@@ -1,0 +1,20 @@
+[
+  {
+    "modid": "clayium",
+    "name": "Clayium",
+    "description": "Clay Industry, for CpS (Clay blocks per Seconds) Challengers",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "deb_rk",
+      "bqc0n",
+      "soramame_256"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
