@@ -12,6 +12,7 @@ public class ClayiumBlocks {
     public static void register() {
         Block b;
         ItemBlock i;
+
     }
     private static void register(Block b, ItemBlock i) {
         ForgeRegistries.BLOCKS.register(b);
