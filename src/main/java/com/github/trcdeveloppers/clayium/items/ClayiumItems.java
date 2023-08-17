@@ -9,6 +9,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static com.github.trcdeveloppers.clayium.Clayium.MOD_ID;
 
 public class ClayiumItems {
+    public static void register(){
+        Item i;
+
+    }
     @GameRegistry.ObjectHolder(MOD_ID)
     public static class ItemHolder{
 

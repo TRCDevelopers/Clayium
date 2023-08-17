@@ -1,5 +1,7 @@
 package com.github.trcdeveloppers.clayium;
 
+import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
+import com.github.trcdeveloppers.clayium.items.ClayiumItems;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -35,7 +37,8 @@ public class Clayium {
      */
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event) {
-
+        ClayiumBlocks.register();
+        ClayiumItems.register();
     }
 
     /**
