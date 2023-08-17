@@ -805,8 +805,8 @@ item.itemCompressedClayShard.3.name=Advanced Industrial Clay Shard
 
 item.itemClayShovel.name=Clay Shovel
 item.itemClayShovel.tooltip.line1=Can dig Clay Ores and increase drops.
-item.itemclaypickaxe.name=Clay Pickaxe
-item.itemclaypickaxe.tooltip.line1=Can harvest Clay Ores so fast and increase drops.
+item.clay_pickaxe.name=Clay Pickaxe
+item.clay_pickaxe.tooltip.line1=Can harvest Clay Ores so fast and increase drops.
 
 item.itemFilterDuplicator.copy.name=Item Filter Duplicator
 item.itemFilterWhitelist.name=White List Item Filter

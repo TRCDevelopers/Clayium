@@ -805,8 +805,8 @@ item.itemCompressedClayShard.3.name=発展工業用粘土片
 
 item.itemClayShovel.name=粘土シャベル
 item.itemClayShovel.tooltip.line1=粘土鉱石が採掘でき、そのドロップ数を上昇させる
-item.itemclaypickaxe.name=粘土ツルハシ
-item.itemclaypickaxe.tooltip.line1=粘土鉱石を素早く採掘し、そのドロップ数を上昇させる
+item.clay_pickaxe.name=粘土ツルハシ
+item.clay_pickaxe.tooltip.line1=粘土鉱石を素早く採掘し、そのドロップ数を上昇させる
 
 item.itemFilterDuplicator.copy.name=アイテムフィルター複製機
 item.itemFilterWhitelist.name=ホワイトリストアイテムフィルター

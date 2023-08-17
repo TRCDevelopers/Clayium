@@ -5,11 +5,9 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.JarURLConnection;
 import java.net.URL;
@@ -26,11 +24,10 @@ public class ClayiumItems {
         return itemMap.get(registryName);
     }
     public static void register(){
-        Item i;
         //参考 https://blog1.mammb.com/entry/2015/03/31/001620
-        final String resourceName = "com/github/trcdeveloppers/clayium/items";
-        final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        final URL url = classLoader.getResource(resourceName);
+        String resourceName = "com/github/trcdeveloppers/clayium/items";
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        URL url = classLoader.getResource(resourceName);
         List<Class<?>> classes = new ArrayList<>();
         if (url.getProtocol().equals("jar")){
             try (JarFile jarFile = ((JarURLConnection) url.openConnection()).getJarFile()){
