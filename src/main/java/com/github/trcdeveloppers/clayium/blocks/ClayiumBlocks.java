@@ -8,9 +8,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import static com.github.trcdeveloppers.clayium.Clayium.MOD_ID;
 
-@GameRegistry.ObjectHolder(MOD_ID)
 public class ClayiumBlocks {
-    /*
-    public static final MySpecialBlock mySpecialBlock = null; // placeholder for special block below
-    */
+    @GameRegistry.ObjectHolder(MOD_ID)
+    public static class BlockHolder{
+
+    }
 }
