@@ -37,6 +37,7 @@ public class BlockClayOre extends ClayiumBlocks.ClayiumBlock {
         this.setSoundType(SoundType.STONE);
     }
 
+    @SuppressWarnings("unused")
     public BlockClayOre() {
         this(Material.ROCK);
     }

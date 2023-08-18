@@ -65,7 +65,7 @@ recipe.ClayTree.description=粘土樹はリチウムの良い入手源である�
 
 tile.clay_ore.name=粘土鉱石
 tile.dense_clay_ore.name=高密度粘土鉱石
-tile.blockClayOre.2.name=高密度粘土鉱石大
+tile.large_dense_clay_ore.name=高密度粘土鉱石大
 
 tile.compressed_clay_tier0.name=高密度粘土
 tile.compressed_clay_tier1.name=圧縮粘土
