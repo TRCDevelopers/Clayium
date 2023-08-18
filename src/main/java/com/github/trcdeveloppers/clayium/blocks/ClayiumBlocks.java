@@ -75,8 +75,8 @@ public class ClayiumBlocks {
         }
     }
     public static abstract class ClayiumBlock extends Block{
-        public ClayiumBlock(Material blockMaterialIn, MapColor blockMapColorIn) {
-            super(blockMaterialIn, blockMapColorIn);
+        public ClayiumBlock(Material materialIn) {
+            super(materialIn);
         }
 
         public boolean hasMetadata(){
