@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+    "item": "clayium:compressed_clay_tier1"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "clayium:compressed_clay_tier0"
+  }
+}
