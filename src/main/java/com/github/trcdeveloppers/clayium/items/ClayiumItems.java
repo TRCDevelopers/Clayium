@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.lang.annotation.Annotation;
 import java.net.JarURLConnection;
@@ -60,6 +61,11 @@ public class ClayiumItems {
                         }
                         ForgeRegistries.ITEMS.register(it);
                         itemMap.put(((com.github.trcdeveloppers.clayium.annotation.Item) an).registryName(),it);
+                        if(it instanceof ClayiumItem){
+                            for(String oreDictionary : ((ClayiumItem) it).getOreDictionaries()){
+                                OreDictionary.registerOre(oreDictionary, it);
+                            }
+                        }
                         if(FMLCommonHandler.instance().getSide().isClient()) {
                             if(it instanceof ClayiumItem && ((ClayiumItem) it).hasMetadata()) {
                                 for(Map.Entry<Integer, String> st : ((ClayiumItem) it).getMetadataModels().entrySet()) {
@@ -84,6 +90,9 @@ public class ClayiumItems {
         */
         public Map<Integer, String> getMetadataModels(){
             return null;
+        }
+        public List<String> getOreDictionaries(){
+            return new ArrayList<>();
         }
     }
 

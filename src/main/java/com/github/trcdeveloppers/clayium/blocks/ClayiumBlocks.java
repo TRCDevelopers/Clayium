@@ -9,6 +9,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -60,6 +61,11 @@ public class ClayiumBlocks {
                         ForgeRegistries.BLOCKS.register(b);
                         blockMap.put(((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName(),b);
                         ForgeRegistries.ITEMS.register(new ItemBlock(b).setRegistryName(((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName()));
+                        if(b instanceof ClayiumBlock) {
+                            for (String oreDictionary : ((ClayiumBlock) b).getOreDictionaries()) {
+                                OreDictionary.registerOre(oreDictionary, Item.getItemFromBlock(b));
+                            }
+                        }
                         if(FMLCommonHandler.instance().getSide().isClient()) {
                             if(b instanceof ClayiumBlocks.ClayiumBlock && ((ClayiumBlocks.ClayiumBlock) b).hasMetadata()) {
                                 for(Map.Entry<Integer, String> st : ((ClayiumBlocks.ClayiumBlock) b).getMetadataModels().entrySet()) {
@@ -88,6 +94,9 @@ public class ClayiumBlocks {
          */
         public Map<Integer, String> getMetadataModels(){
             return null;
+        }
+        public List<String> getOreDictionaries(){
+            return new ArrayList<>();
         }
     }
     public static Block getBlock(String registryName){
