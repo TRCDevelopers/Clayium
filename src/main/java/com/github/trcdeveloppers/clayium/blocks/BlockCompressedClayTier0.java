@@ -16,7 +16,7 @@ public class BlockCompressedClayTier0 extends ClayiumBlocks.ClayiumBlock impleme
         this.setLightLevel(0f);
         this.setHarvestLevel("shovel", 0);
         this.setHardness(1f);
-        this.setSoundType(SoundType.SAND);
+        this.setSoundType(SoundType.GROUND);
     }
     public BlockCompressedClayTier0(){
         this(Material.ROCK);
