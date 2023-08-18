@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.*;
@@ -51,10 +52,10 @@ public class ClayiumBlocks {
                     if(an instanceof com.github.trcdeveloppers.clayium.annotation.Block){
                         Block b;
                         try {
-                            b = (Block) c.newInstance();
-                            b.setTranslationKey(((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName())
+                            b = ((Block) c.getConstructor(Material.class).newInstance(Material.CLOTH)).setTranslationKey(((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName())
                                     .setRegistryName(new ResourceLocation(MOD_ID, ((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName()));
-                        } catch (InstantiationException | IllegalAccessException e) {
+                        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                                 NoSuchMethodException e) {
                             throw new RuntimeException(e);
                         }
                         ForgeRegistries.BLOCKS.register(b);
