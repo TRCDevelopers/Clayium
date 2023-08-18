@@ -34,6 +34,7 @@ public class ItemClayPickaxe extends ItemPickaxe {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack,worldIn,tooltip,flagIn);
         tooltip.add(I18n.format("item.clay_pickaxe.tooltip.line1"));
     }
 }
