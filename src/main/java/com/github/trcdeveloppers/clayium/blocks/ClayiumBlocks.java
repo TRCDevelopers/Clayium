@@ -52,10 +52,9 @@ public class ClayiumBlocks {
                     if(an instanceof com.github.trcdeveloppers.clayium.annotation.Block){
                         Block b;
                         try {
-                            b = ((Block) c.getConstructor(Material.class).newInstance(Material.CLOTH)).setTranslationKey(((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName())
+                            b = ((ClayiumBlock) c.newInstance()).setTranslationKey(((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName())
                                     .setRegistryName(new ResourceLocation(MOD_ID, ((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName()));
-                        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                                 NoSuchMethodException e) {
+                        } catch (InstantiationException | IllegalAccessException e) {
                             throw new RuntimeException(e);
                         }
                         ForgeRegistries.BLOCKS.register(b);
@@ -79,6 +78,7 @@ public class ClayiumBlocks {
         public ClayiumBlock(Material materialIn) {
             super(materialIn);
         }
+        public ClayiumBlock(){super(Material.CLOTH);}
 
         public boolean hasMetadata(){
             return false;
