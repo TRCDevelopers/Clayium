@@ -1,4 +1,4 @@
-package com.github.trcdeveloppers.clayium.items;
+package com.github.trcdeveloppers.clayium.interfaces;
 
 public interface IClayEnergy {
     long getClayEnergy();
