@@ -38,7 +38,9 @@ public class ItemClayPickaxe extends ItemPickaxe {
 
     @Override
     public float getDestroySpeed(ItemStack stack, IBlockState state) {
-        if(state.getBlock() == ClayiumBlocks.getBlock("clay_ore") || state.getBlock() == ClayiumBlocks.getBlock("dense_clay_ore")){
+        if(state.getBlock() == ClayiumBlocks.getBlock("clay_ore")
+                || state.getBlock() == ClayiumBlocks.getBlock("dense_clay_ore")
+                || state.getBlock() == ClayiumBlocks.getBlock("large_dense_clay_ore")) {
             return state.getBlock().getHarvestLevel(state) <= stack.getItem().getHarvestLevel(stack, state.getBlock().getHarvestTool(state), null, state) ? this.efficiencyOnClayOre : this.efficiencyOnClayOre*100f/30f;
         }
         return super.getDestroySpeed(stack,state);

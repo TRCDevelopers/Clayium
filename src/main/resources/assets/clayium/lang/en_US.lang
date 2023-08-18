@@ -65,7 +65,7 @@ recipe.ClayTree.description=A Clay Tree is a good source of Lithium, but it isn'
 
 tile.clay_ore.name=Clay Ore
 tile.dense_clay_ore.name=Dense Clay Ore
-tile.blockClayOre.2.name=Large Dense Clay Ore
+tile.large_dense_clay_ore.name=Large Dense Clay Ore
 
 tile.compressed_clay_tier0.name=Dense Clay
 tile.compressed_clay_tier1.name=Compressed Clay
