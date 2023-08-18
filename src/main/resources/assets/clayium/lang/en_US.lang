@@ -1,6 +1,6 @@
 #
-itemGroup.Clayium=Clayium
-itemGroup.ClayiumCapsule=Clayium Fluid Capsules
+itemGroup.clayium=Clayium
+itemGroup.clayiumcapsule=Clayium Fluid Capsules
 
 tooltip.HoldShiftForDetails=--§fHold §lShift§r For Details§7--
 
