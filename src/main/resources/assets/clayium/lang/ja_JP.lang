@@ -64,7 +64,7 @@ recipe.ClayTree=粘土樹
 recipe.ClayTree.description=粘土樹はリチウムの良い入手源であるが、地上世界には生成されない。粘土樹の苗木は、地面に植えられたバニラの苗木に粘土レーザーを照射することで得られる。レーザーのエネルギー値は 1000 以上でなければならない。
 
 tile.clay_ore.name=粘土鉱石
-tile.blockClayOre.1.name=高密度粘土鉱石
+tile.dense_clay_ore.name=高密度粘土鉱石
 tile.blockClayOre.2.name=高密度粘土鉱石大
 
 tile.compressed_clay_tier0.name=高密度粘土
