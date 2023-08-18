@@ -1,6 +1,7 @@
-package com.github.trcdeveloppers.clayium.blocks;
+package com.github.trcdeveloppers.clayium.blocks.compressed;
 
 import com.github.trcdeveloppers.clayium.annotation.Block;
+import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
 import com.github.trcdeveloppers.clayium.interfaces.IClayEnergy;
 import com.github.trcdeveloppers.clayium.interfaces.ITiered;
 import com.github.trcdeveloppers.clayium.util.UtilLocale;
