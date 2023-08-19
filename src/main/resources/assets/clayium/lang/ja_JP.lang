@@ -101,8 +101,8 @@ tile.blockMachineHull.12.name=OPA マシン筐体
 tile.blockAZ91DHull.name=AZ91D 合金マシン筐体
 tile.blockZK60AHull.name=ZK60A 合金マシン筐体
 
-tile.blockClayWorkTable.name=粘土作業台
-tile.blockClayWorkTable.tooltip.line1=工業化への第一歩
+tile.clay_work_table.name=粘土作業台
+tile.clay_work_table.tooltip.line1=工業化への第一歩
 tile.blockClayCraftingTable.name=粘土作業板
 tile.blockClayCraftingTable.tooltip.line1=ちょっと便利な作業台
 tile.blockClayCraftingTable.tooltip.line2=__DETAIL__
