@@ -2,10 +2,12 @@ package com.github.trcdeveloppers.clayium;
 
 import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
 import com.github.trcdeveloppers.clayium.items.ClayiumItems;
+import com.github.trcdeveloppers.clayium.worldgen.ClayOreGenerator;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(
         modid = Clayium.MOD_ID,
@@ -32,6 +34,7 @@ public class Clayium {
     public void preinit(FMLPreInitializationEvent event) {
         ClayiumBlocks.register();
         ClayiumItems.register();
+        GameRegistry.registerWorldGenerator(new ClayOreGenerator(),0);
     }
 
     /**
