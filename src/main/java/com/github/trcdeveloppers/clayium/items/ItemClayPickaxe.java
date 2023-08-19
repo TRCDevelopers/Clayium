@@ -1,6 +1,7 @@
 package com.github.trcdeveloppers.clayium.items;
 
 import com.github.trcdeveloppers.clayium.annotation.Item;
+import com.github.trcdeveloppers.clayium.util.UtilLocale;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -50,9 +51,14 @@ public class ItemClayPickaxe extends ItemPickaxe {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     @ParametersAreNonnullByDefault
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack,worldIn,tooltip,flagIn);
-        tooltip.add(I18n.format("item.clay_pickaxe.tooltip.line1"));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        if(this.getRegistryName()==null) return;
+        List<String> list = UtilLocale.localizeTooltip("item."+this.getRegistryName().getPath() + ".tooltip");
+        if (list != null) {
+            tooltip.addAll(list);
+        }
     }
 }
