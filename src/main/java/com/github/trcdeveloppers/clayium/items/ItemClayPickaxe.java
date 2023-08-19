@@ -22,18 +22,20 @@ import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.C
 
 @Item(registryName = "clay_pickaxe")
 public class ItemClayPickaxe extends ItemPickaxe {
-    private float efficiencyOnClayOre = 32.0f;
-    public ItemClayPickaxe(){
+    private final float efficiencyOnClayOre = 32.0f;
+
+    public ItemClayPickaxe() {
         super(ToolMaterial.STONE);
         this.setCreativeTab(CLAYIUM);
         this.setMaxDamage(500);
 
     }
+
     @Override
     @SideOnly(Side.CLIENT)
     @ParametersAreNonnullByDefault
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
-        if(this.isInCreativeTab(tab)){
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (this.isInCreativeTab(tab)) {
             items.add(new ItemStack(this, 1, 0));
         }
     }
@@ -41,13 +43,13 @@ public class ItemClayPickaxe extends ItemPickaxe {
     @Override
     @ParametersAreNonnullByDefault
     public float getDestroySpeed(ItemStack stack, IBlockState state) {
-        if(state.getBlock().getRegistryName() != null) {
+        if (state.getBlock().getRegistryName() != null) {
             String regName = state.getBlock().getRegistryName().toString();
             if (regName.startsWith("clayium") && regName.endsWith("clay_ore")) {
                 return state.getBlock().getHarvestLevel(state) <= stack.getItem().getHarvestLevel(stack, Objects.requireNonNull(state.getBlock().getHarvestTool(state)), null, state) ? this.efficiencyOnClayOre : this.efficiencyOnClayOre * 100f / 30f;
             }
         }
-        return super.getDestroySpeed(stack,state);
+        return super.getDestroySpeed(stack, state);
     }
 
     @Override
@@ -55,8 +57,8 @@ public class ItemClayPickaxe extends ItemPickaxe {
     @ParametersAreNonnullByDefault
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        if(this.getRegistryName()==null) return;
-        List<String> list = UtilLocale.localizeTooltip("item."+this.getRegistryName().getPath() + ".tooltip");
+        if (this.getRegistryName() == null) return;
+        List<String> list = UtilLocale.localizeTooltip("item." + this.getRegistryName().getPath() + ".tooltip");
         if (list != null) {
             tooltip.addAll(list);
         }

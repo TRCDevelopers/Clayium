@@ -73,7 +73,7 @@ public class BlockClayOre extends ClayiumBlocks.ClayiumBlock {
     @Override
     @ParametersAreNonnullByDefault
     public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
-        if(player.getHeldItemMainhand().getItem() instanceof ItemClayShovel) return true;
+        if (player.getHeldItemMainhand().getItem() instanceof ItemClayShovel) return true;
         return super.canHarvestBlock(world, pos, player);
     }
 
@@ -95,14 +95,13 @@ public class BlockClayOre extends ClayiumBlocks.ClayiumBlock {
             for (ItemStack item : items) {
                 spawnAsEntity(worldIn, pos, item);
             }
-        }
-        else {
+        } else {
             harvesters.set(player);
             int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack);
             // ClayShovel: +3 fortune, ClayPickaxe: +4 fortune.
             if (player.getHeldItemMainhand().getItem() instanceof ItemClayPickaxe) {
                 i = (i + 1) * 4;
-            }else if(player.getHeldItemMainhand().getItem() instanceof ItemClayShovel){
+            } else if (player.getHeldItemMainhand().getItem() instanceof ItemClayShovel) {
                 i = (i + 1) * 3;
             }
             this.dropBlockAsItem(worldIn, pos, state, i);

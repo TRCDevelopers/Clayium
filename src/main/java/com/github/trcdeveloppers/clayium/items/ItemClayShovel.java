@@ -20,8 +20,9 @@ import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.C
 @Item(registryName = "clay_shovel")
 public class ItemClayShovel extends ItemSpade {
     protected float efficiencyOnClayBlocks = 32.0f;
-    private float efficiencyOnClayOre = 12.0f;
-    public ItemClayShovel(){
+    private final float efficiencyOnClayOre = 12.0f;
+
+    public ItemClayShovel() {
         super(ToolMaterial.WOOD);
         this.setMaxDamage(500);
         this.setCreativeTab(CLAYIUM);
@@ -30,10 +31,10 @@ public class ItemClayShovel extends ItemSpade {
     @ParametersAreNonnullByDefault
     @Override
     public float getDestroySpeed(ItemStack stack, IBlockState state) {
-        if(state.getBlock().getMaterial(state)== Material.CLAY) {
+        if (state.getBlock().getMaterial(state) == Material.CLAY) {
             return this.efficiencyOnClayBlocks;
         }
-        if(state.getBlock().getRegistryName() != null) {
+        if (state.getBlock().getRegistryName() != null) {
             String regName = state.getBlock().getRegistryName().toString();
             if (regName.startsWith("clayium") && regName.endsWith("clay_ore")) {
                 return this.efficiencyOnClayOre;
@@ -41,13 +42,14 @@ public class ItemClayShovel extends ItemSpade {
         }
         return super.getDestroySpeed(stack, state);
     }
+
     @Override
     @SideOnly(Side.CLIENT)
     @ParametersAreNonnullByDefault
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        if(this.getRegistryName()==null) return;
-        List<String> list = UtilLocale.localizeTooltip("item."+this.getRegistryName().getPath() + ".tooltip");
+        if (this.getRegistryName() == null) return;
+        List<String> list = UtilLocale.localizeTooltip("item." + this.getRegistryName().getPath() + ".tooltip");
         if (list != null) {
             tooltip.addAll(list);
         }
