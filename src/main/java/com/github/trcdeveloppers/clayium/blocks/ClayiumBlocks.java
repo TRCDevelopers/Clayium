@@ -2,7 +2,6 @@ package com.github.trcdeveloppers.clayium.blocks;
 
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -12,7 +11,6 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.*;
@@ -30,7 +28,7 @@ public class ClayiumBlocks {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL url = classLoader.getResource(resourceName);
         List<Class<?>> classes = new ArrayList<>();
-        if (url.getProtocol().equals("jar")){
+        if (url != null && url.getProtocol().equals("jar")){
             try (JarFile jarFile = ((JarURLConnection) url.openConnection()).getJarFile()){
                 List<String> classPaths;
                 classPaths= Collections.list(jarFile.entries()).stream()
@@ -84,6 +82,7 @@ public class ClayiumBlocks {
         public ClayiumBlock(Material materialIn) {
             super(materialIn);
         }
+        @SuppressWarnings("unused")
         public ClayiumBlock(){super(Material.CLOTH);}
 
         public boolean hasMetadata(){
