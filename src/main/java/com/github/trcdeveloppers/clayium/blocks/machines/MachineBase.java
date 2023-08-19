@@ -21,8 +21,14 @@ public abstract class MachineBase extends ClayiumBlocks.ClayiumBlock implements 
         return clayEnergy;
     }
 
+    @Override
     public void setClayEnergy(long clayEnergy) {
         this.clayEnergy = clayEnergy;
+    }
+
+    @Override
+    public long addClayEnergy(long energy) {
+        return (this.clayEnergy += energy);
     }
 
     @Override
