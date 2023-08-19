@@ -67,7 +67,7 @@ public class BlockClayOre extends ClayiumBlocks.ClayiumBlock {
     @Override
     @ParametersAreNonnullByDefault
     public int quantityDropped(Random random) {
-        return 4;
+        return 4 + random.nextInt(5) * random.nextInt(4);
     }
 
     @Override
