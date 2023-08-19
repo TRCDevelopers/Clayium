@@ -23,18 +23,19 @@ public class BlockCompressedClayTier1 extends ClayiumBlocks.ClayiumBlock impleme
         super(material);
         this.setCreativeTab(CLAYIUM);
         this.setLightLevel(0f);
-        this.setHarvestLevel("shovel",0);
+        this.setHarvestLevel("shovel", 0);
         this.setHardness(0.5f);
         this.setSoundType(SoundType.GROUND);
     }
+
     @SuppressWarnings("unused")
-    public BlockCompressedClayTier1(){
+    public BlockCompressedClayTier1() {
         this(Material.GROUND);
     }
 
     @Override
     public long getClayEnergy() {
-        return this.getTier()>=4 ? (long)Math.pow(10,this.getTier()+1) : 0L;
+        return this.getTier() >= 4 ? (long) Math.pow(10, this.getTier() + 1) : 0L;
     }
 
     @Override
@@ -45,7 +46,7 @@ public class BlockCompressedClayTier1 extends ClayiumBlocks.ClayiumBlock impleme
     @Override
     @ParametersAreNonnullByDefault
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack,worldIn,tooltip,flagIn);
+        super.addInformation(stack, worldIn, tooltip, flagIn);
         tooltip.add(UtilLocale.ClayEnergyNumeral(this.getClayEnergy()) + "CE");
 
     }
