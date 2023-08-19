@@ -3,6 +3,7 @@ package com.github.trcdeveloppers.clayium.blocks.ores;
 import com.github.trcdeveloppers.clayium.annotation.Block;
 import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
 import com.github.trcdeveloppers.clayium.items.ItemClayPickaxe;
+import com.github.trcdeveloppers.clayium.items.ItemClayShovel;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -15,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -70,6 +72,13 @@ public class BlockClayOre extends ClayiumBlocks.ClayiumBlock {
 
     @Override
     @ParametersAreNonnullByDefault
+    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
+        if(player.getHeldItemMainhand().getItem() instanceof ItemClayShovel) return true;
+        return super.canHarvestBlock(world, pos, player);
+    }
+
+    @Override
+    @ParametersAreNonnullByDefault
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
         player.addStat(Objects.requireNonNull(StatList.getBlockStats(this)));
         player.addExhaustion(0.005F);
@@ -93,6 +102,8 @@ public class BlockClayOre extends ClayiumBlocks.ClayiumBlock {
             // ClayShovel: +3 fortune, ClayPickaxe: +4 fortune.
             if (player.getHeldItemMainhand().getItem() instanceof ItemClayPickaxe) {
                 i = (i + 1) * 4;
+            }else if(player.getHeldItemMainhand().getItem() instanceof ItemClayShovel){
+                i = (i + 1) * 3;
             }
             this.dropBlockAsItem(worldIn, pos, state, i);
             harvesters.set(null);
