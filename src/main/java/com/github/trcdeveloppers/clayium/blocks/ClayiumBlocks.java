@@ -52,7 +52,7 @@ public class ClayiumBlocks {
                     if (an instanceof com.github.trcdeveloppers.clayium.annotation.Block) {
                         Block b;
                         try {
-                            b = ((ClayiumBlock) c.newInstance()).setTranslationKey(((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName())
+                            b = ((Block) c.newInstance()).setTranslationKey(((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName())
                                     .setRegistryName(new ResourceLocation(MOD_ID, ((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName()));
                         } catch (InstantiationException | IllegalAccessException e) {
                             throw new RuntimeException(e);
