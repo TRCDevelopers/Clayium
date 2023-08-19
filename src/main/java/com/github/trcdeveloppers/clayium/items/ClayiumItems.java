@@ -30,7 +30,7 @@ public class ClayiumItems {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL url = classLoader.getResource(resourceName);
         List<Class<?>> classes = new ArrayList<>();
-        if (url.getProtocol().equals("jar")){
+        if (url!=null && url.getProtocol().equals("jar")){
             try (JarFile jarFile = ((JarURLConnection) url.openConnection()).getJarFile()){
                 List<String> classPaths;
                 classPaths= Collections.list(jarFile.entries()).stream()
@@ -69,10 +69,10 @@ public class ClayiumItems {
                         if(FMLCommonHandler.instance().getSide().isClient()) {
                             if(it instanceof ClayiumItem && ((ClayiumItem) it).hasMetadata()) {
                                 for(Map.Entry<Integer, String> st : ((ClayiumItem) it).getMetadataModels().entrySet()) {
-                                    registerModel(it, st.getKey(), st.getValue());
+                                    registerModel(it, st.getKey());
                                 }
                             }else{
-                                registerModel(it,0,((com.github.trcdeveloppers.clayium.annotation.Item) an).registryName());
+                                registerModel(it,0);
                             }
                         }
                     }
@@ -97,7 +97,7 @@ public class ClayiumItems {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void registerModel(Item i, int meta, String registryName){
-        net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(i,meta,new ModelResourceLocation(i.getRegistryName(),"inventory"));
+    public static void registerModel(Item i, int meta){
+        if(i.getRegistryName() != null) net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(i,meta,new ModelResourceLocation(i.getRegistryName(),"inventory"));
     }
 }

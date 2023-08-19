@@ -67,10 +67,10 @@ public class ClayiumBlocks {
                         if(FMLCommonHandler.instance().getSide().isClient()) {
                             if(b instanceof ClayiumBlocks.ClayiumBlock && ((ClayiumBlocks.ClayiumBlock) b).hasMetadata()) {
                                 for(Map.Entry<Integer, String> st : ((ClayiumBlocks.ClayiumBlock) b).getMetadataModels().entrySet()) {
-                                    registerModel(Item.getItemFromBlock(b), st.getKey(), st.getValue());
+                                    registerModel(Item.getItemFromBlock(b), st.getKey());
                                 }
                             }else{
-                                registerModel(Item.getItemFromBlock(b),0,((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName());
+                                registerModel(Item.getItemFromBlock(b),0);
                             }
                         }
                     }
