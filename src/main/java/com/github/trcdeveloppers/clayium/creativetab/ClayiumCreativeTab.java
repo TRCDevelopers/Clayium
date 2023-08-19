@@ -12,6 +12,7 @@ import static net.minecraft.creativetab.CreativeTabs.getNextID;
 public abstract class ClayiumCreativeTab {
     public static final CreativeTabs CLAYIUM = new CreativeTabs(getNextID(), MOD_ID) {
         @SideOnly(Side.CLIENT)
+        @SuppressWarnings("all")
         public ItemStack createIcon() {
             return new ItemStack(Items.CLAY_BALL);
         }

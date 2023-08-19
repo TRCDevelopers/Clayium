@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
@@ -26,6 +27,7 @@ public class BlockCompressedClayTier0 extends ClayiumBlocks.ClayiumBlock impleme
         this.setHardness(0.5f);
         this.setSoundType(SoundType.GROUND);
     }
+    @SuppressWarnings("unused")
     public BlockCompressedClayTier0(){
         this(Material.GROUND);
     }
@@ -41,6 +43,7 @@ public class BlockCompressedClayTier0 extends ClayiumBlocks.ClayiumBlock impleme
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack,worldIn,tooltip,flagIn);
         tooltip.add(UtilLocale.ClayEnergyNumeral(this.getClayEnergy()) + "CE");

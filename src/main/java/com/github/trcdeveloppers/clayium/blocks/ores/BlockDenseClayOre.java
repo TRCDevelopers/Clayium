@@ -19,7 +19,7 @@ public class BlockDenseClayOre extends ClayiumBlocks.ClayiumBlock {
         this.setResistance(5f);
         this.setSoundType(SoundType.STONE);
     }
-
+    @SuppressWarnings("unused")
     public BlockDenseClayOre() {
         this(Material.ROCK);
     }

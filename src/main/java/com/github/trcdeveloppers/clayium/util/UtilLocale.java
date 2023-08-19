@@ -6,6 +6,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
+import java.util.IllegalFormatException;
 import java.util.List;
 
 //everything from Original Clayium
@@ -51,15 +52,15 @@ public class UtilLocale {
     }
     protected static String ClayEnergyNumeral(int d, int p, boolean flag) {
         if (d % 10 != 0 || !flag) {
-            return String.valueOf(d / 1000) + "." + String.valueOf(d / 100 % 10) + String.valueOf(d / 10 % 10) + String.valueOf(d % 10) + CENumerals[p];
+            return d / 1000 + "." + d / 100 % 10 + d / 10 % 10 + d % 10 + CENumerals[p];
         }
         if (d % 100 != 0) {
-            return String.valueOf(d / 1000) + "." + String.valueOf(d / 100 % 10) + String.valueOf(d / 10 % 10) + CENumerals[p];
+            return d / 1000 + "." + d / 100 % 10 + d / 10 % 10 + CENumerals[p];
         }
         if (d % 1000 != 0) {
-            return String.valueOf(d / 1000) + "." + String.valueOf(d / 100 % 10) + CENumerals[p];
+            return d / 1000 + "." + d / 100 % 10 + CENumerals[p];
         }
-        return String.valueOf(d / 1000) + CENumerals[p];
+        return d / 1000 + CENumerals[p];
     }
     protected static String StackSizeNumeral(long stackSize, boolean flag) {
         int k;
@@ -73,13 +74,13 @@ public class UtilLocale {
             s = "-";
         }
         if ((k = (int)Math.floor(Math.log10(n))) < 5) {
-            return s + String.valueOf(n);
+            return s + n;
         }
         int p = Math.min(k / 3, SNumerals.length - 1);
         int d = (int)((double)n / Math.pow(10.0, k - 2));
         boolean flag1 = flag && k % 3 <= 1 && d % 10 == 0;
         boolean flag2 = flag1 && k % 3 == 0 && d / 10 % 10 == 0;
-        return s + String.valueOf(d / 100) + (flag2 ? "" : (k % 3 == 0 ? "." : "") + String.valueOf(d / 10 % 10)) + (flag1 ? "" : (k % 3 == 1 ? "." : "") + String.valueOf(d % 10)) + SNumerals[p];
+        return s + d / 100 + (flag2 ? "" : (k % 3 == 0 ? "." : "") + d / 10 % 10) + (flag1 ? "" : (k % 3 == 1 ? "." : "") + d % 10) + SNumerals[p];
     }
     public static String StackSizeNumeral(long stackSize) {
         return UtilLocale.StackSizeNumeral(stackSize, false);
@@ -105,12 +106,12 @@ public class UtilLocale {
 
     @SideOnly(value= Side.CLIENT)
     public static String laserGui(long laser) {
-        return I18n.format((String)"gui.Common.clayLaser", (Object[])new Object[]{UtilLocale.laserNumeral(laser)});
+        return I18n.format("gui.Common.clayLaser", UtilLocale.laserNumeral(laser));
     }
 
     @SideOnly(value=Side.CLIENT)
     public static String tierGui(int tier) {
-        return I18n.format((String)"gui.Common.tier", (Object[])new Object[]{tier});
+        return I18n.format("gui.Common.tier", tier);
     }
 
     public static String craftTimeNumeral(long craftTime) {
@@ -127,7 +128,6 @@ public class UtilLocale {
         }
         return null;
     }
-    /*
     public static String localizeAndFormat(String str, Object ... args) {
         String ret = UtilLocale.localizeUnsafe(str);
         if (ret == null) {
@@ -137,20 +137,19 @@ public class UtilLocale {
             ret = String.format(ret, args);
         }
         catch (IllegalFormatException e) {
-            ClayiumCore.logger.catching((Throwable)e);
+            //ClayiumCore.logger.catching((Throwable)e);
             return str;
         }
         return ret;
     }
     public static boolean canLocalize(String str) {
-        return StatCollector.func_94522_b((String)str);
+        return I18n.hasKey(str);
     }
-    */
     public static List<String> localizeTooltip(String str) {
         boolean flag = true;
         int i = 0;
         ArrayList<String> ret = new ArrayList<>();
-        while (flag && i < 12) {
+        while (flag && i < maxLineTooltip) {
             String loc = UtilLocale.localizeUnsafe(str + ".line" + ++i);
             if (loc != null) {
                 if (loc.equals("__DETAIL__")) {
