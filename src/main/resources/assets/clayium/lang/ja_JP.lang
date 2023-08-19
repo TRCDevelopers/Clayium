@@ -803,8 +803,8 @@ item.itemCompressedClayShard.1.name=圧縮粘土片
 item.itemCompressedClayShard.2.name=工業用粘土片
 item.itemCompressedClayShard.3.name=発展工業用粘土片
 
-item.itemClayShovel.name=粘土シャベル
-item.itemClayShovel.tooltip.line1=粘土鉱石が採掘でき、そのドロップ数を上昇させる
+item.clay_shovel.name=粘土シャベル
+item.clay_shovel.tooltip.line1=粘土鉱石が採掘でき、そのドロップ数を上昇させる
 item.clay_pickaxe.name=粘土ツルハシ
 item.clay_pickaxe.tooltip.line1=粘土鉱石を素早く採掘し、そのドロップ数を上昇させる
 
