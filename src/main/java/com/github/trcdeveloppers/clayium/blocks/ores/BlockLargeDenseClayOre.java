@@ -2,8 +2,14 @@ package com.github.trcdeveloppers.clayium.blocks.ores;
 
 import com.github.trcdeveloppers.clayium.annotation.Block;
 import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
+import com.github.trcdeveloppers.clayium.items.ItemClayShovel;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
@@ -22,5 +28,12 @@ public class BlockLargeDenseClayOre extends ClayiumBlocks.ClayiumBlock {
     @SuppressWarnings("unused")
     public BlockLargeDenseClayOre() {
         this(Material.ROCK);
+    }
+
+    @Override
+    @ParametersAreNonnullByDefault
+    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
+        if (player.getHeldItemMainhand().getItem() instanceof ItemClayShovel) return true;
+        return super.canHarvestBlock(world, pos, player);
     }
 }
