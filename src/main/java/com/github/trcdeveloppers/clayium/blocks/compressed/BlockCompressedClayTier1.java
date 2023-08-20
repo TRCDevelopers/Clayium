@@ -1,10 +1,10 @@
 package com.github.trcdeveloppers.clayium.blocks.compressed;
 
-import com.github.trcdeveloppers.clayium.annotation.Block;
 import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
 import com.github.trcdeveloppers.clayium.interfaces.IClayEnergy;
 import com.github.trcdeveloppers.clayium.interfaces.ITiered;
 import com.github.trcdeveloppers.clayium.util.UtilLocale;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
@@ -17,8 +17,8 @@ import java.util.List;
 
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
-@Block(registryName = "compressed_clay_tier1")
-public class BlockCompressedClayTier1 extends ClayiumBlocks.ClayiumBlock implements IClayEnergy, ITiered {
+@com.github.trcdeveloppers.clayium.annotation.Block(registryName = "compressed_clay_tier1")
+public class BlockCompressedClayTier1 extends Block implements IClayEnergy, ITiered,ClayiumBlocks.ClayiumBlock {
     public BlockCompressedClayTier1(Material material) {
         super(material);
         this.setCreativeTab(CLAYIUM);

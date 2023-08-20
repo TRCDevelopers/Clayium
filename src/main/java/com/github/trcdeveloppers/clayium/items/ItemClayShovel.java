@@ -18,7 +18,7 @@ import java.util.List;
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
 @Item(registryName = "clay_shovel")
-public class ItemClayShovel extends ItemSpade {
+public class ItemClayShovel extends ItemSpade implements ClayiumItems.ClayiumItem {
     protected float efficiencyOnClayBlocks = 32.0f;
     private final float efficiencyOnClayOre = 12.0f;
 

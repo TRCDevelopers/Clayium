@@ -84,19 +84,19 @@ public class ClayiumItems {
 
     }
 
-    public static abstract class ClayiumItem extends Item {
-        public boolean hasMetadata() {
+    public interface ClayiumItem {
+        default boolean hasMetadata() {
             return false;
         }
 
         /* keyに設定されたメタデータに対してモデルをvalueに定義します。
          * hasMetadataがfalseの場合使用せず、メタデータ0に対してregistryNameの使用をします。
          */
-        public Map<Integer, String> getMetadataModels() {
+        default Map<Integer, String> getMetadataModels() {
             return null;
         }
 
-        public List<String> getOreDictionaries() {
+        default List<String> getOreDictionaries() {
             return new ArrayList<>();
         }
     }

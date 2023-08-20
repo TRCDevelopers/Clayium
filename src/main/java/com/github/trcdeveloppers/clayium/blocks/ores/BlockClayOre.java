@@ -1,9 +1,9 @@
 package com.github.trcdeveloppers.clayium.blocks.ores;
 
-import com.github.trcdeveloppers.clayium.annotation.Block;
 import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
 import com.github.trcdeveloppers.clayium.items.ItemClayPickaxe;
 import com.github.trcdeveloppers.clayium.items.ItemClayShovel;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -27,8 +27,8 @@ import java.util.Random;
 
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
-@Block(registryName = "clay_ore")
-public class BlockClayOre extends ClayiumBlocks.ClayiumBlock {
+@com.github.trcdeveloppers.clayium.annotation.Block(registryName = "clay_ore")
+public class BlockClayOre extends Block implements ClayiumBlocks.ClayiumBlock {
     public BlockClayOre(Material material) {
         super(material);
         this.setCreativeTab(CLAYIUM);
