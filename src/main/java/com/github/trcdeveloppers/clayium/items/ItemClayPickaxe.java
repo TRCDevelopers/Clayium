@@ -21,7 +21,7 @@ import java.util.Objects;
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
 @Item(registryName = "clay_pickaxe")
-public class ItemClayPickaxe extends ItemPickaxe {
+public class ItemClayPickaxe extends ItemPickaxe implements ClayiumItems.ClayiumItem {
     private final float efficiencyOnClayOre = 32.0f;
 
     public ItemClayPickaxe() {

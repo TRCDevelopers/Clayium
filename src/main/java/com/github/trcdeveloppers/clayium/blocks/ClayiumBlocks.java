@@ -80,28 +80,19 @@ public class ClayiumBlocks {
         }
     }
 
-    public static abstract class ClayiumBlock extends Block {
-        public ClayiumBlock(Material materialIn) {
-            super(materialIn);
-        }
-
-        @SuppressWarnings("unused")
-        public ClayiumBlock() {
-            super(Material.CLOTH);
-        }
-
-        public boolean hasMetadata() {
+    public interface ClayiumBlock {
+        default boolean hasMetadata() {
             return false;
         }
 
         /* keyに設定されたメタデータに対してモデルをvalueに定義します。
          * hasMetadataがfalseの場合使用せず、メタデータ0に対してregistryNameの使用をします。
          */
-        public Map<Integer, String> getMetadataModels() {
+        default Map<Integer, String> getMetadataModels() {
             return null;
         }
 
-        public List<String> getOreDictionaries() {
+        default List<String> getOreDictionaries() {
             return new ArrayList<>();
         }
     }

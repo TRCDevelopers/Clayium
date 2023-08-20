@@ -5,16 +5,26 @@ import com.github.trcdeveloppers.clayium.interfaces.IClayEnergyContainer;
 import com.github.trcdeveloppers.clayium.interfaces.IConnectable;
 import com.github.trcdeveloppers.clayium.interfaces.IPipable;
 import com.github.trcdeveloppers.clayium.interfaces.ITiered;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.util.EnumFacing;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class MachineBase extends ClayiumBlocks.ClayiumBlock implements ITiered, IClayEnergyContainer, IPipable, IConnectable {
+public abstract class MachineBase extends Block implements ITiered, IClayEnergyContainer, IPipable, IConnectable,ClayiumBlocks.ClayiumBlock {
     private final Map<EnumFacing, Integer> inputMap = new HashMap<>();
     private final Map<EnumFacing, Integer> outputMap = new HashMap<>();
     private long clayEnergy = 0L;
     private boolean isPipe = false;
+
+    public MachineBase(Material blockMaterialIn, MapColor blockMapColorIn) {
+        super(blockMaterialIn, blockMapColorIn);
+    }
+    public MachineBase(Material materialIn) {
+        super(materialIn);
+    }
 
     @Override
     public long getClayEnergy() {
