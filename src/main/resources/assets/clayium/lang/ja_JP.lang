@@ -927,7 +927,7 @@ item.item.CEE.name=粘土エネルギー励起装置
 item.item.LaserParts.name=レーザーパーツ
 item.item.AntimatterSeed.name=反物質の種
 
-item.itemClayParts.Plate.name=粘土プレート
+item.clay_plate.name=粘土プレート
 item.itemClayParts.Stick.name=粘土棒
 item.itemClayParts.ShortStick.name=粘土小棒
 item.itemClayParts.Ring.name=粘土リング
@@ -947,7 +947,7 @@ item.itemClayParts.Spindle.name=粘土主軸
 item.itemClayParts.CuttingHead.name=粘土切断機ヘッド
 item.itemClayParts.WaterWheel.name=粘土水車パーツ
 
-item.itemDenseClayParts.Plate.name=高密度粘土プレート
+item.dense_clay_plate.name=高密度粘土プレート
 item.itemDenseClayParts.Stick.name=高密度粘土棒
 item.itemDenseClayParts.ShortStick.name=高密度粘土小棒
 item.itemDenseClayParts.Ring.name=高密度粘土リング

@@ -927,7 +927,7 @@ item.item.CEE.name=Clay Energy Excitor
 item.item.LaserParts.name=Laser Parts
 item.item.AntimatterSeed.name=Antimatter Seed
 
-item.itemClayParts.Plate.name=Clay Plate
+item.clay_plate.name=Clay Plate
 item.itemClayParts.Stick.name=Clay Stick
 item.itemClayParts.ShortStick.name=Short Clay Stick
 item.itemClayParts.Ring.name=Clay Ring
@@ -947,7 +947,7 @@ item.itemClayParts.Spindle.name=Clay Spindle
 item.itemClayParts.CuttingHead.name=Clay Cutting Head
 item.itemClayParts.WaterWheel.name=Clay Wheel
 
-item.itemDenseClayParts.Plate.name=Dense Clay Plate
+item.dense_clay_plate.name=Dense Clay Plate
 item.itemDenseClayParts.Stick.name=Dense Clay Stick
 item.itemDenseClayParts.ShortStick.name=Short Dense Clay Stick
 item.itemDenseClayParts.Ring.name=Dense Clay Ring
