@@ -928,7 +928,7 @@ item.item.LaserParts.name=レーザーパーツ
 item.item.AntimatterSeed.name=反物質の種
 
 item.clay_plate.name=粘土プレート
-item.itemClayParts.Stick.name=粘土棒
+item.clay_stick.name=粘土棒
 item.itemClayParts.ShortStick.name=粘土小棒
 item.itemClayParts.Ring.name=粘土リング
 item.itemClayParts.SmallRing.name=粘土小リング
@@ -970,13 +970,13 @@ item.itemDenseClayParts.WaterWheel.name=高密度粘土水車パーツ
 item.itemPlates.IndustrialClay.name=工業用粘土プレート
 item.itemLargePlates.IndustrialClay.name=工業用粘土大プレート
 
-item.itemPlates.AdvancedIndustrialClay.name=発展工業用粘土プレート
+item.adv_industrial_clay_plate.name=発展工業用粘土プレート
 item.itemLargePlates.AdvancedIndustrialClay.name=発展工業用粘土大プレート
 
-item.itemClayParts.Dust.name=粘土粉
-item.itemDenseClayParts.Dust.name=高密度粘土粉
-item.itemDusts.IndustrialClay.name=工業用粘土粉
-item.itemDusts.AdvancedIndustrialClay.name=発展工業用粘土粉
+item.clay_dust.name=粘土粉
+item.dense_clay_dust.name=高密度粘土粉
+item.industrial_clay_dust.name=工業用粘土粉
+item.adv_industrial_clay_dust.name=発展工業用粘土粉
 item.itemDusts.EnergizedClay.name=活性化粘土粉
 item.itemDusts.ExcitedClay.name=励起粘土粉
 
@@ -1005,10 +1005,10 @@ item.itemIngots.Silicon.name=シリコンインゴット
 item.itemIngots.Silicon.tooltip.line1=最初のシリコンインゴットは
 item.itemIngots.Silicon.tooltip.line2=クオーツるつぼで生産しよう
 
-item.itemPlates.Aluminium.name=アルミニウムプレート
+item.aluminium_plate.name=アルミニウムプレート
 item.itemLargePlates.Aluminium.name=アルミニウム大プレート
 item.itemDusts.Aluminium.name=アルミニウムの粉
-item.itemIngots.Aluminium.name=アルミニウムインゴット
+item.aluminum_ingot.name=アルミニウムインゴット
 
 item.itemPlates.ImpureAluminium.name=不純なアルミニウムプレート
 item.itemLargePlates.ImpureAluminium.name=不純なアルミニウム大プレート
@@ -1029,10 +1029,10 @@ item.itemLargePlates.UltimateAlloy.name=究極合金大プレート
 item.itemDusts.UltimateAlloy.name=究極合金の粉
 item.itemIngots.UltimateAlloy.name=究極合金インゴット
 
-item.itemPlates.Antimatter.name=反物質プレート
+item.antimatter_plate.name=反物質プレート
 item.itemLargePlates.Antimatter.name=反物質大プレート
 item.itemDusts.Antimatter.name=反物質の粉
-item.itemGems.Antimatter.name=反物質
+item.antimatter.name=反物質
 
 item.itemPlates.PureAntimatter.name=純反物質プレート
 item.itemLargePlates.PureAntimatter.name=純反物質大プレート

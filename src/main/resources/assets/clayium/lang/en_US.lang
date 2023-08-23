@@ -928,7 +928,7 @@ item.item.LaserParts.name=Laser Parts
 item.item.AntimatterSeed.name=Antimatter Seed
 
 item.clay_plate.name=Clay Plate
-item.itemClayParts.Stick.name=Clay Stick
+item.clay_stick.name=Clay Stick
 item.itemClayParts.ShortStick.name=Short Clay Stick
 item.itemClayParts.Ring.name=Clay Ring
 item.itemClayParts.SmallRing.name=Small Clay Ring
@@ -970,13 +970,13 @@ item.itemDenseClayParts.WaterWheel.name=Dense Clay Wheel
 item.itemPlates.IndustrialClay.name=Industrial Clay Plate
 item.itemLargePlates.IndustrialClay.name=Large Industrial Clay Plate
 
-item.itemPlates.AdvancedIndustrialClay.name=Advanced Industrial Clay Plate
+item.adv_industrial_clay_plate.name=Advanced Industrial Clay Plate
 item.itemLargePlates.AdvancedIndustrialClay.name=Large Advanced Industrial Clay Plate
 
-item.itemClayParts.Dust.name=Clay Dust
-item.itemDenseClayParts.Dust.name=Dense Clay Dust
-item.itemDusts.IndustrialClay.name=Industrial Clay Dust
-item.itemDusts.AdvancedIndustrialClay.name=Advanced Industrial Clay Dust
+item.clay_dust.name=Clay Dust
+item.dense_clay_dust.name=Dense Clay Dust
+item.industrial_clay_dust.name=Industrial Clay Dust
+item.adv_industrial_clay_dust.name=Advanced Industrial Clay Dust
 item.itemDusts.EnergizedClay.name=Energized Clay Dust
 item.itemDusts.ExcitedClay.name=Excited Clay Dust
 
@@ -1005,39 +1005,39 @@ item.itemIngots.Silicon.name=Silicon Ingot
 item.itemIngots.Silicon.tooltip.line1=To get first silicon ingot,
 item.itemIngots.Silicon.tooltip.line2=use Quartz Crucible.
 
-item.itemPlates.Aluminium.name=Aluminium Plate
+item.aluminium_plate.name=Aluminium Plate
 item.itemLargePlates.Aluminium.name=Large Aluminium Plate
 item.itemDusts.Aluminium.name=Aluminium Dust
-item.itemIngots.Aluminium.name=Aluminium Ingot
+item.aluminum_ingot.name=Aluminium Ingot
 
 item.itemPlates.ImpureAluminium.name=Impure Aluminium Plate
 item.itemLargePlates.ImpureAluminium.name=Large Impure Aluminium Plate
 item.itemIngots.ImpureAluminium.name=Impure Aluminium Ingot
 
-item.itemPlates.ClaySteel.name=Clay Steel Plate
-item.itemLargePlates.ClaySteel.name=Large Clay Steel Plate
-item.itemDusts.ClaySteel.name=Clay Steel Dust
-item.itemIngots.ClaySteel.name=Clay Steel Ingot
+item.clay_steel_plate.name=Clay Steel Plate
+item.large_clay_steel_plate.name=Large Clay Steel Plate
+item.clay_steel_dust.name=Clay Steel Dust
+item.clay_steel_ingot.name=Clay Steel Ingot
 
-item.itemPlates.Clayium.name=Clayium Plate
-item.itemLargePlates.Clayium.name=Large Clayium Plate
-item.itemDusts.Clayium.name=Clayium Dust
-item.itemIngots.Clayium.name=Clayium Ingot
+item.clayium_plate.name=Clayium Plate
+item.large_clayium_.name=Large Clayium Plate
+item.clayium_dust.name=Clayium Dust
+item.clayium_ingot.name=Clayium Ingot
 
-item.itemPlates.UltimateAlloy.name=Ultimate Alloy Plate
-item.itemLargePlates.UltimateAlloy.name=Large Ultimate Alloy Plate
-item.itemDusts.UltimateAlloy.name=Ultimate Alloy Dust
-item.itemIngots.UltimateAlloy.name=Ultimate Alloy Ingot
+item.ultimate_plate.name=Ultimate Alloy Plate
+item.large_ultimate_plate.name=Large Ultimate Alloy Plate
+item.ultimate_dust.name=Ultimate Alloy Dust
+item.ultimate_ingot.name=Ultimate Alloy Ingot
 
-item.itemPlates.Antimatter.name=Antimatter Plate
-item.itemLargePlates.Antimatter.name=Large Antimatter Plate
-item.itemDusts.Antimatter.name=Antimatter Dust
-item.itemGems.Antimatter.name=Antimatter
+item.antimatter_plate.name=Antimatter Plate
+item.large_antimatter_plate.name=Large Antimatter Plate
+item.antimatter_dust.name=Antimatter Dust
+item.antimatter.name=Antimatter
 
-item.itemPlates.PureAntimatter.name=Pure Antimatter Plate
-item.itemLargePlates.PureAntimatter.name=Large Pure Antimatter Plate
-item.itemDusts.PureAntimatter.name=Pure Antimatter Dust
-item.itemGems.PureAntimatter.name=Pure Antimatter
+item.pure_antimatter_plate.name=Pure Antimatter Plate
+item.large_pure_antimatter_plate.name=Large Pure Antimatter Plate
+item.pure_antimatter_dust.name=Pure Antimatter Dust
+item.pure_antimatter.name=Pure Antimatter
 
 item.itemPlates.OctupleEnergeticClay.name=Octuple Energetic Clay Plate
 item.itemLargePlates.OctupleEnergeticClay.name=Large Octuple Energetic Clay Plate
