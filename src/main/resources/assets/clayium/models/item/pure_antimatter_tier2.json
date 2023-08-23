@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "clayium:items/matter_base"
+    "layer1": "clayium:items/matter_light",
+    "layer0": "clayium:items/matter_dark"
   }
 }

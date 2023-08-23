@@ -3,6 +3,9 @@ package com.github.trcdeveloppers.clayium;
 import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
 import com.github.trcdeveloppers.clayium.items.ClayiumItems;
 import com.github.trcdeveloppers.clayium.worldgen.ClayOreGenerator;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -42,7 +45,12 @@ public class Clayium {
      */
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
+            @Override
+            public int colorMultiplier(ItemStack stack, int tintIndex) {
+                return 0x0000FF;
+            }
+        }, ClayiumItems.getItem("antimatter"));
     }
 
     /**
