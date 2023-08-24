@@ -26,6 +26,10 @@ public class ClayiumItems {
         return itemMap.get(registryName);
     }
 
+    public static Map<String, Item> getAllItems() {
+        return itemMap;
+    }
+
     public static void register() {
         //参考 https://blog1.mammb.com/entry/2015/03/31/001620
         String resourceName = "com/github/trcdeveloppers/clayium/items";
