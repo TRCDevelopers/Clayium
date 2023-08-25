@@ -1,5 +1,7 @@
 package com.github.trcdeveloppers.clayium.items;
 
+import com.github.trcdeveloppers.clayium.annotation.MaterialFor;
+import com.github.trcdeveloppers.clayium.annotation.MaterialTypes;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -52,14 +54,15 @@ public class ClayiumItems {
                 throw new RuntimeException(e);
             }
         }
-        for (Class<?> c : classes) {
+        for (Class<?> itemClass : classes) {
             Annotation[] ano;
-            if ((ano = c.getAnnotations()).length != 0) {
+            if ((ano = itemClass.getAnnotations()).length != 0) {
                 for (Annotation an : ano) {
+                    // いつかリファクタリングする
                     if (an instanceof com.github.trcdeveloppers.clayium.annotation.Item) {
                         Item it;
                         try {
-                            it = (Item) c.newInstance();
+                            it = (Item) itemClass.newInstance();
                             it.setTranslationKey(((com.github.trcdeveloppers.clayium.annotation.Item) an).registryName())
                                     .setRegistryName(new ResourceLocation(MOD_ID, ((com.github.trcdeveloppers.clayium.annotation.Item) an).registryName()));
                         } catch (InstantiationException | IllegalAccessException e) {
@@ -67,11 +70,13 @@ public class ClayiumItems {
                         }
                         ForgeRegistries.ITEMS.register(it);
                         itemMap.put(((com.github.trcdeveloppers.clayium.annotation.Item) an).registryName(), it);
+                        // Register oreDicts
                         if (it instanceof ClayiumItem) {
                             for (String oreDictionary : ((ClayiumItem) it).getOreDictionaries()) {
                                 OreDictionary.registerOre(oreDictionary, it);
                             }
                         }
+                        // Register model for metas
                         if (FMLCommonHandler.instance().getSide().isClient()) {
                             if (it instanceof ClayiumItem && ((ClayiumItem) it).hasMetadata()) {
                                 for (Map.Entry<Integer, String> st : ((ClayiumItem) it).getMetadataModels().entrySet()) {
@@ -81,11 +86,40 @@ public class ClayiumItems {
                                 registerModel(it, 0);
                             }
                         }
+                    } else if (an instanceof MaterialFor) {
+                        MaterialFor materialFor = (MaterialFor) an;
+                        String materialName = materialFor.materialName();
+                        Arrays.stream(materialFor.materialFor())
+                                .map(type -> type == MaterialTypes.LARGE_PLATE
+                                        ? "large_" + materialName + "_plate" + ":largePlate" + materialName
+                                        : materialName + "_" + type.name().toLowerCase() + ":" + type.name().toLowerCase() + materialName)
+                                .forEach(names -> {
+                                    try {
+                                        String registryName = names.split(":")[0];
+                                        String oreDictName = names.split(":")[1];
+                                        Item item = (Item) itemClass.newInstance();
+                                        item.setTranslationKey(registryName)
+                                                .setRegistryName(new ResourceLocation(MOD_ID, registryName));
+                                        registerModel(item, 0);
+                                        ForgeRegistries.ITEMS.register(item);
+                                        itemMap.put(registryName, item);
+                                        OreDictionary.registerOre(oreDictName, item);
+                                        System.out.println("CLORE " + oreDictName);
+                                    } catch (InstantiationException | IllegalAccessException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                });
                     }
                 }
             }
         }
 
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void registerModel(Item i, int meta) {
+        if (i.getRegistryName() != null)
+            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(i, meta, new ModelResourceLocation(i.getRegistryName(), "inventory"));
     }
 
     public interface ClayiumItem {
@@ -103,11 +137,5 @@ public class ClayiumItems {
         default List<String> getOreDictionaries() {
             return new ArrayList<>();
         }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static void registerModel(Item i, int meta) {
-        if (i.getRegistryName() != null)
-            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(i, meta, new ModelResourceLocation(i.getRegistryName(), "inventory"));
     }
 }
