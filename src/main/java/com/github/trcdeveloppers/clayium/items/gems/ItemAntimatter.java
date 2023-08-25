@@ -28,6 +28,6 @@ public class ItemAntimatter extends Item implements ClayiumItems.ClayiumItem, IC
 
     @Override
     public IItemColor getColor() {
-        return ((stack, tintIndex) -> tintIndex == 0 ? 0x0000EB : tintIndex == 1 ? 0 : 0xFFFFFF);
+        return ((stack, tintIndex) -> tintIndex == 0 ? 0x0000EB : (tintIndex == 1 ? 0 : 0xFFFFFF));
     }
 }
