@@ -89,10 +89,12 @@ public class ClayiumItems {
                     } else if (an instanceof MaterialFor) {
                         MaterialFor materialFor = (MaterialFor) an;
                         String materialName = materialFor.materialName();
+                        String capitalizedMaterialName = materialName.substring(0, 1).toUpperCase() + materialName.substring(1);
                         Arrays.stream(materialFor.materialFor())
+                                // "<registryName>:<oreDictionaryName>"
                                 .map(type -> type == MaterialTypes.LARGE_PLATE
-                                        ? "large_" + materialName + "_plate" + ":largePlate" + materialName
-                                        : materialName + "_" + type.name().toLowerCase() + ":" + type.name().toLowerCase() + materialName)
+                                        ? "large_" + materialName + "_plate" + ":largePlate" + capitalizedMaterialName
+                                        : materialName + "_" + type.name().toLowerCase() + ":" + type.name().toLowerCase() + capitalizedMaterialName)
                                 .forEach(names -> {
                                     try {
                                         String registryName = names.split(":")[0];
@@ -104,7 +106,6 @@ public class ClayiumItems {
                                         ForgeRegistries.ITEMS.register(item);
                                         itemMap.put(registryName, item);
                                         OreDictionary.registerOre(oreDictName, item);
-                                        System.out.println("CLORE " + oreDictName);
                                     } catch (InstantiationException | IllegalAccessException e) {
                                         throw new RuntimeException(e);
                                     }
