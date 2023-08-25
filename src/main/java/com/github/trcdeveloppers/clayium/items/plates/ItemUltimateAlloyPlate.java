@@ -8,18 +8,19 @@ import java.util.List;
 
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
-@com.github.trcdeveloppers.clayium.annotation.Item(registryName = "ultimate_plate")
-public class ItemUltimatePlate extends Item implements ClayiumItems.ClayiumItem {
+@SuppressWarnings("unused")
+@com.github.trcdeveloppers.clayium.annotation.Item(registryName = "ultimate_alloy_plate")
+public class ItemUltimateAlloyPlate extends Item implements ClayiumItems.ClayiumItem {
 
-    public ItemUltimatePlate() {
+    public ItemUltimateAlloyPlate() {
         super();
         setCreativeTab(CLAYIUM);
     }
 
     @Override
     public List<String> getOreDictionaries() {
-        List<String> oreDicts = new ArrayList<>();
-        oreDicts.add("ingotUltimate");
-        return oreDicts;
+        return new ArrayList<String>() {{
+            add("plateUltimateAlloy");
+        }};
     }
 }

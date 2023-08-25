@@ -9,18 +9,18 @@ import java.util.List;
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
 @SuppressWarnings("unused")
-@com.github.trcdeveloppers.clayium.annotation.Item(registryName = "ultimate_ingot")
-public class ItemUltimateIngot extends Item implements ClayiumItems.ClayiumItem {
+@com.github.trcdeveloppers.clayium.annotation.Item(registryName = "ultimate_alloy_ingot")
+public class ItemUltimateAlloyIngot extends Item implements ClayiumItems.ClayiumItem {
 
-    public ItemUltimateIngot() {
+    public ItemUltimateAlloyIngot() {
         super();
         setCreativeTab(CLAYIUM);
     }
 
     @Override
     public List<String> getOreDictionaries() {
-        List<String> oreDicts = new ArrayList<>();
-        oreDicts.add("ingotUltimate");
-        return oreDicts;
+        return new ArrayList<String>() {{
+            add("ingotUltimateAlloy");
+        }};
     }
 }
