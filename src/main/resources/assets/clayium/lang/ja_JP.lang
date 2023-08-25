@@ -1045,15 +1045,15 @@ item.octuple_energetic_clay_dust.name=OEC の粉
 item.octuple_pure_antimatter_plate.name=OPA プレート
 item.large_octuple_pure_antimatter_plate.name=OPA 大プレート
 item.octuple_pure_antimatter_dust.name=OPA の粉
-item.itemGems.OctuplePureAntimatter.name=8重圧縮純反物質
+item.pure_antimatter_tier8.name=8重圧縮純反物質
 
-item.itemGems.PureAntimatter1.name=圧縮純反物質
-item.itemGems.PureAntimatter2.name=2重圧縮純反物質
-item.itemGems.PureAntimatter3.name=3重圧縮純反物質
-item.itemGems.PureAntimatter4.name=4重圧縮純反物質
-item.itemGems.PureAntimatter5.name=5重圧縮純反物質
-item.itemGems.PureAntimatter6.name=6重圧縮純反物質
-item.itemGems.PureAntimatter7.name=7重圧縮純反物質
+item.pure_antimatter_tier1.name=圧縮純反物質
+item.pure_antimatter_tier2.name=2重圧縮純反物質
+item.pure_antimatter_tier3.name=3重圧縮純反物質
+item.pure_antimatter_tier4.name=4重圧縮純反物質
+item.pure_antimatter_tier5.name=5重圧縮純反物質
+item.pure_antimatter_tier6.name=6重圧縮純反物質
+item.pure_antimatter_tier7.name=7重圧縮純反物質
 
 item.iron_ingot.name=鉄インゴット
 item.iron_dust.name=鉄の粉

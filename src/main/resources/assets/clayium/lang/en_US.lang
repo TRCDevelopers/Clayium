@@ -1045,15 +1045,15 @@ item.octuple_energetic_clay_dust.name=Octuple Energetic Clay Dust
 item.octuple_pure_antimatter_plate.name=Octuple Pure Antimatter Plate
 item.large_octuple_pure_antimatter_plate.name=Large Octuple Pure Antimatter Plate
 item.octuple_pure_antimatter_dust.name=Octuple Pure Antimatter Dust
-item.itemGems.OctuplePureAntimatter.name=Octuple Compressed Pure Antimatter
+item.pure_antimatter_tier8.name=Octuple Compressed Pure Antimatter
 
-item.itemGems.PureAntimatter1.name=Compressed Pure Antimatter
-item.itemGems.PureAntimatter2.name=Double Compressed Pure Antimatter
-item.itemGems.PureAntimatter3.name=Triple Compressed Pure Antimatter
-item.itemGems.PureAntimatter4.name=Quadruple Compressed Pure Antimatter
-item.itemGems.PureAntimatter5.name=Quintuple Compressed Pure Antimatter
-item.itemGems.PureAntimatter6.name=Sextuple Compressed Pure Antimatter
-item.itemGems.PureAntimatter7.name=Septuple Compressed Pure Antimatter
+item.pure_antimatter_tier1.name=Compressed Pure Antimatter
+item.pure_antimatter_tier2.name=Double Compressed Pure Antimatter
+item.pure_antimatter_tier3.name=Triple Compressed Pure Antimatter
+item.pure_antimatter_tier4.name=Quadruple Compressed Pure Antimatter
+item.pure_antimatter_tier5.name=Quintuple Compressed Pure Antimatter
+item.pure_antimatter_tier6.name=Sextuple Compressed Pure Antimatter
+item.pure_antimatter_tier7.name=Septuple Compressed Pure Antimatter
 
 item.iron_ingot.name=Iron Ingot
 item.iron_dust.name=Iron Dust
