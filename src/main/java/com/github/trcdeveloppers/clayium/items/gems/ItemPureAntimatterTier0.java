@@ -8,16 +8,16 @@ import net.minecraft.item.Item;
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
 @SuppressWarnings("unused")
-@com.github.trcdeveloppers.clayium.annotation.Item(registryName = "pure_antimatter_tier6")
-public class ItemPureAntimatterTier6 extends Item implements ClayiumItems.ClayiumItem, IColored {
+@com.github.trcdeveloppers.clayium.annotation.Item(registryName = "pure_antimatter_tier0")
+public class ItemPureAntimatterTier0 extends Item implements ClayiumItems.ClayiumItem, IColored {
 
-    public ItemPureAntimatterTier6() {
+    public ItemPureAntimatterTier0() {
         super();
         setCreativeTab(CLAYIUM);
     }
 
     @Override
     public IItemColor getColor() {
-        return ((stack, tintIndex) -> tintIndex == 0 ? 0x6E0727 : (tintIndex == 1 ? 0x969600 : 0xFFFFFF));
+        return ((stack, tintIndex) -> tintIndex == 0 ? 0xFF32FF : (tintIndex == 1 ? 0 : 0xFFFFFF));
     }
 }
