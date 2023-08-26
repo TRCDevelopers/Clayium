@@ -4,6 +4,7 @@ import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
 import com.github.trcdeveloppers.clayium.interfaces.IColored;
 import com.github.trcdeveloppers.clayium.items.ClayiumItems;
 import com.github.trcdeveloppers.clayium.worldgen.ClayOreGenerator;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -45,8 +46,8 @@ public class Clayium {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         ClayiumItems.getAllItems().values().forEach(item -> {
-            if (item instanceof IColored) {
-                Minecraft.getMinecraft().getItemColors().registerItemColorHandler(((IColored) item).getColor(), item);
+            if (item instanceof IItemColor) {
+                Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor) item, item);
             }
         });
     }
