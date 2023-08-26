@@ -1,15 +1,18 @@
 package com.github.trcdeveloppers.clayium;
 
 import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
-import com.github.trcdeveloppers.clayium.interfaces.IColored;
+import com.github.trcdeveloppers.clayium.interfaces.ITiered;
 import com.github.trcdeveloppers.clayium.items.ClayiumItems;
 import com.github.trcdeveloppers.clayium.worldgen.ClayOreGenerator;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(
@@ -48,6 +51,14 @@ public class Clayium {
         ClayiumItems.getAllItems().values().forEach(item -> {
             if (item instanceof IItemColor) {
                 Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor) item, item);
+            }
+        });
+        MinecraftForge.EVENT_BUS.register(new Object() {
+            @SubscribeEvent
+            public void onTooltip(ItemTooltipEvent e) {
+                if (e.getItemStack().getItem() instanceof ITiered) {
+                    e.getToolTip().add(1, "§rTier " + ((ITiered) e.getItemStack().getItem()).getTier());
+                }
             }
         });
     }
