@@ -1,5 +1,6 @@
 package com.github.trcdeveloppers.clayium.items.gems;
 
+import com.github.trcdeveloppers.clayium.annotation.CItem;
 import com.github.trcdeveloppers.clayium.annotation.MaterialFor;
 import com.github.trcdeveloppers.clayium.annotation.MaterialTypes;
 import com.github.trcdeveloppers.clayium.interfaces.ITiered;
@@ -16,7 +17,7 @@ import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.C
 
 @SuppressWarnings("unused")
 @MaterialFor(materialName = "antimatter", materialFor = {MaterialTypes.PLATE, MaterialTypes.LARGE_PLATE, MaterialTypes.DUST})
-@com.github.trcdeveloppers.clayium.annotation.Item(registryName = "antimatter")
+@CItem(registryName = "antimatter")
 public class ItemAntimatter extends Item implements ClayiumItems.ClayiumItem, ITiered, IItemColor {
 
     public ItemAntimatter() {

@@ -1,6 +1,6 @@
 package com.github.trcdeveloppers.clayium.items;
 
-import com.github.trcdeveloppers.clayium.annotation.Item;
+import com.github.trcdeveloppers.clayium.annotation.CItem;
 import com.github.trcdeveloppers.clayium.util.UtilLocale;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -17,7 +17,7 @@ import java.util.List;
 
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
-@Item(registryName = "clay_shovel")
+@CItem(registryName = "clay_shovel")
 public class ItemClayShovel extends ItemSpade implements ClayiumItems.ClayiumItem {
     protected float efficiencyOnClayBlocks = 32.0f;
     private final float efficiencyOnClayOre = 12.0f;

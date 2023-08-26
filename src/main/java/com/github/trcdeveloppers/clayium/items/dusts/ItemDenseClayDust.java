@@ -1,5 +1,6 @@
 package com.github.trcdeveloppers.clayium.items.dusts;
 
+import com.github.trcdeveloppers.clayium.annotation.CItem;
 import com.github.trcdeveloppers.clayium.items.ClayiumItems;
 import net.minecraft.item.Item;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
 @SuppressWarnings("unused")
-@com.github.trcdeveloppers.clayium.annotation.Item(registryName = "dense_clay_dust")
+@CItem(registryName = "dense_clay_dust")
 public class ItemDenseClayDust extends Item implements ClayiumItems.ClayiumItem {
 
     public ItemDenseClayDust() {

@@ -1,5 +1,6 @@
 package com.github.trcdeveloppers.clayium.items;
 
+import com.github.trcdeveloppers.clayium.annotation.CItem;
 import com.github.trcdeveloppers.clayium.annotation.MaterialFor;
 import com.github.trcdeveloppers.clayium.annotation.MaterialTypes;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -11,7 +12,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.*;
@@ -59,17 +64,19 @@ public class ClayiumItems {
             if ((ano = itemClass.getAnnotations()).length != 0) {
                 for (Annotation an : ano) {
                     // いつかリファクタリングする
-                    if (an instanceof com.github.trcdeveloppers.clayium.annotation.Item) {
+                    if (an instanceof CItem) {
                         Item it;
+                        String registryName = ((CItem) an).registryName();
+
                         try {
                             it = (Item) itemClass.newInstance();
-                            it.setTranslationKey(((com.github.trcdeveloppers.clayium.annotation.Item) an).registryName())
-                                    .setRegistryName(new ResourceLocation(MOD_ID, ((com.github.trcdeveloppers.clayium.annotation.Item) an).registryName()));
+                            it.setTranslationKey(registryName)
+                                    .setRegistryName(new ResourceLocation(MOD_ID, registryName));
                         } catch (InstantiationException | IllegalAccessException e) {
                             throw new RuntimeException(e);
                         }
                         ForgeRegistries.ITEMS.register(it);
-                        itemMap.put(((com.github.trcdeveloppers.clayium.annotation.Item) an).registryName(), it);
+                        itemMap.put(registryName, it);
                         // Register oreDicts
                         if (it instanceof ClayiumItem) {
                             for (String oreDictionary : ((ClayiumItem) it).getOreDictionaries()) {

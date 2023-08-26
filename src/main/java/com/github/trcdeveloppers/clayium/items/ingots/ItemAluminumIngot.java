@@ -1,5 +1,6 @@
 package com.github.trcdeveloppers.clayium.items.ingots;
 
+import com.github.trcdeveloppers.clayium.annotation.CItem;
 import com.github.trcdeveloppers.clayium.annotation.MaterialFor;
 import com.github.trcdeveloppers.clayium.annotation.MaterialTypes;
 import com.github.trcdeveloppers.clayium.items.ClayiumItems;
@@ -15,7 +16,7 @@ import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.C
 
 @SuppressWarnings("unused")
 @MaterialFor(materialName = "aluminum", materialFor = {MaterialTypes.PLATE, MaterialTypes.LARGE_PLATE, MaterialTypes.DUST})
-@com.github.trcdeveloppers.clayium.annotation.Item(registryName = "aluminum_ingot")
+@CItem(registryName = "aluminum_ingot")
 public class ItemAluminumIngot extends Item implements ClayiumItems.ClayiumItem, IItemColor {
 
     public ItemAluminumIngot() {
