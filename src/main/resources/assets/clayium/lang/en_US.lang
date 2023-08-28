@@ -1001,17 +1001,13 @@ item.silicon_plate.name=Silicon Plate
 item.large_silicon_plate.name=Large Silicon Plate
 item.silicon_dust.name=Silicon Dust
 item.silicon_ingot.name=Silicon Ingot
-item.itemIngots.Silicon.tooltip.line1=To get first silicon ingot,
-item.itemIngots.Silicon.tooltip.line2=use Quartz Crucible.
+item.silicon_ingot.tooltip.line1=To get first silicon ingot,
+item.silicon_ingot.tooltip.line2=use Quartz Crucible.
 
-item.aluminium_plate.name=Aluminium Plate
-item.large_aluminium_plate.name=Large Aluminium Plate
-item.aluminium_dust.name=Aluminium Dust
+item.aluminum_plate.name=Aluminium Plate
+item.large_aluminum_plate.name=Large Aluminium Plate
+item.aluminum_dust.name=Aluminium Dust
 item.aluminum_ingot.name=Aluminium Ingot
-
-item.impure_aluminium_plate.name=Impure Aluminium Plate
-item.large_impure_aluminium_plate.name=Large Impure Aluminium Plate
-item.impure_aluminium_ingot.name=Impure Aluminium Ingot
 
 item.clay_steel_plate.name=Clay Steel Plate
 item.large_clay_steel_plate.name=Large Clay Steel Plate
@@ -1036,15 +1032,15 @@ item.antimatter.name=Antimatter
 item.pure_antimatter_plate.name=Pure Antimatter Plate
 item.large_pure_antimatter_plate.name=Large Pure Antimatter Plate
 item.pure_antimatter_dust.name=Pure Antimatter Dust
-item.pure_antimatter.name=Pure Antimatter
+item.pure_antimatter_tier0.name=Pure Antimatter
 
 item.octuple_energetic_clay_plate.name=Octuple Energetic Clay Plate
 item.large_octuple_energetic_clay_plate.name=Large Octuple Energetic Clay Plate
 item.octuple_energetic_clay_dust.name=Octuple Energetic Clay Dust
 
-item.octuple_pure_antimatter_plate.name=Octuple Pure Antimatter Plate
-item.large_octuple_pure_antimatter_plate.name=Large Octuple Pure Antimatter Plate
-item.octuple_pure_antimatter_dust.name=Octuple Pure Antimatter Dust
+item.opa_plate.name=Octuple Pure Antimatter Plate
+item.large_opa_plate.name=Large Octuple Pure Antimatter Plate
+item.opa_dust.name=Octuple Pure Antimatter Dust
 item.pure_antimatter_tier8.name=Octuple Compressed Pure Antimatter
 
 item.pure_antimatter_tier1.name=Compressed Pure Antimatter
@@ -1100,7 +1096,7 @@ item.barium_ingot.name=Barium Ingot
 item.copper_dust.name=Copper Dust
 item.copper_ingot.name=Copper Ingot
 
-item.impure_aluminium_dust.name=Impure Aluminium Dust
+item.impure_aluminum_dust.name=Impure Aluminium Dust
 item.impure_magnesium_dust.name=Impure Magnesium Dust
 item.impure_sodium_dust.name=Impure Sodium Dust
 item.impure_lithium_dust.name=Impure Lithium Dust

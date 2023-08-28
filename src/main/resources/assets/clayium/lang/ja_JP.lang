@@ -1001,17 +1001,13 @@ item.silicon_plate.name=シリコンプレート
 item.large_silicon_plate.name=シリコン大プレート
 item.silicon_dust.name=シリコンの粉
 item.silicon_ingot.name=シリコンインゴット
-item.itemIngots.Silicon.tooltip.line1=最初のシリコンインゴットは
-item.itemIngots.Silicon.tooltip.line2=クオーツるつぼで生産しよう
+item.silicon_ingot.tooltip.line1=最初のシリコンインゴットは
+item.silicon_ingot.tooltip.line2=クオーツるつぼで生産しよう
 
-item.aluminium_plate.name=アルミニウムプレート
-item.large_aluminium_plate.name=アルミニウム大プレート
-item.aluminium_dust.name=アルミニウムの粉
+item.aluminum_plate.name=アルミニウムプレート
+item.large_aluminum_plate.name=アルミニウム大プレート
+item.aluminum_dust.name=アルミニウムの粉
 item.aluminum_ingot.name=アルミニウムインゴット
-
-item.impure_aluminium_plate.name=不純なアルミニウムプレート
-item.large_impure_aluminium_plate.name=不純なアルミニウム大プレート
-item.impure_aluminium_ingot.name=不純なアルミニウムインゴット
 
 item.clay_steel_plate.name=粘土鋼プレート
 item.large_clay_steel_plate.name=粘土鋼大プレート
@@ -1036,15 +1032,15 @@ item.antimatter.name=反物質
 item.pure_antimatter_plate.name=純反物質プレート
 item.large_pure_antimatter_plate.name=純反物質大プレート
 item.pure_antimatter_dust.name=純反物質の粉
-item.pure_antimatter.name=純反物質
+item.pure_antimatter_tier0.name=純反物質
 
 item.octuple_energetic_clay_plate.name=OEC プレート
 item.large_octuple_energetic_clay_plate.name=OEC 大プレート
 item.octuple_energetic_clay_dust.name=OEC の粉
 
-item.octuple_pure_antimatter_plate.name=OPA プレート
-item.large_octuple_pure_antimatter_plate.name=OPA 大プレート
-item.octuple_pure_antimatter_dust.name=OPA の粉
+item.opa_plate.name=OPA プレート
+item.large_opa_plate.name=OPA 大プレート
+item.opa_dust.name=OPA の粉
 item.pure_antimatter_tier8.name=8重圧縮純反物質
 
 item.pure_antimatter_tier1.name=圧縮純反物質
@@ -1100,7 +1096,7 @@ item.barium_ingot.name=バリウムインゴット
 item.copper_dust.name=銅の粉
 item.copper_ingot.name=銅インゴット
 
-item.impure_aluminium_dust.name=不純なアルミニウムの粉
+item.impure_aluminum_dust.name=不純なアルミニウムの粉
 item.impure_magnesium_dust.name=不純なマグネシウムの粉
 item.impure_sodium_dust.name=不純なナトリウムの粉
 item.impure_lithium_dust.name=不純なリチウムの粉
