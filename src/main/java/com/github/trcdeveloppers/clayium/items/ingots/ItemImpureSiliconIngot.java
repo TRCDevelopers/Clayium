@@ -3,6 +3,7 @@ package com.github.trcdeveloppers.clayium.items.ingots;
 import com.github.trcdeveloppers.clayium.annotation.CItem;
 import com.github.trcdeveloppers.clayium.annotation.MaterialFor;
 import com.github.trcdeveloppers.clayium.annotation.MaterialTypes;
+import com.github.trcdeveloppers.clayium.interfaces.ITiered;
 import com.github.trcdeveloppers.clayium.items.ClayiumItems;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.Item;
@@ -17,7 +18,7 @@ import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.C
 @SuppressWarnings("unused")
 @MaterialFor(materialName = "impure_silicon", materialFor = {MaterialTypes.PLATE, MaterialTypes.LARGE_PLATE, MaterialTypes.DUST})
 @CItem(registryName = "impure_silicon_ingot")
-public class ItemImpureSiliconIngot extends Item implements ClayiumItems.ClayiumItem, IItemColor {
+public class ItemImpureSiliconIngot extends Item implements ClayiumItems.ClayiumItem, IItemColor, ITiered {
 
     public ItemImpureSiliconIngot() {
         super();
@@ -35,5 +36,10 @@ public class ItemImpureSiliconIngot extends Item implements ClayiumItems.Clayium
     @ParametersAreNonnullByDefault
     public int colorMultiplier(ItemStack stack, int tintIndex) {
         return tintIndex == 0 ? 0x978F98 : (tintIndex == 1 ? 0x533764 : 0xA9A5A5);
+    }
+
+    @Override
+    public int getTier() {
+        return 5;
     }
 }
