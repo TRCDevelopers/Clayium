@@ -57,6 +57,7 @@ public class Clayium {
             @SubscribeEvent
             public void onTooltip(ItemTooltipEvent e) {
                 if (e.getItemStack().getItem() instanceof ITiered) {
+                    e.getToolTip().set(0, ((ITiered) e.getItemStack().getItem()).getRarityColor().getColor().toString() + e.getToolTip().get(0));
                     e.getToolTip().add(1, "§rTier " + ((ITiered) e.getItemStack().getItem()).getTier());
                 }
             }
