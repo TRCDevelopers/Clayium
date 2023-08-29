@@ -12,11 +12,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.*;
@@ -143,7 +139,7 @@ public class ClayiumItems {
         }
 
         default List<String> getOreDictionaries() {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
     }
 }
