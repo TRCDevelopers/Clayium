@@ -18,7 +18,7 @@ import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.C
 @SuppressWarnings("unused")
 @MaterialFor(materialName = "antimatter", materialFor = {MaterialTypes.PLATE, MaterialTypes.LARGE_PLATE, MaterialTypes.DUST})
 @CItem(registryName = "antimatter")
-public class ItemAntimatter extends Item implements ClayiumItems.ClayiumItem, ITiered, IItemColor {
+public class ItemAntimatter extends Item implements ClayiumItems.ClayiumItem, IItemColor, ITiered {
 
     public ItemAntimatter() {
         super();

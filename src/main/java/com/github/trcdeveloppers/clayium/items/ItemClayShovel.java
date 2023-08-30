@@ -19,8 +19,8 @@ import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.C
 
 @CItem(registryName = "clay_shovel")
 public class ItemClayShovel extends ItemSpade implements ClayiumItems.ClayiumItem {
-    protected float efficiencyOnClayBlocks = 32.0f;
     private final float efficiencyOnClayOre = 12.0f;
+    protected float efficiencyOnClayBlocks = 32.0f;
 
     public ItemClayShovel() {
         super(ToolMaterial.WOOD);

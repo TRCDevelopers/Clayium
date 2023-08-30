@@ -1,4 +1,4 @@
-package com.github.trcdeveloppers.clayium.items.plates;
+package com.github.trcdeveloppers.clayium.items.parts.denseclaymisc;
 
 import com.github.trcdeveloppers.clayium.annotation.CItem;
 import com.github.trcdeveloppers.clayium.interfaces.ITiered;
@@ -7,16 +7,17 @@ import net.minecraft.item.Item;
 
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
-@CItem(registryName = "clay_plate")
-public class ItemClayPlate extends Item implements ITiered, ClayiumItems.ClayiumItem {
-    public ItemClayPlate() {
+@SuppressWarnings("unused")
+@CItem(registryName = "dense_clay_needle")
+public class ItemDenseClayNeedle extends Item implements ClayiumItems.ClayiumItem, ITiered {
+
+    public ItemDenseClayNeedle() {
         super();
         setCreativeTab(CLAYIUM);
     }
 
     @Override
     public int getTier() {
-        return 1;
+        return 2;
     }
-
 }
