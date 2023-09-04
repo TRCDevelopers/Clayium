@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface MaterialFor {
     String materialName();
-    MaterialTypes[] materialFor();
+    CShape[] materialFor();
 }

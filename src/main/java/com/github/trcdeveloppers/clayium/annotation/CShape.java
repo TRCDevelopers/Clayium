@@ -1,6 +1,6 @@
 package com.github.trcdeveloppers.clayium.annotation;
 
-public enum MaterialTypes {
+public enum CShape {
     PLATE,
     LARGE_PLATE,
     DUST

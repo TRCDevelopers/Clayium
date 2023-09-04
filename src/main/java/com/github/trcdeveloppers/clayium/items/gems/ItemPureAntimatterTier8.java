@@ -2,7 +2,7 @@ package com.github.trcdeveloppers.clayium.items.gems;
 
 import com.github.trcdeveloppers.clayium.annotation.CItem;
 import com.github.trcdeveloppers.clayium.annotation.MaterialFor;
-import com.github.trcdeveloppers.clayium.annotation.MaterialTypes;
+import com.github.trcdeveloppers.clayium.annotation.CShape;
 import com.github.trcdeveloppers.clayium.interfaces.ITiered;
 import com.github.trcdeveloppers.clayium.items.ClayiumItems;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -14,7 +14,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
 @SuppressWarnings("unused")
-@MaterialFor(materialName = "opa", materialFor = {MaterialTypes.PLATE, MaterialTypes.LARGE_PLATE, MaterialTypes.DUST})
+@MaterialFor(materialName = "opa", materialFor = {CShape.PLATE, CShape.LARGE_PLATE, CShape.DUST})
 @CItem(registryName = "pure_antimatter_tier8")
 public class ItemPureAntimatterTier8 extends Item implements ClayiumItems.ClayiumItem, IItemColor, ITiered {
 
