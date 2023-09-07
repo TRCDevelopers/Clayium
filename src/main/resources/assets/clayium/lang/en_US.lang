@@ -1,4 +1,4 @@
-#
+#PARSE_ESCAPES
 itemGroup.clayium=Clayium
 itemGroup.clayiumcapsule=Clayium Fluid Capsules
 
@@ -799,9 +799,9 @@ item.itemDirectionMemory.name=Direction Memory Card
 item.itemDirectionMemory.tooltip.line1=Used to configure in what direction
 item.itemDirectionMemory.tooltip.line2=an Area Activator aims while using items.
 
-item.itemCompressedClayShard.1.name=Compressed Clay Shard
-item.itemCompressedClayShard.2.name=Industrial Clay Shard
-item.itemCompressedClayShard.3.name=Advanced Industrial Clay Shard
+item.compressed_clay_shard.name=Compressed Clay Shard
+item.industrial_clay_shard.name=Industrial Clay Shard
+item.adv_industrial_clay_shard.name=Advanced Industrial Clay Shard
 
 item.clay_shovel.name=Clay Shovel
 item.clay_shovel.tooltip.line1=Can dig Clay Ores and increase drops.
@@ -876,7 +876,7 @@ item.itemCapsule0001.name=Clay Fluid Capsule (1mB)
 item.itemGadgetHolder.name=Clay Gadget Holder
 item.itemGadgetHolder.tooltip.line1=Clay Gadgets give effects
 item.itemGadgetHolder.tooltip.line2=when they are put in this.
-item.itemGadget.Blank.name=Clay Gadget Template
+item.clay_gadget_parts.name=Clay Gadget Template
 item.itemGadget.AntimatterOverclock.name=Clay Gadget [Overclock I]
 item.itemGadget.AntimatterOverclock.tooltip.line1=Shortens each interval time of digging.
 item.itemGadget.PureAntimatterOverclock.name=Clay Gadget [Overclock II]
@@ -898,34 +898,33 @@ item.itemGadget.LongArm0.name=Clay Gadget [Long Arm]
 item.itemGadget.LongArm1.name=Clay Gadget [Longer Arm]
 item.itemGadget.LongArm2.name=Clay Gadget [Longest Arm]
 
-item.item.ClayCircuit.name=Clay Circuit
-item.item.ClayCircuitBoard.name=Clay Circuit Board
-item.item.SimpleCircuit.name=Simple Circuit
-item.item.BasicCircuit.name=Basic Circuit
-item.item.AdvancedCircuit.name=Advanced Circuit
-item.item.PrecisionCircuit.name=Precision Circuit
-item.item.IntegratedCircuit.name=Integrated Circuit
-item.item.ClayCore.name=Clay Core
-item.item.ClayCore.tooltip.line1=Expands the capacity of a Storage Container
-item.item.ClayCore.tooltip.line2=into the same as DSU.
-item.item.ClayBrain.name=Clay Brain
-item.item.ClaySpirit.name=Clay Spirit
-item.item.ClaySoul.name=Clay Soul
-item.item.ClayAnima.name=Clay Anima
-item.item.ClayPsyche.name=Clay Psyche
-item.item.SynchronousParts.name=Synchronous Parts
-item.item.SynchronousParts.tooltip.line1=Insert this into Interfaces
-item.item.SynchronousParts.tooltip.line2=to enable synchronous.
-item.item.TeleportationParts.name=Teleportation Parts
-item.item.Manipulator1.name=Manipulator Mk I
-item.item.Manipulator2.name=Manipulator Mk II
-item.item.Manipulator3.name=Manipulator Mk III
+item.clay_circuit_board.name=Clay Circuit Board
+item.circuit_tier2.name=Clay Circuit
+item.circuit_tier3.name=Simple Circuit
+item.circuit_tier4.name=Basic Circuit
+item.circuit_tier5.name=Advanced Circuit
+item.circuit_tier6.name=Precision Circuit
+item.circuit_tier7.name=Integrated Circuit
+item.circuit_tier8.name=Clay Core
+item.circuit_tier8.tooltip=Expands the capacity of a Storage Container\n into the same as DSU.
+item.circuit_tier9.name=Clay Brain
+item.circuit_tier10.name=Clay Spirit
+item.circuit_tier11.name=Clay Soul
+item.circuit_tier12.name=Clay Anima
+item.circuit_tier13.name=Clay Psyche
+item.synchronous_parts.name=Synchronous Parts
+item.SynchronousParts.tooltip.line1=Insert this into Interfaces
+item.SynchronousParts.tooltip.line2=to enable synchronous.
+item.teleportation_parts.name=Teleportation Parts
+item.manipulator_tier1.name=Manipulator Mk I
+item.manipulator_tier2.name=Manipulator Mk II
+item.manipulator_tier3.name=Manipulator Mk III
 
-item.item.CEEBoard.name=CEE Board
-item.item.CEECircuit.name=CEE Circuit
-item.item.CEE.name=Clay Energy Excitor
-item.item.LaserParts.name=Laser Parts
-item.item.AntimatterSeed.name=Antimatter Seed
+item.cee_board.name=CEE Board
+item.cee_circuit.name=CEE Circuit
+item.clay_energy_exciter.name=Clay Energy Excitor
+item.laser_parts.name=Laser Parts
+item.antimatter_seed.name=Antimatter Seed
 
 item.clay_plate.name=Clay Plate
 item.clay_stick.name=Clay Stick
@@ -939,13 +938,13 @@ item.clay_disc.name=Clay Disc
 item.clay_small_disc.name=Small Clay Disc
 item.clay_cylinder.name=Clay Cylinder
 item.clay_pipe.name=Clay Pipe
-item.clay_large_ball.name=Large Clay Ball
+item.large_clay_ball.name=Large Clay Ball
 item.clay_large_plate.name=Large Clay Plate
 item.clay_grinding_head.name=Clay Grinding Head
 item.clay_bearing.name=Clay Bearing
 item.clay_spindle.name=Clay Spindle
 item.clay_cutting_head.name=Clay Cutting Head
-item.clay_water_wheel.name=Clay Wheel
+item.clay_wheel.name=Clay Wheel
 
 item.dense_clay_plate.name=Dense Clay Plate
 item.dense_clay_stick.name=Dense Clay Stick
@@ -965,7 +964,7 @@ item.dense_clay_bearing.name=Dense Clay Bearing
 item.dense_clay_spindle.name=Dense Clay Spindle
 item.itemDenseClayParts.Spindle.tooltip.line1=Time consumer
 item.dense_clay_cutting_head.name=Dense Clay Cutting Head
-item.dense_clay_water_wheel.name=Dense Clay Wheel
+item.dense_clay_wheel.name=Dense Clay Wheel
 
 item.industrial_clay_plate.name=Industrial Clay Plate
 item.large_industrial_clay_plate.name=Large Industrial Clay Plate
@@ -1034,9 +1033,9 @@ item.large_pure_antimatter_plate.name=Large Pure Antimatter Plate
 item.pure_antimatter_dust.name=Pure Antimatter Dust
 item.pure_antimatter_tier0.name=Pure Antimatter
 
-item.octuple_energetic_clay_plate.name=Octuple Energetic Clay Plate
-item.large_octuple_energetic_clay_plate.name=Large Octuple Energetic Clay Plate
-item.octuple_energetic_clay_dust.name=Octuple Energetic Clay Dust
+item.oec_plate.name=Octuple Energetic Clay Plate
+item.large_oec_plate.name=Large Octuple Energetic Clay Plate
+item.oec_dust.name=Octuple Energetic Clay Dust
 
 item.opa_plate.name=Octuple Pure Antimatter Plate
 item.large_opa_plate.name=Large Octuple Pure Antimatter Plate
@@ -1118,18 +1117,18 @@ item.impure_copper_dust.name=Impure Copper Dust
 
 item.impure_osmium_ingot.name=Impure Osmium Ingot
 
-item.zincalminium_ingot.name=Zinc-Aluminium Compound Ingot
-item.zincalminium_dust.name=Zinc-Aluminium Compound Dust
-item.zinconium_ingot.name=Zinc-Zirconium Compound Ingot
-item.zinconium_dust.name=Zinc-Zirconium Compound Dust
-item.az91_d_plate.name=AZ91D Alloy Plate
-item.large_az91_d_plate.name=Large AZ91D Alloy Plate
-item.az91_d_dust.name=AZ91D Alloy Dust
-item.az91_d_ingot.name=AZ91D Alloy Ingot
-item.zk60_a_plate.name=ZK60A Alloy Plate
-item.large_zk60_a_plate.name=Large ZK60A Alloy Plate
-item.zk60_a_dust.name=ZK60A Alloy Dust
-item.zk60_a_ingot.name=ZK60A Alloy Ingot
+item.zinc_aluminum_ingot.name=Zinc-Aluminium Compound Ingot
+item.zinc_aluminum_dust.name=Zinc-Aluminium Compound Dust
+item.zinc_zirconium_ingot.name=Zinc-Zirconium Compound Ingot
+item.zinc_zirconium_dust.name=Zinc-Zirconium Compound Dust
+item.az91d_plate.name=AZ91D Alloy Plate
+item.large_az91d_plate.name=Large AZ91D Alloy Plate
+item.az91d_dust.name=AZ91D Alloy Dust
+item.az91d_ingot.name=AZ91D Alloy Ingot
+item.zk60a_plate.name=ZK60A Alloy Plate
+item.large_zk60a_plate.name=Large ZK60A Alloy Plate
+item.zk60a_dust.name=ZK60A Alloy Dust
+item.zk60a_ingot.name=ZK60A Alloy Ingot
 
 item.rubidium_ingot.name=Rubidium Ingot
 item.caesium_ingot.name=Caesium Ingot

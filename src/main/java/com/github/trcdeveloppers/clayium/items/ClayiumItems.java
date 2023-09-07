@@ -17,9 +17,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.net.JarURLConnection;
@@ -65,7 +62,7 @@ public class ClayiumItems {
                 } else if (cItem.oreDicts().length != 0) {
                     materialName = OreDictUtils.extractMaterialName(cItem.oreDicts()[0]);
                 } else {
-                    materialName = registryName.replace("_ingot", "");
+                    materialName = registryName.replace("_ingot", "").replace("_dust", "");
                 }
                 // register Shapes (Plate, LargePlate, Dust) if annotation has shapes
                 for (CShape shape : cItem.shapes()) {
@@ -120,7 +117,6 @@ public class ClayiumItems {
                     if (an instanceof CItem) {
                         Item it;
                         String registryName = ((CItem) an).registryName();
-
                         try {
                             it = (Item) itemClass.newInstance();
                             it.setTranslationKey(registryName)
@@ -215,6 +211,7 @@ public class ClayiumItems {
         private final int tier;
 
         public CItemTiered(int tier) {
+            super.setCreativeTab(CLAYIUM);
             this.tier = tier;
         }
 

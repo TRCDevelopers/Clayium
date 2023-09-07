@@ -1,4 +1,4 @@
-#
+#PARSE_ESCAPES
 itemGroup.clayium=Clayium
 itemGroup.clayiumcapsule=Clayium 液体カプセル
 
@@ -799,9 +799,9 @@ item.itemDirectionMemory.name=方向メモリー
 item.itemDirectionMemory.tooltip.line1=クリック方向・位置を保存し、
 item.itemDirectionMemory.tooltip.line2=範囲代行機に設定を適用する
 
-item.itemCompressedClayShard.1.name=圧縮粘土片
-item.itemCompressedClayShard.2.name=工業用粘土片
-item.itemCompressedClayShard.3.name=発展工業用粘土片
+item.compressed_clay_shard.name=圧縮粘土片
+item.industrial_clay_shard.name=工業用粘土片
+item.adv_industrial_clay_shard.name=発展工業用粘土片
 
 item.clay_shovel.name=粘土シャベル
 item.clay_shovel.tooltip.line1=粘土鉱石が採掘でき、そのドロップ数を上昇させる
@@ -898,34 +898,33 @@ item.itemGadget.LongArm0.name=粘土ガジェット [ロングアーム]
 item.itemGadget.LongArm1.name=粘土ガジェット [超ロングアーム]
 item.itemGadget.LongArm2.name=粘土ガジェット [超超ロングアーム]
 
-item.item.ClayCircuit.name=粘土回路
-item.item.ClayCircuitBoard.name=粘土回路板
-item.item.SimpleCircuit.name=簡易回路
-item.item.BasicCircuit.name=基本回路
-item.item.AdvancedCircuit.name=発展回路
-item.item.PrecisionCircuit.name=精密回路
-item.item.IntegratedCircuit.name=集積回路
-item.item.ClayCore.name=粘土コア
-item.item.ClayCore.tooltip.line1=ストレージコンテナに右クリックすると
-item.item.ClayCore.tooltip.line2=その容量を 21 億個にまで拡張する
-item.item.ClayBrain.name=粘土脳
-item.item.ClaySpirit.name=粘土スピリット
-item.item.ClaySoul.name=粘土ソウル
-item.item.ClayAnima.name=粘土アニマ
-item.item.ClayPsyche.name=粘土プシュケー
-item.item.SynchronousParts.name=シンクロパーツ
-item.item.SynchronousParts.tooltip.line1=同期させるためには、インターフェースに
-item.item.SynchronousParts.tooltip.line2=これを予め挿入しておくこと
-item.item.TeleportationParts.name=空間転移パーツ
-item.item.Manipulator1.name=マジック・ハンド Mk I
-item.item.Manipulator2.name=マジック・ハンド Mk II
-item.item.Manipulator3.name=マジック・ハンド Mk III
+item.clay_circuit_board.name=粘土回路板
+item.circuit_tier2.name=粘土回路
+item.circuit_tier3.name=簡易回路
+item.circuit_tier4.name=基本回路
+item.circuit_tier5.name=発展回路
+item.circuit_tier6.name=精密回路
+item.circuit_tier7.name=集積回路
+item.circuit_tier8.name=粘土コア
+item.circuit_tier8.tooltip=ストレージコンテナに右クリックすると、その容量を 21 億個にまで拡張する
+item.circuit_tier9.name=粘土脳
+item.circuit_tier10.name=粘土スピリット
+item.circuit_tier11.name=粘土ソウル
+item.circuit_tier12.name=粘土アニマ
+item.circuit_tier13.name=粘土プシュケー
+item.synchronous_parts.name=シンクロパーツ
+item.SynchronousParts.tooltip.line1=同期させるためには、インターフェースに
+item.SynchronousParts.tooltip.line2=これを予め挿入しておくこと
+item.teleportation_parts.name=空間転移パーツ
+item.manipulator_tier1.name=マジック・ハンド Mk I
+item.manipulator_tier2.name=マジック・ハンド Mk II
+item.manipulator_tier3.name=マジック・ハンド Mk III
 
-item.item.CEEBoard.name=CEE 回路板
-item.item.CEECircuit.name=CEE 回路
-item.item.CEE.name=粘土エネルギー励起装置
-item.item.LaserParts.name=レーザーパーツ
-item.item.AntimatterSeed.name=反物質の種
+item.cee_board.name=CEE 回路板
+item.cee_circuit.name=CEE 回路
+item.clay_energy_exciter.name=粘土エネルギー励起装置
+item.laser_parts.name=レーザーパーツ
+item.antimatter_seed.name=反物質の種
 
 item.clay_plate.name=粘土プレート
 item.clay_stick.name=粘土棒
@@ -939,13 +938,13 @@ item.clay_disc.name=粘土円盤
 item.clay_small_disc.name=粘土小円盤
 item.clay_cylinder.name=粘土円柱
 item.clay_pipe.name=粘土パイプ
-item.clay_large_ball.name=大粘土玉
+item.large_clay_ball.name=大粘土玉
 item.clay_large_plate.name=粘土大プレート
 item.clay_grinding_head.name=粘土粉砕機ヘッド
 item.clay_bearing.name=粘土軸受
 item.clay_spindle.name=粘土主軸
 item.clay_cutting_head.name=粘土切断機ヘッド
-item.clay_water_wheel.name=粘土水車パーツ
+item.clay_wheel.name=粘土水車パーツ
 
 item.dense_clay_plate.name=高密度粘土プレート
 item.dense_clay_stick.name=高密度粘土棒
@@ -965,7 +964,7 @@ item.dense_clay_bearing.name=高密度粘土軸受
 item.dense_clay_spindle.name=高密度粘土主軸
 item.itemDenseClayParts.Spindle.tooltip.line1=タイムコンシューマー
 item.dense_clay_cutting_head.name=高密度粘土切断機ヘッド
-item.dense_clay_water_wheel.name=高密度粘土水車パーツ
+item.dense_clay_wheel.name=高密度粘土水車パーツ
 
 item.industrial_clay_plate.name=工業用粘土プレート
 item.large_industrial_clay_plate.name=工業用粘土大プレート
@@ -1034,9 +1033,9 @@ item.large_pure_antimatter_plate.name=純反物質大プレート
 item.pure_antimatter_dust.name=純反物質の粉
 item.pure_antimatter_tier0.name=純反物質
 
-item.octuple_energetic_clay_plate.name=OEC プレート
-item.large_octuple_energetic_clay_plate.name=OEC 大プレート
-item.octuple_energetic_clay_dust.name=OEC の粉
+item.oec_plate.name=OEC プレート
+item.large_oec_plate.name=OEC 大プレート
+item.oec_dust.name=OEC の粉
 
 item.opa_plate.name=OPA プレート
 item.large_opa_plate.name=OPA 大プレート
@@ -1118,18 +1117,18 @@ item.impure_copper_dust.name=不純な銅の粉
 
 item.impure_osmium_ingot.name=不純なオスミウムインゴット
 
-item.zincalminium_ingot.name=亜鉛アルミ合金インゴット
-item.zincalminium_dust.name=亜鉛アルミ合金の粉
-item.zinconium_ingot.name=亜鉛ジルコニウム合金インゴット
-item.zinconium_dust.name=亜鉛ジルコニウム合金の粉
-item.az91_d_plate.name=AZ91D 合金プレート
-item.large_az91_d_plate.name=AZ91D 合金大プレート
-item.az91_d_dust.name=AZ91D 合金の粉
-item.az91_d_ingot.name=AZ91D 合金インゴット
-item.zk60_a_plate.name=ZK60A 合金プレート
-item.large_zk60_a_plate.name=ZK60A 合金大プレート
-item.zk60_a_dust.name=ZK60A 合金の粉
-item.zk60_a_ingot.name=ZK60A 合金インゴット
+item.zinc_aluminum_ingot.name=亜鉛アルミ合金インゴット
+item.zinc_aluminum_dust.name=亜鉛アルミ合金の粉
+item.zinc_zirconium_ingot.name=亜鉛ジルコニウム合金インゴット
+item.zinc_zirconium_dust.name=亜鉛ジルコニウム合金の粉
+item.az91d_plate.name=AZ91D 合金プレート
+item.large_az91d_plate.name=AZ91D 合金大プレート
+item.az91d_dust.name=AZ91D 合金の粉
+item.az91d_ingot.name=AZ91D 合金インゴット
+item.zk60a_plate.name=ZK60A 合金プレート
+item.large_zk60a_plate.name=ZK60A 合金大プレート
+item.zk60a_dust.name=ZK60A 合金の粉
+item.zk60a_ingot.name=ZK60A 合金インゴット
 
 item.rubidium_ingot.name=ルビジウムインゴット
 item.caesium_ingot.name=セシウムインゴット
