@@ -1,7 +1,6 @@
 package com.github.trcdeveloppers.clayium.items;
 
 import com.github.trcdeveloppers.clayium.annotation.CItem;
-import com.github.trcdeveloppers.clayium.annotation.MaterialFor;
 import com.github.trcdeveloppers.clayium.annotation.CShape;
 import com.github.trcdeveloppers.clayium.interfaces.ITiered;
 import com.github.trcdeveloppers.clayium.util.OreDictUtils;
@@ -142,30 +141,6 @@ public class ClayiumItems {
                                 registerModel(it, 0);
                             }
                         }
-                    } else if (an instanceof MaterialFor) {
-                        MaterialFor materialFor = (MaterialFor) an;
-                        String materialName = materialFor.materialName();
-                        String capitalizedMaterialName = materialName.substring(0, 1).toUpperCase() + materialName.substring(1);
-                        Arrays.stream(materialFor.materialFor())
-                                // "<registryName>:<oreDictionaryName>"
-                                .map(type -> type == CShape.LARGE_PLATE
-                                        ? "large_" + materialName + "_plate" + ":largePlate" + capitalizedMaterialName
-                                        : materialName + "_" + type.name().toLowerCase() + ":" + type.name().toLowerCase() + capitalizedMaterialName)
-                                .forEach(names -> {
-                                    try {
-                                        String registryName = names.split(":")[0];
-                                        String oreDictName = names.split(":")[1];
-                                        Item item = (Item) itemClass.newInstance();
-                                        item.setTranslationKey(registryName)
-                                                .setRegistryName(new ResourceLocation(MOD_ID, registryName));
-                                        registerModel(item, 0);
-                                        ForgeRegistries.ITEMS.register(item);
-                                        items.put(registryName, item);
-                                        OreDictionary.registerOre(oreDictName, item);
-                                    } catch (InstantiationException | IllegalAccessException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                });
                     }
                 }
             }
