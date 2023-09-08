@@ -16,7 +16,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.net.JarURLConnection;
 import java.net.URL;
@@ -54,34 +53,7 @@ public class ClayiumItems {
                 for (String oreDict : cItem.oreDicts()) {
                     OreDictionary.registerOre(oreDict, item);
                 }
-
-                String materialName;
-                if (!cItem.materialName().isEmpty()) {
-                    materialName = cItem.materialName();
-                } else if (cItem.oreDicts().length != 0) {
-                    materialName = OreDictUtils.extractMaterialName(cItem.oreDicts()[0]);
-                } else {
-                    materialName = registryName.replace("_ingot", "").replace("_dust", "");
-                }
-                // register Shapes (Plate, LargePlate, Dust) if annotation has shapes
-                for (CShape shape : cItem.shapes()) {
-                    // Create copy of an item
-                    Item itemShaped = item instanceof CMaterialTiered
-                        ? new CMaterialTiered(((CMaterialTiered) item).getTier(), ((CMaterialTiered) item).getColors())
-                        : item instanceof CMaterial
-                            ? new CMaterial(((CMaterial) item).getColors())
-                            : new Item();
-
-                    String registryNameShaped = shape == CShape.LARGE_PLATE
-                        ? "large_" + materialName + "_plate"
-                        : materialName + "_" + shape.name().toLowerCase(Locale.ROOT);
-                    registerItem(itemShaped, registryNameShaped);
-                    if (cItem.oreDicts().length != 0) {
-                        OreDictionary.registerOre(shape.name().toLowerCase(Locale.ROOT)
-                            + materialName.substring(0, 1).toUpperCase()
-                            + materialName.substring(1), itemShaped);
-                    }
-                }
+                registerShapes(item, cItem, registryName);
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
@@ -109,43 +81,37 @@ public class ClayiumItems {
             }
         }
         for (Class<?> itemClass : classes) {
-            Annotation[] ano;
-            if ((ano = itemClass.getAnnotations()).length != 0) {
-                for (Annotation an : ano) {
-                    // いつかリファクタリングする
-                    if (an instanceof CItem) {
-                        Item it;
-                        String registryName = ((CItem) an).registryName();
-                        try {
-                            it = (Item) itemClass.newInstance();
-                            it.setTranslationKey(registryName)
-                                    .setRegistryName(new ResourceLocation(MOD_ID, registryName));
-                        } catch (InstantiationException | IllegalAccessException e) {
-                            throw new RuntimeException(e);
-                        }
-                        ForgeRegistries.ITEMS.register(it);
-                        items.put(registryName, it);
-                        // Register oreDicts
-                        if (it instanceof ClayiumItem) {
-                            for (String oreDictionary : ((ClayiumItem) it).getOreDictionaries()) {
-                                OreDictionary.registerOre(oreDictionary, it);
-                            }
-                        }
-                        // Register model for metas
-                        if (FMLCommonHandler.instance().getSide().isClient()) {
-                            if (it instanceof ClayiumItem && ((ClayiumItem) it).hasMetadata()) {
-                                for (Map.Entry<Integer, String> st : ((ClayiumItem) it).getMetadataModels().entrySet()) {
-                                    registerModel(it, st.getKey());
-                                }
-                            } else {
-                                registerModel(it, 0);
-                            }
-                        }
+            CItem cItem = itemClass.getAnnotation(CItem.class);
+            if (cItem == null) {
+                continue;
+            }
+            // いつかリファクタリングする
+            Item item;
+            String registryName = cItem.registryName();
+            try {
+                item = (Item) itemClass.newInstance();
+                item.setTranslationKey(registryName)
+                        .setRegistryName(new ResourceLocation(MOD_ID, registryName));
+            } catch (InstantiationException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+            ForgeRegistries.ITEMS.register(item);
+            items.put(registryName, item);
+            for (String oreDict : cItem.oreDicts()) {
+                OreDictionary.registerOre(oreDict, item);
+            }
+            registerShapes(item, cItem, registryName);
+            // Register model for metas
+            if (FMLCommonHandler.instance().getSide().isClient()) {
+                if (item instanceof ClayiumItem && ((ClayiumItem) item).hasMetadata()) {
+                    for (Map.Entry<Integer, String> st : ((ClayiumItem) item).getMetadataModels().entrySet()) {
+                        registerModel(item, st.getKey());
                     }
+                } else {
+                    registerModel(item, 0);
                 }
             }
         }
-
     }
 
     /***
@@ -156,6 +122,35 @@ public class ClayiumItems {
         ForgeRegistries.ITEMS.register(item);
         registerModel(item, 0);
         items.put(registryName, item);
+    }
+
+    private static void registerShapes(Item item, CItem cItem, String registryName) {
+        String materialName;
+        if (!cItem.materialName().isEmpty()) {
+            materialName = cItem.materialName();
+        } else if (cItem.oreDicts().length != 0) {
+            materialName = OreDictUtils.extractMaterialName(cItem.oreDicts()[0]);
+        } else {
+            materialName = registryName.replace("_ingot", "").replace("_dust", "");
+        }
+        for (CShape shape : cItem.shapes()) {
+            // Create copy of an item
+            Item itemShaped = item instanceof CMaterialTiered
+                ? new CMaterialTiered(((CMaterialTiered) item).getTier(), ((CMaterialTiered) item).getColors())
+                : item instanceof CMaterial
+                    ? new CMaterial(((CMaterial) item).getColors())
+                    : new Item();
+
+            String registryNameShaped = shape == CShape.LARGE_PLATE
+                ? "large_" + materialName + "_plate"
+                : materialName + "_" + shape.name().toLowerCase(Locale.ROOT);
+            registerItem(itemShaped, registryNameShaped);
+            if (cItem.oreDicts().length != 0) {
+                OreDictionary.registerOre(shape.name().toLowerCase(Locale.ROOT)
+                    + materialName.substring(0, 1).toUpperCase()
+                    + materialName.substring(1), itemShaped);
+            }
+        }
     }
 
     @SideOnly(Side.CLIENT)
