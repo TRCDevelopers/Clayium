@@ -1,9 +1,8 @@
 package com.github.trcdeveloppers.clayium.items;
 
-import com.github.trcdeveloppers.clayium.annotation.Item;
+import com.github.trcdeveloppers.clayium.annotation.CItem;
 import com.github.trcdeveloppers.clayium.util.UtilLocale;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemPickaxe;
@@ -20,7 +19,7 @@ import java.util.Objects;
 
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
-@Item(registryName = "clay_pickaxe")
+@CItem(registryName = "clay_pickaxe")
 public class ItemClayPickaxe extends ItemPickaxe implements ClayiumItems.ClayiumItem {
     private final float efficiencyOnClayOre = 32.0f;
 
