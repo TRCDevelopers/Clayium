@@ -2,6 +2,8 @@ package com.github.trcdeveloppers.clayium.items;
 
 import com.github.trcdeveloppers.clayium.annotation.CItem;
 import com.github.trcdeveloppers.clayium.annotation.CShape;
+import com.github.trcdeveloppers.clayium.annotation.GeneralItemModel;
+import com.github.trcdeveloppers.clayium.annotation.UseModel;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -209,25 +211,35 @@ public class CMaterials {
     //endregion
 
     //region Other Materials
+    @UseModel(GeneralItemModel.MATTER)
     @CItem(shapes = {CShape.DUST, CShape.PLATE, CShape.LARGE_PLATE})
     private static final Item ANTIMATTER = new ClayiumItems.CMaterialTiered(10, 0x0000EB, 0x000000, 0xFFFFFF);
 
+    @UseModel(GeneralItemModel.MATTER)
     @CItem(materialName = "pure_antimatter", shapes = {CShape.DUST, CShape.PLATE, CShape.LARGE_PLATE})
     private static final Item PURE_ANTIMATTER_TIER0 = new ClayiumItems.CMaterialTiered(11, 0xFF32FF, 0x000000, 0xFFFFFF);
+    @UseModel(GeneralItemModel.MATTER)
     @CItem
     private static final Item PURE_ANTIMATTER_TIER1 = new ClayiumItems.CMaterialTiered(11, 0xC42385, 0x191919, 0xFFFFFF);
+    @UseModel(GeneralItemModel.MATTER2)
     @CItem
     private static final Item PURE_ANTIMATTER_TIER2 = new ClayiumItems.CMaterialTiered(11, 0x8E1777, 0x323200, 0xFFFFFF);
+    @UseModel(GeneralItemModel.MATTER2)
     @CItem
     private static final Item PURE_ANTIMATTER_TIER3 = new ClayiumItems.CMaterialTiered(11, 0x5E0D45, 0x4B4B00, 0xFFFFFF);
+    @UseModel(GeneralItemModel.MATTER3)
     @CItem
     private static final Item PURE_ANTIMATTER_TIER4 = new ClayiumItems.CMaterialTiered(12, 0x32061F, 0x646400, 0xFFFFFF);
+    @UseModel(GeneralItemModel.MATTER3)
     @CItem
     private static final Item PURE_ANTIMATTER_TIER5 = new ClayiumItems.CMaterialTiered(12, 0x520829, 0x7D7D00, 0xFFFFFF);
+    @UseModel(GeneralItemModel.MATTER4)
     @CItem
     private static final Item PURE_ANTIMATTER_TIER6 = new ClayiumItems.CMaterialTiered(12, 0x6E0727, 0x969600, 0xFFFFFF);
+    @UseModel(GeneralItemModel.MATTER4)
     @CItem
     private static final Item PURE_ANTIMATTER_TIER7 = new ClayiumItems.CMaterialTiered(12, 0x840519, 0xAFAF00, 0xFFFFFF);
+    @UseModel(GeneralItemModel.MATTER5)
     @CItem(materialName = "opa", shapes = {CShape.PLATE, CShape.LARGE_PLATE, CShape.DUST})
     private static final Item PURE_ANTIMATTER_TIER8 = new ClayiumItems.CMaterialTiered(13, 0x960000, 0xC8C800, 0xFFFFFF);
     //endregion

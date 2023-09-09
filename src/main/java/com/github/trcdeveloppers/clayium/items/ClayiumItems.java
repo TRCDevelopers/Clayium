@@ -2,6 +2,8 @@ package com.github.trcdeveloppers.clayium.items;
 
 import com.github.trcdeveloppers.clayium.annotation.CItem;
 import com.github.trcdeveloppers.clayium.annotation.CShape;
+import com.github.trcdeveloppers.clayium.annotation.GeneralItemModel;
+import com.github.trcdeveloppers.clayium.annotation.UseModel;
 import com.github.trcdeveloppers.clayium.interfaces.ITiered;
 import com.github.trcdeveloppers.clayium.util.OreDictUtils;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -42,6 +44,7 @@ public class ClayiumItems {
         Field[] fields = CMaterials.class.getDeclaredFields();
         for (Field field : fields) {
             CItem cItem = field.getAnnotation(CItem.class);
+            UseModel useModel = field.getAnnotation(UseModel.class);
             if (cItem == null) {
                 continue;
             }
@@ -50,6 +53,13 @@ public class ClayiumItems {
                 String registryName = cItem.registryName().isEmpty() ? field.getName().toLowerCase(Locale.ROOT) : cItem.registryName();
                 Item item = (Item) field.get(null);
                 registerItem(item, registryName);
+                if (useModel != null) {
+                    registerGeneralModel(item, useModel.value());
+                } else if (item instanceof CMaterial && (registryName.endsWith("_ingot") || registryName.endsWith("_dust"))) {
+                    registerGeneralModel(item, GeneralItemModel.valueOf(registryName.replaceAll(".+_", "").toUpperCase(Locale.ROOT)));
+                } else {
+                    registerModel(item, 0);
+                }
                 for (String oreDict : cItem.oreDicts()) {
                     OreDictionary.registerOre(oreDict, item);
                 }
@@ -120,8 +130,23 @@ public class ClayiumItems {
     private static void registerItem(Item item, String registryName) {
         item.setTranslationKey(registryName).setRegistryName(new ResourceLocation(MOD_ID, registryName));
         ForgeRegistries.ITEMS.register(item);
-        registerModel(item, 0);
         items.put(registryName, item);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void registerModel(Item i, int meta) {
+        if (i.getRegistryName() != null) {
+            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(i, meta, new ModelResourceLocation(i.getRegistryName(), "inventory"));
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void registerGeneralModel(Item item, GeneralItemModel model) {
+        net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(
+            item,
+            0,
+            new ModelResourceLocation(MOD_ID + ":colored/" + model.name().toLowerCase(Locale.ROOT), "inventory")
+        );
     }
 
     private static void registerShapes(Item item, CItem cItem, String registryName) {
@@ -139,24 +164,24 @@ public class ClayiumItems {
                 ? new CMaterialTiered(((CMaterialTiered) item).getTier(), ((CMaterialTiered) item).getColors())
                 : item instanceof CMaterial
                     ? new CMaterial(((CMaterial) item).getColors())
-                    : new Item();
+                    : item instanceof CItemTiered
+                        ? new CItemTiered(((CItemTiered) item).getTier())
+                        : new Item().setCreativeTab(CLAYIUM);
 
             String registryNameShaped = shape == CShape.LARGE_PLATE
                 ? "large_" + materialName + "_plate"
                 : materialName + "_" + shape.name().toLowerCase(Locale.ROOT);
             registerItem(itemShaped, registryNameShaped);
+            if (itemShaped instanceof CMaterial) {
+                registerGeneralModel(itemShaped, GeneralItemModel.valueOf(shape.name()));
+            } else {
+                registerModel(itemShaped, 0);
+            }
             if (cItem.oreDicts().length != 0) {
                 OreDictionary.registerOre(shape.name().toLowerCase(Locale.ROOT)
                     + materialName.substring(0, 1).toUpperCase()
                     + materialName.substring(1), itemShaped);
             }
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static void registerModel(Item i, int meta) {
-        if (i.getRegistryName() != null) {
-            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(i, meta, new ModelResourceLocation(i.getRegistryName(), "inventory"));
         }
     }
 

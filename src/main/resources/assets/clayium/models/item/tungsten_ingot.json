@@ -1,8 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "clayium:items/ingot_base",
-    "layer1": "clayium:items/ingot_dark",
-    "layer2": "clayium:items/ingot_light"
-  }
-}

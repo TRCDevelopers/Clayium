@@ -6,7 +6,7 @@ tooltip.HoldShiftForDetails=--§fHold §lShift§r For Details§7--
 
 gui.Common.energy=%1$sCE
 gui.Common.tier=Tier %1$d
-gui.Common.clayLaser=Laser : %1$s
+gui.Common.clayLaser=Laser \: %1$s
 gui.Common.resonance=Resonance %1$s
 gui.Common.overclockFactor=Overclock x%1$s
 
@@ -289,8 +289,8 @@ tile.blockClayBlastFurnace.tooltip.line2=[Multiblock]
 tile.blockClayBlastFurnace.tooltip.line3=XXX XXX
 tile.blockClayBlastFurnace.tooltip.line4=XXX XXX
 tile.blockClayBlastFurnace.tooltip.line5=XFX XXX
-tile.blockClayBlastFurnace.tooltip.line6=F: Clay Blast Furnace Block
-tile.blockClayBlastFurnace.tooltip.line7=X: Machine hulls or Interfaces
+tile.blockClayBlastFurnace.tooltip.line6=F\: Clay Blast Furnace Block
+tile.blockClayBlastFurnace.tooltip.line7=X\: Machine hulls or Interfaces
 tile.blockClayBlastFurnace.tooltip.line8=Recipe tier depends on components' tier.
 
 tile.blockAdvancedClayInterface.name=Clay Interface
@@ -348,9 +348,9 @@ tile.blockClayReactor.tooltip.line2=[Multiblock]
 tile.blockClayReactor.tooltip.line3=XXX XXX XXX
 tile.blockClayReactor.tooltip.line4=XXX XXX XLX
 tile.blockClayReactor.tooltip.line5=XXX XRX XXX
-tile.blockClayReactor.tooltip.line6=R: Clay Reactor Block
-tile.blockClayReactor.tooltip.line7=L: Laser Interface
-tile.blockClayReactor.tooltip.line8=X: Machine hulls or Interfaces
+tile.blockClayReactor.tooltip.line6=R\: Clay Reactor Block
+tile.blockClayReactor.tooltip.line7=L\: Laser Interface
+tile.blockClayReactor.tooltip.line8=X\: Machine hulls or Interfaces
 tile.blockClayReactor.tooltip.line9=Recipe tier depends on components' tier.
 tile.blockClayReactor.tooltip.line10=Time to craft depends on Laser's strength.
 
@@ -384,14 +384,14 @@ tile.blockResonator.oec.name=OEC Resonator
 tile.blockResonator.opa.name=OPA Resonator
 tooltip.Resonator.line1=Increases the efficiency of CA machines
 tooltip.Resonator.line2=in the area of 5x5x5.
-tooltip.Resonator.resonance=Resonance : x%1$4.3g
+tooltip.Resonator.resonance=Resonance \: x%1$4.3g
 
 tile.blockOverclocker.antimatter.name=Antimatter Overclocker
 tile.blockOverclocker.pureantimatter.name=Pure Antimatter Overclocker
 tile.blockOverclocker.oec.name=OEC Overclocker
 tile.blockOverclocker.opa.name=OPA Overclocker
 tooltip.Overclocker.line1=Accelerates the adjacent machine.
-tooltip.Overclocker.overclockFactor=OC Factor : x%1$4.3g
+tooltip.Overclocker.overclockFactor=OC Factor \: x%1$4.3g
 
 tile.blockEnergyStorageUpgrade.antimatter.name=Antimatter Energy Storage Upgrade
 tile.blockEnergyStorageUpgrade.pureantimatter.name=Pure Antimatter Energy Storage Upgrade
@@ -439,11 +439,11 @@ tile.blockCAReactorCoil.opa.name=CA Reactor Coil Mk IV
 tooltip.CAReactorCoil.line1=__DETAIL__
 tooltip.CAReactorCoil.line2=- Its six surfaces must be covered by other blocks.
 tooltip.CAReactorCoil.line3=- The number of adjacent coil must be 2.
-tooltip.CAReactorCoil.line4=NG :
+tooltip.CAReactorCoil.line4=NG \:
 tooltip.CAReactorCoil.line5=CCCCC
 tooltip.CAReactorCoil.line6=C___C <- has 4 adjacent coils!
 tooltip.CAReactorCoil.line7=CCCCC
-tooltip.CAReactorCoil.line8=OK :
+tooltip.CAReactorCoil.line8=OK \:
 tooltip.CAReactorCoil.line9=_CCC_
 tooltip.CAReactorCoil.line10=C___C
 tooltip.CAReactorCoil.line11=_CCC_
@@ -477,9 +477,9 @@ tooltip.WaterWheel.line1=Supplies energy to adjacent tier 2, 3 machines.
 tooltip.WaterWheel.line2=__DETAIL__
 tooltip.WaterWheel.line3=The number of water flow in the area of 3x3x3
 tooltip.WaterWheel.line4=determines the strength of energy.
-gui.WaterWheel.progress=Progress: %1$d
-gui.WaterWheel.durability=Durability: %1$d
-gui.WaterWheel.surroundingWater=Water: %1$d
+gui.WaterWheel.progress=Progress\: %1$d
+gui.WaterWheel.durability=Durability\: %1$d
+gui.WaterWheel.surroundingWater=Water\: %1$d
 
 tile.blockClaySteelClayEnergyLaser.name=Blue Clay Laser
 tile.blockClayiumClayEnergyLaser.name=Green Clay Laser
@@ -592,16 +592,16 @@ tile.blockOECRFGenerator.name=OEC CE-RF Converter
 tile.blockOPARFGenerator.name=OPA CE-RF Converter
 gui.RFGenerator.storage=%1$sRF/%2$sRF
 gui.RFGenerator.convertRate=%1$sCE/t -> %2$sRF/t
-gui.RFGenerator.output=Output: %1$sRF/t
-gui.RFGenerator.overclock=Overclock: x%1$s
-gui.RFGenerator.overclockExponent=OC: %1$s ^ %2$s = %3$s
+gui.RFGenerator.output=Output\: %1$sRF/t
+gui.RFGenerator.overclock=Overclock\: x%1$s
+gui.RFGenerator.overclockExponent=OC\: %1$s ^ %2$s = %3$s
 tooltip.RFGenerator.line1=Converts CE to RF.
 tooltip.RFGenerator.line2=__DETAIL__
 tooltip.RFGenerator.line3=Power emission will stop when a redstone signal is applied.
 tooltip.RFGenerator.line4=Overclocker increases output RF/t.
 tooltip.RFGenerator.line5=Edit clayium.cfg to enable recipes for Converters.
 tooltip.RFGenerator.convertRate=%1$sCE/t -> %2$sRF/t
-tooltip.RFGenerator.output=Output: %1$sRF/t
+tooltip.RFGenerator.output=Output\: %1$sRF/t
 
 tile.blockMetalChest.Silicon.name=Silicon Chest
 tile.blockMetalChest.Aluminium.name=Aluminium Chest
@@ -672,8 +672,8 @@ tile.blockMetalChest.Brass.name=Brass Chest
 tile.blockMetalChest.Electrum.name=Electrum Chest
 tile.blockMetalChest.Invar.name=Invar Chest
 
-tooltip.MetalChest.capacity1=Capacity: %1$d x %2$d = %3$d Slots
-tooltip.MetalChest.capacity2=Capacity: %1$d x %2$d x %3$d = %4$d Slots
+tooltip.MetalChest.capacity1=Capacity\: %1$d x %2$d = %3$d Slots
+tooltip.MetalChest.capacity2=Capacity\: %1$d x %2$d x %3$d = %4$d Slots
 
 tile.blockMetal.Magnesium.name=Magnesium Block
 tile.blockMetal.Sodium.name=Sodium Block
@@ -792,8 +792,8 @@ item.itemClayPipingTools.Piping.name=Clay Piping Configurator
 item.itemClayPipingTools.Piping.tooltip.line1=Piping / Rotation(sneak)
 item.itemClayPipingTools.Memory.name=Memory Card
 item.itemClayPipingTools.Memory.tooltip.line1=Stores machine IO settings.
-item.itemClayPipingTools.Memory.tooltip.line2=Right Click : Load from memory
-item.itemClayPipingTools.Memory.tooltip.line3=Shift + Right Click : Save to memory
+item.itemClayPipingTools.Memory.tooltip.line2=Right Click \: Load from memory
+item.itemClayPipingTools.Memory.tooltip.line3=Shift + Right Click \: Save to memory
 
 item.itemDirectionMemory.name=Direction Memory Card
 item.itemDirectionMemory.tooltip.line1=Used to configure in what direction
@@ -839,14 +839,14 @@ item.itemClaySteelPickaxe.name=Clay Steel Pickaxe
 item.itemClaySteelShovel.name=Clay Steel Shovel
 item.itemClaySteelPickaxe.tooltip.line1=__DETAIL__
 item.itemClaySteelPickaxe.tooltip.line2=You can change the mining area mode by right-clicking.
-item.itemClaySteelPickaxe.tooltip.line3=Mode 1 : 3x3 area mode
-item.itemClaySteelPickaxe.tooltip.line4=Mode 2 : arbitrary area mode.
+item.itemClaySteelPickaxe.tooltip.line3=Mode 1 \: 3x3 area mode
+item.itemClaySteelPickaxe.tooltip.line4=Mode 2 \: arbitrary area mode.
 item.itemClaySteelPickaxe.tooltip.line5=You can set up the mining area by right-clicking Clay Blocks
 item.itemClaySteelPickaxe.tooltip.line6=which are constructed in the shape you need.
 item.itemClaySteelShovel.tooltip.line1=__DETAIL__
 item.itemClaySteelShovel.tooltip.line2=You can change the mining area mode by right-clicking.
-item.itemClaySteelShovel.tooltip.line3=Mode 1 : 3x3 area mode
-item.itemClaySteelShovel.tooltip.line4=Mode 2 : arbitrary area mode.
+item.itemClaySteelShovel.tooltip.line3=Mode 1 \: 3x3 area mode
+item.itemClaySteelShovel.tooltip.line4=Mode 2 \: arbitrary area mode.
 item.itemClaySteelShovel.tooltip.line5=You can set up the mining area by right-clicking Clay Blocks
 item.itemClaySteelShovel.tooltip.line6=which are constructed in the shape you need.
 
@@ -939,7 +939,7 @@ item.clay_small_disc.name=Small Clay Disc
 item.clay_cylinder.name=Clay Cylinder
 item.clay_pipe.name=Clay Pipe
 item.large_clay_ball.name=Large Clay Ball
-item.clay_large_plate.name=Large Clay Plate
+item.large_clay_plate.name=Large Clay Plate
 item.clay_grinding_head.name=Clay Grinding Head
 item.clay_bearing.name=Clay Bearing
 item.clay_spindle.name=Clay Spindle
@@ -958,7 +958,7 @@ item.dense_clay_disc.name=Dense Clay Disc
 item.dense_clay_small_disc.name=Small Dense Clay Disc
 item.dense_clay_cylinder.name=Dense Clay Cylinder
 item.dense_clay_pipe.name=Dense Clay Pipe
-item.dense_clay_large_plate.name=Large Dense Clay Plate
+item.large_dense_clay_plate.name=Large Dense Clay Plate
 item.dense_clay_grinding_head.name=Dense Clay Grinding Head
 item.dense_clay_bearing.name=Dense Clay Bearing
 item.dense_clay_spindle.name=Dense Clay Spindle
@@ -970,7 +970,7 @@ item.industrial_clay_plate.name=Industrial Clay Plate
 item.large_industrial_clay_plate.name=Large Industrial Clay Plate
 
 item.adv_industrial_clay_plate.name=Advanced Industrial Clay Plate
-item.large_advanced_industrial_clay_plate.name=Large Advanced Industrial Clay Plate
+item.large_adv_industrial_clay_plate.name=Large Advanced Industrial Clay Plate
 
 item.clay_dust.name=Clay Dust
 item.dense_clay_dust.name=Dense Clay Dust
