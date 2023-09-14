@@ -39,7 +39,7 @@ public class Clayium {
     @Mod.Instance(MOD_ID)
     public static Clayium INSTANCE;
 
-    @SidedProxy(clientSide = "clayium.proxy.ClayiumClientProxy", serverSide = "clayium.proxy.ClayiumCommonProxy")
+    @SidedProxy(clientSide = "com.github.trcdeveloppers.clayium.proxy.ClayiumClientProxy", serverSide = "com.github.trcdeveloppers.clayium.proxy.ClayiumCommonProxy")
     public static ClayiumCommonProxy proxy;
 
     /**
@@ -49,7 +49,7 @@ public class Clayium {
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event) {
         ClayiumBlocks.register();
-        ClayiumItems.register();
+        proxy.registerItems();
         GameRegistry.registerWorldGenerator(new ClayOreGenerator(),0);
 
         GameRegistry.registerTileEntity(TileClayWorkTable.class, new ResourceLocation(MOD_ID, "TileClayWorkTable"));

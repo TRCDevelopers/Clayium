@@ -3,28 +3,16 @@ package com.github.trcdeveloppers.clayium.items;
 import com.github.trcdeveloppers.clayium.annotation.CItem;
 import com.github.trcdeveloppers.clayium.annotation.CShape;
 import com.github.trcdeveloppers.clayium.annotation.GeneralItemModel;
-import com.github.trcdeveloppers.clayium.annotation.UseModel;
-import com.github.trcdeveloppers.clayium.interfaces.ITiered;
 import com.github.trcdeveloppers.clayium.util.OreDictUtils;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.lang.reflect.Field;
-import java.net.JarURLConnection;
-import java.net.URL;
 import java.util.*;
-import java.util.jar.JarFile;
-import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
 
 import static com.github.trcdeveloppers.clayium.Clayium.MOD_ID;
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
@@ -37,119 +25,19 @@ public class ClayiumItems {
     }
 
     public static Map<String, Item> getAllItems() {
-        return items;
-    }
-
-    public static void register() {
-        Field[] fields = CMaterials.class.getDeclaredFields();
-        for (Field field : fields) {
-            CItem cItem = field.getAnnotation(CItem.class);
-            UseModel useModel = field.getAnnotation(UseModel.class);
-            if (cItem == null) {
-                continue;
-            }
-            field.setAccessible(true);
-            try {
-                String registryName = cItem.registryName().isEmpty() ? field.getName().toLowerCase(Locale.ROOT) : cItem.registryName();
-                Item item = (Item) field.get(null);
-                registerItem(item, registryName);
-                if (useModel != null) {
-                    registerGeneralModel(item, useModel.value());
-                } else if (item instanceof CMaterial && (registryName.endsWith("_ingot") || registryName.endsWith("_dust"))) {
-                    registerGeneralModel(item, GeneralItemModel.valueOf(registryName.replaceAll(".+_", "").toUpperCase(Locale.ROOT)));
-                } else {
-                    registerModel(item, 0);
-                }
-                for (String oreDict : cItem.oreDicts()) {
-                    OreDictionary.registerOre(oreDict, item);
-                }
-                registerShapes(item, cItem, registryName);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        //参考 https://blog1.mammb.com/entry/2015/03/31/001620
-        String resourceName = "com/github/trcdeveloppers/clayium/items";
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        URL url = classLoader.getResource(resourceName);
-        List<Class<?>> classes = new ArrayList<>();
-        if (url != null && url.getProtocol().equals("jar")) {
-            try (JarFile jarFile = ((JarURLConnection) url.openConnection()).getJarFile()) {
-                List<String> classPaths;
-                classPaths = Collections.list(jarFile.entries()).stream()
-                        .map(ZipEntry::getName)
-                        .filter(name -> name.startsWith(resourceName))
-                        .filter(name -> name.endsWith(".class"))
-                        .map(name -> name.replace('/', '.').replaceAll(".class$", ""))
-                        .collect(Collectors.toList());
-                for (String p : classPaths) {
-                    classes.add(classLoader.loadClass(p));
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-        for (Class<?> itemClass : classes) {
-            CItem cItem = itemClass.getAnnotation(CItem.class);
-            if (cItem == null) {
-                continue;
-            }
-            // いつかリファクタリングする
-            Item item;
-            String registryName = cItem.registryName();
-            try {
-                item = (Item) itemClass.newInstance();
-                item.setTranslationKey(registryName)
-                        .setRegistryName(new ResourceLocation(MOD_ID, registryName));
-            } catch (InstantiationException | IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-            ForgeRegistries.ITEMS.register(item);
-            items.put(registryName, item);
-            for (String oreDict : cItem.oreDicts()) {
-                OreDictionary.registerOre(oreDict, item);
-            }
-            registerShapes(item, cItem, registryName);
-            // Register model for metas
-            if (FMLCommonHandler.instance().getSide().isClient()) {
-                if (item instanceof ClayiumItem && ((ClayiumItem) item).hasMetadata()) {
-                    for (Map.Entry<Integer, String> st : ((ClayiumItem) item).getMetadataModels().entrySet()) {
-                        registerModel(item, st.getKey());
-                    }
-                } else {
-                    registerModel(item, 0);
-                }
-            }
-        }
+        return Collections.unmodifiableMap(items);
     }
 
     /***
      * @param item registryNameは、このメソッドでセットされるので、まだセットされていない必要がある。
      */
-    private static void registerItem(Item item, String registryName) {
+    public static void registerItem(Item item, String registryName) {
         item.setTranslationKey(registryName).setRegistryName(new ResourceLocation(MOD_ID, registryName));
         ForgeRegistries.ITEMS.register(item);
         items.put(registryName, item);
     }
 
-    @SideOnly(Side.CLIENT)
-    public static void registerModel(Item i, int meta) {
-        if (i.getRegistryName() != null) {
-            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(i, meta, new ModelResourceLocation(i.getRegistryName(), "inventory"));
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static void registerGeneralModel(Item item, GeneralItemModel model) {
-        net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(
-            item,
-            0,
-            new ModelResourceLocation(MOD_ID + ":colored/" + model.name().toLowerCase(Locale.ROOT), "inventory")
-        );
-    }
-
-    private static void registerShapes(Item item, CItem cItem, String registryName) {
+    public static void registerShapes(Item item, CItem cItem, String registryName) {
         String materialName;
         if (!cItem.materialName().isEmpty()) {
             materialName = cItem.materialName();
@@ -160,28 +48,34 @@ public class ClayiumItems {
         }
         for (CShape shape : cItem.shapes()) {
             // Create copy of an item
-            Item itemShaped = item instanceof CMaterialTiered
-                ? new CMaterialTiered(((CMaterialTiered) item).getTier(), ((CMaterialTiered) item).getColors())
-                : item instanceof CMaterial
-                    ? new CMaterial(((CMaterial) item).getColors())
-                    : item instanceof CItemTiered
-                        ? new CItemTiered(((CItemTiered) item).getTier())
-                        : new Item().setCreativeTab(CLAYIUM);
+            GeneralItemModel model = GeneralItemModel.fromCShape(shape);
+            Item itemShaped;
+            if (item instanceof CMaterials.CMaterialTiered) {
+                itemShaped = new CMaterials.CMaterialTiered(model, ((CMaterials.CMaterialTiered) item).getTier(), ((CMaterials.CMaterialTiered) item).getColors());
+            } else if (item instanceof CMaterials.CMaterial) {
+                itemShaped = new CMaterials.CMaterial(model, ((CMaterials.CMaterial) item).getColors());
+            } else if (item instanceof CMaterials.CItemTiered) {
+                itemShaped = new CMaterials.CItemTiered(((CMaterials.CItemTiered) item).getTier());
+            } else {
+                itemShaped = new Item().setCreativeTab(CLAYIUM);
+            }
 
             String registryNameShaped = shape == CShape.LARGE_PLATE
                 ? "large_" + materialName + "_plate"
                 : materialName + "_" + shape.name().toLowerCase(Locale.ROOT);
             registerItem(itemShaped, registryNameShaped);
-            if (itemShaped instanceof CMaterial) {
-                registerGeneralModel(itemShaped, GeneralItemModel.valueOf(shape.name()));
-            } else {
-                registerModel(itemShaped, 0);
-            }
             if (cItem.oreDicts().length != 0) {
                 OreDictionary.registerOre(shape.name().toLowerCase(Locale.ROOT)
                     + materialName.substring(0, 1).toUpperCase()
                     + materialName.substring(1), itemShaped);
             }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void registerModel(Item i, int meta) {
+        if (i.getRegistryName() != null) {
+            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(i, meta, new ModelResourceLocation(i.getRegistryName(), "inventory"));
         }
     }
 
@@ -199,53 +93,6 @@ public class ClayiumItems {
 
         default List<String> getOreDictionaries() {
             return Collections.emptyList();
-        }
-    }
-
-    public static class CItemTiered extends Item implements ITiered {
-        private final int tier;
-
-        public CItemTiered(int tier) {
-            super.setCreativeTab(CLAYIUM);
-            this.tier = tier;
-        }
-
-        @Override
-        public int getTier() {
-            return this.tier;
-        }
-    }
-
-    public static class CMaterial extends Item implements IItemColor {
-        private final int[] colors;
-
-        public CMaterial(int... colors) {
-            super();
-            super.setCreativeTab(CLAYIUM);
-            this.colors = colors;
-        }
-
-        @Override
-        @ParametersAreNonnullByDefault
-        public int colorMultiplier(ItemStack stack, int tintIndex) {
-            return tintIndex >= 0 && tintIndex < this.colors.length ? this.colors[tintIndex] : 0;
-        }
-
-        public int[] getColors() {
-            return this.colors;
-        }
-    }
-    public static class CMaterialTiered extends CMaterial implements ITiered, IItemColor {
-        private final int tier;
-
-        public CMaterialTiered(int tier, int... colors) {
-            super(colors);
-            this.tier = tier;
-        }
-
-        @Override
-        public int getTier() {
-            return this.tier;
         }
     }
 

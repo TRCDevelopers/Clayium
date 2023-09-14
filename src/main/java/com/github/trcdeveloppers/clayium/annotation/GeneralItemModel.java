@@ -9,5 +9,18 @@ public enum GeneralItemModel {
     MATTER2,
     MATTER3,
     MATTER4,
-    MATTER5
+    MATTER5;
+
+    public static GeneralItemModel fromCShape(CShape shape) {
+        switch (shape) {
+            case PLATE:
+                return GeneralItemModel.PLATE;
+            case LARGE_PLATE:
+                return GeneralItemModel.LARGE_PLATE;
+            case DUST:
+                return GeneralItemModel.DUST;
+            default:
+                return null;
+        }
+    }
 }
