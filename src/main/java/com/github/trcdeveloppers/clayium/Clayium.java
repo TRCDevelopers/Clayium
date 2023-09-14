@@ -6,6 +6,7 @@ import com.github.trcdeveloppers.clayium.blocks.machines.clayworktable.TileClayW
 import com.github.trcdeveloppers.clayium.gui.GuiHandler;
 import com.github.trcdeveloppers.clayium.interfaces.ITiered;
 import com.github.trcdeveloppers.clayium.items.ClayiumItems;
+import com.github.trcdeveloppers.clayium.proxy.ClayiumCommonProxy;
 import com.github.trcdeveloppers.clayium.worldgen.ClayOreGenerator;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.Minecraft;
@@ -13,6 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -36,6 +38,9 @@ public class Clayium {
      */
     @Mod.Instance(MOD_ID)
     public static Clayium INSTANCE;
+
+    @SidedProxy(clientSide = "clayium.proxy.ClayiumClientProxy", serverSide = "clayium.proxy.ClayiumCommonProxy")
+    public static ClayiumCommonProxy proxy;
 
     /**
      * This is the first initialization event. Register tile entities here.
