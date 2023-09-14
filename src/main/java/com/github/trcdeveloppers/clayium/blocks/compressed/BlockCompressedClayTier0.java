@@ -1,5 +1,6 @@
 package com.github.trcdeveloppers.clayium.blocks.compressed;
 
+import com.github.trcdeveloppers.clayium.annotation.CBlock;
 import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
 import com.github.trcdeveloppers.clayium.interfaces.IClayEnergy;
 import com.github.trcdeveloppers.clayium.interfaces.ITiered;
@@ -17,7 +18,7 @@ import java.util.List;
 
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
-@com.github.trcdeveloppers.clayium.annotation.Block(registryName = "compressed_clay_tier0")
+@CBlock(registryName = "compressed_clay_tier0")
 public class BlockCompressedClayTier0 extends Block implements IClayEnergy, ITiered,ClayiumBlocks.ClayiumBlock {
     public BlockCompressedClayTier0(Material material) {
         super(material);

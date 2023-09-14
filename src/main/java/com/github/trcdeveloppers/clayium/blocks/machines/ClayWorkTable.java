@@ -1,6 +1,7 @@
 package com.github.trcdeveloppers.clayium.blocks.machines;
 
 
+import com.github.trcdeveloppers.clayium.annotation.CBlock;
 import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
 import com.github.trcdeveloppers.clayium.interfaces.ITiered;
 import com.github.trcdeveloppers.clayium.util.UtilLocale;
@@ -14,7 +15,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
-@com.github.trcdeveloppers.clayium.annotation.Block(registryName = "clay_work_table")
+@CBlock(registryName = "clay_work_table")
 public class ClayWorkTable extends Block implements ITiered, ClayiumBlocks.ClayiumBlock {
     public ClayWorkTable() {
         super(Material.ROCK);

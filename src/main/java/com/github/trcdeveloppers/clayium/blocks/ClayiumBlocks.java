@@ -1,8 +1,8 @@
 package com.github.trcdeveloppers.clayium.blocks;
 
 
+import com.github.trcdeveloppers.clayium.annotation.CBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.lang.annotation.Annotation;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.*;
@@ -19,6 +18,7 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 
 import static com.github.trcdeveloppers.clayium.Clayium.MOD_ID;
+import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 import static com.github.trcdeveloppers.clayium.items.ClayiumItems.registerModel;
 
 public class ClayiumBlocks {
@@ -33,11 +33,11 @@ public class ClayiumBlocks {
             try (JarFile jarFile = ((JarURLConnection) url.openConnection()).getJarFile()) {
                 List<String> classPaths;
                 classPaths = Collections.list(jarFile.entries()).stream()
-                        .map(ZipEntry::getName)
-                        .filter(name -> name.startsWith(resourceName))
-                        .filter(name -> name.endsWith(".class"))
-                        .map(name -> name.replace('/', '.').replaceAll(".class$", ""))
-                        .collect(Collectors.toList());
+                    .map(ZipEntry::getName)
+                    .filter(name -> name.startsWith(resourceName))
+                    .filter(name -> name.endsWith(".class"))
+                    .map(name -> name.replace('/', '.').replaceAll(".class$", ""))
+                    .collect(Collectors.toList());
                 for (String p : classPaths) {
                     classes.add(classLoader.loadClass(p));
                 }
@@ -45,39 +45,41 @@ public class ClayiumBlocks {
                 throw new RuntimeException(e);
             }
         }
-        for (Class<?> c : classes) {
-            Annotation[] ano;
-            if ((ano = c.getAnnotations()).length != 0) {
-                for (Annotation an : ano) {
-                    if (an instanceof com.github.trcdeveloppers.clayium.annotation.Block) {
-                        Block b;
-                        try {
-                            b = ((Block) c.newInstance()).setTranslationKey(((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName())
-                                    .setRegistryName(new ResourceLocation(MOD_ID, ((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName()));
-                        } catch (InstantiationException | IllegalAccessException e) {
-                            throw new RuntimeException(e);
-                        }
-                        ForgeRegistries.BLOCKS.register(b);
-                        blockMap.put(((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName(), b);
-                        ForgeRegistries.ITEMS.register(new ItemBlock(b).setRegistryName(((com.github.trcdeveloppers.clayium.annotation.Block) an).registryName()));
-                        if (b instanceof ClayiumBlock) {
-                            for (String oreDictionary : ((ClayiumBlock) b).getOreDictionaries()) {
-                                OreDictionary.registerOre(oreDictionary, Item.getItemFromBlock(b));
-                            }
-                        }
-                        if (FMLCommonHandler.instance().getSide().isClient()) {
-                            if (b instanceof ClayiumBlocks.ClayiumBlock && ((ClayiumBlocks.ClayiumBlock) b).hasMetadata()) {
-                                for (Map.Entry<Integer, String> st : ((ClayiumBlocks.ClayiumBlock) b).getMetadataModels().entrySet()) {
-                                    registerModel(Item.getItemFromBlock(b), st.getKey());
-                                }
-                            } else {
-                                registerModel(Item.getItemFromBlock(b), 0);
-                            }
-                        }
+        for (Class<?> clazz : classes) {
+            CBlock cBlock = clazz.getAnnotation(CBlock.class);
+            if (cBlock == null) {
+                continue;
+            }
+            Block block;
+            try {
+                block = ((Block) clazz.newInstance()).setCreativeTab(CLAYIUM)
+                    .setTranslationKey(cBlock.registryName())
+                    .setRegistryName(new ResourceLocation(MOD_ID, cBlock.registryName()));
+            } catch (InstantiationException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+            ForgeRegistries.BLOCKS.register(block);
+            blockMap.put(cBlock.registryName(), block);
+            ForgeRegistries.ITEMS.register(new ItemBlock(block).setRegistryName(cBlock.registryName()));
+            if (block instanceof ClayiumBlock) {
+                for (String oreDictionary : ((ClayiumBlock) block).getOreDictionaries()) {
+                    OreDictionary.registerOre(oreDictionary, Item.getItemFromBlock(block));
+                }
+            }
+            if (FMLCommonHandler.instance().getSide().isClient()) {
+                if (block instanceof ClayiumBlocks.ClayiumBlock && ((ClayiumBlocks.ClayiumBlock) block).hasMetadata()) {
+                    for (Map.Entry<Integer, String> st : ((ClayiumBlocks.ClayiumBlock) block).getMetadataModels().entrySet()) {
+                        registerModel(Item.getItemFromBlock(block), st.getKey());
                     }
+                } else {
+                    registerModel(Item.getItemFromBlock(block), 0);
                 }
             }
         }
+    }
+
+    public static Block getBlock(String registryName) {
+        return blockMap.get(registryName);
     }
 
     public interface ClayiumBlock {
@@ -95,9 +97,5 @@ public class ClayiumBlocks {
         default List<String> getOreDictionaries() {
             return new ArrayList<>();
         }
-    }
-
-    public static Block getBlock(String registryName) {
-        return blockMap.get(registryName);
     }
 }
