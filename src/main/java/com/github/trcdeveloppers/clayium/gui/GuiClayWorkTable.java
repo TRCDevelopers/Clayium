@@ -4,6 +4,7 @@ import com.github.trcdeveloppers.clayium.blocks.machines.container.ClayWorktable
 import com.github.trcdeveloppers.clayium.blocks.machines.tile.TileClayWorkTable;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 
@@ -12,8 +13,12 @@ import static com.github.trcdeveloppers.clayium.Clayium.MOD_ID;
 public class GuiClayWorkTable extends GuiContainer {
     public GuiClayWorkTable(IInventory playerInv, TileClayWorkTable te) {
         super(new ClayWorktableContainer(playerInv, te));
-        this.xSize = 256;
-        this.ySize = 256;
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+        this.fontRenderer.drawString(I18n.format("recipe.ClayWorkTable"), 6, 6, 0x404040);
     }
 
     @Override

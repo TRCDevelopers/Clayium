@@ -3,31 +3,38 @@ package com.github.trcdeveloppers.clayium.blocks.machines.container;
 
 import com.github.trcdeveloppers.clayium.blocks.machines.tile.TileClayWorkTable;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ClayWorktableContainer extends Container {
+
+    private final TileClayWorkTable tileClayWorkTable;
+
     public ClayWorktableContainer(IInventory playerInv, TileClayWorkTable te) {
+        this.tileClayWorkTable = te;
         IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        addSlotToContainer(new SlotItemHandler(itemHandler, 0, 50, 50) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
+        addSlotToContainer(new SlotItemHandler(itemHandler, 0, 17, 30));
+        addSlotToContainer(new SlotItemHandler(itemHandler, 1, 80, 17));
+        addSlotToContainer(new SlotItemHandler(itemHandler, 2, 143, 30));
+        addSlotToContainer(new SlotItemHandler(itemHandler, 3, 143, 55));
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                addSlotToContainer(new Slot(playerInv,  i * 9+j + 9, 8 + j * 18, 84 + i * 18));
+                addSlotToContainer(new Slot(playerInv,  j + i*9 + 9, 8 + j*18, 84 + i * 18));
             }
         }
-        for (int k = 0; k < 9; k++) {
-            addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 142));
+        for (int i = 0; i < 9; i++) {
+            addSlotToContainer(new Slot(playerInv, i, 8 + i * 18, 142));
         }
+    }
+
+    @Override
+    public void addListener(IContainerListener listener) {
+        super.addListener(listener);
+//        listener.sendWindowProperty(this, 0, this.tileClayWorkTable.);
     }
 
     @Override

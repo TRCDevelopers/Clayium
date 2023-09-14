@@ -10,7 +10,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nullable;
 
 public class TileClayWorkTable extends TileEntity {
-    private final ItemStackHandler handler = new ItemStackHandler(1);
+    private final ItemStackHandler handler = new ItemStackHandler(4);
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
