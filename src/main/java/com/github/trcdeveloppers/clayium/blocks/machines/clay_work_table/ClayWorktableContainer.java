@@ -1,7 +1,6 @@
-package com.github.trcdeveloppers.clayium.blocks.machines.container;
+package com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table;
 
 
-import com.github.trcdeveloppers.clayium.blocks.machines.tile.TileClayWorkTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;

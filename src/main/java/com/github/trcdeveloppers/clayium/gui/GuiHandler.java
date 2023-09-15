@@ -1,7 +1,8 @@
 package com.github.trcdeveloppers.clayium.gui;
 
-import com.github.trcdeveloppers.clayium.blocks.machines.container.ClayWorktableContainer;
-import com.github.trcdeveloppers.clayium.blocks.machines.tile.TileClayWorkTable;
+import com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table.ClayWorktableContainer;
+import com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table.TileClayWorkTable;
+import com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table.GuiClayWorkTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -16,13 +17,11 @@ public class GuiHandler implements IGuiHandler {
     @Nullable
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        System.out.println("called guihandler");
         TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
         if (te == null) { return null; }
 
         switch (ID) {
             case ClayWorkTable:
-                System.out.println("server gui id 1");
                 return new ClayWorktableContainer(player.inventory, (TileClayWorkTable) te);
         }
         return null;
@@ -31,13 +30,11 @@ public class GuiHandler implements IGuiHandler {
     @Nullable
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        System.out.println("called guihandler");
         TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
         if (te == null) { return null; }
 
         switch (ID) {
             case ClayWorkTable:
-                System.out.println("client gui id 1");
                 return new GuiClayWorkTable(player.inventory, (TileClayWorkTable) te);
         }
         return null;

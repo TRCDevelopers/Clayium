@@ -1,10 +1,9 @@
-package com.github.trcdeveloppers.clayium.blocks.machines;
+package com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table;
 
 
 import com.github.trcdeveloppers.clayium.Clayium;
 import com.github.trcdeveloppers.clayium.annotation.CBlock;
 import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
-import com.github.trcdeveloppers.clayium.blocks.machines.tile.TileClayWorkTable;
 import com.github.trcdeveloppers.clayium.gui.GuiHandler;
 import com.github.trcdeveloppers.clayium.interfaces.ITiered;
 import com.github.trcdeveloppers.clayium.util.UtilLocale;
