@@ -1,22 +1,13 @@
 package com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table;
 
 import com.github.trcdeveloppers.clayium.items.ClayiumItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
-
-import static com.github.trcdeveloppers.clayium.Clayium.MOD_ID;
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClayWorkTableRecipes {
     static final NonNullList<ClayWorkTableRecipe> recipes = NonNullList.create();
@@ -62,11 +53,32 @@ public class ClayWorkTableRecipes {
             ClayWorkTableMethod.CUT, 7);
     }
 
+    //todo: inputとmethodが両方同じときの対処
     private static void addRecipe(ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, ClayWorkTableMethod method, int clicks) {
         recipes.add(new ClayWorkTableRecipe(input, primaryOutput, secondaryOutput, method, clicks));
     }
     private static void addRecipe(ItemStack input, ItemStack primaryOutput, ClayWorkTableMethod method, int clicks) {
         recipes.add(new ClayWorkTableRecipe(input, primaryOutput, ItemStack.EMPTY, method, clicks));
+    }
+
+    static List<ClayWorkTableRecipe> getRecipesFor(ItemStack input) {
+        return recipes.stream()
+            .filter(recipe -> recipe.INPUT.isItemEqual(input))
+            .filter(recipe -> recipe.INPUT.getCount() <= input.getCount())
+            .collect(Collectors.toList());
+    }
+
+    @Nullable
+    static ClayWorkTableRecipe getRecipeFor(ItemStack input, ClayWorkTableMethod method) {
+        for (ClayWorkTableRecipe recipe : recipes) {
+            if (!(recipe.INPUT.isItemEqual(input)
+                && recipe.INPUT.getCount() <= input.getCount())
+                && recipe.METHOD == method) {
+                continue;
+            }
+            return recipe;
+        }
+        return null;
     }
 
     static class ClayWorkTableRecipe {
@@ -81,6 +93,10 @@ public class ClayWorkTableRecipes {
             this.OUTPUT_2 = secondaryOutput;
             this.METHOD = method;
             this.CLICKS = clicks;
+        }
+
+        public boolean hasSecondaryOutput() {
+            return this.OUTPUT_2.isEmpty();
         }
     }
 }
