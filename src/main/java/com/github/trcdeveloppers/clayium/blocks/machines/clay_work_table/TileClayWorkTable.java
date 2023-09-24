@@ -80,19 +80,19 @@ public class TileClayWorkTable extends TileEntity {
                 break;
             // Requires Rolling Pin
             case ROLLING_PIN:
-                if (handler.getStackInSlot(2).getItem() != ClayiumItems.getItem("clay_rolling_pin")) {
+                if (handler.getStackInSlot(1).getItem() != ClayiumItems.getItem("clay_rolling_pin")) {
                     return false;
                 }
             // Requires Slicer or Spatula
             case CUT_PLATE:
             case CUT:
-                if (!(handler.getStackInSlot(2).getItem() == ClayiumItems.getItem("clay_slicer")
-                    || handler.getStackInSlot(2).getItem() == ClayiumItems.getItem("clay_spatula"))) {
+                if (!(handler.getStackInSlot(1).getItem() == ClayiumItems.getItem("clay_slicer")
+                    || handler.getStackInSlot(1).getItem() == ClayiumItems.getItem("clay_spatula"))) {
                     return false;
                 }
             // Requires Spatula
             case CUT_DISC:
-                if (handler.getStackInSlot(2).getItem() != ClayiumItems.getItem("clay_spatula")) {
+                if (handler.getStackInSlot(1).getItem() != ClayiumItems.getItem("clay_spatula")) {
                     return false;
                 }
         }
