@@ -1,9 +1,7 @@
 package com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table;
 
-import com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table.ClayWorktableContainer;
-import com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table.TileClayWorkTable;
+import com.github.trcdeveloppers.clayium.gui.GuiButtonImageToggleable;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiButtonImage;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -11,8 +9,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.io.IOException;
 
 import static com.github.trcdeveloppers.clayium.Clayium.MOD_ID;
 
@@ -52,16 +48,16 @@ public class GuiClayWorkTable extends GuiContainer {
     @Override
     public void initGui() {
         super.initGui();
-        this.buttonList.add(new GuiButtonImage(1,this.guiLeft + 40, this.guiTop + 52, 16, 16, 176, 32, 0, GUI_IMAGE));
-        this.buttonList.add(new GuiButtonImage(2,this.guiLeft + 56, this.guiTop + 52, 16, 16, 192, 32, 0, GUI_IMAGE));
-        this.buttonList.add(new GuiButtonImage(3,this.guiLeft + 72, this.guiTop + 52, 16, 16, 208, 32, 0, GUI_IMAGE));
-        this.buttonList.add(new GuiButtonImage(4,this.guiLeft + 88, this.guiTop + 52, 16, 16, 224, 32, 0, GUI_IMAGE));
-        this.buttonList.add(new GuiButtonImage(5,this.guiLeft + 104, this.guiTop + 52, 16, 16, 240, 32, 0, GUI_IMAGE));
-        this.buttonList.add(new GuiButtonImage(6,this.guiLeft + 120, this.guiTop + 52, 16, 16, 176, 80, 0, GUI_IMAGE));
+        this.buttonList.add(new GuiButtonImageToggleable(1, this.guiLeft + 40, this.guiTop + 52, 16, 16, 176, 32, GUI_IMAGE));
+        this.buttonList.add(new GuiButtonImageToggleable(2, this.guiLeft + 56, this.guiTop + 52, 16, 16, 192, 32, GUI_IMAGE));
+        this.buttonList.add(new GuiButtonImageToggleable(3, this.guiLeft + 72, this.guiTop + 52, 16, 16, 208, 32, GUI_IMAGE));
+        this.buttonList.add(new GuiButtonImageToggleable(4, this.guiLeft + 88, this.guiTop + 52, 16, 16, 224, 32, GUI_IMAGE));
+        this.buttonList.add(new GuiButtonImageToggleable(5, this.guiLeft + 104, this.guiTop + 52, 16, 16, 240, 32, GUI_IMAGE));
+        this.buttonList.add(new GuiButtonImageToggleable(6, this.guiLeft + 120, this.guiTop + 52, 16, 16, 176, 80, GUI_IMAGE));
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) throws IOException {
+    protected void actionPerformed(GuiButton button) {
         if (!button.enabled) {
             return;
         }

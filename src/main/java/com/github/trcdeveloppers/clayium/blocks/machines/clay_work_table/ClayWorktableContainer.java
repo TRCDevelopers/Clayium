@@ -1,7 +1,5 @@
 package com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table;
 
-
-import com.github.trcdeveloppers.clayium.items.ClayiumItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
@@ -26,13 +24,13 @@ public class ClayWorktableContainer extends Container {
         IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         addSlotToContainer(new SlotItemHandler(itemHandler, 0, 17, 30)); // input
         addSlotToContainer(new SlotItemHandler(itemHandler, 1, 80, 17)); // tool
-        addSlotToContainer(new SlotItemHandler(itemHandler, 2, 143, 30) {
+        addSlotToContainer(new SlotItemHandler(itemHandler, 2, 143, 30) { // primary output
             @Override
             public boolean isItemValid(@Nonnull ItemStack stack) {
                 return false;
             }
         });
-        addSlotToContainer(new SlotItemHandler(itemHandler, 3, 143, 55) {
+        addSlotToContainer(new SlotItemHandler(itemHandler, 3, 143, 55) { // secondary output
             @Override
             public boolean isItemValid(@Nonnull ItemStack stack) {
                 return  false;
