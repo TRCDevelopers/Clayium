@@ -1,8 +1,8 @@
 package com.github.trcdeveloppers.clayium;
 
 import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
-import com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table.ClayWorkTableRecipes;
-import com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table.TileClayWorkTable;
+import com.github.trcdeveloppers.clayium.blocks.machines.clayworktable.ClayWorkTableRecipes;
+import com.github.trcdeveloppers.clayium.blocks.machines.clayworktable.TileClayWorkTable;
 import com.github.trcdeveloppers.clayium.gui.GuiHandler;
 import com.github.trcdeveloppers.clayium.interfaces.ITiered;
 import com.github.trcdeveloppers.clayium.items.ClayiumItems;
@@ -19,11 +19,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 @Mod(
         modid = Clayium.MOD_ID,

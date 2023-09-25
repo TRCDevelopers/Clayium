@@ -1,4 +1,4 @@
-package com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table;
+package com.github.trcdeveloppers.clayium.blocks.machines.clayworktable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.*;
@@ -17,7 +17,6 @@ public class ClayWorktableContainer extends Container {
 
     private int lastCraftingProgress = 0;
     private int lastRequiredProgress = 0;
-    private ClayWorkTableMethod lastCraftingMethod = ClayWorkTableMethod.ROLLING_HAND;
 
     public ClayWorktableContainer(IInventory playerInv, TileClayWorkTable te) {
         this.tile = te;
@@ -45,12 +44,6 @@ public class ClayWorktableContainer extends Container {
         for (int i = 0; i < 9; i++) {
             addSlotToContainer(new Slot(playerInv, i, 8 + i * 18, 142));
         }
-    }
-
-    @Override
-    public void addListener(IContainerListener listener) {
-        super.addListener(listener);
-//        listener.sendWindowProperty(this, 0, this.tileClayWorkTable.);
     }
 
     @Override
@@ -87,8 +80,19 @@ public class ClayWorktableContainer extends Container {
     }
 
     @Override
+    public void addListener(IContainerListener listener) {
+        super.addListener(listener);
+        listener.sendWindowProperty(this, 0, this.tile.craftingProgress);
+        listener.sendWindowProperty(this, 1, this.tile.requiredProgress);
+    }
+
+    @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
+
+        if (this.tile.isInputEmpty()) {
+            this.tile.resetRecipe();
+        }
 
         for (IContainerListener listener : this.listeners) {
             if (this.lastCraftingProgress != this.tile.craftingProgress) {
@@ -97,14 +101,10 @@ public class ClayWorktableContainer extends Container {
             if (this.lastRequiredProgress != this.tile.requiredProgress) {
                 listener.sendWindowProperty(this, 1, this.tile.requiredProgress);
             }
-            if (this.lastCraftingMethod != this.tile.craftingMethod) {
-                listener.sendWindowProperty(this, 2, this.tile.craftingMethod.id);
-            }
         }
 
         this.lastCraftingProgress = this.tile.craftingProgress;
         this.lastRequiredProgress = this.tile.requiredProgress;
-        this.lastCraftingMethod = this.tile.craftingMethod;
     }
 
     @Override
@@ -113,10 +113,16 @@ public class ClayWorktableContainer extends Container {
         switch (id) {
             case 0:
                 this.tile.craftingProgress = data;
+                break;
             case 1:
                 this.tile.requiredProgress = data;
-            case 2:
-                this.tile.craftingMethod = ClayWorkTableMethod.fromId(data);
+                break;
         }
+    }
+
+    @Override
+    public boolean enchantItem(EntityPlayer playerIn, int id) {
+        this.tile.pushButton(id);
+        return true;
     }
 }

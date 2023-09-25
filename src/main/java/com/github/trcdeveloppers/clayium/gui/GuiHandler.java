@@ -1,8 +1,8 @@
 package com.github.trcdeveloppers.clayium.gui;
 
-import com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table.ClayWorktableContainer;
-import com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table.TileClayWorkTable;
-import com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table.GuiClayWorkTable;
+import com.github.trcdeveloppers.clayium.blocks.machines.clayworktable.ClayWorktableContainer;
+import com.github.trcdeveloppers.clayium.blocks.machines.clayworktable.TileClayWorkTable;
+import com.github.trcdeveloppers.clayium.blocks.machines.clayworktable.GuiClayWorkTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;

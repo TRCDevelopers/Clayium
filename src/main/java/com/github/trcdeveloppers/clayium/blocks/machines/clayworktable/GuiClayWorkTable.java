@@ -1,4 +1,4 @@
-package com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table;
+package com.github.trcdeveloppers.clayium.blocks.machines.clayworktable;
 
 import com.github.trcdeveloppers.clayium.gui.GuiButtonImageToggleable;
 import net.minecraft.client.gui.GuiButton;
@@ -23,7 +23,6 @@ public class GuiClayWorkTable extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
         this.fontRenderer.drawString(I18n.format("recipe.ClayWorkTable"), 6, 6, 0x404040);
         this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 94, 0x404040);
     }
@@ -33,11 +32,6 @@ public class GuiClayWorkTable extends GuiContainer {
         GlStateManager.color(1f, 1f, 1f, 1f);
         this.mc.getTextureManager().bindTexture(GUI_IMAGE);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
-        // isBurningに相当するものを追加するかも？
-        if (this.tile.requiredProgress != 0) {
-            int i1 = 6;
-//            this.drawTexturedModalRect(this.guiLeft + 56, this.guiTop + 36 + 12 - i1, 176, 12 - i1, 14, i1 + 2);
-        }
         // progress bar
         this.drawTexturedModalRect(this.guiLeft + 48, this.guiTop + 29, 176, 0, this.tile.getCraftingProgressScaled(80), 16);
         for (GuiButton button : this.buttonList) {
@@ -61,5 +55,13 @@ public class GuiClayWorkTable extends GuiContainer {
         if (!button.enabled) {
             return;
         }
+        this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, button.id);
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 }

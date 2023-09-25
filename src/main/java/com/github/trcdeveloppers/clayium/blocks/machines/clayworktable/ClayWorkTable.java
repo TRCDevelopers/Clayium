@@ -1,4 +1,4 @@
-package com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table;
+package com.github.trcdeveloppers.clayium.blocks.machines.clayworktable;
 
 
 import com.github.trcdeveloppers.clayium.Clayium;
@@ -19,8 +19,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -57,17 +55,13 @@ public class ClayWorkTable extends BlockContainer implements ITiered, ClayiumBlo
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (worldIn.isRemote) {
-            System.out.println("This is remote");
             return true;
         }
         TileClayWorkTable te = (TileClayWorkTable) worldIn.getTileEntity(pos);
         if (te == null) {
-            System.out.println("tileentity is null");
             return false;
         }
-        IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
         playerIn.openGui(Clayium.INSTANCE, GuiHandler.ClayWorkTable, worldIn, pos.getX(), pos.getY(), pos.getZ());
-        System.out.println("normal call");
         return true;
     }
 

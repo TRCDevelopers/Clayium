@@ -1,4 +1,4 @@
-package com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table;
+package com.github.trcdeveloppers.clayium.blocks.machines.clayworktable;
 
 public enum ClayWorkTableMethod {
     ROLLING_HAND(1),
@@ -7,7 +7,7 @@ public enum ClayWorkTableMethod {
     CUT_PLATE(4),
     CUT_DISC(5),
     CUT(6),
-    ;
+    EMPTY(-1);
 
     public final int id;
 

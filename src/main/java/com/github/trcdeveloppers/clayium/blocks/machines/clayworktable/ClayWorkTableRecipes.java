@@ -1,17 +1,17 @@
-package com.github.trcdeveloppers.clayium.blocks.machines.clay_work_table;
+package com.github.trcdeveloppers.clayium.blocks.machines.clayworktable;
 
 import com.github.trcdeveloppers.clayium.items.ClayiumItems;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ClayWorkTableRecipes {
-    static final NonNullList<ClayWorkTableRecipe> recipes = NonNullList.create();
+    static final NonNullList<Recipe> recipes = NonNullList.create();
 
+    //todo: create Empty recipe represents there is no recipe
     public static void init() {
         addRecipe(new ItemStack(Items.CLAY_BALL), new ItemStack(ClayiumItems.getItem("clay_stick")),
             ClayWorkTableMethod.ROLLING_HAND, 4);
@@ -55,39 +55,39 @@ public class ClayWorkTableRecipes {
 
     //todo: inputとmethodが両方同じときの対処
     private static void addRecipe(ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, ClayWorkTableMethod method, int clicks) {
-        recipes.add(new ClayWorkTableRecipe(input, primaryOutput, secondaryOutput, method, clicks));
+        recipes.add(new Recipe(input, primaryOutput, secondaryOutput, method, clicks));
     }
     private static void addRecipe(ItemStack input, ItemStack primaryOutput, ClayWorkTableMethod method, int clicks) {
-        recipes.add(new ClayWorkTableRecipe(input, primaryOutput, ItemStack.EMPTY, method, clicks));
+        recipes.add(new Recipe(input, primaryOutput, ItemStack.EMPTY, method, clicks));
     }
 
-    static List<ClayWorkTableRecipe> getRecipesFor(ItemStack input) {
+    static List<Recipe> getRecipesFor(ItemStack input) {
         return recipes.stream()
             .filter(recipe -> recipe.INPUT.isItemEqual(input))
             .filter(recipe -> recipe.INPUT.getCount() <= input.getCount())
             .collect(Collectors.toList());
     }
 
-    @Nullable
-    static ClayWorkTableRecipe getRecipeFor(ItemStack input, ClayWorkTableMethod method) {
-        for (ClayWorkTableRecipe recipe : recipes) {
-            if (!(recipe.INPUT.isItemEqual(input)
-                && recipe.INPUT.getCount() <= input.getCount())
-                && recipe.METHOD == method) {
+    static Recipe getRecipeFor(ItemStack input, ClayWorkTableMethod method) {
+        for (Recipe recipe : recipes) {
+            if (!(recipe.INPUT.isItemEqual(input) && (recipe.INPUT.getCount() <= input.getCount()) && (recipe.METHOD == method))) {
                 continue;
             }
             return recipe;
         }
-        return null;
+        return Recipe.EMPTY;
     }
 
-    static class ClayWorkTableRecipe {
+    static class Recipe {
+
+        public static final Recipe EMPTY = new Recipe(ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ClayWorkTableMethod.EMPTY, 0);
+
         public final ItemStack INPUT;
         public final ItemStack OUTPUT_1;
         public final ItemStack OUTPUT_2;
         public final ClayWorkTableMethod METHOD;
         public final int CLICKS;
-        public ClayWorkTableRecipe(ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, ClayWorkTableMethod method, int clicks) {
+        public Recipe(ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, ClayWorkTableMethod method, int clicks) {
             this.INPUT = input;
             this.OUTPUT_1 = primaryOutput;
             this.OUTPUT_2 = secondaryOutput;
@@ -96,7 +96,22 @@ public class ClayWorkTableRecipes {
         }
 
         public boolean hasSecondaryOutput() {
-            return this.OUTPUT_2.isEmpty();
+            return !this.OUTPUT_2.isEmpty();
+        }
+
+        public boolean isEmpty() {
+            return this == Recipe.EMPTY;
+        }
+
+        @Override
+        public String toString() {
+            return "Recipe{" +
+                    "INPUT=" + INPUT +
+                    ", OUTPUT_1=" + OUTPUT_1 +
+                    ", OUTPUT_2=" + OUTPUT_2 +
+                    ", METHOD=" + METHOD +
+                    ", CLICKS=" + CLICKS +
+                    '}';
         }
     }
 }
