@@ -11,6 +11,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +20,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
@@ -66,10 +70,30 @@ public class ClayWorkTable extends BlockContainer implements ITiered, ClayiumBlo
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        TileClayWorkTable tile = (TileClayWorkTable) worldIn.getTileEntity(pos);
+        if (tile != null) {
+            IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            for (int i = 0; i < handler.getSlots(); i++) {
+                if (handler.getStackInSlot(i).isEmpty()) {
+                    continue;
+                }
+                float f0 = worldIn.rand.nextFloat() * 0.8f + 0.1f;
+                float f1 = worldIn.rand.nextFloat() * 0.8f + 0.1f;
+                float f2 = worldIn.rand.nextFloat() * 0.8f + 0.1f;
+                EntityItem entityItem = new EntityItem(worldIn, pos.getX() + f0, pos.getY() + f1, pos.getZ() + f2, handler.getStackInSlot(i).copy());
+//                float f3 = 0.025f;
+//                entityItem.motionX = worldIn.rand.nextGaussian() * f3;
+//                entityItem.motionY = worldIn.rand.nextGaussian() * f3 + 0.1f;
+//                entityItem.motionZ = worldIn.rand.nextGaussian() * f3;
+                worldIn.spawnEntity(entityItem);
+            }
+        }
         super.breakBlock(worldIn, pos, state);
     }
 
+    @Nonnull
     @Override
     @ParametersAreNonnullByDefault
     public EnumBlockRenderType getRenderType(IBlockState state) {

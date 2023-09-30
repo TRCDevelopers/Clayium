@@ -27,11 +27,14 @@ public class TileClayWorkTable extends TileEntity {
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
+        this.craftingProgress = compound.getInteger("cProgress");
         this.handler.deserializeNBT(compound);
         super.readFromNBT(compound);
     }
+    @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        compound.setInteger("cProgress", this.craftingProgress);
         compound.setTag("inventory", this.handler.serializeNBT());
         return super.writeToNBT(compound);
     }
@@ -56,42 +59,37 @@ public class TileClayWorkTable extends TileEntity {
     }
 
     @SideOnly(Side.CLIENT)
-    int getCraftingProgressScaled(int scale) {
+    public int getCraftingProgressScaled(int scale) {
         if (this.requiredProgress == 0) {
             return 0;
         }
         return this.craftingProgress * scale / this.requiredProgress;
     }
 
-    boolean canPushButton(int id) {
+    public boolean canPushButton(int id) {
         return this.canStartCraft(this.handler.getStackInSlot(0), ClayWorkTableMethod.fromId(id));
     }
 
-    public void pushButton(int id) {
+    void pushButton(int id) {
         if (this.currentRecipe.METHOD.id != id) {
             this.resetRecipe();
         }
-
         ItemStack input = this.handler.getStackInSlot(0);
         if (!this.isCrafting()) {
-            // get and set recipe
             this.currentRecipe = ClayWorkTableRecipes.getRecipeFor(input, ClayWorkTableMethod.fromId(id));
             this.requiredProgress = this.currentRecipe.CLICKS;
             this.craftingProgress = 1;
-        } else {
-            // ここでRecipeがEmptyなら、おかしい
-            this.craftingProgress++;
-            if (this.craftingProgress >= this.requiredProgress) {
-                // craft complete
-                input.setCount(input.getCount()
-                        - currentRecipe.INPUT.getCount());
-                if (this.handler.getStackInSlot(2).isEmpty()) {
-                    this.handler.setStackInSlot(2, currentRecipe.OUTPUT_1.copy());
-                } else {
-                    this.handler.getStackInSlot(2).setCount(this.handler.getStackInSlot(2).getCount() + currentRecipe.OUTPUT_1.getCount());
-                }
-                this.resetRecipe();
+            return;
+        }
+        this.craftingProgress++;
+        if (this.craftingProgress >= this.requiredProgress) {
+            input.setCount(input.getCount() - currentRecipe.INPUT.getCount());
+            if (this.handler.getStackInSlot(2).isEmpty()) {
+                this.handler.setStackInSlot(2, currentRecipe.OUTPUT_1.copy());
+            } else {
+                this.handler.getStackInSlot(2).setCount(this.handler.getStackInSlot(2).getCount() + currentRecipe.OUTPUT_1.getCount());
             }
+            this.resetRecipe();
         }
     }
 
@@ -127,7 +125,7 @@ public class TileClayWorkTable extends TileEntity {
         }
     }
 
-    public void resetRecipe() {
+    void resetRecipe() {
         this.currentRecipe = ClayWorkTableRecipes.Recipe.EMPTY;
         this.requiredProgress = 0;
         this.craftingProgress = 0;

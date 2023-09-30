@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 public class ClayWorkTableRecipes {
     static final NonNullList<Recipe> recipes = NonNullList.create();
 
-    //todo: create Empty recipe represents there is no recipe
     public static void init() {
         addRecipe(new ItemStack(Items.CLAY_BALL), new ItemStack(ClayiumItems.getItem("clay_stick")),
             ClayWorkTableMethod.ROLLING_HAND, 4);
@@ -55,10 +54,15 @@ public class ClayWorkTableRecipes {
 
     //todo: inputとmethodが両方同じときの対処
     private static void addRecipe(ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, ClayWorkTableMethod method, int clicks) {
+        if (!getRecipeFor(input, method).isEmpty()) {
+            //todo: add logger, and warn
+            System.out.println("duplicate recipe");
+            return;
+        }
         recipes.add(new Recipe(input, primaryOutput, secondaryOutput, method, clicks));
     }
     private static void addRecipe(ItemStack input, ItemStack primaryOutput, ClayWorkTableMethod method, int clicks) {
-        recipes.add(new Recipe(input, primaryOutput, ItemStack.EMPTY, method, clicks));
+        addRecipe(input, primaryOutput, ItemStack.EMPTY, method, clicks);
     }
 
     static List<Recipe> getRecipesFor(ItemStack input) {

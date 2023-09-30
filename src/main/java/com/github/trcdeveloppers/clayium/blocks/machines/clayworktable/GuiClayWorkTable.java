@@ -42,12 +42,12 @@ public class GuiClayWorkTable extends GuiContainer {
     @Override
     public void initGui() {
         super.initGui();
-        this.buttonList.add(new GuiButtonImageToggleable(1, this.guiLeft + 40, this.guiTop + 52, 16, 16, 176, 32, GUI_IMAGE));
-        this.buttonList.add(new GuiButtonImageToggleable(2, this.guiLeft + 56, this.guiTop + 52, 16, 16, 192, 32, GUI_IMAGE));
-        this.buttonList.add(new GuiButtonImageToggleable(3, this.guiLeft + 72, this.guiTop + 52, 16, 16, 208, 32, GUI_IMAGE));
-        this.buttonList.add(new GuiButtonImageToggleable(4, this.guiLeft + 88, this.guiTop + 52, 16, 16, 224, 32, GUI_IMAGE));
-        this.buttonList.add(new GuiButtonImageToggleable(5, this.guiLeft + 104, this.guiTop + 52, 16, 16, 240, 32, GUI_IMAGE));
-        this.buttonList.add(new GuiButtonImageToggleable(6, this.guiLeft + 120, this.guiTop + 52, 16, 16, 176, 80, GUI_IMAGE));
+        this.buttonList.add(new GuiButtonImageToggleable(ClayWorkTableMethod.ROLLING_HAND.id, this.guiLeft + 40, this.guiTop + 52, 16, 16, 176, 32, GUI_IMAGE));
+        this.buttonList.add(new GuiButtonImageToggleable(ClayWorkTableMethod.PUNCH.id, this.guiLeft + 56, this.guiTop + 52, 16, 16, 192, 32, GUI_IMAGE));
+        this.buttonList.add(new GuiButtonImageToggleable(ClayWorkTableMethod.ROLLING_PIN.id, this.guiLeft + 72, this.guiTop + 52, 16, 16, 208, 32, GUI_IMAGE));
+        this.buttonList.add(new GuiButtonImageToggleable(ClayWorkTableMethod.CUT_PLATE.id, this.guiLeft + 88, this.guiTop + 52, 16, 16, 224, 32, GUI_IMAGE));
+        this.buttonList.add(new GuiButtonImageToggleable(ClayWorkTableMethod.CUT_DISC.id, this.guiLeft + 104, this.guiTop + 52, 16, 16, 240, 32, GUI_IMAGE));
+        this.buttonList.add(new GuiButtonImageToggleable(ClayWorkTableMethod.CUT.id, this.guiLeft + 120, this.guiTop + 52, 16, 16, 176, 80, GUI_IMAGE));
     }
 
     @Override
@@ -55,6 +55,7 @@ public class GuiClayWorkTable extends GuiContainer {
         if (!button.enabled) {
             return;
         }
+        // calls Container.enchantItem
         this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, button.id);
     }
 
