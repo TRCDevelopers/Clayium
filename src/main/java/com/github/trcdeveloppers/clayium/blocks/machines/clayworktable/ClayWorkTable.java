@@ -79,14 +79,14 @@ public class ClayWorkTable extends BlockContainer implements ITiered, ClayiumBlo
                 if (handler.getStackInSlot(i).isEmpty()) {
                     continue;
                 }
-                float f0 = worldIn.rand.nextFloat() * 0.8f + 0.1f;
-                float f1 = worldIn.rand.nextFloat() * 0.8f + 0.1f;
-                float f2 = worldIn.rand.nextFloat() * 0.8f + 0.1f;
+                float f0 = worldIn.rand.nextFloat() * 0.6f + 0.1f;
+                float f1 = worldIn.rand.nextFloat() * 0.6f + 0.1f;
+                float f2 = worldIn.rand.nextFloat() * 0.6f + 0.1f;
                 EntityItem entityItem = new EntityItem(worldIn, pos.getX() + f0, pos.getY() + f1, pos.getZ() + f2, handler.getStackInSlot(i).copy());
-//                float f3 = 0.025f;
-//                entityItem.motionX = worldIn.rand.nextGaussian() * f3;
-//                entityItem.motionY = worldIn.rand.nextGaussian() * f3 + 0.1f;
-//                entityItem.motionZ = worldIn.rand.nextGaussian() * f3;
+                float f3 = 0.025f;
+                entityItem.motionX = worldIn.rand.nextGaussian() * f3;
+                entityItem.motionY = worldIn.rand.nextGaussian() * f3 + 0.1f;
+                entityItem.motionZ = worldIn.rand.nextGaussian() * f3;
                 worldIn.spawnEntity(entityItem);
             }
         }
