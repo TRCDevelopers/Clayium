@@ -1,5 +1,6 @@
 package com.github.trcdeveloppers.clayium.blocks.machines.clayworktable;
 
+import com.github.trcdeveloppers.clayium.Clayium;
 import com.github.trcdeveloppers.clayium.gui.GuiButtonImageToggleable;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -10,11 +11,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static com.github.trcdeveloppers.clayium.Clayium.MOD_ID;
-
 @SideOnly(Side.CLIENT)
 public class GuiClayWorkTable extends GuiContainer {
-    private static final ResourceLocation GUI_IMAGE = new ResourceLocation(MOD_ID, "textures/gui/clayworktable.png");
+    private static final ResourceLocation GUI_IMAGE = new ResourceLocation(Clayium.MOD_ID, "textures/gui/clayworktable.png");
     private final TileClayWorkTable tile;
 
     public GuiClayWorkTable(IInventory playerInv, TileClayWorkTable te) {

@@ -12,8 +12,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-import javax.annotation.Nonnull;
-
 public class ClayWorktableContainer extends Container {
 
     private final TileClayWorkTable tile;
@@ -42,7 +40,7 @@ public class ClayWorktableContainer extends Container {
         // Primary Output
         this.addSlotToContainer(new SlotItemHandler(itemHandler, 2, 143, 30) {
             @Override
-            public boolean isItemValid(@Nonnull ItemStack stack) {
+            public boolean isItemValid(ItemStack stack) {
                 return false;
             }
 
@@ -54,7 +52,7 @@ public class ClayWorktableContainer extends Container {
         // Secondary Output
         this.addSlotToContainer(new SlotItemHandler(itemHandler, 3, 143, 55) {
             @Override
-            public boolean isItemValid(@Nonnull ItemStack stack) {
+            public boolean isItemValid(ItemStack stack) {
                 return false;
             }
 

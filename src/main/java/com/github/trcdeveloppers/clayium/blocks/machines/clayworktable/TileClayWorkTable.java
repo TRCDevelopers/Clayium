@@ -31,7 +31,7 @@ public class TileClayWorkTable extends TileEntity {
     }
 
     @Override
-    public void readFromNBT(@Nonnull NBTTagCompound compound) {
+    public void readFromNBT(NBTTagCompound compound) {
         this.handler.deserializeNBT(compound.getCompoundTag("Inventory"));
         super.readFromNBT(compound);
     }
