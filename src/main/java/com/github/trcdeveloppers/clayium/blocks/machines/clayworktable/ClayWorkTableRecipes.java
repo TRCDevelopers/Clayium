@@ -61,6 +61,7 @@ public class ClayWorkTableRecipes {
         }
         recipes.add(new Recipe(input, primaryOutput, secondaryOutput, method, clicks));
     }
+
     private static void addRecipe(ItemStack input, ItemStack primaryOutput, ClayWorkTableMethod method, int clicks) {
         addRecipe(input, primaryOutput, ItemStack.EMPTY, method, clicks);
     }
@@ -91,6 +92,7 @@ public class ClayWorkTableRecipes {
         public final ItemStack OUTPUT_2;
         public final ClayWorkTableMethod METHOD;
         public final int CLICKS;
+
         public Recipe(ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, ClayWorkTableMethod method, int clicks) {
             this.INPUT = input;
             this.OUTPUT_1 = primaryOutput;

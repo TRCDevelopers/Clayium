@@ -19,11 +19,10 @@ public class TileClayWorkTable extends TileEntity {
 
     static final Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
     private final ItemStackHandler handler = new ItemStackHandler(4);
-
-    @Nonnull
-    private ClayWorkTableRecipes.Recipe currentRecipe = ClayWorkTableRecipes.Recipe.EMPTY;
     int craftingProgress = 0;
     int requiredProgress = 0;
+    @Nonnull
+    private ClayWorkTableRecipes.Recipe currentRecipe = ClayWorkTableRecipes.Recipe.EMPTY;
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {

@@ -16,6 +16,7 @@ import static com.github.trcdeveloppers.clayium.Clayium.MOD_ID;
 public class GuiClayWorkTable extends GuiContainer {
     private static final ResourceLocation GUI_IMAGE = new ResourceLocation(MOD_ID, "textures/gui/clayworktable.png");
     private final TileClayWorkTable tile;
+
     public GuiClayWorkTable(IInventory playerInv, TileClayWorkTable te) {
         super(new ClayWorktableContainer(playerInv, te));
         this.tile = te;

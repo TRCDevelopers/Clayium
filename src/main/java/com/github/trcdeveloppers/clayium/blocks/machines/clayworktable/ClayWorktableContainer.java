@@ -1,7 +1,10 @@
 package com.github.trcdeveloppers.clayium.blocks.machines.clayworktable;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -52,7 +55,7 @@ public class ClayWorktableContainer extends Container {
         this.addSlotToContainer(new SlotItemHandler(itemHandler, 3, 143, 55) {
             @Override
             public boolean isItemValid(@Nonnull ItemStack stack) {
-                return  false;
+                return false;
             }
 
             @Override
@@ -63,7 +66,7 @@ public class ClayWorktableContainer extends Container {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                addSlotToContainer(new Slot(playerInv,  j + i*9 + 9, 8 + j*18, 84 + i * 18));
+                addSlotToContainer(new Slot(playerInv, j + i*9 + 9, 8 + j*18, 84 + i * 18));
             }
         }
         for (int i = 0; i < 9; i++) {
