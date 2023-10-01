@@ -47,6 +47,8 @@ public class Clayium {
         ClayiumItems.register();
         GameRegistry.registerWorldGenerator(new ClayOreGenerator(),0);
 
+        GameRegistry.registerTileEntity(TileClayWorkTable.class, new ResourceLocation(MOD_ID, "TileClayWorkTable"));
+
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
     }
 
@@ -55,7 +57,6 @@ public class Clayium {
      */
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        GameRegistry.registerTileEntity(TileClayWorkTable.class, new ResourceLocation(MOD_ID, "block_clayworktable"));
         ClayiumItems.getAllItems().values().forEach(item -> {
             if (item instanceof IItemColor) {
                 Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor) item, item);

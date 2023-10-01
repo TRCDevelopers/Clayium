@@ -26,17 +26,15 @@ public class TileClayWorkTable extends TileEntity {
     int requiredProgress = 0;
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        this.craftingProgress = compound.getInteger("cProgress");
-        this.handler.deserializeNBT(compound);
-        super.readFromNBT(compound);
-    }
-    @Nonnull
-    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        compound.setInteger("cProgress", this.craftingProgress);
-        compound.setTag("inventory", this.handler.serializeNBT());
+        compound.setTag("Inventory", this.handler.serializeNBT());
         return super.writeToNBT(compound);
+    }
+
+    @Override
+    public void readFromNBT(@Nonnull NBTTagCompound compound) {
+        this.handler.deserializeNBT(compound.getCompoundTag("Inventory"));
+        super.readFromNBT(compound);
     }
 
     @Override
@@ -125,13 +123,15 @@ public class TileClayWorkTable extends TileEntity {
         }
     }
 
-    void resetRecipe() {
+    private void resetRecipe() {
         this.currentRecipe = ClayWorkTableRecipes.Recipe.EMPTY;
         this.requiredProgress = 0;
         this.craftingProgress = 0;
     }
 
-    public boolean isInputEmpty() {
-        return this.handler.getStackInSlot(0).isEmpty();
+    void resetRecipeIfEmptyInput() {
+        if (this.handler.getStackInSlot(0).isEmpty()) {
+            this.resetRecipe();
+        }
     }
 }

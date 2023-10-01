@@ -21,18 +21,43 @@ public class ClayWorktableContainer extends Container {
     public ClayWorktableContainer(IInventory playerInv, TileClayWorkTable te) {
         this.tile = te;
         IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        addSlotToContainer(new SlotItemHandler(itemHandler, 0, 17, 30)); // input
-        addSlotToContainer(new SlotItemHandler(itemHandler, 1, 80, 17)); // tool
-        addSlotToContainer(new SlotItemHandler(itemHandler, 2, 143, 30) { // primary output
+        // Input
+        this.addSlotToContainer(new SlotItemHandler(itemHandler, 0, 17, 30) {
+            @Override
+            public void onSlotChanged() {
+                te.resetRecipeIfEmptyInput();
+                te.markDirty();
+            }
+        });
+        // Tool
+        this.addSlotToContainer(new SlotItemHandler(itemHandler, 1, 80, 17) {
+            @Override
+            public void onSlotChanged() {
+                te.markDirty();
+            }
+        });
+        // Primary Output
+        this.addSlotToContainer(new SlotItemHandler(itemHandler, 2, 143, 30) {
             @Override
             public boolean isItemValid(@Nonnull ItemStack stack) {
                 return false;
             }
+
+            @Override
+            public void onSlotChanged() {
+                te.markDirty();
+            }
         });
-        addSlotToContainer(new SlotItemHandler(itemHandler, 3, 143, 55) { // secondary output
+        // Secondary Output
+        this.addSlotToContainer(new SlotItemHandler(itemHandler, 3, 143, 55) {
             @Override
             public boolean isItemValid(@Nonnull ItemStack stack) {
                 return  false;
+            }
+
+            @Override
+            public void onSlotChanged() {
+                te.markDirty();
             }
         });
 
@@ -89,10 +114,6 @@ public class ClayWorktableContainer extends Container {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-
-        if (this.tile.isInputEmpty()) {
-            this.tile.resetRecipe();
-        }
 
         for (IContainerListener listener : this.listeners) {
             if (this.lastCraftingProgress != this.tile.craftingProgress) {

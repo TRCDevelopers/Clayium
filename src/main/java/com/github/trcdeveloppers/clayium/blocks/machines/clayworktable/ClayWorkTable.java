@@ -27,6 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
+import java.util.Objects;
 
 @CBlock(registryName = "clay_work_table")
 public class ClayWorkTable extends BlockContainer implements ITiered, ClayiumBlocks.ClayiumBlock {
@@ -65,16 +66,15 @@ public class ClayWorkTable extends BlockContainer implements ITiered, ClayiumBlo
         if (te == null) {
             return false;
         }
-        playerIn.openGui(Clayium.INSTANCE, GuiHandler.ClayWorkTable, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        playerIn.openGui(Clayium.INSTANCE, GuiHandler.CLAY_WORK_TABLE, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
 
     @Override
-    @ParametersAreNonnullByDefault
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileClayWorkTable tile = (TileClayWorkTable) worldIn.getTileEntity(pos);
         if (tile != null) {
-            IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            IItemHandler handler = Objects.requireNonNull(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
             for (int i = 0; i < handler.getSlots(); i++) {
                 if (handler.getStackInSlot(i).isEmpty()) {
                     continue;
@@ -93,9 +93,7 @@ public class ClayWorkTable extends BlockContainer implements ITiered, ClayiumBlo
         super.breakBlock(worldIn, pos, state);
     }
 
-    @Nonnull
     @Override
-    @ParametersAreNonnullByDefault
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.MODEL;
     }

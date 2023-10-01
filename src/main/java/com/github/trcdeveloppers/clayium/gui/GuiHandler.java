@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import javax.annotation.Nullable;
 
 public class GuiHandler implements IGuiHandler {
-    public static final int ClayWorkTable = 1;
+    public static final int CLAY_WORK_TABLE = 1;
 
     @Nullable
     @Override
@@ -21,7 +21,7 @@ public class GuiHandler implements IGuiHandler {
         if (te == null) { return null; }
 
         switch (ID) {
-            case ClayWorkTable:
+            case CLAY_WORK_TABLE:
                 return new ClayWorktableContainer(player.inventory, (TileClayWorkTable) te);
         }
         return null;
@@ -34,7 +34,7 @@ public class GuiHandler implements IGuiHandler {
         if (te == null) { return null; }
 
         switch (ID) {
-            case ClayWorkTable:
+            case CLAY_WORK_TABLE:
                 return new GuiClayWorkTable(player.inventory, (TileClayWorkTable) te);
         }
         return null;
