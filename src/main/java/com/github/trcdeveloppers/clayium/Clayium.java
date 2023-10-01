@@ -1,11 +1,15 @@
 package com.github.trcdeveloppers.clayium;
 
 import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
+import com.github.trcdeveloppers.clayium.blocks.machines.clayworktable.ClayWorkTableRecipes;
+import com.github.trcdeveloppers.clayium.blocks.machines.clayworktable.TileClayWorkTable;
+import com.github.trcdeveloppers.clayium.gui.GuiHandler;
 import com.github.trcdeveloppers.clayium.interfaces.ITiered;
 import com.github.trcdeveloppers.clayium.items.ClayiumItems;
 import com.github.trcdeveloppers.clayium.worldgen.ClayOreGenerator;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -13,6 +17,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(
@@ -41,6 +46,10 @@ public class Clayium {
         ClayiumBlocks.register();
         ClayiumItems.register();
         GameRegistry.registerWorldGenerator(new ClayOreGenerator(),0);
+
+        GameRegistry.registerTileEntity(TileClayWorkTable.class, new ResourceLocation(MOD_ID, "TileClayWorkTable"));
+
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
     }
 
     /**
@@ -62,6 +71,8 @@ public class Clayium {
                 }
             }
         });
+
+        ClayWorkTableRecipes.init();
     }
 
     /**

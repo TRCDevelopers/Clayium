@@ -1,5 +1,6 @@
 package com.github.trcdeveloppers.clayium.blocks.ores;
 
+import com.github.trcdeveloppers.clayium.annotation.CBlock;
 import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
 import com.github.trcdeveloppers.clayium.items.ItemClayShovel;
 import net.minecraft.block.Block;
@@ -13,7 +14,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
-@com.github.trcdeveloppers.clayium.annotation.Block(registryName = "large_dense_clay_ore")
+@CBlock(registryName = "large_dense_clay_ore")
 public class BlockLargeDenseClayOre extends Block implements ClayiumBlocks.ClayiumBlock {
     public BlockLargeDenseClayOre(Material material) {
         super(material);

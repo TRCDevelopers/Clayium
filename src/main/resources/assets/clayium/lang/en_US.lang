@@ -101,8 +101,8 @@ tile.blockMachineHull.12.name=OPA Machine Hull
 tile.blockAZ91DHull.name=AZ91D Alloy Hull
 tile.blockZK60AHull.name=ZK60A Alloy Hull
 
-tile.blockClayWorkTable.name=Clay Work Table
-tile.blockClayWorkTable.tooltip.line1=The first step to Clay Industry.
+tile.clay_work_table.name=Clay Work Table
+tile.clay_work_table.tooltip.line1=The first step to Clay Industry.
 tile.blockClayCraftingTable.name=Clay Crafting Board
 tile.blockClayCraftingTable.tooltip.line1=A convenient version of vanilla Crafting Table.
 tile.blockClayCraftingTable.tooltip.line2=__DETAIL__
