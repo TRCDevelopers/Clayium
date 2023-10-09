@@ -1,6 +1,6 @@
 package com.github.trcdeveloppers.clayium.common.blocks;
 
-import com.github.trcdeveloppers.clayium.common.interfaces.IClayEnergy;
+import com.github.trcdeveloppers.clayium.common.interfaces.IEnergizedClay;
 import com.github.trcdeveloppers.clayium.common.items.ClayiumItems;
 import com.github.trcdeveloppers.clayium.common.util.UtilLocale;
 import com.mojang.realmsclient.gui.ChatFormatting;
@@ -24,7 +24,7 @@ import static com.github.trcdeveloppers.clayium.Clayium.MOD_ID;
 import static com.github.trcdeveloppers.clayium.common.creativetab.ClayiumCreativeTab.CLAYIUM;
 
 @ParametersAreNonnullByDefault
-public class CompressedClay extends Block implements IClayEnergy {
+public class CompressedClay extends Block implements IEnergizedClay {
 
     private final int TIER;
     private final long CE;
@@ -52,7 +52,7 @@ public class CompressedClay extends Block implements IClayEnergy {
         this.TIER = tier;
         this.CE = ce;
         //todo: この10^5倍をうまくラップするようなリファクタリング
-        this.CE_TOOLTIP = ChatFormatting.GRAY + UtilLocale.ClayEnergyNumeral(ce * 100000) + "CE";
+        this.CE_TOOLTIP = ChatFormatting.GRAY + UtilLocale.ClayEnergyNumeral(ce * 100_000) + "CE";
     }
 
     private CompressedClay(int tier, long ce, String registryName) {
