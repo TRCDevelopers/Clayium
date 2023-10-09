@@ -45,7 +45,8 @@ public class ItemClayPickaxe extends ItemPickaxe implements ClayiumItems.Clayium
         if (state.getBlock().getRegistryName() != null) {
             String regName = state.getBlock().getRegistryName().toString();
             if (regName.startsWith("clayium") && regName.endsWith("clay_ore")) {
-                return state.getBlock().getHarvestLevel(state) <= stack.getItem().getHarvestLevel(stack, Objects.requireNonNull(state.getBlock().getHarvestTool(state)), null, state) ? this.efficiencyOnClayOre : this.efficiencyOnClayOre * 100f / 30f;
+                return state.getBlock().getHarvestLevel(state) <= stack.getItem().getHarvestLevel(stack, Objects.requireNonNull(state.getBlock().getHarvestTool(state)), null, state)
+                    ? this.efficiencyOnClayOre : this.efficiencyOnClayOre * 100f / 30f;
             }
         }
         return super.getDestroySpeed(stack, state);
@@ -56,7 +57,9 @@ public class ItemClayPickaxe extends ItemPickaxe implements ClayiumItems.Clayium
     @ParametersAreNonnullByDefault
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        if (this.getRegistryName() == null) return;
+        if (this.getRegistryName() == null) {
+            return;
+        }
         List<String> list = UtilLocale.localizeTooltip("item." + this.getRegistryName().getPath() + ".tooltip");
         if (list != null) {
             tooltip.addAll(list);

@@ -3,7 +3,6 @@ package com.github.trcdeveloppers.clayium.blocks.machines.clayworktable;
 
 import com.github.trcdeveloppers.clayium.Clayium;
 import com.github.trcdeveloppers.clayium.annotation.CBlock;
-import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
 import com.github.trcdeveloppers.clayium.gui.GuiHandler;
 import com.github.trcdeveloppers.clayium.interfaces.ITiered;
 import com.github.trcdeveloppers.clayium.util.UtilLocale;
@@ -28,7 +27,7 @@ import java.util.List;
 import java.util.Objects;
 
 @CBlock(registryName = "clay_work_table")
-public class ClayWorkTable extends BlockContainer implements ITiered, ClayiumBlocks.ClayiumBlock {
+public class ClayWorkTable extends BlockContainer implements ITiered {
     public ClayWorkTable() {
         super(Material.ROCK);
     }

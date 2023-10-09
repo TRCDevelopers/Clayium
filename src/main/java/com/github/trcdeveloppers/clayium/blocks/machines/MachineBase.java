@@ -1,6 +1,5 @@
 package com.github.trcdeveloppers.clayium.blocks.machines;
 
-import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
 import com.github.trcdeveloppers.clayium.interfaces.IClayEnergyContainer;
 import com.github.trcdeveloppers.clayium.interfaces.IConnectable;
 import com.github.trcdeveloppers.clayium.interfaces.IPipable;
@@ -13,7 +12,7 @@ import net.minecraft.util.EnumFacing;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class MachineBase extends Block implements ITiered, IClayEnergyContainer, IPipable, IConnectable,ClayiumBlocks.ClayiumBlock {
+public abstract class MachineBase extends Block implements ITiered, IClayEnergyContainer, IPipable, IConnectable {
     private final Map<EnumFacing, Integer> inputMap = new HashMap<>();
     private final Map<EnumFacing, Integer> outputMap = new HashMap<>();
     private long clayEnergy = 0L;

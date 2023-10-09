@@ -2,7 +2,6 @@ package com.github.trcdeveloppers.clayium.blocks.ores;
 
 
 import com.github.trcdeveloppers.clayium.annotation.CBlock;
-import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
 import com.github.trcdeveloppers.clayium.items.ItemClayShovel;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -16,7 +15,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
 @CBlock(registryName = "dense_clay_ore")
-public class BlockDenseClayOre extends Block implements ClayiumBlocks.ClayiumBlock {
+public class BlockDenseClayOre extends Block {
     public BlockDenseClayOre(Material material) {
         super(material);
         this.setCreativeTab(CLAYIUM);

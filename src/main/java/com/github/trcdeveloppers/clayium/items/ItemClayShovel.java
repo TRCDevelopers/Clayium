@@ -48,7 +48,9 @@ public class ItemClayShovel extends ItemSpade implements ClayiumItems.ClayiumIte
     @ParametersAreNonnullByDefault
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        if (this.getRegistryName() == null) return;
+        if (this.getRegistryName() == null) {
+            return;
+        }
         List<String> list = UtilLocale.localizeTooltip("item." + this.getRegistryName().getPath() + ".tooltip");
         if (list != null) {
             tooltip.addAll(list);

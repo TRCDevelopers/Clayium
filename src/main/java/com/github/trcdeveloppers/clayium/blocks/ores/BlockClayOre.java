@@ -1,7 +1,6 @@
 package com.github.trcdeveloppers.clayium.blocks.ores;
 
 import com.github.trcdeveloppers.clayium.annotation.CBlock;
-import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
 import com.github.trcdeveloppers.clayium.items.ItemClayPickaxe;
 import com.github.trcdeveloppers.clayium.items.ItemClayShovel;
 import net.minecraft.block.Block;
@@ -29,7 +28,7 @@ import java.util.Random;
 import static com.github.trcdeveloppers.clayium.creativetab.ClayiumCreativeTab.CLAYIUM;
 
 @CBlock(registryName = "clay_ore")
-public class BlockClayOre extends Block implements ClayiumBlocks.ClayiumBlock {
+public class BlockClayOre extends Block {
     public BlockClayOre(Material material) {
         super(material);
         this.setCreativeTab(CLAYIUM);
@@ -106,7 +105,7 @@ public class BlockClayOre extends Block implements ClayiumBlocks.ClayiumBlock {
                 i = (i + 1) * 3;
             }
             this.dropBlockAsItem(worldIn, pos, state, i);
-            harvesters.set(null);
+            harvesters.remove();
         }
     }
 }
