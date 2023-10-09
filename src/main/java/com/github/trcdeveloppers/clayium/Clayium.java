@@ -1,29 +1,26 @@
 package com.github.trcdeveloppers.clayium;
 
-import com.github.trcdeveloppers.clayium.blocks.ClayiumBlocks;
-import com.github.trcdeveloppers.clayium.blocks.machines.clayworktable.ClayWorkTableRecipes;
-import com.github.trcdeveloppers.clayium.blocks.machines.clayworktable.TileClayWorkTable;
-import com.github.trcdeveloppers.clayium.gui.GuiHandler;
-import com.github.trcdeveloppers.clayium.interfaces.ITiered;
-import com.github.trcdeveloppers.clayium.items.ClayiumItems;
-import com.github.trcdeveloppers.clayium.worldgen.ClayOreGenerator;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.client.Minecraft;
+import com.github.trcdeveloppers.clayium.common.blocks.machines.clayworktable.ClayWorkTableRecipes;
+import com.github.trcdeveloppers.clayium.common.blocks.machines.clayworktable.TileClayWorkTable;
+import com.github.trcdeveloppers.clayium.common.GuiHandler;
+import com.github.trcdeveloppers.clayium.common.ClayiumCommonProxy;
+import com.github.trcdeveloppers.clayium.common.worldgen.ClayOreGenerator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Mod(
-        modid = Clayium.MOD_ID,
-        name = Clayium.MOD_NAME,
-        version = Clayium.VERSION
+    modid = Clayium.MOD_ID,
+    name = Clayium.MOD_NAME,
+    version = Clayium.VERSION
 )
 public class Clayium {
 
@@ -37,15 +34,20 @@ public class Clayium {
     @Mod.Instance(MOD_ID)
     public static Clayium INSTANCE;
 
+    @SidedProxy(clientSide = "com.github.trcdeveloppers.clayium.client.ClayiumClientProxy",
+                serverSide = "com.github.trcdeveloppers.clayium.common.ClayiumCommonProxy")
+    public static ClayiumCommonProxy proxy;
+
+    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
+
     /**
      * This is the first initialization event. Register tile entities here.
      * The registry events below will have fired prior to entry to this method.
      */
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event) {
-        ClayiumBlocks.register();
-        ClayiumItems.register();
-        GameRegistry.registerWorldGenerator(new ClayOreGenerator(),0);
+        MinecraftForge.EVENT_BUS.register(proxy);
+        GameRegistry.registerWorldGenerator(new ClayOreGenerator(), 0);
 
         GameRegistry.registerTileEntity(TileClayWorkTable.class, new ResourceLocation(MOD_ID, "TileClayWorkTable"));
 
@@ -57,21 +59,7 @@ public class Clayium {
      */
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        ClayiumItems.getAllItems().values().forEach(item -> {
-            if (item instanceof IItemColor) {
-                Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor) item, item);
-            }
-        });
-        MinecraftForge.EVENT_BUS.register(new Object() {
-            @SubscribeEvent
-            public void onTooltip(ItemTooltipEvent e) {
-                if (e.getItemStack().getItem() instanceof ITiered) {
-                    e.getToolTip().set(0, ((ITiered) e.getItemStack().getItem()).getRarityColor().getColor().toString() + e.getToolTip().get(0));
-                    e.getToolTip().add(1, "§rTier " + ((ITiered) e.getItemStack().getItem()).getTier());
-                }
-            }
-        });
-
+        proxy.registerItemColors();
         ClayWorkTableRecipes.init();
     }
 
