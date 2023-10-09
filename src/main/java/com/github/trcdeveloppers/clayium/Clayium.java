@@ -1,10 +1,10 @@
 package com.github.trcdeveloppers.clayium;
 
-import com.github.trcdeveloppers.clayium.blocks.machines.clayworktable.ClayWorkTableRecipes;
-import com.github.trcdeveloppers.clayium.blocks.machines.clayworktable.TileClayWorkTable;
-import com.github.trcdeveloppers.clayium.gui.GuiHandler;
-import com.github.trcdeveloppers.clayium.proxy.ClayiumCommonProxy;
-import com.github.trcdeveloppers.clayium.worldgen.ClayOreGenerator;
+import com.github.trcdeveloppers.clayium.common.blocks.machines.clayworktable.ClayWorkTableRecipes;
+import com.github.trcdeveloppers.clayium.common.blocks.machines.clayworktable.TileClayWorkTable;
+import com.github.trcdeveloppers.clayium.common.GuiHandler;
+import com.github.trcdeveloppers.clayium.common.ClayiumCommonProxy;
+import com.github.trcdeveloppers.clayium.common.worldgen.ClayOreGenerator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -32,8 +32,8 @@ public class Clayium {
     @Mod.Instance(MOD_ID)
     public static Clayium INSTANCE;
 
-    @SidedProxy(clientSide = "com.github.trcdeveloppers.clayium.proxy.ClayiumClientProxy",
-                serverSide = "com.github.trcdeveloppers.clayium.proxy.ClayiumCommonProxy")
+    @SidedProxy(clientSide = "com.github.trcdeveloppers.clayium.client.ClayiumClientProxy",
+                serverSide = "com.github.trcdeveloppers.clayium.common.ClayiumCommonProxy")
     public static ClayiumCommonProxy proxy;
 
     /**
