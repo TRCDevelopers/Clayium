@@ -14,6 +14,8 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Mod(
     modid = Clayium.MOD_ID,
@@ -35,6 +37,8 @@ public class Clayium {
     @SidedProxy(clientSide = "com.github.trcdeveloppers.clayium.client.ClayiumClientProxy",
                 serverSide = "com.github.trcdeveloppers.clayium.common.ClayiumCommonProxy")
     public static ClayiumCommonProxy proxy;
+
+    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
     /**
      * This is the first initialization event. Register tile entities here.
