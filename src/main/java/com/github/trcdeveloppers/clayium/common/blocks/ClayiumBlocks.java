@@ -44,8 +44,8 @@ public class ClayiumBlocks {
                         block = (Block) clazz.newInstance();
                         String registryName = cBlock.registryName();
                         block.setCreativeTab(CLAYIUM)
-                            .setTranslationKey(registryName)
-                            .setRegistryName(new ResourceLocation(MOD_ID, registryName));
+                             .setRegistryName(new ResourceLocation(MOD_ID, registryName))
+                            .setTranslationKey(MOD_ID + "." + registryName);
                         blocks.put(registryName, block);
                     } catch (InstantiationException | IllegalAccessException e) {
                         throw new RuntimeException(e);

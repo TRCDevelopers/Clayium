@@ -23,6 +23,11 @@ public class ClayiumClientProxy extends ClayiumCommonProxy {
     }
 
     @Override
+    public void registerTileEntities() {
+        super.registerTileEntities();
+    }
+
+    @Override
     public void registerItemColors() {
         ClayiumItems.registerItemColors();
     }

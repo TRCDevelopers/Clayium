@@ -7,6 +7,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -43,8 +44,8 @@ public class CompressedClay extends Block implements IEnergizedClay {
     private CompressedClay(Material materialIn, int tier, long ce, String registryName) {
         super(materialIn);
         this.setCreativeTab(CLAYIUM);
-        this.setTranslationKey(registryName);
         this.setRegistryName(new ResourceLocation(MOD_ID, registryName));
+        this.setTranslationKey(MOD_ID + "." + registryName);
         this.setLightLevel(0f);
         this.setHarvestLevel("shovel", 0);
         this.setHardness(0.5f);
@@ -52,7 +53,7 @@ public class CompressedClay extends Block implements IEnergizedClay {
         this.TIER = tier;
         this.CE = ce;
         //todo: この10^5倍をうまくラップするようなリファクタリング
-        this.CE_TOOLTIP = ChatFormatting.GRAY + UtilLocale.ClayEnergyNumeral(ce * 100_000) + "CE";
+        this.CE_TOOLTIP = I18n.format("gui.clayium.energy", UtilLocale.ClayEnergyNumeral(ce * 100_000));
     }
 
     private CompressedClay(int tier, long ce, String registryName) {

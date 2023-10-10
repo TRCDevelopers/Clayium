@@ -1,11 +1,9 @@
 package com.github.trcdeveloppers.clayium;
 
 import com.github.trcdeveloppers.clayium.common.blocks.machines.clayworktable.ClayWorkTableRecipes;
-import com.github.trcdeveloppers.clayium.common.blocks.machines.clayworktable.TileClayWorkTable;
 import com.github.trcdeveloppers.clayium.common.GuiHandler;
 import com.github.trcdeveloppers.clayium.common.ClayiumCommonProxy;
 import com.github.trcdeveloppers.clayium.common.worldgen.ClayOreGenerator;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -47,9 +45,8 @@ public class Clayium {
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(proxy);
+        proxy.registerTileEntities();
         GameRegistry.registerWorldGenerator(new ClayOreGenerator(), 0);
-
-        GameRegistry.registerTileEntity(TileClayWorkTable.class, new ResourceLocation(MOD_ID, "TileClayWorkTable"));
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
     }

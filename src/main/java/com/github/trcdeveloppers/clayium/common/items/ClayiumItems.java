@@ -3,10 +3,10 @@ package com.github.trcdeveloppers.clayium.common.items;
 import com.github.trcdeveloppers.clayium.common.annotation.CItem;
 import com.github.trcdeveloppers.clayium.common.blocks.ClayiumBlocks;
 import com.google.common.reflect.ClassPath;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -68,8 +68,8 @@ public class ClayiumItems {
                         item = (Item) clazz.newInstance();
                         String registryName = cItem.registryName();
                         item.setCreativeTab(CLAYIUM)
-                            .setTranslationKey(registryName)
-                            .setRegistryName(new ResourceLocation(MOD_ID, registryName));
+                            .setRegistryName(new ResourceLocation(MOD_ID, registryName))
+                            .setTranslationKey(MOD_ID + "." + registryName);
                         event.getRegistry().register(item);
                         items.put(registryName, item);
                         if (side.isClient()) {
@@ -87,8 +87,8 @@ public class ClayiumItems {
             Item item = material.hasTier() ? itemWithTierTootip(material.tier) : new Item();
             String registryName = material.name().toLowerCase(Locale.ROOT);
             item.setCreativeTab(CLAYIUM)
-                .setTranslationKey(registryName)
-                .setRegistryName(new ResourceLocation(MOD_ID, registryName));
+                .setRegistryName(new ResourceLocation(MOD_ID, registryName))
+                .setTranslationKey(MOD_ID + "." + registryName);
             event.getRegistry().register(item);
             if (!material.oreDict.isEmpty()) {
                 OreDictionary.registerOre(material.oreDict, item);
@@ -118,8 +118,8 @@ public class ClayiumItems {
                         break;
                 }
                 item.setCreativeTab(CLAYIUM)
-                    .setTranslationKey(registryName)
-                    .setRegistryName(new ResourceLocation(MOD_ID, registryName));
+                    .setRegistryName(new ResourceLocation(MOD_ID, registryName))
+                    .setTranslationKey(MOD_ID + "." + registryName);
                 event.getRegistry().register(item);
                 if (!oreDict.isEmpty()) {
                     OreDictionary.registerOre(oreDict, item);
@@ -151,7 +151,7 @@ public class ClayiumItems {
             @ParametersAreNonnullByDefault
             public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
                 tooltip.set(0, ClayiumItems.getRarity(tier).getColor().toString() + tooltip.get(0));
-                tooltip.add(ChatFormatting.WHITE + "Tier " + tier);
+                tooltip.add(I18n.format("gui.clayium.tier", tier));
             }
         };
     }
@@ -235,8 +235,10 @@ public class ClayiumItems {
         //endregion
         ADV_INDUSTRIAL_CLAY_DUST(4),
         ADV_INDUSTRIAL_CLAY_SHARD(3),
+        ADV_INDUSTRIAL_CLAY_PLATE(2),
         INDUSTRIAL_CLAY_DUST(3),
         INDUSTRIAL_CLAY_SHARD(2),
+        INDUSTRIAL_CLAY_PLATE(2),
 
         SALT(4),
         CALCIUM_CHLORIDE_DUST(4),
@@ -453,11 +455,7 @@ public class ClayiumItems {
         }
 
         int getColor(ItemStack stack, int tinIndex) {
-            return this.colors.length > tinIndex
-                ?
-                this.colors[tinIndex]
-                :
-                    0;
+            return this.colors.length > tinIndex ? this.colors[tinIndex] : 0;
         }
     }
 
