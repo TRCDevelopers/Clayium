@@ -2,7 +2,6 @@ package com.github.trcdeveloppers.clayium.common.recipe.clayworktable;
 
 import com.github.trcdeveloppers.clayium.Clayium;
 import com.github.trcdeveloppers.clayium.common.blocks.machines.clayworktable.ClayWorkTableMethod;
-import com.github.trcdeveloppers.clayium.common.recipe.clayworktable.ClayWorkTableRecipe;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import mcp.MethodsReturnNonnullByDefault;
@@ -32,7 +31,7 @@ public class ClayWorkTableRecipeManager {
 
     public static ClayWorkTableRecipeManager INSTANCE = new ClayWorkTableRecipeManager();
 
-    private List<ClayWorkTableRecipe> recipes = new ArrayList<>();
+    private final List<ClayWorkTableRecipe> recipes = new ArrayList<>();
 
     private ClayWorkTableRecipeManager() {
         CraftingHelper.findFiles(
