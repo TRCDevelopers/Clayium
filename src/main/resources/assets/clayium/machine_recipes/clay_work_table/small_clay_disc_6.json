@@ -1,0 +1,12 @@
+{
+  "input": {
+    "item": "clayium:clay_cylinder",
+    "amount": 1
+  },
+  "output": {
+    "item": "clayium:small_clay_disc",
+    "amount": 8
+  },
+  "method": 6,
+  "clicks": 7
+}

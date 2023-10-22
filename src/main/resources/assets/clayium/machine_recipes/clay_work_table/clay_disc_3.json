@@ -1,0 +1,16 @@
+{
+  "input": {
+    "item": "clayium:large_clay_ball",
+    "amount": 1
+  },
+  "output": {
+    "item": "clayium:clay_disc",
+    "amount": 1
+  },
+  "output_2": {
+    "item": "minecraft:clay_ball",
+    "amount": 2
+  },
+  "method": 3,
+  "clicks": 4
+}

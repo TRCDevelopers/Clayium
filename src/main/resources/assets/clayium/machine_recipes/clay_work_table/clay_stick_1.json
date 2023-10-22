@@ -1,0 +1,12 @@
+{
+  "input": {
+    "item": "minecraft:clay_ball",
+    "amount": 1
+  },
+  "output": {
+    "item": "clayium:clay_stick",
+    "amount": 1
+  },
+  "method": 1,
+  "clicks": 4
+}

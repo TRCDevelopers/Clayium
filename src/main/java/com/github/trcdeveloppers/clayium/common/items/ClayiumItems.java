@@ -206,6 +206,7 @@ public class ClayiumItems {
         CLAY_GRINDING_HEAD(1),
         CLAY_NEEDLE(1),
         CLAY_PIPE(1),
+        CLAY_PLATE(1),
         CLAY_RING(1),
         CLAY_SHORT_STICK(1),
         CLAY_SMALL_DISC(1),
@@ -225,6 +226,7 @@ public class ClayiumItems {
         DENSE_CLAY_GRINDING_HEAD(2),
         DENSE_CLAY_NEEDLE(2),
         DENSE_CLAY_PIPE(2),
+        DENSE_CLAY_PLATE(2),
         DENSE_CLAY_RING(2),
         DENSE_CLAY_SHORT_STICK(2),
         DENSE_CLAY_SMALL_DISC(2),
@@ -270,18 +272,15 @@ public class ClayiumItems {
         }
 
         ClayiumMaterials(int tier) {
-            this.tier = tier;
-            this.oreDict = "";
+            this(tier, "");
         }
 
         ClayiumMaterials(String oreDict) {
-            this.tier = NO_TIER;
-            this.oreDict = oreDict;
+            this(NO_TIER, oreDict);
         }
 
         ClayiumMaterials() {
-            this.tier = NO_TIER;
-            this.oreDict = "";
+            this(NO_TIER, "");
         }
 
         boolean hasTier() {
@@ -430,24 +429,15 @@ public class ClayiumItems {
         }
 
         ClayiumColoredMaterials(int tier, CShape shape, int... colors) {
-            this.tier = tier;
-            this.colors = colors;
-            this.shapes = new CShape[]{shape};
-            this.materialName = this.name().toLowerCase(Locale.ROOT);
+            this(tier, new CShape[]{shape}, colors);
         }
 
         ClayiumColoredMaterials(CShape[] shapes, int... colors) {
-            this.tier = NO_TIER;
-            this.colors = colors;
-            this.shapes = shapes;
-            this.materialName = this.name().toLowerCase(Locale.ROOT);
+            this(NO_TIER, shapes, colors);
         }
 
         ClayiumColoredMaterials(CShape shape, int... colors) {
-            this.tier = NO_TIER;
-            this.shapes = new CShape[]{shape};
-            this.colors = colors;
-            this.materialName = this.name().toLowerCase(Locale.ROOT);
+            this(NO_TIER, new CShape[]{shape}, colors);
         }
 
         boolean hasTier() {

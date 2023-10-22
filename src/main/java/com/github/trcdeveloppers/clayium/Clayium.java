@@ -1,6 +1,5 @@
 package com.github.trcdeveloppers.clayium;
 
-import com.github.trcdeveloppers.clayium.common.blocks.machines.clayworktable.ClayWorkTableRecipes;
 import com.github.trcdeveloppers.clayium.common.GuiHandler;
 import com.github.trcdeveloppers.clayium.common.ClayiumCommonProxy;
 import com.github.trcdeveloppers.clayium.common.worldgen.ClayOreGenerator;
@@ -57,7 +56,6 @@ public class Clayium {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.registerItemColors();
-        ClayWorkTableRecipes.init();
     }
 
     /**
@@ -65,6 +63,5 @@ public class Clayium {
      */
     @Mod.EventHandler
     public void postinit(FMLPostInitializationEvent event) {
-
     }
 }
