@@ -1,6 +1,8 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machines.clayworktable;
 
 import com.github.trcdeveloppers.clayium.common.items.ClayiumItems;
+import com.github.trcdeveloppers.clayium.common.recipe.clayworktable.ClayWorkTableRecipe;
+import com.github.trcdeveloppers.clayium.common.recipe.clayworktable.ClayWorkTableRecipeManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -12,17 +14,18 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class TileClayWorkTable extends TileEntity {
 
-    static final Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+    private static final Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
     private final ItemStackHandler handler = new ItemStackHandler(4);
     int craftingProgress = 0;
     int requiredProgress = 0;
-    @Nonnull
-    private ClayWorkTableRecipes.Recipe currentRecipe = ClayWorkTableRecipes.Recipe.EMPTY;
+    @Nullable
+    private ClayWorkTableRecipe currentRecipe = null;
+    private final ClayWorkTableRecipeManager recipeManager = ClayWorkTableRecipeManager.INSTANCE;
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
@@ -51,10 +54,6 @@ public class TileClayWorkTable extends TileEntity {
         return this.handler.getStackInSlot(2);
     }
 
-    public boolean isCrafting() {
-        return !this.currentRecipe.isEmpty();
-    }
-
     @SideOnly(Side.CLIENT)
     public int getCraftingProgressScaled(int scale) {
         if (this.requiredProgress == 0) {
@@ -67,37 +66,38 @@ public class TileClayWorkTable extends TileEntity {
         return this.canStartCraft(this.handler.getStackInSlot(0), ClayWorkTableMethod.fromId(id));
     }
 
-    void pushButton(int id) {
-        if (this.currentRecipe.METHOD.id != id) {
-            this.resetRecipe();
-        }
+    public void pushButton(int id) {
         ItemStack input = this.handler.getStackInSlot(0);
-        if (!this.isCrafting()) {
-            this.currentRecipe = ClayWorkTableRecipes.getRecipeFor(input, ClayWorkTableMethod.fromId(id));
-            this.requiredProgress = this.currentRecipe.CLICKS;
-            this.craftingProgress = 1;
-            return;
+        ClayWorkTableMethod method = ClayWorkTableMethod.fromId(id);
+        if (method == null) {
+            throw new NullPointerException("Invalid button id");
         }
+
+        ClayWorkTableRecipe recipe = this.recipeManager.getRecipeFor(input, method).orElseThrow(() -> new NullPointerException("button is pushed without any valid recipe!"));
+
+        if (this.currentRecipe != recipe) {
+            this.refreshRecipeWith(recipe);
+        }
+
         this.craftingProgress++;
+
         if (this.craftingProgress >= this.requiredProgress) {
-            input.setCount(input.getCount() - currentRecipe.INPUT.getCount());
+            input.setCount(input.getCount() - currentRecipe.getInput().getCount());
             if (this.handler.getStackInSlot(2).isEmpty()) {
-                this.handler.setStackInSlot(2, currentRecipe.OUTPUT_1.copy());
+                this.handler.setStackInSlot(2, currentRecipe.getPrimaryOutput().copy());
             } else {
-                this.handler.getStackInSlot(2).setCount(this.handler.getStackInSlot(2).getCount() + currentRecipe.OUTPUT_1.getCount());
+                this.handler.getStackInSlot(2).setCount(this.handler.getStackInSlot(2).getCount() + currentRecipe.getPrimaryOutput().getCount());
             }
             this.resetRecipe();
         }
     }
 
     private boolean canStartCraft(ItemStack input, ClayWorkTableMethod method) {
-        if (input.isEmpty()) {
+        Optional<ClayWorkTableRecipe> result = this.recipeManager.getRecipeFor(input, method);
+        if (!result.isPresent()) {
             return false;
         }
-        ClayWorkTableRecipes.Recipe recipe = ClayWorkTableRecipes.getRecipeFor(input, method);
-        if (recipe.isEmpty()) {
-            return false;
-        }
+        ClayWorkTableRecipe recipe = result.get();
 
         if (method == ClayWorkTableMethod.ROLLING_PIN && this.handler.getStackInSlot(1).getItem() != ClayiumItems.getItem("clay_rolling_pin")) {
             return false;
@@ -112,19 +112,25 @@ public class TileClayWorkTable extends TileEntity {
         }
 
         if (recipe.hasSecondaryOutput()) {
-            return (this.handler.getStackInSlot(2).isEmpty() || recipe.OUTPUT_1.isItemEqual(handler.getStackInSlot(2)))
-                && recipe.OUTPUT_2.isItemEqual(this.handler.getStackInSlot(3))
-                && recipe.OUTPUT_1.getCount() + this.handler.getStackInSlot(2).getCount() <= handler.getSlotLimit(2)
-                && recipe.OUTPUT_2.getCount() + this.handler.getStackInSlot(3).getCount() <= handler.getSlotLimit(3);
+            return (this.handler.getStackInSlot(2).isEmpty() || recipe.getPrimaryOutput().isItemEqual(handler.getStackInSlot(2)))
+                && recipe.getSecondaryOutput().isItemEqual(this.handler.getStackInSlot(3))
+                && recipe.getPrimaryOutput().getCount() + this.handler.getStackInSlot(2).getCount() <= handler.getSlotLimit(2)
+                && recipe.getSecondaryOutput().getCount() + this.handler.getStackInSlot(3).getCount() <= handler.getSlotLimit(3);
         } else {
-            return (this.handler.getStackInSlot(2).isEmpty() || recipe.OUTPUT_1.isItemEqual(handler.getStackInSlot(2)))
-                && recipe.OUTPUT_1.getCount() + this.handler.getStackInSlot(2).getCount() <= handler.getSlotLimit(2);
+            return (this.handler.getStackInSlot(2).isEmpty() || recipe.getPrimaryOutput().isItemEqual(handler.getStackInSlot(2)))
+                && recipe.getPrimaryOutput().getCount() + this.handler.getStackInSlot(2).getCount() <= handler.getSlotLimit(2);
         }
     }
 
     private void resetRecipe() {
-        this.currentRecipe = ClayWorkTableRecipes.Recipe.EMPTY;
+        this.currentRecipe = null;
         this.requiredProgress = 0;
+        this.craftingProgress = 0;
+    }
+
+    private void refreshRecipeWith(ClayWorkTableRecipe recipe) {
+        this.currentRecipe = recipe;
+        this.requiredProgress = recipe.getRequiredProcess();
         this.craftingProgress = 0;
     }
 
