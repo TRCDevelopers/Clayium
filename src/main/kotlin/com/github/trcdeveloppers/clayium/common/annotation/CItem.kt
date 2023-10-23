@@ -1,11 +1,5 @@
-package com.github.trcdeveloppers.clayium.common.annotation;
+package com.github.trcdeveloppers.clayium.common.annotation
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.FIELD})
-public @interface CItem {
-	String registryName() default "";
-}
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FIELD)
+annotation class CItem(val registryName: String = "")
