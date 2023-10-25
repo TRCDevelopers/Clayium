@@ -1,11 +1,16 @@
 package com.github.trcdeveloppers.clayium
 
 import com.github.trcdeveloppers.clayium.common.ClayiumCommonProxy
+import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.init.Items
+import net.minecraft.item.ItemStack
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -31,6 +36,13 @@ class Clayium {
         const val MOD_ID = "clayium"
         const val MOD_NAME = "Clayium"
         const val VERSION = "1.0-SNAPSHOT"
+
+        val CreativeTab: CreativeTabs = object : CreativeTabs(getNextID(), MOD_ID) {
+            @SideOnly(Side.CLIENT)
+            override fun createIcon(): ItemStack {
+                return ItemStack(Items.CLAY_BALL)
+            }
+        }
 
         @JvmField
         val LOGGER: Logger = LogManager.getLogger(MOD_ID)

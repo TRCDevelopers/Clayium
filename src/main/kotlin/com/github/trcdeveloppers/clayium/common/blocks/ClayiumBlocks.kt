@@ -1,8 +1,8 @@
 package com.github.trcdeveloppers.clayium.common.blocks
 
+import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.Clayium.Companion.MOD_ID
 import com.github.trcdeveloppers.clayium.common.annotation.CBlock
-import com.github.trcdeveloppers.clayium.common.creativetab.ClayiumCreativeTab
 import com.google.common.reflect.ClassPath
 import net.minecraft.block.Block
 import net.minecraft.util.ResourceLocation
@@ -29,9 +29,9 @@ object ClayiumBlocks {
             .forEach {clazz ->
                 val cBlock = clazz.getAnnotation(CBlock::class.java) ?: return@forEach
                 val block = clazz.newInstance() as Block
-                val registryName = cBlock.registryName;
+                val registryName = cBlock.registryName
 
-                block.creativeTab = ClayiumCreativeTab.CLAYIUM
+                block.creativeTab = Clayium.CreativeTab
                 block.registryName = ResourceLocation(MOD_ID, registryName)
                 block.translationKey = "$MOD_ID.$registryName"
                 blocks[registryName] = block

@@ -1,7 +1,7 @@
 package com.github.trcdeveloppers.clayium.common.blocks
 
+import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.Clayium.Companion.MOD_ID
-import com.github.trcdeveloppers.clayium.common.creativetab.ClayiumCreativeTab
 import com.github.trcdeveloppers.clayium.common.interfaces.IEnergizedClay
 import com.github.trcdeveloppers.clayium.common.items.ClayiumItems.getRarity
 import com.github.trcdeveloppers.clayium.common.util.UtilLocale
@@ -16,10 +16,8 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import javax.annotation.ParametersAreNonnullByDefault
 import kotlin.math.pow
 
-@ParametersAreNonnullByDefault
 class CompressedClay private constructor(materialIn: Material, tier: Int, ce: Long, registryName: String) : Block(materialIn), IEnergizedClay {
     companion object {
         fun createBlocks(): Map<String, Block> {
@@ -38,7 +36,7 @@ class CompressedClay private constructor(materialIn: Material, tier: Int, ce: Lo
     private val ceTooltip: String
 
     init {
-        this.creativeTab = ClayiumCreativeTab.CLAYIUM
+        this.creativeTab = Clayium.CreativeTab
         this.translationKey = "$MOD_ID.$registryName"
         this.registryName = ResourceLocation(MOD_ID, registryName)
         this.blockHardness = 0.5f

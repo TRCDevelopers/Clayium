@@ -1,9 +1,9 @@
 package com.github.trcdeveloppers.clayium.common.items
 
+import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.Clayium.Companion.MOD_ID
 import com.github.trcdeveloppers.clayium.common.annotation.CItem
 import com.github.trcdeveloppers.clayium.common.blocks.ClayiumBlocks.allBlocks
-import com.github.trcdeveloppers.clayium.common.creativetab.ClayiumCreativeTab
 import com.github.trcdeveloppers.clayium.common.items.CShape.*
 import com.google.common.reflect.ClassPath
 import net.minecraft.block.Block
@@ -53,7 +53,7 @@ object ClayiumItems {
                 val item = clazz.newInstance() as Item
                 val registryName = cItem.registryName
 
-                item.creativeTab = ClayiumCreativeTab.CLAYIUM
+                item.creativeTab = Clayium.CreativeTab
                 item.registryName = ResourceLocation(MOD_ID, registryName)
                 item.translationKey = "$MOD_ID.$registryName"
                 event.registry.register(item)
@@ -66,7 +66,7 @@ object ClayiumItems {
             val item = if (material.hasTier()) itemWithTierTootip(material.tier) else Item()
             val registryName = material.name.lowercase()
 
-            item.creativeTab = ClayiumCreativeTab.CLAYIUM
+            item.creativeTab = Clayium.CreativeTab
             item.registryName = ResourceLocation(MOD_ID, registryName)
             item.translationKey = "$MOD_ID.$registryName"
             event.registry.register(item)
@@ -95,7 +95,7 @@ object ClayiumItems {
                     else -> ""
                 }
 
-                item.creativeTab = ClayiumCreativeTab.CLAYIUM
+                item.creativeTab = Clayium.CreativeTab
                 item.registryName = ResourceLocation(MOD_ID, registryName)
                 item.translationKey = "$MOD_ID.$registryName"
                 event.registry.register(item)
@@ -379,23 +379,12 @@ object ClayiumItems {
             return tier != NO_TIER
         }
 
-        fun getColor(notUsed: ItemStack, tinIndex: Int): Int {
+        fun getColor(itemStack: ItemStack, tinIndex: Int): Int {
             return if (colors.size > tinIndex) colors[tinIndex] else 0
         }
 
         companion object {
             const val NO_TIER = -1
         }
-    }
-
-    interface ClayiumItem {
-        fun hasMetadata(): Boolean {
-            return false
-        }
-
-        val metadataModels: Map<Int?, String?>?
-            get() = null
-        val oreDictionaries: List<String?>?
-            get() = emptyList<String>()
     }
 }
