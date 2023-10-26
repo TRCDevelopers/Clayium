@@ -1,7 +1,7 @@
 package com.github.trcdeveloppers.clayium.common.recipe.clayworktable;
 
 import com.github.trcdeveloppers.clayium.Clayium;
-import com.github.trcdeveloppers.clayium.common.blocks.machines.clayworktable.ClayWorkTableMethod;
+import com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;

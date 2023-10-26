@@ -1,4 +1,4 @@
-package com.github.trcdeveloppers.clayium.common.blocks.machines;
+package com.github.trcdeveloppers.clayium.common.blocks.machine;
 
 import com.github.trcdeveloppers.clayium.common.interfaces.IClayEnergyContainer;
 import com.github.trcdeveloppers.clayium.common.interfaces.IConnectable;

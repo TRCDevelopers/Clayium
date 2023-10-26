@@ -1,4 +1,4 @@
-package com.github.trcdeveloppers.clayium.common.blocks.machines.clayworktable;
+package com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

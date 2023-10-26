@@ -1,4 +1,4 @@
-package com.github.trcdeveloppers.clayium.common.blocks.machines.clayworktable;
+package com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable;
 
 public enum ClayWorkTableMethod {
     ROLLING_HAND(1),

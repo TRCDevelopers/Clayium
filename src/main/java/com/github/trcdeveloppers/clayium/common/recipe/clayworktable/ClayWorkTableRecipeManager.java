@@ -1,7 +1,7 @@
 package com.github.trcdeveloppers.clayium.common.recipe.clayworktable;
 
 import com.github.trcdeveloppers.clayium.Clayium;
-import com.github.trcdeveloppers.clayium.common.blocks.machines.clayworktable.ClayWorkTableMethod;
+import com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import mcp.MethodsReturnNonnullByDefault;
