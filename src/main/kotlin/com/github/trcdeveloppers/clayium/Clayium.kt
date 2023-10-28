@@ -19,17 +19,17 @@ class Clayium {
     @Mod.EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
         // If proxy is null, something is wrong.
-        proxy!!.preInit(event)
+        proxy.preInit(event)
     }
 
     @Mod.EventHandler
     fun init(event: FMLInitializationEvent) {
-        proxy!!.init(event)
+        proxy.init(event)
     }
 
     @Mod.EventHandler
     fun postInit(event: FMLPostInitializationEvent) {
-        proxy!!.postInit(event)
+        proxy.postInit(event)
     }
 
     companion object {
@@ -49,11 +49,10 @@ class Clayium {
         /**
          * This is the instance of your mod as created by Forge. It will never be null.
          */
-        @JvmField
         @Mod.Instance(MOD_ID)
-        var INSTANCE: Clayium? = null
+        lateinit var INSTANCE: Clayium
 
         @SidedProxy(clientSide = "com.github.trcdeveloppers.clayium.client.ClayiumClientProxy", serverSide = "com.github.trcdeveloppers.clayium.common.ClayiumCommonProxy")
-        var proxy: ClayiumCommonProxy? = null
+        lateinit var proxy: ClayiumCommonProxy
     }
 }
