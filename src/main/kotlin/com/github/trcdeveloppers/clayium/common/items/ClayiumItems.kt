@@ -59,7 +59,7 @@ object ClayiumItems {
                 event.registry.register(item)
                 items[registryName] = item
                 if (side.isClient) {
-                    ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation("$MOD_ID:registryName$", "inventory"))
+                    ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(ResourceLocation(MOD_ID, registryName), "inventory"))
                 }
             }
         for (material in ClayiumMaterials.entries) {
