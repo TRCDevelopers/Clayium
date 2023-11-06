@@ -1,0 +1,57 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "clayium:machine_hull_4"
+      }
+    },
+    {
+      "apply": { "model": "clayium:insertion_up_model" },
+      "when": { "insertion_up": true }
+    },
+    {
+      "apply": { "model": "clayium:insertion_down_model" },
+      "when": { "insertion_down": true }
+    },
+    {
+      "apply": { "model": "clayium:insertion_north_model" },
+      "when": { "insertion_north": true }
+    },
+    {
+      "apply": { "model": "clayium:insertion_south_model" },
+      "when": { "insertion_south": true }
+    },
+    {
+      "apply": { "model": "clayium:insertion_east_model" },
+      "when": { "insertion_east": true }
+    },
+    {
+      "apply": { "model": "clayium:insertion_west_model" },
+      "when": { "insertion_west": true }
+    },
+    {
+      "apply": { "model": "clayium:extraction_up_model" },
+      "when": { "extraction_up": true }
+    },
+    {
+      "apply": { "model": "clayium:extraction_down_model" },
+      "when": { "extraction_down": true }
+    },
+    {
+      "apply": { "model": "clayium:extraction_north_model" },
+      "when": { "extraction_north": true }
+    },
+    {
+      "apply": { "model": "clayium:extraction_south_model" },
+      "when": { "extraction_south": true }
+    },
+    {
+      "apply": { "model": "clayium:extraction_east_model" },
+      "when": { "extraction_east": true }
+    },
+    {
+      "apply": { "model": "clayium:extraction_west_model" },
+      "when": { "extraction_west": true }
+    }
+  ]
+}
