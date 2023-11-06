@@ -109,11 +109,25 @@ object ClayiumItems {
                 }
             }
         }
-        allBlocks.forEach { (registryName: String?, block: Block?) ->
+        registerItem(Item().setMaxDamage(100).setMaxStackSize(1), "clay_spatula", side, event)
+        registerItem(Item().setMaxDamage(100).setMaxStackSize(1), "clay_rolling_pin", side, event)
+        registerItem(Item().setMaxDamage(100).setMaxStackSize(1), "clay_slicer", side, event)
+        allBlocks.forEach { (registryName: String, block: Block) ->
             event.registry.register(ItemBlock(block).setRegistryName(registryName))
             if (side.isClient) {
                 ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, ModelResourceLocation(ResourceLocation(MOD_ID, registryName), "inventory"))
             }
+        }
+    }
+
+    private fun registerItem(item: Item, registryName: String, side: Side, event: RegistryEvent.Register<Item>) {
+        item.creativeTab = Clayium.CreativeTab
+        item.registryName = ResourceLocation(MOD_ID, registryName)
+        item.translationKey = "$MOD_ID.$registryName"
+        event.registry.register(item)
+        items[registryName] = item
+        if (side.isClient) {
+            ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(ResourceLocation(MOD_ID, registryName), "inventory"))
         }
     }
 
@@ -220,7 +234,11 @@ object ClayiumItems {
         MANIPULATOR_TIER2(8),
         MANIPULATOR_TIER3(12),
         LASER_PARTS(7),
-        TELEPORTATION_PARTS(11);
+        TELEPORTATION_PARTS(11),
+
+        CLAY_PIPING_TOOL(6),
+        CLAY_IO_CONFIGURATOR(6),
+        ;
 
         constructor(oreDict: String) : this(-1, oreDict)
 
