@@ -29,7 +29,7 @@ import javax.annotation.ParametersAreNonnullByDefault
 
 object ClayiumItems {
     @SideOnly(Side.CLIENT)
-    private var itemColors: MutableMap<Item, IItemColor>? = null
+    private lateinit var itemColors: MutableMap<Item, IItemColor>
     private val items: MutableMap<String, Item> = HashMap()
     @JvmStatic
     fun getItem(registryName: String): Item? {
@@ -104,8 +104,7 @@ object ClayiumItems {
                 }
                 items[registryName] = item
                 if (side.isClient) {
-                    // If itemColors is null, something went wrong and should crash.
-                    itemColors!![item] = IItemColor { stack, tintIndex -> material.getColor(stack, tintIndex) }
+                    itemColors[item] = IItemColor { stack, tintIndex -> material.getColor(stack, tintIndex) }
                     ModelLoader.setCustomModelResourceLocation(item, 0, shape.model)
                 }
             }
@@ -120,7 +119,7 @@ object ClayiumItems {
 
     @SideOnly(Side.CLIENT)
     fun registerItemColors() {
-        itemColors!!.forEach { (item, itemColor) -> Minecraft.getMinecraft().itemColors.registerItemColorHandler(itemColor, item) }
+        itemColors.forEach { (item, itemColor) -> Minecraft.getMinecraft().itemColors.registerItemColorHandler(itemColor, item) }
     }
 
     private fun itemWithTierTootip(tier: Int): Item {
