@@ -7,28 +7,54 @@
     },
     {
       "apply": { "model": "clayium:insertion_up_model" },
-      "when": { "insertion_up": true }
+      "when": { "insertion_up": "normal" }
     },
     {
       "apply": { "model": "clayium:insertion_down_model" },
-      "when": { "insertion_down": true }
+      "when": { "insertion_down": "normal" }
     },
     {
       "apply": { "model": "clayium:insertion_north_model" },
-      "when": { "insertion_north": true }
+      "when": { "insertion_north": "normal" }
     },
     {
       "apply": { "model": "clayium:insertion_south_model" },
-      "when": { "insertion_south": true }
+      "when": { "insertion_south": "normal" }
     },
     {
       "apply": { "model": "clayium:insertion_east_model" },
-      "when": { "insertion_east": true }
+      "when": { "insertion_east": "normal" }
     },
     {
       "apply": { "model": "clayium:insertion_west_model" },
-      "when": { "insertion_west": true }
+      "when": { "insertion_west": "normal" }
     },
+
+    {
+      "apply": { "model": "clayium:insertion_up_ce" },
+      "when": { "insertion_up": "ce" }
+    },
+    {
+      "apply": { "model": "clayium:insertion_down_ce" },
+      "when": { "insertion_down": "ce" }
+    },
+    {
+      "apply": { "model": "clayium:insertion_north_ce" },
+      "when": { "insertion_north": "ce" }
+    },
+    {
+      "apply": { "model": "clayium:insertion_south_ce" },
+      "when": { "insertion_south": "ce" }
+    },
+    {
+      "apply": { "model": "clayium:insertion_east_ce" },
+      "when": { "insertion_east": "ce" }
+    },
+    {
+      "apply": { "model": "clayium:insertion_west_ce" },
+      "when": { "insertion_west": "ce" }
+    },
+
     {
       "apply": { "model": "clayium:extraction_up_model" },
       "when": { "extraction_up": true }

@@ -1,6 +1,5 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine
 
-import com.github.trcdeveloppers.clayium.Clayium
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.nbt.NBTTagCompound
@@ -13,17 +12,17 @@ import net.minecraft.world.World
 
 class TileClayiumContainer(private val block: Block) : TileEntity() {
 
-    var upIn = false
+    var upIn = EnumInsertionModeSingle.NONE
         private set
-    var downIn = false
+    var downIn = EnumInsertionModeSingle.NONE
         private set
-    var northIn = false
+    var northIn = EnumInsertionModeSingle.NONE
         private set
-    var southIn = false
+    var southIn = EnumInsertionModeSingle.NONE
         private set
-    var eastIn = false
+    var eastIn = EnumInsertionModeSingle.NONE
         private set
-    var westIn = false
+    var westIn = EnumInsertionModeSingle.NONE
         private set
 
     var upEx = false
@@ -39,19 +38,14 @@ class TileClayiumContainer(private val block: Block) : TileEntity() {
     var westEx = false
         private set
 
-    fun toggleUpIn() {
-        Clayium.LOGGER.info("toggleUpIn called, before: $upIn")
-        this.upIn = !this.upIn
-    }
-
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         super.writeToNBT(compound)
-        compound.setBoolean("upIn", upIn)
-        compound.setBoolean("downIn", downIn)
-        compound.setBoolean("northIn", northIn)
-        compound.setBoolean("southIn", southIn)
-        compound.setBoolean("eastIn", eastIn)
-        compound.setBoolean("westIn", westIn)
+        compound.setString("upIn", upIn.name)
+        compound.setString("downIn", downIn.name)
+        compound.setString("northIn", northIn.name)
+        compound.setString("southIn", southIn.name)
+        compound.setString("eastIn", eastIn.name)
+        compound.setString("westIn", westIn.name)
         compound.setBoolean("upDown", upEx)
         compound.setBoolean("downDown", downEx)
         compound.setBoolean("northDown", northEx)
@@ -63,12 +57,12 @@ class TileClayiumContainer(private val block: Block) : TileEntity() {
 
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
-        upIn = compound.getBoolean("upIn")
-        downIn = compound.getBoolean("downIn")
-        northIn = compound.getBoolean("northIn")
-        southIn = compound.getBoolean("southIn")
-        eastIn = compound.getBoolean("eastIn")
-        westIn = compound.getBoolean("westIn")
+        upIn = EnumInsertionModeSingle.valueOf(compound.getString("upIn"))
+        downIn = EnumInsertionModeSingle.valueOf(compound.getString("downIn"))
+        northIn = EnumInsertionModeSingle.valueOf(compound.getString("northIn"))
+        southIn = EnumInsertionModeSingle.valueOf(compound.getString("southIn"))
+        eastIn = EnumInsertionModeSingle.valueOf(compound.getString("eastIn"))
+        westIn = EnumInsertionModeSingle.valueOf(compound.getString("westIn"))
         upEx = compound.getBoolean("upDown")
         downEx = compound.getBoolean("downDown")
         northEx = compound.getBoolean("northDown")
@@ -93,18 +87,18 @@ class TileClayiumContainer(private val block: Block) : TileEntity() {
         return newSate.block !== this.block
     }
 
-    fun cycleInput(facing: EnumFacing) {
+    fun toggleInsertion(facing: EnumFacing) {
         when (facing) {
-            EnumFacing.UP -> this.upIn = !this.upIn
-            EnumFacing.DOWN -> this.downIn = !this.downIn
-            EnumFacing.NORTH -> this.northIn = !this.northIn
-            EnumFacing.SOUTH -> this.southIn = !this.southIn
-            EnumFacing.EAST -> this.eastIn = !this.eastIn
-            EnumFacing.WEST -> this.westIn = !this.westIn
+            EnumFacing.UP -> this.upIn = this.upIn.next
+            EnumFacing.DOWN -> this.downIn = this.downIn.next
+            EnumFacing.NORTH -> this.northIn = this.northIn.next
+            EnumFacing.SOUTH -> this.southIn = this.southIn.next
+            EnumFacing.EAST -> this.eastIn = this.eastIn.next
+            EnumFacing.WEST -> this.westIn = this.westIn.next
         }
     }
 
-    fun cycleOutput(facing: EnumFacing) {
+    fun toggleExtraction(facing: EnumFacing) {
         when (facing) {
             EnumFacing.UP -> this.upEx = !this.upEx
             EnumFacing.DOWN -> this.downEx = !this.downEx

@@ -4,15 +4,15 @@ import net.minecraft.util.IStringSerializable
 
 enum class EnumInsertionModeSingle : IStringSerializable {
     NONE,
-    INSERTION,
-    INSERTION_CE
+    NORMAL,
+    CE
     ;
 
     val next
         get() = when (this) {
-            NONE -> INSERTION
-            INSERTION -> INSERTION_CE
-            INSERTION_CE -> NONE
+            NONE -> NORMAL
+            NORMAL -> CE
+            CE -> NONE
         }
 
     override fun getName(): String {

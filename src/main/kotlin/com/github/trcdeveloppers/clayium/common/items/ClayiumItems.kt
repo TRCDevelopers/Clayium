@@ -21,6 +21,7 @@ import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.IRarity
 import net.minecraftforge.event.RegistryEvent
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.oredict.OreDictionary
@@ -28,6 +29,25 @@ import java.util.*
 import javax.annotation.ParametersAreNonnullByDefault
 
 object ClayiumItems {
+
+    @JvmStatic
+    @ObjectHolder("$MOD_ID:clay_spatula")
+    lateinit var CLAY_SPATULA: Item
+        private set
+    @JvmStatic
+    @ObjectHolder("$MOD_ID:clay_rolling_pin")
+    lateinit var CLAY_ROLLING_PIN: Item
+        private set
+    @ObjectHolder("$MOD_ID:clay_slicer")
+    lateinit var CLAY_SLICER: Item
+        private set
+    @ObjectHolder("$MOD_ID:clay_piping_tool")
+    lateinit var CLAY_PIPING_TOOL: Item
+        private set
+    @ObjectHolder("$MOD_ID:clay_io_configurator")
+    lateinit var CLAY_IO_CONFIGURATOR: Item
+        private set
+
     @SideOnly(Side.CLIENT)
     private lateinit var itemColors: MutableMap<Item, IItemColor>
     private val items: MutableMap<String, Item> = HashMap()
@@ -112,6 +132,8 @@ object ClayiumItems {
         registerItem(Item().setMaxDamage(100).setMaxStackSize(1), "clay_spatula", side, event)
         registerItem(Item().setMaxDamage(100).setMaxStackSize(1), "clay_rolling_pin", side, event)
         registerItem(Item().setMaxDamage(100).setMaxStackSize(1), "clay_slicer", side, event)
+        registerItem(Item().setMaxStackSize(1), "clay_piping_tool", side, event)
+        registerItem(Item().setMaxStackSize(1), "clay_io_configurator", side, event)
         allBlocks.forEach { (registryName: String, block: Block) ->
             event.registry.register(ItemBlock(block).setRegistryName(registryName))
             if (side.isClient) {
@@ -236,8 +258,6 @@ object ClayiumItems {
         LASER_PARTS(7),
         TELEPORTATION_PARTS(11),
 
-        CLAY_PIPING_TOOL(6),
-        CLAY_IO_CONFIGURATOR(6),
         ;
 
         constructor(oreDict: String) : this(-1, oreDict)

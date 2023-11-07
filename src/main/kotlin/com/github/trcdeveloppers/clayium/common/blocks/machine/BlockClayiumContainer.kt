@@ -1,10 +1,11 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine
 
-import com.github.trcdeveloppers.clayium.Clayium
+import com.github.trcdeveloppers.clayium.common.items.ClayiumItems
 import net.minecraft.block.BlockContainer
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.IProperty
 import net.minecraft.block.properties.PropertyBool
+import net.minecraft.block.properties.PropertyEnum
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.statemap.IStateMapper
@@ -13,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.text.TextComponentString
 import net.minecraft.world.ChunkCache
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
@@ -24,12 +26,14 @@ abstract class BlockClayiumContainer : BlockContainer(Material.IRON) {
     init {
         this.defaultState = this.blockState.baseState
             .withProperty(isPipe, false)
-            .withProperty(INSERTION_UP, false)
-            .withProperty(INSERTION_DOWN, false)
-            .withProperty(INSERTION_NORTH, false)
-            .withProperty(INSERTION_SOUTH, false)
-            .withProperty(INSERTION_EAST, false)
-            .withProperty(INSERTION_WEST, false)
+
+            .withProperty(INSERTION_UP, EnumInsertionModeSingle.NONE)
+            .withProperty(INSERTION_DOWN, EnumInsertionModeSingle.NONE)
+            .withProperty(INSERTION_NORTH, EnumInsertionModeSingle.NONE)
+            .withProperty(INSERTION_SOUTH, EnumInsertionModeSingle.NONE)
+            .withProperty(INSERTION_EAST, EnumInsertionModeSingle.NONE)
+            .withProperty(INSERTION_WEST, EnumInsertionModeSingle.NONE)
+
             .withProperty(EXTRACTION_UP, false)
             .withProperty(EXTRACTION_DOWN, false)
             .withProperty(EXTRACTION_NORTH, false)
@@ -44,16 +48,36 @@ abstract class BlockClayiumContainer : BlockContainer(Material.IRON) {
         facing: EnumFacing,
         hitX: Float, hitY: Float, hitZ: Float
     ): Boolean {
-        if (worldIn.isRemote) return true
-        if (hand === EnumHand.OFF_HAND) {
-            Clayium.LOGGER.info("OFF HAND")
+        if (worldIn.isRemote || hand == EnumHand.OFF_HAND) {
             return true
         }
 
         val tile = worldIn.getTileEntity(pos) as? TileClayiumContainer ?: return true
 
-        tile.toggleUpIn()
-        worldIn.setBlockState(pos, this.getActualState(state, worldIn, pos))
+        when (playerIn.getHeldItem(hand).item) {
+            ClayiumItems.CLAY_SPATULA -> {
+                // isPipe is for rendering only, so does not touched in Tile Entity.
+                worldIn.setBlockState(pos, state.cycleProperty(isPipe))
+            }
+            ClayiumItems.CLAY_ROLLING_PIN -> {
+                tile.toggleInsertion(facing)
+                worldIn.setBlockState(pos, this.getActualState(state, worldIn, pos))
+            }
+            ClayiumItems.CLAY_SLICER -> {
+                tile.toggleExtraction(facing)
+                worldIn.setBlockState(pos, this.getActualState(state, worldIn, pos))
+            }
+            ClayiumItems.CLAY_IO_CONFIGURATOR -> {
+                if (playerIn.isSneaking) {
+                    tile.toggleExtraction(facing)
+                } else {
+                    tile.toggleInsertion(facing)
+                }
+                worldIn.setBlockState(pos, this.getActualState(state, worldIn, pos))
+            }
+            // TODO: Open GUI
+            else -> playerIn.sendStatusMessage(TextComponentString("you clicked buffer."), true)
+        }
 
         return true
     }
@@ -95,17 +119,17 @@ abstract class BlockClayiumContainer : BlockContainer(Material.IRON) {
         val isPipe: IProperty<Boolean> = PropertyBool.create("is_pipe")
 
         @JvmStatic
-        val INSERTION_UP: IProperty<Boolean> = PropertyBool.create("insertion_up")
+        val INSERTION_UP: IProperty<EnumInsertionModeSingle> = PropertyEnum.create("insertion_up", EnumInsertionModeSingle::class.java)
         @JvmStatic
-        val INSERTION_DOWN: IProperty<Boolean> = PropertyBool.create("insertion_down")
+        val INSERTION_DOWN: IProperty<EnumInsertionModeSingle> = PropertyEnum.create("insertion_down", EnumInsertionModeSingle::class.java)
         @JvmStatic
-        val INSERTION_NORTH: IProperty<Boolean> = PropertyBool.create("insertion_north")
+        val INSERTION_NORTH: IProperty<EnumInsertionModeSingle> = PropertyEnum.create("insertion_north", EnumInsertionModeSingle::class.java)
         @JvmStatic
-        val INSERTION_SOUTH: IProperty<Boolean> = PropertyBool.create("insertion_south")
+        val INSERTION_SOUTH: IProperty<EnumInsertionModeSingle> = PropertyEnum.create("insertion_south", EnumInsertionModeSingle::class.java)
         @JvmStatic
-        val INSERTION_EAST: IProperty<Boolean> = PropertyBool.create("insertion_east")
+        val INSERTION_EAST: IProperty<EnumInsertionModeSingle> = PropertyEnum.create("insertion_east", EnumInsertionModeSingle::class.java)
         @JvmStatic
-        val INSERTION_WEST: IProperty<Boolean> = PropertyBool.create("insertion_west")
+        val INSERTION_WEST: IProperty<EnumInsertionModeSingle> = PropertyEnum.create("insertion_west", EnumInsertionModeSingle::class.java)
 
         @JvmStatic
         val EXTRACTION_UP: IProperty<Boolean> = PropertyBool.create("extraction_up")
