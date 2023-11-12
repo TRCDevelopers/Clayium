@@ -2,7 +2,7 @@ package com.github.trcdeveloppers.clayium.common.blocks.machine
 
 import net.minecraft.util.IStringSerializable
 
-enum class EnumInsertionModeSingle : IStringSerializable {
+enum class EnumImportMode : IStringSerializable {
     NONE,
     NORMAL,
     CE
