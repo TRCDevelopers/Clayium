@@ -12,6 +12,7 @@ import net.minecraft.util.*
 import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.common.FMLCommonHandler
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder
 
 class ClayBuffer private constructor(val tier: Int, registryName: String) : BlockClayiumContainer() {
 
@@ -41,6 +42,11 @@ class ClayBuffer private constructor(val tier: Int, registryName: String) : Bloc
     }
 
     companion object {
+
+        @JvmStatic
+        @ObjectHolder("$MOD_ID:clay_buffer_4")
+        lateinit var clayBuffer4: Block
+
         fun createBlocks(): Map<String, Block> {
             val blocks: MutableMap<String, Block> = HashMap()
 //            for (tier in 4..13) {

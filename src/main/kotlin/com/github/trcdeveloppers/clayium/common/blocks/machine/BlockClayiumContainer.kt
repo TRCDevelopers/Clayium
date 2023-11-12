@@ -19,6 +19,7 @@ import net.minecraft.world.ChunkCache
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraft.world.chunk.Chunk
+import net.minecraftforge.common.util.Constants
 import kotlin.Boolean
 
 abstract class BlockClayiumContainer : BlockContainer(Material.IRON) {
@@ -27,12 +28,12 @@ abstract class BlockClayiumContainer : BlockContainer(Material.IRON) {
         this.defaultState = this.blockState.baseState
             .withProperty(isPipe, false)
 
-            .withProperty(INSERTION_UP, EnumInsertionModeSingle.NONE)
-            .withProperty(INSERTION_DOWN, EnumInsertionModeSingle.NONE)
-            .withProperty(INSERTION_NORTH, EnumInsertionModeSingle.NONE)
-            .withProperty(INSERTION_SOUTH, EnumInsertionModeSingle.NONE)
-            .withProperty(INSERTION_EAST, EnumInsertionModeSingle.NONE)
-            .withProperty(INSERTION_WEST, EnumInsertionModeSingle.NONE)
+            .withProperty(INSERTION_UP, false)
+            .withProperty(INSERTION_DOWN, false)
+            .withProperty(INSERTION_NORTH, false)
+            .withProperty(INSERTION_SOUTH, false)
+            .withProperty(INSERTION_EAST, false)
+            .withProperty(INSERTION_WEST, false)
 
             .withProperty(EXTRACTION_UP, false)
             .withProperty(EXTRACTION_DOWN, false)
@@ -61,11 +62,9 @@ abstract class BlockClayiumContainer : BlockContainer(Material.IRON) {
             }
             ClayiumItems.CLAY_ROLLING_PIN -> {
                 tile.toggleInsertion(facing)
-                worldIn.setBlockState(pos, this.getActualState(state, worldIn, pos))
             }
             ClayiumItems.CLAY_SLICER -> {
                 tile.toggleExtraction(facing)
-                worldIn.setBlockState(pos, this.getActualState(state, worldIn, pos))
             }
             ClayiumItems.CLAY_IO_CONFIGURATOR -> {
                 if (playerIn.isSneaking) {
@@ -73,12 +72,14 @@ abstract class BlockClayiumContainer : BlockContainer(Material.IRON) {
                 } else {
                     tile.toggleInsertion(facing)
                 }
-                worldIn.setBlockState(pos, this.getActualState(state, worldIn, pos))
             }
             // TODO: Open GUI
             else -> playerIn.sendStatusMessage(TextComponentString("you clicked buffer."), true)
         }
 
+        val newState = this.getActualState(state, worldIn, pos)
+        worldIn.setBlockState(pos, newState)
+        worldIn.notifyBlockUpdate(pos, state, newState, Constants.BlockFlags.DEFAULT)
         return true
     }
 
@@ -119,17 +120,17 @@ abstract class BlockClayiumContainer : BlockContainer(Material.IRON) {
         val isPipe: IProperty<Boolean> = PropertyBool.create("is_pipe")
 
         @JvmStatic
-        val INSERTION_UP: IProperty<EnumInsertionModeSingle> = PropertyEnum.create("insertion_up", EnumInsertionModeSingle::class.java)
+        val INSERTION_UP: IProperty<Boolean> = PropertyBool.create("insertion_up")
         @JvmStatic
-        val INSERTION_DOWN: IProperty<EnumInsertionModeSingle> = PropertyEnum.create("insertion_down", EnumInsertionModeSingle::class.java)
+        val INSERTION_DOWN: IProperty<Boolean> = PropertyBool.create("insertion_down")
         @JvmStatic
-        val INSERTION_NORTH: IProperty<EnumInsertionModeSingle> = PropertyEnum.create("insertion_north", EnumInsertionModeSingle::class.java)
+        val INSERTION_NORTH: IProperty<Boolean> = PropertyBool.create("insertion_north")
         @JvmStatic
-        val INSERTION_SOUTH: IProperty<EnumInsertionModeSingle> = PropertyEnum.create("insertion_south", EnumInsertionModeSingle::class.java)
+        val INSERTION_SOUTH: IProperty<Boolean> = PropertyBool.create("insertion_south")
         @JvmStatic
-        val INSERTION_EAST: IProperty<EnumInsertionModeSingle> = PropertyEnum.create("insertion_east", EnumInsertionModeSingle::class.java)
+        val INSERTION_EAST: IProperty<Boolean> = PropertyBool.create("insertion_east")
         @JvmStatic
-        val INSERTION_WEST: IProperty<EnumInsertionModeSingle> = PropertyEnum.create("insertion_west", EnumInsertionModeSingle::class.java)
+        val INSERTION_WEST: IProperty<Boolean> = PropertyBool.create("insertion_west")
 
         @JvmStatic
         val EXTRACTION_UP: IProperty<Boolean> = PropertyBool.create("extraction_up")

@@ -12,17 +12,17 @@ import net.minecraft.world.World
 
 class TileClayiumContainer(private val block: Block) : TileEntity() {
 
-    var upIn = EnumInsertionModeSingle.NONE
+    var upIn = false
         private set
-    var downIn = EnumInsertionModeSingle.NONE
+    var downIn = false
         private set
-    var northIn = EnumInsertionModeSingle.NONE
+    var northIn = false
         private set
-    var southIn = EnumInsertionModeSingle.NONE
+    var southIn = false
         private set
-    var eastIn = EnumInsertionModeSingle.NONE
+    var eastIn = false
         private set
-    var westIn = EnumInsertionModeSingle.NONE
+    var westIn = false
         private set
 
     var upEx = false
@@ -40,12 +40,13 @@ class TileClayiumContainer(private val block: Block) : TileEntity() {
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         super.writeToNBT(compound)
-        compound.setString("upIn", upIn.name)
-        compound.setString("downIn", downIn.name)
-        compound.setString("northIn", northIn.name)
-        compound.setString("southIn", southIn.name)
-        compound.setString("eastIn", eastIn.name)
-        compound.setString("westIn", westIn.name)
+        compound.setBoolean("upIn", upIn)
+        compound.setBoolean("downIn", downIn)
+        compound.setBoolean("northIn", northIn)
+        compound.setBoolean("southIn", southIn)
+        compound.setBoolean("eastIn", eastIn)
+        compound.setBoolean("westIn", westIn)
+
         compound.setBoolean("upDown", upEx)
         compound.setBoolean("downDown", downEx)
         compound.setBoolean("northDown", northEx)
@@ -57,12 +58,13 @@ class TileClayiumContainer(private val block: Block) : TileEntity() {
 
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
-        upIn = EnumInsertionModeSingle.valueOf(compound.getString("upIn"))
-        downIn = EnumInsertionModeSingle.valueOf(compound.getString("downIn"))
-        northIn = EnumInsertionModeSingle.valueOf(compound.getString("northIn"))
-        southIn = EnumInsertionModeSingle.valueOf(compound.getString("southIn"))
-        eastIn = EnumInsertionModeSingle.valueOf(compound.getString("eastIn"))
-        westIn = EnumInsertionModeSingle.valueOf(compound.getString("westIn"))
+        upIn = compound.getBoolean("upIn")
+        downIn = compound.getBoolean("downIn")
+        northIn = compound.getBoolean("northIn")
+        southIn = compound.getBoolean("southIn")
+        eastIn = compound.getBoolean("eastIn")
+        westIn = compound.getBoolean("westIn")
+
         upEx = compound.getBoolean("upDown")
         downEx = compound.getBoolean("downDown")
         northEx = compound.getBoolean("northDown")
@@ -89,12 +91,12 @@ class TileClayiumContainer(private val block: Block) : TileEntity() {
 
     fun toggleInsertion(facing: EnumFacing) {
         when (facing) {
-            EnumFacing.UP -> this.upIn = this.upIn.next
-            EnumFacing.DOWN -> this.downIn = this.downIn.next
-            EnumFacing.NORTH -> this.northIn = this.northIn.next
-            EnumFacing.SOUTH -> this.southIn = this.southIn.next
-            EnumFacing.EAST -> this.eastIn = this.eastIn.next
-            EnumFacing.WEST -> this.westIn = this.westIn.next
+            EnumFacing.UP -> this.upIn = !this.upIn
+            EnumFacing.DOWN -> this.downIn = !this.downIn
+            EnumFacing.NORTH -> this.northIn = !this.northIn
+            EnumFacing.SOUTH -> this.southIn = !this.southIn
+            EnumFacing.EAST -> this.eastIn = !this.eastIn
+            EnumFacing.WEST -> this.westIn = !this.westIn
         }
     }
 
