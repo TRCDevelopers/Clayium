@@ -30,24 +30,6 @@ import javax.annotation.ParametersAreNonnullByDefault
 
 object ClayiumItems {
 
-    @JvmStatic
-    @ObjectHolder("$MOD_ID:clay_spatula")
-    lateinit var CLAY_SPATULA: Item
-        private set
-    @JvmStatic
-    @ObjectHolder("$MOD_ID:clay_rolling_pin")
-    lateinit var CLAY_ROLLING_PIN: Item
-        private set
-    @ObjectHolder("$MOD_ID:clay_slicer")
-    lateinit var CLAY_SLICER: Item
-        private set
-    @ObjectHolder("$MOD_ID:clay_piping_tool")
-    lateinit var CLAY_PIPING_TOOL: Item
-        private set
-    @ObjectHolder("$MOD_ID:clay_io_configurator")
-    lateinit var CLAY_IO_CONFIGURATOR: Item
-        private set
-
     @SideOnly(Side.CLIENT)
     private lateinit var itemColors: MutableMap<Item, IItemColor>
     private val items: MutableMap<String, Item> = HashMap()
@@ -83,7 +65,7 @@ object ClayiumItems {
                 }
             }
         for (material in ClayiumMaterials.entries) {
-            val item = if (material.hasTier()) itemWithTierTootip(material.tier) else Item()
+            val item = if (material.hasTier()) itemWithTierTooltip(material.tier) else Item()
             val registryName = material.name.lowercase()
 
             item.creativeTab = Clayium.CreativeTab
@@ -100,7 +82,7 @@ object ClayiumItems {
         }
         for (material in ClayiumColoredMaterials.entries) {
             for (shape in material.shapes) {
-                val item = if (material.hasTier()) itemWithTierTootip(material.tier) else Item()
+                val item = if (material.hasTier()) itemWithTierTooltip(material.tier) else Item()
                 var registryName = material.name.lowercase()
                 val capitalizedName = material.materialName.substring(0, 1).uppercase() + material.materialName.substring(1)
                 val oreDict = when (shape) {
@@ -158,7 +140,7 @@ object ClayiumItems {
         itemColors.forEach { (item, itemColor) -> Minecraft.getMinecraft().itemColors.registerItemColorHandler(itemColor, item) }
     }
 
-    private fun itemWithTierTootip(tier: Int): Item {
+    private fun itemWithTierTooltip(tier: Int): Item {
         return object : Item() {
             @SideOnly(Side.CLIENT)
             @ParametersAreNonnullByDefault
@@ -424,4 +406,22 @@ object ClayiumItems {
             const val NO_TIER = -1
         }
     }
+
+    @JvmStatic
+    @ObjectHolder("$MOD_ID:clay_spatula")
+    lateinit var CLAY_SPATULA: Item
+        private set
+    @JvmStatic
+    @ObjectHolder("$MOD_ID:clay_rolling_pin")
+    lateinit var CLAY_ROLLING_PIN: Item
+        private set
+    @ObjectHolder("$MOD_ID:clay_slicer")
+    lateinit var CLAY_SLICER: Item
+        private set
+    @ObjectHolder("$MOD_ID:clay_piping_tool")
+    lateinit var CLAY_PIPING_TOOL: Item
+        private set
+    @ObjectHolder("$MOD_ID:clay_io_configurator")
+    lateinit var CLAY_IO_CONFIGURATOR: Item
+        private set
 }
