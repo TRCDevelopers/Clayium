@@ -9,6 +9,7 @@ import net.minecraft.block.Block
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.relauncher.Side
+import java.lang.reflect.Constructor
 import java.util.Collections
 
 object ClayiumBlocks {
@@ -28,16 +29,43 @@ object ClayiumBlocks {
             .map(ClassPath.ClassInfo::load)
             .forEach { clazz ->
                 val cBlock = clazz.getAnnotation(CBlock::class.java) ?: return@forEach
-                val block = clazz.newInstance() as Block
-                val registryName = cBlock.registryName
 
-                block.creativeTab = Clayium.CreativeTab
-                block.registryName = ResourceLocation(MOD_ID, registryName)
-                block.translationKey = "$MOD_ID.$registryName"
-                blocks[registryName] = block
+                if (cBlock.tiers.isEmpty()) {
+                    val registryName = cBlock.registryName
+                    registerBlock(clazz.newInstance() as Block, registryName)
+                    return@forEach
+                }
+
+                val tieredConstructor = getTieredConstructor(clazz) ?: return@forEach
+                if (cBlock.tiers.size == 1) {
+                    val registryName = cBlock.registryName
+                    registerBlock(tieredConstructor.newInstance(cBlock.tiers[0]) as Block, registryName)
+                    return@forEach
+                }
+
+                cBlock.tiers.forEach { tier ->
+                    val registryName = cBlock.registryName + "_tier$tier"
+                    registerBlock(tieredConstructor.newInstance(tier) as Block, registryName)
+                }
             }
         blocks.putAll(CompressedClay.createBlocks())
         blocks.putAll(ClayBuffer.createBlocks())
         blocks.values.forEach(event.registry::register)
+    }
+
+    private fun registerBlock(block: Block, registryName: String) {
+        block.creativeTab = Clayium.CreativeTab
+        block.registryName = ResourceLocation(MOD_ID, registryName)
+        block.translationKey = "$MOD_ID.$registryName"
+        blocks[registryName] = block
+    }
+
+    private fun getTieredConstructor(clazz: Class<*>): Constructor<*>? {
+        return try {
+            clazz.getConstructor(Int::class.java)
+        } catch (e: NoSuchMethodException) {
+            Clayium.LOGGER.warn("Class ${clazz.name} does not have a constructor with Int parameter. This will be ignored.")
+            null
+        }
     }
 }
