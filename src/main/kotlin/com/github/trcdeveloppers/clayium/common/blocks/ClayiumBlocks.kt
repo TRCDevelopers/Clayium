@@ -49,7 +49,7 @@ object ClayiumBlocks {
                 }
             }
         blocks.putAll(CompressedClay.createBlocks())
-        blocks.putAll(ClayBuffer.createBlocks())
+//        blocks.putAll(ClayBuffer.createBlocks())
         blocks.values.forEach(event.registry::register)
     }
 
