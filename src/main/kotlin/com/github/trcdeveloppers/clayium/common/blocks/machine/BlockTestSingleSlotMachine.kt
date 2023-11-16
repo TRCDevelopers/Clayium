@@ -5,7 +5,7 @@ import com.github.trcdeveloppers.clayium.common.annotation.LoadWithCustomLoader
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.World
 
-@LoadWithCustomLoader
+@LoadWithCustomLoader(faceTexture = "grinder")
 @CBlock(registryName = "test_single_slot_machine", tiers = [5])
 class BlockTestSingleSlotMachine(
     private val tier: Int,

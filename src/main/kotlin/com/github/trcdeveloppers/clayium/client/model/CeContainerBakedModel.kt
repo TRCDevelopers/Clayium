@@ -17,12 +17,23 @@ import java.util.function.Function
 class CeContainerBakedModel(
     bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>,
     tier: Int,
+    faceTextureLocation: ResourceLocation,
+    facing: EnumFacing,
 ) : IBakedModel {
 
     private val machineHull = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/machinehull-$tier"))
+    private val faceTexture = bakedTextureGetter.apply(faceTextureLocation)
     private val import = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/import"))
     private val importEnergy = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/import_energy"))
     private val export = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/export"))
+
+    private val baseQuads = EnumFacing.entries.associateWith { side ->
+        if (side == facing) {
+            arrayOf(getFaceQuad(side, this.machineHull), getFaceQuad(side, this.faceTexture))
+        } else {
+            arrayOf(this.getFaceQuad(side, this.machineHull))
+        }
+    }
 
     override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> {
         if (side == null || state == null) {
@@ -32,8 +43,8 @@ class CeContainerBakedModel(
         val extState = state as IExtendedBlockState
         val quads = mutableListOf<BakedQuad>()
 
-        // Machine Hull
-        quads.add(this.getFaceQuad(side, this.machineHull))
+        // Base quad (machine hull, face texture)
+        quads.addAll(this.baseQuads.getValue(side))
 
         // Import, Import CE
         when (extState.getValue(BlockSingleSlotMachine.getInputState(side))) {
