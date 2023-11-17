@@ -1,6 +1,5 @@
 package com.github.trcdeveloppers.clayium.common.items
 
-import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.Clayium.Companion.MOD_ID
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 

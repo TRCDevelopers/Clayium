@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.event.ForgeEventFactory
-import java.util.*
+import java.util.Random
 
 @CBlock(registryName = "clay_ore")
 class BlockClayOre(material: Material) : Block(material) {

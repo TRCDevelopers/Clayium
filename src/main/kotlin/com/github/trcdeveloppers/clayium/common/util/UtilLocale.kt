@@ -4,7 +4,7 @@ import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.resources.I18n
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import java.util.*
+import java.util.IllegalFormatException
 import kotlin.math.floor
 import kotlin.math.log10
 import kotlin.math.min

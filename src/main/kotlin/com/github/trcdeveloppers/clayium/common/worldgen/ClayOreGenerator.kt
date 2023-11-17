@@ -11,7 +11,7 @@ import net.minecraft.world.gen.IChunkGenerator
 import net.minecraft.world.gen.feature.WorldGenMinable
 import net.minecraftforge.fml.common.IWorldGenerator
 import net.minecraftforge.fml.common.registry.GameRegistry
-import java.util.*
+import java.util.Random
 
 /*
 * all codes are from clayium and make these work same in 1.12.2
