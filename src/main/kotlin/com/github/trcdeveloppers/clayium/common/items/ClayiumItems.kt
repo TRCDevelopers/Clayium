@@ -4,7 +4,14 @@ import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.Clayium.Companion.MOD_ID
 import com.github.trcdeveloppers.clayium.common.annotation.CItem
 import com.github.trcdeveloppers.clayium.common.blocks.ClayiumBlocks.allBlocks
-import com.github.trcdeveloppers.clayium.common.items.CShape.*
+import com.github.trcdeveloppers.clayium.common.items.CShape.DUST
+import com.github.trcdeveloppers.clayium.common.items.CShape.INGOT
+import com.github.trcdeveloppers.clayium.common.items.CShape.LARGE_PLATE
+import com.github.trcdeveloppers.clayium.common.items.CShape.MATTER2
+import com.github.trcdeveloppers.clayium.common.items.CShape.MATTER3
+import com.github.trcdeveloppers.clayium.common.items.CShape.MATTER4
+import com.github.trcdeveloppers.clayium.common.items.CShape.MATTER5
+import com.github.trcdeveloppers.clayium.common.items.CShape.PLATE
 import com.google.common.reflect.ClassPath
 import net.minecraft.block.Block
 import net.minecraft.client.Minecraft
