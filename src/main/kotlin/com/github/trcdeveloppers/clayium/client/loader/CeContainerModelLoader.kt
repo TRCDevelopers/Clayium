@@ -1,10 +1,11 @@
 package com.github.trcdeveloppers.clayium.client.loader
 
 import com.github.trcdeveloppers.clayium.Clayium
-import com.github.trcdeveloppers.clayium.client.model.CeContainerModel
+import com.github.trcdeveloppers.clayium.client.model.ClayContainerModel
 import com.github.trcdeveloppers.clayium.common.annotation.CBlock
 import com.github.trcdeveloppers.clayium.common.annotation.LoadWithCustomLoader
 import com.google.common.reflect.ClassPath
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.IResourceManager
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -13,6 +14,13 @@ import net.minecraftforge.client.model.IModel
 import net.minecraftforge.client.model.ModelLoaderRegistry
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+
+internal fun ModelResourceLocation.getVariantValue(variantName: String): String? {
+    if (!this.toString().contains(variantName)) return null
+    return this.toString().replaceBefore("$variantName=", "")
+        .replaceAfter(",", "")
+        .replace("$variantName=", "").replace(",", "")
+}
 
 @SideOnly(Side.CLIENT)
 class CeContainerModelLoader : ICustomModelLoader {
@@ -28,7 +36,7 @@ class CeContainerModelLoader : ICustomModelLoader {
                 val faceTexture = loadWithCustomLoader.faceTexture
                 val cBlock = clazz.getAnnotation(CBlock::class.java) ?: return@forEach
                 if (cBlock.tiers.isEmpty() ) {
-                    customLoaderUsers[cBlock.registryName] = CModelData.EMPTY
+                    Clayium.LOGGER.warn("${cBlock.registryName} has no tier and Annotated with LoadWithCustomLoader. Ignored.")
                     return@forEach
                 } else if (cBlock.tiers.size == 1) {
                     customLoaderUsers[cBlock.registryName] = CModelData(cBlock.tiers[0], faceTexture)
@@ -44,29 +52,23 @@ class CeContainerModelLoader : ICustomModelLoader {
     override fun onResourceManagerReload(resourceManager: IResourceManager) {}
 
     override fun accepts(modelLocation: ResourceLocation): Boolean {
-        val modelLocStr = modelLocation.toString()
-        if (modelLocation.namespace != Clayium.MOD_ID
-            || !modelLocStr.contains("#")
-            || modelLocStr.contains("#inventory")
-            || modelLocStr.contains("item")) return false
+        if (!(modelLocation.namespace == Clayium.MOD_ID && modelLocation is ModelResourceLocation)) {
+            return false
+        }
+        if (modelLocation.variant == "normal") {
+            return false
+        }
 
-        val registryName = modelLocation.toString().replaceAfter("#", "").replace("#", "")
-            .replace("${Clayium.MOD_ID}:", "")
-
-        return registryName in this.customLoaderUsers.keys
+        return modelLocation.path in this.customLoaderUsers.keys
     }
 
     override fun loadModel(modelLocation: ResourceLocation): IModel {
-        val registryName = modelLocation.toString().replaceAfter("#", "").replace("#", "")
-            .replace("${Clayium.MOD_ID}:", "")
-       val facing = EnumFacing.byName(
-           modelLocation.toString().replaceBefore("facing=", "")
-               .replaceAfter(",", "")
-               .replace("facing=", "").replace(",", "")
-       ) ?: return ModelLoaderRegistry.getMissingModel()
+        val modelResourceLocation = modelLocation as ModelResourceLocation
+        val registryName = modelResourceLocation.path
+        val facing = EnumFacing.byName(modelResourceLocation.getVariantValue("facing")) ?: return ModelLoaderRegistry.getMissingModel()
 
         val modelData = this.customLoaderUsers[registryName] ?: return ModelLoaderRegistry.getMissingModel()
-        return CeContainerModel(
+        return ClayContainerModel(
             modelData.tier,
             modelData.getFaceTexture() ?: ResourceLocation("builtin/missing"),
             facing,
@@ -78,18 +80,7 @@ class CeContainerModelLoader : ICustomModelLoader {
         private val faceTextureName: String,
     ) {
         fun getFaceTexture(): ResourceLocation? {
-            return if (this.faceTextureName.isEmpty()) {
-                null
-            } else {
-                ResourceLocation(Clayium.MOD_ID, "blocks/${this.faceTextureName}")
-            }
-        }
-
-        fun isEmpty(): Boolean {
-            return this == EMPTY
-        }
-        companion object {
-            val EMPTY = CModelData(0, "")
+            return if (this.faceTextureName.isEmpty()) null else ResourceLocation(Clayium.MOD_ID, "blocks/${this.faceTextureName}")
         }
     }
 }

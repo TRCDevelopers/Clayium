@@ -2,7 +2,6 @@ package com.github.trcdeveloppers.clayium.common
 
 import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.common.blocks.ClayiumBlocks
-import com.github.trcdeveloppers.clayium.common.blocks.machine.TileClayiumContainer
 import com.github.trcdeveloppers.clayium.common.blocks.machine.TileSingleSlotMachine
 import com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
 import com.github.trcdeveloppers.clayium.common.items.ClayiumItems
@@ -46,7 +45,6 @@ open class ClayiumCommonProxy {
 
     open fun registerTileEntities() {
         GameRegistry.registerTileEntity(TileClayWorkTable::class.java, ResourceLocation(Clayium.MOD_ID, "TileClayWorkTable"))
-        GameRegistry.registerTileEntity(TileClayiumContainer::class.java, ResourceLocation(Clayium.MOD_ID, "TileEntityClayContainer"))
         GameRegistry.registerTileEntity(TileSingleSlotMachine::class.java, ResourceLocation(Clayium.MOD_ID, "TileSingleSlotMachine"))
     }
 }

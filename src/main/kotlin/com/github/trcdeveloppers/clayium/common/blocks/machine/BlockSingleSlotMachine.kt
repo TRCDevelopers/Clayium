@@ -90,10 +90,7 @@ abstract class BlockSingleSlotMachine : BlockContainer(Material.IRON) {
         return this.defaultState.withProperty(FACING, placer.horizontalFacing.opposite)
     }
 
-    override fun onBlockPlacedBy(
-        worldIn: World, pos: BlockPos, state: IBlockState,
-        placer: EntityLivingBase, stack: ItemStack
-    ) {
+    override fun onBlockPlacedBy(worldIn: World, pos: BlockPos, state: IBlockState, placer: EntityLivingBase, stack: ItemStack) {
         worldIn.setBlockState(pos, state.withProperty(BlockFurnace.FACING, placer.horizontalFacing.opposite), Constants.BlockFlags.SEND_TO_CLIENTS)
     }
 
