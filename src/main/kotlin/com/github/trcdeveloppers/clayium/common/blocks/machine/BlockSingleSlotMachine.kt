@@ -64,7 +64,6 @@ abstract class BlockSingleSlotMachine : BlockContainer(Material.IRON) {
 
     override fun getExtendedState(state: IBlockState, world: IBlockAccess, pos: BlockPos): IBlockState {
         val tile = world.getTileEntity(pos) as? TileSingleSlotMachine ?: return state
-        Clayium.LOGGER.info("getExtendedState is called: $state")
 
         return (state as IExtendedBlockState)
             .withProperty(INPUT_UP, tile.inputUp)
@@ -106,25 +105,18 @@ abstract class BlockSingleSlotMachine : BlockContainer(Material.IRON) {
         hitX: Float, hitY: Float, hitZ: Float
     ): Boolean {
         if (hand == EnumHand.OFF_HAND) return false
-        if (!worldIn.isRemote) {
-            val tile = worldIn.getTileEntity(pos) as? TileSingleSlotMachine ?: return false
+        if (worldIn.isRemote) return true
 
-            when (playerIn.getHeldItem(hand).item.registryName?.path) {
-                "clay_spatula" -> worldIn.setBlockState(pos, state.withProperty(IS_PIPE, !state.getValue(IS_PIPE)))
-                else -> {
-                    tile.toggleInput(facing)
-//                    worldIn.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.DEFAULT_AND_RERENDER)
-                    worldIn.markAndNotifyBlock(pos, worldIn.getChunk(pos), state, state, Constants.BlockFlags.DEFAULT_AND_RERENDER)
-                    Clayium.LOGGER.info("AfterChange: tile upInput: ${tile.inputUp}")
-                }
+        val tile = worldIn.getTileEntity(pos) as? TileSingleSlotMachine ?: return false
+
+        when (playerIn.getHeldItem(hand).item.registryName?.path) {
+            "clay_spatula" -> worldIn.setBlockState(pos, state.withProperty(IS_PIPE, !state.getValue(IS_PIPE)))
+            else -> {
+                tile.toggleInput(facing)
+                worldIn.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.DEFAULT)
             }
-
-            return true
-        } else {
-            val tile = worldIn.getTileEntity(pos) as? TileSingleSlotMachine ?: return false
-            Clayium.LOGGER.info("tile upInput: ${tile.inputUp}")
-            return true
         }
+        return true
     }
 
     override fun getRenderType(state: IBlockState): EnumBlockRenderType {

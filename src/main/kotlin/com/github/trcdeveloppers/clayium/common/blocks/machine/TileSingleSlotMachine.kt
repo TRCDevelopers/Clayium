@@ -73,7 +73,9 @@ class TileSingleSlotMachine : TileEntity() {
 
     override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
         this.readFromNBT(pkt.nbtCompound)
-        Clayium.LOGGER.info("onDataPacket is called: ${this.inputUp}")
+        if (this.world.isRemote) {
+            this.world.markBlockRangeForRenderUpdate(pos, pos)
+        }
     }
 
     fun toggleInput(side: EnumFacing) {
