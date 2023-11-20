@@ -1,7 +1,7 @@
 package com.github.trcdeveloppers.clayium.client.model
 
 import com.github.trcdeveloppers.clayium.common.blocks.machine.BlockSingleSlotMachine
-import com.github.trcdeveloppers.clayium.common.blocks.machine.EnumImportMode
+import com.github.trcdeveloppers.clayium.common.blocks.machine.EnumIoMode
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.*
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
@@ -82,9 +82,9 @@ class ClayContainerModel(
 
             // Import, Import CE
             when (extState.getValue(BlockSingleSlotMachine.getInputState(side))) {
-                EnumImportMode.NORMAL -> quads.add(this.getFaceQuad(side, this.import))
-                EnumImportMode.CE -> quads.add(this.getFaceQuad(side, this.importEnergy))
-                EnumImportMode.NONE, null -> {}
+                EnumIoMode.NORMAL -> quads.add(this.getFaceQuad(side, this.import))
+                EnumIoMode.CE -> quads.add(this.getFaceQuad(side, this.importEnergy))
+                EnumIoMode.NONE, null -> {}
             }
 
             // Export

@@ -1,9 +1,9 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine
 
+import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.common.blocks.UnlistedBoolean
 import com.github.trcdeveloppers.clayium.common.blocks.UnlistedImportMode
 import net.minecraft.block.BlockContainer
-import net.minecraft.block.BlockFurnace
 import net.minecraft.block.BlockHorizontal
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -64,6 +64,7 @@ abstract class BlockSingleSlotMachine : BlockContainer(Material.IRON) {
 
     override fun getExtendedState(state: IBlockState, world: IBlockAccess, pos: BlockPos): IBlockState {
         val tile = world.getTileEntity(pos) as? TileSingleSlotMachine ?: return state
+        Clayium.LOGGER.info("getExtendedState is called: $state")
 
         return (state as IExtendedBlockState)
             .withProperty(INPUT_UP, tile.inputUp)
@@ -79,6 +80,9 @@ abstract class BlockSingleSlotMachine : BlockContainer(Material.IRON) {
             .withProperty(OUTPUT_SOUTH, tile.outputSouth)
             .withProperty(OUTPUT_EAST, tile.outputEast)
             .withProperty(OUTPUT_WEST, tile.outputWest)
+
+//            .withProperty(IS_PIPE, state.getValue(IS_PIPE))
+//            .withProperty(FACING, state.getValue(FACING))
     }
 
     override fun getStateForPlacement(
@@ -91,7 +95,7 @@ abstract class BlockSingleSlotMachine : BlockContainer(Material.IRON) {
     }
 
     override fun onBlockPlacedBy(worldIn: World, pos: BlockPos, state: IBlockState, placer: EntityLivingBase, stack: ItemStack) {
-        worldIn.setBlockState(pos, state.withProperty(BlockFurnace.FACING, placer.horizontalFacing.opposite), Constants.BlockFlags.SEND_TO_CLIENTS)
+        worldIn.setBlockState(pos, state.withProperty(FACING, placer.horizontalFacing.opposite))
     }
 
     override fun onBlockActivated(
@@ -101,14 +105,26 @@ abstract class BlockSingleSlotMachine : BlockContainer(Material.IRON) {
         facing: EnumFacing,
         hitX: Float, hitY: Float, hitZ: Float
     ): Boolean {
-        if (!worldIn.isRemote) return true
-        val tile = worldIn.getTileEntity(pos) as? TileSingleSlotMachine ?: return false
+        if (hand == EnumHand.OFF_HAND) return false
+        if (!worldIn.isRemote) {
+            val tile = worldIn.getTileEntity(pos) as? TileSingleSlotMachine ?: return false
 
-        tile.toggleInput(facing)
+            when (playerIn.getHeldItem(hand).item.registryName?.path) {
+                "clay_spatula" -> worldIn.setBlockState(pos, state.withProperty(IS_PIPE, !state.getValue(IS_PIPE)))
+                else -> {
+                    tile.toggleInput(facing)
+//                    worldIn.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.DEFAULT_AND_RERENDER)
+                    worldIn.markAndNotifyBlock(pos, worldIn.getChunk(pos), state, state, Constants.BlockFlags.DEFAULT_AND_RERENDER)
+                    Clayium.LOGGER.info("AfterChange: tile upInput: ${tile.inputUp}")
+                }
+            }
 
-        worldIn.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.DEFAULT)
-
-        return true
+            return true
+        } else {
+            val tile = worldIn.getTileEntity(pos) as? TileSingleSlotMachine ?: return false
+            Clayium.LOGGER.info("tile upInput: ${tile.inputUp}")
+            return true
+        }
     }
 
     override fun getRenderType(state: IBlockState): EnumBlockRenderType {
@@ -126,19 +142,18 @@ abstract class BlockSingleSlotMachine : BlockContainer(Material.IRON) {
         @JvmStatic
         val FACING: PropertyDirection = BlockHorizontal.FACING
 
-
         @JvmStatic
-        val INPUT_UP: IUnlistedProperty<EnumImportMode> = UnlistedImportMode("input_up")
+        val INPUT_UP: IUnlistedProperty<EnumIoMode> = UnlistedImportMode("input_up")
         @JvmStatic
-        val INPUT_DOWN: IUnlistedProperty<EnumImportMode> = UnlistedImportMode("input_down")
+        val INPUT_DOWN: IUnlistedProperty<EnumIoMode> = UnlistedImportMode("input_down")
         @JvmStatic
-        val INPUT_NORTH: IUnlistedProperty<EnumImportMode> = UnlistedImportMode("input_north")
+        val INPUT_NORTH: IUnlistedProperty<EnumIoMode> = UnlistedImportMode("input_north")
         @JvmStatic
-        val INPUT_SOUTH: IUnlistedProperty<EnumImportMode> = UnlistedImportMode("input_south")
+        val INPUT_SOUTH: IUnlistedProperty<EnumIoMode> = UnlistedImportMode("input_south")
         @JvmStatic
-        val INPUT_EAST: IUnlistedProperty<EnumImportMode> = UnlistedImportMode("input_east")
+        val INPUT_EAST: IUnlistedProperty<EnumIoMode> = UnlistedImportMode("input_east")
         @JvmStatic
-        val INPUT_WEST: IUnlistedProperty<EnumImportMode> = UnlistedImportMode("input_west")
+        val INPUT_WEST: IUnlistedProperty<EnumIoMode> = UnlistedImportMode("input_west")
 
         @JvmStatic
         val OUTPUT_UP: IUnlistedProperty<Boolean> = UnlistedBoolean("output_up")
@@ -153,7 +168,7 @@ abstract class BlockSingleSlotMachine : BlockContainer(Material.IRON) {
         @JvmStatic
         val OUTPUT_WEST: IUnlistedProperty<Boolean> = UnlistedBoolean("output_west")
 
-        fun getInputState(facing: EnumFacing): IUnlistedProperty<EnumImportMode> {
+        fun getInputState(facing: EnumFacing): IUnlistedProperty<EnumIoMode> {
             return when (facing) {
                 EnumFacing.UP -> INPUT_UP
                 EnumFacing.DOWN -> INPUT_DOWN

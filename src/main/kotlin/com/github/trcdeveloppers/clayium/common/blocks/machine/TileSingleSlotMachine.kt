@@ -1,5 +1,6 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine
 
+import com.github.trcdeveloppers.clayium.Clayium
 import net.minecraft.block.state.IBlockState
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
@@ -10,12 +11,12 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 class TileSingleSlotMachine : TileEntity() {
-    var inputUp = EnumImportMode.NONE
-    var inputDown = EnumImportMode.NONE
-    var inputNorth = EnumImportMode.NONE
-    var inputSouth = EnumImportMode.NONE
-    var inputWest = EnumImportMode.NONE
-    var inputEast = EnumImportMode.NONE
+    var inputUp = EnumIoMode.NONE
+    var inputDown = EnumIoMode.NONE
+    var inputNorth = EnumIoMode.NONE
+    var inputSouth = EnumIoMode.NONE
+    var inputWest = EnumIoMode.NONE
+    var inputEast = EnumIoMode.NONE
 
     var outputUp = false
     var outputDown = false
@@ -47,12 +48,12 @@ class TileSingleSlotMachine : TileEntity() {
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
 
-        inputUp = EnumImportMode.valueOf(compound.getString("inputUp"))
-        inputDown = EnumImportMode.valueOf(compound.getString("inputDown"))
-        inputNorth = EnumImportMode.valueOf(compound.getString("inputNorth"))
-        inputSouth = EnumImportMode.valueOf(compound.getString("inputSouth"))
-        inputWest = EnumImportMode.valueOf(compound.getString("inputWest"))
-        inputEast = EnumImportMode.valueOf(compound.getString("inputEast"))
+        inputUp = EnumIoMode.valueOf(compound.getString("inputUp"))
+        inputDown = EnumIoMode.valueOf(compound.getString("inputDown"))
+        inputNorth = EnumIoMode.valueOf(compound.getString("inputNorth"))
+        inputSouth = EnumIoMode.valueOf(compound.getString("inputSouth"))
+        inputWest = EnumIoMode.valueOf(compound.getString("inputWest"))
+        inputEast = EnumIoMode.valueOf(compound.getString("inputEast"))
 
         outputUp = compound.getBoolean("outputUp")
         outputDown = compound.getBoolean("outputDown")
@@ -72,6 +73,7 @@ class TileSingleSlotMachine : TileEntity() {
 
     override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
         this.readFromNBT(pkt.nbtCompound)
+        Clayium.LOGGER.info("onDataPacket is called: ${this.inputUp}")
     }
 
     fun toggleInput(side: EnumFacing) {

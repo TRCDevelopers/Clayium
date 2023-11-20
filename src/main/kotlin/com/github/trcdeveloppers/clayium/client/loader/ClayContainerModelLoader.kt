@@ -2,6 +2,7 @@ package com.github.trcdeveloppers.clayium.client.loader
 
 import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.client.model.ClayContainerModel
+import com.github.trcdeveloppers.clayium.client.model.ClayContainerPipeModel
 import com.github.trcdeveloppers.clayium.common.annotation.CBlock
 import com.github.trcdeveloppers.clayium.common.annotation.LoadWithCustomLoader
 import com.google.common.reflect.ClassPath
@@ -68,14 +69,17 @@ class CeContainerModelLoader : ICustomModelLoader {
         val facing = EnumFacing.byName(modelResourceLocation.getVariantValue("facing")) ?: return ModelLoaderRegistry.getMissingModel()
 
         val modelData = this.customLoaderUsers[registryName] ?: return ModelLoaderRegistry.getMissingModel()
-        return ClayContainerModel(
+
+        return if (modelResourceLocation.getVariantValue("is_pipe")?.toBoolean() == true) ClayContainerPipeModel(
+                modelData.tier
+            ) else ClayContainerModel(
             modelData.tier,
             modelData.getFaceTexture() ?: ResourceLocation("builtin/missing"),
             facing,
         )
     }
 
-    data class CModelData(
+    class CModelData(
         val tier: Int,
         private val faceTextureName: String,
     ) {
