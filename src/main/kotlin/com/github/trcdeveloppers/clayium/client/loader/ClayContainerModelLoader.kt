@@ -70,13 +70,15 @@ class CeContainerModelLoader : ICustomModelLoader {
 
         val modelData = this.customLoaderUsers[registryName] ?: return ModelLoaderRegistry.getMissingModel()
 
-        return if (modelResourceLocation.getVariantValue("is_pipe")?.toBoolean() == true) ClayContainerPipeModel(
-                modelData.tier
-            ) else ClayContainerModel(
-            modelData.tier,
-            modelData.getFaceTexture() ?: ResourceLocation("builtin/missing"),
-            facing,
-        )
+        return if (modelResourceLocation.getVariantValue("is_pipe")?.toBoolean() == true) {
+            ClayContainerPipeModel(modelData.tier)
+        } else {
+            ClayContainerModel(
+                modelData.tier,
+                modelData.getFaceTexture() ?: ResourceLocation("builtin/missing"),
+                facing,
+            )
+        }
     }
 
     class CModelData(

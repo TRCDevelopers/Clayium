@@ -11,6 +11,7 @@ import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.properties.PropertyDirection
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -18,6 +19,7 @@ import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
@@ -66,22 +68,19 @@ abstract class BlockSingleSlotMachine : BlockContainer(Material.IRON) {
         val tile = world.getTileEntity(pos) as? TileSingleSlotMachine ?: return state
 
         return (state as IExtendedBlockState)
-            .withProperty(INPUT_UP, tile.inputUp)
-            .withProperty(INPUT_DOWN, tile.inputDown)
-            .withProperty(INPUT_NORTH, tile.inputNorth)
-            .withProperty(INPUT_SOUTH, tile.inputSouth)
-            .withProperty(INPUT_EAST, tile.inputEast)
-            .withProperty(INPUT_WEST, tile.inputWest)
+            .withProperty(INPUT_UP, tile.getInput(EnumFacing.UP))
+            .withProperty(INPUT_DOWN, tile.getInput(EnumFacing.DOWN))
+            .withProperty(INPUT_NORTH, tile.getInput(EnumFacing.NORTH))
+            .withProperty(INPUT_SOUTH, tile.getInput(EnumFacing.SOUTH))
+            .withProperty(INPUT_EAST, tile.getInput(EnumFacing.EAST))
+            .withProperty(INPUT_WEST, tile.getInput(EnumFacing.WEST))
 
-            .withProperty(OUTPUT_UP, tile.outputUp)
-            .withProperty(OUTPUT_DOWN, tile.outputDown)
-            .withProperty(OUTPUT_NORTH, tile.outputNorth)
-            .withProperty(OUTPUT_SOUTH, tile.outputSouth)
-            .withProperty(OUTPUT_EAST, tile.outputEast)
-            .withProperty(OUTPUT_WEST, tile.outputWest)
-
-//            .withProperty(IS_PIPE, state.getValue(IS_PIPE))
-//            .withProperty(FACING, state.getValue(FACING))
+            .withProperty(OUTPUT_UP, tile.getOutput(EnumFacing.UP))
+            .withProperty(OUTPUT_DOWN, tile.getOutput(EnumFacing.DOWN))
+            .withProperty(OUTPUT_NORTH, tile.getOutput(EnumFacing.NORTH))
+            .withProperty(OUTPUT_SOUTH, tile.getOutput(EnumFacing.SOUTH))
+            .withProperty(OUTPUT_EAST, tile.getOutput(EnumFacing.EAST))
+            .withProperty(OUTPUT_WEST, tile.getOutput(EnumFacing.WEST))
     }
 
     override fun getStateForPlacement(
@@ -119,6 +118,44 @@ abstract class BlockSingleSlotMachine : BlockContainer(Material.IRON) {
         return true
     }
 
+    override fun isFullBlock(state: IBlockState): Boolean {
+        return !state.getValue(IS_PIPE)
+    }
+
+    override fun isFullCube(state: IBlockState): Boolean {
+        return !state.getValue(IS_PIPE)
+    }
+
+    override fun isOpaqueCube(state: IBlockState): Boolean {
+        return !state.getValue(IS_PIPE)
+    }
+
+    override fun addCollisionBoxToList(
+        state: IBlockState,
+        worldIn: World,
+        pos: BlockPos,
+        entityBox: AxisAlignedBB,
+        collidingBoxes: MutableList<AxisAlignedBB>,
+        entityIn: Entity?,
+        isActualState: Boolean
+    ) {
+        super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState)
+    }
+
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
+        return if (state.getValue(IS_PIPE)) {
+            PIPE_CENTER_AABB
+        } else {
+            FULL_BLOCK_AABB
+        }
+    }
+
+    protected fun canConnectTo(world: IBlockAccess, pos: BlockPos, facing: EnumFacing): Boolean {
+        val tile = world.getTileEntity(pos) as? TileSingleSlotMachine ?: return false
+        //todo:
+        return false
+    }
+
     override fun getRenderType(state: IBlockState): EnumBlockRenderType {
         return EnumBlockRenderType.MODEL
     }
@@ -128,6 +165,9 @@ abstract class BlockSingleSlotMachine : BlockContainer(Material.IRON) {
     }
 
     companion object {
+
+        val PIPE_CENTER_AABB = AxisAlignedBB(0.25, 0.25, 0.25, 0.75, 0.75, 0.75)
+
         @JvmStatic
         val IS_PIPE: PropertyBool = PropertyBool.create("is_pipe")
 

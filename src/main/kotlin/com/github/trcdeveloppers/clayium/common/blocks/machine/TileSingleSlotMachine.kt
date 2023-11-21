@@ -11,56 +11,27 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 class TileSingleSlotMachine : TileEntity() {
-    var inputUp = EnumIoMode.NONE
-    var inputDown = EnumIoMode.NONE
-    var inputNorth = EnumIoMode.NONE
-    var inputSouth = EnumIoMode.NONE
-    var inputWest = EnumIoMode.NONE
-    var inputEast = EnumIoMode.NONE
 
-    var outputUp = false
-    var outputDown = false
-    var outputNorth = false
-    var outputSouth = false
-    var outputWest = false
-    var outputEast = false
+    private val inputs = Array(6) { EnumIoMode.NONE }
+    private val outputs = Array(6) { false }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         super.writeToNBT(compound)
 
-        compound.setString("inputUp", inputUp.name)
-        compound.setString("inputDown", inputDown.name)
-        compound.setString("inputNorth", inputNorth.name)
-        compound.setString("inputSouth", inputSouth.name)
-        compound.setString("inputWest", inputWest.name)
-        compound.setString("inputEast", inputEast.name)
-
-        compound.setBoolean("outputUp", outputUp)
-        compound.setBoolean("outputDown", outputDown)
-        compound.setBoolean("outputNorth", outputNorth)
-        compound.setBoolean("outputSouth", outputSouth)
-        compound.setBoolean("outputWest", outputWest)
-        compound.setBoolean("outputEast", outputEast)
+        for (side in EnumFacing.entries) {
+            compound.setInteger("input${side.name}", inputs[side.index].index)
+            compound.setBoolean("output${side.name}", outputs[side.index])
+        }
 
         return compound
     }
 
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
-
-        inputUp = EnumIoMode.valueOf(compound.getString("inputUp"))
-        inputDown = EnumIoMode.valueOf(compound.getString("inputDown"))
-        inputNorth = EnumIoMode.valueOf(compound.getString("inputNorth"))
-        inputSouth = EnumIoMode.valueOf(compound.getString("inputSouth"))
-        inputWest = EnumIoMode.valueOf(compound.getString("inputWest"))
-        inputEast = EnumIoMode.valueOf(compound.getString("inputEast"))
-
-        outputUp = compound.getBoolean("outputUp")
-        outputDown = compound.getBoolean("outputDown")
-        outputNorth = compound.getBoolean("outputNorth")
-        outputSouth = compound.getBoolean("outputSouth")
-        outputWest = compound.getBoolean("outputWest")
-        outputEast = compound.getBoolean("outputEast")
+        for (side in EnumFacing.entries) {
+            inputs[side.index] = EnumIoMode.byIndex(compound.getInteger("input${side.name}"))
+            outputs[side.index] = compound.getBoolean("output${side.name}")
+        }
     }
 
     override fun getUpdateTag(): NBTTagCompound {
@@ -78,27 +49,21 @@ class TileSingleSlotMachine : TileEntity() {
         }
     }
 
+    fun getInput(side: EnumFacing): EnumIoMode {
+        return inputs[side.index]
+    }
+
+    fun getOutput(side: EnumFacing): Boolean {
+        return outputs[side.index]
+    }
+
     fun toggleInput(side: EnumFacing) {
-        when (side) {
-            EnumFacing.UP -> inputUp = inputUp.next
-            EnumFacing.DOWN -> inputDown = inputDown.next
-            EnumFacing.NORTH -> inputNorth = inputNorth.next
-            EnumFacing.SOUTH -> inputSouth = inputSouth.next
-            EnumFacing.WEST -> inputWest = inputWest.next
-            EnumFacing.EAST -> inputEast = inputEast.next
-        }
+        inputs[side.index] = inputs[side.index].next
         markDirty()
     }
 
     fun toggleOutput(side: EnumFacing) {
-        when (side) {
-            EnumFacing.UP -> outputUp = !outputUp
-            EnumFacing.DOWN -> outputDown = !outputDown
-            EnumFacing.NORTH -> outputNorth = !outputNorth
-            EnumFacing.SOUTH -> outputSouth = !outputSouth
-            EnumFacing.WEST -> outputWest = !outputWest
-            EnumFacing.EAST -> outputEast = !outputEast
-        }
+        outputs[side.index] = !outputs[side.index]
         markDirty()
     }
 
