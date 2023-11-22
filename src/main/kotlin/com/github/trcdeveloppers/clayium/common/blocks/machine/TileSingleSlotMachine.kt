@@ -1,6 +1,5 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine
 
-import com.github.trcdeveloppers.clayium.Clayium
 import net.minecraft.block.state.IBlockState
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
@@ -19,8 +18,8 @@ class TileSingleSlotMachine : TileEntity() {
         super.writeToNBT(compound)
 
         for (side in EnumFacing.entries) {
-            compound.setInteger("input${side.name}", inputs[side.index].index)
-            compound.setBoolean("output${side.name}", outputs[side.index])
+            compound.setInteger("input_${side.name2}", inputs[side.index].index)
+            compound.setBoolean("output_${side.name2}", outputs[side.index])
         }
 
         return compound
@@ -29,8 +28,8 @@ class TileSingleSlotMachine : TileEntity() {
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
         for (side in EnumFacing.entries) {
-            inputs[side.index] = EnumIoMode.byIndex(compound.getInteger("input${side.name}"))
-            outputs[side.index] = compound.getBoolean("output${side.name}")
+            inputs[side.index] = EnumIoMode.byIndex(compound.getInteger("input_${side.name2}"))
+            outputs[side.index] = compound.getBoolean("output_${side.name2}")
         }
     }
 
