@@ -22,7 +22,10 @@ import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.common.property.IUnlistedProperty
 
 // This class does not extend BlockSingleSlotMachine because it does not have CE input, or Facing.
-class ClayBuffer private constructor(val tier: Int, registryName: String) : BlockContainer(Material.IRON) {
+class ClayBuffer private constructor(
+    val tier: Int,
+    registryName: String
+) : BlockContainer(Material.IRON) {
 
     init {
         this.creativeTab = Clayium.CreativeTab
@@ -58,7 +61,7 @@ class ClayBuffer private constructor(val tier: Int, registryName: String) : Bloc
     }
 
     override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity? {
-        return null
+        return TileClayBuffer(tier)
     }
 
     override fun getRenderLayer(): BlockRenderLayer {
