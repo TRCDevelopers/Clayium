@@ -1,17 +1,19 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable
 
+import com.github.trcdeveloppers.clayium.common.blocks.machine.ContainerClayium
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.inventory.Container
 import net.minecraft.inventory.IContainerListener
 import net.minecraft.inventory.IInventory
-import net.minecraft.inventory.Slot
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.SlotItemHandler
 
-class ClayWorktableContainer(playerInv: IInventory, private val tile: TileClayWorkTable) : Container() {
+class ClayWorktableContainer(
+    playerInv: IInventory,
+    private val tile: TileClayWorkTable,
+) : ContainerClayium(playerInv) {
     private var lastCraftingProgress = 0
     private var lastRequiredProgress = 0
 
@@ -50,45 +52,10 @@ class ClayWorktableContainer(playerInv: IInventory, private val tile: TileClayWo
                 tile.markDirty()
             }
         })
-        for (i in 0..2) {
-            for (j in 0..8) {
-                addSlotToContainer(Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18))
-            }
-        }
-        for (i in 0..8) {
-            addSlotToContainer(Slot(playerInv, i, 8 + i * 18, 142))
-        }
     }
 
     override fun canInteractWith(playerIn: EntityPlayer): Boolean {
         return !playerIn.isSpectator
-    }
-
-    override fun transferStackInSlot(playerIn: EntityPlayer, index: Int): ItemStack {
-        var itemstack = ItemStack.EMPTY
-        val slot = inventorySlots[index]
-        if (slot != null && slot.hasStack) {
-            val itemstack1 = slot.stack
-            itemstack = itemstack1.copy()
-            val containerSlots = inventorySlots.size - playerIn.inventory.mainInventory.size
-            if (index < containerSlots) {
-                if (!mergeItemStack(itemstack1, containerSlots, inventorySlots.size, true)) {
-                    return ItemStack.EMPTY
-                }
-            } else if (!mergeItemStack(itemstack1, 0, containerSlots, false)) {
-                return ItemStack.EMPTY
-            }
-            if (itemstack1.count == 0) {
-                slot.putStack(ItemStack.EMPTY)
-            } else {
-                slot.onSlotChanged()
-            }
-            if (itemstack1.count == itemstack.count) {
-                return ItemStack.EMPTY
-            }
-            slot.onTake(playerIn, itemstack1)
-        }
-        return itemstack
     }
 
     override fun addListener(listener: IContainerListener) {
