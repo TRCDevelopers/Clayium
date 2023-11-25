@@ -11,9 +11,12 @@ import net.minecraft.block.properties.IProperty
 import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.EntityLivingBase
+import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumBlockRenderType
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
@@ -58,6 +61,13 @@ class ClayBuffer private constructor(
         val tile = world.getTileEntity(pos) as? TileClayBuffer ?: return state
 
         return (state as IExtendedBlockState)
+    }
+
+    override fun onBlockPlacedBy(
+        worldIn: World, pos: BlockPos, state: IBlockState,
+        placer: EntityLivingBase, stack: ItemStack
+    ) {
+        (worldIn.getTileEntity(pos) as? TileClayBuffer)?.toggleInput(EnumFacing.getDirectionFromEntityLiving(pos, placer).opposite)
     }
 
     override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity? {
