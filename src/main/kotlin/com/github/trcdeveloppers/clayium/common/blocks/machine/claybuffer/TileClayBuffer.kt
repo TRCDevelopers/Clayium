@@ -16,7 +16,7 @@ import net.minecraftforge.items.ItemStackHandler
 import java.lang.IllegalArgumentException
 
 class TileClayBuffer(
-    tier: Int,
+    val tier: Int,
 ) : TileEntity(), ITickable {
 
     private val coolDown = TierConstants.getTransferCooldon(tier)
