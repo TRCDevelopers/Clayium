@@ -2,6 +2,7 @@ package com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer
 
 import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.Clayium.Companion.MOD_ID
+import com.github.trcdeveloppers.clayium.common.GuiHandler
 import com.github.trcdeveloppers.clayium.common.blocks.UnlistedBoolean
 import net.minecraft.block.Block
 import net.minecraft.block.BlockContainer
@@ -12,11 +13,13 @@ import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
@@ -25,7 +28,7 @@ import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.common.property.IUnlistedProperty
 
 // This class does not extend BlockSingleSlotMachine because it does not have CE input, or Facing.
-class ClayBuffer private constructor(
+class BlockClayBuffer private constructor(
     val tier: Int,
     registryName: String
 ) : BlockContainer(Material.IRON) {
@@ -67,10 +70,26 @@ class ClayBuffer private constructor(
         worldIn: World, pos: BlockPos, state: IBlockState,
         placer: EntityLivingBase, stack: ItemStack
     ) {
-        (worldIn.getTileEntity(pos) as? TileClayBuffer)?.toggleInput(EnumFacing.getDirectionFromEntityLiving(pos, placer).opposite)
+        (worldIn.getTileEntity(pos) as? TileClayBuffer)?.toggleInput(
+            EnumFacing.getDirectionFromEntityLiving(pos, placer).opposite
+        )
     }
 
-    override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity? {
+    override fun onBlockActivated(
+        worldIn: World,
+        pos: BlockPos, state: IBlockState,
+        playerIn: EntityPlayer, hand: EnumHand,
+        facing: EnumFacing,
+        hitX: Float, hitY: Float, hitZ: Float
+    ): Boolean {
+        if (worldIn.isRemote) return true
+
+        val tile = worldIn.getTileEntity(pos) as? TileClayBuffer ?: return false
+        playerIn.openGui(Clayium.INSTANCE, GuiHandler.CLAY_BUFFER, worldIn, pos.x, pos.y, pos.z)
+        return true
+    }
+
+    override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity {
         return TileClayBuffer(tier)
     }
 
@@ -107,9 +126,8 @@ class ClayBuffer private constructor(
             val blocks: MutableMap<String, Block> = HashMap()
             for (tier in 4..13) {
                 val registryName = "clay_buffer_$tier"
-                blocks[registryName] = ClayBuffer(tier, registryName)
+                blocks[registryName] = BlockClayBuffer(tier, registryName)
             }
-            blocks["clay_buffer_4"] = ClayBuffer(4, "clay_buffer_4")
             return blocks
         }
     }

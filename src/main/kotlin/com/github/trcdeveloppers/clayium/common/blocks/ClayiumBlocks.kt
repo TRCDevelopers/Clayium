@@ -3,6 +3,7 @@ package com.github.trcdeveloppers.clayium.common.blocks
 import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.Clayium.Companion.MOD_ID
 import com.github.trcdeveloppers.clayium.common.annotation.CBlock
+import com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer.BlockClayBuffer
 import com.google.common.reflect.ClassPath
 import net.minecraft.block.Block
 import net.minecraft.util.ResourceLocation
@@ -48,7 +49,7 @@ object ClayiumBlocks {
                 }
             }
         blocks.putAll(CompressedClay.createBlocks())
-//        blocks.putAll(ClayBuffer.createBlocks())
+        blocks.putAll(BlockClayBuffer.createBlocks())
         blocks.values.forEach(event.registry::register)
     }
 
