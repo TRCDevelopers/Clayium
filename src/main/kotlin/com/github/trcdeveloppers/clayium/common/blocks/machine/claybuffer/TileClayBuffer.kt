@@ -114,7 +114,7 @@ class TileClayBuffer(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : Any?> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        return if (capability === ITEM_HANDLER_CAPABILITY) ITEM_HANDLER_CAPABILITY as T else super.getCapability(capability, facing)
+        return if (capability === ITEM_HANDLER_CAPABILITY) handler as T else super.getCapability(capability, facing)
     }
 
     override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean {
