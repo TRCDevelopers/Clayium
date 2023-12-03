@@ -8,17 +8,19 @@ import net.minecraft.item.ItemStack
 
 abstract class ContainerClayium(
     playerInv: IInventory,
+    playerInvOffsetY: Int,
 ) : Container() {
 
     init {
         // add player inventory slots
         for (i in 0..2) {
             for (j in 0..8) {
-                this.addSlotToContainer(Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18))
+                this.addSlotToContainer(Slot(playerInv, j + i * 9 + 9, 8 + j * 18, playerInvOffsetY + i * 18))
             }
         }
+        // hot bar
         for (i in 0..8) {
-            this.addSlotToContainer(Slot(playerInv, i, 8 + i * 18, 142))
+            this.addSlotToContainer(Slot(playerInv, i, 8 + i * 18, playerInvOffsetY + 58))
         }
     }
 

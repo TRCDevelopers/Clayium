@@ -13,7 +13,7 @@ import net.minecraftforge.items.SlotItemHandler
 class ClayWorktableContainer(
     playerInv: IInventory,
     private val tile: TileClayWorkTable,
-) : ContainerClayium(playerInv) {
+) : ContainerClayium(playerInv, 84) {
     private var lastCraftingProgress = 0
     private var lastRequiredProgress = 0
 

@@ -2,7 +2,7 @@ package com.github.trcdeveloppers.clayium.common
 
 import com.github.trcdeveloppers.clayium.client.gui.GuiClayBuffer
 import com.github.trcdeveloppers.clayium.client.gui.GuiClayWorkTable
-import com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer.ClayBufferContainer
+import com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer.ContainerClayBuffer
 import com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable.ClayWorktableContainer
 import com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
@@ -16,7 +16,7 @@ class GuiHandler : IGuiHandler {
         val tile = world.getTileEntity(BlockPos(x, y, z)) ?: return null
         return when (id) {
             CLAY_WORK_TABLE -> ClayWorktableContainer(player.inventory, tile as TileClayWorkTable)
-            CLAY_BUFFER -> ClayBufferContainer((tile as TileClayBuffer).tier, player.inventory, tile)
+            CLAY_BUFFER -> ContainerClayBuffer((tile as TileClayBuffer).tier, player.inventory, tile)
             else -> null
         }
     }
