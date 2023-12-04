@@ -9,7 +9,7 @@ class ContainerClayBuffer(
     tier: Int,
     playerInv: IInventory,
     private val tile: TileClayBuffer,
-) : ContainerClayium(playerInv, PLAYER_INV_OFFSET_Y) {
+) : ContainerClayium(playerInv, 18 + tile.inventoryY * 18 + 12) {
 
     init {
         val machineGuiSizeX = 176
@@ -21,9 +21,5 @@ class ContainerClayBuffer(
                 this.addSlotToContainer(SlotItemHandler(itemHandler, i + j * tile.inventoryX, i * 18 + (machineGuiSizeX - 18 * tile.inventoryX) / 2, j * 18 + 18))
             }
         }
-    }
-
-    companion object {
-        const val PLAYER_INV_OFFSET_Y: Int = 48
     }
 }
