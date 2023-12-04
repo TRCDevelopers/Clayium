@@ -1,6 +1,7 @@
 package com.github.trcdeveloppers.clayium.client
 
 import com.github.trcdeveloppers.clayium.client.loader.CeContainerModelLoader
+import com.github.trcdeveloppers.clayium.client.loader.ClayBufferModelLoader
 import com.github.trcdeveloppers.clayium.common.ClayiumCommonProxy
 import com.github.trcdeveloppers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdeveloppers.clayium.common.items.ClayiumItems
@@ -20,6 +21,7 @@ class ClayiumClientProxy : ClayiumCommonProxy() {
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
         ModelLoaderRegistry.registerLoader(CeContainerModelLoader())
+        ModelLoaderRegistry.registerLoader(ClayBufferModelLoader())
     }
 
     override fun init(event: FMLInitializationEvent) {
