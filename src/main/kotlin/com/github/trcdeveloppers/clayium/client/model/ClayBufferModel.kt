@@ -1,5 +1,6 @@
 package com.github.trcdeveloppers.clayium.client.model
 
+import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer.BlockClayBuffer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -12,7 +13,6 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.IModel
 import net.minecraftforge.common.model.IModelState
 import net.minecraftforge.common.property.IExtendedBlockState
-import java.util.function.Function
 
 class ClayBufferModel(
     private val tier: Int,
@@ -20,7 +20,7 @@ class ClayBufferModel(
 
     override fun getTextures(): Collection<ResourceLocation> {
         return listOf(
-            ResourceLocation("clayium:blocks/machinehull-$tier"),
+            ResourceLocation("clayium:blocks/machinehull-${tier-1}"),
             ResourceLocation("clayium:blocks/import"),
             ResourceLocation("clayium:blocks/export"),
         )
@@ -29,17 +29,17 @@ class ClayBufferModel(
     override fun bake(
         state: IModelState,
         format: VertexFormat,
-        bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>
+        bakedTextureGetter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>
     ): IBakedModel {
         return ClayBufferBakedModel(bakedTextureGetter, tier)
     }
 
     private class ClayBufferBakedModel(
-        bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>,
+        bakedTextureGetter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>,
         tier: Int,
     ) : ClayiumBakedModel() {
 
-        private val machineHull = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/machinehull-$tier"))
+        private val machineHull = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/machinehull-${tier-1}"))
         private val import = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/import"))
         private val export = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/export"))
 
@@ -61,20 +61,21 @@ class ClayBufferModel(
             val extState = state as IExtendedBlockState
             val quads = mutableListOf<BakedQuad>()
 
+            Clayium.LOGGER.info("Getting quads for $side, $extState, ${extState.getValue(BlockClayBuffer.INPUTS[side.index])}")
+
             quads.add(this.baseQuads.getValue(side))
 
             // Import
-            if (extState.getValue(BlockClayBuffer.getInputProperty(side))) {
+            if (extState.getValue(BlockClayBuffer.INPUTS[side.index])) {
                 quads.add(this.getFaceQuad(side, this.import))
             }
 
             // Export
-            if (extState.getValue(BlockClayBuffer.getOutputProperty(side))) {
+            if (extState.getValue(BlockClayBuffer.OUTPUTS[side.index])) {
                 quads.add(this.getFaceQuad(side, this.export))
             }
 
             return quads
         }
     }
-
 }

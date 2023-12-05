@@ -23,7 +23,7 @@ abstract class ClayiumBakedModel : IBakedModel {
         )
     }
 
-    companion object {
+    protected companion object {
         val faceBakery = FaceBakery()
     }
 }

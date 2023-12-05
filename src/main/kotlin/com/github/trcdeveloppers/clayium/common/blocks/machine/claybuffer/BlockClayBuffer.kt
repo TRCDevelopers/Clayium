@@ -27,7 +27,6 @@ import net.minecraft.world.World
 import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.common.property.IUnlistedProperty
 
-// This class does not extend BlockSingleSlotMachine because it does not have CE input, or Facing.
 class BlockClayBuffer private constructor(
     val tier: Int,
     registryName: String
@@ -64,19 +63,19 @@ class BlockClayBuffer private constructor(
         val tile = world.getTileEntity(pos) as? TileClayBuffer ?: return state
 
         return (state as IExtendedBlockState)
-            .withProperty(INPUT_UP, tile.getInput(EnumFacing.UP))
             .withProperty(INPUT_DOWN, tile.getInput(EnumFacing.DOWN))
+            .withProperty(INPUT_UP, tile.getInput(EnumFacing.UP))
             .withProperty(INPUT_NORTH, tile.getInput(EnumFacing.NORTH))
             .withProperty(INPUT_SOUTH, tile.getInput(EnumFacing.SOUTH))
-            .withProperty(INPUT_EAST, tile.getInput(EnumFacing.EAST))
             .withProperty(INPUT_WEST, tile.getInput(EnumFacing.WEST))
+            .withProperty(INPUT_EAST, tile.getInput(EnumFacing.EAST))
 
-            .withProperty(OUTPUT_UP, tile.getOutput(EnumFacing.UP))
             .withProperty(OUTPUT_DOWN, tile.getOutput(EnumFacing.DOWN))
+            .withProperty(OUTPUT_UP, tile.getOutput(EnumFacing.UP))
             .withProperty(OUTPUT_NORTH, tile.getOutput(EnumFacing.NORTH))
             .withProperty(OUTPUT_SOUTH, tile.getOutput(EnumFacing.SOUTH))
-            .withProperty(OUTPUT_EAST, tile.getOutput(EnumFacing.EAST))
             .withProperty(OUTPUT_WEST, tile.getOutput(EnumFacing.WEST))
+            .withProperty(OUTPUT_EAST, tile.getOutput(EnumFacing.EAST))
     }
 
     override fun onBlockPlacedBy(
@@ -134,27 +133,6 @@ class BlockClayBuffer private constructor(
 
         @JvmStatic val INPUTS = arrayOf(INPUT_DOWN, INPUT_UP, INPUT_NORTH, INPUT_SOUTH, INPUT_WEST, INPUT_EAST)
         @JvmStatic val OUTPUTS = arrayOf(OUTPUT_DOWN, OUTPUT_UP, OUTPUT_NORTH, OUTPUT_SOUTH, OUTPUT_WEST, OUTPUT_EAST)
-        fun getInputProperty(facing: EnumFacing): IUnlistedProperty<Boolean> {
-            return when (facing) {
-                EnumFacing.UP -> INPUT_UP
-                EnumFacing.DOWN -> INPUT_DOWN
-                EnumFacing.NORTH -> INPUT_NORTH
-                EnumFacing.SOUTH -> INPUT_SOUTH
-                EnumFacing.EAST -> INPUT_EAST
-                EnumFacing.WEST -> INPUT_WEST
-            }
-        }
-
-        fun getOutputProperty(facing: EnumFacing): IUnlistedProperty<Boolean> {
-            return when (facing) {
-                EnumFacing.UP -> OUTPUT_UP
-                EnumFacing.DOWN -> OUTPUT_DOWN
-                EnumFacing.NORTH -> OUTPUT_NORTH
-                EnumFacing.SOUTH -> OUTPUT_SOUTH
-                EnumFacing.EAST -> OUTPUT_EAST
-                EnumFacing.WEST -> OUTPUT_WEST
-            }
-        }
 
         fun createBlocks(): Map<String, Block> {
             val blocks: MutableMap<String, Block> = HashMap()

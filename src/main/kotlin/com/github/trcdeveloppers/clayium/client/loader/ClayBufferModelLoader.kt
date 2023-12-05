@@ -15,16 +15,18 @@ class ClayBufferModelLoader : ICustomModelLoader {
     override fun onResourceManagerReload(resourceManager: IResourceManager) {}
 
     override fun accepts(modelLocation: ResourceLocation): Boolean {
-        if (!(modelLocation.namespace == Clayium.MOD_ID && modelLocation is ModelResourceLocation)) {
+        if (!(modelLocation.namespace == Clayium.MOD_ID
+                && modelLocation is ModelResourceLocation
+                && "is_pipe" in modelLocation.variant)) {
             return false
         }
         val registryName = modelLocation.path
-        println(registryName)
-        return registryName.startsWith("buffer_tier")
+        return registryName.startsWith("clay_buffer")
     }
 
     override fun loadModel(modelLocation: ResourceLocation): IModel {
         val registryName = modelLocation.path
-        return ClayBufferModel(registryName.last().digitToInt())
+        Clayium.LOGGER.info("Loading model for $modelLocation, tier: ${registryName.split("_").last().toInt()}")
+        return ClayBufferModel(registryName.split("_").last().toInt())
     }
 }

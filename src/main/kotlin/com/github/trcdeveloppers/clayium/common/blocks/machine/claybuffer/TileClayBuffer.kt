@@ -17,7 +17,7 @@ import net.minecraftforge.items.ItemStackHandler
 import java.lang.IllegalArgumentException
 
 class TileClayBuffer(
-    val tier: Int,
+    val tier: Int = 4,
 ) : TileEntity(), ITickable {
 
     val inventoryY: Int = when (tier) {
