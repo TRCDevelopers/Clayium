@@ -11,7 +11,11 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.network.IGuiHandler
 
-class GuiHandler : IGuiHandler {
+object GuiHandler : IGuiHandler {
+
+    const val CLAY_WORK_TABLE = 1
+    const val CLAY_BUFFER = 2
+
     override fun getServerGuiElement(id: Int, player: EntityPlayer, world: World, x: Int, y: Int, z: Int): Any? {
         val tile = world.getTileEntity(BlockPos(x, y, z)) ?: return null
         return when (id) {
@@ -28,10 +32,5 @@ class GuiHandler : IGuiHandler {
             CLAY_BUFFER -> GuiClayBuffer((tile as TileClayBuffer).tier, player.inventory, tile)
             else -> null
         }
-    }
-
-    companion object {
-        const val CLAY_WORK_TABLE = 1
-        const val CLAY_BUFFER = 2
     }
 }
