@@ -1,5 +1,6 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer
 
+import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.common.config.ConfigTierParameters
 import net.minecraft.block.state.IBlockState
 import net.minecraft.nbt.NBTTagCompound
@@ -17,8 +18,11 @@ import net.minecraftforge.items.ItemStackHandler
 import java.lang.IllegalArgumentException
 
 class TileClayBuffer(
-    val tier: Int = 4,
+    tier: Int = 4,
 ) : TileEntity(), ITickable {
+
+    var tier = tier
+        private set
 
     val inventoryY: Int = when (tier) {
         in 4..7 -> tier - 3
@@ -46,22 +50,22 @@ class TileClayBuffer(
     private var ticked: Int = 0
 
     override fun update() {
-        if (world.isRemote) return
-        if (ticked < transferInterval) {
-            ticked++
-            return
-        }
-
-        for (side in importingFaces) {
-            val adjustHandler = this.world.getTileEntity(this.pos.offset(side))?.getCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue
-            this.transferStack(adjustHandler, handler, 64)
-        }
-
-        for (side in exportingFaces) {
-            val adjustHandler = this.world.getTileEntity(this.pos.offset(side))?.getCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue
-            this.transferStack(handler, adjustHandler, 64)
-        }
-        ticked = 0
+//        if (world.isRemote) return
+//        if (ticked < transferInterval) {
+//            ticked++
+//            return
+//        }
+//
+//        for (side in importingFaces) {
+//            val adjustHandler = this.world.getTileEntity(this.pos.offset(side))?.getCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue
+//            this.transferStack(adjustHandler, handler, 64)
+//        }
+//
+//        for (side in exportingFaces) {
+//            val adjustHandler = this.world.getTileEntity(this.pos.offset(side))?.getCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue
+//            this.transferStack(handler, adjustHandler, 64)
+//        }
+//        ticked = 0
     }
 
     private fun transferStack(from: IItemHandler, to: IItemHandler, amount: Int) {
@@ -76,6 +80,8 @@ class TileClayBuffer(
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         super.writeToNBT(compound)
+        compound.setTag("inventory", handler.serializeNBT())
+        compound.setInteger("tier", tier)
         for (side in importingFaces) {
             compound.setBoolean("input_${side.name2}", true)
         }
@@ -87,6 +93,8 @@ class TileClayBuffer(
 
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
+        handler.deserializeNBT(compound.getCompoundTag("inventory"))
+        tier = compound.getInteger("tier")
         for (side in EnumFacing.entries) {
             if (compound.getBoolean("input_${side.name2}")) importingFaces.add(side)
             if (compound.getBoolean("output_${side.name2}")) exportingFaces.add(side)
@@ -121,12 +129,6 @@ class TileClayBuffer(
         return oldState.block != newSate.block
     }
 
-    fun getInput(side: EnumFacing): Boolean {
-        return side in importingFaces
-    }
-    fun getOutput(side: EnumFacing): Boolean {
-        return side in exportingFaces
-    }
 
     fun toggleInput(side: EnumFacing) {
         if (side in importingFaces) importingFaces.remove(side) else importingFaces.add(side)
