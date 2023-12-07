@@ -1,8 +1,7 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine
 
-import com.github.trcdeveloppers.clayium.Clayium
-import com.github.trcdeveloppers.clayium.common.blocks.UnlistedBoolean
-import com.github.trcdeveloppers.clayium.common.blocks.UnlistedImportMode
+import com.github.trcdeveloppers.clayium.common.blocks.unlistedproperty.UnlistedBoolean
+import com.github.trcdeveloppers.clayium.common.blocks.unlistedproperty.UnlistedImportMode
 import net.minecraft.block.BlockContainer
 import net.minecraft.block.BlockHorizontal
 import net.minecraft.block.SoundType

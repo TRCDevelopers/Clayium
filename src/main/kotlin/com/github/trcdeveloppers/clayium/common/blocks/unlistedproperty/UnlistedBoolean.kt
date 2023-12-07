@@ -1,4 +1,4 @@
-package com.github.trcdeveloppers.clayium.common.blocks
+package com.github.trcdeveloppers.clayium.common.blocks.unlistedproperty
 
 import net.minecraftforge.common.property.IUnlistedProperty
 

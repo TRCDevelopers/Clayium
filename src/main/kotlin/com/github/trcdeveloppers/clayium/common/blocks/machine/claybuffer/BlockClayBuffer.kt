@@ -3,7 +3,7 @@ package com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer
 import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.Clayium.Companion.MOD_ID
 import com.github.trcdeveloppers.clayium.common.GuiHandler
-import com.github.trcdeveloppers.clayium.common.blocks.UnlistedBoolean
+import com.github.trcdeveloppers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
 import net.minecraft.block.Block
 import net.minecraft.block.BlockContainer
 import net.minecraft.block.SoundType
