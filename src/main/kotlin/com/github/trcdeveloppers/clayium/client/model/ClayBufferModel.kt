@@ -1,6 +1,5 @@
 package com.github.trcdeveloppers.clayium.client.model
 
-import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer.BlockClayBuffer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -61,17 +60,15 @@ class ClayBufferModel(
             val extState = state as IExtendedBlockState
             val quads = mutableListOf<BakedQuad>()
 
-            Clayium.LOGGER.info("Getting quads for $side, $extState, ${extState.getValue(BlockClayBuffer.INPUTS[side.index])}")
-
             quads.add(this.baseQuads.getValue(side))
 
             // Import
-            if (extState.getValue(BlockClayBuffer.INPUTS[side.index])) {
+            if (extState.getValue(BlockClayBuffer.INPUTS)[side.index]) {
                 quads.add(this.getFaceQuad(side, this.import))
             }
 
             // Export
-            if (extState.getValue(BlockClayBuffer.OUTPUTS[side.index])) {
+            if (extState.getValue(BlockClayBuffer.OUTPUTS)[side.index]) {
                 quads.add(this.getFaceQuad(side, this.export))
             }
 

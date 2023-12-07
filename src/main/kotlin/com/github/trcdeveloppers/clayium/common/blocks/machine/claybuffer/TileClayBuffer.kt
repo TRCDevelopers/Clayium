@@ -1,6 +1,5 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer
 
-import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.common.config.ConfigTierParameters
 import net.minecraft.block.state.IBlockState
 import net.minecraft.nbt.NBTTagCompound
@@ -48,6 +47,10 @@ class TileClayBuffer(
     private val importingFaces: MutableSet<EnumFacing> = HashSet()
     private val exportingFaces: MutableSet<EnumFacing> = HashSet()
     private var ticked: Int = 0
+
+    val inputs: BooleanArray get() = BooleanArray(6) { EnumFacing.entries[it] in importingFaces }
+    val outputs: BooleanArray get() = BooleanArray(6) { EnumFacing.entries[it] in exportingFaces }
+
 
     override fun update() {
 //        if (world.isRemote) return
@@ -128,7 +131,6 @@ class TileClayBuffer(
     override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean {
         return oldState.block != newSate.block
     }
-
 
     fun toggleInput(side: EnumFacing) {
         if (side in importingFaces) importingFaces.remove(side) else importingFaces.add(side)

@@ -22,8 +22,10 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
+import net.minecraft.world.ChunkCache
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
+import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.common.property.IUnlistedProperty
 
@@ -46,8 +48,7 @@ class BlockClayBuffer private constructor(
     override fun createBlockState(): BlockStateContainer {
         return BlockStateContainer.Builder(this)
             .add(IS_PIPE)
-            .add(INPUT_DOWN).add(INPUT_UP).add(INPUT_NORTH).add(INPUT_SOUTH).add(INPUT_WEST).add(INPUT_EAST)
-            .add(OUTPUT_DOWN).add(OUTPUT_UP).add(OUTPUT_NORTH).add(OUTPUT_SOUTH).add(OUTPUT_WEST).add(OUTPUT_EAST)
+            .add(INPUTS).add(OUTPUTS)
             .build()
     }
 
@@ -60,22 +61,21 @@ class BlockClayBuffer private constructor(
     }
 
     override fun getExtendedState(state: IBlockState, world: IBlockAccess, pos: BlockPos): IBlockState {
-        val tile = world.getTileEntity(pos) as? TileClayBuffer ?: return state
+        val tile = if (world is ChunkCache) {
+            world.getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK)
+        } else {
+            world.getTileEntity(pos)
+        } as? TileClayBuffer
 
-        return (state as IExtendedBlockState)
-            .withProperty(INPUT_DOWN, tile.getInput(EnumFacing.DOWN))
-            .withProperty(INPUT_UP, tile.getInput(EnumFacing.UP))
-            .withProperty(INPUT_NORTH, tile.getInput(EnumFacing.NORTH))
-            .withProperty(INPUT_SOUTH, tile.getInput(EnumFacing.SOUTH))
-            .withProperty(INPUT_WEST, tile.getInput(EnumFacing.WEST))
-            .withProperty(INPUT_EAST, tile.getInput(EnumFacing.EAST))
-
-            .withProperty(OUTPUT_DOWN, tile.getOutput(EnumFacing.DOWN))
-            .withProperty(OUTPUT_UP, tile.getOutput(EnumFacing.UP))
-            .withProperty(OUTPUT_NORTH, tile.getOutput(EnumFacing.NORTH))
-            .withProperty(OUTPUT_SOUTH, tile.getOutput(EnumFacing.SOUTH))
-            .withProperty(OUTPUT_WEST, tile.getOutput(EnumFacing.WEST))
-            .withProperty(OUTPUT_EAST, tile.getOutput(EnumFacing.EAST))
+        return if (tile == null) {
+             (state as IExtendedBlockState)
+                 .withProperty(INPUTS, BooleanArray(6))
+                 .withProperty(OUTPUTS, BooleanArray(6))
+        } else {
+             (state as IExtendedBlockState)
+                 .withProperty(INPUTS, tile.inputs)
+                 .withProperty(OUTPUTS, tile.outputs)
+        }
     }
 
     override fun onBlockPlacedBy(
@@ -115,24 +115,10 @@ class BlockClayBuffer private constructor(
 
     companion object {
 
-        @JvmStatic val IS_PIPE: IProperty<Boolean> = PropertyBool.create("is_pipe")
+        val IS_PIPE: IProperty<Boolean> = PropertyBool.create("is_pipe")
 
-        @JvmStatic val INPUT_DOWN: IUnlistedProperty<Boolean> = UnlistedBoolean("input_down")
-        @JvmStatic val INPUT_UP: IUnlistedProperty<Boolean> = UnlistedBoolean("input_up")
-        @JvmStatic val INPUT_NORTH: IUnlistedProperty<Boolean> = UnlistedBoolean("input_north")
-        @JvmStatic val INPUT_SOUTH: IUnlistedProperty<Boolean> = UnlistedBoolean("input_south")
-        @JvmStatic val INPUT_WEST: IUnlistedProperty<Boolean> = UnlistedBoolean("input_west")
-        @JvmStatic val INPUT_EAST: IUnlistedProperty<Boolean> = UnlistedBoolean("input_east")
-
-        @JvmStatic val OUTPUT_DOWN: IUnlistedProperty<Boolean> = UnlistedBoolean("output_down")
-        @JvmStatic val OUTPUT_UP: IUnlistedProperty<Boolean> = UnlistedBoolean("output_up")
-        @JvmStatic val OUTPUT_NORTH: IUnlistedProperty<Boolean> = UnlistedBoolean("output_north")
-        @JvmStatic val OUTPUT_SOUTH: IUnlistedProperty<Boolean> = UnlistedBoolean("output_south")
-        @JvmStatic val OUTPUT_WEST: IUnlistedProperty<Boolean> = UnlistedBoolean("output_west")
-        @JvmStatic val OUTPUT_EAST: IUnlistedProperty<Boolean> = UnlistedBoolean("output_east")
-
-        @JvmStatic val INPUTS = arrayOf(INPUT_DOWN, INPUT_UP, INPUT_NORTH, INPUT_SOUTH, INPUT_WEST, INPUT_EAST)
-        @JvmStatic val OUTPUTS = arrayOf(OUTPUT_DOWN, OUTPUT_UP, OUTPUT_NORTH, OUTPUT_SOUTH, OUTPUT_WEST, OUTPUT_EAST)
+        val INPUTS: IUnlistedProperty<BooleanArray> = UnlistedBooleanArray("input_conditions")
+        val OUTPUTS: IUnlistedProperty<BooleanArray> = UnlistedBooleanArray("output_conditions")
 
         fun createBlocks(): Map<String, Block> {
             val blocks: MutableMap<String, Block> = HashMap()
