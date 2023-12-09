@@ -4,6 +4,8 @@ import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.Clayium.Companion.MOD_ID
 import com.github.trcdeveloppers.clayium.common.GuiHandler
 import com.github.trcdeveloppers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
+import com.github.trcdeveloppers.clayium.common.interfaces.IShiftRightClickable
+import com.github.trcdeveloppers.clayium.common.items.ClayiumItems
 import net.minecraft.block.Block
 import net.minecraft.block.BlockContainer
 import net.minecraft.block.SoundType
@@ -32,7 +34,7 @@ import net.minecraftforge.common.property.IUnlistedProperty
 class BlockClayBuffer private constructor(
     val tier: Int,
     registryName: String
-) : BlockContainer(Material.IRON) {
+) : BlockContainer(Material.IRON), IShiftRightClickable {
 
     init {
         this.creativeTab = Clayium.CreativeTab
@@ -94,11 +96,44 @@ class BlockClayBuffer private constructor(
         facing: EnumFacing,
         hitX: Float, hitY: Float, hitZ: Float
     ): Boolean {
-        if (worldIn.isRemote) return true
+        if (worldIn.isRemote || hand === EnumHand.OFF_HAND) return true
 
-        val tile = worldIn.getTileEntity(pos) as? TileClayBuffer ?: return false
-        playerIn.openGui(Clayium.INSTANCE, GuiHandler.CLAY_BUFFER, worldIn, pos.x, pos.y, pos.z)
+        when (playerIn.getHeldItem(hand).item) {
+            ClayiumItems.CLAY_SPATULA -> {
+                worldIn.setBlockState(pos, state.withProperty(IS_PIPE, !state.getValue(IS_PIPE)))
+            }
+            ClayiumItems.CLAY_ROLLING_PIN -> {
+                (worldIn.getTileEntity(pos) as? TileClayBuffer)?.toggleInput(facing)
+            }
+            ClayiumItems.CLAY_SLICER -> {
+                (worldIn.getTileEntity(pos) as? TileClayBuffer)?.toggleOutput(facing)
+            }
+            else -> {
+                playerIn.openGui(Clayium, GuiHandler.CLAY_BUFFER, worldIn, pos.x, pos.y, pos.z)
+            }
+        }
+
         return true
+    }
+
+    override fun onShiftRightClicked(
+        world: World, pos: BlockPos, state: IBlockState,
+        player: EntityPlayer, hand: EnumHand,
+        facing: EnumFacing
+    ): Boolean {
+        val tile = (world.getTileEntity(pos) as? TileClayBuffer) ?: return false
+
+        return when (player.getHeldItem(hand).item) {
+            ClayiumItems.CLAY_IO_CONFIGURATOR -> {
+                tile.toggleOutput(facing)
+                true
+            }
+            ClayiumItems.CLAY_PIPING_TOOL -> {
+                //todo: rotate the block
+                true
+            }
+            else -> false
+        }
     }
 
     override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity {

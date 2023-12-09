@@ -5,6 +5,7 @@ import com.github.trcdeveloppers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdeveloppers.clayium.common.blocks.machine.TileSingleSlotMachine
 import com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
+import com.github.trcdeveloppers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdeveloppers.clayium.common.items.ClayiumItems
 import com.github.trcdeveloppers.clayium.common.worldgen.ClayOreGenerator
 import net.minecraft.block.Block
@@ -12,6 +13,7 @@ import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.RegistryEvent
+import net.minecraftforge.event.entity.player.PlayerInteractEvent
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
@@ -48,5 +50,21 @@ open class ClayiumCommonProxy {
         GameRegistry.registerTileEntity(TileClayWorkTable::class.java, ResourceLocation(Clayium.MOD_ID, "TileClayWorkTable"))
         GameRegistry.registerTileEntity(TileSingleSlotMachine::class.java, ResourceLocation(Clayium.MOD_ID, "TileSingleSlotMachine"))
         GameRegistry.registerTileEntity(TileClayBuffer::class.java, ResourceLocation(Clayium.MOD_ID, "TileClayBuffer"))
+    }
+
+    @SubscribeEvent
+    fun onBlockRightClicked(e: PlayerInteractEvent.RightClickBlock) {
+        println("fired")
+        val world = e.world
+        if (world.isRemote) return
+
+        val blockState = world.getBlockState(e.pos)
+        val block = blockState.block
+        if (block is IShiftRightClickable && e.entityPlayer.isSneaking) {
+            val facing = e.face
+            if (facing != null) {
+                block.onShiftRightClicked(world, e.pos, blockState, e.entityPlayer, e.hand, facing)
+            }
+        }
     }
 }
