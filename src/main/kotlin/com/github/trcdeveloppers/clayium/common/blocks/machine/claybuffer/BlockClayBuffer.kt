@@ -30,6 +30,7 @@ import net.minecraft.world.World
 import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.common.property.IUnlistedProperty
+import net.minecraftforge.common.util.Constants
 
 class BlockClayBuffer private constructor(
     val tier: Int,
@@ -97,22 +98,16 @@ class BlockClayBuffer private constructor(
         hitX: Float, hitY: Float, hitZ: Float
     ): Boolean {
         if (worldIn.isRemote || hand === EnumHand.OFF_HAND) return true
+        val tileClayBuffer = worldIn.getTileEntity(pos) as? TileClayBuffer ?: return false
 
         when (playerIn.getHeldItem(hand).item) {
-            ClayiumItems.CLAY_SPATULA -> {
-                worldIn.setBlockState(pos, state.withProperty(IS_PIPE, !state.getValue(IS_PIPE)))
-            }
-            ClayiumItems.CLAY_ROLLING_PIN -> {
-                (worldIn.getTileEntity(pos) as? TileClayBuffer)?.toggleInput(facing)
-            }
-            ClayiumItems.CLAY_SLICER -> {
-                (worldIn.getTileEntity(pos) as? TileClayBuffer)?.toggleOutput(facing)
-            }
-            else -> {
-                playerIn.openGui(Clayium, GuiHandler.CLAY_BUFFER, worldIn, pos.x, pos.y, pos.z)
-            }
+            ClayiumItems.CLAY_SPATULA -> worldIn.setBlockState(pos, state.withProperty(IS_PIPE, !state.getValue(IS_PIPE)))
+            ClayiumItems.CLAY_ROLLING_PIN -> tileClayBuffer.toggleInput(facing)
+            ClayiumItems.CLAY_SLICER -> tileClayBuffer.toggleOutput(facing)
+            else -> playerIn.openGui(Clayium, GuiHandler.CLAY_BUFFER, worldIn, pos.x, pos.y, pos.z)
         }
 
+        worldIn.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.SEND_TO_CLIENTS)
         return true
     }
 
