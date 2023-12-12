@@ -1,5 +1,7 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer
 
+import com.github.trcdeveloppers.clayium.Clayium
+import com.github.trcdeveloppers.clayium.common.blocks.machine.ItemStackTransferHandler
 import com.github.trcdeveloppers.clayium.common.config.ConfigTierParameters
 import net.minecraft.block.state.IBlockState
 import net.minecraft.nbt.NBTTagCompound
@@ -11,6 +13,8 @@ import net.minecraft.util.ITickable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemStackHandler
@@ -46,39 +50,19 @@ class TileClayBuffer(
 
     private val importingFaces: MutableSet<EnumFacing> = HashSet()
     private val exportingFaces: MutableSet<EnumFacing> = HashSet()
-    private var ticked: Int = 0
 
     val inputs: BooleanArray get() = BooleanArray(6) { EnumFacing.entries[it] in importingFaces }
     val outputs: BooleanArray get() = BooleanArray(6) { EnumFacing.entries[it] in exportingFaces }
 
+    private val itemStackTransferDelegation = ItemStackTransferHandler(
+        transferInterval, 64,
+        handler,
+        importingFaces, exportingFaces,
+        this,
+    )
 
     override fun update() {
-//        if (world.isRemote) return
-//        if (ticked < transferInterval) {
-//            ticked++
-//            return
-//        }
-//
-//        for (side in importingFaces) {
-//            val adjustHandler = this.world.getTileEntity(this.pos.offset(side))?.getCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue
-//            this.transferStack(adjustHandler, handler, 64)
-//        }
-//
-//        for (side in exportingFaces) {
-//            val adjustHandler = this.world.getTileEntity(this.pos.offset(side))?.getCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue
-//            this.transferStack(handler, adjustHandler, 64)
-//        }
-//        ticked = 0
-    }
-
-    private fun transferStack(from: IItemHandler, to: IItemHandler, amount: Int) {
-        for (slot in 0 until from.slots) {
-            val stack = from.getStackInSlot(slot)
-            if (stack.isEmpty) continue
-            val remainedStack = to.insertItem(slot, stack, false)
-            from.extractItem(slot, stack.count - remainedStack.count, false)
-            break
-        }
+        itemStackTransferDelegation.update()
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
@@ -109,11 +93,46 @@ class TileClayBuffer(
     }
 
     override fun getUpdatePacket(): SPacketUpdateTileEntity {
-        return SPacketUpdateTileEntity(pos, 1, this.writeToNBT(NBTTagCompound()))
+        Clayium.LOGGER.info(
+            "sending packet: ${NBTTagCompound().apply {
+                for (side in importingFaces) {
+                    setBoolean("input_${side.name2}", true)
+                }
+                for (side in exportingFaces) {
+                    setBoolean("output_${side.name2}", true)
+                }
+            }}"
+        )
+        return SPacketUpdateTileEntity(
+            pos, 1,
+            // We don't need to send the inventory data, since that is a container's job
+            // Tier is also not needed, since it is not a dynamic property. It is only set once when the block is loaded
+            NBTTagCompound().apply {
+                for (side in importingFaces) {
+                    setBoolean("input_${side.name2}", true)
+                }
+                for (side in exportingFaces) {
+                    setBoolean("output_${side.name2}", true)
+                }
+            }
+        )
     }
 
+    @SideOnly(Side.CLIENT)
     override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
-        this.readFromNBT(pkt.nbtCompound)
+        val compound = pkt.nbtCompound
+        for (side in EnumFacing.entries) {
+            if (compound.getBoolean("input_${side.name2}")) {
+                importingFaces.add(side)
+            } else {
+                importingFaces.remove(side)
+            }
+            if (compound.getBoolean("output_${side.name2}")) {
+                exportingFaces.add(side)
+            } else {
+                importingFaces.remove(side)
+            }
+        }
         if (this.world.isRemote) {
             this.world.markBlockRangeForRenderUpdate(pos, pos)
         }
@@ -136,6 +155,7 @@ class TileClayBuffer(
         if (side in importingFaces) importingFaces.remove(side) else importingFaces.add(side)
         this.markDirty()
     }
+
     fun toggleOutput(side: EnumFacing) {
         if (side in exportingFaces) exportingFaces.remove(side) else exportingFaces.add(side)
         this.markDirty()
