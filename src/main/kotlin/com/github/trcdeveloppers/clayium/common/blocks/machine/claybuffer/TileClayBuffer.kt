@@ -1,6 +1,5 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer
 
-import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.common.blocks.machine.ItemStackTransferHandler
 import com.github.trcdeveloppers.clayium.common.config.ConfigTierParameters
 import net.minecraft.block.state.IBlockState
@@ -93,16 +92,6 @@ class TileClayBuffer(
     }
 
     override fun getUpdatePacket(): SPacketUpdateTileEntity {
-        Clayium.LOGGER.info(
-            "sending packet: ${NBTTagCompound().apply {
-                for (side in importingFaces) {
-                    setBoolean("input_${side.name2}", true)
-                }
-                for (side in exportingFaces) {
-                    setBoolean("output_${side.name2}", true)
-                }
-            }}"
-        )
         return SPacketUpdateTileEntity(
             pos, 1,
             // We don't need to send the inventory data, since that is a container's job
@@ -122,20 +111,10 @@ class TileClayBuffer(
     override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
         val compound = pkt.nbtCompound
         for (side in EnumFacing.entries) {
-            if (compound.getBoolean("input_${side.name2}")) {
-                importingFaces.add(side)
-            } else {
-                importingFaces.remove(side)
-            }
-            if (compound.getBoolean("output_${side.name2}")) {
-                exportingFaces.add(side)
-            } else {
-                importingFaces.remove(side)
-            }
+            if (compound.getBoolean("input_${side.name2}")) importingFaces.add(side) else importingFaces.remove(side)
+            if (compound.getBoolean("output_${side.name2}")) exportingFaces.add(side) else exportingFaces.remove(side)
         }
-        if (this.world.isRemote) {
-            this.world.markBlockRangeForRenderUpdate(pos, pos)
-        }
+        this.world.markBlockRangeForRenderUpdate(pos, pos)
     }
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
