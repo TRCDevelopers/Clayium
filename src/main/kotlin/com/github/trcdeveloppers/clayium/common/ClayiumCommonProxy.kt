@@ -54,16 +54,14 @@ open class ClayiumCommonProxy {
 
     @SubscribeEvent
     fun onBlockRightClicked(e: PlayerInteractEvent.RightClickBlock) {
-        println("fired")
         val world = e.world
-        if (world.isRemote) return
-
         val blockState = world.getBlockState(e.pos)
         val block = blockState.block
+
         if (block is IShiftRightClickable && e.entityPlayer.isSneaking) {
-            val facing = e.face
-            if (facing != null) {
-                block.onShiftRightClicked(world, e.pos, blockState, e.entityPlayer, e.hand, facing)
+            if (block.onShiftRightClicked(world, e.pos, blockState, e.entityPlayer, e.hand, e.face ?: return, e.hitVec.x.toFloat(), e.hitVec.y.toFloat(), e.hitVec.z.toFloat())) {
+                e.isCanceled = true
+                e.entityPlayer.swingArm(e.hand)
             }
         }
     }

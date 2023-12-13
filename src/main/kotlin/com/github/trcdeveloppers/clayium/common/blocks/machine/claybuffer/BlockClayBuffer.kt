@@ -97,14 +97,31 @@ class BlockClayBuffer private constructor(
         facing: EnumFacing,
         hitX: Float, hitY: Float, hitZ: Float
     ): Boolean {
-        if (worldIn.isRemote || hand === EnumHand.OFF_HAND) return true
-        val tileClayBuffer = worldIn.getTileEntity(pos) as? TileClayBuffer ?: return false
+        if (hand === EnumHand.OFF_HAND) return false
 
+        if (worldIn.isRemote) return true
+        val tileClayBuffer = worldIn.getTileEntity(pos) as? TileClayBuffer ?: return false
         when (playerIn.getHeldItem(hand).item) {
             ClayiumItems.CLAY_SPATULA -> worldIn.setBlockState(pos, state.withProperty(IS_PIPE, !state.getValue(IS_PIPE)))
             ClayiumItems.CLAY_ROLLING_PIN -> tileClayBuffer.toggleInput(facing)
             ClayiumItems.CLAY_SLICER -> tileClayBuffer.toggleOutput(facing)
-            else -> playerIn.openGui(Clayium, GuiHandler.CLAY_BUFFER, worldIn, pos.x, pos.y, pos.z)
+            ClayiumItems.CLAY_IO_CONFIGURATOR -> {
+                if (playerIn.isSneaking) {
+                    tileClayBuffer.toggleOutput(facing)
+                } else {
+                    tileClayBuffer.toggleInput(facing)
+                }
+            }
+            ClayiumItems.CLAY_PIPING_TOOL -> {
+                if (playerIn.isSneaking) {
+                    //todo: rotate the block
+                } else {
+                    worldIn.setBlockState(pos, state.withProperty(IS_PIPE, !state.getValue(IS_PIPE)))
+                }
+            }
+            else -> {
+                playerIn.openGui(Clayium, GuiHandler.CLAY_BUFFER, worldIn, pos.x, pos.y, pos.z)
+            }
         }
 
         worldIn.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.SEND_TO_CLIENTS)
@@ -114,21 +131,10 @@ class BlockClayBuffer private constructor(
     override fun onShiftRightClicked(
         world: World, pos: BlockPos, state: IBlockState,
         player: EntityPlayer, hand: EnumHand,
-        facing: EnumFacing
+        facing: EnumFacing,
+        hitX: Float, hitY: Float, hitZ: Float,
     ): Boolean {
-        val tile = (world.getTileEntity(pos) as? TileClayBuffer) ?: return false
-
-        return when (player.getHeldItem(hand).item) {
-            ClayiumItems.CLAY_IO_CONFIGURATOR -> {
-                tile.toggleOutput(facing)
-                true
-            }
-            ClayiumItems.CLAY_PIPING_TOOL -> {
-                //todo: rotate the block
-                true
-            }
-            else -> false
-        }
+        return this.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ)
     }
 
     override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity {

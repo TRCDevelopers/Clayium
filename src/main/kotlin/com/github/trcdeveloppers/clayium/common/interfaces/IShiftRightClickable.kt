@@ -14,10 +14,9 @@ interface IShiftRightClickable {
      */
     fun onShiftRightClicked(
         world: World,
-        pos: BlockPos,
-        state: IBlockState,
-        player: EntityPlayer,
-        hand: EnumHand,
-        facing: EnumFacing
+        pos: BlockPos, state: IBlockState,
+        player: EntityPlayer, hand: EnumHand,
+        facing: EnumFacing,
+        hitX: Float, hitY: Float, hitZ: Float,
     ): Boolean
 }
