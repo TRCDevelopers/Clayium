@@ -98,8 +98,8 @@ class BlockClayBuffer private constructor(
         hitX: Float, hitY: Float, hitZ: Float
     ): Boolean {
         if (hand === EnumHand.OFF_HAND) return false
-
         if (worldIn.isRemote) return true
+
         val tileClayBuffer = worldIn.getTileEntity(pos) as? TileClayBuffer ?: return false
         when (playerIn.getHeldItem(hand).item) {
             ClayiumItems.CLAY_SPATULA -> worldIn.setBlockState(pos, state.withProperty(IS_PIPE, !state.getValue(IS_PIPE)))
@@ -120,7 +120,7 @@ class BlockClayBuffer private constructor(
                 }
             }
             else -> {
-                playerIn.openGui(Clayium, GuiHandler.CLAY_BUFFER, worldIn, pos.x, pos.y, pos.z)
+                playerIn.openGui(Clayium.INSTANCE, GuiHandler.CLAY_BUFFER, worldIn, pos.x, pos.y, pos.z)
             }
         }
 
