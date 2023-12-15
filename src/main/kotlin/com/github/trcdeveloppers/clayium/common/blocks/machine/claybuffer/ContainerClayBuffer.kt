@@ -1,6 +1,5 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer
 
-import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.common.blocks.machine.ContainerUtils
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.Container
@@ -37,7 +36,6 @@ class ContainerClayBuffer(
         val slotStack = slot.stack
         val orgStack = slotStack.copy()
 
-        Clayium.LOGGER.info("${inventorySlots.size}, $index")
         when (index) {
             // hot bar -> container? -> player inventory
             in 0..<9 -> {

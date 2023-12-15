@@ -59,10 +59,9 @@ open class ClayiumCommonProxy {
         val block = blockState.block
 
         if (block is IShiftRightClickable && e.entityPlayer.isSneaking) {
-            if (block.onShiftRightClicked(world, e.pos, blockState, e.entityPlayer, e.hand, e.face ?: return, e.hitVec.x.toFloat(), e.hitVec.y.toFloat(), e.hitVec.z.toFloat())) {
-                e.isCanceled = true
-                e.entityPlayer.swingArm(e.hand)
-            }
+            val (cancel, swing) = block.onShiftRightClicked(world, e.pos, blockState, e.entityPlayer, e.hand, e.face ?: return, e.hitVec.x.toFloat(), e.hitVec.y.toFloat(), e.hitVec.z.toFloat())
+            e.isCanceled = cancel
+            if (swing) e.entityPlayer.swingArm(e.hand)
         }
     }
 }

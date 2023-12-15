@@ -3,7 +3,6 @@ package com.github.trcdeveloppers.clayium.common.blocks.machine
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.ITickable
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
@@ -15,10 +14,10 @@ class ItemStackTransferHandler(
     private val importingFaces: MutableSet<EnumFacing>,
     private val exportingFaces: MutableSet<EnumFacing>,
     private val tileEntity: TileEntity,
-) : ITickable {
+)  {
     private var ticked: Int = 0
 
-    override fun update() {
+    fun transfer() {
         if (tileEntity.isInvalid || tileEntity.world.isRemote) return
         if (ticked < transferInterval) {
             ticked++

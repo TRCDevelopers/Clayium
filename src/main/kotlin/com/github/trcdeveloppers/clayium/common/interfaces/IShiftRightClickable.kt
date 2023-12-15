@@ -18,5 +18,10 @@ interface IShiftRightClickable {
         player: EntityPlayer, hand: EnumHand,
         facing: EnumFacing,
         hitX: Float, hitY: Float, hitZ: Float,
-    ): Boolean
+    ): Result
+
+    data class Result(
+        val cancelEvent: Boolean,
+        val swingArm: Boolean,
+    )
 }

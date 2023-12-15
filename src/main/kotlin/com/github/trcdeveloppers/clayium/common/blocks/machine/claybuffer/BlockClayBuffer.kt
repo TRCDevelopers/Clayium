@@ -105,23 +105,9 @@ class BlockClayBuffer private constructor(
             ClayiumItems.CLAY_SPATULA -> worldIn.setBlockState(pos, state.withProperty(IS_PIPE, !state.getValue(IS_PIPE)))
             ClayiumItems.CLAY_ROLLING_PIN -> tileClayBuffer.toggleInput(facing)
             ClayiumItems.CLAY_SLICER -> tileClayBuffer.toggleOutput(facing)
-            ClayiumItems.CLAY_IO_CONFIGURATOR -> {
-                if (playerIn.isSneaking) {
-                    tileClayBuffer.toggleOutput(facing)
-                } else {
-                    tileClayBuffer.toggleInput(facing)
-                }
-            }
-            ClayiumItems.CLAY_PIPING_TOOL -> {
-                if (playerIn.isSneaking) {
-                    //todo: rotate the block
-                } else {
-                    worldIn.setBlockState(pos, state.withProperty(IS_PIPE, !state.getValue(IS_PIPE)))
-                }
-            }
-            else -> {
-                playerIn.openGui(Clayium.INSTANCE, GuiHandler.CLAY_BUFFER, worldIn, pos.x, pos.y, pos.z)
-            }
+            ClayiumItems.CLAY_IO_CONFIGURATOR -> tileClayBuffer.toggleInput(facing)
+            ClayiumItems.CLAY_PIPING_TOOL -> worldIn.setBlockState(pos, state.withProperty(IS_PIPE, !state.getValue(IS_PIPE)))
+            else -> playerIn.openGui(Clayium.INSTANCE, GuiHandler.CLAY_BUFFER, worldIn, pos.x, pos.y, pos.z)
         }
 
         worldIn.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.SEND_TO_CLIENTS)
@@ -133,8 +119,28 @@ class BlockClayBuffer private constructor(
         player: EntityPlayer, hand: EnumHand,
         facing: EnumFacing,
         hitX: Float, hitY: Float, hitZ: Float,
-    ): Boolean {
-        return this.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ)
+    ): IShiftRightClickable.Result {
+        if (hand === EnumHand.OFF_HAND) {
+            return IShiftRightClickable.Result(
+                (player.getHeldItem(EnumHand.MAIN_HAND).item === ClayiumItems.CLAY_IO_CONFIGURATOR
+                    || player.getHeldItem(EnumHand.MAIN_HAND).item === ClayiumItems.CLAY_PIPING_TOOL),
+                false,
+            )
+        }
+        if (world.isRemote) return IShiftRightClickable.Result(true, true)
+
+        when (player.getHeldItem(hand).item) {
+            ClayiumItems.CLAY_IO_CONFIGURATOR -> {
+                (world.getTileEntity(pos) as? TileClayBuffer)?.toggleOutput(facing)
+            }
+            ClayiumItems.CLAY_PIPING_TOOL -> {
+                //todo: rotate the block
+            }
+            else -> return IShiftRightClickable.Result(false, false)
+        }
+
+        world.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.SEND_TO_CLIENTS)
+        return IShiftRightClickable.Result(true, true)
     }
 
     override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity {

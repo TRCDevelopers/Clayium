@@ -61,7 +61,7 @@ class TileClayBuffer(
     )
 
     override fun update() {
-        itemStackTransferDelegation.update()
+        itemStackTransferDelegation.transfer()
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
