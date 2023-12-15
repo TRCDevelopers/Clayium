@@ -14,7 +14,7 @@ class GuiClayBuffer(
     private val tier: Int,
     playerInv: IInventory,
     private val tile: TileClayBuffer,
-) : GuiContainer(ContainerClayBuffer(tier, playerInv, tile))  {
+) : GuiContainer(ContainerClayBuffer(playerInv, tile))  {
 
     init {
         this.ySize = 18 + tile.inventoryY * 18 + 94

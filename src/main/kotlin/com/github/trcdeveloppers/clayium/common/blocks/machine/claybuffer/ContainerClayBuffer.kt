@@ -10,9 +10,8 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.SlotItemHandler
 
 class ContainerClayBuffer(
-    tier: Int,
     playerInv: IInventory,
-    private val tile: TileClayBuffer,
+    tile: TileClayBuffer,
 ) : Container() {
 
     init {

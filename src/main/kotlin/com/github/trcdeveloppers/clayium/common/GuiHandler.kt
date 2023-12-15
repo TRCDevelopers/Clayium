@@ -20,7 +20,7 @@ object GuiHandler : IGuiHandler {
         val tile = world.getTileEntity(BlockPos(x, y, z)) ?: return null
         return when (id) {
             CLAY_WORK_TABLE -> ClayWorktableContainer(player.inventory, tile as TileClayWorkTable)
-            CLAY_BUFFER -> ContainerClayBuffer((tile as TileClayBuffer).tier, player.inventory, tile)
+            CLAY_BUFFER -> ContainerClayBuffer(player.inventory, tile as TileClayBuffer)
             else -> null
         }
     }
