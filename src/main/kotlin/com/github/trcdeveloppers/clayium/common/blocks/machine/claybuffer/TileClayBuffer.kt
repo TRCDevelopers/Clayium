@@ -1,7 +1,7 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer
 
 import com.github.trcdeveloppers.clayium.common.blocks.machine.ItemStackTransferHandler
-import com.github.trcdeveloppers.clayium.common.config.ConfigTierParameters
+import com.github.trcdeveloppers.clayium.common.config.ConfigTierBalance
 import net.minecraft.block.state.IBlockState
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
@@ -48,8 +48,8 @@ class TileClayBuffer(
     val outputs: BooleanArray get() = BooleanArray(6) { EnumFacing.entries[it] in exportingFaces }
 
     private val itemStackTransferDelegation = ItemStackTransferHandler(
-        ConfigTierParameters.bufferTransferIntervals[tier],
-        ConfigTierParameters.bufferTransferAmount[tier],
+        ConfigTierBalance.bufferTransferIntervals[tier-1],
+        ConfigTierBalance.bufferTransferAmount[tier-1],
         handler,
         importingFaces, exportingFaces,
         this,
