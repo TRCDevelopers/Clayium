@@ -15,6 +15,7 @@ import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
@@ -31,6 +32,7 @@ import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.common.property.IUnlistedProperty
 import net.minecraftforge.common.util.Constants
+import net.minecraftforge.items.CapabilityItemHandler
 
 class BlockClayBuffer private constructor(
     val tier: Int,
@@ -127,7 +129,11 @@ class BlockClayBuffer private constructor(
                 false,
             )
         }
-        if (world.isRemote) return IShiftRightClickable.Result(true, true)
+        if (world.isRemote) {
+            val isUsingTool = (player.getHeldItem(EnumHand.MAIN_HAND).item === ClayiumItems.CLAY_IO_CONFIGURATOR
+                        || player.getHeldItem(EnumHand.MAIN_HAND).item === ClayiumItems.CLAY_PIPING_TOOL)
+            return IShiftRightClickable.Result(isUsingTool, isUsingTool)
+        }
 
         when (player.getHeldItem(hand).item) {
             ClayiumItems.CLAY_IO_CONFIGURATOR -> {
