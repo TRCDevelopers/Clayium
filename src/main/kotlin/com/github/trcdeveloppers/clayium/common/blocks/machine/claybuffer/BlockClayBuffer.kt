@@ -153,6 +153,32 @@ class BlockClayBuffer private constructor(
         return TileClayBuffer(tier)
     }
 
+    override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
+        val handler = worldIn.getTileEntity(pos)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
+        if (handler != null) {
+            for (i in 0..<handler.slots) {
+                val stack = handler.getStackInSlot(i)
+                if (stack.isEmpty) {
+                    continue
+                }
+                val f0 = worldIn.rand.nextFloat() * 0.6f + 0.1f
+                val f1 = worldIn.rand.nextFloat() * 0.6f + 0.1f
+                val f2 = worldIn.rand.nextFloat() * 0.6f + 0.1f
+                val entityItem = EntityItem(
+                    worldIn,
+                    (pos.x + f0).toDouble(), (pos.y + f1).toDouble(), (pos.z + f2).toDouble(),
+                    handler.getStackInSlot(i).copy()
+                )
+                val f3 = 0.025f
+                entityItem.motionX = worldIn.rand.nextGaussian() * f3
+                entityItem.motionY = worldIn.rand.nextGaussian() * f3 + 0.1f
+                entityItem.motionZ = worldIn.rand.nextGaussian() * f3
+                worldIn.spawnEntity(entityItem)
+            }
+        }
+        super.breakBlock(worldIn, pos, state)
+    }
+
     override fun getRenderLayer(): BlockRenderLayer {
         return BlockRenderLayer.CUTOUT_MIPPED
     }
