@@ -39,12 +39,6 @@ class TileClayBuffer(
         else -> throw IllegalArgumentException("Invalid tier for buffer: $tier")
     }
 
-    private val transferInterval = try {
-        ConfigTierParameters.bufferTransferIntervals[tier]
-    } catch (e: IndexOutOfBoundsException) {
-        throw IllegalArgumentException("Invalid tier: $tier")
-    }
-
     private val handler = ItemStackHandler(inventoryX * inventoryY)
 
     private val importingFaces: MutableSet<EnumFacing> = HashSet()
@@ -54,7 +48,8 @@ class TileClayBuffer(
     val outputs: BooleanArray get() = BooleanArray(6) { EnumFacing.entries[it] in exportingFaces }
 
     private val itemStackTransferDelegation = ItemStackTransferHandler(
-        transferInterval, 64,
+        ConfigTierParameters.bufferTransferIntervals[tier],
+        ConfigTierParameters.bufferTransferAmount[tier],
         handler,
         importingFaces, exportingFaces,
         this,
