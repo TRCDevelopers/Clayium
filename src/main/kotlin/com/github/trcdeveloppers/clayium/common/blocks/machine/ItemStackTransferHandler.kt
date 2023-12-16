@@ -47,6 +47,7 @@ class ItemStackTransferHandler(
             )
             if (remainingExportWork <= 0) break
         }
+        ticked = 0
     }
 
     private fun transferItemStack(
