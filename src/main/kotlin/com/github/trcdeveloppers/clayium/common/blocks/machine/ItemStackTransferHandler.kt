@@ -58,24 +58,28 @@ class ItemStackTransferHandler(
         var remainingWork = amount
 
         for (i in 0..<from.slots) {
-            val stack = from.extractItem(i, remainingWork, false)
-            if (stack.isEmpty) continue
+            // get how many items can be inserted
+            val extractedStack = from.extractItem(i, remainingWork, true)
+            if (extractedStack.isEmpty) continue
+            val insertedItemCount = extractedStack.count - insertToInventory(to, extractedStack, true).count
+            if (insertedItemCount == 0) continue
 
-            remainingWork -= this.insertToInventory(to, stack).count
-            if (remainingWork <= 0) return 0
+            // actually insert the items
+            insertToInventory(to, from.extractItem(i, insertedItemCount, false), false)
+            remainingWork -= insertedItemCount
         }
         return remainingWork
     }
 
     /**
      * @param handler The target inventory of the insertion
-     * @param stack The stack to insert
+     * @param stack The stack to insert. This stack will not be modified.
      * @return The remaining ItemStack that was not inserted (if the entire stack is accepted, then return an empty ItemStack)
      */
-    private fun insertToInventory(handler: IItemHandler, stack: ItemStack): ItemStack {
-        var remaining = stack
+    private fun insertToInventory(handler: IItemHandler, stack: ItemStack, simulate: Boolean): ItemStack {
+        var remaining = stack.copy()
         for (i in 0..<handler.slots) {
-            remaining = handler.insertItem(i, remaining, false)
+            remaining = handler.insertItem(i, remaining, simulate)
             if (remaining.isEmpty) break
         }
         return remaining
