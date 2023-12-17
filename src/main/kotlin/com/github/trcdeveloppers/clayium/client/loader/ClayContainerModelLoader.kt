@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 
 internal fun ModelResourceLocation.getVariantValue(variantName: String): String? {
     if (!this.toString().contains(variantName)) return null
-    return this.toString().replaceBefore("$variantName=", "")
+    return this.variant.replaceBefore("$variantName=", "")
         .replaceAfter(",", "")
         .replace("$variantName=", "").replace(",", "")
 }

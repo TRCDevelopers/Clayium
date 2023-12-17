@@ -53,7 +53,7 @@ class BlockClayBuffer private constructor(
     override fun createBlockState(): BlockStateContainer {
         return BlockStateContainer.Builder(this)
             .add(IS_PIPE)
-            .add(INPUTS).add(OUTPUTS)
+            .add(INPUTS, OUTPUTS, CONNECTIONS)
             .build()
     }
 
@@ -76,10 +76,12 @@ class BlockClayBuffer private constructor(
              (state as IExtendedBlockState)
                  .withProperty(INPUTS, BooleanArray(6))
                  .withProperty(OUTPUTS, BooleanArray(6))
+                 .withProperty(CONNECTIONS, BooleanArray(6))
         } else {
              (state as IExtendedBlockState)
                  .withProperty(INPUTS, tile.inputs)
                  .withProperty(OUTPUTS, tile.outputs)
+                 .withProperty(CONNECTIONS, tile.getConnections())
         }
     }
 
@@ -193,6 +195,7 @@ class BlockClayBuffer private constructor(
 
         val INPUTS: IUnlistedProperty<BooleanArray> = UnlistedBooleanArray("input_conditions")
         val OUTPUTS: IUnlistedProperty<BooleanArray> = UnlistedBooleanArray("output_conditions")
+        val CONNECTIONS: IUnlistedProperty<BooleanArray> = UnlistedBooleanArray("connections")
 
         fun createBlocks(): Map<String, Block> {
             val blocks: MutableMap<String, Block> = HashMap()

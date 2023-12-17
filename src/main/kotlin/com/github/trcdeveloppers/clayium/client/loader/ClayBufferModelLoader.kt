@@ -2,6 +2,7 @@ package com.github.trcdeveloppers.clayium.client.loader
 
 import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.client.model.ClayBufferModel
+import com.github.trcdeveloppers.clayium.client.model.ClayBufferPipeModel
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.IResourceManager
 import net.minecraft.util.ResourceLocation
@@ -25,8 +26,12 @@ class ClayBufferModelLoader : ICustomModelLoader {
     }
 
     override fun loadModel(modelLocation: ResourceLocation): IModel {
+        val modelResourceLocation = modelLocation as ModelResourceLocation
         val registryName = modelLocation.path
-        Clayium.LOGGER.info("Loading model for $modelLocation, tier: ${registryName.split("_").last().toInt()}")
-        return ClayBufferModel(registryName.split("_").last().toInt())
+        val isPipe = modelResourceLocation.getVariantValue("is_pipe")?.toBoolean() ?: false
+        Clayium.LOGGER.info("Loading model for $modelLocation, tier: ${registryName.split("_").last().toInt()}, with is_pipe: $isPipe")
+        val tier = registryName.split("_").last().toInt()
+        return if (isPipe) ClayBufferPipeModel(tier) else ClayBufferModel(tier)
+
     }
 }

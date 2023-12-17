@@ -125,6 +125,14 @@ class TileClayBuffer(
         return oldState.block != newSate.block
     }
 
+    //todo: cache
+    fun getConnections(): BooleanArray {
+        return BooleanArray(6) {
+            val side = EnumFacing.entries[it]
+            this.world.getTileEntity(this.pos.offset(side))?.hasCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: false
+        }
+    }
+
     fun toggleInput(side: EnumFacing) {
         if (side in importingFaces) importingFaces.remove(side) else importingFaces.add(side)
         this.markDirty()
