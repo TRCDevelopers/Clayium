@@ -129,6 +129,7 @@ class TileClayBuffer(
     fun getConnections(): BooleanArray {
         return BooleanArray(6) {
             val side = EnumFacing.entries[it]
+            if (!(side in importingFaces || side in exportingFaces)) return@BooleanArray false
             this.world.getTileEntity(this.pos.offset(side))?.hasCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: false
         }
     }
