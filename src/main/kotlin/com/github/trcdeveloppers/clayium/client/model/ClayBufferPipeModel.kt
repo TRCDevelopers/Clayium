@@ -37,10 +37,20 @@ class ClayBufferPipeModel(
 
     private class ClayBufferPipeBakedModel(
         bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>,
-        tier: Int,
+        machineHullTier: Int,
     ) : IBakedModel {
 
-        private val machineHull = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/machinehull-${tier-1}"))
+        private val machineHull = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/machinehull-${machineHullTier-1}"))
+        private val sideCubeQuads = sideCubes.mapIndexed { index: Int, (from, to): Pair<Vector3f, Vector3f> ->
+            val positionOfCube = EnumFacing.byIndex(index)
+            EnumFacing.entries
+                .filter { it != positionOfCube.opposite }
+                .map { createQuad(it, from, to, getUv(positionOfCube, it)) }
+        }
+
+        private val centerCubeQuad = EnumFacing.entries.map{
+            createQuad(it, Vector3f(5f, 5f, 5f), Vector3f(11f, 11f, 11f), floatArrayOf(5f, 5f, 11f, 11f))
+        }
 
         override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> {
             if (state == null || side != null) return emptyList()
@@ -48,33 +58,13 @@ class ClayBufferPipeModel(
             val connections = (state as IExtendedBlockState).getValue(BlockClayBuffer.CONNECTIONS)
             val quads = mutableListOf<BakedQuad>()
 
-            // Render the center cube (6, 6, 6) -> (11, 11, 11) if there is no connection
-            val centerCubeRenderFlag = BooleanArray(6) { !connections[it] }
-
-            // make shape
-            val cubes = mutableSetOf(Vector3f(5f, 5f, 5f) to Vector3f(11f, 11f, 11f))
-            for (enumfacing in EnumFacing.entries) {
-                if (connections[enumfacing.index]) cubes.add(sideCubes[enumfacing] ?: continue)
-            }
-
-            // make quads for shape
-            for (cube in cubes) {
-                val (from, to) = cube
-                val uv = floatArrayOf(from.x, from.y, to.x, to.y)
-                for (enumfacing in EnumFacing.entries) {
-                    if (connections[enumfacing.index]) {
-                        quads.add(createQuad(enumfacing, from, to, uv))
-                    }
+            for (index in EnumFacing.entries.indices) {
+                if (connections[index]) {
+                    quads.addAll(sideCubeQuads[index])
+                } else {
+                    quads.add(centerCubeQuad[index])
                 }
             }
-
-            // add quads for center cube if needed
-            for (enumfacing in EnumFacing.entries) {
-                if (centerCubeRenderFlag[enumfacing.index]) {
-                    quads.add(createQuad(enumfacing, Vector3f(5f, 5f, 5f), Vector3f(11f, 11f, 11f), floatArrayOf(5f, 5f, 11f, 11f)))
-                }
-            }
-
             return quads
         }
 
@@ -96,14 +86,51 @@ class ClayBufferPipeModel(
 
         companion object {
             private val faceBakery = FaceBakery()
-            private val sideCubes: Map<EnumFacing, Pair<Vector3f, Vector3f>> = mapOf(
-                EnumFacing.UP to (Vector3f(5f, 0f, 5f) to Vector3f(11f, 6f, 11f)),
-                EnumFacing.DOWN to (Vector3f(5f, 11f, 5f) to Vector3f(11f, 16f, 11f)),
-                EnumFacing.NORTH to (Vector3f(5f, 5f, 0f) to Vector3f(11f, 11f, 5f)),
-                EnumFacing.SOUTH to (Vector3f(5f, 5f, 11f) to Vector3f(11f, 11f, 16f)),
-                EnumFacing.WEST to (Vector3f(0f, 6f, 6f) to Vector3f(5f, 11f, 11f)),
-                EnumFacing.EAST to (Vector3f(11f, 6f, 6f) to Vector3f(16f, 11f, 11f)),
+            private val sideCubes = listOf(
+                // From top to bottom, these are DOWN, UP, NORTH, SOUTH, WEST and EAST
+                Pair(Vector3f(5f, 0f, 5f), Vector3f(11f, 5f, 11f)),
+                Pair(Vector3f(5f, 11f, 5f), Vector3f(11f, 16f, 11f)),
+                Pair(Vector3f(5f, 5f, 0f), Vector3f(11f, 11f, 5f)),
+                Pair(Vector3f(5f, 5f, 11f), Vector3f(11f, 11f, 16f)),
+                Pair(Vector3f(0f, 5f, 5f), Vector3f(5f, 11f, 11f)),
+                Pair(Vector3f(11f, 5f, 5f), Vector3f(16f, 11f, 11f)),
             )
+
+            private fun getUv(cubePos: EnumFacing, sideOfCube: EnumFacing): FloatArray {
+                if (cubePos == sideOfCube) {
+                    return floatArrayOf(5f, 5f, 11f, 11f)
+                }
+                return when (cubePos) {
+                    EnumFacing.UP -> floatArrayOf(5f, 11f, 11f, 16f)
+                    EnumFacing.DOWN -> floatArrayOf(5f, 0f, 11f, 5f)
+                    EnumFacing.NORTH -> when (sideOfCube) {
+                        EnumFacing.UP -> floatArrayOf(5f, 0f, 11f, 5f)
+                        EnumFacing.DOWN -> floatArrayOf(5f, 11f, 11f, 16f)
+                        EnumFacing.WEST -> floatArrayOf(0f, 5f, 5f, 11f)
+                        EnumFacing.EAST -> floatArrayOf(11f, 5f, 16f, 11f)
+                        else -> throw IllegalArgumentException("Invalid side of cube: $sideOfCube")
+                    }
+                    EnumFacing.SOUTH -> when (sideOfCube) {
+                        EnumFacing.UP -> floatArrayOf(5f, 11f, 11f, 16f)
+                        EnumFacing.DOWN -> floatArrayOf(5f, 0f, 11f, 5f)
+                        EnumFacing.WEST -> floatArrayOf(11f, 5f, 16f, 11f)
+                        EnumFacing.EAST -> floatArrayOf(0f, 5f, 5f, 11f)
+                        else -> throw IllegalArgumentException("Invalid side of cube: $sideOfCube")
+                    }
+                    EnumFacing.WEST -> when (sideOfCube) {
+                        EnumFacing.UP, EnumFacing.DOWN -> floatArrayOf(0f, 5f, 5f, 11f)
+                        EnumFacing.NORTH -> floatArrayOf(11f, 5f, 16f, 11f)
+                        EnumFacing.SOUTH -> floatArrayOf(0f, 5f, 5f, 11f)
+                        else -> throw IllegalArgumentException("Invalid side of cube: $sideOfCube")
+                    }
+                    EnumFacing.EAST -> when (sideOfCube) {
+                        EnumFacing.UP, EnumFacing.DOWN -> floatArrayOf(11f, 5f, 16f, 11f)
+                        EnumFacing.NORTH -> floatArrayOf(0f, 5f, 5f, 11f)
+                        EnumFacing.SOUTH -> floatArrayOf(11f, 5f, 16f, 11f)
+                        else -> throw IllegalArgumentException("Invalid side of cube: $sideOfCube")
+                    }
+                }
+            }
         }
     }
 }

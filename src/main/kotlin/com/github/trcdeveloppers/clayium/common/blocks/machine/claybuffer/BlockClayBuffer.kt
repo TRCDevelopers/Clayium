@@ -106,11 +106,10 @@ class BlockClayBuffer private constructor(
 
         val tileClayBuffer = worldIn.getTileEntity(pos) as? TileClayBuffer ?: return false
         when (playerIn.getHeldItem(hand).item) {
-            ClayiumItems.CLAY_SPATULA -> worldIn.setBlockState(pos, state.withProperty(IS_PIPE, !state.getValue(IS_PIPE)))
+            ClayiumItems.CLAY_SPATULA, ClayiumItems.CLAY_PIPING_TOOL -> worldIn.setBlockState(pos, state.withProperty(IS_PIPE, !state.getValue(IS_PIPE)))
             ClayiumItems.CLAY_ROLLING_PIN -> tileClayBuffer.toggleInput(facing)
             ClayiumItems.CLAY_SLICER -> tileClayBuffer.toggleOutput(facing)
             ClayiumItems.CLAY_IO_CONFIGURATOR -> tileClayBuffer.toggleInput(facing)
-            ClayiumItems.CLAY_PIPING_TOOL -> worldIn.setBlockState(pos, state.withProperty(IS_PIPE, !state.getValue(IS_PIPE)))
             else -> playerIn.openGui(Clayium.INSTANCE, GuiHandler.CLAY_BUFFER, worldIn, pos.x, pos.y, pos.z)
         }
 
@@ -181,13 +180,12 @@ class BlockClayBuffer private constructor(
         super.breakBlock(worldIn, pos, state)
     }
 
-    override fun getRenderLayer(): BlockRenderLayer {
-        return BlockRenderLayer.CUTOUT_MIPPED
-    }
+    override fun isFullBlock(state: IBlockState) = !state.getValue(IS_PIPE)
+    override fun isFullCube(state: IBlockState) = !state.getValue(IS_PIPE)
+    override fun isOpaqueCube(state: IBlockState) = !state.getValue(IS_PIPE)
 
-    override fun getRenderType(state: IBlockState): EnumBlockRenderType {
-        return EnumBlockRenderType.MODEL
-    }
+    override fun getRenderLayer() = BlockRenderLayer.CUTOUT_MIPPED
+    override fun getRenderType(state: IBlockState) = EnumBlockRenderType.MODEL
 
     companion object {
 
