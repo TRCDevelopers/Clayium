@@ -14,6 +14,7 @@ import net.minecraft.block.properties.IProperty
 import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
@@ -24,6 +25,7 @@ import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.ChunkCache
 import net.minecraft.world.IBlockAccess
@@ -184,10 +186,53 @@ class BlockClayBuffer private constructor(
     override fun isFullCube(state: IBlockState) = !state.getValue(IS_PIPE)
     override fun isOpaqueCube(state: IBlockState) = !state.getValue(IS_PIPE)
 
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
+        if (state.getValue(IS_PIPE)) {
+            val connections = (source.getTileEntity(pos) as? TileClayBuffer)?.getConnections() ?: return CENTER_AABB
+            var aabb = CENTER_AABB
+            for (i in 0..5) {
+                if (connections[i]) {
+                    aabb = aabb.union(SIDE_AABBS[i])
+                }
+            }
+            return aabb
+        } else {
+            return FULL_BLOCK_AABB
+        }
+    }
+
+    override fun addCollisionBoxToList(
+        state: IBlockState, worldIn: World, pos: BlockPos,
+        entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?,
+        isActualState: Boolean
+    ) {
+        if (state.getValue(IS_PIPE)) {
+            val connections = (worldIn.getTileEntity(pos) as? TileClayBuffer)?.getConnections()
+                ?: return super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState)
+            for (i in 0..5) {
+                if (connections[i]) {
+                    addCollisionBoxToList(pos, entityBox, collidingBoxes, SIDE_AABBS[i])
+                }
+            }
+        } else {
+            return super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState)
+        }
+    }
+
     override fun getRenderLayer() = BlockRenderLayer.CUTOUT_MIPPED
     override fun getRenderType(state: IBlockState) = EnumBlockRenderType.MODEL
 
     companion object {
+
+        val CENTER_AABB = AxisAlignedBB(0.3125, 0.3125, 0.3125, 0.6875, 0.6875, 0.6875)
+        val SIDE_AABBS = listOf(
+            AxisAlignedBB(0.3125, 0.0, 0.3125, 0.6875, 0.3125, 0.6875),
+            AxisAlignedBB(0.3125, 0.6875, 0.3125, 0.6875, 1.0, 0.6875),
+            AxisAlignedBB(0.3125, 0.3125, 0.0, 0.6875, 0.6875, 0.3125),
+            AxisAlignedBB(0.3125, 0.3125, 0.6875, 0.6875, 0.6875, 1.0),
+            AxisAlignedBB(0.0, 0.3125, 0.3125, 0.3125, 0.6875, 0.6875),
+            AxisAlignedBB(0.6875, 0.3125, 0.3125, 1.0, 0.6875, 0.6875),
+        )
 
         val IS_PIPE: IProperty<Boolean> = PropertyBool.create("is_pipe")
 
