@@ -206,7 +206,7 @@ tile.clayium.buffer_tier10.name=反物質バッファー
 tile.clayium.buffer_tier11.name=純反物質バッファー
 tile.clayium.buffer_tier12.name=OEC バッファー
 tile.clayium.buffer_tier13.name=OPA バッファー
-tooltip.clayium.Buffer.line1=いわゆるアイテムパイプ
+tooltip.clayium.buffer.line1=いわゆるアイテムパイプ
 
 tile.clayium.blockBasicMultitrackBuffer.name=複線バッファー
 tile.clayium.blockAdvancedMultitrackBuffer.name=発展複線バッファー

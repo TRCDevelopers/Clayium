@@ -151,7 +151,7 @@ object UtilLocale {
         return I18n.hasKey(str)
     }
 
-    fun localizeTooltip(str: String): List<String>? {
+    fun localizeTooltip(str: String): List<String> {
         var flag = true
         var i = 0
         val ret = ArrayList<String>()
@@ -169,6 +169,6 @@ object UtilLocale {
             }
             flag = false
         }
-        return if (ret.isEmpty()) null else ret
+        return if (ret.isEmpty()) listOf(str) else ret
     }
 }

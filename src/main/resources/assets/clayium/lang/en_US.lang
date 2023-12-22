@@ -206,7 +206,7 @@ tile.clayium.buffer_tier10.name=Antimatter Buffer
 tile.clayium.buffer_tier11.name=Pure Antimatter Buffer
 tile.clayium.buffer_tier12.name=OEC Buffer
 tile.clayium.buffer_tier13.name=OPA Buffer
-tooltip.clayium.Buffer.line1=Transfers items. Acts as an item pipe.
+tooltip.clayium.buffer.line1=Transfers items. Acts as an item pipe.
 
 tile.clayium.blockBasicMultitrackBuffer.name=Basic Multitrack  Buffer
 tile.clayium.blockAdvancedMultitrackBuffer.name=Advanced Multitrack Buffer

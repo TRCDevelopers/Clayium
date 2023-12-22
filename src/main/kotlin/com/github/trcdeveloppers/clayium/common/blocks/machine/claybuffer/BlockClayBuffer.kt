@@ -6,6 +6,7 @@ import com.github.trcdeveloppers.clayium.common.GuiHandler
 import com.github.trcdeveloppers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
 import com.github.trcdeveloppers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdeveloppers.clayium.common.items.ClayiumItems
+import com.github.trcdeveloppers.clayium.common.util.UtilLocale
 import net.minecraft.block.Block
 import net.minecraft.block.BlockContainer
 import net.minecraft.block.SoundType
@@ -14,6 +15,7 @@ import net.minecraft.block.properties.IProperty
 import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.item.EntityItem
@@ -34,6 +36,8 @@ import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.common.property.IUnlistedProperty
 import net.minecraftforge.common.util.Constants
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 
 class BlockClayBuffer private constructor(
@@ -221,6 +225,11 @@ class BlockClayBuffer private constructor(
 
     override fun getRenderLayer() = BlockRenderLayer.CUTOUT_MIPPED
     override fun getRenderType(state: IBlockState) = EnumBlockRenderType.MODEL
+
+    @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        tooltip.addAll(UtilLocale.localizeTooltip("tooltip.clayium.buffer"))
+    }
 
     companion object {
 
