@@ -12,7 +12,10 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 @SideOnly(Side.CLIENT)
-class ClayBufferModelLoader : ICustomModelLoader {
+object ClayBufferModelLoader : ICustomModelLoader {
+
+    private val alphabetAndUnderline = Regex("[A-z_]+")
+
     override fun onResourceManagerReload(resourceManager: IResourceManager) {}
 
     override fun accepts(modelLocation: ResourceLocation): Boolean {
@@ -29,9 +32,8 @@ class ClayBufferModelLoader : ICustomModelLoader {
         val modelResourceLocation = modelLocation as ModelResourceLocation
         val registryName = modelLocation.path
         val isPipe = modelResourceLocation.getVariantValue("is_pipe")?.toBoolean() ?: false
-        Clayium.LOGGER.info("Loading model for $modelLocation, tier: ${registryName.split("_").last().toInt()}, with is_pipe: $isPipe")
-        val tier = registryName.split("_").last().toInt()
+        Clayium.LOGGER.info("Loading model for $modelLocation, tier: ${registryName.replace(alphabetAndUnderline, "").toInt()}")
+        val tier = registryName.replace(alphabetAndUnderline, "").toInt()
         return if (isPipe) ClayBufferPipeModel(tier) else ClayBufferModel(tier)
-
     }
 }

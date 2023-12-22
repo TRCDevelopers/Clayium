@@ -196,16 +196,16 @@ tile.clayium.blockClayiumSmelter.name=クレイウム精錬機
 tile.clayium.blockUltimateSmelter.name=究極精錬機
 tooltip.clayium.Smelter.line1=粘土エネルギーで動くかまど
 
-tile.clayium.buffer_tier4.name=バッファー
-tile.clayium.buffer_tier5.name=発展バッファー
-tile.clayium.buffer_tier6.name=精密バッファー
-tile.clayium.buffer_tier7.name=粘土鋼バッファー
-tile.clayium.buffer_tier8.name=クレイウムバッファー
-tile.clayium.buffer_tier9.name=究極バッファー
-tile.clayium.buffer_tier10.name=反物質バッファー
-tile.clayium.buffer_tier11.name=純反物質バッファー
-tile.clayium.buffer_tier12.name=OEC バッファー
-tile.clayium.buffer_tier13.name=OPA バッファー
+tile.clayium.clay_buffer_tier4.name=バッファー
+tile.clayium.clay_buffer_tier5.name=発展バッファー
+tile.clayium.clay_buffer_tier6.name=精密バッファー
+tile.clayium.clay_buffer_tier7.name=粘土鋼バッファー
+tile.clayium.clay_buffer_tier8.name=クレイウムバッファー
+tile.clayium.clay_buffer_tier9.name=究極バッファー
+tile.clayium.clay_buffer_tier10.name=反物質バッファー
+tile.clayium.clay_buffer_tier11.name=純反物質バッファー
+tile.clayium.clay_buffer_tier12.name=OEC バッファー
+tile.clayium.clay_buffer_tier13.name=OPA バッファー
 tooltip.clayium.buffer.line1=いわゆるアイテムパイプ
 
 tile.clayium.blockBasicMultitrackBuffer.name=複線バッファー

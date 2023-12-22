@@ -1,9 +1,5 @@
 {
   "parent": "block/block",
-  "textures": {
-    "input": "clayium:blocks/import",
-    "base": "clayium:blocks/machinehull-4"
-  },
   "elements": [
     {
       "from": [0, 0, 0],
@@ -16,12 +12,12 @@
         "west": {"texture": "#base", "uv": [0, 0, 16, 16]},
         "east": {"texture": "#base", "uv": [0, 0, 16, 16]}
       }
-   },
+    },
     {
       "from": [0, 0, 0],
       "to": [16, 16, 16],
       "faces": {
-        "up": {"texture": "#input", "uv": [0, 0, 16, 16]}
+        "north": {"texture": "#input", "uv": [0, 0, 16, 16]}
       }
     }
   ]

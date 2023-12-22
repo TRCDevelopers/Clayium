@@ -21,7 +21,7 @@ class ClayiumClientProxy : ClayiumCommonProxy() {
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
         ModelLoaderRegistry.registerLoader(CeContainerModelLoader())
-        ModelLoaderRegistry.registerLoader(ClayBufferModelLoader())
+        ModelLoaderRegistry.registerLoader(ClayBufferModelLoader)
     }
 
     override fun init(event: FMLInitializationEvent) {

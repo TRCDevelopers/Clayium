@@ -252,7 +252,7 @@ class BlockClayBuffer private constructor(
         fun createBlocks(): Map<String, Block> {
             val blocks: MutableMap<String, Block> = HashMap()
             for (tier in 4..13) {
-                val registryName = "clay_buffer_$tier"
+                val registryName = "clay_buffer_tier$tier"
                 blocks[registryName] = BlockClayBuffer(tier, registryName)
             }
             return blocks

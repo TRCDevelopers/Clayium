@@ -196,16 +196,16 @@ tile.clayium.blockClayiumSmelter.name=Clayium Smelter
 tile.clayium.blockUltimateSmelter.name=Ultimate Smelter
 tooltip.clayium.Smelter.line1=Furnace powered by CE.
 
-tile.clayium.buffer_tier4.name=Basic Buffer
-tile.clayium.buffer_tier5.name=Advanced Buffer
-tile.clayium.buffer_tier6.name=Precision Buffer
-tile.clayium.buffer_tier7.name=Clay Steel Buffer
-tile.clayium.buffer_tier8.name=Clayium Buffer
-tile.clayium.buffer_tier9.name=Ultimate Buffer
-tile.clayium.buffer_tier10.name=Antimatter Buffer
-tile.clayium.buffer_tier11.name=Pure Antimatter Buffer
-tile.clayium.buffer_tier12.name=OEC Buffer
-tile.clayium.buffer_tier13.name=OPA Buffer
+tile.clayium.clay_buffer_tier4.name=Basic Buffer
+tile.clayium.clay_buffer_tier5.name=Advanced Buffer
+tile.clayium.clay_buffer_tier6.name=Precision Buffer
+tile.clayium.clay_buffer_tier7.name=Clay Steel Buffer
+tile.clayium.clay_buffer_tier8.name=Clayium Buffer
+tile.clayium.clay_buffer_tier9.name=Ultimate Buffer
+tile.clayium.clay_buffer_tier10.name=Antimatter Buffer
+tile.clayium.clay_buffer_tier11.name=Pure Antimatter Buffer
+tile.clayium.clay_buffer_tier12.name=OEC Buffer
+tile.clayium.clay_buffer_tier13.name=OPA Buffer
 tooltip.clayium.buffer.line1=Transfers items. Acts as an item pipe.
 
 tile.clayium.blockBasicMultitrackBuffer.name=Basic Multitrack  Buffer
