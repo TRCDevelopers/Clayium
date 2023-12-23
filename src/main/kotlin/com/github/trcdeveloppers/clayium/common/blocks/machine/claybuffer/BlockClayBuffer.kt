@@ -193,6 +193,7 @@ class BlockClayBuffer private constructor(
     override fun isFullBlock(state: IBlockState) = !state.getValue(IS_PIPE)
     override fun isFullCube(state: IBlockState) = !state.getValue(IS_PIPE)
     override fun isOpaqueCube(state: IBlockState) = !state.getValue(IS_PIPE)
+    override fun causesSuffocation(state: IBlockState) = !state.getValue(IS_PIPE)
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
         if (state.getValue(IS_PIPE)) {
