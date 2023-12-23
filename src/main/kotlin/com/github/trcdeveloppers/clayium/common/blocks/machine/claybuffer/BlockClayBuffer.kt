@@ -56,6 +56,10 @@ class BlockClayBuffer private constructor(
         this.defaultState = this.blockState.baseState.withProperty(IS_PIPE, false)
     }
 
+    override fun canEntitySpawn(state: IBlockState, entityIn: Entity): Boolean {
+        return false
+    }
+
     override fun createBlockState(): BlockStateContainer {
         return BlockStateContainer.Builder(this)
             .add(IS_PIPE)
