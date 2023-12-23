@@ -216,6 +216,7 @@ class BlockClayBuffer private constructor(
         isActualState: Boolean
     ) {
         if (state.getValue(IS_PIPE)) {
+            Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, CENTER_AABB)
             val connections = (worldIn.getTileEntity(pos) as? TileClayBuffer)?.getConnections()
                 ?: return super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState)
             for (i in 0..5) {
