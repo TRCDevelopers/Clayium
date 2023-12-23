@@ -129,7 +129,12 @@ class TileClayBuffer(
     fun getConnections(): BooleanArray {
         return BooleanArray(6) {
             val side = EnumFacing.entries[it]
-            this.world.getTileEntity(this.pos.offset(side))?.hasCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: false
+            val tile = this.world.getTileEntity(this.pos.offset(side))
+            if (tile is TileClayBuffer) {
+                (this.inputs[it] || this.outputs[it]) || (tile.inputs[side.opposite.index] || tile.outputs[side.opposite.index])
+            } else {
+                tile?.hasCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: false
+            }
         }
     }
 
