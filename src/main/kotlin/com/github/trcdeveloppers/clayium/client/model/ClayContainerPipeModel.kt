@@ -22,7 +22,7 @@ class ClayContainerPipeModel(
 
     override fun getTextures(): MutableCollection<ResourceLocation> {
         return mutableListOf(
-            ResourceLocation("clayium:blocks/machinehull-$machineHullTier"),
+            ResourceLocation("clayium:blocks/machinehull_tier$machineHullTier"),
         )
     }
 
@@ -39,7 +39,7 @@ class ClayContainerPipeModel(
         tier: Int,
     ) : IBakedModel {
 
-        private val machineHull = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/machinehull-$tier"))
+        private val machineHull = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/machinehull_$tier"))
 
         private val baseQuads = EnumFacing.entries.map {
             faceBakery.makeBakedQuad(

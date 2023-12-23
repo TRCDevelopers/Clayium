@@ -19,7 +19,7 @@ class ClayBufferModel(
 
     override fun getTextures(): Collection<ResourceLocation> {
         return listOf(
-            ResourceLocation("clayium:blocks/machinehull-${tier-1}"),
+            ResourceLocation("clayium:blocks/machinehull_tier$tier"),
             ResourceLocation("clayium:blocks/import"),
             ResourceLocation("clayium:blocks/export"),
         )
@@ -38,7 +38,7 @@ class ClayBufferModel(
         tier: Int,
     ) : ClayiumBakedModel() {
 
-        private val machineHull = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/machinehull-${tier-1}"))
+        private val machineHull = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/machinehull_tier$tier"))
         private val import = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/import"))
         private val export = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/export"))
 

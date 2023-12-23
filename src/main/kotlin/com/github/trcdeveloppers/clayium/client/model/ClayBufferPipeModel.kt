@@ -24,7 +24,7 @@ class ClayBufferPipeModel(
 ) : IModel {
 
     override fun getTextures(): Collection<ResourceLocation> {
-        return listOf(ResourceLocation("clayium:blocks/machinehull-${tier-1}"),)
+        return listOf(ResourceLocation("clayium:blocks/machinehull_tier$tier"),)
     }
 
     override fun bake(
@@ -40,7 +40,7 @@ class ClayBufferPipeModel(
         machineHullTier: Int,
     ) : IBakedModel {
 
-        private val machineHull = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/machinehull-${machineHullTier-1}"))
+        private val machineHull = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/machinehull_tier$machineHullTier"))
         private val sideCubeQuads = sideCubes.mapIndexed { index: Int, (from, to): Pair<Vector3f, Vector3f> ->
             val positionOfCube = EnumFacing.byIndex(index)
             EnumFacing.entries

@@ -1,3 +1,7 @@
 {
-  "parent": "clayium:block/clay_buffer_tier8_model"
+  "parent": "clayium:block/machine",
+  "textures": {
+    "input": "clayium:blocks/import",
+    "base": "clayium:blocks/machinehull_tier8"
+  }
 }

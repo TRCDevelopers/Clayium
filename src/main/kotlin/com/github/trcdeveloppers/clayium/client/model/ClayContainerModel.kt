@@ -24,7 +24,7 @@ class ClayContainerModel(
 
     override fun getTextures(): MutableCollection<ResourceLocation> {
         return mutableListOf(
-            ResourceLocation("clayium:blocks/machinehull-$machineHullTier"),
+            ResourceLocation("clayium:blocks/machinehull_tier$machineHullTier"),
             faceTextureLocation,
             ResourceLocation("clayium:blocks/import"),
             ResourceLocation("clayium:blocks/import_energy"),
@@ -48,7 +48,7 @@ class ClayContainerModel(
         facing: EnumFacing,
     ) : IBakedModel {
 
-        private val machineHull = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/machinehull-$tier"))
+        private val machineHull = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/machinehull_tier$tier"))
         private val faceTexture = bakedTextureGetter.apply(faceTextureLocation)
         private val import = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/import"))
         private val importEnergy = bakedTextureGetter.apply(ResourceLocation("clayium:blocks/import_energy"))
