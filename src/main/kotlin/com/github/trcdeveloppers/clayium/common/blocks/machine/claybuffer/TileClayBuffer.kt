@@ -88,7 +88,7 @@ class TileClayBuffer(
 
     override fun getUpdatePacket(): SPacketUpdateTileEntity {
         return SPacketUpdateTileEntity(
-            pos, 1,
+            pos, 0,
             // We don't need to send the inventory data, since that is a container's job
             // Tier is also not needed, since it is not a dynamic property. It is only set once when the block is loaded
             NBTTagCompound().apply {
