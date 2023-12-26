@@ -47,6 +47,8 @@ class TileClayBuffer(
     val inputs: BooleanArray get() = BooleanArray(6) { EnumFacing.entries[it] in importingFaces }
     val outputs: BooleanArray get() = BooleanArray(6) { EnumFacing.entries[it] in exportingFaces }
 
+    val connections = BooleanArray(6)
+
     private val itemStackTransferDelegation = ItemStackTransferHandler(
         ConfigTierBalance.bufferTransferIntervals[tier-1],
         ConfigTierBalance.bufferTransferAmount[tier-1],
@@ -83,10 +85,24 @@ class TileClayBuffer(
     }
 
     override fun getUpdateTag(): NBTTagCompound {
-        return this.writeToNBT(NBTTagCompound())
+        this.refreshConnections()
+        return this.writeToNBT(
+            NBTTagCompound().apply {
+                setByteArray("connections", ByteArray(6) { if (connections[it]) 1 else 0 })
+            }
+        )
+    }
+
+    override fun handleUpdateTag(tag: NBTTagCompound) {
+        super.handleUpdateTag(tag)
+        val connections = tag.getByteArray("connections")
+        for (i in connections.indices) {
+            this.connections[i] = connections[i] == 1.toByte()
+        }
     }
 
     override fun getUpdatePacket(): SPacketUpdateTileEntity {
+        this.refreshConnections()
         return SPacketUpdateTileEntity(
             pos, 0,
             // We don't need to send the inventory data, since that is a container's job
@@ -98,6 +114,7 @@ class TileClayBuffer(
                 for (side in exportingFaces) {
                     setBoolean("output_${side.name2}", true)
                 }
+                setByteArray("connections", ByteArray(6) { if (connections[it]) 1 else 0 })
             }
         )
     }
@@ -108,6 +125,10 @@ class TileClayBuffer(
         for (side in EnumFacing.entries) {
             if (compound.getBoolean("input_${side.name2}")) importingFaces.add(side) else importingFaces.remove(side)
             if (compound.getBoolean("output_${side.name2}")) exportingFaces.add(side) else exportingFaces.remove(side)
+        }
+        val connections = compound.getByteArray("connections")
+        for (i in connections.indices) {
+            this.connections[i] = connections[i] == 1.toByte()
         }
         this.world.markBlockRangeForRenderUpdate(pos, pos)
     }
@@ -125,19 +146,6 @@ class TileClayBuffer(
         return oldState.block != newSate.block
     }
 
-    //todo: cache
-    fun getConnections(): BooleanArray {
-        return BooleanArray(6) {
-            val side = EnumFacing.entries[it]
-            val tile = this.world.getTileEntity(this.pos.offset(side))
-            if (tile is TileClayBuffer) {
-                (this.inputs[it] || this.outputs[it]) || (tile.inputs[side.opposite.index] || tile.outputs[side.opposite.index])
-            } else {
-                tile?.hasCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: false
-            }
-        }
-    }
-
     fun toggleInput(side: EnumFacing) {
         if (side in importingFaces) importingFaces.remove(side) else importingFaces.add(side)
         this.markDirty()
@@ -146,6 +154,19 @@ class TileClayBuffer(
     fun toggleOutput(side: EnumFacing) {
         if (side in exportingFaces) exportingFaces.remove(side) else exportingFaces.add(side)
         this.markDirty()
+    }
+
+    fun refreshConnections() {
+        for (side in EnumFacing.entries) {
+            val i = side.index
+            val j = side.opposite.index
+            val tile = this.world.getTileEntity(this.pos.offset(side))
+            if (tile is TileClayBuffer) {
+                this.connections[i] = (this.inputs[i] || this.outputs[i]) || (tile.inputs[j] || tile.outputs[j])
+            } else {
+                this.connections[i] = tile?.hasCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: false
+            }
+        }
     }
 
     companion object {

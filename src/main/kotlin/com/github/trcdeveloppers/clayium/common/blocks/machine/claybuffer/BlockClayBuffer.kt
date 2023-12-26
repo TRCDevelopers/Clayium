@@ -91,7 +91,7 @@ class BlockClayBuffer private constructor(
              (state as IExtendedBlockState)
                  .withProperty(INPUTS, tile.inputs)
                  .withProperty(OUTPUTS, tile.outputs)
-                 .withProperty(CONNECTIONS, tile.getConnections())
+                 .withProperty(CONNECTIONS, tile.connections)
         }
     }
 
@@ -99,9 +99,10 @@ class BlockClayBuffer private constructor(
         worldIn: World, pos: BlockPos, state: IBlockState,
         placer: EntityLivingBase, stack: ItemStack
     ) {
-        (worldIn.getTileEntity(pos) as? TileClayBuffer)?.toggleInput(
-            EnumFacing.getDirectionFromEntityLiving(pos, placer).opposite
-        )
+        if (worldIn.isRemote) return
+        val tileClayBuffer = worldIn.getTileEntity(pos) as? TileClayBuffer ?: return
+        tileClayBuffer.toggleInput(EnumFacing.getDirectionFromEntityLiving(pos, placer).opposite)
+        tileClayBuffer.refreshConnections()
     }
 
     override fun onBlockActivated(
@@ -160,6 +161,14 @@ class BlockClayBuffer private constructor(
         return IShiftRightClickable.Result(true, true)
     }
 
+    override fun onNeighborChange(world: IBlockAccess, pos: BlockPos, neighbor: BlockPos) {
+        if (world is World && !world.isRemote) {
+            world.notifyBlockUpdate(neighbor, world.getBlockState(neighbor), world.getBlockState(neighbor), Constants.BlockFlags.SEND_TO_CLIENTS)
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), Constants.BlockFlags.SEND_TO_CLIENTS)
+        }
+        super.onNeighborChange(world, pos, neighbor)
+    }
+
     override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity {
         return TileClayBuffer(tier)
     }
@@ -197,7 +206,7 @@ class BlockClayBuffer private constructor(
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
         if (state.getValue(IS_PIPE)) {
-            val connections = (source.getTileEntity(pos) as? TileClayBuffer)?.getConnections() ?: return CENTER_AABB
+            val connections = (source.getTileEntity(pos) as? TileClayBuffer)?.connections ?: return CENTER_AABB
             var aabb = CENTER_AABB
             for (i in 0..5) {
                 if (connections[i]) {
@@ -217,7 +226,7 @@ class BlockClayBuffer private constructor(
     ) {
         if (state.getValue(IS_PIPE)) {
             Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, CENTER_AABB)
-            val connections = (worldIn.getTileEntity(pos) as? TileClayBuffer)?.getConnections()
+            val connections = (worldIn.getTileEntity(pos) as? TileClayBuffer)?.connections
                 ?: return super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState)
             for (i in 0..5) {
                 if (connections[i]) {
