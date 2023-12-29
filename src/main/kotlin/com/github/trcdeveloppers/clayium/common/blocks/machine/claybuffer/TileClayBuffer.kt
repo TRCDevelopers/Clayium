@@ -1,5 +1,6 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer
 
+import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.common.blocks.machine.ItemStackTransferHandler
 import com.github.trcdeveloppers.clayium.common.config.ConfigTierBalance
 import net.minecraft.block.state.IBlockState
@@ -19,27 +20,22 @@ import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemStackHandler
 import java.lang.IllegalArgumentException
 
-class TileClayBuffer(
-    tier: Int = 4,
-) : TileEntity(), ITickable {
+class TileClayBuffer() : TileEntity(), ITickable {
 
-    var tier = tier
+    constructor(tier: Int) : this() {
+        this.initParams(tier)
+    }
+
+    var tier = -1
         private set
 
-    val inventoryY: Int = when (tier) {
-        in 4..7 -> tier - 3
-        8, -> 4
-        in 9..13 -> 6
-        else -> throw IllegalArgumentException("Invalid tier for buffer: $tier")
-    }
+    var inventoryY: Int = -1
+        private set
+    var inventoryX: Int = -1
+        private set
 
-    val inventoryX: Int = when (tier) {
-        in 4..7 -> tier - 2
-        in 8..13 -> 9
-        else -> throw IllegalArgumentException("Invalid tier for buffer: $tier")
-    }
-
-    private val handler = ItemStackHandler(inventoryX * inventoryY)
+    private lateinit var handler: ItemStackHandler
+    private lateinit var itemStackTransferDelegation : ItemStackTransferHandler
 
     private val importingFaces: MutableSet<EnumFacing> = HashSet()
     private val exportingFaces: MutableSet<EnumFacing> = HashSet()
@@ -49,13 +45,28 @@ class TileClayBuffer(
 
     val connections = BooleanArray(6)
 
-    private val itemStackTransferDelegation = ItemStackTransferHandler(
-        ConfigTierBalance.bufferTransferIntervals[tier-1],
-        ConfigTierBalance.bufferTransferAmount[tier-1],
-        handler,
-        importingFaces, exportingFaces,
-        this,
-    )
+    private fun initParams(tierIn: Int) {
+        this.tier = tierIn
+        this.inventoryY = when (tierIn) {
+            in 4..7 -> tierIn - 3
+            8, -> 4
+            in 9..13 -> 6
+            else -> throw IllegalArgumentException("Invalid tier for buffer: $tierIn")
+        }
+        this.inventoryX = when (tierIn) {
+            in 4..7 -> tierIn - 2
+            in 8..13 -> 9
+            else -> throw IllegalArgumentException("Invalid tier for buffer: $tierIn")
+        }
+        this.handler = ItemStackHandler(inventoryX * inventoryY)
+        this.itemStackTransferDelegation = ItemStackTransferHandler(
+            ConfigTierBalance.bufferTransferIntervals[tierIn - 1],
+            ConfigTierBalance.bufferTransferAmount[tierIn - 1],
+            handler,
+            importingFaces, exportingFaces,
+            this,
+        )
+    }
 
     override fun update() {
         itemStackTransferDelegation.transfer()
@@ -63,6 +74,7 @@ class TileClayBuffer(
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         super.writeToNBT(compound)
+
         compound.setTag("inventory", handler.serializeNBT())
         compound.setInteger("tier", tier)
         for (side in importingFaces) {
@@ -76,8 +88,12 @@ class TileClayBuffer(
 
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
+
+        this.tier = compound.getInteger("tier")
+        this.initParams(tier)
+        Clayium.LOGGER.info("Reading buffer with tier $tier")
+
         handler.deserializeNBT(compound.getCompoundTag("inventory"))
-        tier = compound.getInteger("tier")
         for (side in EnumFacing.entries) {
             if (compound.getBoolean("input_${side.name2}")) importingFaces.add(side)
             if (compound.getBoolean("output_${side.name2}")) exportingFaces.add(side)
