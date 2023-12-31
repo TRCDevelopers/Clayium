@@ -185,6 +185,14 @@ class TileClayBuffer() : TileEntity(), ITickable {
         }
     }
 
+    fun rotate() {
+        importingFaces.clear()
+        importingFaces.addAll(importingFaces.map { it.opposite })
+
+        exportingFaces.clear()
+        exportingFaces.addAll(exportingFaces.map { it.opposite })
+    }
+
     companion object {
         @JvmStatic
         private val ITEM_HANDLER_CAPABILITY: Capability<IItemHandler> = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY

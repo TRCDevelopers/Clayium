@@ -152,7 +152,7 @@ class BlockClayBuffer private constructor(
                 (world.getTileEntity(pos) as? TileClayBuffer)?.toggleOutput(facing)
             }
             ClayiumItems.CLAY_PIPING_TOOL -> {
-                //todo: rotate the block
+                (world.getTileEntity(pos) as? TileClayBuffer)?.rotate()
             }
             else -> return IShiftRightClickable.Result(false, false)
         }
