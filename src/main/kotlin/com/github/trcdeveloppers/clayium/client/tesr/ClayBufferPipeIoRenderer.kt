@@ -19,6 +19,8 @@ object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileClayBuffer>() {
     // offset to prevent z-fighting
     private const val CUBE_OFFSET = 0.01f
 
+    private val quads = EnumFacing.entries.map { createQuadsFor(it) }
+
     override fun render(
         te: TileClayBuffer,
         x: Double,
@@ -34,14 +36,25 @@ object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileClayBuffer>() {
         GlStateManager.pushMatrix()
         GlStateManager.translate(x, y, z)
 
-        this.bindTexture(ResourceLocation(Clayium.MOD_ID, "textures/blocks/import.png"))
-
         val buf = Tessellator.getInstance().buffer
+
         val connections = te.connections
 
-        for (side in EnumFacing.entries) {
-            if (!connections[side.index]) continue
-            for (quad in createQuadsFor(side)) {
+        this.bindTexture(ResourceLocation(Clayium.MOD_ID, "textures/blocks/import.png"))
+        val inputs = te.inputs
+
+        for (i in 0..5) {
+            if (!(connections[i] && inputs[i])) continue
+            for (quad in quads[i]) {
+                quad.draw(buf, 0.0625f)
+            }
+        }
+
+        this.bindTexture(ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_p.png"))
+        val outputs = te.outputs
+        for (i in 0..5) {
+            if (!(connections[i] && outputs[i])) continue
+            for (quad in quads[i]) {
                 quad.draw(buf, 0.0625f)
             }
         }
