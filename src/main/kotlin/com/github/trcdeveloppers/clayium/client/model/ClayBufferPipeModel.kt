@@ -25,7 +25,11 @@ class ClayBufferPipeModel(
 ) : IModel {
 
     override fun getTextures(): Collection<ResourceLocation> {
-        return listOf(ResourceLocation("clayium:blocks/machinehull_tier$tier"),)
+        return listOf(
+            ResourceLocation("clayium:blocks/machinehull_tier$tier"),
+            ResourceLocation("clayium:blocks/import"),
+            ResourceLocation("clayium:blocks/export"),
+        )
     }
 
     override fun bake(
