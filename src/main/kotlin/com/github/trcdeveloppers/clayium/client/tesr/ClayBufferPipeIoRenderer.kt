@@ -40,7 +40,7 @@ object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileClayBuffer>() {
 
         val connections = te.connections
 
-        this.bindTexture(ResourceLocation(Clayium.MOD_ID, "textures/blocks/import.png"))
+        this.bindTexture(ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_p.png"))
         val inputs = te.inputs
 
         for (i in 0..5) {
