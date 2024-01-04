@@ -1,5 +1,6 @@
 package com.github.trcdeveloppers.clayium.client.model
 
+import com.github.trcdeveloppers.clayium.client.ModelUtils
 import com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer.BlockClayBuffer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -45,7 +46,7 @@ class ClayBufferPipeModel(
             val positionOfCube = EnumFacing.byIndex(index)
             EnumFacing.entries
                 .filter { it != positionOfCube.opposite }
-                .map { createQuad(it, from, to, getUv(positionOfCube, it)) }
+                .map { createQuad(it, from, to, ModelUtils.getUvFloat(positionOfCube, it)) }
         }
 
         private val centerCubeQuad = EnumFacing.entries.map{
@@ -96,41 +97,6 @@ class ClayBufferPipeModel(
                 Pair(Vector3f(11f, 5f, 5f), Vector3f(16f, 11f, 11f)),
             )
 
-            private fun getUv(cubePos: EnumFacing, sideOfCube: EnumFacing): FloatArray {
-                if (cubePos == sideOfCube) {
-                    return floatArrayOf(5f, 5f, 11f, 11f)
-                }
-                return when (cubePos) {
-                    EnumFacing.UP -> floatArrayOf(5f, 11f, 11f, 16f)
-                    EnumFacing.DOWN -> floatArrayOf(5f, 0f, 11f, 5f)
-                    EnumFacing.NORTH -> when (sideOfCube) {
-                        EnumFacing.UP -> floatArrayOf(5f, 0f, 11f, 5f)
-                        EnumFacing.DOWN -> floatArrayOf(5f, 11f, 11f, 16f)
-                        EnumFacing.WEST -> floatArrayOf(0f, 5f, 5f, 11f)
-                        EnumFacing.EAST -> floatArrayOf(11f, 5f, 16f, 11f)
-                        else -> throw IllegalArgumentException("Invalid side of cube: $sideOfCube")
-                    }
-                    EnumFacing.SOUTH -> when (sideOfCube) {
-                        EnumFacing.UP -> floatArrayOf(5f, 11f, 11f, 16f)
-                        EnumFacing.DOWN -> floatArrayOf(5f, 0f, 11f, 5f)
-                        EnumFacing.WEST -> floatArrayOf(11f, 5f, 16f, 11f)
-                        EnumFacing.EAST -> floatArrayOf(0f, 5f, 5f, 11f)
-                        else -> throw IllegalArgumentException("Invalid side of cube: $sideOfCube")
-                    }
-                    EnumFacing.WEST -> when (sideOfCube) {
-                        EnumFacing.UP, EnumFacing.DOWN -> floatArrayOf(0f, 5f, 5f, 11f)
-                        EnumFacing.NORTH -> floatArrayOf(11f, 5f, 16f, 11f)
-                        EnumFacing.SOUTH -> floatArrayOf(0f, 5f, 5f, 11f)
-                        else -> throw IllegalArgumentException("Invalid side of cube: $sideOfCube")
-                    }
-                    EnumFacing.EAST -> when (sideOfCube) {
-                        EnumFacing.UP, EnumFacing.DOWN -> floatArrayOf(11f, 5f, 16f, 11f)
-                        EnumFacing.NORTH -> floatArrayOf(0f, 5f, 5f, 11f)
-                        EnumFacing.SOUTH -> floatArrayOf(11f, 5f, 16f, 11f)
-                        else -> throw IllegalArgumentException("Invalid side of cube: $sideOfCube")
-                    }
-                }
-            }
         }
     }
 }
