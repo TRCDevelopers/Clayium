@@ -19,13 +19,13 @@ object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileClayBuffer>() {
     // offset to prevent z-fighting
     private const val CUBE_OFFSET = 0.01f
 
+    private val importTexture = ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_p.png")
+    private val exportTexture = ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_p.png")
+
     private val quads = EnumFacing.entries.map { createQuadsFor(it) }
 
     override fun render(
-        te: TileClayBuffer,
-        x: Double,
-        y: Double,
-        z: Double,
+        te: TileClayBuffer, x: Double, y: Double, z: Double,
         partialTicks: Float,
         destroyStage: Int,
         alpha: Float
@@ -40,9 +40,8 @@ object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileClayBuffer>() {
 
         val connections = te.connections
 
-        this.bindTexture(ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_p.png"))
+        this.bindTexture(importTexture)
         val inputs = te.inputs
-
         for (i in 0..5) {
             if (!(connections[i] && inputs[i])) continue
             for (quad in quads[i]) {
@@ -50,7 +49,7 @@ object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileClayBuffer>() {
             }
         }
 
-        this.bindTexture(ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_p.png"))
+        this.bindTexture(exportTexture)
         val outputs = te.outputs
         for (i in 0..5) {
             if (!(connections[i] && outputs[i])) continue
