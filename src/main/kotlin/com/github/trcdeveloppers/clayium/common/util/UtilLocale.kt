@@ -4,7 +4,7 @@ import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.resources.I18n
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import java.util.*
+import java.util.IllegalFormatException
 import kotlin.math.floor
 import kotlin.math.log10
 import kotlin.math.min
@@ -151,7 +151,7 @@ object UtilLocale {
         return I18n.hasKey(str)
     }
 
-    fun localizeTooltip(str: String): List<String>? {
+    fun localizeTooltip(str: String): List<String> {
         var flag = true
         var i = 0
         val ret = ArrayList<String>()
@@ -169,6 +169,6 @@ object UtilLocale {
             }
             flag = false
         }
-        return if (ret.isEmpty()) null else ret
+        return if (ret.isEmpty()) listOf(str) else ret
     }
 }

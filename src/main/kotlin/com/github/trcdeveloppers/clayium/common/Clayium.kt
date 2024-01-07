@@ -1,6 +1,5 @@
-package com.github.trcdeveloppers.clayium
+package com.github.trcdeveloppers.clayium.common
 
-import com.github.trcdeveloppers.clayium.common.ClayiumCommonProxy
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack

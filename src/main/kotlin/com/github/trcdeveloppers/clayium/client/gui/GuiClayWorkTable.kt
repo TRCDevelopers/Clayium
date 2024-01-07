@@ -1,6 +1,6 @@
 package com.github.trcdeveloppers.clayium.client.gui
 
-import com.github.trcdeveloppers.clayium.Clayium
+import com.github.trcdeveloppers.clayium.common.Clayium
 import com.github.trcdeveloppers.clayium.client.gui.button.GuiButtonImageToggleable
 import com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod
 import com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable.ClayWorktableContainer
@@ -15,8 +15,10 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 @SideOnly(Side.CLIENT)
-class GuiClayWorkTable(playerInv: IInventory, private val tile: TileClayWorkTable) :
-    GuiContainer(ClayWorktableContainer(playerInv, tile)) {
+class GuiClayWorkTable(
+    playerInv: IInventory,
+    private val tile: TileClayWorkTable
+) : GuiContainer(ClayWorktableContainer(playerInv, tile)) {
     override fun drawGuiContainerForegroundLayer(mouseX: Int, mouseY: Int) {
         fontRenderer.drawString(I18n.format("recipe.clayium.ClayWorkTable"), 6, 6, 0x404040)
         fontRenderer.drawString(I18n.format("container.inventory"), 8, ySize - 94, 0x404040)

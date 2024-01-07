@@ -12,8 +12,6 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemStackHandler
-import java.lang.IllegalArgumentException
-import java.lang.NullPointerException
 
 class TileClayWorkTable : TileEntity() {
     private val handler = ItemStackHandler(4)

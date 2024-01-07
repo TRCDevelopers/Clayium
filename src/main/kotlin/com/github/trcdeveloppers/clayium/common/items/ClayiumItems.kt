@@ -1,10 +1,17 @@
 package com.github.trcdeveloppers.clayium.common.items
 
-import com.github.trcdeveloppers.clayium.Clayium
-import com.github.trcdeveloppers.clayium.Clayium.Companion.MOD_ID
+import com.github.trcdeveloppers.clayium.common.Clayium
+import com.github.trcdeveloppers.clayium.common.Clayium.Companion.MOD_ID
 import com.github.trcdeveloppers.clayium.common.annotation.CItem
 import com.github.trcdeveloppers.clayium.common.blocks.ClayiumBlocks.allBlocks
-import com.github.trcdeveloppers.clayium.common.items.CShape.*
+import com.github.trcdeveloppers.clayium.common.items.CShape.DUST
+import com.github.trcdeveloppers.clayium.common.items.CShape.INGOT
+import com.github.trcdeveloppers.clayium.common.items.CShape.LARGE_PLATE
+import com.github.trcdeveloppers.clayium.common.items.CShape.MATTER2
+import com.github.trcdeveloppers.clayium.common.items.CShape.MATTER3
+import com.github.trcdeveloppers.clayium.common.items.CShape.MATTER4
+import com.github.trcdeveloppers.clayium.common.items.CShape.MATTER5
+import com.github.trcdeveloppers.clayium.common.items.CShape.PLATE
 import com.google.common.reflect.ClassPath
 import net.minecraft.block.Block
 import net.minecraft.client.Minecraft
@@ -21,15 +28,17 @@ import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.IRarity
 import net.minecraftforge.event.RegistryEvent
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.oredict.OreDictionary
-import java.util.*
+import java.util.Collections
 import javax.annotation.ParametersAreNonnullByDefault
 
 object ClayiumItems {
+
     @SideOnly(Side.CLIENT)
-    private var itemColors: MutableMap<Item, IItemColor>? = null
+    private lateinit var itemColors: MutableMap<Item, IItemColor>
     private val items: MutableMap<String, Item> = HashMap()
     @JvmStatic
     fun getItem(registryName: String): Item? {
@@ -63,7 +72,7 @@ object ClayiumItems {
                 }
             }
         for (material in ClayiumMaterials.entries) {
-            val item = if (material.hasTier()) itemWithTierTootip(material.tier) else Item()
+            val item = if (material.hasTier()) itemWithTierTooltip(material.tier) else Item()
             val registryName = material.name.lowercase()
 
             item.creativeTab = Clayium.CreativeTab
@@ -80,7 +89,7 @@ object ClayiumItems {
         }
         for (material in ClayiumColoredMaterials.entries) {
             for (shape in material.shapes) {
-                val item = if (material.hasTier()) itemWithTierTootip(material.tier) else Item()
+                val item = if (material.hasTier()) itemWithTierTooltip(material.tier) else Item()
                 var registryName = material.name.lowercase()
                 val capitalizedName = material.materialName.substring(0, 1).uppercase() + material.materialName.substring(1)
                 val oreDict = when (shape) {
@@ -104,13 +113,17 @@ object ClayiumItems {
                 }
                 items[registryName] = item
                 if (side.isClient) {
-                    // If itemColors is null, something went wrong and should crash.
-                    itemColors!![item] = IItemColor { stack, tintIndex -> material.getColor(stack, tintIndex) }
+                    itemColors[item] = IItemColor { stack, tintIndex -> material.getColor(stack, tintIndex) }
                     ModelLoader.setCustomModelResourceLocation(item, 0, shape.model)
                 }
             }
         }
-        allBlocks.forEach { (registryName: String?, block: Block?) ->
+        registerItem(Item().setMaxDamage(100).setMaxStackSize(1), "clay_spatula", side, event)
+        registerItem(Item().setMaxDamage(100).setMaxStackSize(1), "clay_rolling_pin", side, event)
+        registerItem(Item().setMaxDamage(100).setMaxStackSize(1), "clay_slicer", side, event)
+        registerItem(Item().setMaxStackSize(1), "clay_piping_tool", side, event)
+        registerItem(Item().setMaxStackSize(1), "clay_io_configurator", side, event)
+        allBlocks.forEach { (registryName: String, block: Block) ->
             event.registry.register(ItemBlock(block).setRegistryName(registryName))
             if (side.isClient) {
                 ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, ModelResourceLocation(ResourceLocation(MOD_ID, registryName), "inventory"))
@@ -118,12 +131,23 @@ object ClayiumItems {
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    fun registerItemColors() {
-        itemColors!!.forEach { (item, itemColor) -> Minecraft.getMinecraft().itemColors.registerItemColorHandler(itemColor, item) }
+    private fun registerItem(item: Item, registryName: String, side: Side, event: RegistryEvent.Register<Item>) {
+        item.creativeTab = Clayium.CreativeTab
+        item.registryName = ResourceLocation(MOD_ID, registryName)
+        item.translationKey = "$MOD_ID.$registryName"
+        event.registry.register(item)
+        items[registryName] = item
+        if (side.isClient) {
+            ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(ResourceLocation(MOD_ID, registryName), "inventory"))
+        }
     }
 
-    private fun itemWithTierTootip(tier: Int): Item {
+    @SideOnly(Side.CLIENT)
+    fun registerItemColors() {
+        itemColors.forEach { (item, itemColor) -> Minecraft.getMinecraft().itemColors.registerItemColorHandler(itemColor, item) }
+    }
+
+    private fun itemWithTierTooltip(tier: Int): Item {
         return object : Item() {
             @SideOnly(Side.CLIENT)
             @ParametersAreNonnullByDefault
@@ -221,7 +245,9 @@ object ClayiumItems {
         MANIPULATOR_TIER2(8),
         MANIPULATOR_TIER3(12),
         LASER_PARTS(7),
-        TELEPORTATION_PARTS(11);
+        TELEPORTATION_PARTS(11),
+
+        ;
 
         constructor(oreDict: String) : this(-1, oreDict)
 
@@ -387,4 +413,22 @@ object ClayiumItems {
             const val NO_TIER = -1
         }
     }
+
+    @JvmStatic
+    @ObjectHolder("$MOD_ID:clay_spatula")
+    lateinit var CLAY_SPATULA: Item
+        private set
+    @JvmStatic
+    @ObjectHolder("$MOD_ID:clay_rolling_pin")
+    lateinit var CLAY_ROLLING_PIN: Item
+        private set
+    @ObjectHolder("$MOD_ID:clay_slicer")
+    lateinit var CLAY_SLICER: Item
+        private set
+    @ObjectHolder("$MOD_ID:clay_piping_tool")
+    lateinit var CLAY_PIPING_TOOL: Item
+        private set
+    @ObjectHolder("$MOD_ID:clay_io_configurator")
+    lateinit var CLAY_IO_CONFIGURATOR: Item
+        private set
 }

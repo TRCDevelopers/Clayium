@@ -8,7 +8,7 @@ import net.minecraft.block.Block
 import net.minecraft.block.material.MapColor
 import net.minecraft.block.material.Material
 import net.minecraft.util.EnumFacing
-import java.util.*
+import java.util.EnumMap
 
 abstract class MachineBase : Block, ITiered, IClayEnergyContainer, IPipable, IConnectable {
     private val inputMap: MutableMap<EnumFacing, Int> = EnumMap(EnumFacing::class.java)

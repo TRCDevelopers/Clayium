@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "clayium:blocks/machinehull_tier4"
+  }
+}

@@ -1,8 +1,9 @@
 package com.github.trcdeveloppers.clayium.common
 
-import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.common.blocks.ClayiumBlocks
+import com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
+import com.github.trcdeveloppers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdeveloppers.clayium.common.items.ClayiumItems
 import com.github.trcdeveloppers.clayium.common.worldgen.ClayOreGenerator
 import net.minecraft.block.Block
@@ -10,6 +11,7 @@ import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.RegistryEvent
+import net.minecraftforge.event.entity.player.PlayerInteractEvent
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
@@ -23,15 +25,13 @@ open class ClayiumCommonProxy {
         MinecraftForge.EVENT_BUS.register(Clayium.proxy)
         this.registerTileEntities()
         GameRegistry.registerWorldGenerator(ClayOreGenerator(), 0)
-        NetworkRegistry.INSTANCE.registerGuiHandler(Clayium.INSTANCE, GuiHandler())
+        NetworkRegistry.INSTANCE.registerGuiHandler(Clayium.INSTANCE, GuiHandler)
     }
 
     open fun init(event: FMLInitializationEvent) {
-
     }
 
     open fun postInit(event: FMLPostInitializationEvent) {
-
     }
 
     @SubscribeEvent
@@ -46,5 +46,19 @@ open class ClayiumCommonProxy {
 
     open fun registerTileEntities() {
         GameRegistry.registerTileEntity(TileClayWorkTable::class.java, ResourceLocation(Clayium.MOD_ID, "TileClayWorkTable"))
+        GameRegistry.registerTileEntity(TileClayBuffer::class.java, ResourceLocation(Clayium.MOD_ID, "TileClayBuffer"))
+    }
+
+    @SubscribeEvent
+    fun onBlockRightClicked(e: PlayerInteractEvent.RightClickBlock) {
+        val world = e.world
+        val blockState = world.getBlockState(e.pos)
+        val block = blockState.block
+
+        if (block is IShiftRightClickable && e.entityPlayer.isSneaking) {
+            val (cancel, swing) = block.onShiftRightClicked(world, e.pos, blockState, e.entityPlayer, e.hand, e.face ?: return, e.hitVec.x.toFloat(), e.hitVec.y.toFloat(), e.hitVec.z.toFloat())
+            e.isCanceled = cancel
+            if (swing) e.entityPlayer.swingArm(e.hand)
+        }
     }
 }

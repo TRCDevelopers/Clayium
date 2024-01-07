@@ -1,6 +1,6 @@
 package com.github.trcdeveloppers.clayium.common.blocks.ores
 
-import com.github.trcdeveloppers.clayium.Clayium
+import com.github.trcdeveloppers.clayium.common.Clayium
 import com.github.trcdeveloppers.clayium.common.annotation.CBlock
 import com.github.trcdeveloppers.clayium.common.items.ItemClayPickaxe
 import com.github.trcdeveloppers.clayium.common.items.ItemClayShovel
@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.event.ForgeEventFactory
-import java.util.*
+import java.util.Random
 
 @CBlock(registryName = "clay_ore")
 class BlockClayOre(material: Material) : Block(material) {
