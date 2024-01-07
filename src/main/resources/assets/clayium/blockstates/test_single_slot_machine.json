@@ -1,9 +1,0 @@
-{
-  "multipart": [
-    {
-      "apply": {
-        "model": "clayium:machine_hull_4"
-      }
-    }
-  ]
-}

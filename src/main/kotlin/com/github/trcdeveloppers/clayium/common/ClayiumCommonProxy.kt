@@ -1,7 +1,6 @@
 package com.github.trcdeveloppers.clayium.common
 
 import com.github.trcdeveloppers.clayium.common.blocks.ClayiumBlocks
-import com.github.trcdeveloppers.clayium.common.blocks.machine.TileSingleSlotMachine
 import com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
 import com.github.trcdeveloppers.clayium.common.interfaces.IShiftRightClickable
@@ -47,7 +46,6 @@ open class ClayiumCommonProxy {
 
     open fun registerTileEntities() {
         GameRegistry.registerTileEntity(TileClayWorkTable::class.java, ResourceLocation(Clayium.MOD_ID, "TileClayWorkTable"))
-        GameRegistry.registerTileEntity(TileSingleSlotMachine::class.java, ResourceLocation(Clayium.MOD_ID, "TileSingleSlotMachine"))
         GameRegistry.registerTileEntity(TileClayBuffer::class.java, ResourceLocation(Clayium.MOD_ID, "TileClayBuffer"))
     }
 
