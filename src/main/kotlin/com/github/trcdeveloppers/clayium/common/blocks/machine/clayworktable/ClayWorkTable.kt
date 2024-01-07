@@ -1,6 +1,6 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable
 
-import com.github.trcdeveloppers.clayium.Clayium
+import com.github.trcdeveloppers.clayium.common.Clayium
 import com.github.trcdeveloppers.clayium.common.GuiHandler
 import com.github.trcdeveloppers.clayium.common.annotation.CBlock
 import com.github.trcdeveloppers.clayium.common.interfaces.ITiered

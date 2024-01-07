@@ -1,6 +1,6 @@
 package com.github.trcdeveloppers.clayium.client.loader
 
-import com.github.trcdeveloppers.clayium.Clayium
+import com.github.trcdeveloppers.clayium.common.Clayium
 import com.github.trcdeveloppers.clayium.client.model.ClayContainerModel
 import com.github.trcdeveloppers.clayium.client.model.ClayContainerPipeModel
 import com.github.trcdeveloppers.clayium.common.annotation.CBlock

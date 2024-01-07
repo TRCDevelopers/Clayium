@@ -1,7 +1,7 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer
 
-import com.github.trcdeveloppers.clayium.Clayium
-import com.github.trcdeveloppers.clayium.Clayium.Companion.MOD_ID
+import com.github.trcdeveloppers.clayium.common.Clayium
+import com.github.trcdeveloppers.clayium.common.Clayium.Companion.MOD_ID
 import com.github.trcdeveloppers.clayium.common.GuiHandler
 import com.github.trcdeveloppers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
 import com.github.trcdeveloppers.clayium.common.interfaces.IShiftRightClickable

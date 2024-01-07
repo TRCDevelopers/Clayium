@@ -1,6 +1,5 @@
 package com.github.trcdeveloppers.clayium.common
 
-import com.github.trcdeveloppers.clayium.Clayium
 import com.github.trcdeveloppers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdeveloppers.clayium.common.blocks.machine.TileSingleSlotMachine
 import com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer.TileClayBuffer

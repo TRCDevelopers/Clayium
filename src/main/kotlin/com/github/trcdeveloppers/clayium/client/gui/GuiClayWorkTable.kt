@@ -1,6 +1,6 @@
 package com.github.trcdeveloppers.clayium.client.gui
 
-import com.github.trcdeveloppers.clayium.Clayium
+import com.github.trcdeveloppers.clayium.common.Clayium
 import com.github.trcdeveloppers.clayium.client.gui.button.GuiButtonImageToggleable
 import com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod
 import com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable.ClayWorktableContainer

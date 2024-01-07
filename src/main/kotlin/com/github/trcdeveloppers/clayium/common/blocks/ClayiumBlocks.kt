@@ -1,7 +1,7 @@
 package com.github.trcdeveloppers.clayium.common.blocks
 
-import com.github.trcdeveloppers.clayium.Clayium
-import com.github.trcdeveloppers.clayium.Clayium.Companion.MOD_ID
+import com.github.trcdeveloppers.clayium.common.Clayium
+import com.github.trcdeveloppers.clayium.common.Clayium.Companion.MOD_ID
 import com.github.trcdeveloppers.clayium.common.annotation.CBlock
 import com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer.BlockClayBuffer
 import com.google.common.reflect.ClassPath

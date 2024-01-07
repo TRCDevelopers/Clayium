@@ -1,6 +1,6 @@
 package com.github.trcdeveloppers.clayium.common.recipe.clayworktable
 
-import com.github.trcdeveloppers.clayium.Clayium
+import com.github.trcdeveloppers.clayium.common.Clayium
 import com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod
 import com.github.trcdeveloppers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod.Companion.fromId
 import com.google.gson.JsonObject

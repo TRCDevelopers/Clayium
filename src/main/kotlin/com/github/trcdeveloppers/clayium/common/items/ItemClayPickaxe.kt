@@ -1,6 +1,6 @@
 package com.github.trcdeveloppers.clayium.common.items
 
-import com.github.trcdeveloppers.clayium.Clayium
+import com.github.trcdeveloppers.clayium.common.Clayium
 import com.github.trcdeveloppers.clayium.common.annotation.CItem
 import com.github.trcdeveloppers.clayium.common.util.UtilLocale
 import net.minecraft.block.state.IBlockState

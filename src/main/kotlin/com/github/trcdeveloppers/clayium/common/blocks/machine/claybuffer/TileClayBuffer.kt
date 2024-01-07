@@ -1,6 +1,6 @@
 package com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer
 
-import com.github.trcdeveloppers.clayium.Clayium
+import com.github.trcdeveloppers.clayium.common.Clayium
 import com.github.trcdeveloppers.clayium.common.blocks.machine.ItemStackTransferHandler
 import com.github.trcdeveloppers.clayium.common.config.ConfigTierBalance
 import net.minecraft.block.state.IBlockState

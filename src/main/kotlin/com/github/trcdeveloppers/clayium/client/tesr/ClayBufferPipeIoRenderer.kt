@@ -1,6 +1,6 @@
 package com.github.trcdeveloppers.clayium.client.tesr
 
-import com.github.trcdeveloppers.clayium.Clayium
+import com.github.trcdeveloppers.clayium.common.Clayium
 import com.github.trcdeveloppers.clayium.client.ModelUtils
 import com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdeveloppers.clayium.common.items.ClayiumItems

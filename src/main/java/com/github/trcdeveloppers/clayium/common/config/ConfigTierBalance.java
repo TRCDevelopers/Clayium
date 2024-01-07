@@ -1,6 +1,6 @@
 package com.github.trcdeveloppers.clayium.common.config;
 
-import com.github.trcdeveloppers.clayium.Clayium;
+import com.github.trcdeveloppers.clayium.common.Clayium;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.LangKey;
 import net.minecraftforge.common.config.Config.RangeInt;

@@ -1,6 +1,6 @@
 package com.github.trcdeveloppers.clayium.client.gui
 
-import com.github.trcdeveloppers.clayium.Clayium
+import com.github.trcdeveloppers.clayium.common.Clayium
 import com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer.ContainerClayBuffer
 import com.github.trcdeveloppers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import net.minecraft.client.gui.inventory.GuiContainer

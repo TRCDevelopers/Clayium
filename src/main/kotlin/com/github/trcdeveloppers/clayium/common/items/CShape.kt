@@ -1,6 +1,6 @@
 package com.github.trcdeveloppers.clayium.common.items
 
-import com.github.trcdeveloppers.clayium.Clayium.Companion.MOD_ID
+import com.github.trcdeveloppers.clayium.common.Clayium.Companion.MOD_ID
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 
 enum class CShape {
