@@ -2,7 +2,7 @@ package com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer
 
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.machine.ItemStackTransferHandler
-import com.github.trcdevelopers.clayium.common.config.config.ConfigTierBalance
+import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
 import net.minecraft.block.state.IBlockState
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager

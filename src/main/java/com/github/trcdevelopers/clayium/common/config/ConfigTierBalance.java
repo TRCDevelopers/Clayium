@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.common.config.config;
+package com.github.trcdevelopers.clayium.common.config;
 
 import com.github.trcdevelopers.clayium.common.Clayium;
 import net.minecraftforge.common.config.Config;
