@@ -4,7 +4,7 @@ plugins {
 }
 
 
-group = 'com.github.trcdeveloppers'
+group = 'com.github.trcdevelopers'
 version = '1.0-SNAPSHOT'
 
 java {
