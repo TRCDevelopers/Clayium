@@ -36,7 +36,7 @@ class Clayium {
         const val MOD_NAME = "Clayium"
         const val VERSION = "1.0-SNAPSHOT"
 
-        val CreativeTab: CreativeTabs = object : CreativeTabs(getNextID(), MOD_ID) {
+        val creativeTab: CreativeTabs = object : CreativeTabs(getNextID(), MOD_ID) {
             @SideOnly(Side.CLIENT)
             override fun createIcon(): ItemStack {
                 return ItemStack(Items.CLAY_BALL)

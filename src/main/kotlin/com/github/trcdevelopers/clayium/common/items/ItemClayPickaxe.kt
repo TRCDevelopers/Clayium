@@ -19,7 +19,7 @@ class ItemClayPickaxe : ItemPickaxe(ToolMaterial.STONE) {
     private val efficiencyOnClayOre = 32.0f
 
     init {
-        creativeTab = Clayium.CreativeTab
+        creativeTab = Clayium.creativeTab
         maxDamage = 500
     }
 

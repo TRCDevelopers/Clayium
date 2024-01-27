@@ -62,7 +62,7 @@ object ClayiumItems {
                 val item = clazz.newInstance() as Item
                 val registryName = cItem.registryName
 
-                item.creativeTab = Clayium.CreativeTab
+                item.creativeTab = Clayium.creativeTab
                 item.registryName = ResourceLocation(MOD_ID, registryName)
                 item.translationKey = "$MOD_ID.$registryName"
                 event.registry.register(item)
@@ -75,7 +75,7 @@ object ClayiumItems {
             val item = if (material.hasTier()) itemWithTierTooltip(material.tier) else Item()
             val registryName = material.name.lowercase()
 
-            item.creativeTab = Clayium.CreativeTab
+            item.creativeTab = Clayium.creativeTab
             item.registryName = ResourceLocation(MOD_ID, registryName)
             item.translationKey = "$MOD_ID.$registryName"
             event.registry.register(item)
@@ -104,7 +104,7 @@ object ClayiumItems {
                     else -> ""
                 }
 
-                item.creativeTab = Clayium.CreativeTab
+                item.creativeTab = Clayium.creativeTab
                 item.registryName = ResourceLocation(MOD_ID, registryName)
                 item.translationKey = "$MOD_ID.$registryName"
                 event.registry.register(item)
@@ -132,7 +132,7 @@ object ClayiumItems {
     }
 
     private fun registerItem(item: Item, registryName: String, side: Side, event: RegistryEvent.Register<Item>) {
-        item.creativeTab = Clayium.CreativeTab
+        item.creativeTab = Clayium.creativeTab
         item.registryName = ResourceLocation(MOD_ID, registryName)
         item.translationKey = "$MOD_ID.$registryName"
         event.registry.register(item)

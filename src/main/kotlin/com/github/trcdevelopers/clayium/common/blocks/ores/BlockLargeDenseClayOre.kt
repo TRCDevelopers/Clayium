@@ -14,7 +14,7 @@ import javax.annotation.ParametersAreNonnullByDefault
 @CBlock(registryName = "large_dense_clay_ore")
 class BlockLargeDenseClayOre(material: Material) : Block(material) {
     init {
-        creativeTab = Clayium.CreativeTab
+        creativeTab = Clayium.creativeTab
         soundType = SoundType.STONE
         setLightLevel(0f)
         setHarvestLevel("pickaxe", 1)

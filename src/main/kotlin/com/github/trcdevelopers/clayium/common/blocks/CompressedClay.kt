@@ -37,7 +37,7 @@ class CompressedClay private constructor(materialIn: Material, tier: Int, ce: Lo
     private val ceTooltip: String
 
     init {
-        this.creativeTab = Clayium.CreativeTab
+        this.creativeTab = Clayium.creativeTab
         this.translationKey = "$MOD_ID.$registryName"
         this.registryName = ResourceLocation(MOD_ID, registryName)
         this.blockHardness = 0.5f

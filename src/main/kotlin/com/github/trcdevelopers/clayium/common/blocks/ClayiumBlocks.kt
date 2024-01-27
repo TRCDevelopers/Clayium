@@ -54,7 +54,7 @@ object ClayiumBlocks {
     }
 
     private fun registerBlock(block: Block, registryName: String) {
-        block.creativeTab = Clayium.CreativeTab
+        block.creativeTab = Clayium.creativeTab
         block.registryName = ResourceLocation(MOD_ID, registryName)
         block.translationKey = "$MOD_ID.$registryName"
         blocks[registryName] = block

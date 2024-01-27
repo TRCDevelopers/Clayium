@@ -25,7 +25,7 @@ import java.util.Random
 @CBlock(registryName = "clay_ore")
 class BlockClayOre(material: Material) : Block(material) {
     init {
-        creativeTab = Clayium.CreativeTab
+        creativeTab = Clayium.creativeTab
         soundType = SoundType.STONE
         setLightLevel(0f)
         setHarvestLevel("pickaxe", 1)
