@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.common
 
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
+import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemDust
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.init.Items
 import net.minecraft.item.Item
@@ -39,6 +40,7 @@ class Clayium {
     @SubscribeEvent
     fun registerItems(event: RegistryEvent.Register<Item>) {
         proxy.registerItem(event.registry, MetaItemClayParts)
+        proxy.registerItem(event.registry, MetaItemDust)
     }
 
     companion object {
