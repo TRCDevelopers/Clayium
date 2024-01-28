@@ -24,7 +24,6 @@ object MetaItemClayParts : MetaItemClayium("clay_parts") {
     val CEE_BOARD = addItem(13, "cee_board").tier(3)
     //endregion
 
-    //region Clay Parts
     val CLAY_BEARING = addItem(14, "clay_bearing").tier(1)
     val CLAY_BLADE = addItem(15, "clay_blade").tier(1)
     val CLAY_CUTTING_HEAD = addItem(16, "clay_cutting_head").tier(1)
@@ -64,9 +63,17 @@ object MetaItemClayParts : MetaItemClayium("clay_parts") {
     val DENSE_CLAY_WHEEL = addItem(49, "dense_clay_wheel").tier(2)
 
     val LARGE_CLAY_BALL = addItem(50, "large_clay_ball").tier(2)
-    //endregion
 
     val COMPRESSED_CLAY_SHARD = addItem(51, "compressed_clay_shard").tier(1)
     val INDUSTRIAL_CLAY_SHARD = addItem(52, "industrial_clay_shard").tier(2)
     val ADV_INDUSTRIAL_CLAY_SHARD = addItem(53, "adv_industrial_clay_shard").tier(3)
+
+    val CLAY_GADGET_PARTS = addItem(54, "clay_gadget_parts").tier(6)
+
+    val MANIPULATOR_MK1 = addItem(55, "manipulator_mk1").tier(6)
+    val MANIPULATOR_MK2 = addItem(56, "manipulator_mk2").tier(8)
+    val MANIPULATOR_MK3 = addItem(57, "manipulator_mk3").tier(12)
+
+    val LASER_PARTS = addItem(58, "laser_parts").tier(7)
+    val TELEPORTATION_PARTS = addItem(59, "teleportation_parts").tier(11)
 }
