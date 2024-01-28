@@ -19,6 +19,7 @@ import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.IRarity
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.oredict.OreDictionary
 
 abstract class MetaItemClayium(name: String) : ItemClayium(name) {
 
@@ -83,6 +84,9 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         val meta: Short,
         val name: String,
     ) {
+
+        val stackForm = ItemStack(this@MetaItemClayium, 1, meta.toInt())
+
         val translationKey = "item.${Clayium.MOD_ID}.$name"
         val behaviors = mutableListOf<IItemBehavior>()
         var colorHandler: IItemColorHandler? = null
@@ -107,5 +111,11 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
             addComponent(TooltipBehavior { it.add("§rTier $tier") })
             return this
         }
+
+        fun oreDict(name: String): MetaValueItem {
+            OreDictionary.registerOre(name, stackForm)
+            return this
+        }
+
     }
 }
