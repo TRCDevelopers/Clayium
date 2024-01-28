@@ -8,7 +8,7 @@ import net.minecraft.world.World
 
 sealed interface IItemComponent
 
-interface ISubItemHandler : IItemComponent {
+fun interface ISubItemHandler : IItemComponent {
     fun getSubItems(itemStack: ItemStack, tab: CreativeTabs, items: NonNullList<ItemStack>)
 }
 
@@ -16,6 +16,6 @@ interface IItemBehavior : IItemComponent {
     fun addInformation(stack: ItemStack, world: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {}
 }
 
-interface IItemColorHandler : IItemComponent {
+fun interface IItemColorHandler : IItemComponent {
     fun getColor(stack: ItemStack, tintIndex: Int): Int
 }

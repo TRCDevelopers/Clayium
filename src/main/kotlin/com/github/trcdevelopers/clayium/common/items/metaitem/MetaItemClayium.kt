@@ -99,7 +99,12 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
             return this
         }
 
+        /**
+         * sets the rarity and adds a tooltip by tier.
+         * if -1 is passed, it mutates nothing
+         */
         fun tier(tier: Int): MetaValueItem {
+            if (tier == -1) return this
             rarity = when (tier) {
                 4, 5, 6, 7 -> EnumRarity.UNCOMMON
                 8, 9, 10, 11 -> EnumRarity.RARE

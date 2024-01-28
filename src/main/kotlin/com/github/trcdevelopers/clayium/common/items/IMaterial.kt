@@ -9,12 +9,15 @@ interface IMaterial {
      */
     val oreDictSuffix: String
 
+    /**
+     * -1 if none.
+     */
     val tier: Int
 
     /**
      * Used with tintIndex in the Model file.
      * Make sure that the array index and tintIndex correspond.
-     * null if the material is not colored.
+     * 0xFFFFFF if the material is not colored.
      */
-    val colors: IntArray?
+    val colors: IntArray
 }
