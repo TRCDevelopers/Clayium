@@ -27,19 +27,17 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         hasSubtypes = true
     }
 
-    private val metaValueItems = mutableMapOf<Short, MetaValueItem>()
+    private val _metaValueItems = mutableMapOf<Short, MetaValueItem>()
+    val metaValueItems: Map<Short, MetaValueItem> get() = _metaValueItems
 
-    fun addItem(
-        meta: Short,
-        name: String,
-    ): MetaValueItem {
+    protected fun addItem(meta: Short, name: String): MetaValueItem {
         val item = MetaValueItem(meta, name)
-        metaValueItems[meta] = item
+        _metaValueItems[meta] = item
         return item
     }
 
     private fun getItem(meta: Short): MetaValueItem? {
-        return metaValueItems[meta]
+        return _metaValueItems[meta]
     }
 
     @SideOnly(Side.CLIENT)
@@ -51,7 +49,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
 
     @SideOnly(Side.CLIENT)
     open fun registerModels() {
-        for (item in metaValueItems.values) {
+        for (item in _metaValueItems.values) {
             ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:${item.name}", "inventory"))
         }
     }
@@ -66,7 +64,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
 
     override fun getSubItems(tab: CreativeTabs, items: NonNullList<ItemStack>) {
         if (!isInCreativeTab(tab)) return
-        for (meta in metaValueItems.keys.map(Short::toInt)) {
+        for (meta in _metaValueItems.keys.map(Short::toInt)) {
             items.add(ItemStack(this, 1, meta))
         }
     }
