@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation
 /**
  * @param name name without mod id
  */
-class ItemClayium(name: String) : Item() {
+open class ItemClayium(name: String) : Item() {
     init {
         this.creativeTab = Clayium.creativeTab
         this.registryName = ResourceLocation(Clayium.MOD_ID, name)
