@@ -8,28 +8,31 @@ import com.github.trcdevelopers.clayium.common.items.metaitem.component.IItemCom
 import com.github.trcdevelopers.clayium.common.items.metaitem.component.ISubItemHandler
 import com.github.trcdevelopers.clayium.common.items.metaitem.component.TooltipBehavior
 import net.minecraft.client.Minecraft
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.util.ITooltipFlag
+import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.EnumRarity
 import net.minecraft.item.ItemStack
-import net.minecraft.util.ResourceLocation
+import net.minecraft.util.NonNullList
 import net.minecraft.world.World
+import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.IRarity
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 abstract class MetaItemClayium(name: String) : ItemClayium(name) {
 
+    init {
+        hasSubtypes = true
+    }
+
     private val metaValueItems = mutableMapOf<Short, MetaValueItem>()
 
-    /**
-     * @param translationKey "item.$MOD_ID." is added automatically.
-     */
     fun addItem(
         meta: Short,
-        translationKey: String,
-        model: ResourceLocation = ResourceLocation(Clayium.MOD_ID, "item/$translationKey"),
+        name: String,
     ): MetaValueItem {
-        val item = MetaValueItem(meta, "item.${Clayium.MOD_ID}.$translationKey")
+        val item = MetaValueItem(meta, name)
         metaValueItems[meta] = item
         return item
     }
@@ -38,12 +41,18 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         return metaValueItems[meta]
     }
 
-
     @SideOnly(Side.CLIENT)
     fun registerColorHandler() {
         Minecraft.getMinecraft().itemColors.registerItemColorHandler({ stack, tintIndex ->
             getItem(stack.itemDamage.toShort())?.colorHandler?.getColor(stack, tintIndex) ?: 0xFFFFFF
         }, this)
+    }
+
+    @SideOnly(Side.CLIENT)
+    open fun registerModels() {
+        for (item in metaValueItems.values) {
+            ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:${item.name}", "inventory"))
+        }
     }
 
     override fun getTranslationKey(stack: ItemStack): String {
@@ -52,6 +61,13 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
 
     override fun getForgeRarity(stack: ItemStack): IRarity {
         return getItem(stack.itemDamage.toShort())?.rarity ?: super.getForgeRarity(stack)
+    }
+
+    override fun getSubItems(tab: CreativeTabs, items: NonNullList<ItemStack>) {
+        if (!isInCreativeTab(tab)) return
+        for (meta in metaValueItems.keys.map(Short::toInt)) {
+            items.add(ItemStack(this, 1, meta))
+        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -65,10 +81,10 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
 
     inner class MetaValueItem(
         val meta: Short,
-        val translationKey: String,
+        val name: String,
     ) {
+        val translationKey = "item.${Clayium.MOD_ID}.$name"
         val behaviors = mutableListOf<IItemBehavior>()
-
         var colorHandler: IItemColorHandler? = null
         var rarity: IRarity = EnumRarity.COMMON
 

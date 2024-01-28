@@ -7,6 +7,7 @@ import com.github.trcdevelopers.clayium.common.ClayiumCommonProxy
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
+import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraftforge.client.model.ModelLoaderRegistry
@@ -18,9 +19,13 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.registries.IForgeRegistry
 
 @SideOnly(Side.CLIENT)
 class ClayiumClientProxy : ClayiumCommonProxy() {
+
+    private val metaItems = mutableListOf<MetaItemClayium>()
+
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
         ModelLoaderRegistry.registerLoader(CeContainerModelLoader())
@@ -35,6 +40,9 @@ class ClayiumClientProxy : ClayiumCommonProxy() {
 
     override fun postInit(event: FMLPostInitializationEvent) {
         super.postInit(event)
+        for (item in metaItems) {
+            item.registerColorHandler()
+        }
     }
 
     @SubscribeEvent
@@ -47,7 +55,11 @@ class ClayiumClientProxy : ClayiumCommonProxy() {
         ClayiumBlocks.registerBlocks(event, Side.CLIENT)
     }
 
-    override fun registerTileEntities() {
-        super.registerTileEntities()
+    override fun registerItem(registry: IForgeRegistry<Item>, item: Item) {
+        if (item is MetaItemClayium) {
+            metaItems.add(item)
+            item.registerModels()
+        }
+        super.registerItem(registry, item)
     }
 }
