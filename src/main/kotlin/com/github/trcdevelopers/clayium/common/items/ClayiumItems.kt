@@ -169,14 +169,9 @@ object ClayiumItems {
     }
 
     private enum class ClayiumMaterials constructor(val tier: Int = -1, val oreDict: String = "") {
-        ADV_INDUSTRIAL_CLAY_DUST(4),
         ADV_INDUSTRIAL_CLAY_PLATE(2),
-        INDUSTRIAL_CLAY_DUST(3),
         INDUSTRIAL_CLAY_PLATE(2),
         SALT(4),
-        CALCIUM_CHLORIDE_DUST(4),
-        SODIUM_CARBONATE_DUST(4),
-        QUARTZ_DUST(4),
         CLAY_CIRCUIT_BOARD(2),
         CLAY_ENERGY_EXCITER(3),
         EXCITED_CLAY_DUST(7),

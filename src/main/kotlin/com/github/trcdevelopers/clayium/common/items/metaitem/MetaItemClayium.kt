@@ -27,17 +27,16 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         hasSubtypes = true
     }
 
-    private val _metaValueItems = mutableMapOf<Short, MetaValueItem>()
-    val metaValueItems: Map<Short, MetaValueItem> get() = _metaValueItems
+    protected val metaValueItems = mutableMapOf<Short, MetaValueItem>()
 
     protected fun addItem(meta: Short, name: String): MetaValueItem {
         val item = MetaValueItem(meta, name)
-        _metaValueItems[meta] = item
+        this.metaValueItems[meta] = item
         return item
     }
 
     private fun getItem(meta: Short): MetaValueItem? {
-        return _metaValueItems[meta]
+        return this.metaValueItems[meta]
     }
 
     @SideOnly(Side.CLIENT)
@@ -49,9 +48,13 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
 
     @SideOnly(Side.CLIENT)
     open fun registerModels() {
-        for (item in _metaValueItems.values) {
-            ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:${item.name}", "inventory"))
+        for (item in this.metaValueItems.values) {
+            registerModel(item)
         }
+    }
+
+    protected fun registerModel(item: MetaValueItem) {
+        ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:${item.name}", "inventory"))
     }
 
     override fun getTranslationKey(stack: ItemStack): String {
@@ -64,7 +67,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
 
     override fun getSubItems(tab: CreativeTabs, items: NonNullList<ItemStack>) {
         if (!isInCreativeTab(tab)) return
-        for (meta in _metaValueItems.keys.map(Short::toInt)) {
+        for (meta in this.metaValueItems.keys.map(Short::toInt)) {
             items.add(ItemStack(this, 1, meta))
         }
     }
@@ -78,7 +81,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         }
     }
 
-    inner class MetaValueItem(
+    open inner class MetaValueItem(
         val meta: Short,
         val name: String,
     ) {
