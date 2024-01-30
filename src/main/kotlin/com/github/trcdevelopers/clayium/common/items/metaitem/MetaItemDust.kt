@@ -18,7 +18,7 @@ object MetaItemDust : MetaItemClayium("dust") {
     val INDUSTRIAL_CLAY = addItem(2, "industrial_clay_dust").tier(3)
     val ADV_INDUSTRIAL_CLAY = addItem(3, "adv_industrial_clay_dust").tier(4)
     val CALCIUM_CHLORIDE = addItem(4, "calcium_chloride_dust").tier(4)
-    val SODIUM_CHLORIDE = addItem(5, "sodium_chloride_dust").tier(4)
+    val SODIUM_CARBONATE = addItem(5, "sodium_carbonate_dust").tier(4)
     val QUARTZ = addItem(6, "quartz_dust").tier(4)
     val EXCITED_CLAY = addItem(7, "excited_clay_dust").tier(7)
     val SALT = addItem(8, "salt_dust").tier(4).oreDict("dustSalt")
