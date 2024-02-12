@@ -71,53 +71,53 @@ object ClayiumItems {
                     ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(ResourceLocation(MOD_ID, registryName), "inventory"))
                 }
             }
-        for (material in ClayiumMaterials.entries) {
-            val item = if (material.hasTier()) itemWithTierTooltip(material.tier) else Item()
-            val registryName = material.name.lowercase()
-
-            item.creativeTab = Clayium.creativeTab
-            item.registryName = ResourceLocation(MOD_ID, registryName)
-            item.translationKey = "$MOD_ID.$registryName"
-            event.registry.register(item)
-            if (material.oreDict.isNotEmpty()) {
-                OreDictionary.registerOre(material.oreDict, item)
-            }
-            items[registryName] = item
-            if (side.isClient) {
-                ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(ResourceLocation(MOD_ID, registryName), "inventory"))
-            }
-        }
-        for (material in ClayiumColoredMaterials.entries) {
-            for (shape in material.shapes) {
-                val item = if (material.hasTier()) itemWithTierTooltip(material.tier) else Item()
-                var registryName = material.name.lowercase()
-                val capitalizedName = material.materialName.substring(0, 1).uppercase() + material.materialName.substring(1)
-                val oreDict = when (shape) {
-                    LARGE_PLATE -> {
-                        registryName = "large_" + material.materialName + "_plate"
-                        "largePlate$capitalizedName"
-                    }
-                    INGOT, PLATE, DUST -> {
-                        registryName = material.materialName + "_" + shape.name.lowercase()
-                        shape.name.lowercase() + capitalizedName
-                    }
-                    else -> ""
-                }
-
-                item.creativeTab = Clayium.creativeTab
-                item.registryName = ResourceLocation(MOD_ID, registryName)
-                item.translationKey = "$MOD_ID.$registryName"
-                event.registry.register(item)
-                if (oreDict.isNotEmpty()) {
-                    OreDictionary.registerOre(oreDict, item)
-                }
-                items[registryName] = item
-                if (side.isClient) {
-                    itemColors[item] = IItemColor { stack, tintIndex -> material.getColor(stack, tintIndex) }
-                    ModelLoader.setCustomModelResourceLocation(item, 0, shape.model)
-                }
-            }
-        }
+//        for (material in ClayiumMaterials.entries) {
+//            val item = if (material.hasTier()) itemWithTierTooltip(material.tier) else Item()
+//            val registryName = material.name.lowercase()
+//
+//            item.creativeTab = Clayium.creativeTab
+//            item.registryName = ResourceLocation(MOD_ID, registryName)
+//            item.translationKey = "$MOD_ID.$registryName"
+//            event.registry.register(item)
+//            if (material.oreDict.isNotEmpty()) {
+//                OreDictionary.registerOre(material.oreDict, item)
+//            }
+//            items[registryName] = item
+//            if (side.isClient) {
+//                ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(ResourceLocation(MOD_ID, registryName), "inventory"))
+//            }
+//        }
+//        for (material in ClayiumColoredMaterials.entries) {
+//            for (shape in material.shapes) {
+//                val item = if (material.hasTier()) itemWithTierTooltip(material.tier) else Item()
+//                var registryName = material.name.lowercase()
+//                val capitalizedName = material.materialName.substring(0, 1).uppercase() + material.materialName.substring(1)
+//                val oreDict = when (shape) {
+//                    LARGE_PLATE -> {
+//                        registryName = "large_" + material.materialName + "_plate"
+//                        "largePlate$capitalizedName"
+//                    }
+//                    INGOT, PLATE, DUST -> {
+//                        registryName = material.materialName + "_" + shape.name.lowercase()
+//                        shape.name.lowercase() + capitalizedName
+//                    }
+//                    else -> ""
+//                }
+//
+//                item.creativeTab = Clayium.creativeTab
+//                item.registryName = ResourceLocation(MOD_ID, registryName)
+//                item.translationKey = "$MOD_ID.$registryName"
+//                event.registry.register(item)
+//                if (oreDict.isNotEmpty()) {
+//                    OreDictionary.registerOre(oreDict, item)
+//                }
+//                items[registryName] = item
+//                if (side.isClient) {
+//                    itemColors[item] = IItemColor { stack, tintIndex -> material.getColor(stack, tintIndex) }
+//                    ModelLoader.setCustomModelResourceLocation(item, 0, shape.model)
+//                }
+//            }
+//        }
         registerItem(Item().setMaxDamage(100).setMaxStackSize(1), "clay_spatula", side, event)
         registerItem(Item().setMaxDamage(100).setMaxStackSize(1), "clay_rolling_pin", side, event)
         registerItem(Item().setMaxDamage(100).setMaxStackSize(1), "clay_slicer", side, event)

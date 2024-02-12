@@ -1,10 +1,7 @@
 package com.github.trcdevelopers.clayium.common
 
-import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
-import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemDust
-import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemIngot
-import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemLargePlate
-import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemPlate
+import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
+import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.init.Items
 import net.minecraft.item.Item
@@ -19,6 +16,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.registries.IForgeRegistry
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -42,11 +40,13 @@ class Clayium {
 
     @SubscribeEvent
     fun registerItems(event: RegistryEvent.Register<Item>) {
-        proxy.registerItem(event.registry, MetaItemClayParts)
-        proxy.registerItem(event.registry, MetaItemDust)
-        proxy.registerItem(event.registry, MetaItemIngot)
-        proxy.registerItem(event.registry, MetaItemPlate)
-        proxy.registerItem(event.registry, MetaItemLargePlate)
+        val registry: IForgeRegistry<Item> = event.registry
+
+        for (orePrefix in OrePrefix.prefixes) {
+            val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.name}", orePrefix)
+            metaPrefixItem.registerSubItems()
+            proxy.registerItem(registry, metaPrefixItem)
+        }
     }
 
     companion object {
