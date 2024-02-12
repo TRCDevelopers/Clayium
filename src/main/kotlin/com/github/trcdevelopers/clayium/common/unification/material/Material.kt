@@ -50,16 +50,16 @@ enum class Material(
     ),
     PURE_ANTIMATTER_TIER0(8, "pure_antimatter", 11,
         colors =  intArrayOf(0xFF32FF, 0x000000, 0xFFFFFF),
-        properties = setOf(Matter, Dust, ImpureDust(0xFF32FF, 0x000000, 0xFFFFFF), Plate(20))
+        properties = setOf(Matter, Dust, Plate(20))
     ),
     // specific case, block -> plate recipe should be added manually
     OCTUPLE_ENERGETIC_CLAY(9, "oec", 12,
         colors =  intArrayOf(0xFFFF00, 0x8C8C8C, 0xFFFFFF),
-        properties = setOf(Dust, ImpureDust(0xFFFF00, 0x8C8C8C, 0xFFFFFF))
+        properties = setOf(Dust, Plate(20))
     ),
     PURE_ANTIMATTER_TIER8(10, "opa", 13,
         colors =  intArrayOf(0x960000, 0xC8C800, 0xFFFFFF),
-        properties = setOf(Matter, Dust, ImpureDust(0x960000, 0xC8C800, 0xFFFFFF), Plate(20))
+        properties = setOf(Matter, Dust, Plate(20))
     ),
 
     AZ91D(11, "az91d", 6,
