@@ -10,6 +10,49 @@ gui.clayium.clayLaser=Laser \: %1$s
 gui.clayium.resonance=Resonance %1$s
 gui.clayium.overclockFactor=Overclock x%1$s
 
+ore.clayium.ingot=Ingot
+ore.clayium.dust=Dust
+ore.clayium.matter=Matter
+ore.clayium.plate=Plate
+
+material.clayium.impure_silicon=Impure Silicon
+material.clayium.silicone=Slicone
+material.clayium.silicon=Silicon
+material.clayium.aluminum=Aluminum
+material.clayium.clay_steel=Clay Steel
+material.clayium.clayium=Clayium
+material.clayium.ultimate_alloy=Ultimate Alloy
+material.clayium.antimatter=Antimatter
+material.clayium.pure_antimatter=Pure Antimatter
+material.clayium.oec=OEC
+material.clayium.opa=OPA
+material.clayium.az91d=AZ91D
+material.clayium.zk60a=ZK60A
+material.clayium.barium=Barium
+material.clayium.beryllium=Beryllium
+material.clayium.brass=Brass
+material.clayium.bronze=Bronze
+material.clayium.calcium=Calcium
+material.clayium.chrome=Chrome
+material.clayium.copper=Copper
+material.clayium.electrum=Electrum
+material.clayium.hafnium=Hafnium
+material.clayium.invar=Invar
+material.clayium.lead=Lead
+material.clayium.lithium=Lithium
+material.clayium.manganese=Manganese
+material.clayium.magnesium=Magnesium
+material.clayium.nickel=Nickel
+material.clayium.potassium=Potassium
+material.clayium.sodium=Sodium
+material.clayium.steel=Steel
+material.clayium.strontium=Strontium
+material.clayium.titanium=Titanium
+material.clayium.zinc=Zinc
+material.clayium.zirconium=Zirconium
+
+
+
 recipe.clayium.ClayWorkTable=Clay Work Table
 
 recipe.clayium.BendingMachine=Clay Bending Machine
