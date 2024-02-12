@@ -16,6 +16,9 @@ class OrePrefix(
         val ingot = OrePrefix("ingot") { it.hasProperty<MaterialProperty.Ingot>() }
         val matter = OrePrefix("matter") { it.hasProperty<MaterialProperty.Matter>() }
         val dust = OrePrefix("dust") { it.hasProperty<MaterialProperty.Dust>() }
+        val impureDust = OrePrefix("impureDust") { it.hasProperty<MaterialProperty.ImpureDust>() }
         val plate = OrePrefix("plate") { it.hasProperty<MaterialProperty.Plate>() }
+
+        val prefixes = setOf(ingot, matter, dust, impureDust, plate)
     }
 }

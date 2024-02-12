@@ -1,7 +1,5 @@
 package com.github.trcdevelopers.clayium.common.unification.material
 
-import net.minecraft.item.ItemStack
-
 sealed interface MaterialProperty {
     fun verify(material: Material): Boolean
 
@@ -28,6 +26,6 @@ sealed interface MaterialProperty {
         }
 
         override fun verify(material: Material) = material.hasProperty<Dust>()
-        fun getColorForItemStack(i: Int, stack: ItemStack) = colors[i]
+        fun getColor(i: Int) = colors[i]
     }
 }

@@ -21,11 +21,11 @@ enum class Material(
         properties = setOf(Ingot, Dust, Plate(20))
     ),
     SILICONE(1, "silicone", 5,
-            colors = intArrayOf(0xD2D2D2, 0xB4B4B4, 0xF0F0F0),
+        colors = intArrayOf(0xD2D2D2, 0xB4B4B4, 0xF0F0F0),
         properties = setOf(Ingot, Dust, Plate(20))
     ),
     SILICON(2, "silicon", 5,
-            colors = intArrayOf(0x281C28, 0x191919, 0xFFFFFF),
+        colors = intArrayOf(0x281C28, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot, Dust, Plate(20))
     ),
     ALUMINUM(3, "aluminum", 6,
@@ -55,7 +55,7 @@ enum class Material(
     // specific case, block -> plate recipe should be added manually
     OCTUPLE_ENERGETIC_CLAY(9, "oec", 12,
         colors =  intArrayOf(0xFFFF00, 0x8C8C8C, 0xFFFFFF),
-        properties = setOf(Ingot, Dust, ImpureDust(0xFFFF00, 0x8C8C8C, 0xFFFFFF))
+        properties = setOf(Dust, ImpureDust(0xFFFF00, 0x8C8C8C, 0xFFFFFF))
     ),
     PURE_ANTIMATTER_TIER8(10, "opa", 13,
         colors =  intArrayOf(0x960000, 0xC8C800, 0xFFFFFF),
@@ -304,7 +304,6 @@ enum class Material(
         properties = setOf(Ingot)
     ),
     //endregion
-
     ;
 
     val properties: Set<MaterialProperty> = run {
@@ -329,7 +328,12 @@ enum class Material(
     companion object {
         private val uniqueIdMap: IntIdentityHashBiMap<Material> = run {
             val map = IntIdentityHashBiMap<Material>(entries.size)
-            entries.forEach { map.put(it, it.uniqueId) }
+            entries.forEach {
+                if (map.get(it.uniqueId) != null) {
+                    throw IllegalArgumentException("Material id ${it.uniqueId} is already occupied by ${it.materialName}")
+                }
+                map.put(it, it.uniqueId)
+            }
             map
         }
 
