@@ -29,8 +29,9 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
 
     protected val metaValueItems = mutableMapOf<Short, MetaValueItem>()
 
-    protected fun addItem(meta: Short, name: String): MetaValueItem {
+    protected fun addItem(meta: Short, name: String, itemModifier: MetaValueItem.() -> Unit = {}): MetaValueItem {
         val item = MetaValueItem(meta, name)
+        item.itemModifier()
         this.metaValueItems[meta] = item
         return item
     }
