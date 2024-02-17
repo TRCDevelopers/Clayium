@@ -22,7 +22,7 @@ open class MetaPrefixItem private constructor(
 
             addItem(material.uniqueId.toShort(), material.materialName) {
                 tier(material.tier)
-                oreDict("${orePrefix.name}${CUtils.toUpperCamel(material.materialName)}")
+                oreDict("${orePrefix.camel}${CUtils.toUpperCamel(material.materialName)}")
                 if (material.colors != null) {
                     addComponent(IItemColorHandler { _, i -> material.colors[i] })
                 }
@@ -34,16 +34,16 @@ open class MetaPrefixItem private constructor(
         for (item in metaValueItems.values) {
             val material = getMaterial(item.meta.toInt()) ?: continue
             if (material.colors == null) {
-                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:${material.materialName}_${orePrefix.name}", "inventory"))
+                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:${material.materialName}_${orePrefix.snake}", "inventory"))
             } else {
-                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:colored/${orePrefix.name}", "inventory"))
+                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:colored/${orePrefix.snake}", "inventory"))
             }
         }
     }
 
     override fun getItemStackDisplayName(stack: ItemStack): String {
         val material = getMaterial(stack) ?: return "invalid"
-        return "${I18n.format("material.clayium.${material.materialName}")} ${I18n.format("ore.clayium.${orePrefix.name}")}"
+        return "${I18n.format("material.clayium.${material.materialName}")} ${I18n.format("ore.clayium.${orePrefix.snake}")}"
     }
 
     private fun getMaterial(stack: ItemStack): Material? {

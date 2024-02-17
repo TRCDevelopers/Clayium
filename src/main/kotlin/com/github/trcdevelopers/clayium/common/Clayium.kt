@@ -43,7 +43,7 @@ class Clayium {
         val registry: IForgeRegistry<Item> = event.registry
 
         for (orePrefix in OrePrefix.prefixes) {
-            val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.name}", orePrefix)
+            val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
             metaPrefixItem.registerSubItems()
             proxy.registerItem(registry, metaPrefixItem)
         }

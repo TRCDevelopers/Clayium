@@ -12,9 +12,10 @@ gui.clayium.overclockFactor=Overclock x%1$s
 
 ore.clayium.ingot=Ingot
 ore.clayium.dust=Dust
-ore.clayium.impureDust=Impure Dust
+ore.clayium.impure_dust=Impure Dust
 ore.clayium.matter=Matter
 ore.clayium.plate=Plate
+ore.clayium.large_plate=Large Plate
 
 material.clayium.impure_silicon=Impure Silicon
 material.clayium.silicone=Silicone
