@@ -18,21 +18,26 @@ open class MetaPrefixItem private constructor(
 
     open fun registerSubItems() {
         for (material in Material.entries) {
-            if (orePrefix.doGenerateItem(material)) {
-                addItem(material.uniqueId.toShort(), material.materialName)
-                    .tier(material.tier)
-                    .addComponent(IItemColorHandler { _, i -> material.colors[i] })
-                    .oreDict("${orePrefix.name}${CUtils.toUpperCamel(material.materialName)}")
+            if (!orePrefix.doGenerateItem(material)) continue
+
+            addItem(material.uniqueId.toShort(), material.materialName) {
+                tier(material.tier)
+                oreDict("${orePrefix.name}${CUtils.toUpperCamel(material.materialName)}")
+                if (material.colors != null) {
+                    addComponent(IItemColorHandler { _, i -> material.colors[i] })
+                }
             }
         }
     }
 
     override fun registerModels() {
         for (item in metaValueItems.values) {
-            ModelLoader.setCustomModelResourceLocation(
-                this, item.meta.toInt(),
-                ModelResourceLocation("${Clayium.MOD_ID}:colored/${orePrefix.name}", "inventory")
-            )
+            val material = getMaterial(item.meta.toInt()) ?: continue
+            if (material.colors == null) {
+                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:${material.materialName}_${orePrefix.name}", "inventory"))
+            } else {
+                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:colored/${orePrefix.name}", "inventory"))
+            }
         }
     }
 

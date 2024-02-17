@@ -11,7 +11,7 @@ enum class Material(
     val uniqueId: Int,
     val materialName: String,
     val tier: Int = -1,
-    val colors: IntArray = intArrayOf(0xFFFFFF),
+    val colors: IntArray? = null,
     properties: Set<MaterialProperty> = emptySet(),
 ) {
 
@@ -312,17 +312,17 @@ enum class Material(
 
     IMPURE_GLOWSTONE(1000, "impure_glowstone", colors = intArrayOf(0x979746, 0x191919, 0xFFFFFF), properties = setOf(Dust)),
     IMPURE_REDSTONE(1001, "impure_redstone", colors = intArrayOf(0x974646, 0x191919, 0xFFFFFF), properties = setOf(Dust)),
-    //CALCIUM_CHLORIDE
+    CALCIUM_CHLORIDE(1002, "calcium_chloride", properties = setOf(Dust)),
     CARBON(1003, "carbon", colors = intArrayOf(0x0A0A0A, 0x191919, 0x1E1E1E), properties = setOf(Dust)),
     CHARCOAL(1004, "coal", colors = intArrayOf(0x141414, 0x191919, 0x503232), properties = setOf(Dust)),
     COAL(1005, "coal", colors = intArrayOf(0x141414, 0x191919, 0x323250), properties = setOf(Dust)),
     LAPIS(1006, "lapis", colors = intArrayOf(0x3C64BE, 0x0A2B7A, 0x5A82E2), properties = setOf(Dust)),
     ORGANIC_CLAY(1007, "organic_clay", colors = intArrayOf(0x8890AD, 0x6A2C2B, 0x92A4B7), properties = setOf(Dust)),
     PHOSPHORUS(1008, "phosphorus", colors = intArrayOf(0xB4B419, 0x9B9B00, 0xCDCD32), properties = setOf(Dust)),
-    //QUARTZ
-    //SALT
+    QUARTZ(1009, "quartz", properties = setOf(Dust)),
+    SALT(1010, "salt", properties = setOf(Dust)),
     SALTPETER(1011, "saltpeter", colors = intArrayOf(0xDEDCDC, 0xBEC8D2, 0xFFF0E6), properties = setOf(Dust)),
-    //SODIUM_CARBONATE
+    SODIUM_CARBONATE(1012, "sodium_carbonate", properties = setOf(Dust)),
     SULFUR(1013, "sulfur", colors = intArrayOf(0xE6E600, 0xCDCD00, 0xFFFF00), properties = setOf(Dust)),
     ;
 
