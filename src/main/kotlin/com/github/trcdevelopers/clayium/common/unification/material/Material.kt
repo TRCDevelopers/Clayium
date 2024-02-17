@@ -314,7 +314,7 @@ enum class Material(
     IMPURE_REDSTONE(1001, "impure_redstone", colors = intArrayOf(0x974646, 0x191919, 0xFFFFFF), properties = setOf(Dust)),
     CALCIUM_CHLORIDE(1002, "calcium_chloride", properties = setOf(Dust)),
     CARBON(1003, "carbon", colors = intArrayOf(0x0A0A0A, 0x191919, 0x1E1E1E), properties = setOf(Dust)),
-    CHARCOAL(1004, "coal", colors = intArrayOf(0x141414, 0x191919, 0x503232), properties = setOf(Dust)),
+    CHARCOAL(1004, "charcoal", colors = intArrayOf(0x141414, 0x191919, 0x503232), properties = setOf(Dust)),
     COAL(1005, "coal", colors = intArrayOf(0x141414, 0x191919, 0x323250), properties = setOf(Dust)),
     LAPIS(1006, "lapis", colors = intArrayOf(0x3C64BE, 0x0A2B7A, 0x5A82E2), properties = setOf(Dust)),
     ORGANIC_CLAY(1007, "organic_clay", colors = intArrayOf(0x8890AD, 0x6A2C2B, 0x92A4B7), properties = setOf(Dust)),
