@@ -45,10 +45,24 @@ open class MetaPrefixItem private constructor(
         return Material.fromId(stack.itemDamage)
     }
 
+    private fun getMaterial(id: Int): Material? {
+        return Material.fromId(id)
+    }
+
     companion object {
         fun create(name: String, orePrefix: OrePrefix): MetaPrefixItem {
             return when (orePrefix) {
                 OrePrefix.impureDust -> MetaPrefixItemImpureDust
+                OrePrefix.matter -> object : MetaPrefixItem(name, OrePrefix.matter) {
+                    override fun registerModels() {
+                        for (item in metaValueItems.values) {
+                            ModelLoader.setCustomModelResourceLocation(
+                                this, item.meta.toInt(),
+                                Material.fromId(item.meta.toInt())?.getProperty<MaterialProperty.Matter>()?.modelLocation ?: ModelLoader.MODEL_MISSING
+                            )
+                        }
+                    }
+                }
                 else -> MetaPrefixItem(name, orePrefix)
             }
         }

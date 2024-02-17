@@ -1,5 +1,8 @@
 package com.github.trcdevelopers.clayium.common.unification.material
 
+import com.github.trcdevelopers.clayium.common.Clayium
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
+
 sealed interface MaterialProperty {
     fun verify(material: Material): Boolean
 
@@ -9,7 +12,11 @@ sealed interface MaterialProperty {
 
     data object Ingot : IndependentProperty()
     data object Dust : IndependentProperty()
-    data object Matter : IndependentProperty()
+    class Matter(
+        texture: String = "matter",
+    ) : IndependentProperty() {
+        val modelLocation = ModelResourceLocation("${Clayium.MOD_ID}:colored/$texture", "inventory")
+    }
 
     class Plate(
         val recipeTime: Int,

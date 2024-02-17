@@ -46,11 +46,11 @@ enum class Material(
     ),
     ANTIMATTER(7, "antimatter", 10,
         colors =  intArrayOf(0x0000EB, 0x000000, 0xFFFFFF),
-        properties = setOf(Matter, Dust, Plate(20))
+        properties = setOf(Matter(), Dust, Plate(20))
     ),
     PURE_ANTIMATTER_TIER0(8, "pure_antimatter", 11,
         colors =  intArrayOf(0xFF32FF, 0x000000, 0xFFFFFF),
-        properties = setOf(Matter, Dust, Plate(20))
+        properties = setOf(Matter(), Dust, Plate(20))
     ),
     // specific case, block -> plate recipe should be added manually
     OCTUPLE_ENERGETIC_CLAY(9, "oec", 12,
@@ -59,251 +59,271 @@ enum class Material(
     ),
     PURE_ANTIMATTER_TIER8(10, "opa", 13,
         colors =  intArrayOf(0x960000, 0xC8C800, 0xFFFFFF),
-        properties = setOf(Matter, Dust, Plate(20))
+        properties = setOf(Matter("matter5"), Dust, Plate(20))
     ),
 
-    AZ91D(11, "az91d", 6,
+    /* pure antimatter 1x~7x */
+    PURE_ANTIMATTER_TIER1(11, "pure_antimatter_tier1", 11, intArrayOf(0xC42385, 0x191919, 0xFFFFFF), setOf(Matter("matter2"))),
+    PURE_ANTIMATTER_TIER2(12, "pure_antimatter_tier2", 11, intArrayOf(0x8E1777, 0x323200, 0xFFFFFF), setOf(Matter("matter2"))),
+    PURE_ANTIMATTER_TIER3(13, "pure_antimatter_tier3", 11, intArrayOf(0x5E0D45, 0x4B4B00, 0xFFFFFF), setOf(Matter("matter3"))),
+    PURE_ANTIMATTER_TIER4(14, "pure_antimatter_tier4", 12, intArrayOf(0x32061F, 0x646400, 0xFFFFFF), setOf(Matter("matter3"))),
+    PURE_ANTIMATTER_TIER5(15, "pure_antimatter_tier5", 12, intArrayOf(0x520829, 0x7D7D00, 0xFFFFFF), setOf(Matter("matter4"))),
+    PURE_ANTIMATTER_TIER6(16, "pure_antimatter_tier6", 12, intArrayOf(0x6E0727, 0x969600, 0xFFFFFF), setOf(Matter("matter4"))),
+    PURE_ANTIMATTER_TIER7(17, "pure_antimatter_tier7", 12, intArrayOf(0x840519, 0xAFAF00, 0xFFFFFF), setOf(Matter("matter4"))),
+
+    AZ91D(18, "az91d", 6,
         colors = intArrayOf(0x828C87, 0x0A280A, 0xFFFFFF),
         properties = setOf(Ingot, Dust, Plate(20))
     ),
-    ZK60A(12, "zk60a", 6,
+    ZK60A(19, "zk60a", 6,
         colors = intArrayOf(0x4B5550, 0x0A280A, 0xFFFFFF),
         properties = setOf(Ingot, Dust, Plate(20))
     ),
 
-    // region Ingot & Dust
-    BARIUM(13, "barium",
+    BARIUM(20, "barium",
         colors = intArrayOf(0x965078, 0x781450, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0x965078, 0x78783C, 0xDCDCDC))
     ),
-    BERYLLIUM(14, "beryllium",
+    BERYLLIUM(21, "beryllium",
         colors = intArrayOf(0xD2F0D2, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0xD2F0D2, 0x78783C, 0xDCDCDC))
     ),
-    BRASS(15, "brass",
+    BRASS(22, "brass",
         colors = intArrayOf(0xBEAA14, 0x000000, 0xFFFFFF),
         properties = setOf(Ingot, Dust)
     ),
-    BRONZE(16, "bronze",
+    BRONZE(23, "bronze",
         colors = intArrayOf(0xFA9628, 0x000000, 0xFFFFFF),
         properties = setOf(Ingot, Dust)
     ),
-    CALCIUM(17, "calcium",
+    CALCIUM(24, "calcium",
         colors = intArrayOf(0xF0F0F0, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0xF0F0F0, 0x78783C, 0xDCDCDC))
     ),
-    CHROME(18, "chrome",
+    CHROME(25, "chrome",
         colors = intArrayOf(0xF0D2D2, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot, Dust)
     ),
-    COPPER(19, "copper",
+    COPPER(26, "copper",
         colors = intArrayOf(0xA05A0A, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0xA05A0A, 0x78783C, 0xDCDCDC))
     ),
-    ELECTRUM(20, "electrum",
+    ELECTRUM(27, "electrum",
         colors = intArrayOf(0xE6E69B, 0x787846, 0xFFFFFF),
         properties = setOf(Ingot, Dust)
     ),
-    HAFNIUM(21, "hafnium",
+    HAFNIUM(28, "hafnium",
         colors = intArrayOf(0xF0D2AA, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0xF0D2AA, 0x78783C, 0xDCDCDC))
     ),
-    INVAR(22, "invar",
+    INVAR(29, "invar",
         colors = intArrayOf(0xAAAA50, 0x8C8C46, 0xB4B450),
         properties = setOf(Ingot, Dust)
     ),
-    LEAD(23, "lead",
+    LEAD(30, "lead",
         colors = intArrayOf(0xBEF0D2, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0xBEF0D2, 0x78783C, 0xDCDCDC))
     ),
-    LITHIUM(24, "lithium",
+    LITHIUM(31, "lithium",
         colors = intArrayOf(0xD2D296, 0x787878, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0xDCDC96, 0x78783C, 0xDCDCDC))
     ),
-    MANGANESE(25, "manganese",
+    MANGANESE(32, "manganese",
         colors = intArrayOf(0xBEF0F0, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0xBEF0F0, 0x78783C, 0xDCDCDC))
     ),
-    MAGNESIUM(26, "magnesium",
+    MAGNESIUM(33, "magnesium",
         colors = intArrayOf(0x96D296, 0x787878, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0x96DC96, 0x78783C, 0xDCDCDC))
     ),
-    NICKEL(27, "nickel",
+    NICKEL(34, "nickel",
         colors = intArrayOf(0xD2D2F0, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0xD2D2F0, 0x78783C, 0xDCDCDC))
     ),
-    POTASSIUM(28, "potassium",
+    POTASSIUM(35, "potassium",
         colors = intArrayOf(0xF0F0BE, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0xF0F0BE, 0x78783C, 0xDCDCDC))
     ),
-    SODIUM(29, "sodium",
+    SODIUM(36, "sodium",
         colors = intArrayOf(0xAAAADE, 0x787878, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0xAAAAE6, 0x78783C, 0xDCDCDC))
     ),
-    STEEL(30, "steel",
+    STEEL(37, "steel",
         colors = intArrayOf(0x5A5A6E, 0x000000, 0xFFFFFF),
         properties = setOf(Ingot, Dust)
     ),
-    STRONTIUM(31, "strontium",
+    STRONTIUM(38, "strontium",
         colors = intArrayOf(0xD2AAF2, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0xD2AAF2, 0x78783C, 0xDCDCDC))
     ),
-    TITANIUM(32, "titanium",
+    TITANIUM(39, "titanium",
         colors = intArrayOf(0xD2F0F0, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0xD2F0F0, 0x78783C, 0xDCDCDC))
     ),
-    ZINC(33, "zinc",
+    ZINC(40, "zinc",
         colors = intArrayOf(0xE6AAAA, 0x787878, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0xE6AAAA, 0x78783C, 0xDCDCDC))
     ),
-    ZIRCONIUM(34, "zirconium",
+    ZIRCONIUM(41, "zirconium",
         colors = intArrayOf(0xBEAA7A, 0x787878, 0xFFFFFF),
         properties = setOf(Ingot, Dust, ImpureDust(0xBEAA7A, 0x78783C, 0xDCDCDC))
     ),
-    //endregion
 
-    //region Only Ingot
-    ACTINIUM(35, "actinium",
+    ACTINIUM(42, "actinium",
         colors = intArrayOf(0xF5F5F5, 0x0000EB, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    AMERICIUM(36, "americium",
+    AMERICIUM(43, "americium",
             colors = intArrayOf(0xEBEBEB, 0x9B9B9B, 0xEBEBEB),
             properties = setOf(Ingot)
     ),
-    ANTIMONY(37, "antimony",
+    ANTIMONY(44, "antimony",
         colors = intArrayOf(0x464646, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    BISMUTH(38, "bismuth",
+    BISMUTH(45, "bismuth",
         colors = intArrayOf(0x467846, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    CAESIUM(39, "caesium",
+    CAESIUM(46, "caesium",
         colors = intArrayOf(0xF5F5F5, 0x969600, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    CERIUM(40, "cerium",
+    CERIUM(47, "cerium",
         colors = intArrayOf(0x919191, 0x969600, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    COBALT(41, "cobalt",
+    COBALT(48, "cobalt",
         colors = intArrayOf(0x1E1EE6, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    CURIUM(42, "curium",
+    CURIUM(49, "curium",
         colors = intArrayOf(0xFFFFFF, 0x9B9B9B, 0xF4F4F4),
         properties = setOf(Ingot)
     ),
-    EUROPIUM(43, "europium",
+    EUROPIUM(50, "europium",
         colors = intArrayOf(0x919191, 0x373737, 0x919191),
         properties = setOf(Ingot)
     ),
-    FRANCIUM(44, "francium",
+    FRANCIUM(51, "francium",
         colors = intArrayOf(0xF5F5F5, 0x00EB00, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    IRIDIUM(45, "iridium",
+    IRIDIUM(52, "iridium",
         colors = intArrayOf(0xF0F0F0, 0xD2D2D2, 0xEBEBEB),
         properties = setOf(Ingot)
     ),
-    LANTHANUM(46, "lanthanum",
+    LANTHANUM(53, "lanthanum",
         colors = intArrayOf(0x919191, 0xEB0000, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    MOLYBDENUM(47, "molybdenum",
+    MOLYBDENUM(54, "molybdenum",
         colors = intArrayOf(0x82A082, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    NEODYMIUM(48, "neodymium",
+    NEODYMIUM(55, "neodymium",
         colors = intArrayOf(0x919191, 0x009696, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    NEPTUNIUM(49, "neptunium",
+    NEPTUNIUM(56, "neptunium",
         colors = intArrayOf(0x3232FF, 0x32329B, 0x3232FF),
         properties = setOf(Ingot)
     ),
-    OSMIUM(50, "osmium",
+    OSMIUM(57, "osmium",
         colors = intArrayOf(0x464696, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    PALLADIUM(51, "palladium",
+    PALLADIUM(58, "palladium",
         colors = intArrayOf(0x974646, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    PLATINUM(52, "platinum",
+    PLATINUM(59, "platinum",
         colors = intArrayOf(0xF5F5E6, 0x8C8C78, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    PLUTONIUM(53, "plutonium",
+    PLUTONIUM(60, "plutonium",
         colors = intArrayOf(0xFF3232, 0x9B3232, 0xFF3232),
         properties = setOf(Ingot)
     ),
-    PRASEODYMIUM(54, "praseodymium",
+    PRASEODYMIUM(61, "praseodymium",
         colors = intArrayOf(0x919191, 0x00EB00, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    PROMETHIUM(55, "promethium",
+    PROMETHIUM(62, "promethium",
         colors = intArrayOf(0x919191, 0x0000EB, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    PROTACTINIUM(56, "protactinium",
+    PROTACTINIUM(63, "protactinium",
         colors = intArrayOf(0x323232, 0x191919, 0x323264),
         properties = setOf(Ingot)
     ),
-    RADIUM(57, "radium",
+    RADIUM(64, "radium",
         colors = intArrayOf(0xF5F5F5, 0x009696, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    RHENIUM(58, "rhenium",
+    RHENIUM(65, "rhenium",
         colors = intArrayOf(0x464696, 0x191919, 0x32325A),
         properties = setOf(Ingot)
     ),
-    RUBIDIUM(59, "rubidium",
+    RUBIDIUM(66, "rubidium",
         colors = intArrayOf(0xF5F5F5, 0xEB0000, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    SAMARIUM(60, "samarium",
+    SAMARIUM(67, "samarium",
         colors = intArrayOf(0x919191, 0x960096, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    SILVER(61, "silver",
+    SILVER(68, "silver",
         colors = intArrayOf(0xE6E6F5, 0x78788C, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    TANTALUM(62, "tantalum",
+    TANTALUM(69, "tantalum",
         colors = intArrayOf(0xF0D2AA, 0x191919, 0xF0D296),
         properties = setOf(Ingot)
     ),
-    THORIUM(63, "thorium",
+    THORIUM(70, "thorium",
         colors = intArrayOf(0x323232, 0x191919, 0xC83232),
         properties = setOf(Ingot)
     ),
-    TIN(64, "tin",
+    TIN(71, "tin",
         colors = intArrayOf(0xE6E6F0, 0x000000, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    TUNGSTEN(65, "tungsten",
+    TUNGSTEN(72, "tungsten",
         colors = intArrayOf(0x1E1E1E, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    URANIUM(66, "uranium",
+    URANIUM(73, "uranium",
         colors = intArrayOf(0x32FF32, 0x329B32, 0x32FF32),
         properties = setOf(Ingot)
     ),
-    VANADIUM(67, "vanadium",
+    VANADIUM(74, "vanadium",
         colors = intArrayOf(0x3C7878, 0x191919, 0xFFFFFF),
         properties = setOf(Ingot)
     ),
-    ZINC_ALUMINUM(68, "zinc_aluminum",
+    ZINC_ALUMINUM(75, "zinc_aluminum",
         colors = intArrayOf(0xF0BEDC, 0xA00000, 0xFFFFFF),
-        properties = setOf(Ingot)
+        properties = setOf(Ingot, Dust)
     ),
-    ZINC_ZIRCONIUM(69, "zinc_zirconium",
+    ZINC_ZIRCONIUM(76, "zinc_zirconium",
         colors = intArrayOf(0xE6AA8C, 0x780000, 0xFFFFFF),
-        properties = setOf(Ingot)
+        properties = setOf(Ingot, Dust)
     ),
-    //endregion
+
+    IMPURE_GLOWSTONE(1000, "impure_glowstone", colors = intArrayOf(0x979746, 0x191919, 0xFFFFFF), properties = setOf(Dust)),
+    IMPURE_REDSTONE(1001, "impure_redstone", colors = intArrayOf(0x974646, 0x191919, 0xFFFFFF), properties = setOf(Dust)),
+    //CALCIUM_CHLORIDE
+    CARBON(1003, "carbon", colors = intArrayOf(0x0A0A0A, 0x191919, 0x1E1E1E), properties = setOf(Dust)),
+    CHARCOAL(1004, "coal", colors = intArrayOf(0x141414, 0x191919, 0x503232), properties = setOf(Dust)),
+    COAL(1005, "coal", colors = intArrayOf(0x141414, 0x191919, 0x323250), properties = setOf(Dust)),
+    LAPIS(1006, "lapis", colors = intArrayOf(0x3C64BE, 0x0A2B7A, 0x5A82E2), properties = setOf(Dust)),
+    ORGANIC_CLAY(1007, "organic_clay", colors = intArrayOf(0x8890AD, 0x6A2C2B, 0x92A4B7), properties = setOf(Dust)),
+    PHOSPHORUS(1008, "phosphorus", colors = intArrayOf(0xB4B419, 0x9B9B00, 0xCDCD32), properties = setOf(Dust)),
+    //QUARTZ
+    //SALT
+    SALTPETER(1011, "saltpeter", colors = intArrayOf(0xDEDCDC, 0xBEC8D2, 0xFFF0E6), properties = setOf(Dust)),
+    //SODIUM_CARBONATE
+    SULFUR(1013, "sulfur", colors = intArrayOf(0xE6E600, 0xCDCD00, 0xFFFF00), properties = setOf(Dust)),
     ;
 
     val properties: Set<MaterialProperty> = run {
@@ -329,8 +349,9 @@ enum class Material(
         private val uniqueIdMap: IntIdentityHashBiMap<Material> = run {
             val map = IntIdentityHashBiMap<Material>(entries.size)
             entries.forEach {
-                if (map.get(it.uniqueId) != null) {
-                    throw IllegalArgumentException("Material id ${it.uniqueId} is already occupied by ${it.materialName}")
+                val exceptNull = map.get(it.uniqueId)
+                if (exceptNull != null) {
+                    throw IllegalArgumentException("Material id ${it.uniqueId} is already occupied by ${exceptNull.materialName}, cannot register ${it.materialName}")
                 }
                 map.put(it, it.uniqueId)
             }
