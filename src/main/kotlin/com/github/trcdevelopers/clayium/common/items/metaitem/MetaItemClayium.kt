@@ -50,12 +50,8 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
     @SideOnly(Side.CLIENT)
     open fun registerModels() {
         for (item in this.metaValueItems.values) {
-            registerModel(item)
+            ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:${item.name}", "inventory"))
         }
-    }
-
-    protected fun registerModel(item: MetaValueItem) {
-        ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:${item.name}", "inventory"))
     }
 
     override fun getTranslationKey(stack: ItemStack): String {
