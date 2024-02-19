@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common
 
+import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import net.minecraft.creativetab.CreativeTabs
@@ -47,6 +48,8 @@ class Clayium {
             metaPrefixItem.registerSubItems()
             proxy.registerItem(registry, metaPrefixItem)
         }
+
+        proxy.registerItem(registry, MetaItemClayParts)
     }
 
     companion object {
