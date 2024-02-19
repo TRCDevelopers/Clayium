@@ -1,15 +1,23 @@
 package com.github.trcdevelopers.clayium.common
 
+import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
+import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
+import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.init.Items
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraftforge.common.MinecraftForge
+import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.registries.IForgeRegistry
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -17,7 +25,7 @@ import org.apache.logging.log4j.Logger
 class Clayium {
     @Mod.EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
-        // If proxy is null, something is wrong.
+        MinecraftForge.EVENT_BUS.register(this)
         proxy.preInit(event)
     }
 
@@ -31,12 +39,25 @@ class Clayium {
         proxy.postInit(event)
     }
 
+    @SubscribeEvent
+    fun registerItems(event: RegistryEvent.Register<Item>) {
+        val registry: IForgeRegistry<Item> = event.registry
+
+        for (orePrefix in OrePrefix.entries) {
+            val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
+            metaPrefixItem.registerSubItems()
+            proxy.registerItem(registry, metaPrefixItem)
+        }
+
+        proxy.registerItem(registry, MetaItemClayParts)
+    }
+
     companion object {
         const val MOD_ID = "clayium"
         const val MOD_NAME = "Clayium"
         const val VERSION = "1.0-SNAPSHOT"
 
-        val CreativeTab: CreativeTabs = object : CreativeTabs(getNextID(), MOD_ID) {
+        val creativeTab: CreativeTabs = object : CreativeTabs(getNextID(), MOD_ID) {
             @SideOnly(Side.CLIENT)
             override fun createIcon(): ItemStack {
                 return ItemStack(Items.CLAY_BALL)

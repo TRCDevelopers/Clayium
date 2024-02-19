@@ -46,7 +46,7 @@ class BlockClayBuffer private constructor(
 ) : BlockContainer(Material.IRON), IShiftRightClickable {
 
     init {
-        this.creativeTab = Clayium.CreativeTab
+        this.creativeTab = Clayium.creativeTab
         this.translationKey = "$MOD_ID.$registryName"
         this.registryName = ResourceLocation(MOD_ID, registryName)
         this.blockSoundType = SoundType.METAL

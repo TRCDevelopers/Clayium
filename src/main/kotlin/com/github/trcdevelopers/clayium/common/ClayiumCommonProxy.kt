@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.network.NetworkRegistry
 import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.registries.IForgeRegistry
 
 open class ClayiumCommonProxy {
     open fun preInit(event: FMLPreInitializationEvent) {
@@ -47,6 +48,10 @@ open class ClayiumCommonProxy {
     open fun registerTileEntities() {
         GameRegistry.registerTileEntity(TileClayWorkTable::class.java, ResourceLocation(Clayium.MOD_ID, "TileClayWorkTable"))
         GameRegistry.registerTileEntity(TileClayBuffer::class.java, ResourceLocation(Clayium.MOD_ID, "TileClayBuffer"))
+    }
+
+    open fun registerItem(registry: IForgeRegistry<Item>, item: Item) {
+        registry.register(item)
     }
 
     @SubscribeEvent

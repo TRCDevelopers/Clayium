@@ -18,7 +18,7 @@ class ItemClayShovel : ItemSpade(ToolMaterial.WOOD) {
     private var efficiencyOnClayBlocks = 32.0f
 
     init {
-        creativeTab = Clayium.CreativeTab
+        creativeTab = Clayium.creativeTab
         maxDamage = 500
     }
 
