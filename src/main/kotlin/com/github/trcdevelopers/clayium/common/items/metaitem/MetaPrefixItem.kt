@@ -57,8 +57,8 @@ open class MetaPrefixItem private constructor(
     companion object {
         fun create(name: String, orePrefix: OrePrefix): MetaPrefixItem {
             return when (orePrefix) {
-                OrePrefix.impureDust -> MetaPrefixItemImpureDust
-                OrePrefix.matter -> object : MetaPrefixItem(name, OrePrefix.matter) {
+                OrePrefix.IMPURE_DUST -> MetaPrefixItemImpureDust
+                OrePrefix.MATTER -> object : MetaPrefixItem(name, OrePrefix.MATTER) {
                     override fun registerModels() {
                         for (item in metaValueItems.values) {
                             ModelLoader.setCustomModelResourceLocation(
@@ -73,10 +73,10 @@ open class MetaPrefixItem private constructor(
         }
     }
 
-    private object MetaPrefixItemImpureDust : MetaPrefixItem("meta_impure_dust", OrePrefix.impureDust) {
+    private object MetaPrefixItemImpureDust : MetaPrefixItem("meta_impure_dust", OrePrefix.IMPURE_DUST) {
        override fun registerSubItems() {
             for (material in Material.entries) {
-                if (OrePrefix.impureDust.doGenerateItem(material)) {
+                if (OrePrefix.IMPURE_DUST.doGenerateItem(material)) {
                     val impureDust  = material.getProperty<MaterialProperty.ImpureDust>()!!
                     addItem(material.uniqueId.toShort(), material.materialName)
                         .tier(material.tier)
