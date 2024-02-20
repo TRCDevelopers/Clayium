@@ -25,9 +25,6 @@ import net.minecraftforge.registries.IForgeRegistry
 
 @SideOnly(Side.CLIENT)
 class ClayiumClientProxy : ClayiumCommonProxy() {
-
-    private val metaItems = mutableListOf<MetaItemClayium>()
-
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
         ModelLoaderRegistry.registerLoader(CeContainerModelLoader())
@@ -42,7 +39,7 @@ class ClayiumClientProxy : ClayiumCommonProxy() {
 
     override fun postInit(event: FMLPostInitializationEvent) {
         super.postInit(event)
-        for (item in metaItems) {
+        for (item in MetaItemClayium.META_ITEMS) {
             item.registerColorHandler()
         }
     }
