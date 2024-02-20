@@ -1,0 +1,20 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "tier0": {
+      "parent": "clayium:block/compressed_clay_0"
+    },
+    "tier1": {
+      "parent": "clayium:block/compressed_clay_1"
+    },
+    "tier2": {
+      "parent": "clayium:block/compressed_clay_2"
+    },
+    "tier3": {
+      "parent": "clayium:block/compressed_clay_3"
+    },
+    "tier4": {
+      "parent": "clayium:block/compressed_clay_4"
+    }
+  }
+}

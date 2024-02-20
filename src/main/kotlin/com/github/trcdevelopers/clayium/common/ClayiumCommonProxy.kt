@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.common
 
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
+import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
@@ -48,11 +49,13 @@ open class ClayiumCommonProxy {
         }
 
         ClayiumItems.registerItems(event, Side.SERVER)
+        registry.register(ItemBlockCompressedClay(ClayiumBlocks.COMPRESSED_CLAY))
     }
 
     @SubscribeEvent
     open fun registerBlocks(event: RegistryEvent.Register<Block>) {
         ClayiumBlocks.registerBlocks(event, Side.SERVER)
+        event.registry.register(ClayiumBlocks.COMPRESSED_CLAY)
     }
 
     open fun registerTileEntities() {

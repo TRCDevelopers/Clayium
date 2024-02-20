@@ -3,6 +3,7 @@ package com.github.trcdevelopers.clayium.common.blocks
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.Clayium.Companion.MOD_ID
 import com.github.trcdevelopers.clayium.common.annotation.CBlock
+import com.github.trcdevelopers.clayium.common.blocks.clay.BlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.BlockClayBuffer
 import com.google.common.reflect.ClassPath
 import net.minecraft.block.Block
@@ -13,6 +14,9 @@ import java.lang.reflect.Constructor
 import java.util.Collections
 
 object ClayiumBlocks {
+
+    val COMPRESSED_CLAY = BlockCompressedClay()
+
     private val blocks: MutableMap<String, Block> = HashMap()
     @JvmStatic
     val allBlocks: Map<String, Block>
@@ -48,7 +52,6 @@ object ClayiumBlocks {
                     registerBlock(tieredConstructor.newInstance(tier) as Block, registryName)
                 }
             }
-        blocks.putAll(CompressedClay.createBlocks())
         blocks.putAll(BlockClayBuffer.createBlocks())
         blocks.values.forEach(event.registry::register)
     }

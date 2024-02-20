@@ -1,0 +1,12 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "tier": {
+      "0": { "model": "clayium:compressed_clay_0" },
+      "1": { "model": "clayium:compressed_clay_1" },
+      "2": { "model": "clayium:compressed_clay_2" },
+      "3": { "model": "clayium:compressed_clay_3" },
+      "4": { "model": "clayium:compressed_clay_4" }
+    }
+  }
+}

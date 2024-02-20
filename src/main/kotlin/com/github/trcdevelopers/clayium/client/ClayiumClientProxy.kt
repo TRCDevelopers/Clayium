@@ -5,6 +5,7 @@ import com.github.trcdevelopers.clayium.client.loader.ClayBufferModelLoader
 import com.github.trcdevelopers.clayium.client.tesr.ClayBufferPipeIoRenderer
 import com.github.trcdevelopers.clayium.common.ClayiumCommonProxy
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
+import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
@@ -55,16 +56,22 @@ class ClayiumClientProxy : ClayiumCommonProxy() {
             metaPrefixItem.registerModels()
         }
         ClayiumItems.registerItems(event, Side.CLIENT)
+
+        registry.register(ItemBlockCompressedClay(ClayiumBlocks.COMPRESSED_CLAY).apply {
+            registerModels()
+        })
     }
 
     @SubscribeEvent
     override fun registerBlocks(event: RegistryEvent.Register<Block>) {
+        val registry = event.registry
         ClayiumBlocks.registerBlocks(event, Side.CLIENT)
+
+        registry.register(ClayiumBlocks.COMPRESSED_CLAY)
     }
 
     override fun registerItem(registry: IForgeRegistry<Item>, item: Item) {
         if (item is MetaItemClayium) {
-            metaItems.add(item)
             item.registerModels()
         }
         super.registerItem(registry, item)
