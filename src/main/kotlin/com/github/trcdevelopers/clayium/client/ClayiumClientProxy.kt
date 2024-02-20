@@ -8,6 +8,8 @@ import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
+import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
+import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraftforge.client.model.ModelLoaderRegistry
@@ -47,6 +49,14 @@ class ClayiumClientProxy : ClayiumCommonProxy() {
 
     @SubscribeEvent
     override fun registerItems(event: RegistryEvent.Register<Item>) {
+        val registry = event.registry
+
+        for (orePrefix in OrePrefix.entries) {
+            val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
+            registry.register(metaPrefixItem)
+            metaPrefixItem.registerSubItems()
+            metaPrefixItem.registerModels()
+        }
         ClayiumItems.registerItems(event, Side.CLIENT)
     }
 

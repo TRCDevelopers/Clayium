@@ -5,6 +5,8 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileCla
 import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
+import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
+import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import com.github.trcdevelopers.clayium.common.worldgen.ClayOreGenerator
 import net.minecraft.block.Block
 import net.minecraft.item.Item
@@ -37,6 +39,14 @@ open class ClayiumCommonProxy {
 
     @SubscribeEvent
     open fun registerItems(event: RegistryEvent.Register<Item>) {
+        val registry = event.registry
+
+        for (orePrefix in OrePrefix.entries) {
+            val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
+            registry.register(metaPrefixItem)
+            metaPrefixItem.registerSubItems()
+        }
+
         ClayiumItems.registerItems(event, Side.SERVER)
     }
 
