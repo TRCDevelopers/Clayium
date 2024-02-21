@@ -22,7 +22,7 @@ class ItemBlockCompressedClay(block: BlockCompressedClay) : ItemBlock(block) {
     fun registerModels() {
         for (i in 0..4) {
             ModelLoader.setCustomModelResourceLocation(this, i,
-                ModelResourceLocation("${Clayium.MOD_ID}:compressed_clay_item", "tier$i")
+                ModelResourceLocation("${Clayium.MOD_ID}:compressed_clay_$i", "inventory")
             )
         }
     }
