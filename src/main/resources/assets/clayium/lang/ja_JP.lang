@@ -4,11 +4,12 @@ itemGroup.clayium.clayiumcapsule=Clayium 液体カプセル
 
 tooltip.clayium.HoldShiftForDetails=--§f詳細は§lShift§rキー§7--
 
-gui.clayium.tier=Tier %1$d
-gui.clayium.energy=%1$sCE
 gui.clayium.clayLaser=レーザー %1$s
 gui.clayium.resonance=共鳴率 %1$s
 gui.clayium.overclockFactor=オーバークロック x%1$s
+
+clayium.tooltip.tier=§rTier %1$s
+clayium.tooltip.ce=%1$sCE
 
 clayium.oreprefix.ingot=%sインゴット
 clayium.oreprefix.dust=%sの粉

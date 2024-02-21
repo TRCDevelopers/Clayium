@@ -1,8 +1,12 @@
 package com.github.trcdevelopers.clayium.common.blocks.clay
 
 import com.github.trcdevelopers.clayium.common.Clayium
+import com.github.trcdevelopers.clayium.common.util.I18nUtils
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemBlock
+import net.minecraft.item.ItemStack
+import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -19,8 +23,14 @@ class ItemBlockCompressedClay(block: BlockCompressedClay) : ItemBlock(block) {
     }
 
     @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        tooltip.add(I18nUtils.format("tooltip.tier", stack.metadata))
+        tooltip.add(I18nUtils.format("tooltip.ce", 0))
+    }
+
+    @SideOnly(Side.CLIENT)
     fun registerModels() {
-        for (i in 0..4) {
+        for (i in 0..3) {
             ModelLoader.setCustomModelResourceLocation(this, i,
                 ModelResourceLocation("${Clayium.MOD_ID}:compressed_clay_$i", "inventory")
             )

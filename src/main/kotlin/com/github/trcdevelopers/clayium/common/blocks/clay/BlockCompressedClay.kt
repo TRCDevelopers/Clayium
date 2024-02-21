@@ -18,23 +18,21 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
-class BlockCompressedClay : Block(Material.IRON) {
-
+class BlockCompressedClay : Block(Material.GROUND) {
 
     init {
         creativeTab = Clayium.creativeTab
         translationKey = "${Clayium.MOD_ID}.compressed_clay"
         registryName = ResourceLocation(Clayium.MOD_ID, "compressed_clay")
-        blockHardness = 0.5f
+        blockHardness = 0.6f
         soundType = SoundType.GROUND
         lightValue = 0
-        setHarvestLevel("shovel", 0)
 
         this.defaultState = this.blockState.baseState.withProperty(TIER, 0)
     }
 
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
-        for (i in 0..4) {
+        for (i in 0..3) {
             items.add(ItemStack(this, 1, i))
         }
     }
@@ -60,6 +58,6 @@ class BlockCompressedClay : Block(Material.IRON) {
     }
 
     companion object {
-        val TIER: IProperty<Int> = PropertyInteger.create("tier", 0, 4)
+        val TIER: IProperty<Int> = PropertyInteger.create("tier", 0, 3)
     }
 }
