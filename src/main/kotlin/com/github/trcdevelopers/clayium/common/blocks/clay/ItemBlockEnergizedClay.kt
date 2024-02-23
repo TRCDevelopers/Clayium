@@ -2,7 +2,9 @@ package com.github.trcdevelopers.clayium.common.blocks.clay
 
 import com.github.trcdevelopers.clayium.common.ClayEnergy
 import com.github.trcdevelopers.clayium.common.Clayium
+import com.github.trcdevelopers.clayium.common.interfaces.IEnergizedClay
 import com.github.trcdevelopers.clayium.common.util.I18nUtils
+import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
@@ -11,7 +13,7 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import kotlin.math.pow
 
-class ItemBlockEnergizedClay(block: BlockEnergizedClay) : ItemBlock(block) {
+class ItemBlockEnergizedClay(block: BlockEnergizedClay) : ItemBlock(block), IEnergizedClay {
 
     init {
         hasSubtypes = true
@@ -33,7 +35,7 @@ class ItemBlockEnergizedClay(block: BlockEnergizedClay) : ItemBlock(block) {
         tooltip.add(I18nUtils.format("tooltip.ce", 0))
     }
 
-    fun getClayEnergy(stack: ItemStack): ClayEnergy {
+    override fun getClayEnergy(stack: ItemStack): ClayEnergy {
         return ClayEnergy.of(10.toDouble().pow(stack.metadata).toLong())
     }
 }
