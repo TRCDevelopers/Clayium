@@ -3,6 +3,7 @@ package com.github.trcdevelopers.clayium.common.blocks.clay
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.util.I18nUtils
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
@@ -20,6 +21,10 @@ class ItemBlockCompressedClay(block: BlockCompressedClay) : ItemBlock(block) {
 
     override fun getMetadata(damage: Int): Int {
         return damage
+    }
+
+    override fun getItemStackDisplayName(stack: ItemStack): String {
+        return I18n.format("tile.${Clayium.MOD_ID}.compressed_clay_tier${stack.metadata}.name")
     }
 
     @SideOnly(Side.CLIENT)

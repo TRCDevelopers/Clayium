@@ -24,7 +24,7 @@ class ItemBlockEnergizedClay(block: BlockEnergizedClay) : ItemBlock(block) {
     }
 
     override fun getItemStackDisplayName(stack: ItemStack): String {
-        return I18nUtils.format("item.energized_clay_${stack.metadata}.name")
+        return I18n.format("tile.${Clayium.MOD_ID}.compressed_clay_tier${stack.metadata}.name")
     }
 
     @SideOnly(Side.CLIENT)
