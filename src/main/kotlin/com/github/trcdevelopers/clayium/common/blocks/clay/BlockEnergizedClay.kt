@@ -27,6 +27,7 @@ class BlockEnergizedClay : Block(Material.GROUND) {
         blockHardness = 0.6f
         soundType = SoundType.GROUND
         lightValue = 0
+        setHarvestLevel("shovel", 0)
 
         this.defaultState = this.blockState.baseState.withProperty(BlockCompressedClay.TIER, 0)
     }
