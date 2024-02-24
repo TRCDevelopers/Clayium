@@ -1,7 +1,6 @@
 package com.github.trcdevelopers.clayium.common.blocks.clay
 
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.util.I18nUtils
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
@@ -29,8 +28,8 @@ class ItemBlockCompressedClay(block: BlockCompressedClay) : ItemBlock(block) {
 
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        tooltip.add(I18nUtils.format("tooltip.tier", stack.metadata))
-        tooltip.add(I18nUtils.format("tooltip.ce", 0))
+        tooltip.add(I18n.format("tooltip.${Clayium.MOD_ID}.tier", stack.metadata))
+        tooltip.add(I18n.format("tooltip.${Clayium.MOD_ID}.ce", 0))
     }
 
     @SideOnly(Side.CLIENT)
