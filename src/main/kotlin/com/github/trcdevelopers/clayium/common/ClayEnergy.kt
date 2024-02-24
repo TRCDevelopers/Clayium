@@ -1,7 +1,14 @@
 package com.github.trcdevelopers.clayium.common
 
+import com.github.trcdevelopers.clayium.common.util.UtilLocale
+
 @JvmInline
 value class ClayEnergy private constructor(private val energy: Long) {
+
+    override fun toString(): String {
+        return UtilLocale.ClayEnergyNumeral(energy.toDouble())
+    }
+
     companion object {
         fun micro(energy: Long): ClayEnergy {
             require(energy % 10 == 0.toLong()) {
