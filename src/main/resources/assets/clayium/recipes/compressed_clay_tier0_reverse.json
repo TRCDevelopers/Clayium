@@ -2,7 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-    "item": "clayium:compressed_clay_0"
+    "item": "clayium:compressed_clay",
+    "data": 0
     }
   ],
   "result": {

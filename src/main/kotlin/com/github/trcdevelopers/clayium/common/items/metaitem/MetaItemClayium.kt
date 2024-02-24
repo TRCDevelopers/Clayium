@@ -25,6 +25,9 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
 
     init {
         hasSubtypes = true
+
+        @Suppress("LeakingThis")
+        _metaItems.add(this)
     }
 
     protected val metaValueItems = mutableMapOf<Short, MetaValueItem>()
@@ -76,6 +79,11 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         for (behavior in item.behaviors) {
             behavior.addInformation(stack, worldIn, tooltip, flagIn)
         }
+    }
+
+    companion object {
+        private val _metaItems = mutableListOf<MetaItemClayium>()
+        val META_ITEMS: List<MetaItemClayium> get() = _metaItems
     }
 
     open inner class MetaValueItem(

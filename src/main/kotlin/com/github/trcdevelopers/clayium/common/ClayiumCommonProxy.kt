@@ -1,10 +1,14 @@
 package com.github.trcdevelopers.clayium.common
 
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
+import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
+import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
+import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
+import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import com.github.trcdevelopers.clayium.common.worldgen.ClayOreGenerator
 import net.minecraft.block.Block
 import net.minecraft.item.Item
@@ -37,12 +41,25 @@ open class ClayiumCommonProxy {
 
     @SubscribeEvent
     open fun registerItems(event: RegistryEvent.Register<Item>) {
+        val registry = event.registry
+
+        for (orePrefix in OrePrefix.entries) {
+            val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
+            registry.register(metaPrefixItem)
+            metaPrefixItem.registerSubItems()
+        }
+
         ClayiumItems.registerItems(event, Side.SERVER)
+        registry.register(ItemBlockCompressedClay(ClayiumBlocks.COMPRESSED_CLAY))
+        registry.register(ItemBlockEnergizedClay(ClayiumBlocks.ENERGIZED_CLAY))
     }
 
     @SubscribeEvent
     open fun registerBlocks(event: RegistryEvent.Register<Block>) {
         ClayiumBlocks.registerBlocks(event, Side.SERVER)
+
+        event.registry.register(ClayiumBlocks.COMPRESSED_CLAY)
+        event.registry.register(ClayiumBlocks.ENERGIZED_CLAY)
     }
 
     open fun registerTileEntities() {

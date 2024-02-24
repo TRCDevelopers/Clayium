@@ -7,13 +7,13 @@
   ],
   "key": {
     "x":{
-      "item": "clayium:compressed_clay_0",
+      "item": "clayium:compressed_clay",
       "data": 0
     }
   },
   "result": {
-    "item": "clayium:compressed_clay_1",
-    "data": 0,
+    "item": "clayium:compressed_clay",
+    "data": 1,
     "count": 1
   }
 }
