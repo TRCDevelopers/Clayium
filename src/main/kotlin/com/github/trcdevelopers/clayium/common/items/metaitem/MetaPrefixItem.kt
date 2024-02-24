@@ -43,7 +43,7 @@ open class MetaPrefixItem private constructor(
 
     override fun getItemStackDisplayName(stack: ItemStack): String {
         val material = getMaterial(stack) ?: return "invalid"
-        return I18n.format("clayium.oreprefix.${orePrefix.camel}", I18n.format("clayium.material.${material.materialName}"))
+        return I18n.format("oreprefix.${Clayium.MOD_ID}.${orePrefix.camel}", I18n.format("material.${Clayium.MOD_ID}.${material.materialName}"))
     }
 
     private fun getMaterial(stack: ItemStack): Material? {
