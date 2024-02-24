@@ -4,6 +4,7 @@ import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.Clayium.Companion.MOD_ID
 import com.github.trcdevelopers.clayium.common.annotation.CBlock
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockCompressedClay
+import com.github.trcdevelopers.clayium.common.blocks.clay.BlockEnergizedClay
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.BlockClayBuffer
 import com.google.common.reflect.ClassPath
 import net.minecraft.block.Block
@@ -16,6 +17,7 @@ import java.util.Collections
 object ClayiumBlocks {
 
     val COMPRESSED_CLAY = BlockCompressedClay()
+    val ENERGIZED_CLAY = BlockEnergizedClay()
 
     private val blocks: MutableMap<String, Block> = HashMap()
     @JvmStatic

@@ -22,30 +22,31 @@ class BlockEnergizedClay : Block(Material.GROUND) {
 
     init {
         creativeTab = Clayium.creativeTab
-        translationKey = "${Clayium.MOD_ID}.compressed_clay"
-        registryName = ResourceLocation(Clayium.MOD_ID, "compressed_clay")
+        registryName = ResourceLocation(Clayium.MOD_ID, "energized_clay")
         blockHardness = 0.6f
         soundType = SoundType.GROUND
         lightValue = 0
         setHarvestLevel("shovel", 0)
 
-        this.defaultState = this.blockState.baseState.withProperty(BlockCompressedClay.TIER, 0)
+        this.defaultState = this.blockState.baseState.withProperty(META, 0)
     }
 
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
-        super.getSubBlocks(itemIn, items)
+        for (i in 0..8) {
+            items.add(ItemStack(this, 1, i))
+        }
     }
 
     override fun createBlockState(): BlockStateContainer {
-        return BlockStateContainer.Builder(this).add(TIER).build()
+        return BlockStateContainer.Builder(this).add(META).build()
     }
 
     override fun getMetaFromState(state: IBlockState): Int {
-        return state.getValue(TIER)
+        return state.getValue(META)
     }
 
     override fun getStateFromMeta(meta: Int): IBlockState {
-        return this.defaultState.withProperty(TIER, meta)
+        return this.defaultState.withProperty(META, meta)
     }
 
     override fun getStateForPlacement(world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand): IBlockState {
@@ -57,6 +58,6 @@ class BlockEnergizedClay : Block(Material.GROUND) {
     }
 
     companion object {
-        val TIER = PropertyInteger.create("tier", 4, 12)
+        private val META = PropertyInteger.create("meta", 0, 8)
     }
 }

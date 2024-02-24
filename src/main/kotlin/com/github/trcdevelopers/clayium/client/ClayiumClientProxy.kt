@@ -6,6 +6,7 @@ import com.github.trcdevelopers.clayium.client.tesr.ClayBufferPipeIoRenderer
 import com.github.trcdevelopers.clayium.common.ClayiumCommonProxy
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
+import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
@@ -24,6 +25,7 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.registries.IForgeRegistry
 
+@Suppress("unused")
 @SideOnly(Side.CLIENT)
 class ClayiumClientProxy : ClayiumCommonProxy() {
     override fun preInit(event: FMLPreInitializationEvent) {
@@ -57,9 +59,8 @@ class ClayiumClientProxy : ClayiumCommonProxy() {
         }
         ClayiumItems.registerItems(event, Side.CLIENT)
 
-        registry.register(ItemBlockCompressedClay(ClayiumBlocks.COMPRESSED_CLAY).apply {
-            registerModels()
-        })
+        registry.register(ItemBlockCompressedClay(ClayiumBlocks.COMPRESSED_CLAY).apply { registerModels() })
+        registry.register(ItemBlockEnergizedClay(ClayiumBlocks.ENERGIZED_CLAY).apply { registerModels() })
     }
 
     @SubscribeEvent
@@ -68,6 +69,7 @@ class ClayiumClientProxy : ClayiumCommonProxy() {
         ClayiumBlocks.registerBlocks(event, Side.CLIENT)
 
         registry.register(ClayiumBlocks.COMPRESSED_CLAY)
+        registry.register(ClayiumBlocks.ENERGIZED_CLAY)
     }
 
     override fun registerItem(registry: IForgeRegistry<Item>, item: Item) {
