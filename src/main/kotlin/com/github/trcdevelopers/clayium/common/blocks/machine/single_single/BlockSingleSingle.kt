@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
+@Suppress("OVERRIDE_DEPRECATION")
 class BlockSingleSingle(
     private val tier: Int,
     private val teFactory: (Int) -> TileEntity,
