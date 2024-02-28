@@ -20,7 +20,8 @@ import java.util.Optional
 object ClayWorkTableRecipeManager {
     val INSTANCE = this
 
-    private val recipes: MutableList<ClayWorkTableRecipe> = ArrayList()
+    private val _recipes: MutableList<ClayWorkTableRecipe> = ArrayList()
+    val recipes get() = _recipes.toList()
 
     init {
         CraftingHelper.findFiles(
@@ -35,7 +36,7 @@ object ClayWorkTableRecipeManager {
                 try {
                     Files.newBufferedReader(file).use { reader ->
                         val json = JsonUtils.fromJson(CraftingHelper.GSON, reader, JsonObject::class.java) ?: return@use
-                        recipes.add(getRecipe(json) ?: run { Clayium.LOGGER.error("Invalid recipe found at {}", key); return@findFiles true })
+                        _recipes.add(getRecipe(json) ?: run { Clayium.LOGGER.error("Invalid recipe found at {}", key); return@findFiles true })
                     }
                 } catch (e: IOException) {
                     throw RuntimeException(e)
@@ -55,7 +56,7 @@ object ClayWorkTableRecipeManager {
             return null
         }
 
-        for (recipe in recipes) {
+        for (recipe in _recipes) {
             if (recipe.matches(input, method)) {
                 return recipe
             }
@@ -77,7 +78,7 @@ object ClayWorkTableRecipeManager {
         }
         val inputItem = ForgeRegistries.ITEMS.getValue(ResourceLocation(inputJson["item"].asString))
             ?: run {
-                Clayium.LOGGER.error("ClayWorkTable Recipe: input item not found")
+                Clayium.LOGGER.error("ClayWorkTable Recipe: input item not found: {}", inputJson["item"].asString)
                 return null
             }
 
