@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.integration.jei
 
+import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.recipe.CRecipes
 import com.github.trcdevelopers.clayium.common.recipe.ClayWorkTableRecipe
 import com.github.trcdevelopers.clayium.integration.jei.clayworktable.ClayWorkTableRecipeCategory
@@ -9,6 +10,7 @@ import mezz.jei.api.IModPlugin
 import mezz.jei.api.IModRegistry
 import mezz.jei.api.JEIPlugin
 import mezz.jei.api.recipe.IRecipeCategoryRegistration
+import net.minecraft.item.ItemStack
 
 @JEIPlugin
 class JeiPlugin : IModPlugin {
@@ -25,6 +27,7 @@ class JeiPlugin : IModPlugin {
 
     override fun register(registry: IModRegistry) {
         registry.handleRecipes(ClayWorkTableRecipe::class.java, ::ClayWorkTableRecipeWrapper, ClayWorkTableRecipeCategory.UID)
+        registry.addRecipeCatalyst(ItemStack(ClayiumBlocks.getBlock("clay_work_table")!!), ClayWorkTableRecipeCategory.UID)
 
         registry.addRecipes(CRecipes.CLAY_WORK_TABLE, ClayWorkTableRecipeCategory.UID)
     }
