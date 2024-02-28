@@ -4,13 +4,19 @@ import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
+import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod
 import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
+import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
+import com.github.trcdevelopers.clayium.common.recipe.CRecipes
+import com.github.trcdevelopers.clayium.common.recipe.ClayWorkTableRecipe
+import com.github.trcdevelopers.clayium.common.recipe.RecipeInput
 import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import com.github.trcdevelopers.clayium.common.worldgen.ClayOreGenerator
 import net.minecraft.block.Block
+import net.minecraft.init.Items
 import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.MinecraftForge
@@ -23,6 +29,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.network.NetworkRegistry
 import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.oredict.OreDictionary
 import net.minecraftforge.registries.IForgeRegistry
 
 open class ClayiumCommonProxy {
@@ -37,6 +44,16 @@ open class ClayiumCommonProxy {
     }
 
     open fun postInit(event: FMLPostInitializationEvent) {
+        CRecipes.addClayWorkTableRecipe(ClayWorkTableRecipe(
+            RecipeInput(Items.CLAY_BALL, 1),
+            MetaItemClayParts.CLAY_STICK.stackForm,
+            ClayWorkTableMethod.ROLLING_HAND, 4
+        ))
+        CRecipes.addClayWorkTableRecipe(ClayWorkTableRecipe(
+            RecipeInput(MetaItemClayParts.CLAY_DISC.stackForm),
+            OreDictionary.getOres("plateClay")[0],
+            ClayWorkTableMethod.CUT_DISC, 4
+        ))
     }
 
     @SubscribeEvent
