@@ -1,7 +1,7 @@
 package com.github.trcdevelopers.clayium.integration.jei
 
-import com.github.trcdevelopers.clayium.common.recipe.clayworktable.ClayWorkTableRecipe
-import com.github.trcdevelopers.clayium.common.recipe.clayworktable.ClayWorkTableRecipeManager
+import com.github.trcdevelopers.clayium.common.recipe.CRecipes
+import com.github.trcdevelopers.clayium.common.recipe.ClayWorkTableRecipe
 import com.github.trcdevelopers.clayium.integration.jei.clayworktable.ClayWorkTableRecipeCategory
 import com.github.trcdevelopers.clayium.integration.jei.clayworktable.ClayWorkTableRecipeWrapper
 import mezz.jei.api.IJeiRuntime
@@ -26,6 +26,6 @@ class JeiPlugin : IModPlugin {
     override fun register(registry: IModRegistry) {
         registry.handleRecipes(ClayWorkTableRecipe::class.java, ::ClayWorkTableRecipeWrapper, ClayWorkTableRecipeCategory.UID)
 
-        registry.addRecipes(ClayWorkTableRecipeManager.INSTANCE.recipes, ClayWorkTableRecipeCategory.UID)
+        registry.addRecipes(CRecipes.CLAY_WORK_TABLE, ClayWorkTableRecipeCategory.UID)
     }
 }
