@@ -5,7 +5,7 @@ import com.github.trcdevelopers.clayium.common.unification.material.Material
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
-import net.minecraftforge.oredict.OreDictionary
+import net.minecraftforge.oredict.OreIngredient
 import java.util.function.Predicate
 
 class RecipeInput(
@@ -14,7 +14,7 @@ class RecipeInput(
 ) : Predicate<ItemStack> {
 
     constructor(orePrefix: OrePrefix, material: Material, amount: Int) : this(
-        Ingredient.fromStacks(*OreDictionary.getOres(orePrefix.concat(material)).toTypedArray()),
+        OreIngredient(orePrefix.concat(material)),
         amount
     )
 

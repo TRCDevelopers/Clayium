@@ -31,7 +31,7 @@ class JeiPlugin : IModPlugin {
         registry.handleRecipes(ClayWorkTableRecipe::class.java, ::ClayWorkTableRecipeWrapper, ClayWorkTableRecipeCategory.UID)
         registry.addRecipeCatalyst(ItemStack(ClayiumBlocks.getBlock("clay_work_table")!!), ClayWorkTableRecipeCategory.UID)
 
-        registry.addRecipes(CRecipes.CLAY_WORK_TABLE, ClayWorkTableRecipeCategory.UID)
+        registry.addRecipes(CRecipes.CLAY_WORK_TABLE.recipes, ClayWorkTableRecipeCategory.UID)
     }
 
     companion object {
