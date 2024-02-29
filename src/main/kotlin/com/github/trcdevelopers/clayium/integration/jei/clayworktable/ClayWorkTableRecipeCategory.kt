@@ -40,6 +40,10 @@ class ClayWorkTableRecipeCategory(
         return icon
     }
 
+    override fun drawExtras(minecraft: Minecraft) {
+//        progressBar.draw(minecraft, 44, 23)
+    }
+
     override fun setRecipe(
         recipeLayout: IRecipeLayout,
         recipeWrapper: ClayWorkTableRecipeWrapper,
