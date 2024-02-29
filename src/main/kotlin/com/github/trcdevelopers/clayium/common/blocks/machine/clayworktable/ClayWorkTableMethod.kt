@@ -10,7 +10,9 @@ enum class ClayWorkTableMethod(val id: Int) {
     ;
 
     companion object {
-        @JvmStatic
+
+        val ids = entries.map { it.id }.toIntArray()
+
         fun fromId(id: Int): ClayWorkTableMethod? {
             return when (id) {
                 0 -> ROLLING_HAND
