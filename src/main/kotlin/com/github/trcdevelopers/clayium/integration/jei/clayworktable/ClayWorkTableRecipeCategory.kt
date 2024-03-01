@@ -52,6 +52,8 @@ class ClayWorkTableRecipeCategory(
         val itemStacks = recipeLayout.itemStacks
         itemStacks.init(0, true, 12, 23)
         itemStacks.set(0, ingredients.getInputs(VanillaTypes.ITEM)[0])
+        itemStacks.init(1, true, 75, 10)
+        itemStacks.set(1, ingredients.getInputs(VanillaTypes.ITEM)[1])
 
         itemStacks.init(2, false, 138, 23)
         itemStacks.set(2, ingredients.getOutputs(VanillaTypes.ITEM)[0])

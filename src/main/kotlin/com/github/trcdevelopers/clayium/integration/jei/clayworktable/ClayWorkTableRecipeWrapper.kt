@@ -10,6 +10,7 @@ import mezz.jei.api.ingredients.VanillaTypes
 import mezz.jei.api.recipe.IRecipeWrapper
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 
 class ClayWorkTableRecipeWrapper(
@@ -24,7 +25,7 @@ class ClayWorkTableRecipeWrapper(
     )
 
     override fun getIngredients(ingredients: IIngredients) {
-        ingredients.setInputLists(VanillaTypes.ITEM, listOf(recipe.input.inputStacks))
+        ingredients.setInputLists(VanillaTypes.ITEM, listOf(recipe.input.inputStacks, recipe.method.requiredTools.map { ItemStack(it) }))
         ingredients.setOutputs(VanillaTypes.ITEM, recipe.outputs)
     }
 
