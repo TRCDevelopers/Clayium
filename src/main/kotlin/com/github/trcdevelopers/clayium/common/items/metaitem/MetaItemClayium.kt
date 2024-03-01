@@ -91,12 +91,15 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         val name: String,
     ) {
 
+        @Deprecated("use getStackForm(count) instead", ReplaceWith("getStackForm(1)"))
         val stackForm = ItemStack(this@MetaItemClayium, 1, meta.toInt())
 
         val translationKey = "item.${Clayium.MOD_ID}.$name"
         val behaviors = mutableListOf<IItemBehavior>()
         var colorHandler: IItemColorHandler? = null
         var rarity: IRarity = EnumRarity.COMMON
+
+        fun getStackForm(count: Int = 1): ItemStack = ItemStack(this@MetaItemClayium, count, meta.toInt())
 
         fun addComponent(component: IItemComponent): MetaValueItem {
             when (component) {
