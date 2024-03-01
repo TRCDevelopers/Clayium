@@ -59,7 +59,6 @@ class ClayWorkTableRecipeCategory(
         itemStacks.set(2, ingredients.getOutputs(VanillaTypes.ITEM)[0])
         itemStacks.init(3, false, 138, 48)
         itemStacks.set(3, ingredients.getOutputs(VanillaTypes.ITEM)[1])
-        Minecraft.getMinecraft().fontRenderer.drawString("IT WORKS!", 0, 0, 0xDEDEDE)
     }
 
     companion object {
