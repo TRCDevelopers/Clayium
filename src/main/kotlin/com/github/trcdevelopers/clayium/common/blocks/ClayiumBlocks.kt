@@ -6,6 +6,8 @@ import com.github.trcdevelopers.clayium.common.annotation.CBlock
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockEnergizedClay
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.BlockClayBuffer
+import com.github.trcdevelopers.clayium.common.blocks.machine.single_single.BlockSingleSingle
+import com.github.trcdevelopers.clayium.common.blocks.machine.single_single.TileSingleSingle
 import com.google.common.reflect.ClassPath
 import net.minecraft.block.Block
 import net.minecraft.util.ResourceLocation
@@ -55,6 +57,7 @@ object ClayiumBlocks {
                 }
             }
         blocks.putAll(BlockClayBuffer.createBlocks())
+        blocks["single_single"] = BlockSingleSingle(6, ::TileSingleSingle).setRegistryName("single_single")
         blocks.values.forEach(event.registry::register)
     }
 
