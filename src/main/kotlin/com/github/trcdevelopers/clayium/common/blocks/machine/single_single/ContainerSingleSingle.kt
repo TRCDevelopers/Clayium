@@ -14,19 +14,8 @@ class ContainerSingleSingle(
     init {
         val itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) ?: throw NullPointerException("Item handler capability is null.")
 
-        addSlotToContainer(object : SlotItemHandler(itemHandler, 0, 44, 35) {
-            override fun onSlotChanged() {
-                tile.markDirty()
-            }
-        })
-        addSlotToContainer(object : SlotItemHandler(itemHandler, 1, 116, 35) {
-            override fun isItemValid(stack: ItemStack): Boolean {
-                return false
-            }
-            override fun onSlotChanged() {
-                tile.markDirty()
-            }
-        })
+        addSlotToContainer(SlotItemHandler(itemHandler, 0, 44, 35))
+        addSlotToContainer(SlotItemHandler(itemHandler, 1, 116, 35))
     }
 
     override fun transferStackInSlot(playerIn: EntityPlayer, index: Int): ItemStack {

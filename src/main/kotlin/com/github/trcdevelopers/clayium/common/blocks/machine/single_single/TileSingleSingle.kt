@@ -11,7 +11,11 @@ class TileSingleSingle(
     var tier: Int = -1,
 ) : TileEntity() {
 
-    private val itemHandler = ItemStackHandler(2)
+    private val itemHandler = object : ItemStackHandler(2) {
+        override fun onContentsChanged(slot: Int) {
+            this@TileSingleSingle.markDirty()
+        }
+    }
 
     private fun initParams(tier: Int) {
         this.tier = tier
