@@ -1,6 +1,5 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable
 
-import com.github.trcdevelopers.clayium.common.items.ClayiumItems.getItem
 import com.github.trcdevelopers.clayium.common.recipe.CRecipes
 import com.github.trcdevelopers.clayium.common.recipe.ClayWorkTableRecipe
 import net.minecraft.item.ItemStack
@@ -39,7 +38,7 @@ class TileClayWorkTable : TileEntity() {
     }
 
     private val currentTool: ItemStack
-        get() = itemHandler.getStackInSlot(2)
+        get() = itemHandler.getStackInSlot(1)
 
     @SideOnly(Side.CLIENT)
     fun getCraftingProgressScaled(scale: Int): Int {
@@ -76,18 +75,7 @@ class TileClayWorkTable : TileEntity() {
 
     private fun canStartCraft(input: ItemStack, method: ClayWorkTableMethod): Boolean {
         val recipe = CRecipes.getClayWorkTableRecipe(input, method) ?: return false
-        if (method == ClayWorkTableMethod.ROLLING_PIN && itemHandler.getStackInSlot(1).item !== getItem("clay_rolling_pin")) {
-            return false
-        }
-        if ((method == ClayWorkTableMethod.CUT_PLATE || method == ClayWorkTableMethod.CUT)
-            && !(itemHandler.getStackInSlot(1).item === getItem("clay_slicer")
-                    || itemHandler.getStackInSlot(1).item === getItem("clay_spatula"))
-        ) {
-            return false
-        }
-        if (method == ClayWorkTableMethod.CUT_DISC && itemHandler.getStackInSlot(1).item !== getItem("clay_spatula")) {
-            return false
-        }
+        if (!method.isValidTool(currentTool)) return false
 
         val outputSlot = itemHandler.getStackInSlot(2)
         val secondaryOutputSlot = itemHandler.getStackInSlot(3)
