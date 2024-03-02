@@ -19,10 +19,7 @@ import net.minecraft.world.World
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockMachine(
     val name: String,
-    /**
-     * min and max tier of the machine (inclusive)
-     */
-    val tierRange: IntRange,
+    val tiers: IntArray,
     /**
      * receives tier and returns TileEntity
      */
@@ -32,7 +29,7 @@ class BlockMachine(
     /**
      * represents the tier of this block. saved in metadata.
      */
-    private val tierProperty: PropertyInteger = PropertyInteger.create("tier", tierRange.first, tierRange.last)
+    private val tierProperty: PropertyInteger = PropertyInteger.create("tier", tiers.min(), tiers.max())
 
     init {
         setCreativeTab(Clayium.creativeTab)
@@ -40,7 +37,7 @@ class BlockMachine(
         setHardness(5.0f)
         setHarvestLevel("pickaxe", 1)
 
-        this.defaultState = this.blockState.baseState.withProperty(tierProperty, tierRange.first).withProperty(IS_PIPE, false)
+        this.defaultState = this.blockState.baseState.withProperty(tierProperty, tiers.min()).withProperty(IS_PIPE, false)
     }
 
     override fun hasTileEntity(state: IBlockState) = true
