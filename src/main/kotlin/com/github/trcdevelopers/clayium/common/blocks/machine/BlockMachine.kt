@@ -43,6 +43,9 @@ class BlockMachine(
         this.defaultState = this.blockState.baseState.withProperty(tierProperty, tierRange.first).withProperty(IS_PIPE, false)
     }
 
+    override fun hasTileEntity(state: IBlockState) = true
+    override fun createTileEntity(world: World, state: IBlockState) = tileEntityProvider(state.getValue(tierProperty))
+
     override fun createBlockState(): BlockStateContainer {
         return BlockStateContainer.Builder(this).add(tierProperty, IS_PIPE)
             .build()
