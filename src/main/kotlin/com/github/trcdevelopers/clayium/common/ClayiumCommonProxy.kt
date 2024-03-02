@@ -5,6 +5,7 @@ import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedCl
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
+import com.github.trcdevelopers.clayium.common.blocks.machine.single_single.TileSingleSingle
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
@@ -67,6 +68,7 @@ open class ClayiumCommonProxy {
     open fun registerTileEntities() {
         GameRegistry.registerTileEntity(TileClayWorkTable::class.java, ResourceLocation(Clayium.MOD_ID, "TileClayWorkTable"))
         GameRegistry.registerTileEntity(TileClayBuffer::class.java, ResourceLocation(Clayium.MOD_ID, "TileClayBuffer"))
+        GameRegistry.registerTileEntity(TileSingleSingle::class.java, ResourceLocation(Clayium.MOD_ID, "tile_single_single"))
     }
 
     open fun registerItem(registry: IForgeRegistry<Item>, item: Item) {
