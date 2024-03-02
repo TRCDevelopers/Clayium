@@ -20,8 +20,8 @@ class ContainerSingleSingle(
 
     override fun transferStackInSlot(playerIn: EntityPlayer, index: Int): ItemStack {
         println("clicked: $index")
-        val slot = inventorySlots[index] ?: return ItemStack.EMPTY
-        if (!slot.hasStack) return ItemStack.EMPTY
+        val slot = inventorySlots[index]
+        if (slot == null || !slot.hasStack) return ItemStack.EMPTY
         val slotStack = slot.stack
         val orgStack = slotStack.copy()
 
@@ -29,20 +29,20 @@ class ContainerSingleSingle(
             // player inventory -> container? -> hot bar
             in 0..<27 -> {
                 if (!(mergeItemStack(slotStack, 36, inventorySlots.size, false)
-                            || mergeItemStack(slotStack, 0, 8, false))) {
+                            || mergeItemStack(slotStack, 27, 36, false))) {
                     return ItemStack.EMPTY
                 }
             }
             // hot bar -> container? -> player inventory
             in 27..<36 -> {
                 if (!(mergeItemStack(slotStack, 36, inventorySlots.size, false)
-                            || mergeItemStack(slotStack, 9, 35, false))) {
+                            || mergeItemStack(slotStack, 0, 27, false))) {
                     return ItemStack.EMPTY
                 }
             }
             // container -> hot bar? -> player inventory
             in 36..<inventorySlots.size -> {
-                if (!mergeItemStack(slotStack, 0, 35, false)) {
+                if (!mergeItemStack(slotStack, 0, 35, true)) {
                     return ItemStack.EMPTY
                 }
             }
