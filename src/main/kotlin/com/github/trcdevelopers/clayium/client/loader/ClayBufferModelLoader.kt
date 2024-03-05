@@ -1,8 +1,8 @@
 package com.github.trcdevelopers.clayium.client.loader
 
-import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.client.model.ClayBufferModel
 import com.github.trcdevelopers.clayium.client.model.ClayBufferPipeModel
+import com.github.trcdevelopers.clayium.common.Clayium
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.IResourceManager
 import net.minecraft.util.ResourceLocation
@@ -10,6 +10,13 @@ import net.minecraftforge.client.model.ICustomModelLoader
 import net.minecraftforge.client.model.IModel
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+
+internal fun ModelResourceLocation.getVariantValue(variantName: String): String? {
+    if (!this.toString().contains(variantName)) return null
+    return this.variant.replaceBefore("$variantName=", "")
+        .replaceAfter(",", "")
+        .replace("$variantName=", "").replace(",", "")
+}
 
 @SideOnly(Side.CLIENT)
 object ClayBufferModelLoader : ICustomModelLoader {
