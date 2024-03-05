@@ -1,6 +1,5 @@
 package com.github.trcdevelopers.clayium.client
 
-import com.github.trcdevelopers.clayium.client.loader.CeContainerModelLoader
 import com.github.trcdevelopers.clayium.client.loader.ClayBufferModelLoader
 import com.github.trcdevelopers.clayium.client.tesr.ClayBufferPipeIoRenderer
 import com.github.trcdevelopers.clayium.common.ClayiumCommonProxy
@@ -30,7 +29,6 @@ import net.minecraftforge.registries.IForgeRegistry
 class ClayiumClientProxy : ClayiumCommonProxy() {
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
-        ModelLoaderRegistry.registerLoader(CeContainerModelLoader())
         ModelLoaderRegistry.registerLoader(ClayBufferModelLoader)
         ClientRegistry.bindTileEntitySpecialRenderer(TileClayBuffer::class.java, ClayBufferPipeIoRenderer)
     }
