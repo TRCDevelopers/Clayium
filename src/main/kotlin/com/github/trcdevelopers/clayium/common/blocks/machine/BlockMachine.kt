@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine
 
 import com.github.trcdevelopers.clayium.common.Clayium
+import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedMachineIo
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyBool
@@ -8,7 +9,6 @@ import net.minecraft.block.properties.PropertyInteger
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.Entity
-import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.math.AxisAlignedBB
@@ -17,6 +17,7 @@ import net.minecraft.world.ChunkCache
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraft.world.chunk.Chunk
+import net.minecraftforge.common.property.IExtendedBlockState
 
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockMachine(
@@ -25,13 +26,8 @@ class BlockMachine(
     /**
      * receives tier and returns TileEntity
      */
-    val tileEntityProvider: (Int) -> TileEntity,
+    val tileEntityProvider: (Int) -> TileEntityMachine,
 ) : Block(Material.IRON) {
-
-    /**
-     * represents the tier of this block. saved in metadata.
-     */
-    private val tierProperty: PropertyInteger = PropertyInteger.create("tier", tiers.min(), tiers.max())
 
     init {
         setCreativeTab(Clayium.creativeTab)
@@ -39,23 +35,25 @@ class BlockMachine(
         setHardness(5.0f)
         setHarvestLevel("pickaxe", 1)
 
-        this.defaultState = this.blockState.baseState.withProperty(tierProperty, tiers.min()).withProperty(IS_PIPE, false)
+        this.defaultState = this.blockState.baseState.withProperty(TIER, tiers.min()).withProperty(IS_PIPE, false)
     }
 
     override fun hasTileEntity(state: IBlockState) = true
-    override fun createTileEntity(world: World, state: IBlockState) = tileEntityProvider(state.getValue(tierProperty))
+    override fun createTileEntity(world: World, state: IBlockState) = tileEntityProvider(state.getValue(TIER))
 
     override fun createBlockState(): BlockStateContainer {
-        return BlockStateContainer.Builder(this).add(tierProperty, IS_PIPE)
+        return BlockStateContainer.Builder(this)
+            .add(TIER, IS_PIPE)
+            .add(INPUTS, OUTPUTS)
             .build()
     }
 
     override fun getStateFromMeta(meta: Int): IBlockState {
-        return defaultState.withProperty(tierProperty, meta)
+        return defaultState.withProperty(TIER, meta)
     }
 
     override fun getMetaFromState(state: IBlockState): Int {
-        return state.getValue(tierProperty)
+        return state.getValue(TIER)
     }
 
     override fun getActualState(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): IBlockState {
@@ -69,8 +67,14 @@ class BlockMachine(
     }
 
     override fun getExtendedState(state: IBlockState, world: IBlockAccess, pos: BlockPos): IBlockState {
-        //todo: inputs, outputs, connections
-        return state
+        val ext = state as? IExtendedBlockState ?: return state
+        val te = if (world is ChunkCache) world.getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) else world.getTileEntity(pos)
+
+        return if (te is TileEntityMachine) {
+            ext.withProperty(INPUTS, te.inputs).withProperty(OUTPUTS, te.outputs)
+        } else {
+            ext
+        }
     }
 
     override fun isFullBlock(state: IBlockState) = !state.getValue(IS_PIPE)
@@ -97,8 +101,16 @@ class BlockMachine(
 
     companion object {
         /**
+         * represents the tier of this block. saved in metadata.
+         *
+         * [BlockMachine.createBlockState] is called before initialization of [BlockMachine]. so it must be static.
+         */
+        private val TIER: PropertyInteger = PropertyInteger.create("tier", 0, 13)
+        /**
          * this property is not saved in metadata, but in tile entity and used in [Block.getActualState]
          */
         val IS_PIPE: PropertyBool = PropertyBool.create("is_pipe")
+        val INPUTS = UnlistedMachineIo("inputs")
+        val OUTPUTS = UnlistedMachineIo("outputs")
     }
 }
