@@ -22,4 +22,14 @@ enum class MachineIoMode(
             return entries[id]
         }
     }
+
+    object Input {
+        val BUFFER = listOf(NONE, ALL)
+        val SINGLE = listOf(NONE, ALL, CE)
+    }
+
+    object Output {
+        val BUFFER = listOf(NONE, ALL)
+        val SINGLE = listOf(NONE, ALL)
+    }
 }

@@ -5,6 +5,9 @@ import com.github.trcdevelopers.clayium.common.Clayium.Companion.MOD_ID
 import com.github.trcdevelopers.clayium.common.annotation.CBlock
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockEnergizedClay
+import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
+import com.github.trcdevelopers.clayium.common.blocks.machine.TileEntityMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.BlockClayBuffer
 import com.github.trcdevelopers.clayium.common.blocks.machine.single_single.BlockSingleSingle
 import com.github.trcdevelopers.clayium.common.blocks.machine.single_single.TileSingleSingle
@@ -58,6 +61,9 @@ object ClayiumBlocks {
             }
         blocks.putAll(BlockClayBuffer.createBlocks())
         blocks["single_single"] = BlockSingleSingle(6, ::TileSingleSingle).setRegistryName("single_single")
+        blocks["test_machine"] = BlockMachine("test_machine", intArrayOf(1, 2, 3, 4)) { tier ->
+            TileEntityMachine.create(tier, MachineIoMode.Input.SINGLE, MachineIoMode.Output.SINGLE)
+        }
         blocks.values.forEach(event.registry::register)
     }
 

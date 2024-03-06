@@ -4,6 +4,8 @@ import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.Clayium.Companion.MOD_ID
 import com.github.trcdevelopers.clayium.common.annotation.CItem
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks.allBlocks
+import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
+import com.github.trcdevelopers.clayium.common.blocks.machine.ItemBlockMachine
 import com.google.common.reflect.ClassPath
 import net.minecraft.block.Block
 import net.minecraft.client.Minecraft
@@ -63,6 +65,13 @@ object ClayiumItems {
         registerItem(Item().setMaxStackSize(1), "clay_piping_tool", side, event)
         registerItem(Item().setMaxStackSize(1), "clay_io_configurator", side, event)
         allBlocks.forEach { (registryName: String, block: Block) ->
+            if (block is BlockMachine) {
+                event.registry.register(ItemBlockMachine(block).setRegistryName(registryName))
+                if (side.isClient) {
+                    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, ModelResourceLocation(ResourceLocation(MOD_ID, registryName), "inventory"))
+                }
+                return@forEach
+            }
             event.registry.register(ItemBlock(block).setRegistryName(registryName))
             if (side.isClient) {
                 ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, ModelResourceLocation(ResourceLocation(MOD_ID, registryName), "inventory"))
