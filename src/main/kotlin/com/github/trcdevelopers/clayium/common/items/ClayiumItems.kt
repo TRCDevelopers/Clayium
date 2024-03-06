@@ -66,10 +66,8 @@ object ClayiumItems {
         registerItem(Item().setMaxStackSize(1), "clay_io_configurator", side, event)
         allBlocks.forEach { (registryName: String, block: Block) ->
             if (block is BlockMachine) {
-                event.registry.register(ItemBlockMachine(block).setRegistryName(registryName))
-                if (side.isClient) {
-                    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, ModelResourceLocation(ResourceLocation(MOD_ID, registryName), "inventory"))
-                }
+                event.registry.register(ItemBlockMachine(block))
+                (Item.getItemFromBlock(block) as ItemBlockMachine).registerModels()
                 return@forEach
             }
             event.registry.register(ItemBlock(block).setRegistryName(registryName))
