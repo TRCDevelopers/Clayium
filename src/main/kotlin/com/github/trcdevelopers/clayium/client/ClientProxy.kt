@@ -2,7 +2,7 @@ package com.github.trcdevelopers.clayium.client
 
 import com.github.trcdevelopers.clayium.client.loader.ClayBufferModelLoader
 import com.github.trcdevelopers.clayium.client.tesr.ClayBufferPipeIoRenderer
-import com.github.trcdevelopers.clayium.common.ClayiumCommonProxy
+import com.github.trcdevelopers.clayium.common.CommonProxy
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
@@ -26,7 +26,7 @@ import net.minecraftforge.registries.IForgeRegistry
 
 @Suppress("unused")
 @SideOnly(Side.CLIENT)
-class ClayiumClientProxy : ClayiumCommonProxy() {
+class ClientProxy : CommonProxy() {
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
         ModelLoaderRegistry.registerLoader(ClayBufferModelLoader)

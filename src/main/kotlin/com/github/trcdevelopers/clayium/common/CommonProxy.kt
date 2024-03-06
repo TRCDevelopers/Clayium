@@ -27,7 +27,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.registries.IForgeRegistry
 
-open class ClayiumCommonProxy {
+open class CommonProxy {
     open fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(Clayium.proxy)
         this.registerTileEntities()

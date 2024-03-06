@@ -1,8 +1,6 @@
 package com.github.trcdevelopers.clayium.common
 
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
-import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.init.Items
 import net.minecraft.item.Item
@@ -66,7 +64,7 @@ class Clayium {
         @Mod.Instance(MOD_ID)
         lateinit var INSTANCE: Clayium
 
-        @SidedProxy(clientSide = "com.github.trcdevelopers.clayium.client.ClayiumClientProxy", serverSide = "com.github.trcdevelopers.clayium.common.ClayiumCommonProxy")
-        lateinit var proxy: ClayiumCommonProxy
+        @SidedProxy(clientSide = "com.github.trcdevelopers.clayium.client.ClientProxy", serverSide = "com.github.trcdevelopers.clayium.common.CommonProxy")
+        lateinit var proxy: CommonProxy
     }
 }
