@@ -29,7 +29,7 @@ class BlockCompressedClay : Block(Material.GROUND) {
         lightValue = 0
         setHarvestLevel("shovel", 0)
 
-        this.defaultState = this.blockState.baseState.withProperty(TIER, 0)
+        this.defaultState = this.blockState.baseState.withProperty(META, 0)
     }
 
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
@@ -39,15 +39,15 @@ class BlockCompressedClay : Block(Material.GROUND) {
     }
 
     override fun createBlockState(): BlockStateContainer {
-        return BlockStateContainer.Builder(this).add(TIER).build()
+        return BlockStateContainer.Builder(this).add(META).build()
     }
 
     override fun getMetaFromState(state: IBlockState): Int {
-        return state.getValue(TIER)
+        return state.getValue(META)
     }
 
     override fun getStateFromMeta(meta: Int): IBlockState {
-        return this.defaultState.withProperty(TIER, meta)
+        return this.defaultState.withProperty(META, meta)
     }
 
     override fun getStateForPlacement(world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand): IBlockState {
@@ -59,6 +59,6 @@ class BlockCompressedClay : Block(Material.GROUND) {
     }
 
     companion object {
-        val TIER: IProperty<Int> = PropertyInteger.create("tier", 0, 3)
+        val META: IProperty<Int> = PropertyInteger.create("meta", 0, 3)
     }
 }

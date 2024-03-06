@@ -48,9 +48,9 @@ class ItemBlockEnergizedClay(block: BlockEnergizedClay) : ItemBlock(block), IEne
 
     @SideOnly(Side.CLIENT)
     fun registerModels() {
-        for (i in 4..12) {
-            ModelLoader.setCustomModelResourceLocation(this, i - 4,
-                ModelResourceLocation("${Clayium.MOD_ID}:compressed_clay_$i", "inventory")
+        for (i in 0..8) {
+            ModelLoader.setCustomModelResourceLocation(this, i,
+                ModelResourceLocation("${Clayium.MOD_ID}:energized_clay", "meta=${i}")
             )
         }
     }
