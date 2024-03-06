@@ -1,7 +1,7 @@
 {
   "parent": "clayium:block/machine",
   "textures": {
-    "input": "clayium:blocks/import",
+    "face": "clayium:blocks/import",
     "base": "clayium:blocks/machinehull_tier9"
   }
 }
