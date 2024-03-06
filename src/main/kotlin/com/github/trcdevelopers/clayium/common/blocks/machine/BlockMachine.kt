@@ -3,6 +3,7 @@ package com.github.trcdevelopers.clayium.common.blocks.machine
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedMachineIo
 import net.minecraft.block.Block
+import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.properties.PropertyInteger
@@ -40,6 +41,7 @@ class BlockMachine(
         setRegistryName(Clayium.MOD_ID, name)
         setHardness(5.0f)
         setHarvestLevel("pickaxe", 1)
+        setSoundType(SoundType.METAL)
 
         this.defaultState = this.blockState.baseState.withProperty(TIER, tiers.min()).withProperty(IS_PIPE, false)
     }
@@ -86,6 +88,10 @@ class BlockMachine(
     override fun getStateForPlacement(world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand): IBlockState {
         if (meta !in tiers) { return defaultState }
         return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand)
+    }
+
+    override fun damageDropped(state: IBlockState): Int {
+        return state.getValue(TIER)
     }
 
     override fun isFullBlock(state: IBlockState) = !state.getValue(IS_PIPE)
