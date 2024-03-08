@@ -76,7 +76,7 @@ class BlockMachine(
     }
 
     override fun getStateForPlacement(world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand): IBlockState {
-        return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand)
+        return defaultState.withProperty(FACING, placer.horizontalFacing.opposite)
     }
 
     override fun isFullBlock(state: IBlockState) = !state.getValue(IS_PIPE)
