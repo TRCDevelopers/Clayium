@@ -6,18 +6,15 @@ import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyBool
-import net.minecraft.block.properties.PropertyInteger
+import net.minecraft.block.properties.PropertyDirection
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
-import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
-import net.minecraft.item.ItemStack
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
-import net.minecraft.util.NonNullList
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.ChunkCache
@@ -29,7 +26,7 @@ import net.minecraftforge.common.property.IExtendedBlockState
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockMachine(
     val name: String,
-    val tiers: IntArray,
+    val tier: Int,
     /**
      * receives tier and returns TileEntity
      */
@@ -43,35 +40,28 @@ class BlockMachine(
         setHarvestLevel("pickaxe", 1)
         setSoundType(SoundType.METAL)
 
-        this.defaultState = this.blockState.baseState.withProperty(TIER, tiers.min()).withProperty(IS_PIPE, false)
+        this.defaultState = this.blockState.baseState.withProperty(IS_PIPE, false).withProperty(FACING, EnumFacing.NORTH)
     }
 
     override fun hasTileEntity(state: IBlockState) = true
-    override fun createTileEntity(world: World, state: IBlockState) = tileEntityProvider(state.getValue(TIER))
+    override fun createTileEntity(world: World, state: IBlockState) = tileEntityProvider(tier)
 
     override fun createBlockState(): BlockStateContainer {
         return BlockStateContainer.Builder(this)
-            .add(TIER, IS_PIPE)
+            .add(IS_PIPE, FACING)
             .add(INPUTS, OUTPUTS)
             .build()
     }
 
     override fun getStateFromMeta(meta: Int): IBlockState {
-        return defaultState.withProperty(TIER, meta)
+        val isPipe = meta >= 4
+        val facing = EnumFacing.byHorizontalIndex(meta % 4)
+        return defaultState.withProperty(IS_PIPE, isPipe).withProperty(FACING, facing)
     }
 
     override fun getMetaFromState(state: IBlockState): Int {
-        return state.getValue(TIER)
-    }
-
-    override fun getActualState(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): IBlockState {
-        val te = if (worldIn is ChunkCache) worldIn.getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) else worldIn.getTileEntity(pos)
-
-        return if (te is TileEntityMachine) {
-            state.withProperty(IS_PIPE, te.isPipe)
-        } else {
-            state
-        }
+        val offset = if (state.getValue(IS_PIPE)) 4 else 0
+        return state.getValue(FACING).horizontalIndex + offset
     }
 
     override fun getExtendedState(state: IBlockState, world: IBlockAccess, pos: BlockPos): IBlockState {
@@ -86,12 +76,7 @@ class BlockMachine(
     }
 
     override fun getStateForPlacement(world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand): IBlockState {
-        if (meta !in tiers) { return defaultState }
         return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand)
-    }
-
-    override fun damageDropped(state: IBlockState): Int {
-        return state.getValue(TIER)
     }
 
     override fun isFullBlock(state: IBlockState) = !state.getValue(IS_PIPE)
@@ -116,24 +101,14 @@ class BlockMachine(
         return false
     }
 
-    override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
-        for (tier in tiers) {
-            items.add(ItemStack(this, 1, tier))
-        }
-    }
-
     companion object {
-        /**
-         * represents the tier of this block. saved in metadata.
-         *
-         * [BlockMachine.createBlockState] is called before initialization of [BlockMachine]. so it must be static.
-         */
-        private val TIER: PropertyInteger = PropertyInteger.create("tier", 0, 13)
         /**
          * this property is not saved in metadata, but in tile entity and used in [Block.getActualState]
          */
         val IS_PIPE: PropertyBool = PropertyBool.create("is_pipe")
+        val FACING: PropertyDirection = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL)
         val INPUTS = UnlistedMachineIo("inputs")
         val OUTPUTS = UnlistedMachineIo("outputs")
     }
+
 }

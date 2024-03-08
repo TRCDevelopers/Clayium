@@ -58,7 +58,7 @@ object ClayiumBlocks {
                 }
             }
         blocks.putAll(BlockClayBuffer.createBlocks())
-        blocks["bending_machine"] = BlockMachine("bending_machine", intArrayOf(1, 2, 3, 4)) { tier ->
+        blocks["bending_machine"] = BlockMachine("bending_machine", 0) { tier ->
             TileEntityMachine.create(tier, MachineIoMode.Input.SINGLE, MachineIoMode.Output.SINGLE)
         }
         blocks.values.forEach(event.registry::register)
