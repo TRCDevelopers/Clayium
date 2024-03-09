@@ -5,9 +5,6 @@ import com.github.trcdevelopers.clayium.common.Clayium.Companion.MOD_ID
 import com.github.trcdevelopers.clayium.common.annotation.CBlock
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockEnergizedClay
-import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
-import com.github.trcdevelopers.clayium.common.blocks.machine.TileEntityMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.BlockClayBuffer
 import com.google.common.reflect.ClassPath
 import net.minecraft.block.Block
@@ -58,9 +55,6 @@ object ClayiumBlocks {
                 }
             }
         blocks.putAll(BlockClayBuffer.createBlocks())
-        blocks["bending_machine"] = BlockMachine("bending_machine", 0) { tier ->
-            TileEntityMachine.create(tier, MachineIoMode.Input.SINGLE, MachineIoMode.Output.SINGLE)
-        }
         blocks.values.forEach(event.registry::register)
     }
 

@@ -3,6 +3,8 @@ package com.github.trcdevelopers.clayium.common
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
+import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
 import com.github.trcdevelopers.clayium.common.blocks.machine.TileEntityMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
@@ -14,6 +16,7 @@ import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import com.github.trcdevelopers.clayium.common.worldgen.ClayOreGenerator
 import net.minecraft.block.Block
 import net.minecraft.item.Item
+import net.minecraft.item.ItemBlock
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.RegistryEvent
@@ -43,6 +46,20 @@ open class CommonProxy {
     }
 
     @SubscribeEvent
+    open fun registerBlocks(event: RegistryEvent.Register<Block>) {
+        ClayiumBlocks.registerBlocks(event, Side.SERVER)
+
+        event.registry.register(ClayiumBlocks.COMPRESSED_CLAY)
+        event.registry.register(ClayiumBlocks.ENERGIZED_CLAY)
+
+        for (machines in MachineBlocks.ALL_MACHINES) {
+            for (machine in machines.value) {
+                event.registry.register(machine.value)
+            }
+        }
+    }
+
+    @SubscribeEvent
     open fun registerItems(event: RegistryEvent.Register<Item>) {
         val registry = event.registry
 
@@ -55,14 +72,23 @@ open class CommonProxy {
         ClayiumItems.registerItems(event, Side.SERVER)
         registry.register(ItemBlockCompressedClay(ClayiumBlocks.COMPRESSED_CLAY))
         registry.register(ItemBlockEnergizedClay(ClayiumBlocks.ENERGIZED_CLAY))
+
+        for (machines in MachineBlocks.ALL_MACHINES) {
+            val machineName = machines.key
+            for (machine in machines.value) {
+                registerMachineItemBlock(registry, machineName, machine.key, machine.value)
+            }
+        }
     }
 
-    @SubscribeEvent
-    open fun registerBlocks(event: RegistryEvent.Register<Block>) {
-        ClayiumBlocks.registerBlocks(event, Side.SERVER)
+    open fun registerItem(registry: IForgeRegistry<Item>, item: Item) {
+        registry.register(item)
+    }
 
-        event.registry.register(ClayiumBlocks.COMPRESSED_CLAY)
-        event.registry.register(ClayiumBlocks.ENERGIZED_CLAY)
+    open fun registerMachineItemBlock(registry: IForgeRegistry<Item>, machineName: String, tier: Int, block: BlockMachine): Item {
+        val itemBlock = ItemBlock(block).setRegistryName(block.registryName)
+        registry.register(itemBlock)
+        return itemBlock
     }
 
     open fun registerTileEntities() {
@@ -71,10 +97,7 @@ open class CommonProxy {
         GameRegistry.registerTileEntity(TileEntityMachine::class.java, ResourceLocation(Clayium.MOD_ID, "TileEntityMachine"))
     }
 
-    open fun registerItem(registry: IForgeRegistry<Item>, item: Item) {
-        registry.register(item)
-    }
-
+    // todo: move this to item
     @SubscribeEvent
     fun onBlockRightClicked(e: PlayerInteractEvent.RightClickBlock) {
         val world = e.world

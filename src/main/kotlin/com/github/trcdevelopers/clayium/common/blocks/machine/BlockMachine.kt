@@ -25,7 +25,6 @@ import net.minecraftforge.common.property.IExtendedBlockState
 
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockMachine(
-    val name: String,
     val tier: Int,
     /**
      * receives tier and returns TileEntity
@@ -35,7 +34,6 @@ class BlockMachine(
 
     init {
         setCreativeTab(Clayium.creativeTab)
-        setRegistryName(Clayium.MOD_ID, name)
         setHardness(5.0f)
         setHarvestLevel("pickaxe", 1)
         setSoundType(SoundType.METAL)
