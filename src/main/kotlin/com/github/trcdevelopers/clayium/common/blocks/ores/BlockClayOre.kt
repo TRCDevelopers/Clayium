@@ -1,7 +1,5 @@
 package com.github.trcdevelopers.clayium.common.blocks.ores
 
-import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.annotation.CBlock
 import com.github.trcdevelopers.clayium.common.items.ItemClayPickaxe
 import com.github.trcdevelopers.clayium.common.items.ItemClayShovel
 import net.minecraft.block.Block
@@ -22,19 +20,14 @@ import net.minecraft.world.World
 import net.minecraftforge.event.ForgeEventFactory
 import java.util.Random
 
-@CBlock(registryName = "clay_ore")
-class BlockClayOre(material: Material) : Block(material) {
+class BlockClayOre : Block(Material.ROCK) {
     init {
-        creativeTab = Clayium.creativeTab
-        soundType = SoundType.STONE
+        setSoundType(SoundType.STONE)
         setLightLevel(0f)
-        setHarvestLevel("pickaxe", 1)
         setResistance(5f)
         setHardness(3f)
+        setHarvestLevel("pickaxe", 1)
     }
-
-    @Suppress("unused")
-    constructor() : this(Material.ROCK)
 
     override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item {
         return Items.CLAY_BALL
@@ -56,11 +49,7 @@ class BlockClayOre(material: Material) : Block(material) {
     }
 
     override fun canHarvestBlock(world: IBlockAccess, pos: BlockPos, player: EntityPlayer): Boolean {
-        return if (player.heldItemMainhand.item is ItemClayShovel) true else super.canHarvestBlock(
-            world,
-            pos,
-            player
-        )
+        return (player.heldItemMainhand.item is ItemClayShovel) || super.canHarvestBlock(world, pos, player)
     }
 
     override fun harvestBlock(worldIn: World, player: EntityPlayer, pos: BlockPos, state: IBlockState, te: TileEntity?, stack: ItemStack) {

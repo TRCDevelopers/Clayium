@@ -31,6 +31,7 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.registries.IForgeRegistry
 
 open class CommonProxy {
+
     open fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(Clayium.proxy)
         this.registerTileEntities()
@@ -46,22 +47,34 @@ open class CommonProxy {
     }
 
     @SubscribeEvent
-    open fun registerBlocks(event: RegistryEvent.Register<Block>) {
-        ClayiumBlocks.registerBlocks(event, Side.SERVER)
+    fun registerBlocks(event: RegistryEvent.Register<Block>) {
+        val registry: IForgeRegistry<Block> = event.registry
 
-        event.registry.register(ClayiumBlocks.COMPRESSED_CLAY)
-        event.registry.register(ClayiumBlocks.ENERGIZED_CLAY)
+        registerBlock(registry, ClayiumBlocks.CLAY_WORK_TABLE)
+
+        registerBlock(registry, ClayiumBlocks.COMPRESSED_CLAY)
+        registerBlock(registry, ClayiumBlocks.ENERGIZED_CLAY)
+
+        registerBlock(registry, ClayiumBlocks.CLAY_ORE)
+        registerBlock(registry, ClayiumBlocks.DENSE_CLAY_ORE)
+        registerBlock(registry, ClayiumBlocks.LARGE_DENSE_CLAY_ORE)
 
         for (machines in MachineBlocks.ALL_MACHINES) {
             for (machine in machines.value) {
-                event.registry.register(machine.value)
+                registerBlock(registry, machine.value)
             }
         }
+    }
+
+    open fun registerBlock(registry: IForgeRegistry<Block>, block: Block) {
+        registry.register(block)
     }
 
     @SubscribeEvent
     open fun registerItems(event: RegistryEvent.Register<Item>) {
         val registry = event.registry
+
+        ClayiumItems.registerItems(event, Side.SERVER)
 
         for (orePrefix in OrePrefix.entries) {
             val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
@@ -69,9 +82,14 @@ open class CommonProxy {
             metaPrefixItem.registerSubItems()
         }
 
-        ClayiumItems.registerItems(event, Side.SERVER)
-        registry.register(ItemBlockCompressedClay(ClayiumBlocks.COMPRESSED_CLAY))
-        registry.register(ItemBlockEnergizedClay(ClayiumBlocks.ENERGIZED_CLAY))
+        registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ::ItemBlock))
+
+        registry.register(createItemBlock(ClayiumBlocks.COMPRESSED_CLAY, ::ItemBlockCompressedClay))
+        registry.register(createItemBlock(ClayiumBlocks.ENERGIZED_CLAY, ::ItemBlockEnergizedClay))
+
+        registry.register(createItemBlock(ClayiumBlocks.CLAY_ORE, ::ItemBlock))
+        registry.register(createItemBlock(ClayiumBlocks.DENSE_CLAY_ORE, ::ItemBlock))
+        registry.register(createItemBlock(ClayiumBlocks.LARGE_DENSE_CLAY_ORE, ::ItemBlock))
 
         for (machines in MachineBlocks.ALL_MACHINES) {
             val machineName = machines.key
@@ -83,6 +101,12 @@ open class CommonProxy {
 
     open fun registerItem(registry: IForgeRegistry<Item>, item: Item) {
         registry.register(item)
+    }
+
+    open fun <T: Block> createItemBlock(block: T, producer: (T) -> ItemBlock): ItemBlock {
+        return producer(block).apply {
+            registryName = block.registryName ?: throw IllegalArgumentException("Block ${block.translationKey} has no registry name")
+        }
     }
 
     open fun registerMachineItemBlock(registry: IForgeRegistry<Item>, machineName: String, tier: Int, block: BlockMachine): Item {

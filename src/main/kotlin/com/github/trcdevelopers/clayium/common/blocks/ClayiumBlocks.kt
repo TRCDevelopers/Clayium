@@ -2,75 +2,42 @@ package com.github.trcdevelopers.clayium.common.blocks
 
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.Clayium.Companion.MOD_ID
-import com.github.trcdevelopers.clayium.common.annotation.CBlock
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockEnergizedClay
-import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.BlockClayBuffer
-import com.google.common.reflect.ClassPath
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
+import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.BlockClayWorkTable
+import com.github.trcdevelopers.clayium.common.blocks.ores.BlockClayOre
+import com.github.trcdevelopers.clayium.common.blocks.ores.BlockDenseClayOre
+import com.google.common.collect.ImmutableMap
 import net.minecraft.block.Block
-import net.minecraft.util.ResourceLocation
-import net.minecraftforge.event.RegistryEvent
-import net.minecraftforge.fml.relauncher.Side
-import java.lang.reflect.Constructor
-import java.util.Collections
 
+/**
+ * holds non-functional blocks and BlockClayWorkTable.
+ * for functional blocks, see [MachineBlocks]
+ */
 object ClayiumBlocks {
 
-    val COMPRESSED_CLAY = BlockCompressedClay()
-    val ENERGIZED_CLAY = BlockEnergizedClay()
+    val CLAY_WORK_TABLE = createBlock("clay_work_table", BlockClayWorkTable())
+
+    val COMPRESSED_CLAY = createBlock("compressed_clay", BlockCompressedClay())
+    val ENERGIZED_CLAY = createBlock("energized_clay", BlockEnergizedClay())
+
+    val CLAY_ORE = createBlock("clay_ore", BlockClayOre())
+    val DENSE_CLAY_ORE = createBlock("dense_clay_ore", BlockDenseClayOre())
+    val LARGE_DENSE_CLAY_ORE = createBlock("large_dense_clay_ore", BlockDenseClayOre())
 
     private val blocks: MutableMap<String, Block> = HashMap()
-    @JvmStatic
-    val allBlocks: Map<String, Block>
-        get() = Collections.unmodifiableMap(blocks)
+    val allBlocks: Map<String, Block> get() = ImmutableMap.copyOf(blocks)
+
+    private fun <T: Block> createBlock(key: String, block: T): T {
+        return block.apply {
+            setCreativeTab(Clayium.creativeTab)
+            setRegistryName(MOD_ID, key)
+            setTranslationKey("$MOD_ID.$key")
+        }
+    }
 
     fun getBlock(registryName: String): Block? {
         return blocks[registryName]
-    }
-
-    fun registerBlocks(event: RegistryEvent.Register<Block>, side: Side) {
-        //参考 https://blog1.mammb.com/entry/2015/03/31/001620
-        val classLoader = Thread.currentThread().contextClassLoader
-        ClassPath.from(classLoader).getTopLevelClassesRecursive("com.github.trcdevelopers.clayium.common.blocks")
-            .map(ClassPath.ClassInfo::load)
-            .forEach { clazz ->
-                val cBlock = clazz.getAnnotation(CBlock::class.java) ?: return@forEach
-
-                if (cBlock.tiers.isEmpty()) {
-                    val registryName = cBlock.registryName
-                    registerBlock(clazz.newInstance() as Block, registryName)
-                    return@forEach
-                }
-
-                val tieredConstructor = getTieredConstructor(clazz) ?: return@forEach
-                if (cBlock.tiers.size == 1) {
-                    val registryName = cBlock.registryName
-                    registerBlock(tieredConstructor.newInstance(cBlock.tiers[0]) as Block, registryName)
-                    return@forEach
-                }
-
-                cBlock.tiers.forEach { tier ->
-                    val registryName = cBlock.registryName + "_tier$tier"
-                    registerBlock(tieredConstructor.newInstance(tier) as Block, registryName)
-                }
-            }
-        blocks.putAll(BlockClayBuffer.createBlocks())
-        blocks.values.forEach(event.registry::register)
-    }
-
-    private fun registerBlock(block: Block, registryName: String) {
-        block.creativeTab = Clayium.creativeTab
-        block.registryName = ResourceLocation(MOD_ID, registryName)
-        block.translationKey = "$MOD_ID.$registryName"
-        blocks[registryName] = block
-    }
-
-    private fun getTieredConstructor(clazz: Class<*>): Constructor<*>? {
-        return try {
-            clazz.getConstructor(Int::class.java)
-        } catch (e: NoSuchMethodException) {
-            Clayium.LOGGER.warn("Class ${clazz.name} does not have a constructor with Int parameter. This will be ignored.")
-            null
-        }
     }
 }

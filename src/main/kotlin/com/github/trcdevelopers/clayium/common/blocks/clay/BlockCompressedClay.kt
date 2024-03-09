@@ -1,6 +1,5 @@
 package com.github.trcdevelopers.clayium.common.blocks.clay
 
-import com.github.trcdevelopers.clayium.common.Clayium
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -14,19 +13,15 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.NonNullList
-import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 class BlockCompressedClay : Block(Material.GROUND) {
 
     init {
-        creativeTab = Clayium.creativeTab
-        translationKey = "${Clayium.MOD_ID}.compressed_clay"
-        registryName = ResourceLocation(Clayium.MOD_ID, "compressed_clay")
-        blockHardness = 0.6f
-        soundType = SoundType.GROUND
-        lightValue = 0
+        setSoundType(SoundType.GROUND)
+        setLightLevel(0f)
+        setHardness(0.6f)
         setHarvestLevel("shovel", 0)
 
         this.defaultState = this.blockState.baseState.withProperty(META, 0)

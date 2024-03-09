@@ -2,7 +2,6 @@ package com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable
 
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
-import com.github.trcdevelopers.clayium.common.annotation.CBlock
 import com.github.trcdevelopers.clayium.common.interfaces.ITiered
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.block.BlockContainer
@@ -20,8 +19,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.items.CapabilityItemHandler
 
-@CBlock(registryName = "clay_work_table")
-class ClayWorkTable : BlockContainer(Material.ROCK), ITiered {
+class BlockClayWorkTable : BlockContainer(Material.ROCK), ITiered {
     override val tier: Int
         get() = 0
 
