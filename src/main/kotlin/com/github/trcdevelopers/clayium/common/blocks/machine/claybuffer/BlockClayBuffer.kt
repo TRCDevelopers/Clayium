@@ -1,7 +1,6 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer
 
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.Clayium.Companion.MOD_ID
 import com.github.trcdevelopers.clayium.common.GuiHandler
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
@@ -26,7 +25,6 @@ import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
-import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.ChunkCache
@@ -40,15 +38,12 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 
-class BlockClayBuffer private constructor(
+@Suppress("OVERRIDE_DEPRECATION")
+class BlockClayBuffer(
     val tier: Int,
-    registryName: String
 ) : BlockContainer(Material.IRON), IShiftRightClickable {
 
     init {
-        this.creativeTab = Clayium.creativeTab
-        this.translationKey = "$MOD_ID.$registryName"
-        this.registryName = ResourceLocation(MOD_ID, registryName)
         this.blockSoundType = SoundType.METAL
         this.setHardness(5.0f)
         this.setResistance(10.0f)
@@ -220,6 +215,7 @@ class BlockClayBuffer private constructor(
         }
     }
 
+    @Suppress("DEPRECATION")
     override fun addCollisionBoxToList(
         state: IBlockState, worldIn: World, pos: BlockPos,
         entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?,
@@ -264,14 +260,5 @@ class BlockClayBuffer private constructor(
         val INPUTS: IUnlistedProperty<BooleanArray> = UnlistedBooleanArray("input_conditions")
         val OUTPUTS: IUnlistedProperty<BooleanArray> = UnlistedBooleanArray("output_conditions")
         val CONNECTIONS: IUnlistedProperty<BooleanArray> = UnlistedBooleanArray("connections")
-
-        fun createBlocks(): Map<String, Block> {
-            val blocks: MutableMap<String, Block> = HashMap()
-            for (tier in 4..13) {
-                val registryName = "clay_buffer_tier$tier"
-                blocks[registryName] = BlockClayBuffer(tier, registryName)
-            }
-            return blocks
-        }
     }
 }

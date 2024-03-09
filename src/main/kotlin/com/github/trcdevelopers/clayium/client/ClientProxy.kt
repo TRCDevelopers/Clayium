@@ -69,6 +69,7 @@ class ClientProxy : CommonProxy() {
         registry.register(ItemBlockEnergizedClay(ClayiumBlocks.ENERGIZED_CLAY).apply { registerModels() })
 
         registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ::ItemBlock))
+        ClayiumBlocks.BUFFER.values.forEach { registry.register(createItemBlock(it, ::ItemBlock)) }
         registry.register(createItemBlock(ClayiumBlocks.CLAY_ORE, ::ItemBlock))
         registry.register(createItemBlock(ClayiumBlocks.DENSE_CLAY_ORE, ::ItemBlock))
         registry.register(createItemBlock(ClayiumBlocks.LARGE_DENSE_CLAY_ORE, ::ItemBlock))
