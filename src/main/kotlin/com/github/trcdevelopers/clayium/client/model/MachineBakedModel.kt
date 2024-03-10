@@ -33,12 +33,10 @@ class MachineBakedModel(
     private val machineHull = bakedTextureGetter.apply(machineHullLocation)
     private val face = bakedTextureGetter.apply(faceLocation)
     private val inputTextures: List<TextureAtlasSprite?> = MachineIoMode.entries.map {
-        if (it == NONE) return@map null
-        bakedTextureGetter.apply(getInputLocation(it))
+        bakedTextureGetter.apply(getInputLocation(it) ?: return@map null)
     }
     private val outputTextures: List<TextureAtlasSprite?> = MachineIoMode.entries.map {
-        if (it == NONE || it == CE) return@map null
-        bakedTextureGetter.apply(getOutputLocation(it))
+        bakedTextureGetter.apply(getOutputLocation(it) ?: return@map null)
     }
 
     private val machineHullQuads = EnumFacing.VALUES.map {
@@ -103,23 +101,22 @@ class MachineBakedModel(
             )
         }
 
-        private fun getInputLocation(mode: MachineIoMode): ResourceLocation {
+        private fun getInputLocation(mode: MachineIoMode): ResourceLocation? {
             return when (mode) {
                 SLOT_1 -> ResourceLocation("clayium:blocks/import_1")
                 SLOT_2 -> ResourceLocation("clayium:blocks/import_2")
                 ALL -> ResourceLocation("clayium:blocks/import")
                 CE -> ResourceLocation("clayium:blocks/import_energy")
-                NONE -> throw IllegalArgumentException("No texture for mode NONE")
+                NONE -> null
             }
         }
 
-        private fun getOutputLocation(mode: MachineIoMode): ResourceLocation {
+        private fun getOutputLocation(mode: MachineIoMode): ResourceLocation? {
             return when (mode) {
                 SLOT_1 -> ResourceLocation("clayium:blocks/export_1")
                 SLOT_2 -> ResourceLocation("clayium:blocks/export_2")
                 ALL -> ResourceLocation("clayium:blocks/export")
-                CE -> throw IllegalArgumentException("Export CE is invalid")
-                NONE -> throw IllegalArgumentException("No texture for mode NONE")
+                CE, NONE -> null
             }
         }
     }
