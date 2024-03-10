@@ -1,0 +1,5 @@
+<root>
+    <item name='net.minecraft.util.EnumFacing net.minecraft.util.EnumFacing byName(java.lang.String) 0'>
+        <annotation name='javax.annotation.Nullable'/>
+    </item>
+</root>
