@@ -2,6 +2,7 @@ package com.github.trcdevelopers.clayium.common.items
 
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.annotation.CItem
+import com.github.trcdevelopers.clayium.common.blocks.ores.IClayOreBlock
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.util.ITooltipFlag
@@ -32,16 +33,13 @@ class ItemClayPickaxe : ItemPickaxe(ToolMaterial.STONE) {
     }
 
     override fun getDestroySpeed(stack: ItemStack, state: IBlockState): Float {
-        if (state.block.registryName != null) {
-            val regName = state.block.registryName.toString()
-            if (regName.startsWith("clayium") && regName.endsWith("clay_ore")) {
-                val blockHarvestLevel = state.block.getHarvestLevel(state)
-                val itemHarvestLevel = stack.item.getHarvestLevel(stack, state.block.getHarvestTool(state) ?: "", null, state)
-                return if (blockHarvestLevel <= itemHarvestLevel) {
-                    efficiencyOnClayOre
-                } else {
-                    efficiencyOnClayOre * 100f / 30f
-                }
+        if (state.block is IClayOreBlock) {
+            val blockHarvestLevel = state.block.getHarvestLevel(state)
+            val itemHarvestLevel = stack.item.getHarvestLevel(stack, state.block.getHarvestTool(state) ?: "", null, state)
+            return if (blockHarvestLevel <= itemHarvestLevel) {
+                efficiencyOnClayOre
+            } else {
+                efficiencyOnClayOre * 100f / 30f
             }
         }
         return super.getDestroySpeed(stack, state)

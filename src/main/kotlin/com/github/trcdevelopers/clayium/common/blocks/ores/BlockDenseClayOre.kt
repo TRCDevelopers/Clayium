@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 
-class BlockDenseClayOre : Block(Material.ROCK) {
+class BlockDenseClayOre : Block(Material.ROCK), IClayOreBlock {
     init {
         setSoundType(SoundType.STONE)
         setLightLevel(0f)

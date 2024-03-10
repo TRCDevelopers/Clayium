@@ -20,7 +20,7 @@ import net.minecraft.world.World
 import net.minecraftforge.event.ForgeEventFactory
 import java.util.Random
 
-class BlockClayOre : Block(Material.ROCK) {
+class BlockClayOre : Block(Material.ROCK), IClayOreBlock {
     init {
         setSoundType(SoundType.STONE)
         setLightLevel(0f)

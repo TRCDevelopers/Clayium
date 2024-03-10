@@ -2,6 +2,7 @@ package com.github.trcdevelopers.clayium.common.items
 
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.annotation.CItem
+import com.github.trcdevelopers.clayium.common.blocks.ores.IClayOreBlock
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
@@ -15,22 +16,21 @@ import net.minecraftforge.fml.relauncher.SideOnly
 @CItem(registryName = "clay_shovel")
 class ItemClayShovel : ItemSpade(ToolMaterial.WOOD) {
     private val efficiencyOnClayOre = 12.0f
-    private var efficiencyOnClayBlocks = 32.0f
+    private val efficiencyOnClayBlocks = 32.0f
 
     init {
         creativeTab = Clayium.creativeTab
         maxDamage = 500
     }
 
+    @Suppress("DEPRECATION")
     override fun getDestroySpeed(stack: ItemStack, state: IBlockState): Float {
-        if (state.block.getMaterial(state) === Material.CLAY) {
+        val block = state.block
+        if (block.getMaterial(state) === Material.CLAY) {
             return efficiencyOnClayBlocks
         }
-        if (state.block.registryName != null) {
-            val regName = state.block.registryName.toString()
-            if (regName.startsWith("clayium") && regName.endsWith("clay_ore")) {
-                return efficiencyOnClayOre
-            }
+        if (block is IClayOreBlock) {
+            return efficiencyOnClayOre
         }
         return super.getDestroySpeed(stack, state)
     }
