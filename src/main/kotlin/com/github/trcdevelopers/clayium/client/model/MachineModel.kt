@@ -12,12 +12,13 @@ import java.util.function.Function
 
 class MachineModel(
     private val facing: EnumFacing,
-    private val machineHullTexture: ResourceLocation
+    private val faceLocation: ResourceLocation,
+    private val machineHullLocation: ResourceLocation
 ) : IModel {
 
     override fun getTextures(): Collection<ResourceLocation> {
         return ImmutableList.of(
-            machineHullTexture,
+            machineHullLocation,
             ResourceLocation("clayium:blocks/import_energy"),
             ResourceLocation("clayium:blocks/import"),
             ResourceLocation("clayium:blocks/import_1"),
@@ -35,6 +36,11 @@ class MachineModel(
         format: VertexFormat,
         bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>
     ): IBakedModel {
-        return MachineBakedModel(bakedTextureGetter, machineHullTexture)
+        return MachineBakedModel(
+            facing = facing,
+            faceLocation = faceLocation,
+            machineHullLocation = machineHullLocation,
+            bakedTextureGetter
+        )
     }
 }

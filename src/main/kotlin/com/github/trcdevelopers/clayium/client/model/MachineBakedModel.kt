@@ -24,11 +24,14 @@ import org.lwjgl.util.vector.Vector3f
 import java.util.function.Function
 
 class MachineBakedModel(
+    private val facing: EnumFacing,
+    faceLocation: ResourceLocation,
+    machineHullLocation: ResourceLocation,
     bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>,
-    machineHullLocation: ResourceLocation
 ) : IBakedModel {
 
     private val machineHull = bakedTextureGetter.apply(machineHullLocation)
+    private val face = bakedTextureGetter.apply(faceLocation)
     private val inputTextures: List<TextureAtlasSprite?> = MachineIoMode.entries.map {
         if (it == NONE) return@map null
         bakedTextureGetter.apply(getInputLocation(it))
@@ -41,6 +44,8 @@ class MachineBakedModel(
     private val machineHullQuads = EnumFacing.VALUES.map {
         createQuad(it, machineHull)
     }
+
+    private val faceQuad = createQuad(facing, face)
 
 
     /**
@@ -69,6 +74,7 @@ class MachineBakedModel(
         val extState = state as IExtendedBlockState
         val quads = mutableListOf(machineHullQuads[side.index])
 
+        if (side == facing) quads.add(faceQuad)
         val inputMode = extState.getValue(BlockMachine.INPUTS)[side.index]
         inputQuads[inputMode]?.let { quads.add(it[side.index]) }
 

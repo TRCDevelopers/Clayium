@@ -44,7 +44,11 @@ object MachineModelLoader : ICustomModelLoader {
         val facing = EnumFacing.byName(properties["facing"])
             ?: return ModelLoaderRegistry.getMissingModel()
 
-        return MachineModel(facing, ResourceLocation(Clayium.MOD_ID, "blocks/machinehull_tier$tier"))
+        val machineName = modelLocation.getName().replaceAfter("_tier", "").replace("_tier", "")
+
+        return MachineModel(facing,
+            faceLocation = ResourceLocation(Clayium.MOD_ID, "blocks/$machineName"),
+            machineHullLocation = ResourceLocation(Clayium.MOD_ID, "blocks/machinehull_tier$tier"),)
     }
 
     private fun ModelResourceLocation.getName(): String {
