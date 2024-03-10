@@ -907,9 +907,9 @@ item.clayium.industrial_clay_shard.name=Industrial Clay Shard
 item.clayium.adv_industrial_clay_shard.name=Advanced Industrial Clay Shard
 
 item.clayium.clay_shovel.name=Clay Shovel
-item.clayium.clay_shovel.tooltip.line1=Can dig Clay Ores and increase drops.
+item.clayium.clay_shovel.tooltip=Can dig Clay Ores and increase drops.
 item.clayium.clay_pickaxe.name=Clay Pickaxe
-item.clayium.clay_pickaxe.tooltip.line1=Can harvest Clay Ores so fast and increase drops.
+item.clayium.clay_pickaxe.tooltip=Can harvest Clay Ores so fast and increase drops.
 
 item.clayium.itemFilterDuplicator.copy.name=Item Filter Duplicator
 item.clayium.itemFilterWhitelist.name=White List Item Filter

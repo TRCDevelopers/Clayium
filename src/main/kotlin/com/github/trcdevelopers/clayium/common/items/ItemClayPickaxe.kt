@@ -3,8 +3,8 @@ package com.github.trcdevelopers.clayium.common.items
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.annotation.CItem
 import com.github.trcdevelopers.clayium.common.blocks.ores.IClayOreBlock
-import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.ItemPickaxe
@@ -47,16 +47,6 @@ class ItemClayPickaxe : ItemPickaxe(ToolMaterial.STONE) {
 
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        super.addInformation(stack, worldIn, tooltip, flagIn)
-        if (registryName == null) {
-            return
-        }
-        val list = UtilLocale.localizeTooltip(
-            "item." + registryName!!
-                .path + ".tooltip"
-        )
-        if (list != null) {
-            tooltip.addAll(list)
-        }
+        tooltip.add(I18n.format("item.clayium.clay_pickaxe.tooltip"))
     }
 }
