@@ -18,7 +18,7 @@ class ClayWorkTableRecipeCategory(
 ) : IRecipeCategory<ClayWorkTableRecipeWrapper> {
 
     private val overlay = guiHelper.createDrawable(ResourceLocation(Clayium.MOD_ID, "textures/gui/clayworktable.png"), 4, 6, 168, 74)
-    private val icon = guiHelper.createDrawableIngredient(ItemStack(ClayiumBlocks.getBlock("clay_work_table")!!))
+    private val icon = guiHelper.createDrawableIngredient(ItemStack(ClayiumBlocks.CLAY_WORK_TABLE))
 
     override fun getUid(): String {
         return UID
