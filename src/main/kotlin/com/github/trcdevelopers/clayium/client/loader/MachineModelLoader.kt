@@ -52,7 +52,6 @@ object MachineModelLoader : ICustomModelLoader {
     }
 
     private fun ModelResourceLocation.getProperties(): Map<String, String> {
-        Clayium.LOGGER.info(this.variant)
         // properties in raw string ("facing=north,is_pipe=false")
         return this.variant
             // (["facing=north", "is_pipe=false"])

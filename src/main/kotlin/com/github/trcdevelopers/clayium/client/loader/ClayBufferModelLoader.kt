@@ -39,7 +39,6 @@ object ClayBufferModelLoader : ICustomModelLoader {
         val modelResourceLocation = modelLocation as ModelResourceLocation
         val registryName = modelLocation.path
         val isPipe = modelResourceLocation.getVariantValue("is_pipe")?.toBoolean() ?: false
-        Clayium.LOGGER.info("Loading model for $modelLocation, tier: ${registryName.replace(alphabetAndUnderline, "").toInt()}")
         val tier = registryName.replace(alphabetAndUnderline, "").toInt()
         return if (isPipe) ClayBufferPipeModel(tier) else ClayBufferModel(tier)
     }
