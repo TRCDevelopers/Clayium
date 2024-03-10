@@ -34,7 +34,7 @@ class MachineBakedModel(
         bakedTextureGetter.apply(getInputLocation(it))
     }
     private val outputTextures: List<TextureAtlasSprite?> = MachineIoMode.entries.map {
-        if (it == NONE) return@map null
+        if (it == NONE || it == CE) return@map null
         bakedTextureGetter.apply(getOutputLocation(it))
     }
 
