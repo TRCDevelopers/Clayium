@@ -29,7 +29,7 @@ class JeiPlugin : IModPlugin {
     override fun register(registry: IModRegistry) {
         jeiHelpers = registry.jeiHelpers
         registry.handleRecipes(ClayWorkTableRecipe::class.java, ::ClayWorkTableRecipeWrapper, ClayWorkTableRecipeCategory.UID)
-        registry.addRecipeCatalyst(ItemStack(ClayiumBlocks.getBlock("clay_work_table")!!), ClayWorkTableRecipeCategory.UID)
+        registry.addRecipeCatalyst(ItemStack(ClayiumBlocks.CLAY_WORK_TABLE), ClayWorkTableRecipeCategory.UID)
 
         registry.addRecipes(CRecipes.CLAY_WORK_TABLE.recipes, ClayWorkTableRecipeCategory.UID)
     }
