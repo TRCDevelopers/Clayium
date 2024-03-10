@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.client
 
 import com.github.trcdevelopers.clayium.client.loader.ClayBufferModelLoader
+import com.github.trcdevelopers.clayium.client.loader.MachineModelLoader
 import com.github.trcdevelopers.clayium.client.tesr.ClayBufferPipeIoRenderer
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.CommonProxy
@@ -37,6 +38,7 @@ class ClientProxy : CommonProxy() {
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
         ModelLoaderRegistry.registerLoader(ClayBufferModelLoader)
+        ModelLoaderRegistry.registerLoader(MachineModelLoader)
         ClientRegistry.bindTileEntitySpecialRenderer(TileClayBuffer::class.java, ClayBufferPipeIoRenderer)
     }
 
