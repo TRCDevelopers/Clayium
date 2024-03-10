@@ -47,7 +47,6 @@ class MachineBakedModel(
 
     private val faceQuad = createQuad(facing, face)
 
-
     /**
      * value is null if the mode has no texture (i.e. NONE)
      */
