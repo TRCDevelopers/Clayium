@@ -61,6 +61,10 @@ object ClayiumBlocks {
     fun registerItemBlockModels() {
         registerItemModel(CLAY_WORK_TABLE)
 
+        for (buffer in BUFFER.values) {
+            registerItemModel(buffer)
+        }
+
         registerItemModel(COMPRESSED_CLAY)
         registerItemModel(ENERGIZED_CLAY)
 
