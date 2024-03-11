@@ -206,7 +206,7 @@ tile.clayium.blockAZ91DHull.name=AZ91D 合金マシン筐体
 tile.clayium.blockZK60AHull.name=ZK60A 合金マシン筐体
 
 tile.clayium.clay_work_table.name=粘土作業台
-tile.clayium.clay_work_table.tooltip.line1=工業化への第一歩
+tile.clayium.clay_work_table.tooltip=工業化への第一歩
 tile.clayium.blockClayCraftingTable.name=粘土作業板
 tile.clayium.blockClayCraftingTable.tooltip.line1=ちょっと便利な作業台
 tile.clayium.blockClayCraftingTable.tooltip.line2=__DETAIL__

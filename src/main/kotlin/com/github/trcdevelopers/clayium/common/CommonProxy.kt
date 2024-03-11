@@ -10,6 +10,7 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileCla
 import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
+import com.github.trcdevelopers.clayium.common.items.ItemBlockTiered
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trcdevelopers.clayium.common.recipe.loader.CRecipeLoader
@@ -94,8 +95,8 @@ open class CommonProxy {
         registerItem(registry, ClayiumItems.CLAY_PICKAXE)
         registerItem(registry, ClayiumItems.CLAY_SHOVEL)
 
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ::ItemBlock))
-        ClayiumBlocks.BUFFER.values.forEach { registry.register(createItemBlock(it, ::ItemBlock)) }
+        registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ItemBlockTiered::create))
+        ClayiumBlocks.BUFFER.values.forEach { registry.register(createItemBlock(it, ItemBlockTiered::create)) }
 
         registry.register(createItemBlock(ClayiumBlocks.COMPRESSED_CLAY, ::ItemBlockCompressedClay))
         registry.register(createItemBlock(ClayiumBlocks.ENERGIZED_CLAY, ::ItemBlockEnergizedClay))

@@ -3,10 +3,10 @@ package com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
 import com.github.trcdevelopers.clayium.common.interfaces.ITiered
-import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.block.BlockContainer
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
@@ -17,11 +17,13 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 
+@Suppress("OVERRIDE_DEPRECATION")
 class BlockClayWorkTable : BlockContainer(Material.ROCK), ITiered {
-    override val tier: Int
-        get() = 0
+    override val tier = 0
 
     override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity {
         return TileClayWorkTable()
@@ -41,16 +43,10 @@ class BlockClayWorkTable : BlockContainer(Material.ROCK), ITiered {
         return true
     }
 
+    @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        super.addInformation(stack, worldIn, tooltip, flagIn)
-        registryName ?: return
-        val list = UtilLocale.localizeTooltip(
-            "tile." + registryName!!
-                .path + ".tooltip"
-        )
-        if (list != null) {
-            tooltip.addAll(list)
-        }
+        tooltip.add(ITiered.getTierTooltip(tier))
+        tooltip.add(I18n.format("tile.clayium.clay_work_table.tooltip"))
     }
 
     override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {

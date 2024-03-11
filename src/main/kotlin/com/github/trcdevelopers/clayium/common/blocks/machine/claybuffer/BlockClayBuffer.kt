@@ -4,6 +4,7 @@ import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
+import com.github.trcdevelopers.clayium.common.interfaces.ITiered
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.block.Block
@@ -40,8 +41,8 @@ import net.minecraftforge.items.CapabilityItemHandler
 
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockClayBuffer(
-    val tier: Int,
-) : BlockContainer(Material.IRON), IShiftRightClickable {
+    override val tier: Int,
+) : BlockContainer(Material.IRON), IShiftRightClickable, ITiered {
 
     init {
         this.blockSoundType = SoundType.METAL
@@ -240,6 +241,7 @@ class BlockClayBuffer(
 
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        tooltip.add(ITiered.getTierTooltip(tier))
         tooltip.addAll(UtilLocale.localizeTooltip("tooltip.clayium.buffer"))
     }
 

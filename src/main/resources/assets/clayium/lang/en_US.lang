@@ -205,7 +205,7 @@ tile.clayium.blockAZ91DHull.name=AZ91D Alloy Hull
 tile.clayium.blockZK60AHull.name=ZK60A Alloy Hull
 
 tile.clayium.clay_work_table.name=Clay Work Table
-tile.clayium.clay_work_table.tooltip.line1=The first step to Clay Industry.
+tile.clayium.clay_work_table.tooltip=The first step to Clay Industry.
 tile.clayium.blockClayCraftingTable.name=Clay Crafting Board
 tile.clayium.blockClayCraftingTable.tooltip.line1=A convenient version of vanilla Crafting Table.
 tile.clayium.blockClayCraftingTable.tooltip.line2=__DETAIL__
