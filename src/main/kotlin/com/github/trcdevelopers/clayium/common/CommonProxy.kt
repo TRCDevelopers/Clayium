@@ -10,6 +10,7 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileCla
 import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
+import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trcdevelopers.clayium.common.recipe.loader.CRecipeLoader
 import com.github.trcdevelopers.clayium.common.unification.OrePrefix
@@ -73,8 +74,15 @@ open class CommonProxy {
     }
 
     @SubscribeEvent
-    open fun registerItems(event: RegistryEvent.Register<Item>) {
+    fun registerItems(event: RegistryEvent.Register<Item>) {
         val registry = event.registry
+
+        registry.register(MetaItemClayParts)
+        for (orePrefix in OrePrefix.entries) {
+            val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
+            registry.register(metaPrefixItem)
+            metaPrefixItem.registerSubItems()
+        }
 
         registerItem(registry, ClayiumItems.CLAY_ROLLING_PIN)
         registerItem(registry, ClayiumItems.CLAY_SLICER)
@@ -85,12 +93,6 @@ open class CommonProxy {
 
         registerItem(registry, ClayiumItems.CLAY_PICKAXE)
         registerItem(registry, ClayiumItems.CLAY_SHOVEL)
-
-        for (orePrefix in OrePrefix.entries) {
-            val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
-            registry.register(metaPrefixItem)
-            metaPrefixItem.registerSubItems()
-        }
 
         registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ::ItemBlock))
         ClayiumBlocks.BUFFER.values.forEach { registry.register(createItemBlock(it, ::ItemBlock)) }
@@ -114,7 +116,7 @@ open class CommonProxy {
         registry.register(item)
     }
 
-    open fun <T: Block> createItemBlock(block: T, producer: (T) -> ItemBlock): ItemBlock {
+    private fun <T: Block> createItemBlock(block: T, producer: (T) -> ItemBlock): ItemBlock {
         return producer(block).apply {
             registryName = block.registryName ?: throw IllegalArgumentException("Block ${block.translationKey} has no registry name")
         }

@@ -73,11 +73,13 @@ object ClayiumBlocks {
     private fun registerItemModel(block: Block) {
         for (state in block.blockState.validStates) {
             if (block.blockState.properties.isEmpty()) {
+                Clayium.LOGGER.info("registering SINGLE model for $block")
                 ModelLoader.setCustomModelResourceLocation(
                     Item.getItemFromBlock(block), 0,
                     ModelResourceLocation(block.registryName!!, "normal")
                 )
             } else {
+                Clayium.LOGGER.info("registering MULTI model for $block")
                 val meta = block.getMetaFromState(state)
                 ModelLoader.setCustomModelResourceLocation(
                     Item.getItemFromBlock(block), meta,

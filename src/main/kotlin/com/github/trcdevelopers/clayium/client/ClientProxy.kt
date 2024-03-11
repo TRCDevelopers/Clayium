@@ -9,10 +9,8 @@ import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
-import net.minecraft.block.Block
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
-import net.minecraft.item.ItemBlock
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.client.model.ModelLoaderRegistry
@@ -56,12 +54,6 @@ class ClientProxy : CommonProxy() {
     override fun registerMachineItemBlock(registry: IForgeRegistry<Item>, machineName: String, tier: Int, block: BlockMachine): Item {
         return super.registerMachineItemBlock(registry, machineName, tier, block).also {
             ModelLoader.setCustomModelResourceLocation(it, 0, ModelResourceLocation("${Clayium.MOD_ID}:$machineName", "tier=$tier"))
-        }
-    }
-
-    override fun <T : Block> createItemBlock(block: T, producer: (T) -> ItemBlock): ItemBlock {
-        return super.createItemBlock(block, producer).apply {
-            ModelLoader.setCustomModelResourceLocation(this, 0, ModelResourceLocation(block.registryName!!, "inventory"))
         }
     }
 
