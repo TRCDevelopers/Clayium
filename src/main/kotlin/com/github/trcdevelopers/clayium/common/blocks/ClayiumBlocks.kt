@@ -61,8 +61,11 @@ object ClayiumBlocks {
     fun registerItemBlockModels() {
         registerItemModel(CLAY_WORK_TABLE)
 
-        for (buffer in BUFFER.values) {
-            registerItemModel(buffer)
+        for ((tier, buffer) in BUFFER) {
+            ModelLoader.setCustomModelResourceLocation(
+                Item.getItemFromBlock(buffer), 0,
+                ModelResourceLocation("${Clayium.MOD_ID}:clay_buffer", "tier=$tier")
+            )
         }
 
         registerItemModel(COMPRESSED_CLAY)
