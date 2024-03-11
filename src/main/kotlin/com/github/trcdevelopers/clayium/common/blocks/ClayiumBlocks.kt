@@ -11,6 +11,11 @@ import com.github.trcdevelopers.clayium.common.blocks.ores.BlockDenseClayOre
 import com.google.common.collect.ImmutableMap
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap
 import net.minecraft.block.Block
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.item.Item
+import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 /**
  * holds non-functional blocks and non-BlockMachine machines (e.g. ClayWorkTable, ClayBuffer)
@@ -52,7 +57,33 @@ object ClayiumBlocks {
         }
     }
 
-    fun getBlock(registryName: String): Block? {
-        return blocks[registryName]
+    @SideOnly(Side.CLIENT)
+    fun registerItemBlockModels() {
+        registerItemModel(CLAY_WORK_TABLE)
+
+        registerItemModel(COMPRESSED_CLAY)
+        registerItemModel(ENERGIZED_CLAY)
+
+        registerItemModel(CLAY_ORE)
+        registerItemModel(DENSE_CLAY_ORE)
+        registerItemModel(LARGE_DENSE_CLAY_ORE)
+    }
+
+    @SideOnly(Side.CLIENT)
+    private fun registerItemModel(block: Block) {
+        for (state in block.blockState.validStates) {
+            if (block.blockState.properties.isEmpty()) {
+                ModelLoader.setCustomModelResourceLocation(
+                    Item.getItemFromBlock(block), 0,
+                    ModelResourceLocation(block.registryName!!, "normal")
+                )
+            } else {
+                val meta = block.getMetaFromState(state)
+                ModelLoader.setCustomModelResourceLocation(
+                    Item.getItemFromBlock(block), meta,
+                    ModelResourceLocation(block.registryName!!, "meta=$meta")
+                )
+            }
+        }
     }
 }

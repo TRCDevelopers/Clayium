@@ -27,7 +27,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.network.NetworkRegistry
 import net.minecraftforge.fml.common.registry.GameRegistry
-import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.registries.IForgeRegistry
 
 open class CommonProxy {
@@ -77,7 +76,15 @@ open class CommonProxy {
     open fun registerItems(event: RegistryEvent.Register<Item>) {
         val registry = event.registry
 
-        ClayiumItems.registerItems(event, Side.SERVER)
+        registerItem(registry, ClayiumItems.CLAY_ROLLING_PIN)
+        registerItem(registry, ClayiumItems.CLAY_SLICER)
+        registerItem(registry, ClayiumItems.CLAY_SPATULA)
+        registerItem(registry, ClayiumItems.CLAY_WRENCH)
+        registerItem(registry, ClayiumItems.CLAY_IO_CONFIGURATOR)
+        registerItem(registry, ClayiumItems.CLAY_PIPING_TOOL)
+
+        registerItem(registry, ClayiumItems.CLAY_PICKAXE)
+        registerItem(registry, ClayiumItems.CLAY_SHOVEL)
 
         for (orePrefix in OrePrefix.entries) {
             val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)

@@ -6,22 +6,16 @@ import com.github.trcdevelopers.clayium.client.tesr.ClayBufferPipeIoRenderer
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.CommonProxy
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
-import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
-import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
 import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
-import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
-import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import net.minecraft.block.Block
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
+import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.client.model.ModelLoaderRegistry
-import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.client.registry.ClientRegistry
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
@@ -44,52 +38,19 @@ class ClientProxy : CommonProxy() {
 
     override fun init(event: FMLInitializationEvent) {
         super.init(event)
-        ClayiumItems.registerItemColors()
     }
 
     override fun postInit(event: FMLPostInitializationEvent) {
         super.postInit(event)
-        for (item in MetaItemClayium.META_ITEMS) {
-            item.registerColorHandler()
-        }
-    }
-
-    @SubscribeEvent
-    override fun registerItems(event: RegistryEvent.Register<Item>) {
-        val registry = event.registry
-
-        for (orePrefix in OrePrefix.entries) {
-            val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
-            registry.register(metaPrefixItem)
-            metaPrefixItem.registerSubItems()
-            metaPrefixItem.registerModels()
-        }
-        ClayiumItems.registerItems(event, Side.CLIENT)
-
-        // todo: move model registration to ClayiumBlocks
-        registry.register(ItemBlockCompressedClay(ClayiumBlocks.COMPRESSED_CLAY).apply { registerModels() })
-        registry.register(ItemBlockEnergizedClay(ClayiumBlocks.ENERGIZED_CLAY).apply { registerModels() })
-
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ::ItemBlock))
-        ClayiumBlocks.BUFFER.values.forEach { registry.register(createItemBlock(it, ::ItemBlock)) }
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_ORE, ::ItemBlock))
-        registry.register(createItemBlock(ClayiumBlocks.DENSE_CLAY_ORE, ::ItemBlock))
-        registry.register(createItemBlock(ClayiumBlocks.LARGE_DENSE_CLAY_ORE, ::ItemBlock))
-
-
-        for (machines in MachineBlocks.ALL_MACHINES) {
-            val machineName = machines.key
-            for (machine in machines.value) {
-                registerMachineItemBlock(registry, machineName, machine.key, machine.value)
-            }
-        }
+        MetaItemClayium.registerColors()
     }
 
     override fun registerItem(registry: IForgeRegistry<Item>, item: Item) {
+        registry.register(item)
         if (item is MetaItemClayium) {
             item.registerModels()
         }
-        super.registerItem(registry, item)
+        ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(item.registryName!!, "inventory"))
     }
 
     override fun registerMachineItemBlock(registry: IForgeRegistry<Item>, machineName: String, tier: Int, block: BlockMachine): Item {
@@ -102,5 +63,11 @@ class ClientProxy : CommonProxy() {
         return super.createItemBlock(block, producer).apply {
             ModelLoader.setCustomModelResourceLocation(this, 0, ModelResourceLocation(block.registryName!!, "inventory"))
         }
+    }
+
+    @SubscribeEvent
+    fun registerModels(event: ModelRegistryEvent) {
+        MetaItemClayium.registerModels()
+        ClayiumBlocks.registerItemBlockModels()
     }
 }

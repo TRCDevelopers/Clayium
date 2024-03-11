@@ -1,7 +1,6 @@
 package com.github.trcdevelopers.clayium.common.items
 
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.annotation.CItem
 import com.github.trcdevelopers.clayium.common.blocks.ores.IClayOreBlock
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
@@ -13,7 +12,6 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-@CItem(registryName = "clay_shovel")
 class ItemClayShovel : ItemSpade(ToolMaterial.WOOD) {
     private val efficiencyOnClayOre = 12.0f
     private val efficiencyOnClayBlocks = 32.0f

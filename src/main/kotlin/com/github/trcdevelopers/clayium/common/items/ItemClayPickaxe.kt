@@ -1,7 +1,6 @@
 package com.github.trcdevelopers.clayium.common.items
 
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.annotation.CItem
 import com.github.trcdevelopers.clayium.common.blocks.ores.IClayOreBlock
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.resources.I18n
@@ -15,7 +14,6 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import javax.annotation.ParametersAreNonnullByDefault
 
-@CItem(registryName = "clay_pickaxe")
 class ItemClayPickaxe : ItemPickaxe(ToolMaterial.STONE) {
     private val efficiencyOnClayOre = 32.0f
 
