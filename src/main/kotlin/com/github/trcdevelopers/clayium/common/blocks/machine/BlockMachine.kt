@@ -100,9 +100,6 @@ class BlockMachine(
     }
 
     companion object {
-        /**
-         * this property is not saved in metadata, but in tile entity and used in [Block.getActualState]
-         */
         val IS_PIPE: PropertyBool = PropertyBool.create("is_pipe")
         val FACING: PropertyDirection = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL)
         val INPUTS = UnlistedMachineIo("inputs")
