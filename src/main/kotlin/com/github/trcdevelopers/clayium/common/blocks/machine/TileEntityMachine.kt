@@ -101,7 +101,7 @@ class TileEntityMachine : TileEntity(), ItemClayConfigTool.Listener {
         return oldState.block != newSate.block
     }
 
-    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, worldIn: World, pos: BlockPos, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         if (worldIn.isRemote) return
         when (toolType) {
             ItemClayConfigTool.ToolType.PIPING -> { /* handled by Block */ }

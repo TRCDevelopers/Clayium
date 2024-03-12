@@ -112,7 +112,7 @@ class BlockMachine(
         return false
     }
 
-    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, worldIn: World, pos: BlockPos, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         if (worldIn.isRemote) return
         when (toolType) {
             PIPING -> {
