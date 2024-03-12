@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine
 
+import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
@@ -12,6 +13,7 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.util.Constants
+import net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
 
 class TileEntityMachine : TileEntity(), ItemClayConfigTool.Listener {
 
@@ -27,6 +29,9 @@ class TileEntityMachine : TileEntity(), ItemClayConfigTool.Listener {
 
     private lateinit var validInputModes: List<MachineIoMode>
     private lateinit var validOutputModes: List<MachineIoMode>
+
+    val connections = BooleanArray(6)
+
 
     private fun initParams(tier: Int) {
 
@@ -63,10 +68,12 @@ class TileEntityMachine : TileEntity(), ItemClayConfigTool.Listener {
     }
 
     override fun getUpdateTag(): NBTTagCompound {
+        this.refreshConnections()
         return writeToNBT(NBTTagCompound())
     }
 
     override fun getUpdatePacket(): SPacketUpdateTileEntity {
+        this.refreshConnections()
         return SPacketUpdateTileEntity(
             pos, blockMetadata,
             NBTTagCompound().apply {
@@ -124,7 +131,22 @@ class TileEntityMachine : TileEntity(), ItemClayConfigTool.Listener {
     }
 
     private fun refreshConnections() {
-        //todo
+        for (facing in EnumFacing.entries) {
+            val i = facing.index
+            val o = facing.opposite.index
+            when (val tile = this.world.getTileEntity(this.pos.offset(facing))) {
+                is TileEntityMachine -> {
+                    this.connections[i] = !((this.inputs[i] == MachineIoMode.NONE || tile.outputs[o] == MachineIoMode.NONE) && (this.outputs[i] == MachineIoMode.NONE || tile.inputs[o] == MachineIoMode.NONE))
+                }
+                is TileClayBuffer -> {
+                    // in TileClayBuffer, IO is stored in BooleanArray.
+                    this.connections[i] = !((this.inputs[i] == MachineIoMode.NONE || !tile.outputs[o]) && (this.outputs[i] == MachineIoMode.NONE || !tile.inputs[o]))
+                }
+                else -> {
+                    this.connections[i] = tile?.hasCapability(ITEM_HANDLER_CAPABILITY, facing.opposite) == true
+                }
+            }
+        }
     }
 
     companion object {

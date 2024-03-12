@@ -3,6 +3,12 @@ package com.github.trcdevelopers.clayium.common.blocks.machine
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedMachineIo
+import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
+import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.EXTRACTION
+import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.FILTER_REMOVER
+import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.INSERTION
+import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.PIPING
+import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.ROTATION
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -12,6 +18,7 @@ import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
@@ -23,6 +30,7 @@ import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.common.property.IExtendedBlockState
+import net.minecraftforge.common.util.Constants
 
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockMachine(
@@ -31,7 +39,7 @@ class BlockMachine(
      * receives tier and returns TileEntity
      */
     val tileEntityProvider: (Int) -> TileEntityMachine,
-) : Block(Material.IRON) {
+) : Block(Material.IRON), ItemClayConfigTool.Listener {
 
     init {
         setCreativeTab(Clayium.creativeTab)
@@ -102,6 +110,34 @@ class BlockMachine(
 
     override fun canEntitySpawn(state: IBlockState, entityIn: Entity): Boolean {
         return false
+    }
+
+    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+        if (worldIn.isRemote) return
+        when (toolType) {
+            PIPING -> {
+                val state = worldIn.getBlockState(pos)
+                if (state.block is BlockMachine) {
+                    state.cycleProperty(IS_PIPE)
+                }
+            }
+            ROTATION -> {
+                val state = worldIn.getBlockState(pos)
+                if (state.block is BlockMachine) {
+                    if (state.getValue(FACING) == facing) {
+                        state.withProperty(FACING, facing.opposite)
+                    } else {
+                        state.withProperty(FACING, facing)
+                    }
+                }
+            }
+            INSERTION, EXTRACTION, FILTER_REMOVER -> {
+                /* handled by Tile Entity */
+                return
+            }
+        }
+
+        worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), Constants.BlockFlags.DEFAULT)
     }
 
     companion object {
