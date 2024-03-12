@@ -67,11 +67,26 @@ class TileEntityMachine : TileEntity(), ItemClayConfigTool.Listener {
     }
 
     override fun getUpdatePacket(): SPacketUpdateTileEntity {
-        return SPacketUpdateTileEntity(pos, blockMetadata, writeToNBT(NBTTagCompound()))
+        return SPacketUpdateTileEntity(
+            pos, blockMetadata,
+            NBTTagCompound().apply {
+                setIntArray("inputs", _inputs.map { it.id }.toIntArray())
+                setIntArray("outputs", _outputs.map { it.id }.toIntArray())
+            }
+        )
     }
 
     override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
-        readFromNBT(pkt.nbtCompound)
+        pkt.nbtCompound.let { compound ->
+            _inputs.apply {
+                clear()
+                addAll(compound.getIntArray("inputs").map { MachineIoMode.byId(it) })
+            }
+            _outputs.apply {
+                clear()
+                addAll(compound.getIntArray("outputs").map { MachineIoMode.byId(it) })
+            }
+        }
         this.world.markBlockRangeForRenderUpdate(pos, pos)
     }
 
@@ -91,7 +106,6 @@ class TileEntityMachine : TileEntity(), ItemClayConfigTool.Listener {
             }
             ItemClayConfigTool.ToolType.FILTER_REMOVER -> TODO()
         }
-        this.markDirty()
         worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), Constants.BlockFlags.DEFAULT)
     }
 
@@ -99,12 +113,18 @@ class TileEntityMachine : TileEntity(), ItemClayConfigTool.Listener {
         val current = _inputs[side.index]
         val next = validInputModes[(validInputModes.indexOf(current) + 1) % validInputModes.size]
         _inputs[side.index] = next
+        this.markDirty()
     }
 
     private fun toggleOutput(side: EnumFacing) {
         val current = _outputs[side.index]
         val next = validOutputModes[(validOutputModes.indexOf(current) + 1) % validOutputModes.size]
         _outputs[side.index] = next
+        this.markDirty()
+    }
+
+    private fun refreshConnections() {
+        //todo
     }
 
     companion object {
