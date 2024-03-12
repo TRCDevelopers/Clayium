@@ -1,22 +1,65 @@
 package com.github.trcdevelopers.clayium.client
 
+import net.minecraft.client.renderer.block.model.BakedQuad
+import net.minecraft.client.renderer.block.model.BlockFaceUV
+import net.minecraft.client.renderer.block.model.BlockPartFace
+import net.minecraft.client.renderer.block.model.FaceBakery
+import net.minecraft.client.renderer.block.model.ModelRotation
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.util.EnumFacing
+import org.lwjgl.util.vector.Vector3f
 
 object ModelUtils {
+
+    val faceBakery = FaceBakery()
+
+    val sideCubes = listOf(
+        // From top to bottom, these are DOWN, UP, NORTH, SOUTH, WEST and EAST
+        Pair(Vector3f(5f, 0f, 5f), Vector3f(11f, 5f, 11f)),
+        Pair(Vector3f(5f, 11f, 5f), Vector3f(11f, 16f, 11f)),
+        Pair(Vector3f(5f, 5f, 0f), Vector3f(11f, 11f, 5f)),
+        Pair(Vector3f(5f, 5f, 11f), Vector3f(11f, 11f, 16f)),
+        Pair(Vector3f(0f, 5f, 5f), Vector3f(5f, 11f, 11f)),
+        Pair(Vector3f(11f, 5f, 5f), Vector3f(16f, 11f, 11f)),
+    )
 
     private val uvCacheInt: Map<EnumFacing, Map<EnumFacing, IntArray>> = EnumFacing.entries.associateWith { cubePos ->
         EnumFacing.entries
             .filter { it != cubePos.opposite }
             .associateWith { facingOfCube ->
-            getUv(cubePos, facingOfCube).map { it.toInt() }.toIntArray()
-        }
+                getUv(cubePos, facingOfCube).map { it.toInt() }.toIntArray()
+            }
     }
 
     private val uvCacheFloat: Map<EnumFacing, Map<EnumFacing, FloatArray>> = EnumFacing.entries.associateWith { cubePos ->
         EnumFacing.entries
             .filter { it != cubePos.opposite }
             .associateWith { facingOfCube ->
-            getUv(cubePos, facingOfCube)
+                getUv(cubePos, facingOfCube)
+            }
+    }
+
+    fun createQuad(texture: TextureAtlasSprite, side: EnumFacing, from: Vector3f, to: Vector3f, uv: FloatArray): BakedQuad {
+        return faceBakery.makeBakedQuad(
+            from, to,
+            BlockPartFace(null, 0, "", BlockFaceUV(uv, 0)),
+            texture, side, ModelRotation.X0_Y0,
+            null, true, true
+        )
+    }
+
+    fun createSideCubeQuads(machineHull: TextureAtlasSprite): List<List<BakedQuad>> {
+        return sideCubes.mapIndexed { index: Int, (from, to): Pair<Vector3f, Vector3f> ->
+        val positionOfCube = EnumFacing.byIndex(index)
+        EnumFacing.entries
+            .filter { it != positionOfCube.opposite }
+            .map { createQuad(machineHull, it, from, to, getUvFloat(positionOfCube, it)) }
+        }
+    }
+
+    fun createCenterCubeQuads(machineHull: TextureAtlasSprite): List<BakedQuad> {
+        return EnumFacing.entries.map{
+            createQuad(machineHull, it, Vector3f(5f, 5f, 5f), Vector3f(11f, 11f, 11f), floatArrayOf(5f, 5f, 11f, 11f))
         }
     }
 
