@@ -30,13 +30,10 @@ class ItemClayConfigTool(
             ?: return EnumActionResult.PASS
 
         val block = worldIn.getBlockState(pos).block
-        if (block is Listener) {
-            block.onRightClicked(typeToSend, player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
-            return EnumActionResult.SUCCESS
-        }
         val tile = worldIn.getTileEntity(pos)
-        if (tile is Listener) {
-            tile.onRightClicked(typeToSend, player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
+        if (block is Listener || tile is Listener) {
+            (block as? Listener)?.onRightClicked(typeToSend, player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
+            (tile as? Listener)?.onRightClicked(typeToSend, player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
             return EnumActionResult.SUCCESS
         }
         return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
