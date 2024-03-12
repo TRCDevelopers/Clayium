@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine
 
+import com.google.common.collect.ImmutableList
 import net.minecraft.util.IStringSerializable
 
 enum class MachineIoMode(
@@ -21,6 +22,8 @@ enum class MachineIoMode(
             require(id in 0..4) { "Invalid id for MachineIoMode: $id" }
             return entries[id]
         }
+
+        val defaultStateList = ImmutableList.of(NONE, NONE, NONE, NONE, NONE, NONE)
     }
 
     object Input {

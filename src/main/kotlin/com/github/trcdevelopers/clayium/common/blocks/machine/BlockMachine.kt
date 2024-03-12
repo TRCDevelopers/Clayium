@@ -38,7 +38,11 @@ class BlockMachine(
         setHarvestLevel("pickaxe", 1)
         setSoundType(SoundType.METAL)
 
-        this.defaultState = this.blockState.baseState.withProperty(IS_PIPE, false).withProperty(FACING, EnumFacing.NORTH)
+        this.defaultState = this.blockState.baseState
+            .withProperty(IS_PIPE, false).withProperty(FACING, EnumFacing.NORTH).also {
+                (it as IExtendedBlockState)
+                    .withProperty(INPUTS, MachineIoMode.defaultStateList).withProperty(OUTPUTS, MachineIoMode.defaultStateList).withProperty(CONNECTIONS, BooleanArray(6))
+            }
     }
 
     override fun hasTileEntity(state: IBlockState) = true
