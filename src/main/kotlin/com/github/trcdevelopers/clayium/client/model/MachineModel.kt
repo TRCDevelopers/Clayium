@@ -19,6 +19,7 @@ class MachineModel(
     override fun getTextures(): Collection<ResourceLocation> {
         return ImmutableList.of(
             machineHullLocation,
+            faceLocation,
             ResourceLocation("clayium:blocks/import_energy"),
             ResourceLocation("clayium:blocks/import"),
             ResourceLocation("clayium:blocks/import_1"),
