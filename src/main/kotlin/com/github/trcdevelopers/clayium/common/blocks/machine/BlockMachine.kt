@@ -118,16 +118,16 @@ class BlockMachine(
             PIPING -> {
                 val state = worldIn.getBlockState(pos)
                 if (state.block is BlockMachine) {
-                    state.cycleProperty(IS_PIPE)
+                    worldIn.setBlockState(pos, state.cycleProperty(IS_PIPE))
                 }
             }
             ROTATION -> {
                 val state = worldIn.getBlockState(pos)
                 if (state.block is BlockMachine) {
                     if (state.getValue(FACING) == facing) {
-                        state.withProperty(FACING, facing.opposite)
+                        worldIn.setBlockState(pos, state.withProperty(FACING, facing.opposite))
                     } else {
-                        state.withProperty(FACING, facing)
+                        worldIn.setBlockState(pos, state.withProperty(FACING, facing))
                     }
                 }
             }
