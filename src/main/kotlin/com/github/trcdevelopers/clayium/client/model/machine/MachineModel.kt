@@ -38,11 +38,10 @@ class MachineModel(
         format: VertexFormat,
         bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>
     ): IBakedModel {
-        return MachineBakedModel(
-            facing = facing,
-            faceLocation = faceLocation,
-            machineHullLocation = machineHullLocation,
-            bakedTextureGetter
-        )
+        return if (isPipe) {
+            PipedMachineBakedModel(machineHullLocation, bakedTextureGetter)
+        } else {
+            MachineBakedModel(facing = facing, faceLocation = faceLocation, machineHullLocation = machineHullLocation, bakedTextureGetter)
+        }
     }
 }

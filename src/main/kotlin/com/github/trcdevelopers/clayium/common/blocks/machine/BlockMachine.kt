@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine
 
 import com.github.trcdevelopers.clayium.common.Clayium
+import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedMachineIo
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
@@ -51,7 +52,7 @@ class BlockMachine(
     override fun createBlockState(): BlockStateContainer {
         return BlockStateContainer.Builder(this)
             .add(IS_PIPE, FACING)
-            .add(INPUTS, OUTPUTS)
+            .add(INPUTS, OUTPUTS, CONNECTIONS)
             .build()
     }
 
@@ -71,7 +72,7 @@ class BlockMachine(
         val te = if (world is ChunkCache) world.getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) else world.getTileEntity(pos)
 
         return if (te is TileEntityMachine) {
-            ext.withProperty(INPUTS, te.inputs).withProperty(OUTPUTS, te.outputs)
+            ext.withProperty(INPUTS, te.inputs).withProperty(OUTPUTS, te.outputs).withProperty(CONNECTIONS, te.connections)
         } else {
             ext
         }
@@ -108,6 +109,7 @@ class BlockMachine(
         val FACING: PropertyDirection = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL)
         val INPUTS = UnlistedMachineIo("inputs")
         val OUTPUTS = UnlistedMachineIo("outputs")
+        val CONNECTIONS = UnlistedBooleanArray("connections")
     }
 
 }

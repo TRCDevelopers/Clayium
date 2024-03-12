@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.client.model.machine
 
 import com.github.trcdevelopers.clayium.client.ModelUtils
+import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.IBakedModel
@@ -8,6 +9,7 @@ import net.minecraft.client.renderer.block.model.ItemOverrideList
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.common.property.IExtendedBlockState
 import java.util.function.Function
 
 class PipedMachineBakedModel(
@@ -20,8 +22,20 @@ class PipedMachineBakedModel(
     private val sideCubeQuads = ModelUtils.createSideCubeQuads(machineHull)
     private val centerCubeQuad = ModelUtils.createCenterCubeQuads(machineHull)
 
-    override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): MutableList<BakedQuad> {
-        TODO("Not yet implemented")
+    override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> {
+        if (state == null || side != null) return emptyList()
+
+        val connections = (state as IExtendedBlockState).getValue(BlockMachine.CONNECTIONS)
+        val quads = mutableListOf<BakedQuad>()
+
+        for (i in EnumFacing.entries.indices) {
+            if (connections[i]) {
+                quads.addAll(sideCubeQuads[i])
+            } else {
+                quads.add(centerCubeQuad[i])
+            }
+        }
+        return quads
     }
 
     override fun isAmbientOcclusion() = true
