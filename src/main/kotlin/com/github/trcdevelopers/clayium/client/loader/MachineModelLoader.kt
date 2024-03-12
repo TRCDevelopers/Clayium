@@ -1,6 +1,6 @@
 package com.github.trcdevelopers.clayium.client.loader
 
-import com.github.trcdevelopers.clayium.client.model.MachineModel
+import com.github.trcdevelopers.clayium.client.model.machine.MachineModel
 import com.github.trcdevelopers.clayium.common.Clayium
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.IResourceManager
@@ -40,13 +40,14 @@ object MachineModelLoader : ICustomModelLoader {
 
         val properties = modelLocation.getProperties()
         val tier = modelLocation.getName().replaceBefore("tier", "").replace("tier", "").toIntOrNull()
-            ?: return ModelLoaderRegistry.getMissingModel()
+        val isPipe = properties["is_pipe"]?.toBooleanStrictOrNull()
         val facing = EnumFacing.byName(properties["facing"])
-            ?: return ModelLoaderRegistry.getMissingModel()
+
+        if (tier == null || isPipe == null || facing == null) return ModelLoaderRegistry.getMissingModel()
 
         val machineName = modelLocation.getName().replaceAfter("_tier", "").replace("_tier", "")
 
-        return MachineModel(facing,
+        return MachineModel(isPipe, facing,
             faceLocation = ResourceLocation(Clayium.MOD_ID, "blocks/$machineName"),
             machineHullLocation = ResourceLocation(Clayium.MOD_ID, "blocks/machinehull_tier$tier"),)
     }

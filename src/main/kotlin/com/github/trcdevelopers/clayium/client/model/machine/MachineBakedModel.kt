@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.client.model
+package com.github.trcdevelopers.clayium.client.model.machine
 
 import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode

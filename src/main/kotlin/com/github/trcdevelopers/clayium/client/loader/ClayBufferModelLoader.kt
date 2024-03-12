@@ -1,7 +1,7 @@
 package com.github.trcdevelopers.clayium.client.loader
 
-import com.github.trcdevelopers.clayium.client.model.ClayBufferModel
-import com.github.trcdevelopers.clayium.client.model.ClayBufferPipeModel
+import com.github.trcdevelopers.clayium.client.model.buffer.ClayBufferModel
+import com.github.trcdevelopers.clayium.client.model.buffer.ClayBufferPipeModel
 import com.github.trcdevelopers.clayium.common.Clayium
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.IResourceManager

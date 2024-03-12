@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.client.model
+package com.github.trcdevelopers.clayium.client.model.buffer
 
 import com.github.trcdevelopers.clayium.client.ModelUtils
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.BlockClayBuffer

@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.client.model
+package com.github.trcdevelopers.clayium.client.model.machine
 
 import com.google.common.collect.ImmutableList
 import net.minecraft.client.renderer.block.model.IBakedModel
@@ -11,6 +11,7 @@ import net.minecraftforge.common.model.IModelState
 import java.util.function.Function
 
 class MachineModel(
+    private val isPipe: Boolean,
     private val facing: EnumFacing,
     private val faceLocation: ResourceLocation,
     private val machineHullLocation: ResourceLocation
