@@ -122,6 +122,8 @@ class BlockMachine(
                 }
             }
             ROTATION -> {
+                if (facing.axis.isVertical) return
+
                 val state = worldIn.getBlockState(pos)
                 if (state.block is BlockMachine) {
                     if (state.getValue(FACING) == facing) {
