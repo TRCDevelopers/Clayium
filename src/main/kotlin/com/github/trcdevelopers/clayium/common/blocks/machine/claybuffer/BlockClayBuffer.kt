@@ -2,6 +2,8 @@ package com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer
 
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
+import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine.Companion.CONNECTIONS
+import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine.Companion.IS_PIPE
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdevelopers.clayium.common.interfaces.ITiered
@@ -11,8 +13,6 @@ import net.minecraft.block.Block
 import net.minecraft.block.BlockContainer
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
-import net.minecraft.block.properties.IProperty
-import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.util.ITooltipFlag
@@ -257,10 +257,7 @@ class BlockClayBuffer(
             AxisAlignedBB(0.6875, 0.3125, 0.3125, 1.0, 0.6875, 0.6875),
         )
 
-        val IS_PIPE: IProperty<Boolean> = PropertyBool.create("is_pipe")
-
         val INPUTS: IUnlistedProperty<BooleanArray> = UnlistedBooleanArray("input_conditions")
         val OUTPUTS: IUnlistedProperty<BooleanArray> = UnlistedBooleanArray("output_conditions")
-        val CONNECTIONS: IUnlistedProperty<BooleanArray> = UnlistedBooleanArray("connections")
     }
 }

@@ -1,7 +1,7 @@
 package com.github.trcdevelopers.clayium.client.model.buffer
 
 import com.github.trcdevelopers.clayium.client.ModelUtils
-import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.BlockClayBuffer
+import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.IBakedModel
@@ -48,7 +48,7 @@ class ClayBufferPipeModel(
         override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> {
             if (state == null || side != null) return emptyList()
 
-            val connections = (state as IExtendedBlockState).getValue(BlockClayBuffer.CONNECTIONS)
+            val connections = (state as IExtendedBlockState).getValue(BlockMachine.CONNECTIONS)
             val quads = mutableListOf<BakedQuad>()
 
             for (index in EnumFacing.entries.indices) {
