@@ -96,13 +96,24 @@ class BlockMachine(
     override fun causesSuffocation(state: IBlockState) = isFullBlock(state)
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
-        //todo
-        return super.getBoundingBox(state, source, pos)
+        if (state.getValue(IS_PIPE)) {
+            val connections = (source.getTileEntity(pos) as? TileEntityMachine)?.connections
+                ?: return FULL_BLOCK_AABB
+            return getPipeAABB(connections)
+        } else {
+            return FULL_BLOCK_AABB
+        }
     }
 
     override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, isActualState: Boolean) {
-        //todo
-        super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState)
+        if (state.getValue(IS_PIPE)) {
+            val connections = (worldIn.getTileEntity(pos) as? TileEntityMachine)?.connections
+                ?: return
+            addPipeAABBs(pos, entityBox, collidingBoxes, connections)
+        } else {
+            @Suppress("DEPRECATION")
+            super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState)
+        }
     }
 
     override fun getRenderLayer() = BlockRenderLayer.CUTOUT_MIPPED
@@ -148,6 +159,39 @@ class BlockMachine(
         val INPUTS = UnlistedMachineIo("inputs")
         val OUTPUTS = UnlistedMachineIo("outputs")
         val CONNECTIONS = UnlistedBooleanArray("connections")
+
+        val CENTER_AABB = AxisAlignedBB(0.3125, 0.3125, 0.3125, 0.6875, 0.6875, 0.6875)
+        val SIDE_AABBS = listOf(
+            AxisAlignedBB(0.3125, 0.0, 0.3125, 0.6875, 0.3125, 0.6875),
+            AxisAlignedBB(0.3125, 0.6875, 0.3125, 0.6875, 1.0, 0.6875),
+            AxisAlignedBB(0.3125, 0.3125, 0.0, 0.6875, 0.6875, 0.3125),
+            AxisAlignedBB(0.3125, 0.3125, 0.6875, 0.6875, 0.6875, 1.0),
+            AxisAlignedBB(0.0, 0.3125, 0.3125, 0.3125, 0.6875, 0.6875),
+            AxisAlignedBB(0.6875, 0.3125, 0.3125, 1.0, 0.6875, 0.6875),
+        )
+
+        fun getPipeAABB(connections: BooleanArray): AxisAlignedBB {
+            require(connections.size == 6) { "connections must be of size 6" }
+
+            var aabb = CENTER_AABB
+            for (i in 0..5) {
+                if (connections[i]) {
+                    aabb = aabb.union(SIDE_AABBS[i])
+                }
+            }
+            return aabb
+        }
+
+        fun addPipeAABBs(pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, connections: BooleanArray) {
+            require(connections.size == 6) { "connections must be of size 6" }
+
+            Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, CENTER_AABB)
+            for (i in 0..5) {
+                if (connections[i]) {
+                    Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, SIDE_AABBS[i])
+                }
+            }
+        }
     }
 
 }
