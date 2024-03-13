@@ -79,19 +79,21 @@ class TileEntityMachine : TileEntity(), ItemClayConfigTool.Listener {
             NBTTagCompound().apply {
                 setIntArray("inputs", _inputs.map { it.id }.toIntArray())
                 setIntArray("outputs", _outputs.map { it.id }.toIntArray())
+                setByteArray("connections", connections.map { if (it) 1.toByte() else 0.toByte() }.toByteArray())
             }
         )
     }
 
     override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
         pkt.nbtCompound.let { compound ->
-            _inputs.apply {
-                clear()
-                addAll(compound.getIntArray("inputs").map { MachineIoMode.byId(it) })
-            }
-            _outputs.apply {
-                clear()
-                addAll(compound.getIntArray("outputs").map { MachineIoMode.byId(it) })
+            val inputTag = compound.getIntArray("inputs")
+            val outputTag = compound.getIntArray("outputs")
+            val connectionTag = compound.getByteArray("connections")
+            for (facing in EnumFacing.entries) {
+                val i = facing.index
+                _inputs[i] = MachineIoMode.byId(inputTag[i])
+                _outputs[i] = MachineIoMode.byId(outputTag[i])
+                connections[i] = connectionTag[i] == 1.toByte()
             }
         }
         this.world.markBlockRangeForRenderUpdate(pos, pos)
