@@ -185,10 +185,10 @@ class BlockMachine(
         fun addPipeAABBs(pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, connections: BooleanArray) {
             require(connections.size == 6) { "connections must be of size 6" }
 
-            Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, CENTER_AABB)
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, CENTER_AABB)
             for (i in 0..5) {
                 if (connections[i]) {
-                    Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, SIDE_AABBS[i])
+                    addCollisionBoxToList(pos, entityBox, collidingBoxes, SIDE_AABBS[i])
                 }
             }
         }
