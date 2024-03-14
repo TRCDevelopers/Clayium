@@ -13,7 +13,10 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.ITickable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
+import net.minecraftforge.items.CapabilityItemHandler
+import net.minecraftforge.items.IItemHandler
 
 /**
  * root of all tile machines
@@ -36,6 +39,8 @@ abstract class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, Item
 
     private lateinit var autoIoHandler: AutoIoHandler
 
+    protected abstract val itemStackHandler: IItemHandler
+
     val inputs get() = _inputs.toList()
     val outputs get() = _outputs.toList()
 
@@ -52,6 +57,18 @@ abstract class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, Item
 
     override fun update() {
         autoIoHandler.doWork()
+    }
+
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
+        return capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing)
+    }
+
+    override fun <T : Any?> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        return if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemStackHandler)
+        } else {
+            super.getCapability(capability, facing)
+        }
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
@@ -153,5 +170,10 @@ abstract class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, Item
         fun doWork() {
 
         }
+    }
+
+    companion object {
+        @JvmStatic
+        val ITEM_HANDLER_CAPABILITY: Capability<IItemHandler> = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
     }
 }
