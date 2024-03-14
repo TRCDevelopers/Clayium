@@ -37,7 +37,7 @@ abstract class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, Item
     private lateinit var validInputModes: List<MachineIoMode>
     private lateinit var validOutputModes: List<MachineIoMode>
 
-    private lateinit var autoIoHandler: AutoIoHandler
+    protected abstract var autoIoHandler: AutoIoHandler
 
     protected abstract var itemStackHandler: IItemHandler
 
