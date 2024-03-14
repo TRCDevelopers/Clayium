@@ -39,7 +39,7 @@ abstract class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, Item
 
     private lateinit var autoIoHandler: AutoIoHandler
 
-    protected abstract val itemStackHandler: IItemHandler
+    protected abstract var itemStackHandler: IItemHandler
 
     val inputs get() = _inputs.toList()
     val outputs get() = _outputs.toList()
@@ -158,7 +158,7 @@ abstract class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, Item
         this.markDirty()
     }
 
-    private inner class AutoIoHandler(
+    protected inner class AutoIoHandler(
         private val intervalTick: Int,
         private val amountPerAction: Int,
     ) {
