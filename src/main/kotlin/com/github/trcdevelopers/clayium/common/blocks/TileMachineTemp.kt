@@ -60,15 +60,12 @@ abstract class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, Item
     }
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
-        return capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing)
+        return capability === ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing)
     }
 
     override fun <T : Any?> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        return if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemStackHandler)
-        } else {
-            super.getCapability(capability, facing)
-        }
+        return if (capability === ITEM_HANDLER_CAPABILITY) ITEM_HANDLER_CAPABILITY.cast(itemStackHandler) else super.getCapability(capability, facing)
+
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
