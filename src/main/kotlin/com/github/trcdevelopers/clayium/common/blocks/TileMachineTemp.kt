@@ -20,7 +20,7 @@ import net.minecraftforge.common.util.Constants
  *
  * - has auto IO handler
  */
-class TileMachineTemp : TileEntity(), ITickable, ItemClayConfigTool.Listener {
+class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, ItemClayConfigTool.Listener {
 
     var tier: Int = -1
         private set
@@ -103,6 +103,14 @@ class TileMachineTemp : TileEntity(), ITickable, ItemClayConfigTool.Listener {
 
     override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean {
         return oldState.block != newSate.block
+    }
+
+    override fun isImporting(side: EnumFacing): Boolean {
+        return _inputs[side.index] != MachineIoMode.NONE
+    }
+
+    override fun isExporting(side: EnumFacing): Boolean {
+        return _outputs[side.index] != MachineIoMode.NONE
     }
 
     override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, worldIn: World, pos: BlockPos, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
