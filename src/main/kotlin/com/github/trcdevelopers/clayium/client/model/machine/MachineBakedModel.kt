@@ -4,9 +4,8 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.ALL
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.CE
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.NONE
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.SLOT_1
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.SLOT_2
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.FIRST
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.SECOND
 import com.google.common.collect.ImmutableList
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -103,20 +102,20 @@ class MachineBakedModel(
 
         private fun getInputLocation(mode: MachineIoMode): ResourceLocation? {
             return when (mode) {
-                SLOT_1 -> ResourceLocation("clayium:blocks/import_1")
-                SLOT_2 -> ResourceLocation("clayium:blocks/import_2")
+                FIRST -> ResourceLocation("clayium:blocks/import_1")
+                SECOND -> ResourceLocation("clayium:blocks/import_2")
                 ALL -> ResourceLocation("clayium:blocks/import")
                 CE -> ResourceLocation("clayium:blocks/import_energy")
-                NONE -> null
+                else -> null
             }
         }
 
         private fun getOutputLocation(mode: MachineIoMode): ResourceLocation? {
             return when (mode) {
-                SLOT_1 -> ResourceLocation("clayium:blocks/export_1")
-                SLOT_2 -> ResourceLocation("clayium:blocks/export_2")
+                FIRST -> ResourceLocation("clayium:blocks/export_1")
+                SECOND -> ResourceLocation("clayium:blocks/export_2")
                 ALL -> ResourceLocation("clayium:blocks/export")
-                CE, NONE -> null
+                else -> null
             }
         }
     }

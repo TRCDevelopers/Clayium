@@ -7,10 +7,17 @@ enum class MachineIoMode(
     val id: Int,
 ) : IStringSerializable {
     NONE(0),
-    SLOT_1(1),
-    SLOT_2(2),
+    FIRST(1),
+    SECOND(2),
     ALL(3),
     CE(4),
+    M_ALL(5),
+    M_1(6),
+    M_2(7),
+    M_3(8),
+    M_4(9),
+    M_5(10),
+    M_6(11),
     ;
 
     override fun getName(): String {
@@ -23,7 +30,7 @@ enum class MachineIoMode(
             return entries[id]
         }
 
-        val defaultStateList = ImmutableList.of(NONE, NONE, NONE, NONE, NONE, NONE)
+        val defaultStateList: ImmutableList<MachineIoMode> = ImmutableList.of(NONE, NONE, NONE, NONE, NONE, NONE)
     }
 
     object Input {
