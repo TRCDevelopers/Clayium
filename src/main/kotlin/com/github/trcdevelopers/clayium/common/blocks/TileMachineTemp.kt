@@ -44,13 +44,11 @@ abstract class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, Item
     val inputs get() = _inputs.toList()
     val outputs get() = _outputs.toList()
 
-    private fun initParams(tier: Int) {
+    protected open fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
         this.tier = tier
         //todo: proper values
         autoIoHandler = AutoIoHandler(20, 64)
-    }
 
-    private fun setValidIoModes(inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
         this.validInputModes = inputModes
         this.validOutputModes = outputModes
     }
@@ -79,12 +77,12 @@ abstract class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, Item
     }
 
     override fun readFromNBT(compound: NBTTagCompound) {
-        initParams(compound.getInteger("tier"))
-        currentFacing = EnumFacing.byIndex(compound.getInteger("facing"))
-        setValidIoModes(
+        initParams(
+            compound.getInteger("tier"),
             compound.getIntArray("validInputs").map { MachineIoMode.byId(it) },
             compound.getIntArray("validOutputs").map { MachineIoMode.byId(it) }
         )
+        currentFacing = EnumFacing.byIndex(compound.getInteger("facing"))
         for (side in EnumFacing.entries) {
             val i = side.index
             _inputs[i] = MachineIoMode.byId(compound.getIntArray("inputs")[i])
