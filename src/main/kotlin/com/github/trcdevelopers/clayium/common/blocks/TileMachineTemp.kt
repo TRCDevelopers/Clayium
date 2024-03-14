@@ -20,7 +20,7 @@ import net.minecraftforge.common.util.Constants
  *
  * - has auto IO handler
  */
-class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, ItemClayConfigTool.Listener {
+abstract class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, ItemClayConfigTool.Listener {
 
     var tier: Int = -1
         private set
@@ -144,15 +144,6 @@ class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, ItemClayConfi
         val next = validOutputModes[(validOutputModes.indexOf(current) + 1) % validOutputModes.size]
         _outputs[side.index] = next
         this.markDirty()
-    }
-
-    companion object {
-        fun create(tier: Int, validInputs: List<MachineIoMode>, validOutputs: List<MachineIoMode>): TileMachineTemp {
-            return TileMachineTemp().apply {
-                initParams(tier)
-                setValidIoModes(validInputs, validOutputs)
-            }
-        }
     }
 
     private inner class AutoIoHandler(
