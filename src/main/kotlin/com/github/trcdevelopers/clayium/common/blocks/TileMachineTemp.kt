@@ -10,6 +10,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
+import net.minecraft.util.ITickable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.util.Constants
@@ -19,7 +20,7 @@ import net.minecraftforge.common.util.Constants
  *
  * - has auto IO handler
  */
-class TileMachineTemp : TileEntity(), ItemClayConfigTool.Listener {
+class TileMachineTemp : TileEntity(), ITickable, ItemClayConfigTool.Listener {
 
     var tier: Int = -1
         private set
@@ -33,17 +34,24 @@ class TileMachineTemp : TileEntity(), ItemClayConfigTool.Listener {
     private lateinit var validInputModes: List<MachineIoMode>
     private lateinit var validOutputModes: List<MachineIoMode>
 
+    private lateinit var autoIoHandler: AutoIoHandler
 
     val inputs get() = _inputs.toList()
     val outputs get() = _outputs.toList()
 
     private fun initParams(tier: Int) {
         this.tier = tier
+        //todo: proper values
+        autoIoHandler = AutoIoHandler(20, 64)
     }
 
     private fun setValidIoModes(inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
         this.validInputModes = inputModes
         this.validOutputModes = outputModes
+    }
+
+    override fun update() {
+        autoIoHandler.doWork()
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
@@ -136,6 +144,15 @@ class TileMachineTemp : TileEntity(), ItemClayConfigTool.Listener {
                 initParams(tier)
                 setValidIoModes(validInputs, validOutputs)
             }
+        }
+    }
+
+    private inner class AutoIoHandler(
+        private val intervalTick: Int,
+        private val amountPerAction: Int,
+    ) {
+        fun doWork() {
+
         }
     }
 }
