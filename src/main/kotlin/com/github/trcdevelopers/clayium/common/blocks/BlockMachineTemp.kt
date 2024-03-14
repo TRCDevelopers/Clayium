@@ -25,7 +25,8 @@ import net.minecraft.world.chunk.Chunk
  */
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockMachineTemp(
-
+    val tier: Int,
+    val tileEntityProvider: (Int) -> TileMachineTemp,
 ): Block(Material.IRON) {
 
     init {
@@ -62,7 +63,7 @@ class BlockMachineTemp(
     }
 
     override fun hasTileEntity(state: IBlockState) = true
-    override fun createTileEntity(world: World, state: IBlockState) = TODO()
+    override fun createTileEntity(world: World, state: IBlockState) = tileEntityProvider(tier)
 
     override fun canCreatureSpawn(state: IBlockState, world: IBlockAccess, pos: BlockPos, type: EntityLiving.SpawnPlacementType) = false
 
