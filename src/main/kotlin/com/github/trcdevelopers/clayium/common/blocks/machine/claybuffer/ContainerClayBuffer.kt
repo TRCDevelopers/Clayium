@@ -14,7 +14,7 @@ class ContainerClayBuffer(
 ) : Container() {
 
     init {
-        ContainerUtils.getPlayerSlots(playerInv, 18 + tile.inventoryY * 18 + 12).forEach(this::addSlotToContainer)
+        ContainerUtils.getPlayerSlots(playerInv, 0, 18 + tile.inventoryY * 18 + 12).forEach(this::addSlotToContainer)
         val machineGuiSizeX = 176
         val machineGuiSizeY = 72
         val itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
