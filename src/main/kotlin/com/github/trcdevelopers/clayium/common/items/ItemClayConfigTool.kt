@@ -25,18 +25,18 @@ class ItemClayConfigTool(
         return typeWhenSneak != null
     }
 
-    override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
+    override fun onItemUseFirst(player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, hand: EnumHand): EnumActionResult {
         val typeToSend = (if (player.isSneaking) typeWhenSneak else type)
             ?: return EnumActionResult.PASS
 
-        val block = worldIn.getBlockState(pos).block
-        val tile = worldIn.getTileEntity(pos)
+        val block = world.getBlockState(pos).block
+        val tile = world.getTileEntity(pos)
         if (block is Listener || tile is Listener) {
-            (block as? Listener)?.onRightClicked(typeToSend, worldIn, pos, player, hand, facing, hitX, hitY, hitZ)
-            (tile as? Listener)?.onRightClicked(typeToSend, worldIn, pos, player, hand, facing, hitX, hitY, hitZ)
+            (block as? Listener)?.onRightClicked(typeToSend, world, pos, player, hand, side, hitX, hitY, hitZ)
+            (tile as? Listener)?.onRightClicked(typeToSend, world, pos, player, hand, side, hitX, hitY, hitZ)
             return EnumActionResult.SUCCESS
         }
-        return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
+        return super.onItemUseFirst(player, world, pos, side, hitX, hitY, hitZ, hand)
     }
 
     /**
@@ -48,7 +48,7 @@ class ItemClayConfigTool(
          */
         fun onRightClicked(
             toolType: ToolType,
-            worldIn: World,
+            world: World,
             pos: BlockPos,
             player: EntityPlayer,
             hand: EnumHand,
