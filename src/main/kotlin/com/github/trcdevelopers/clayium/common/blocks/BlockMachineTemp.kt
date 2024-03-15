@@ -2,6 +2,7 @@ package com.github.trcdevelopers.clayium.common.blocks
 
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.BlockMachineTemp.Companion.IS_PIPE
+import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedMachineIo
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -71,10 +72,13 @@ class BlockMachineTemp(
 
     companion object {
         val IS_PIPE = PropertyBool.create("is_pipe")
-
         /**
          * property name is "facing".
          */
         val FACING_HORIZONTAL = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL)
+
+        val INPUTS = UnlistedMachineIo("inputs")
+        val OUTPUTS = UnlistedMachineIo("outputs")
+        val CONNECTIONS = UnlistedMachineIo("connections")
     }
 }
