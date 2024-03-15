@@ -37,4 +37,11 @@ class TileEntityClayBuffer : TileMachineTemp() {
         }
     }
 
+    companion object {
+        fun createNew(tier: Int): TileEntityClayBuffer {
+            return TileEntityClayBuffer().apply {
+                initParams(tier, MachineIoMode.Input.BUFFER, MachineIoMode.Output.BUFFER)
+            }
+        }
+    }
 }
