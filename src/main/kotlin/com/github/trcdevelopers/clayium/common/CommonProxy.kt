@@ -1,9 +1,9 @@
 package com.github.trcdevelopers.clayium.common
 
+import com.github.trcdevelopers.clayium.common.blocks.BlockMachineTemp
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
-import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
 import com.github.trcdevelopers.clayium.common.blocks.machine.TileEntityMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
@@ -123,7 +123,7 @@ open class CommonProxy {
         }
     }
 
-    open fun registerMachineItemBlock(registry: IForgeRegistry<Item>, machineName: String, tier: Int, block: BlockMachine): Item {
+    open fun registerMachineItemBlock(registry: IForgeRegistry<Item>, machineName: String, tier: Int, block: BlockMachineTemp): Item {
         val itemBlock = ItemBlock(block).setRegistryName(block.registryName)
         registry.register(itemBlock)
         return itemBlock

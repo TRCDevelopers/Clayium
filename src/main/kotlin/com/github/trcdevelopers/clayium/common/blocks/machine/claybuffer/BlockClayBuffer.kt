@@ -2,8 +2,6 @@ package com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer
 
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
-import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine.Companion.CONNECTIONS
-import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine.Companion.IS_PIPE
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdevelopers.clayium.common.interfaces.ITiered
