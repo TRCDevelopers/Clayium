@@ -13,8 +13,10 @@ import net.minecraft.block.properties.PropertyDirection
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLiving
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.ChunkCache
 import net.minecraft.world.IBlockAccess
@@ -83,6 +85,18 @@ class BlockMachineTemp(
 
     override fun hasTileEntity(state: IBlockState) = true
     override fun createTileEntity(world: World, state: IBlockState) = tileEntityProvider(tier)
+
+    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        if (worldIn.isRemote) return true
+
+        val tile = worldIn.getTileEntity(pos)
+        return if (tile is TileMachineTemp) {
+            tile.openGui(playerIn, worldIn, pos)
+            true
+        } else {
+            false
+        }
+    }
 
     override fun canCreatureSpawn(state: IBlockState, world: IBlockAccess, pos: BlockPos, type: EntityLiving.SpawnPlacementType) = false
 
