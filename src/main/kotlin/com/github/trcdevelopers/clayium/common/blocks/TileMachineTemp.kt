@@ -46,6 +46,8 @@ abstract class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, Item
     val outputs get() = _outputs.toList()
     val connections get() = _connections.copyOf()
 
+    abstract fun openGui(player: EntityPlayer, world: World, pos: BlockPos)
+
     protected open fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
         this.tier = tier
         //todo: proper values
