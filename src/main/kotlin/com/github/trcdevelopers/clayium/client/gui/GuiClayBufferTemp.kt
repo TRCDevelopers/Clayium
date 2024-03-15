@@ -1,10 +1,8 @@
 package com.github.trcdevelopers.clayium.client.gui
 
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.blocks.GuiContainerClayBuffer
+import com.github.trcdevelopers.clayium.common.blocks.ContainerClayBufferTemp
 import com.github.trcdevelopers.clayium.common.blocks.TileEntityClayBuffer
-import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.ContainerClayBuffer
-import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.resources.I18n
@@ -16,7 +14,7 @@ class GuiClayBufferTemp(
     private val tier: Int,
     playerInv: IInventory,
     private val tile: TileEntityClayBuffer,
-) : GuiContainer(GuiContainerClayBuffer(playerInv, tile))  {
+) : GuiContainer(ContainerClayBufferTemp(playerInv, tile))  {
 
     init {
         this.ySize = 18 + tile.inventoryY * 18 + 94

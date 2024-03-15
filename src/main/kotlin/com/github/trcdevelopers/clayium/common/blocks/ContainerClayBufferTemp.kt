@@ -1,7 +1,6 @@
 package com.github.trcdevelopers.clayium.common.blocks
 
 import com.github.trcdevelopers.clayium.common.blocks.machine.ContainerUtils
-import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.Container
 import net.minecraft.inventory.IInventory
@@ -9,7 +8,7 @@ import net.minecraft.item.ItemStack
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.SlotItemHandler
 
-class GuiContainerClayBuffer(
+class ContainerClayBufferTemp(
     playerInv: IInventory,
     tile: TileEntityClayBuffer,
 ) : Container() {
