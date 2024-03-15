@@ -4,12 +4,10 @@ import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockEnergizedClay
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
-import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.BlockClayBuffer
 import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.BlockClayWorkTable
 import com.github.trcdevelopers.clayium.common.blocks.ores.BlockClayOre
 import com.github.trcdevelopers.clayium.common.blocks.ores.BlockDenseClayOre
 import com.google.common.collect.ImmutableMap
-import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap
 import net.minecraft.block.Block
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
@@ -28,16 +26,16 @@ object ClayiumBlocks {
     /**
      * buffer does not have facing property, so it is not a BlockMachine
      */
-    val BUFFER: Map<Int, BlockClayBuffer> = Int2ObjectLinkedOpenHashMap<BlockClayBuffer>().also {
-        for (tier in 4..13) {
-            val name = "clay_buffer_tier$tier"
-            it.put(tier, BlockClayBuffer(tier).apply {
-                setCreativeTab(Clayium.creativeTab)
-                setRegistryName(Clayium.MOD_ID, name)
-                setTranslationKey("${Clayium.MOD_ID}.$name")
-            })
-        }
-    }
+//    val BUFFER: Map<Int, BlockClayBuffer> = Int2ObjectLinkedOpenHashMap<BlockClayBuffer>().also {
+//        for (tier in 4..13) {
+//            val name = "clay_buffer_tier$tier"
+//            it.put(tier, BlockClayBuffer(tier).apply {
+//                setCreativeTab(Clayium.creativeTab)
+//                setRegistryName(Clayium.MOD_ID, name)
+//                setTranslationKey("${Clayium.MOD_ID}.$name")
+//            })
+//        }
+//    }
 
     val COMPRESSED_CLAY = createBlock("compressed_clay", BlockCompressedClay())
     val ENERGIZED_CLAY = createBlock("energized_clay", BlockEnergizedClay())
@@ -61,12 +59,12 @@ object ClayiumBlocks {
     fun registerItemBlockModels() {
         registerItemModel(CLAY_WORK_TABLE)
 
-        for ((tier, buffer) in BUFFER) {
-            ModelLoader.setCustomModelResourceLocation(
-                Item.getItemFromBlock(buffer), 0,
-                ModelResourceLocation("${Clayium.MOD_ID}:clay_buffer", "tier=$tier")
-            )
-        }
+//        for ((tier, buffer) in BUFFER) {
+//            ModelLoader.setCustomModelResourceLocation(
+//                Item.getItemFromBlock(buffer), 0,
+//                ModelResourceLocation("${Clayium.MOD_ID}:clay_buffer", "tier=$tier")
+//            )
+//        }
 
         registerItemModel(COMPRESSED_CLAY)
         registerItemModel(ENERGIZED_CLAY)
