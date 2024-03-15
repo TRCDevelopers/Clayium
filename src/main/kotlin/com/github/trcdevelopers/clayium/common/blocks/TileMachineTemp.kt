@@ -33,6 +33,7 @@ abstract class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, Item
 
     private val _inputs = MutableList(6) { MachineIoMode.NONE }
     private val _outputs = MutableList(6) { MachineIoMode.NONE }
+    private val _connections = BooleanArray(6)
 
     private lateinit var validInputModes: List<MachineIoMode>
     private lateinit var validOutputModes: List<MachineIoMode>
@@ -43,6 +44,7 @@ abstract class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, Item
 
     val inputs get() = _inputs.toList()
     val outputs get() = _outputs.toList()
+    val connections get() = _connections.copyOf()
 
     protected open fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
         this.tier = tier

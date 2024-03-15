@@ -2,6 +2,10 @@ package com.github.trcdevelopers.clayium.common.blocks
 
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.BlockMachineTemp.Companion.IS_PIPE
+import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
+import com.github.trcdevelopers.clayium.common.blocks.machine.TileEntityMachine
+import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedMachineIo
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
@@ -18,6 +22,7 @@ import net.minecraft.world.ChunkCache
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraft.world.chunk.Chunk
+import net.minecraftforge.common.property.IExtendedBlockState
 
 /**
  * Root of all Clayium BlockMachines.
@@ -36,7 +41,11 @@ class BlockMachineTemp(
         setHarvestLevel("pickaxe", 1)
         setSoundType(SoundType.METAL)
 
-        defaultState = defaultState
+        defaultState = (defaultState as IExtendedBlockState)
+            .withProperty(INPUTS, MachineIoMode.defaultStateList)
+            .withProperty(OUTPUTS, MachineIoMode.defaultStateList)
+            .withProperty(CONNECTIONS, BooleanArray(6))
+
             .withProperty(IS_PIPE, false).withProperty(FACING_HORIZONTAL, EnumFacing.NORTH)
     }
 
@@ -63,6 +72,17 @@ class BlockMachineTemp(
         }
     }
 
+    override fun getExtendedState(state: IBlockState, world: IBlockAccess, pos: BlockPos): IBlockState {
+        val ext = state as? IExtendedBlockState ?: return state
+        val te = if (world is ChunkCache) world.getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) else world.getTileEntity(pos)
+
+        return if (te is TileMachineTemp) {
+            ext.withProperty(INPUTS, te.inputs).withProperty(OUTPUTS, te.outputs).withProperty(CONNECTIONS, te.connections)
+        } else {
+            ext
+        }
+    }
+
     override fun hasTileEntity(state: IBlockState) = true
     override fun createTileEntity(world: World, state: IBlockState) = tileEntityProvider(tier)
 
@@ -79,6 +99,6 @@ class BlockMachineTemp(
 
         val INPUTS = UnlistedMachineIo("inputs")
         val OUTPUTS = UnlistedMachineIo("outputs")
-        val CONNECTIONS = UnlistedMachineIo("connections")
+        val CONNECTIONS = UnlistedBooleanArray("connections")
     }
 }
