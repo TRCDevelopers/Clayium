@@ -71,6 +71,10 @@ class BlockMachineTemp(
 
     companion object {
         val IS_PIPE = PropertyBool.create("is_pipe")
+
+        /**
+         * property name is "facing".
+         */
         val FACING_HORIZONTAL = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL)
     }
 }
