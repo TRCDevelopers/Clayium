@@ -1,7 +1,15 @@
-package com.github.trcdevelopers.clayium.common.blocks
+package com.github.trcdevelopers.clayium.common.blocks.machine.tile
 
+import com.github.trcdevelopers.clayium.common.Clayium
+import com.github.trcdevelopers.clayium.common.GuiHandler
+import com.github.trcdevelopers.clayium.common.blocks.TileMachineTemp
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
+import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemStackHandler
 
@@ -14,6 +22,10 @@ class TileEntityClayBuffer : TileMachineTemp() {
         private set
     var inventoryX: Int = 1
         private set
+
+    override fun openGui(player: EntityPlayer, world: World, pos: BlockPos) {
+        player.openGui(Clayium.INSTANCE, GuiHandler.CLAY_BUFFER, world, pos.x, pos.y, pos.z)
+    }
 
     override fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
         super.initParams(tier, inputModes, outputModes)
@@ -38,6 +50,9 @@ class TileEntityClayBuffer : TileMachineTemp() {
     }
 
     companion object {
+        @JvmStatic
+        private val ITEM_HANDLER_CAPABILITY: Capability<IItemHandler> = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+
         fun createNew(tier: Int): TileEntityClayBuffer {
             return TileEntityClayBuffer().apply {
                 initParams(tier, MachineIoMode.Input.BUFFER, MachineIoMode.Output.BUFFER)
