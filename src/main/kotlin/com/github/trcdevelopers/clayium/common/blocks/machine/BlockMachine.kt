@@ -46,9 +46,8 @@ class BlockMachine(
         setHarvestLevel("pickaxe", 1)
         setSoundType(SoundType.METAL)
 
-        defaultState = (blockState.baseState
-            .withProperty(IS_PIPE, false).withProperty(FACING_HORIZONTAL, EnumFacing.NORTH) as IExtendedBlockState)
-            .withProperty(INPUTS, MachineIoMode.defaultStateList).withProperty(OUTPUTS, MachineIoMode.defaultStateList).withProperty(CONNECTIONS, BooleanArray(6))
+        defaultState = blockState.baseState
+            .withProperty(IS_PIPE, false).withProperty(FACING_HORIZONTAL, EnumFacing.NORTH)
     }
 
     override fun createBlockState(): BlockStateContainer {
@@ -117,7 +116,7 @@ class BlockMachine(
         return if (te is TileMachine) {
             ext.withProperty(INPUTS, te.inputs).withProperty(OUTPUTS, te.outputs).withProperty(CONNECTIONS, te.connections)
         } else {
-            ext
+            ext.withProperty(INPUTS, MachineIoMode.defaultStateList).withProperty(OUTPUTS, MachineIoMode.defaultStateList).withProperty(CONNECTIONS, BooleanArray(6))
         }
     }
 
