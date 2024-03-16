@@ -2,7 +2,7 @@ package com.github.trcdevelopers.clayium.common.blocks.machine
 
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileEntityClayBuffer
+import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileSimpleMachine
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
@@ -21,7 +21,7 @@ object MachineBlocks {
         return machines[tier] ?: throw IllegalArgumentException("$name exists, but tier$tier does not. available tiers: ${machines.keys.joinToString()}")
     }
 
-    val CLAY_BUFFER = createMachine(Name.BUFFER, (4..13).toIntArray(), TileEntityClayBuffer::create)
+    val CLAY_BUFFER = createMachine(Name.BUFFER, (4..13).toIntArray(), TileClayBuffer::create)
 
     val BENDING_MACHINE = createMachine(Name.BENDING, intArrayOf(1, 2, 3, 4, 5, 6, 7, 9)) { tier ->
         TileSimpleMachine.create(tier)

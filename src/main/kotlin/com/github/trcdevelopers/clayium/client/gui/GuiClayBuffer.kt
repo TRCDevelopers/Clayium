@@ -2,7 +2,7 @@ package com.github.trcdevelopers.clayium.client.gui
 
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.ContainerClayBuffer
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileEntityClayBuffer
+import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileClayBuffer
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.resources.I18n
@@ -12,7 +12,7 @@ import net.minecraftforge.items.SlotItemHandler
 
 class GuiClayBuffer(
     playerInv: IInventory,
-    private val tile: TileEntityClayBuffer,
+    private val tile: TileClayBuffer,
 ) : GuiContainer(ContainerClayBuffer(playerInv, tile))  {
 
     init {

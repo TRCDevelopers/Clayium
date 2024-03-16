@@ -1,14 +1,14 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer
 
 import com.github.trcdevelopers.clayium.common.blocks.machine.ContainerClayium
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileEntityClayBuffer
+import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileClayBuffer
 import net.minecraft.inventory.IInventory
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.SlotItemHandler
 
 class ContainerClayBuffer(
     playerInv: IInventory,
-    tile: TileEntityClayBuffer,
+    tile: TileClayBuffer,
 ) : ContainerClayium(playerInv, 30 + tile.inventoryY * 18) {
     init {
         val machineGuiSizeX = 176

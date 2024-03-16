@@ -12,7 +12,7 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemStackHandler
 
-class TileEntityClayBuffer : TileMachine() {
+class TileClayBuffer : TileMachine() {
 
     override lateinit var itemStackHandler: IItemHandler
     override lateinit var autoIoHandler: AutoIoHandler
@@ -44,7 +44,7 @@ class TileEntityClayBuffer : TileMachine() {
             ConfigTierBalance.bufferAmount[tier],
         )
         this.itemStackHandler = object : ItemStackHandler(inventoryX * inventoryY) {
-            override fun onContentsChanged(slot: Int) = this@TileEntityClayBuffer.markDirty()
+            override fun onContentsChanged(slot: Int) = this@TileClayBuffer.markDirty()
         }
     }
 
@@ -52,8 +52,8 @@ class TileEntityClayBuffer : TileMachine() {
         @JvmStatic
         private val ITEM_HANDLER_CAPABILITY: Capability<IItemHandler> = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
 
-        fun create(tier: Int): TileEntityClayBuffer {
-            return TileEntityClayBuffer().apply {
+        fun create(tier: Int): TileClayBuffer {
+            return TileClayBuffer().apply {
                 initParams(tier, MachineIoMode.Input.BUFFER, MachineIoMode.Output.BUFFER)
             }
         }

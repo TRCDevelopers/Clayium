@@ -6,7 +6,7 @@ import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedCla
 import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
 import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileEntityClayBuffer
+import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileSimpleMachine
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
@@ -131,7 +131,7 @@ open class CommonProxy {
 
         GameRegistry.registerTileEntity(TileMachine::class.java, ResourceLocation(Clayium.MOD_ID, "tile_machine"))
         GameRegistry.registerTileEntity(TileSimpleMachine::class.java, ResourceLocation(Clayium.MOD_ID, "tile_simple_machine"))
-        GameRegistry.registerTileEntity(TileEntityClayBuffer::class.java, ResourceLocation(Clayium.MOD_ID, "tile_clay_buffer"))
+        GameRegistry.registerTileEntity(TileClayBuffer::class.java, ResourceLocation(Clayium.MOD_ID, "tile_clay_buffer"))
     }
 
     // todo: move this to item

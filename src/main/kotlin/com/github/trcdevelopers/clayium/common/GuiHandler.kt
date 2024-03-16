@@ -5,7 +5,7 @@ import com.github.trcdevelopers.clayium.client.gui.GuiClayWorkTable
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.ContainerClayBuffer
 import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.ClayWorktableContainer
 import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileEntityClayBuffer
+import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileClayBuffer
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
@@ -20,7 +20,7 @@ object GuiHandler : IGuiHandler {
         val tile = world.getTileEntity(BlockPos(x, y, z)) ?: return null
         return when (id) {
             CLAY_WORK_TABLE -> ClayWorktableContainer(player.inventory, tile as TileClayWorkTable)
-            CLAY_BUFFER -> ContainerClayBuffer(player.inventory, tile as TileEntityClayBuffer)
+            CLAY_BUFFER -> ContainerClayBuffer(player.inventory, tile as TileClayBuffer)
             else -> null
         }
     }
@@ -29,7 +29,7 @@ object GuiHandler : IGuiHandler {
         val tile = world.getTileEntity(BlockPos(x, y, z)) ?: return null
         return when (id) {
             CLAY_WORK_TABLE -> GuiClayWorkTable(player.inventory, tile as TileClayWorkTable)
-            CLAY_BUFFER -> GuiClayBuffer(player.inventory, (tile as TileEntityClayBuffer))
+            CLAY_BUFFER -> GuiClayBuffer(player.inventory, (tile as TileClayBuffer))
             else -> null
         }
     }
