@@ -2,12 +2,12 @@ package com.github.trcdevelopers.clayium.common
 
 import com.github.trcdevelopers.clayium.common.blocks.BlockMachineTemp
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
+import com.github.trcdevelopers.clayium.common.blocks.TileMachineTemp
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
-import com.github.trcdevelopers.clayium.common.blocks.machine.TileEntityMachine
-import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
+import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileEntityClayBuffer
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.ItemBlockTiered
@@ -52,9 +52,9 @@ open class CommonProxy {
         val registry: IForgeRegistry<Block> = event.registry
 
         registerBlock(registry, ClayiumBlocks.CLAY_WORK_TABLE)
-        for (buffer in ClayiumBlocks.BUFFER.values) {
-            registerBlock(registry, buffer)
-        }
+//        for (buffer in ClayiumBlocks.BUFFER.values) {
+//            registerBlock(registry, buffer)
+//        }
 
         registerBlock(registry, ClayiumBlocks.COMPRESSED_CLAY)
         registerBlock(registry, ClayiumBlocks.ENERGIZED_CLAY)
@@ -96,7 +96,7 @@ open class CommonProxy {
         registerItem(registry, ClayiumItems.CLAY_SHOVEL)
 
         registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ItemBlockTiered::create))
-        ClayiumBlocks.BUFFER.values.forEach { registry.register(createItemBlock(it, ItemBlockTiered::create)) }
+//        ClayiumBlocks.BUFFER.values.forEach { registry.register(createItemBlock(it, ItemBlockTiered::create)) }
 
         registry.register(createItemBlock(ClayiumBlocks.COMPRESSED_CLAY, ::ItemBlockCompressedClay))
         registry.register(createItemBlock(ClayiumBlocks.ENERGIZED_CLAY, ::ItemBlockEnergizedClay))
@@ -130,9 +130,10 @@ open class CommonProxy {
     }
 
     open fun registerTileEntities() {
-        GameRegistry.registerTileEntity(TileClayWorkTable::class.java, ResourceLocation(Clayium.MOD_ID, "TileClayWorkTable"))
-        GameRegistry.registerTileEntity(TileClayBuffer::class.java, ResourceLocation(Clayium.MOD_ID, "TileClayBuffer"))
-        GameRegistry.registerTileEntity(TileEntityMachine::class.java, ResourceLocation(Clayium.MOD_ID, "TileEntityMachine"))
+        GameRegistry.registerTileEntity(TileClayWorkTable::class.java, ResourceLocation(Clayium.MOD_ID, "tile_clay_work_table"))
+
+        GameRegistry.registerTileEntity(TileMachineTemp::class.java, ResourceLocation(Clayium.MOD_ID, "tile_machine"))
+        GameRegistry.registerTileEntity(TileEntityClayBuffer::class.java, ResourceLocation(Clayium.MOD_ID, "tile_clay_buffer"))
     }
 
     // todo: move this to item

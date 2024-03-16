@@ -2,7 +2,7 @@ package com.github.trcdevelopers.clayium.client.gui
 
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.ContainerClayBuffer
-import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
+import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileEntityClayBuffer
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.resources.I18n
@@ -11,9 +11,8 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.items.SlotItemHandler
 
 class GuiClayBuffer(
-    private val tier: Int,
     playerInv: IInventory,
-    private val tile: TileClayBuffer,
+    private val tile: TileEntityClayBuffer,
 ) : GuiContainer(ContainerClayBuffer(playerInv, tile))  {
 
     init {
@@ -21,7 +20,7 @@ class GuiClayBuffer(
     }
 
     override fun drawGuiContainerForegroundLayer(mouseX: Int, mouseY: Int) {
-        fontRenderer.drawString(I18n.format("tile.clayium.clay_buffer_tier$tier.name"), 6, 6, 0x404040)
+        fontRenderer.drawString(I18n.format("tile.clayium.clay_buffer_tier${tile.tier}.name"), 6, 6, 0x404040)
         fontRenderer.drawString(I18n.format("container.inventory"), 6, 18 + tile.inventoryY * 18, 0x404040)
     }
 

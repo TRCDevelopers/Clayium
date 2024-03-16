@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.common.blocks
 
 import com.github.trcdevelopers.clayium.common.blocks.machine.ContainerUtils
+import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileEntityClayBuffer
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.Container
 import net.minecraft.inventory.IInventory

@@ -1,8 +1,8 @@
 package com.github.trcdevelopers.clayium.client.tesr
 
-import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.client.ModelUtils
-import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.TileClayBuffer
+import com.github.trcdevelopers.clayium.common.Clayium
+import com.github.trcdevelopers.clayium.common.blocks.TileMachineTemp
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import net.minecraft.client.model.PositionTextureVertex
 import net.minecraft.client.model.TexturedQuad
@@ -14,7 +14,7 @@ import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 
-object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileClayBuffer>() {
+object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileMachineTemp>() {
 
     // offset to prevent z-fighting
     private const val CUBE_OFFSET = 0.01f
@@ -25,7 +25,7 @@ object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileClayBuffer>() {
     private val quads = EnumFacing.entries.map { createQuadsFor(it) }
 
     override fun render(
-        te: TileClayBuffer, x: Double, y: Double, z: Double,
+        te: TileMachineTemp, x: Double, y: Double, z: Double,
         partialTicks: Float,
         destroyStage: Int,
         alpha: Float
@@ -40,23 +40,24 @@ object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileClayBuffer>() {
 
         val connections = te.connections
 
-        this.bindTexture(importTexture)
-        val inputs = te.inputs
-        for (i in 0..5) {
-            if (!(connections[i] && inputs[i])) continue
-            for (quad in quads[i]) {
-                quad.draw(buf, 0.0625f)
-            }
-        }
-
-        this.bindTexture(exportTexture)
-        val outputs = te.outputs
-        for (i in 0..5) {
-            if (!(connections[i] && outputs[i])) continue
-            for (quad in quads[i]) {
-                quad.draw(buf, 0.0625f)
-            }
-        }
+        //todo
+//        this.bindTexture(importTexture)
+//        val inputs = te.inputs
+//        for (i in 0..5) {
+//            if (!(connections[i] && inputs[i])) continue
+//            for (quad in quads[i]) {
+//                quad.draw(buf, 0.0625f)
+//            }
+//        }
+//
+//        this.bindTexture(exportTexture)
+//        val outputs = te.outputs
+//        for (i in 0..5) {
+//            if (!(connections[i] && outputs[i])) continue
+//            for (quad in quads[i]) {
+//                quad.draw(buf, 0.0625f)
+//            }
+//        }
 
         GlStateManager.popMatrix()
     }
