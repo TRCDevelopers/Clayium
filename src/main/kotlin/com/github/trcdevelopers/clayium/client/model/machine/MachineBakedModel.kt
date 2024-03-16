@@ -58,23 +58,24 @@ open class MachineBakedModel(
         }
     }
 
-    final override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> {
+    override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> {
         if (state == null || side == null) return emptyList()
 
-        return getQuadsInternal(state, side, rand)
+        val quads = getBaseQuads(side)
+        addIoQuads(quads, state as IExtendedBlockState, side, rand)
+        return quads
     }
 
-    protected open fun getQuadsInternal(state: IBlockState, side: EnumFacing, rand: Long): MutableList<BakedQuad> {
-        val extState = state as IExtendedBlockState
-        val quads = mutableListOf(machineHullQuads[side.index])
+    protected fun getBaseQuads(side: EnumFacing): MutableList<BakedQuad> {
+        return mutableListOf(machineHullQuads[side.index])
+    }
 
-        val inputMode = extState.getValue(BlockMachine.INPUTS)[side.index]
+    protected open fun addIoQuads(quads: MutableList<BakedQuad>, state: IExtendedBlockState, side: EnumFacing, rand: Long) {
+        val inputMode = state.getValue(BlockMachine.INPUTS)[side.index]
         inputQuads[inputMode]?.let { quads.add(it[side.index]) }
 
-        val outputMode = extState.getValue(BlockMachine.OUTPUTS)[side.index]
+        val outputMode = state.getValue(BlockMachine.OUTPUTS)[side.index]
         outputQuads[outputMode]?.let { quads.add(it[side.index]) }
-
-        return quads
     }
 
     override fun isAmbientOcclusion() = true
