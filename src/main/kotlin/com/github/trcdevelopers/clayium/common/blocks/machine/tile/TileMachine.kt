@@ -52,8 +52,6 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
 
     protected open fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
         this.tier = tier
-        //todo: proper values
-        autoIoHandler = AutoIoHandler(20, 64)
 
         this.validInputModes = inputModes
         this.validOutputModes = outputModes
