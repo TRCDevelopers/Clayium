@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.items.ItemStackHandler
 
 /**
  * single input with single output
@@ -22,6 +23,8 @@ class TileSimpleMachine : TileMachine() {
 
     override fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
         super.initParams(tier, inputModes, outputModes)
+        //todo: temp implementation
+        itemStackHandler = ItemStackHandler(1)
         autoIoHandler = AutoIoHandler(
             ConfigTierBalance.machineInterval[tier],
             ConfigTierBalance.machineAmount[tier],
