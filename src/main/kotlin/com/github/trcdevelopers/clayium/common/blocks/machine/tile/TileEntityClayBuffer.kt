@@ -2,7 +2,6 @@ package com.github.trcdevelopers.clayium.common.blocks.machine.tile
 
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
-import com.github.trcdevelopers.clayium.common.blocks.TileMachineTemp
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
 import net.minecraft.entity.player.EntityPlayer
@@ -13,7 +12,7 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemStackHandler
 
-class TileEntityClayBuffer : TileMachineTemp() {
+class TileEntityClayBuffer : TileMachine() {
 
     override lateinit var itemStackHandler: IItemHandler
     override lateinit var autoIoHandler: AutoIoHandler

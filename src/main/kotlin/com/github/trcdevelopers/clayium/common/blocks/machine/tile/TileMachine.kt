@@ -1,5 +1,6 @@
-package com.github.trcdevelopers.clayium.common.blocks
+package com.github.trcdevelopers.clayium.common.blocks.machine.tile
 
+import com.github.trcdevelopers.clayium.common.blocks.IPipeConnectable
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import net.minecraft.block.state.IBlockState
@@ -24,7 +25,7 @@ import net.minecraftforge.items.IItemHandler
  *
  * - has auto IO handler
  */
-abstract class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, ItemClayConfigTool.Listener {
+abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClayConfigTool.Listener {
 
     var tier: Int = -1
         private set

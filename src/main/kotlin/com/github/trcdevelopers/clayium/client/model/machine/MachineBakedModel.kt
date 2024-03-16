@@ -1,6 +1,6 @@
 package com.github.trcdevelopers.clayium.client.model.machine
 
-import com.github.trcdevelopers.clayium.common.blocks.BlockMachineTemp
+import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.ALL
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.CE
@@ -71,10 +71,10 @@ class MachineBakedModel(
         val quads = mutableListOf(machineHullQuads[side.index])
 
         if (side == facing) quads.add(faceQuad)
-        val inputMode = extState.getValue(BlockMachineTemp.INPUTS)[side.index]
+        val inputMode = extState.getValue(BlockMachine.INPUTS)[side.index]
         inputQuads[inputMode]?.let { quads.add(it[side.index]) }
 
-        val outputMode = extState.getValue(BlockMachineTemp.OUTPUTS)[side.index]
+        val outputMode = extState.getValue(BlockMachine.OUTPUTS)[side.index]
         outputQuads[outputMode]?.let { quads.add(it[side.index]) }
 
         return ImmutableList.copyOf(quads)

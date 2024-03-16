@@ -4,9 +4,9 @@ import com.github.trcdevelopers.clayium.client.loader.MachineModelLoader
 import com.github.trcdevelopers.clayium.client.tesr.ClayBufferPipeIoRenderer
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.CommonProxy
-import com.github.trcdevelopers.clayium.common.blocks.BlockMachineTemp
+import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
-import com.github.trcdevelopers.clayium.common.blocks.TileMachineTemp
+import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
@@ -29,7 +29,7 @@ class ClientProxy : CommonProxy() {
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
         ModelLoaderRegistry.registerLoader(MachineModelLoader)
-        ClientRegistry.bindTileEntitySpecialRenderer(TileMachineTemp::class.java, ClayBufferPipeIoRenderer)
+        ClientRegistry.bindTileEntitySpecialRenderer(TileMachine::class.java, ClayBufferPipeIoRenderer)
     }
 
     override fun init(event: FMLInitializationEvent) {
@@ -49,7 +49,7 @@ class ClientProxy : CommonProxy() {
         ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(item.registryName!!, "inventory"))
     }
 
-    override fun registerMachineItemBlock(registry: IForgeRegistry<Item>, machineName: String, tier: Int, block: BlockMachineTemp): Item {
+    override fun registerMachineItemBlock(registry: IForgeRegistry<Item>, machineName: String, tier: Int, block: BlockMachine): Item {
         return super.registerMachineItemBlock(registry, machineName, tier, block).also {
             ModelLoader.setCustomModelResourceLocation(it, 0, ModelResourceLocation("${Clayium.MOD_ID}:$machineName", "tier=$tier"))
         }

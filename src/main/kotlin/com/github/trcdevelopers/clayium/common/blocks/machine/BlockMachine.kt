@@ -1,8 +1,8 @@
-package com.github.trcdevelopers.clayium.common.blocks
+package com.github.trcdevelopers.clayium.common.blocks.machine
 
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.blocks.BlockMachineTemp.Companion.IS_PIPE
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
+import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine.Companion.IS_PIPE
+import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedMachineIo
 import com.github.trcdevelopers.clayium.common.interfaces.ITiered
@@ -33,9 +33,9 @@ import net.minecraftforge.common.property.IExtendedBlockState
  * - can be piped (see [IS_PIPE])
  */
 @Suppress("OVERRIDE_DEPRECATION")
-class BlockMachineTemp(
+class BlockMachine(
     override val tier: Int,
-    val tileEntityProvider: (Int) -> TileMachineTemp,
+    val tileEntityProvider: (Int) -> TileMachine,
 ): Block(Material.IRON), ITiered {
 
     init {
@@ -45,7 +45,8 @@ class BlockMachineTemp(
         setSoundType(SoundType.METAL)
 
         defaultState = (blockState.baseState as IExtendedBlockState)
-            .withProperty(INPUTS, MachineIoMode.defaultStateList).withProperty(OUTPUTS, MachineIoMode.defaultStateList).withProperty(CONNECTIONS, BooleanArray(6))
+            .withProperty(INPUTS, MachineIoMode.defaultStateList).withProperty(OUTPUTS, MachineIoMode.defaultStateList).withProperty(
+                CONNECTIONS, BooleanArray(6))
             .withProperty(IS_PIPE, false).withProperty(FACING_HORIZONTAL, EnumFacing.NORTH)
     }
 
@@ -66,7 +67,7 @@ class BlockMachineTemp(
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
         if (state.getValue(IS_PIPE)) {
-            val connections = (source.getTileEntity(pos) as? TileMachineTemp)?.connections ?: return CENTER_AABB
+            val connections = (source.getTileEntity(pos) as? TileMachine)?.connections ?: return CENTER_AABB
             var aabb = CENTER_AABB
             for (i in 0..5) {
                 if (connections[i]) {
@@ -87,7 +88,7 @@ class BlockMachineTemp(
     ) {
         if (state.getValue(IS_PIPE)) {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, CENTER_AABB)
-            val connections = (worldIn.getTileEntity(pos) as? TileMachineTemp)?.connections
+            val connections = (worldIn.getTileEntity(pos) as? TileMachine)?.connections
                 ?: return super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState)
             for (i in 0..5) {
                 if (connections[i]) {
@@ -101,7 +102,7 @@ class BlockMachineTemp(
 
     override fun getActualState(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): IBlockState {
         val tile = if (worldIn is ChunkCache) worldIn.getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) else worldIn.getTileEntity(pos)
-        return if (tile is TileMachineTemp) {
+        return if (tile is TileMachine) {
             state.withProperty(FACING_HORIZONTAL, tile.currentFacing)
         } else {
             state
@@ -112,7 +113,7 @@ class BlockMachineTemp(
         val ext = state as? IExtendedBlockState ?: return state
         val te = if (world is ChunkCache) world.getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) else world.getTileEntity(pos)
 
-        return if (te is TileMachineTemp) {
+        return if (te is TileMachine) {
             ext.withProperty(INPUTS, te.inputs).withProperty(OUTPUTS, te.outputs).withProperty(CONNECTIONS, te.connections)
         } else {
             ext
@@ -126,7 +127,7 @@ class BlockMachineTemp(
         if (worldIn.isRemote) return true
 
         val tile = worldIn.getTileEntity(pos)
-        return if (tile is TileMachineTemp) {
+        return if (tile is TileMachine) {
             tile.openGui(playerIn, worldIn, pos)
             true
         } else {

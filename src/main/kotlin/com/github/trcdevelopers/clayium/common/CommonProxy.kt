@@ -1,13 +1,13 @@
 package com.github.trcdevelopers.clayium.common
 
-import com.github.trcdevelopers.clayium.common.blocks.BlockMachineTemp
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
-import com.github.trcdevelopers.clayium.common.blocks.TileMachineTemp
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
+import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
 import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileEntityClayBuffer
+import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.ItemBlockTiered
@@ -122,7 +122,7 @@ open class CommonProxy {
         }
     }
 
-    open fun registerMachineItemBlock(registry: IForgeRegistry<Item>, machineName: String, tier: Int, block: BlockMachineTemp): Item {
+    open fun registerMachineItemBlock(registry: IForgeRegistry<Item>, machineName: String, tier: Int, block: BlockMachine): Item {
         val itemBlock = ItemBlock(block).setRegistryName(block.registryName)
         registry.register(itemBlock)
         return itemBlock
@@ -131,7 +131,7 @@ open class CommonProxy {
     open fun registerTileEntities() {
         GameRegistry.registerTileEntity(TileClayWorkTable::class.java, ResourceLocation(Clayium.MOD_ID, "tile_clay_work_table"))
 
-        GameRegistry.registerTileEntity(TileMachineTemp::class.java, ResourceLocation(Clayium.MOD_ID, "tile_machine"))
+        GameRegistry.registerTileEntity(TileMachine::class.java, ResourceLocation(Clayium.MOD_ID, "tile_machine"))
         GameRegistry.registerTileEntity(TileEntityClayBuffer::class.java, ResourceLocation(Clayium.MOD_ID, "tile_clay_buffer"))
     }
 

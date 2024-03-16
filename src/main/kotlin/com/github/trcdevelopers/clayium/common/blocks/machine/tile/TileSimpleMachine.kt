@@ -1,6 +1,5 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine.tile
 
-import com.github.trcdevelopers.clayium.common.blocks.TileMachineTemp
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.math.BlockPos
@@ -12,7 +11,7 @@ import net.minecraftforge.items.IItemHandler
  *
  * todo: add recipe support, implement things
  */
-class TileSimpleMachine : TileMachineTemp() {
+class TileSimpleMachine : TileMachine() {
 
     override lateinit var autoIoHandler: AutoIoHandler
     override lateinit var itemStackHandler: IItemHandler

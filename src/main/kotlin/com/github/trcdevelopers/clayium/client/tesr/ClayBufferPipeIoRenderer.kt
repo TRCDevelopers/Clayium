@@ -2,7 +2,7 @@ package com.github.trcdevelopers.clayium.client.tesr
 
 import com.github.trcdevelopers.clayium.client.ModelUtils
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.blocks.TileMachineTemp
+import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import net.minecraft.client.model.PositionTextureVertex
 import net.minecraft.client.model.TexturedQuad
@@ -14,7 +14,7 @@ import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 
-object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileMachineTemp>() {
+object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileMachine>() {
 
     // offset to prevent z-fighting
     private const val CUBE_OFFSET = 0.01f
@@ -25,7 +25,7 @@ object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileMachineTemp>() {
     private val quads = EnumFacing.entries.map { createQuadsFor(it) }
 
     override fun render(
-        te: TileMachineTemp, x: Double, y: Double, z: Double,
+        te: TileMachine, x: Double, y: Double, z: Double,
         partialTicks: Float,
         destroyStage: Int,
         alpha: Float
