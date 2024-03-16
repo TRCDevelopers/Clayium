@@ -87,12 +87,18 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
             compound.getIntArray("validOutputs").map { MachineIoMode.byId(it) }
         )
         currentFacing = EnumFacing.byIndex(compound.getInteger("facing"))
+        val readInputs = compound.getIntArray("inputs")
+        val readOutputs = compound.getIntArray("outputs")
         for (side in EnumFacing.entries) {
             val i = side.index
-            _inputs[i] = MachineIoMode.byId(compound.getIntArray("inputs")[i])
-            _outputs[i] = MachineIoMode.byId(compound.getIntArray("outputs")[i])
+            _inputs[i] = MachineIoMode.byId(readInputs[i])
+            _outputs[i] = MachineIoMode.byId(readOutputs[i])
         }
         super.readFromNBT(compound)
+    }
+
+    override fun getUpdateTag(): NBTTagCompound {
+        return writeToNBT(NBTTagCompound())
     }
 
     override fun getUpdatePacket(): SPacketUpdateTileEntity {

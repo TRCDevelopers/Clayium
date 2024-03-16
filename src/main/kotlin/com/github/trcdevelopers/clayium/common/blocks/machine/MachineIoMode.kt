@@ -26,7 +26,6 @@ enum class MachineIoMode(
 
     companion object {
         fun byId(id: Int): MachineIoMode {
-            require(id in 0..4) { "Invalid id for MachineIoMode: $id" }
             return entries[id]
         }
 
