@@ -6,6 +6,8 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedMachineIo
 import com.github.trcdevelopers.clayium.common.interfaces.ITiered
+import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
+import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.PIPING
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -36,7 +38,7 @@ import net.minecraftforge.common.property.IExtendedBlockState
 class BlockMachine(
     override val tier: Int,
     val tileEntityProvider: (Int) -> TileMachine,
-): Block(Material.IRON), ITiered {
+): Block(Material.IRON), ITiered, ItemClayConfigTool.Listener {
 
     init {
         setCreativeTab(Clayium.creativeTab)
@@ -44,10 +46,9 @@ class BlockMachine(
         setHarvestLevel("pickaxe", 1)
         setSoundType(SoundType.METAL)
 
-        defaultState = (blockState.baseState as IExtendedBlockState)
-            .withProperty(INPUTS, MachineIoMode.defaultStateList).withProperty(OUTPUTS, MachineIoMode.defaultStateList).withProperty(
-                CONNECTIONS, BooleanArray(6))
-            .withProperty(IS_PIPE, false).withProperty(FACING_HORIZONTAL, EnumFacing.NORTH)
+        defaultState = (blockState.baseState
+            .withProperty(IS_PIPE, false).withProperty(FACING_HORIZONTAL, EnumFacing.NORTH) as IExtendedBlockState)
+            .withProperty(INPUTS, MachineIoMode.defaultStateList).withProperty(OUTPUTS, MachineIoMode.defaultStateList).withProperty(CONNECTIONS, BooleanArray(6))
     }
 
     override fun createBlockState(): BlockStateContainer {
@@ -132,6 +133,17 @@ class BlockMachine(
             true
         } else {
             false
+        }
+    }
+
+    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, world: World, pos: BlockPos, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+        if (world.isRemote) return
+        when (toolType) {
+            PIPING -> {
+                val state = world.getBlockState(pos)
+                world.setBlockState(pos, state.cycleProperty(IS_PIPE))
+            }
+            else -> { /* handled by tileEntity */ }
         }
     }
 

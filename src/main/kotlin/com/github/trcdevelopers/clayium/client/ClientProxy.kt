@@ -1,11 +1,12 @@
 package com.github.trcdevelopers.clayium.client
 
+import com.github.trcdevelopers.clayium.client.loader.FacedMachineModelLoader
 import com.github.trcdevelopers.clayium.client.loader.MachineModelLoader
 import com.github.trcdevelopers.clayium.client.tesr.ClayBufferPipeIoRenderer
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.CommonProxy
-import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
+import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -29,6 +30,7 @@ class ClientProxy : CommonProxy() {
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
         ModelLoaderRegistry.registerLoader(MachineModelLoader)
+        ModelLoaderRegistry.registerLoader(FacedMachineModelLoader)
         ClientRegistry.bindTileEntitySpecialRenderer(TileMachine::class.java, ClayBufferPipeIoRenderer)
     }
 

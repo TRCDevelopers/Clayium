@@ -131,8 +131,8 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         return _outputs[side.index] != MachineIoMode.NONE
     }
 
-    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, worldIn: World, pos: BlockPos, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
-        if (worldIn.isRemote) return
+    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, world: World, pos: BlockPos, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+        if (world.isRemote) return
         when (toolType) {
             ItemClayConfigTool.ToolType.PIPING -> { /* handled by Block */ }
             ItemClayConfigTool.ToolType.INSERTION -> toggleInput(facing)
@@ -143,11 +143,10 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
                 val from = this.currentFacing.horizontalIndex
                 val to = facing.horizontalIndex
                 val offset = from - to
-                TODO()
             }
             ItemClayConfigTool.ToolType.FILTER_REMOVER -> TODO()
         }
-        worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), Constants.BlockFlags.DEFAULT)
+        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), Constants.BlockFlags.DEFAULT)
     }
 
     private fun toggleInput(side: EnumFacing) {

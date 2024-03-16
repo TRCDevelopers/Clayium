@@ -6,7 +6,6 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.ALL
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.CE
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.FIRST
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.SECOND
-import com.google.common.collect.ImmutableList
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.BlockFaceUV
@@ -22,15 +21,12 @@ import net.minecraftforge.common.property.IExtendedBlockState
 import org.lwjgl.util.vector.Vector3f
 import java.util.function.Function
 
-class MachineBakedModel(
-    private val facing: EnumFacing,
-    faceLocation: ResourceLocation,
+open class MachineBakedModel(
     machineHullLocation: ResourceLocation,
     bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>,
 ) : IBakedModel {
 
     private val machineHull = bakedTextureGetter.apply(machineHullLocation)
-    private val face = bakedTextureGetter.apply(faceLocation)
     private val inputTextures: List<TextureAtlasSprite?> = MachineIoMode.entries.map {
         bakedTextureGetter.apply(getInputLocation(it) ?: return@map null)
     }
@@ -41,8 +37,6 @@ class MachineBakedModel(
     private val machineHullQuads = EnumFacing.VALUES.map {
         createQuad(it, machineHull)
     }
-
-    private val faceQuad = createQuad(facing, face)
 
     /**
      * value is null if the mode has no texture (i.e. NONE)
@@ -64,20 +58,23 @@ class MachineBakedModel(
         }
     }
 
-    override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> {
+    final override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> {
         if (state == null || side == null) return emptyList()
 
+        return getQuadsInternal(state, side, rand)
+    }
+
+    protected open fun getQuadsInternal(state: IBlockState, side: EnumFacing, rand: Long): MutableList<BakedQuad> {
         val extState = state as IExtendedBlockState
         val quads = mutableListOf(machineHullQuads[side.index])
 
-        if (side == facing) quads.add(faceQuad)
         val inputMode = extState.getValue(BlockMachine.INPUTS)[side.index]
         inputQuads[inputMode]?.let { quads.add(it[side.index]) }
 
         val outputMode = extState.getValue(BlockMachine.OUTPUTS)[side.index]
         outputQuads[outputMode]?.let { quads.add(it[side.index]) }
 
-        return ImmutableList.copyOf(quads)
+        return quads
     }
 
     override fun isAmbientOcclusion() = true
@@ -89,7 +86,7 @@ class MachineBakedModel(
     companion object {
         private val faceBakery = FaceBakery()
 
-        private fun createQuad(side: EnumFacing, texture: TextureAtlasSprite): BakedQuad {
+        fun createQuad(side: EnumFacing, texture: TextureAtlasSprite): BakedQuad {
             return faceBakery.makeBakedQuad(
                 Vector3f(0f, 0f, 0f),
                 Vector3f(16f, 16f, 16f),

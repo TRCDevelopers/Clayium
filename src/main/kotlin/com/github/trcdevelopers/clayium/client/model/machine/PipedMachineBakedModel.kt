@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.property.IExtendedBlockState
 import java.util.function.Function
 
-class PipedMachineBakedModel(
+open class PipedMachineBakedModel(
     machineHullLocation: ResourceLocation,
     bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>,
 ) : IBakedModel {
