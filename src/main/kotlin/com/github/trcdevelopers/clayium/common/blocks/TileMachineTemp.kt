@@ -4,6 +4,7 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
@@ -166,8 +167,69 @@ abstract class TileMachineTemp : TileEntity(), ITickable, IPipeConnectable, Item
         private val intervalTick: Int,
         private val amountPerAction: Int,
     ) {
-        fun doWork() {
 
+        private var ticked = 0
+
+        fun doWork() {
+            if (world.isRemote) return
+            if (ticked < intervalTick) {
+                ticked++
+                return
+            }
+
+            var remainingImportWork = this.amountPerAction
+            var remainingExportWork = this.amountPerAction
+            for (side in EnumFacing.entries) {
+                if (remainingImportWork > 0 && isImporting(side)) {
+                    remainingImportWork -= this.transferItemStack(
+                        from = world.getTileEntity(pos.offset(side))?.getCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                        to = itemStackHandler,
+                        amount = remainingImportWork,
+                    )
+                }
+                if (remainingExportWork > 0 && isExporting(side)) {
+                    remainingExportWork -= this.transferItemStack(
+                        from = itemStackHandler,
+                        to = world.getTileEntity(pos.offset(side))?.getCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                        amount = remainingExportWork,
+                    )
+                }
+            }
+        }
+
+        private fun transferItemStack(
+            from: IItemHandler,
+            to: IItemHandler,
+            amount: Int,
+        ) : Int {
+            var remainingWork = amount
+
+            for (i in 0..<from.slots) {
+                // get how many items can be inserted
+                val extractedStack = from.extractItem(i, remainingWork, true)
+                if (extractedStack.isEmpty) continue
+                val insertedItemCount = extractedStack.count - insertToInventory(to, extractedStack, true).count
+                if (insertedItemCount == 0) continue
+
+                // actually insert the items
+                insertToInventory(to, from.extractItem(i, insertedItemCount, false), false)
+                remainingWork -= insertedItemCount
+            }
+            return remainingWork
+        }
+
+        /**
+         * @param handler The target inventory of the insertion
+         * @param stack The stack to insert. This stack will not be modified.
+         * @return The remaining ItemStack that was not inserted (if the entire stack is accepted, then return an empty ItemStack)
+         */
+        private fun insertToInventory(handler: IItemHandler, stack: ItemStack, simulate: Boolean): ItemStack {
+            var remaining = stack.copy()
+            for (i in 0..<handler.slots) {
+                remaining = handler.insertItem(i, remaining, simulate)
+                if (remaining.isEmpty) break
+            }
+            return remaining
         }
     }
 
