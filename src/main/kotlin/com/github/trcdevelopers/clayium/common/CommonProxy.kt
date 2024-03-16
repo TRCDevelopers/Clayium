@@ -53,9 +53,6 @@ open class CommonProxy {
         val registry: IForgeRegistry<Block> = event.registry
 
         registerBlock(registry, ClayiumBlocks.CLAY_WORK_TABLE)
-        for (buffer in MachineBlocks.CLAY_BUFFER.values) {
-            registerBlock(registry, buffer)
-        }
 
         registerBlock(registry, ClayiumBlocks.COMPRESSED_CLAY)
         registerBlock(registry, ClayiumBlocks.ENERGIZED_CLAY)
