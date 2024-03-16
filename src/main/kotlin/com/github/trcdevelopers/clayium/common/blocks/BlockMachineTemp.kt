@@ -44,17 +44,15 @@ class BlockMachineTemp(
         setHarvestLevel("pickaxe", 1)
         setSoundType(SoundType.METAL)
 
-        defaultState = (defaultState as IExtendedBlockState)
-            .withProperty(INPUTS, MachineIoMode.defaultStateList)
-            .withProperty(OUTPUTS, MachineIoMode.defaultStateList)
-            .withProperty(CONNECTIONS, BooleanArray(6))
-
+        defaultState = (blockState.baseState as IExtendedBlockState)
+            .withProperty(INPUTS, MachineIoMode.defaultStateList).withProperty(OUTPUTS, MachineIoMode.defaultStateList).withProperty(CONNECTIONS, BooleanArray(6))
             .withProperty(IS_PIPE, false).withProperty(FACING_HORIZONTAL, EnumFacing.NORTH)
     }
 
     override fun createBlockState(): BlockStateContainer {
         return BlockStateContainer.Builder(this)
             .add(IS_PIPE, FACING_HORIZONTAL)
+            .add(INPUTS, OUTPUTS, CONNECTIONS)
             .build()
     }
 

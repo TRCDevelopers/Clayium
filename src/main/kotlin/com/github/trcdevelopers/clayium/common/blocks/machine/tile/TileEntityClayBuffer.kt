@@ -53,7 +53,7 @@ class TileEntityClayBuffer : TileMachineTemp() {
         @JvmStatic
         private val ITEM_HANDLER_CAPABILITY: Capability<IItemHandler> = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
 
-        fun createNew(tier: Int): TileEntityClayBuffer {
+        fun create(tier: Int): TileEntityClayBuffer {
             return TileEntityClayBuffer().apply {
                 initParams(tier, MachineIoMode.Input.BUFFER, MachineIoMode.Output.BUFFER)
             }
