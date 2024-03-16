@@ -40,8 +40,8 @@ class TileEntityClayBuffer : TileMachine() {
             else -> 1
         }
         this.autoIoHandler = AutoIoHandler(
-            ConfigTierBalance.bufferTransferIntervals[tier - 1],
-            ConfigTierBalance.bufferTransferAmount[tier - 1],
+            ConfigTierBalance.bufferInterval[tier],
+            ConfigTierBalance.bufferAmount[tier],
         )
         this.itemStackHandler = object : ItemStackHandler(inventoryX * inventoryY) {
             override fun onContentsChanged(slot: Int) = this@TileEntityClayBuffer.markDirty()
