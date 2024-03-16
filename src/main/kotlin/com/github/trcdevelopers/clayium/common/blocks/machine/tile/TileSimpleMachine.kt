@@ -2,6 +2,9 @@ package com.github.trcdevelopers.clayium.common.blocks.machine.tile
 
 import com.github.trcdevelopers.clayium.common.blocks.TileMachineTemp
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 import net.minecraftforge.items.IItemHandler
 
 /**
@@ -13,6 +16,10 @@ class TileSimpleMachine : TileMachineTemp() {
 
     override lateinit var autoIoHandler: AutoIoHandler
     override lateinit var itemStackHandler: IItemHandler
+
+    override fun openGui(player: EntityPlayer, world: World, pos: BlockPos) {
+        TODO("Not yet implemented")
+    }
 
     override fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
         super.initParams(tier, inputModes, outputModes)
