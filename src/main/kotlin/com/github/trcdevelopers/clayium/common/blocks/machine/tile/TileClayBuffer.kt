@@ -5,6 +5,7 @@ import com.github.trcdevelopers.clayium.common.GuiHandler
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
@@ -14,8 +15,9 @@ import net.minecraftforge.items.ItemStackHandler
 
 class TileClayBuffer : TileMachine() {
 
-    override lateinit var itemStackHandler: IItemHandler
     override lateinit var autoIoHandler: AutoIoHandler
+
+    private lateinit var itemStackHandler: ItemStackHandler
 
     var inventoryY: Int = 1
         private set
@@ -24,6 +26,10 @@ class TileClayBuffer : TileMachine() {
 
     override fun openGui(player: EntityPlayer, world: World, pos: BlockPos) {
         player.openGui(Clayium.INSTANCE, GuiHandler.CLAY_BUFFER, world, pos.x, pos.y, pos.z)
+    }
+
+    override fun getItemHandler(): IItemHandler {
+        return itemStackHandler
     }
 
     override fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
@@ -46,6 +52,16 @@ class TileClayBuffer : TileMachine() {
         this.itemStackHandler = object : ItemStackHandler(inventoryX * inventoryY) {
             override fun onContentsChanged(slot: Int) = this@TileClayBuffer.markDirty()
         }
+    }
+
+    override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
+        compound.setTag("inventory", itemStackHandler.serializeNBT())
+        return super.writeToNBT(compound)
+    }
+
+    override fun readFromNBT(compound: NBTTagCompound) {
+        itemStackHandler.deserializeNBT(compound.getCompoundTag("inventory"))
+        super.readFromNBT(compound)
     }
 
     companion object {

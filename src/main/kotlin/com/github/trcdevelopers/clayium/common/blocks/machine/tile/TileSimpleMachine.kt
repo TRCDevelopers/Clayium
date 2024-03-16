@@ -16,9 +16,14 @@ import net.minecraftforge.items.ItemStackHandler
 class TileSimpleMachine : TileMachine() {
 
     override lateinit var autoIoHandler: AutoIoHandler
-    override lateinit var itemStackHandler: IItemHandler
+
+    private lateinit var itemStackHandler: ItemStackHandler
 
     override fun openGui(player: EntityPlayer, world: World, pos: BlockPos) {
+    }
+
+    override fun getItemHandler(): IItemHandler {
+        return itemStackHandler
     }
 
     override fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {

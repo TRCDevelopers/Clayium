@@ -42,13 +42,12 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
 
     protected abstract var autoIoHandler: AutoIoHandler
 
-    protected abstract var itemStackHandler: IItemHandler
-
     val inputs get() = _inputs.toList()
     val outputs get() = _outputs.toList()
     val connections get() = _connections.copyOf()
 
     abstract fun openGui(player: EntityPlayer, world: World, pos: BlockPos)
+    abstract fun getItemHandler(): IItemHandler
 
     protected open fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
         this.tier = tier
@@ -66,7 +65,7 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
     }
 
     override fun <T : Any?> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        return if (capability === ITEM_HANDLER_CAPABILITY) ITEM_HANDLER_CAPABILITY.cast(itemStackHandler) else super.getCapability(capability, facing)
+        return if (capability === ITEM_HANDLER_CAPABILITY) ITEM_HANDLER_CAPABILITY.cast(getItemHandler()) else super.getCapability(capability, facing)
 
     }
 
@@ -188,13 +187,13 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
                 if (remainingImportWork > 0 && isImporting(side)) {
                     remainingImportWork -= this.transferItemStack(
                         from = world.getTileEntity(pos.offset(side))?.getCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
-                        to = itemStackHandler,
+                        to = getItemHandler(),
                         amount = remainingImportWork,
                     )
                 }
                 if (remainingExportWork > 0 && isExporting(side)) {
                     remainingExportWork -= this.transferItemStack(
-                        from = itemStackHandler,
+                        from = getItemHandler(),
                         to = world.getTileEntity(pos.offset(side))?.getCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
                         amount = remainingExportWork,
                     )
