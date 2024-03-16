@@ -23,20 +23,6 @@ object ClayiumBlocks {
 
     val CLAY_WORK_TABLE = createBlock("clay_work_table", BlockClayWorkTable())
 
-    /**
-     * buffer does not have facing property, so it is not a BlockMachine
-     */
-//    val BUFFER: Map<Int, BlockClayBuffer> = Int2ObjectLinkedOpenHashMap<BlockClayBuffer>().also {
-//        for (tier in 4..13) {
-//            val name = "clay_buffer_tier$tier"
-//            it.put(tier, BlockClayBuffer(tier).apply {
-//                setCreativeTab(Clayium.creativeTab)
-//                setRegistryName(Clayium.MOD_ID, name)
-//                setTranslationKey("${Clayium.MOD_ID}.$name")
-//            })
-//        }
-//    }
-
     val COMPRESSED_CLAY = createBlock("compressed_clay", BlockCompressedClay())
     val ENERGIZED_CLAY = createBlock("energized_clay", BlockEnergizedClay())
 
@@ -58,13 +44,6 @@ object ClayiumBlocks {
     @SideOnly(Side.CLIENT)
     fun registerItemBlockModels() {
         registerItemModel(CLAY_WORK_TABLE)
-
-//        for ((tier, buffer) in BUFFER) {
-//            ModelLoader.setCustomModelResourceLocation(
-//                Item.getItemFromBlock(buffer), 0,
-//                ModelResourceLocation("${Clayium.MOD_ID}:clay_buffer", "tier=$tier")
-//            )
-//        }
 
         registerItemModel(COMPRESSED_CLAY)
         registerItemModel(ENERGIZED_CLAY)
