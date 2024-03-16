@@ -5,6 +5,7 @@ import com.github.trcdevelopers.clayium.common.blocks.BlockMachineTemp.Companion
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedMachineIo
+import com.github.trcdevelopers.clayium.common.interfaces.ITiered
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -33,9 +34,9 @@ import net.minecraftforge.common.property.IExtendedBlockState
  */
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockMachineTemp(
-    val tier: Int,
+    override val tier: Int,
     val tileEntityProvider: (Int) -> TileMachineTemp,
-): Block(Material.IRON) {
+): Block(Material.IRON), ITiered {
 
     init {
         setCreativeTab(Clayium.creativeTab)
