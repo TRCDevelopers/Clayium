@@ -117,6 +117,7 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
                 _outputs[i] = MachineIoMode.byId(tagOutputs[i])
             }
         }
+        world.markBlockRangeForRenderUpdate(pos, pos)
     }
 
     override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean {
