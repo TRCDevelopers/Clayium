@@ -60,8 +60,8 @@ class TileClayBuffer : TileMachine() {
     }
 
     override fun readFromNBT(compound: NBTTagCompound) {
-        itemStackHandler.deserializeNBT(compound.getCompoundTag("inventory"))
         super.readFromNBT(compound)
+        itemStackHandler.deserializeNBT(compound.getCompoundTag("inventory"))
     }
 
     companion object {

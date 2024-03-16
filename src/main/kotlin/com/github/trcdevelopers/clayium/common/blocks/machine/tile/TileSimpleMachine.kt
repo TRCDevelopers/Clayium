@@ -3,6 +3,7 @@ package com.github.trcdevelopers.clayium.common.blocks.machine.tile
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.items.IItemHandler
@@ -34,6 +35,16 @@ class TileSimpleMachine : TileMachine() {
             ConfigTierBalance.machineInterval[tier],
             ConfigTierBalance.machineAmount[tier],
         )
+    }
+
+    override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
+        compound.setTag("inventory", itemStackHandler.serializeNBT())
+        return super.writeToNBT(compound)
+    }
+
+    override fun readFromNBT(compound: NBTTagCompound) {
+        super.readFromNBT(compound)
+        itemStackHandler.deserializeNBT(compound.getCompoundTag("inventory"))
     }
 
     companion object {
