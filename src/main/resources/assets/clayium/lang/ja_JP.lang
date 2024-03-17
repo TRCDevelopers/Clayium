@@ -114,6 +114,21 @@ material.clayium.saltpeter=硝石
 material.clayium.sodium_carbonate=炭酸ナトリウム
 material.clayium.sulfur=硫黄
 
+machine.clayium.tier1=粘土
+machine.clayium.tier2=高密度粘土
+machine.clayium.tier3=簡易
+#日本語では、tier4は接頭辞なしにそのまま機械名がくる。
+machine.clayium.tier4=
+machine.clayium.tier5=発展
+machine.clayium.tier6=精密
+machine.clayium.tier7=粘土鋼
+machine.clayium.tier8=クレイウム
+machine.clayium.tier9=究極
+machine.clayium.tier10=反物質
+machine.clayium.tier11=純反物質
+machine.clayium.tier12=OEC
+machine.clayium.tier13=OPA
+
 recipe.clayium.ClayWorkTable=粘土作業台
 
 recipe.clayium.BendingMachine=粘土プレート作成機
@@ -218,15 +233,8 @@ tile.clayium.blockEnergeticClayCondenser.name=エネルギー粘土凝縮機 Mk 
 tile.clayium.blockEnergeticClayCondenser.tooltip.line1=初めてのエネルギー粘土
 tile.clayium.blockEnergeticClayCondenserMK2.name=エネルギー粘土凝縮機 Mk II
 
-tile.clayium.blockClayBendingMachine.name=粘土プレート作成機
-tile.clayium.blockClayBendingMachine.tooltip.line1=初めての機械
-tile.clayium.blockDenseClayBendingMachine.name=高密度粘土プレート作成機
-tile.clayium.blockSimpleBendingMachine.name=簡易プレート作成機
-tile.clayium.blockBasicBendingMachine.name=プレート作成機
-tile.clayium.blockAdvancedBendingMachine.name=発展プレート作成機
-tile.clayium.blockPrecisionBendingMachine.name=精密プレート作成機
-tile.clayium.blockClaySteelBendingMachine.name=粘土鋼プレート作成機
-tile.clayium.blockUltimateBendingMachine.name=究極プレート作成機
+#tile.clayium.blockClayBendingMachine.tooltip.line1=初めての機械
+tile.clayium.bending_machine=%sプレート作成機
 
 tile.clayium.blockClayWireDrawingMachine.name=粘土ワイヤー圧延機
 tile.clayium.blockDenseClayWireDrawingMachine.name=高密度粘土ワイヤー圧延機
@@ -300,16 +308,7 @@ tile.clayium.blockClayiumSmelter.name=クレイウム精錬機
 tile.clayium.blockUltimateSmelter.name=究極精錬機
 tooltip.clayium.Smelter.line1=粘土エネルギーで動くかまど
 
-tile.clayium.clay_buffer_tier4.name=バッファー
-tile.clayium.clay_buffer_tier5.name=発展バッファー
-tile.clayium.clay_buffer_tier6.name=精密バッファー
-tile.clayium.clay_buffer_tier7.name=粘土鋼バッファー
-tile.clayium.clay_buffer_tier8.name=クレイウムバッファー
-tile.clayium.clay_buffer_tier9.name=究極バッファー
-tile.clayium.clay_buffer_tier10.name=反物質バッファー
-tile.clayium.clay_buffer_tier11.name=純反物質バッファー
-tile.clayium.clay_buffer_tier12.name=OEC バッファー
-tile.clayium.clay_buffer_tier13.name=OPA バッファー
+tile.clayium.clay_buffer=%sバッファー
 tooltip.clayium.buffer.line1=いわゆるアイテムパイプ
 
 tile.clayium.blockBasicMultitrackBuffer.name=複線バッファー

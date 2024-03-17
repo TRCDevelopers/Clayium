@@ -40,6 +40,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
  */
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockMachine(
+    private val machineName: String,
     override val tier: Int,
     val tileEntityProvider: (Int) -> TileMachine,
 ): Block(Material.IRON), ITiered, ItemClayConfigTool.Listener {

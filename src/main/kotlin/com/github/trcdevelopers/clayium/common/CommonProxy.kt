@@ -18,8 +18,10 @@ import com.github.trcdevelopers.clayium.common.recipe.loader.CRecipeLoader
 import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import com.github.trcdevelopers.clayium.common.worldgen.ClayOreGenerator
 import net.minecraft.block.Block
+import net.minecraft.client.resources.I18n
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
+import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.RegistryEvent
@@ -121,8 +123,13 @@ open class CommonProxy {
     }
 
     open fun registerMachineItemBlock(registry: IForgeRegistry<Item>, machineName: String, tier: Int, block: BlockMachine): Item {
-        val itemBlock = createItemBlock(block, ::ItemBlockTiered)
-        registry.register(itemBlock)
+        val itemBlock = object : ItemBlockTiered<BlockMachine>(block) {
+            override fun getItemStackDisplayName(stack: ItemStack): String {
+                return I18n.format("tile.clayium.${machineName}", I18n.format("machine.clayium.tier${tier}"))
+            }
+        }
+
+        registry.register(itemBlock.setRegistryName(block.registryName!!))
         return itemBlock
     }
 

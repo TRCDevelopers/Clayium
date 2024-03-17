@@ -1,8 +1,8 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine
 
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileClayBuffer
+import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileSimpleMachine
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
@@ -30,7 +30,7 @@ object MachineBlocks {
     private fun createMachine(name: String, tiers: IntArray, tileEntityProvider: (Int) -> TileMachine): Map<Int, BlockMachine> {
         val map = Int2ObjectLinkedOpenHashMap<BlockMachine>()
         for (tier in tiers) {
-            val block = BlockMachine(tier, tileEntityProvider).apply { setRegistryName(Clayium.MOD_ID, "${name}_tier$tier") }
+            val block = BlockMachine(name, tier, tileEntityProvider).apply { setRegistryName(Clayium.MOD_ID, "${name}_tier$tier") }
             map.put(tier, block)
         }
         _machines[name] = map

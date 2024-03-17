@@ -12,7 +12,7 @@ import net.minecraftforge.common.IRarity
  * [ItemBlock.getForgeRarity] doesn't override [Item.getForgeRarity] because [Block] doesn't have a rarity.
  * So this class will address that issue.
  */
-class ItemBlockTiered<T>(block: T) : ItemBlock(block), ITiered
+open class ItemBlockTiered<T>(block: T) : ItemBlock(block), ITiered
         where T : Block,
               T : ITiered {
     override val tier: Int = block.tier
