@@ -93,7 +93,7 @@ open class CommonProxy {
         registerItem(registry, ClayiumItems.CLAY_PICKAXE)
         registerItem(registry, ClayiumItems.CLAY_SHOVEL)
 
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ItemBlockTiered::create))
+        registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ::ItemBlockTiered))
 
         registry.register(createItemBlock(ClayiumBlocks.COMPRESSED_CLAY, ::ItemBlockCompressedClay))
         registry.register(createItemBlock(ClayiumBlocks.ENERGIZED_CLAY, ::ItemBlockEnergizedClay))
@@ -121,7 +121,7 @@ open class CommonProxy {
     }
 
     open fun registerMachineItemBlock(registry: IForgeRegistry<Item>, machineName: String, tier: Int, block: BlockMachine): Item {
-        val itemBlock = ItemBlock(block).setRegistryName(block.registryName)
+        val itemBlock = createItemBlock(block, ::ItemBlockTiered)
         registry.register(itemBlock)
         return itemBlock
     }
