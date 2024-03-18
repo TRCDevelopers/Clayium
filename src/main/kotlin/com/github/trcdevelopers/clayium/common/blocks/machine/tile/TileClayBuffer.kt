@@ -76,10 +76,12 @@ class TileClayBuffer : TileMachine() {
 
     override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, world: World, pos: BlockPos, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         if (!world.isRemote && toolType == ItemClayConfigTool.ToolType.ROTATION && facing.axis == EnumFacing.Axis.Y) {
-            val oldInputs = _inputs
+            val oldInputs = _inputs.toList()
+            val oldOutputs = _outputs.toList()
             for (side in EnumFacing.entries) {
                 val rotatedSide = side.rotateAround(EnumFacing.Axis.X)
                 _inputs[rotatedSide.index] = oldInputs[side.index]
+                _outputs[rotatedSide.index] = oldOutputs[side.index]
             }
         } else {
             super.onRightClicked(toolType, world, pos, player, hand, facing, hitX, hitY, hitZ)
