@@ -161,11 +161,26 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
             ItemClayConfigTool.ToolType.INSERTION -> toggleInput(facing)
             ItemClayConfigTool.ToolType.EXTRACTION -> toggleOutput(facing)
             ItemClayConfigTool.ToolType.ROTATION -> {
-                // facing is handled by Block
                 if (facing.axis.isVertical) return
-                val from = this.currentFacing.horizontalIndex
-                val to = facing.horizontalIndex
-                val offset = from - to
+                val oldInputs = _inputs.toList()
+                val oldOutputs = _outputs.toList()
+                if (currentFacing == facing) {
+                    for (side in EnumFacing.HORIZONTALS) {
+                        val rotatedSide = side.opposite
+                        _inputs[rotatedSide.index] = oldInputs[side.index]
+                        _outputs[rotatedSide.index] = oldOutputs[side.index]
+                    }
+                } else {
+                    var rotatedFace = currentFacing
+                    while (rotatedFace != currentFacing) {
+                        rotatedFace = rotatedFace.rotateY()
+                        for (side in EnumFacing.HORIZONTALS) {
+                            val rotatedSide = side.rotateY()
+                            _inputs[rotatedSide.index] = oldInputs[side.index]
+                            _outputs[rotatedSide.index] = oldOutputs[side.index]
+                        }
+                    }
+                }
             }
             ItemClayConfigTool.ToolType.FILTER_REMOVER -> TODO()
         }
