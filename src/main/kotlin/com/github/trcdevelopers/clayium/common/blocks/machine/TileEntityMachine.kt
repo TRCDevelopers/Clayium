@@ -102,19 +102,19 @@ class TileEntityMachine : TileEntity(), ItemClayConfigTool.Listener {
         return oldState.block != newSate.block
     }
 
-    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, world: World, pos: BlockPos, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
-        if (world.isRemote) return
+    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, worldIn: World, posIn: BlockPos, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+        if (worldIn.isRemote) return
         when (toolType) {
             ItemClayConfigTool.ToolType.PIPING -> { /* handled by Block */ }
-            ItemClayConfigTool.ToolType.INSERTION -> toggleInput(facing)
-            ItemClayConfigTool.ToolType.EXTRACTION -> toggleOutput(facing)
+            ItemClayConfigTool.ToolType.INSERTION -> toggleInput(clickedSide)
+            ItemClayConfigTool.ToolType.EXTRACTION -> toggleOutput(clickedSide)
             ItemClayConfigTool.ToolType.ROTATION -> {
                 // facing is handled by Block
                 //todo
             }
             ItemClayConfigTool.ToolType.FILTER_REMOVER -> TODO()
         }
-        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), Constants.BlockFlags.DEFAULT)
+        worldIn.notifyBlockUpdate(posIn, worldIn.getBlockState(posIn), worldIn.getBlockState(posIn), Constants.BlockFlags.DEFAULT)
     }
 
     private fun toggleInput(side: EnumFacing) {

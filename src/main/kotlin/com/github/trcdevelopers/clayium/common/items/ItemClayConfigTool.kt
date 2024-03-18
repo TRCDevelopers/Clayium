@@ -48,11 +48,11 @@ class ItemClayConfigTool(
          */
         fun onRightClicked(
             toolType: ToolType,
-            world: World,
-            pos: BlockPos,
+            worldIn: World,
+            posIn: BlockPos,
             player: EntityPlayer,
             hand: EnumHand,
-            facing: EnumFacing,
+            clickedSide: EnumFacing,
             hitX: Float, hitY: Float, hitZ: Float
         )
     }

@@ -148,13 +148,13 @@ class BlockMachine(
         }
     }
 
-    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, world: World, pos: BlockPos, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
-        if (world.isRemote) return
+    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, worldIn: World, posIn: BlockPos, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+        if (worldIn.isRemote) return
         when (toolType) {
             PIPING -> {
-                val state = world.getBlockState(pos)
-                world.setBlockState(pos, state.cycleProperty(IS_PIPE))
-                world.markBlockRangeForRenderUpdate(pos, pos)
+                val state = worldIn.getBlockState(posIn)
+                worldIn.setBlockState(posIn, state.cycleProperty(IS_PIPE))
+                worldIn.markBlockRangeForRenderUpdate(posIn, posIn)
             }
             else -> { /* handled by tileEntity */ }
         }

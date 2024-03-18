@@ -74,8 +74,8 @@ class TileClayBuffer : TileMachine() {
         itemStackHandler.deserializeNBT(compound.getCompoundTag("inventory"))
     }
 
-    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, world: World, pos: BlockPos, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
-        if (!world.isRemote && toolType == ItemClayConfigTool.ToolType.ROTATION && facing.axis == EnumFacing.Axis.Y) {
+    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, worldIn: World, posIn: BlockPos, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+        if (!worldIn.isRemote && toolType == ItemClayConfigTool.ToolType.ROTATION && clickedSide.axis == EnumFacing.Axis.Y) {
             val oldInputs = _inputs.toList()
             val oldOutputs = _outputs.toList()
             for (side in EnumFacing.entries) {
@@ -83,9 +83,9 @@ class TileClayBuffer : TileMachine() {
                 _inputs[rotatedSide.index] = oldInputs[side.index]
                 _outputs[rotatedSide.index] = oldOutputs[side.index]
             }
-            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3)
+            worldIn.notifyBlockUpdate(posIn, worldIn.getBlockState(posIn), worldIn.getBlockState(posIn), 3)
         } else {
-            super.onRightClicked(toolType, world, pos, player, hand, facing, hitX, hitY, hitZ)
+            super.onRightClicked(toolType, worldIn, posIn, player, hand, clickedSide, hitX, hitY, hitZ)
         }
     }
 

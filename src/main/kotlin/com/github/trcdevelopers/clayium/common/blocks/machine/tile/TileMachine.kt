@@ -155,17 +155,16 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         return _outputs[side.index] != MachineIoMode.NONE
     }
 
-    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, world: World, pos: BlockPos, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
-        if (world.isRemote) return
-        val oldState = world.getBlockState(pos)
-        var newState = oldState
+    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, worldIn: World, posIn: BlockPos, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+        if (worldIn.isRemote) return
+        val oldState = worldIn.getBlockState(posIn)
         when (toolType) {
             ItemClayConfigTool.ToolType.PIPING -> { /* handled by Block */ }
-            ItemClayConfigTool.ToolType.INSERTION -> toggleInput(facing)
-            ItemClayConfigTool.ToolType.EXTRACTION -> toggleOutput(facing)
+            ItemClayConfigTool.ToolType.INSERTION -> toggleInput(clickedSide)
+            ItemClayConfigTool.ToolType.EXTRACTION -> toggleOutput(clickedSide)
             ItemClayConfigTool.ToolType.ROTATION -> {
-                if (facing.axis.isVertical) return
-                if (currentFacing == facing) {
+                if (clickedSide.axis.isVertical) return
+                if (currentFacing == clickedSide) {
                     currentFacing = currentFacing.opposite
                     val oldInputs = _inputs.toList()
                     val oldOutputs = _outputs.toList()
@@ -175,7 +174,7 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
                         _outputs[rotatedSide.index] = oldOutputs[side.index]
                     }
                 } else {
-                    while (currentFacing != facing) {
+                    while (currentFacing != clickedSide) {
                         val oldInputs = _inputs.toList()
                         val oldOutputs = _outputs.toList()
                         currentFacing = currentFacing.rotateY()
@@ -190,7 +189,7 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
             }
             ItemClayConfigTool.ToolType.FILTER_REMOVER -> TODO()
         }
-        world.notifyBlockUpdate(pos, oldState, newState, Constants.BlockFlags.DEFAULT)
+        worldIn.notifyBlockUpdate(posIn, oldState, oldState, Constants.BlockFlags.DEFAULT)
     }
 
     fun onNeighborChange(side: EnumFacing) {
