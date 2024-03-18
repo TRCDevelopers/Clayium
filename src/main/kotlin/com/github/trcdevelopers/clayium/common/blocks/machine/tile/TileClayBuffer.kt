@@ -4,8 +4,11 @@ import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
@@ -52,6 +55,11 @@ class TileClayBuffer : TileMachine() {
         this.itemStackHandler = object : ItemStackHandler(inventoryX * inventoryY) {
             override fun onContentsChanged(slot: Int) = this@TileClayBuffer.markDirty()
         }
+    }
+
+    override fun onBlockPlaced(player: EntityLivingBase, stack: ItemStack) {
+        super.onBlockPlaced(player, stack)
+        toggleInput(EnumFacing.getDirectionFromEntityLiving(pos, player).opposite)
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {

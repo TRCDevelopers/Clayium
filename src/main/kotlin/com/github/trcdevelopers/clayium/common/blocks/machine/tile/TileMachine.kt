@@ -8,6 +8,7 @@ import com.github.trcdevelopers.clayium.common.util.NBTTypeUtils.hasByteArray
 import com.github.trcdevelopers.clayium.common.util.NBTTypeUtils.hasInt
 import com.github.trcdevelopers.clayium.common.util.NBTTypeUtils.hasIntArray
 import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -58,6 +59,10 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
 
         this.validInputModes = inputModes
         this.validOutputModes = outputModes
+    }
+
+    open fun onBlockPlaced(player: EntityLivingBase, stack: ItemStack) {
+        this.currentFacing = player.horizontalFacing.opposite
     }
 
     override fun update() {
@@ -169,7 +174,7 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         this.refreshConnection(side)
     }
 
-    private fun toggleInput(side: EnumFacing) {
+    protected fun toggleInput(side: EnumFacing) {
         val current = _inputs[side.index]
         val next = validInputModes[(validInputModes.indexOf(current) + 1) % validInputModes.size]
         _inputs[side.index] = next
@@ -177,7 +182,7 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         this.markDirty()
     }
 
-    private fun toggleOutput(side: EnumFacing) {
+    protected fun toggleOutput(side: EnumFacing) {
         val current = _outputs[side.index]
         val next = validOutputModes[(validOutputModes.indexOf(current) + 1) % validOutputModes.size]
         _outputs[side.index] = next
