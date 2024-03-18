@@ -2,6 +2,20 @@ package com.github.trcdevelopers.clayium.client.tesr
 
 import com.github.trcdevelopers.clayium.client.ModelUtils
 import com.github.trcdevelopers.clayium.common.Clayium
+import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.ALL
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.CE
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.FIRST
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.M_1
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.M_2
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.M_3
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.M_4
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.M_5
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.M_6
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.M_ALL
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.NONE
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.SECOND
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import net.minecraft.client.model.PositionTextureVertex
@@ -19,10 +33,40 @@ object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileMachine>() {
     // offset to prevent z-fighting
     private const val CUBE_OFFSET = 0.01f
 
-    private val importTexture = ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_p.png")
-    private val exportTexture = ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_p.png")
+    private val inputTextures: Map<MachineIoMode, ResourceLocation?> = MachineIoMode.entries.associateWith {
+        when (it) {
+            NONE -> null
+            FIRST -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_1_p.png")
+            SECOND -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_2_p.png")
+            ALL -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_p.png")
+            CE -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_energy_p.png")
+            M_ALL -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_m0_p.png")
+            M_1 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_m1_p.png")
+            M_2 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_m2_p.png")
+            M_3 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_m3_p.png")
+            M_4 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_m4_p.png")
+            M_5 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_m5_p.png")
+            M_6 -> ResourceLocation (Clayium.MOD_ID, "textures/blocks/import_m6_p.png")
+        }
+    }
 
-    private val quads = EnumFacing.entries.map { createQuadsFor(it) }
+    private val outputTextures: Map<MachineIoMode, ResourceLocation?> = MachineIoMode.entries.associateWith {
+        when (it) {
+            NONE, CE -> null
+            FIRST -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_1_p.png")
+            SECOND -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_2_p.png")
+            ALL -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_p.png")
+            M_ALL -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_m0_p.png")
+            M_1 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_m1_p.png")
+            M_2 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_m2_p.png")
+            M_3 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_m3_p.png")
+            M_4 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_m4_p.png")
+            M_5 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_m5_p.png")
+            M_6 -> ResourceLocation (Clayium.MOD_ID, "textures/blocks/export_m6_p.png")
+        }
+    }
+
+    private val sideQuads = EnumFacing.entries.map { createQuadsFor(it) }
 
     override fun render(
         te: TileMachine, x: Double, y: Double, z: Double,
@@ -30,6 +74,9 @@ object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileMachine>() {
         destroyStage: Int,
         alpha: Float
     ) {
+        if (te.blockType !is BlockMachine) return
+        if (!world.getBlockState(te.pos).getValue(BlockMachine.IS_PIPE)) return
+
         val player = this.rendererDispatcher.entity as? EntityPlayer ?: return
         if (!isPipingTool(player.heldItemMainhand.item)) return
 
@@ -39,25 +86,24 @@ object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileMachine>() {
         val buf = Tessellator.getInstance().buffer
 
         val connections = te.connections
+        val inputs = te.inputs
+        val outputs = te.outputs
 
-        //todo
-//        this.bindTexture(importTexture)
-//        val inputs = te.inputs
-//        for (i in 0..5) {
-//            if (!(connections[i] && inputs[i])) continue
-//            for (quad in quads[i]) {
-//                quad.draw(buf, 0.0625f)
-//            }
-//        }
-//
-//        this.bindTexture(exportTexture)
-//        val outputs = te.outputs
-//        for (i in 0..5) {
-//            if (!(connections[i] && outputs[i])) continue
-//            for (quad in quads[i]) {
-//                quad.draw(buf, 0.0625f)
-//            }
-//        }
+        for (side in EnumFacing.entries) {
+            val i = side.index
+            if (!connections[i]) continue
+
+            val inputTex = inputTextures[inputs[i]]
+            if (inputTex != null) {
+                bindTexture(inputTex)
+                sideQuads[i].forEach { it.draw(buf, 0.0625f) }
+            }
+            val outputTex = outputTextures[outputs[i]]
+            if (outputTex != null) {
+                bindTexture(outputTex)
+                sideQuads[i].forEach { it.draw(buf, 0.0625f) }
+            }
+        }
 
         GlStateManager.popMatrix()
     }
