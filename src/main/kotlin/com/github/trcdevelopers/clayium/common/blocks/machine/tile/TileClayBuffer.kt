@@ -83,6 +83,7 @@ class TileClayBuffer : TileMachine() {
                 _inputs[rotatedSide.index] = oldInputs[side.index]
                 _outputs[rotatedSide.index] = oldOutputs[side.index]
             }
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3)
         } else {
             super.onRightClicked(toolType, world, pos, player, hand, facing, hitX, hitY, hitZ)
         }

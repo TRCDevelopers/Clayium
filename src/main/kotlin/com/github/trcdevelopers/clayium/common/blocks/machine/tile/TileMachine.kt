@@ -114,6 +114,7 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
     override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
         readDynamicData(pkt.nbtCompound)
         if (world.isRemote) {
+            Clayium.LOGGER.info("onDataPacket: facing: $currentFacing")
             world.markBlockRangeForRenderUpdate(pos, pos)
         }
     }
@@ -156,35 +157,40 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
 
     override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, world: World, pos: BlockPos, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         if (world.isRemote) return
+        val oldState = world.getBlockState(pos)
+        var newState = oldState
         when (toolType) {
             ItemClayConfigTool.ToolType.PIPING -> { /* handled by Block */ }
             ItemClayConfigTool.ToolType.INSERTION -> toggleInput(facing)
             ItemClayConfigTool.ToolType.EXTRACTION -> toggleOutput(facing)
             ItemClayConfigTool.ToolType.ROTATION -> {
                 if (facing.axis.isVertical) return
-                val oldInputs = _inputs.toList()
-                val oldOutputs = _outputs.toList()
                 if (currentFacing == facing) {
+                    currentFacing = currentFacing.opposite
+                    val oldInputs = _inputs.toList()
+                    val oldOutputs = _outputs.toList()
                     for (side in EnumFacing.HORIZONTALS) {
                         val rotatedSide = side.opposite
                         _inputs[rotatedSide.index] = oldInputs[side.index]
                         _outputs[rotatedSide.index] = oldOutputs[side.index]
                     }
                 } else {
-                    var rotatedFace = currentFacing
-                    while (rotatedFace != currentFacing) {
-                        rotatedFace = rotatedFace.rotateY()
+                    while (currentFacing != facing) {
+                        val oldInputs = _inputs.toList()
+                        val oldOutputs = _outputs.toList()
+                        currentFacing = currentFacing.rotateY()
                         for (side in EnumFacing.HORIZONTALS) {
                             val rotatedSide = side.rotateY()
                             _inputs[rotatedSide.index] = oldInputs[side.index]
                             _outputs[rotatedSide.index] = oldOutputs[side.index]
+                            Clayium.LOGGER.info("inputs: ${_inputs}")
                         }
                     }
                 }
             }
             ItemClayConfigTool.ToolType.FILTER_REMOVER -> TODO()
         }
-        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), Constants.BlockFlags.DEFAULT)
+        world.notifyBlockUpdate(pos, oldState, newState, Constants.BlockFlags.DEFAULT)
     }
 
     fun onNeighborChange(side: EnumFacing) {
