@@ -96,7 +96,7 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
             if (compound.hasIntArray("validOutputs")) compound.getIntArray("validOutputs").map { MachineIoMode.byId(it) } else listOf(MachineIoMode.NONE),
         )
         currentFacing = if (compound.hasInt("facing")) EnumFacing.byIndex(compound.getInteger("facing")) else EnumFacing.NORTH
-        readIOFromNBT(compound)
+        readDynamicData(compound)
         super.readFromNBT(compound)
     }
 
@@ -107,28 +107,29 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
     override fun getUpdatePacket(): SPacketUpdateTileEntity {
         return SPacketUpdateTileEntity(
             pos, blockMetadata,
-            writeIOToNBT(NBTTagCompound())
+            writeDynamicData(NBTTagCompound())
         )
     }
 
     override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
-        readIOFromNBT(pkt.nbtCompound)
+        readDynamicData(pkt.nbtCompound)
         if (world.isRemote) {
             world.markBlockRangeForRenderUpdate(pos, pos)
         }
     }
 
-    private fun writeIOToNBT(compound: NBTTagCompound): NBTTagCompound {
+    private fun writeDynamicData(compound: NBTTagCompound): NBTTagCompound {
         compound.setIntArray("inputs", IntArray(6) { _inputs[it].id })
         compound.setIntArray("outputs", IntArray(6) { _outputs[it].id })
         compound.setByteArray("connections", ByteArray(6) { if (_connections[it]) 1 else 0 })
+        compound.setInteger("facing", currentFacing.index)
         return compound
     }
 
     /**
      * reads input, output, connections from NBT
      */
-    private fun readIOFromNBT(compound: NBTTagCompound) {
+    private fun readDynamicData(compound: NBTTagCompound) {
         val tagInputs = if (compound.hasIntArray("inputs")) compound.getIntArray("inputs") else IntArray(6) { 0 }
         val tagOutputs = if (compound.hasIntArray("outputs")) compound.getIntArray("outputs") else IntArray(6) { 0 }
         val tagConnections = if (compound.hasByteArray("connections")) compound.getByteArray("connections") else ByteArray(6) { 0 }
@@ -138,6 +139,7 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
             _outputs[i] = MachineIoMode.byId(tagOutputs[i])
             _connections[i] = tagConnections[i] == 1.toByte()
         }
+        currentFacing = if (compound.hasInt("facing")) EnumFacing.byIndex(compound.getInteger("facing")) else EnumFacing.NORTH
     }
 
     override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean {

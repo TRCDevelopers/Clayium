@@ -133,6 +133,7 @@ class BlockMachine(
     override fun onBlockPlacedBy(worldIn: World, pos: BlockPos, state: IBlockState, placer: EntityLivingBase, stack: ItemStack) {
         if (worldIn.isRemote) return
         (worldIn.getTileEntity(pos) as? TileMachine)?.onBlockPlaced(placer, stack)
+        worldIn.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.DEFAULT)
     }
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
