@@ -4,11 +4,13 @@ import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
+import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
@@ -70,6 +72,18 @@ class TileClayBuffer : TileMachine() {
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
         itemStackHandler.deserializeNBT(compound.getCompoundTag("inventory"))
+    }
+
+    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, world: World, pos: BlockPos, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+        if (!world.isRemote && toolType == ItemClayConfigTool.ToolType.ROTATION && facing.axis == EnumFacing.Axis.Y) {
+            val oldInputs = _inputs
+            for (side in EnumFacing.entries) {
+                val rotatedSide = side.rotateAround(EnumFacing.Axis.X)
+                _inputs[rotatedSide.index] = oldInputs[side.index]
+            }
+        } else {
+            super.onRightClicked(toolType, world, pos, player, hand, facing, hitX, hitY, hitZ)
+        }
     }
 
     companion object {

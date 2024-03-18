@@ -38,12 +38,12 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
     var currentFacing: EnumFacing = EnumFacing.NORTH
         private set
 
-    private val _inputs = MutableList(6) { MachineIoMode.NONE }
-    private val _outputs = MutableList(6) { MachineIoMode.NONE }
-    private val _connections = BooleanArray(6)
+    protected val _inputs = MutableList(6) { MachineIoMode.NONE }
+    protected val _outputs = MutableList(6) { MachineIoMode.NONE }
+    protected val _connections = BooleanArray(6)
 
-    private lateinit var validInputModes: List<MachineIoMode>
-    private lateinit var validOutputModes: List<MachineIoMode>
+    protected lateinit var validInputModes: List<MachineIoMode>
+    protected lateinit var validOutputModes: List<MachineIoMode>
 
     protected abstract var autoIoHandler: AutoIoHandler
 
