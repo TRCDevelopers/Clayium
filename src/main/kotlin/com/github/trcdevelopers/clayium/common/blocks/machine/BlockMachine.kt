@@ -30,6 +30,7 @@ import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.common.property.IExtendedBlockState
+import net.minecraftforge.common.util.Constants
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
@@ -146,8 +147,20 @@ class BlockMachine(
             PIPING -> {
                 val state = world.getBlockState(pos)
                 world.setBlockState(pos, state.cycleProperty(IS_PIPE))
+                world.markBlockRangeForRenderUpdate(pos, pos)
             }
             else -> { /* handled by tileEntity */ }
+        }
+    }
+
+    override fun onNeighborChange(world: IBlockAccess, pos: BlockPos, neighbor: BlockPos) {
+        if (world is World && !world.isRemote) {
+            val tileMachine = world.getTileEntity(pos) as? TileMachine ?: return
+            val state = world.getBlockState(pos)
+            val direction = neighbor.subtract(pos)
+            val side = EnumFacing.getFacingFromVector(direction.x.toFloat(), direction.y.toFloat(), direction.z.toFloat())
+            tileMachine.onNeighborChange(side)
+            world.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.DEFAULT)
         }
     }
 

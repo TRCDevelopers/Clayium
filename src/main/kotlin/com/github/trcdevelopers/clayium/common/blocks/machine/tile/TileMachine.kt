@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine.tile
 
+import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.IPipeConnectable
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
@@ -76,6 +77,7 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         compound.setIntArray("validOutputs", validOutputModes.map { it.id }.toIntArray())
         compound.setIntArray("inputs", _inputs.map { it.id }.toIntArray())
         compound.setIntArray("outputs", _outputs.map { it.id }.toIntArray())
+        compound.setByteArray("connections", ByteArray(6) { if (_connections[it]) 1 else 0 })
         return super.writeToNBT(compound)
     }
 
@@ -88,10 +90,12 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         currentFacing = EnumFacing.byIndex(compound.getInteger("facing"))
         val readInputs = compound.getIntArray("inputs")
         val readOutputs = compound.getIntArray("outputs")
+        val readConnections = compound.getByteArray("connections")
         for (side in EnumFacing.entries) {
             val i = side.index
             _inputs[i] = MachineIoMode.byId(readInputs[i])
             _outputs[i] = MachineIoMode.byId(readOutputs[i])
+            _connections[i] = readConnections[i] == 1.toByte()
         }
         super.readFromNBT(compound)
     }
@@ -104,8 +108,9 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         return SPacketUpdateTileEntity(
             pos, blockMetadata,
             NBTTagCompound().apply {
-                setIntArray("inputs", _inputs.map { it.id }.toIntArray())
-                setIntArray("outputs", _outputs.map { it.id }.toIntArray())
+                setIntArray("inputs", IntArray(6) { _inputs[it].id })
+                setIntArray("outputs", IntArray(6) { _outputs[it].id })
+                setByteArray("connections",  ByteArray(6) { if (_connections[it]) 1 else 0 })
             }
         )
     }
@@ -114,13 +119,17 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         pkt.nbtCompound.let {
             val tagInputs = it.getIntArray("inputs")
             val tagOutputs = it.getIntArray("outputs")
+            val tagConnections = it.getByteArray("connections")
             for (side in EnumFacing.entries) {
                 val i = side.index
                 _inputs[i] = MachineIoMode.byId(tagInputs[i])
                 _outputs[i] = MachineIoMode.byId(tagOutputs[i])
+                _connections[i] = tagConnections[i] == 1.toByte()
             }
         }
-        world.markBlockRangeForRenderUpdate(pos, pos)
+        if (world.isRemote) {
+            world.markBlockRangeForRenderUpdate(pos, pos)
+        }
     }
 
     override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean {
@@ -153,10 +162,15 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), Constants.BlockFlags.DEFAULT)
     }
 
+    fun onNeighborChange(side: EnumFacing) {
+        this.refreshConnection(side)
+    }
+
     private fun toggleInput(side: EnumFacing) {
         val current = _inputs[side.index]
         val next = validInputModes[(validInputModes.indexOf(current) + 1) % validInputModes.size]
         _inputs[side.index] = next
+        this.refreshConnection(side)
         this.markDirty()
     }
 
@@ -164,7 +178,22 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         val current = _outputs[side.index]
         val next = validOutputModes[(validOutputModes.indexOf(current) + 1) % validOutputModes.size]
         _outputs[side.index] = next
+        this.refreshConnection(side)
         this.markDirty()
+    }
+
+    private fun refreshConnection(side: EnumFacing) {
+        val i = side.index
+        val o = side.opposite.index
+        when (val neighborTile = world.getTileEntity(pos.offset(side))) {
+            is TileMachine -> {
+                Clayium.LOGGER.info("neighborTile: $neighborTile")
+                this._connections[i] = (isImporting(side) && neighborTile.isExporting(side.opposite)) || (isExporting(side) && neighborTile.isImporting(side.opposite))
+            }
+            else -> {
+                this._connections[i] = neighborTile?.hasCapability(ITEM_HANDLER_CAPABILITY, side.opposite) == true
+            }
+        }
     }
 
     protected inner class AutoIoHandler(
