@@ -24,7 +24,7 @@ object NBTTypeUtils {
     fun NBTTagCompound.hasDouble(key: String) = this.hasKey(key, 6)
     fun NBTTagCompound.hasByteArray(key: String) = this.hasKey(key, 7)
     fun NBTTagCompound.hasString(key: String) = this.hasKey(key, 8)
-    fun NBTTagCompound.hasCompound(key: String) = this.hasKey(key, 10)
+    fun NBTTagCompound.hasCompoundTag(key: String) = this.hasKey(key, 10)
     fun NBTTagCompound.hasIntArray(key: String) = this.hasKey(key, 11)
     fun NBTTagCompound.hasLongArray(key: String) = this.hasKey(key, 12)
 
