@@ -5,8 +5,10 @@ import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
 import com.github.trcdevelopers.clayium.common.util.NBTTypeUtils.hasCompoundTag
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.ItemStackHandler
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
 
@@ -51,6 +53,30 @@ class TileSimpleMachine : TileMachine() {
         super.readFromNBT(compound)
         if (compound.hasCompoundTag("input_inventory")) inputItemHandler.deserializeNBT(compound.getCompoundTag("input_inventory"))
         if (compound.hasCompoundTag("output_inventory")) outputItemHandler.deserializeNBT(compound.getCompoundTag("output_inventory"))
+    }
+
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
+        if (capability === ITEM_HANDLER_CAPABILITY) {
+            return if (facing == null) true else isImporting(facing) || isExporting(facing)
+        }
+        return super.hasCapability(capability, facing)
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === ITEM_HANDLER_CAPABILITY) {
+            return if (facing == null || (isImporting(facing) && isExporting(facing))) {
+                ITEM_HANDLER_CAPABILITY.cast(combinedHandler)
+            } else {
+                if (isImporting(facing)) {
+                    ITEM_HANDLER_CAPABILITY.cast(inputItemHandler)
+                } else if (isExporting(facing)) {
+                    ITEM_HANDLER_CAPABILITY.cast(outputItemHandler)
+                } else {
+                    null
+                }
+            }
+        }
+        return super.getCapability(capability, facing)
     }
 
     companion object {
