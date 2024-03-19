@@ -69,15 +69,6 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         autoIoHandler.doWork()
     }
 
-    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
-        return capability === ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing)
-    }
-
-    override fun <T : Any?> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        return if (capability === ITEM_HANDLER_CAPABILITY) ITEM_HANDLER_CAPABILITY.cast(getItemHandler()) else super.getCapability(capability, facing)
-
-    }
-
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         compound.setInteger("tier", tier)
         compound.setInteger("facing", currentFacing.index)

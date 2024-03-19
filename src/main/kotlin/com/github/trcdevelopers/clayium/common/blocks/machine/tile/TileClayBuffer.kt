@@ -64,6 +64,17 @@ class TileClayBuffer : TileMachine() {
         toggleInput(EnumFacing.getDirectionFromEntityLiving(pos, player).opposite)
     }
 
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
+        return capability === ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing)
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === ITEM_HANDLER_CAPABILITY) {
+            return ITEM_HANDLER_CAPABILITY.cast(itemStackHandler)
+        }
+        return super.getCapability(capability, facing)
+    }
+
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         compound.setTag("inventory", itemStackHandler.serializeNBT())
         return super.writeToNBT(compound)
