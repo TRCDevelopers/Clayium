@@ -39,7 +39,7 @@ class BlockClayWorkTable : BlockContainer(Material.ROCK), ITiered {
             return true
         }
         val te = worldIn.getTileEntity(pos) as TileClayWorkTable? ?: return false
-        playerIn.openGui(Clayium.INSTANCE, GuiHandler.CLAY_WORK_TABLE, worldIn, pos.x, pos.y, pos.z)
+        playerIn.openGui(Clayium, GuiHandler.CLAY_WORK_TABLE, worldIn, pos.x, pos.y, pos.z)
         return true
     }
 

@@ -30,7 +30,7 @@ class TileClayBuffer : TileMachine() {
         private set
 
     override fun openGui(player: EntityPlayer, world: World, pos: BlockPos) {
-        player.openGui(Clayium.INSTANCE, GuiHandler.CLAY_BUFFER, world, pos.x, pos.y, pos.z)
+        player.openGui(Clayium, GuiHandler.CLAY_BUFFER, world, pos.x, pos.y, pos.z)
     }
 
     override fun getItemHandler(): IItemHandler {

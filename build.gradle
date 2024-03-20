@@ -88,6 +88,9 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.dev"
     }
+    maven {
+        url = uri("https://maven.cleanroommc.com")
+    }
 }
 
 dependencies {
@@ -98,16 +101,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
-     compileOnly fg.deobf("mezz.jei:jei_${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
-     runtimeOnly fg.deobf("mezz.jei:jei_${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
-    // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
-
-    // Examples using mod jars from ./libs
-    // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
-
-    // For more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    compileOnly fg.deobf("mezz.jei:jei_${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
+    runtimeOnly fg.deobf("mezz.jei:jei_${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
+    implementation 'io.github.chaosunity.forgelin:Forgelin-Continuous:1.9.23.0'
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

@@ -14,8 +14,13 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-@Mod(modid = Clayium.MOD_ID, name = Clayium.MOD_NAME, version = Clayium.VERSION)
-class Clayium {
+@Mod(
+    modid = Clayium.MOD_ID,
+    name = Clayium.MOD_NAME,
+    version = Clayium.VERSION,
+    modLanguageAdapter = "io.github.chaosunity.forgelin.KotlinAdapter",
+)
+object Clayium {
     @Mod.EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(this)
@@ -32,27 +37,20 @@ class Clayium {
         proxy.postInit(event)
     }
 
-    companion object {
-        const val MOD_ID = "clayium"
-        const val MOD_NAME = "Clayium"
-        const val VERSION = "1.0-SNAPSHOT"
+    const val MOD_ID = "clayium"
+    const val MOD_NAME = "Clayium"
+    const val VERSION = "1.0-SNAPSHOT"
 
-        val creativeTab: CreativeTabs = object : CreativeTabs(getNextID(), MOD_ID) {
-            @SideOnly(Side.CLIENT)
-            override fun createIcon(): ItemStack {
-                return ItemStack(Items.CLAY_BALL)
-            }
+    val creativeTab: CreativeTabs = object : CreativeTabs(getNextID(), MOD_ID) {
+        @SideOnly(Side.CLIENT)
+        override fun createIcon(): ItemStack {
+            return ItemStack(Items.CLAY_BALL)
         }
-
-        @JvmField
-        val LOGGER: Logger = LogManager.getLogger(MOD_ID)
-        /**
-         * This is the instance of your mod as created by Forge. It will never be null.
-         */
-        @Mod.Instance(MOD_ID)
-        lateinit var INSTANCE: Clayium
-
-        @SidedProxy(clientSide = "com.github.trcdevelopers.clayium.client.ClientProxy", serverSide = "com.github.trcdevelopers.clayium.common.CommonProxy")
-        lateinit var proxy: CommonProxy
     }
+
+    @JvmField
+    val LOGGER: Logger = LogManager.getLogger(MOD_ID)
+
+    @SidedProxy(clientSide = "com.github.trcdevelopers.clayium.client.ClientProxy", serverSide = "com.github.trcdevelopers.clayium.common.CommonProxy")
+    lateinit var proxy: CommonProxy
 }
