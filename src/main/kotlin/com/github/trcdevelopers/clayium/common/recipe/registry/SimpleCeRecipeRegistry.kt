@@ -4,7 +4,6 @@ import com.github.trcdevelopers.clayium.common.recipe.SimpleCeRecipe
 import net.minecraft.item.ItemStack
 
 class SimpleCeRecipeRegistry(
-    val recipeRegistryName: String,
     private val inputSize: Int,
     private val outputSize: Int,
 ) {
