@@ -15,6 +15,7 @@ class SimpleCeRecipe(
     private val outputs: List<ItemStack>,
     val requiredTicks: Int,
     val cePerTick: ClayEnergy,
+    val tier: Int,
 ) {
     /**
      * @return [ItemStack.EMPTY] if index is out of bounds, otherwise the copied output itemStack at given index.
@@ -35,6 +36,7 @@ class SimpleCeRecipe(
 
         private var requiredTicks: Int = 0
         private var cePerTick: ClayEnergy = ClayEnergy(0)
+        private var tier: Int = 0
 
         fun input(index: Int, input: Item, amount: Int = 1) {
             inputs.add(index, RecipeInput(input, amount))
@@ -60,8 +62,12 @@ class SimpleCeRecipe(
             this.cePerTick = cePerTick
         }
 
+        fun tier(tier: Int) {
+            this.tier = tier
+        }
+
         fun build(): SimpleCeRecipe {
-            return SimpleCeRecipe(inputSize, outputSize, inputs, outputs, requiredTicks, cePerTick)
+            return SimpleCeRecipe(inputSize, outputSize, inputs, outputs, requiredTicks, cePerTick, tier)
         }
     }
 }
