@@ -27,6 +27,24 @@ class SimpleCeRecipe(
         return outputs[index].copy()
     }
 
+    fun matches(vararg inputsIn: ItemStack): Boolean {
+        if (inputsIn.size < inputSize) return false
+        val unvalidatedInputs = inputs.toMutableList()
+
+        for (givenInput in inputsIn) {
+            val iterator = unvalidatedInputs.iterator()
+            while (iterator.hasNext()) {
+                val recipeInput = iterator.next()
+                if (recipeInput.test(givenInput)) {
+                    iterator.remove()
+                    break
+                }
+            }
+        }
+
+        return unvalidatedInputs.isEmpty()
+    }
+
     class Builder(
         private val inputSize: Int,
         private val outputSize: Int,
