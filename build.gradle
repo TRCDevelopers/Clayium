@@ -36,6 +36,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+            jvmArg "-Dfile.encoding=UTF-8"
 
             // Recommended logging data for a userdev environment
             // The markers can be added/remove as needed separated by commas.
