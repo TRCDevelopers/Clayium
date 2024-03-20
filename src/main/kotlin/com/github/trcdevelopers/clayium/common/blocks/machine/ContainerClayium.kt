@@ -37,23 +37,24 @@ abstract class ContainerClayium(
         val orgStack = slotStack.copy()
 
         when (index) {
-            // hot bar -> container? -> player inventory
-            in 0..<9 -> {
+            // player inventory -> container? -> hot bar
+            in 0..<27 -> {
                 if (!(mergeItemStack(slotStack, 36, inventorySlots.size, false)
-                            || mergeItemStack(slotStack, 9, 35, false))) {
+                            || mergeItemStack(slotStack, 27, 36, false))) {
                     return ItemStack.EMPTY
                 }
             }
-            // player inventory -> container? -> hot bar
-            in 9..<36 -> {
+            // hot bar -> container? -> player inventory
+            in 27..<36 -> {
                 if (!(mergeItemStack(slotStack, 36, inventorySlots.size, false)
-                            || mergeItemStack(slotStack, 0, 8, false))) {
+                            || mergeItemStack(slotStack, 0, 27, false))) {
                     return ItemStack.EMPTY
                 }
             }
             // container -> hot bar? -> player inventory
             in 36..<inventorySlots.size -> {
-                if (!mergeItemStack(slotStack, 0, 35, false)) {
+                if (!(mergeItemStack(slotStack, 27, 36, false)
+                        || mergeItemStack(slotStack, 0, 27, false))) {
                     return ItemStack.EMPTY
                 }
             }
