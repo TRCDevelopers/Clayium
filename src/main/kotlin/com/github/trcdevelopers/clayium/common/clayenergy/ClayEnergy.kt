@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.common
+package com.github.trcdevelopers.clayium.common.clayenergy
 
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
 

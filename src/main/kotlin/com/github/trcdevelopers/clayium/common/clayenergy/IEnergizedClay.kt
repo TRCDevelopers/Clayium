@@ -1,6 +1,5 @@
-package com.github.trcdevelopers.clayium.common.interfaces
+package com.github.trcdevelopers.clayium.common.clayenergy
 
-import com.github.trcdevelopers.clayium.common.ClayEnergy
 import net.minecraft.item.ItemStack
 
 interface IEnergizedClay {
