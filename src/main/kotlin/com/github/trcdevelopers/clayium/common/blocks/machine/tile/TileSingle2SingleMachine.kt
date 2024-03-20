@@ -1,9 +1,12 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine.tile
 
+import com.github.trcdevelopers.clayium.common.Clayium
+import com.github.trcdevelopers.clayium.common.GuiHandler
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
 import com.github.trcdevelopers.clayium.common.util.NBTTypeUtils.hasCompoundTag
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
@@ -26,14 +29,27 @@ class TileSingle2SingleMachine : TileMachine() {
     private lateinit var combinedHandler: CombinedInvWrapper
 
     override fun openGui(player: EntityPlayer, world: World, pos: BlockPos) {
+        player.openGui(Clayium, GuiHandler.SINGLE_2_SINGLE, world, pos.x, pos.y, pos.z)
     }
 
     override fun getItemHandler() = combinedHandler
 
     override fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
         super.initParams(tier, inputModes, outputModes)
-        inputItemHandler = ItemStackHandler(1)
-        outputItemHandler = ItemStackHandler(1)
+        inputItemHandler = object : ItemStackHandler(1) {
+            override fun onContentsChanged(slot: Int) {
+                this@TileSingle2SingleMachine.markDirty()
+            }
+        }
+        outputItemHandler = object : ItemStackHandler(1) {
+            override fun onContentsChanged(slot: Int) {
+                this@TileSingle2SingleMachine.markDirty()
+            }
+
+            override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
+                return false
+            }
+        }
         combinedHandler = CombinedInvWrapper(inputItemHandler, outputItemHandler)
         autoIoHandler = AutoIoHandler(
             ConfigTierBalance.machineInterval[tier],

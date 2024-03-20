@@ -11,6 +11,8 @@ abstract class ContainerClayium(
     playerInvOffsetY: Int,
 ) : Container() {
 
+    protected val machineInventorySlots = arrayListOf<Slot>()
+
     init {
         // add player inventory slots
         for (i in 0..2) {
