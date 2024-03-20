@@ -8,7 +8,7 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
 import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileSimpleMachine
+import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileSingle2SingleMachine
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.ItemBlockTiered
@@ -137,7 +137,7 @@ open class CommonProxy {
         GameRegistry.registerTileEntity(TileClayWorkTable::class.java, ResourceLocation(Clayium.MOD_ID, "tile_clay_work_table"))
 
         GameRegistry.registerTileEntity(TileMachine::class.java, ResourceLocation(Clayium.MOD_ID, "tile_machine"))
-        GameRegistry.registerTileEntity(TileSimpleMachine::class.java, ResourceLocation(Clayium.MOD_ID, "tile_simple_machine"))
+        GameRegistry.registerTileEntity(TileSingle2SingleMachine::class.java, ResourceLocation(Clayium.MOD_ID, "tile_simple_machine"))
         GameRegistry.registerTileEntity(TileClayBuffer::class.java, ResourceLocation(Clayium.MOD_ID, "tile_clay_buffer"))
     }
 

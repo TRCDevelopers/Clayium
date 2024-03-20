@@ -17,7 +17,7 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper
  *
  * todo: add recipe support, implement things
  */
-class TileSimpleMachine : TileMachine() {
+class TileSingle2SingleMachine : TileMachine() {
 
     override lateinit var autoIoHandler: AutoIoHandler
 
@@ -32,10 +32,8 @@ class TileSimpleMachine : TileMachine() {
 
     override fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
         super.initParams(tier, inputModes, outputModes)
-        val inputSize = inputModes.size - 2 // - NONE, CE
-        val outputSize = outputModes.size - 1 // - NONE
-        inputItemHandler = ItemStackHandler(inputSize)
-        outputItemHandler = ItemStackHandler(outputSize)
+        inputItemHandler = ItemStackHandler(1)
+        outputItemHandler = ItemStackHandler(1)
         combinedHandler = CombinedInvWrapper(inputItemHandler, outputItemHandler)
         autoIoHandler = AutoIoHandler(
             ConfigTierBalance.machineInterval[tier],
@@ -80,8 +78,8 @@ class TileSimpleMachine : TileMachine() {
     }
 
     companion object {
-        fun create(tier: Int): TileSimpleMachine {
-            return TileSimpleMachine().apply {
+        fun create(tier: Int): TileSingle2SingleMachine {
+            return TileSingle2SingleMachine().apply {
                 initParams(tier, MachineIoMode.Input.SINGLE, MachineIoMode.Output.SINGLE)
             }
         }
