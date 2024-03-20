@@ -20,7 +20,7 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper
  *
  * todo: add recipe support, implement things
  */
-class TileSingle2SingleMachine : TileMachine() {
+class TileSingle2SingleMachine : TileCeMachine() {
 
     override lateinit var autoIoHandler: AutoIoHandler
 

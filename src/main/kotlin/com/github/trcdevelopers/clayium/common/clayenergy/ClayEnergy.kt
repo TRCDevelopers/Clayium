@@ -9,6 +9,9 @@ value class ClayEnergy private constructor(private val energy: Long) {
         return UtilLocale.ClayEnergyNumeral(energy.toDouble())
     }
 
+    operator fun plus(other: ClayEnergy) = ClayEnergy(energy + other.energy)
+    operator fun minus(other: ClayEnergy) = ClayEnergy(energy - other.energy)
+
     companion object {
         fun micro(energy: Long): ClayEnergy {
             require(energy % 10 == 0.toLong()) {
