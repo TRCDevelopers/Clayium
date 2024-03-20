@@ -3,7 +3,7 @@ package com.github.trcdevelopers.clayium.common.clayenergy
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
 
 @JvmInline
-value class ClayEnergy private constructor(private val energy: Long) {
+value class ClayEnergy(val energy: Long) {
 
     override fun toString(): String {
         return UtilLocale.ClayEnergyNumeral(energy.toDouble())
