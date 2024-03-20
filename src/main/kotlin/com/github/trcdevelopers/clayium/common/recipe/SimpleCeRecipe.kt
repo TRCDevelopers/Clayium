@@ -17,6 +17,9 @@ class SimpleCeRecipe(
     val cePerTick: ClayEnergy,
     val tier: Int,
 ) {
+
+    val outputsList = outputs.map { it.copy() }
+
     /**
      * @return [ItemStack.EMPTY] if index is out of bounds, otherwise the copied output itemStack at given index.
      */

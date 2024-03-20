@@ -1,10 +1,14 @@
 package com.github.trcdevelopers.clayium.integration.jei
 
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
 import com.github.trcdevelopers.clayium.common.recipe.CRecipes
 import com.github.trcdevelopers.clayium.common.recipe.ClayWorkTableRecipe
+import com.github.trcdevelopers.clayium.common.recipe.SimpleCeRecipe
 import com.github.trcdevelopers.clayium.integration.jei.clayworktable.ClayWorkTableRecipeCategory
 import com.github.trcdevelopers.clayium.integration.jei.clayworktable.ClayWorkTableRecipeWrapper
+import com.github.trcdevelopers.clayium.integration.jei.simplecerecipe.SimpleCeRecipeCategory
+import com.github.trcdevelopers.clayium.integration.jei.simplecerecipe.SimpleCeRecipeWrapper
 import mezz.jei.api.IJeiHelpers
 import mezz.jei.api.IJeiRuntime
 import mezz.jei.api.IModPlugin
@@ -24,14 +28,18 @@ class JeiPlugin : IModPlugin {
 
     override fun registerCategories(registry: IRecipeCategoryRegistration) {
         registry.addRecipeCategories(ClayWorkTableRecipeCategory(registry.jeiHelpers.guiHelper))
+        registry.addRecipeCategories(SimpleCeRecipeCategory(registry.jeiHelpers.guiHelper))
     }
 
     override fun register(registry: IModRegistry) {
         jeiHelpers = registry.jeiHelpers
         registry.handleRecipes(ClayWorkTableRecipe::class.java, ::ClayWorkTableRecipeWrapper, ClayWorkTableRecipeCategory.UID)
         registry.addRecipeCatalyst(ItemStack(ClayiumBlocks.CLAY_WORK_TABLE), ClayWorkTableRecipeCategory.UID)
-
         registry.addRecipes(CRecipes.CLAY_WORK_TABLE.recipes, ClayWorkTableRecipeCategory.UID)
+
+        registry.handleRecipes(SimpleCeRecipe::class.java, ::SimpleCeRecipeWrapper, SimpleCeRecipeCategory.UID)
+        MachineBlocks.BENDING_MACHINE.forEach { registry.addRecipeCatalyst(ItemStack(it.value), SimpleCeRecipeCategory.UID) }
+        registry.addRecipes(CRecipes.BENDING.recipes, SimpleCeRecipeCategory.UID)
     }
 
     companion object {
