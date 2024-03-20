@@ -20,6 +20,7 @@ class GuiSingle2SingleMachine(
         //todo
         // fontRenderer.drawString(I18n.format(""), 6, 6, 0x404040)
         fontRenderer.drawString(I18n.format("container.inventory"), 8, ySize - 94, 0x404040)
+        fontRenderer.drawString(I18n.format("tooltip.clayium.ce", tile.storedCe.toString()), 4, 60, 0x404040)
     }
 
     override fun drawGuiContainerBackgroundLayer(partialTicks: Float, mouseX: Int, mouseY: Int) {
