@@ -127,7 +127,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
     }
 
     private fun onInputSlotChanged() {
-        Clayium.LOGGER.info("input slot changed, recipe: $recipe, crafting: $crafting")
+        if (world.isRemote) return
         val inputStack = inputItemHandler.getStackInSlot(0)
         if (inputStack.isEmpty) {
             recipe = null
@@ -147,7 +147,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
     }
 
     private fun onOutputSlotChanged() {
-        Clayium.LOGGER.info("output slot changed, recipe: $recipe, crafting: $crafting")
+        if (world.isRemote) return
         crafting = recipe?.getOutput(0)?.let { canOutputMerge(it) } ?: false
     }
 
@@ -155,7 +155,6 @@ class TileSingle2SingleMachine : TileCeMachine() {
         val outputSlot = outputItemHandler.getStackInSlot(0)
         if (outputSlot.isEmpty) return true
 
-        Clayium.LOGGER.info("onOutputSlotChanged. isItemEqual: ${outputSlot.isItemEqual(stack)}, metadata: ${outputSlot.metadata == stack.metadata}, areItemStackTagsEqual: ${ItemStack.areItemStackTagsEqual(outputSlot, stack)}, count: ${outputSlot.count + stack.count <= minOf(outputSlot.maxStackSize, outputItemHandler.getSlotLimit(0))}")
         return outputSlot.isItemEqual(stack)
                 && (!stack.hasSubtypes || outputSlot.metadata == stack.metadata)
                 && ItemStack.areItemStackTagsEqual(outputSlot, stack)
