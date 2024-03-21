@@ -33,7 +33,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
 
     private lateinit var recipeRegistry: SimpleCeRecipeRegistry
     private var recipe: SimpleCeRecipe? = null
-    private var crafting = false
+    private var canStartCraft = false
 
     var requiredProgress: Int = 0
     var craftingProgress: Int = 0
@@ -72,13 +72,10 @@ class TileSingle2SingleMachine : TileCeMachine() {
     override fun update() {
         super.update()
         if (world.isRemote) return
-        if (crafting) {
+        if (canStartCraft) {
             val currentRecipe = recipe ?: return
             if (craftingProgress >= requiredProgress) {
-                craftingProgress = 0
-                requiredProgress = 0
-                recipe = null
-                crafting = false
+                // craft finished. onInput/OutputSlotChanged will be called, so no need to reset params here
                 val output = currentRecipe.getOutput(0)
                 outputItemHandler.insertItem(0, output, false)
                 inputItemHandler.extractItem(0, currentRecipe.inputs[0].amount, false)
@@ -131,16 +128,20 @@ class TileSingle2SingleMachine : TileCeMachine() {
         val inputStack = inputItemHandler.getStackInSlot(0)
         if (inputStack.isEmpty) {
             recipe = null
-            crafting = false
+            canStartCraft = false
             requiredProgress = 0
             craftingProgress = 0
             return
         }
-        recipe = recipeRegistry.getRecipe(inputStack)
-        crafting = recipe?.getOutput(0)?.let { canOutputMerge(it) } ?: false
 
+        recipe = recipeRegistry.getRecipe(inputStack)
         val recipeGot = recipe
-        if (recipeGot != null && crafting) {
+        if (recipeGot == null) {
+            canStartCraft = false
+            requiredProgress = 0
+            craftingProgress = 0
+        } else {
+            canStartCraft = canOutputMerge(recipeGot.getOutput(0))
             requiredProgress = recipeGot.requiredTicks
             craftingProgress = 0
         }
@@ -148,7 +149,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
 
     private fun onOutputSlotChanged() {
         if (world.isRemote) return
-        crafting = recipe?.getOutput(0)?.let { canOutputMerge(it) } ?: false
+        canStartCraft = recipe?.getOutput(0)?.let { canOutputMerge(it) } ?: false
     }
 
     private fun canOutputMerge(stack: ItemStack): Boolean {
