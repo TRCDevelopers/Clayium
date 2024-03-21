@@ -66,7 +66,9 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
     }
 
     override fun update() {
-        autoIoHandler.doWork()
+        if (!world.isRemote) {
+            autoIoHandler.doWork()
+        }
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
