@@ -35,6 +35,11 @@ class GuiSingle2SingleMachine(
         this.drawTexturedModalRect(guiLeft + 39, guiTop + 30, 0, 32, 26, 26)
         this.drawTexturedModalRect(guiLeft + 111, guiTop + 30, 0, 32, 26, 26)
 
+        this.mc.textureManager.bindTexture(PROGRESS_BAR)
+        val progress = if (tile.requiredProgress == 0) 0 else tile.craftingProgress * 24 / tile.requiredProgress
+        this.drawTexturedModalRect(guiLeft + 76, guiTop + 35, 0, 0, 24, 16)
+        this.drawTexturedModalRect(guiLeft + 76, guiTop + 35, 0, 17, progress, 16)
+
         GlStateManager.popMatrix()
     }
 
@@ -48,5 +53,6 @@ class GuiSingle2SingleMachine(
         private val SLOT = ResourceLocation(Clayium.MOD_ID, "textures/gui/slot.png")
         private val BACKGROUND = ResourceLocation(Clayium.MOD_ID, "textures/gui/back.png")
         private val PLAYER_INVENTORY = ResourceLocation(Clayium.MOD_ID, "textures/gui/playerinventory.png")
+        private val PROGRESS_BAR = ResourceLocation(Clayium.MOD_ID, "textures/gui/progress_bar.png")
     }
 }

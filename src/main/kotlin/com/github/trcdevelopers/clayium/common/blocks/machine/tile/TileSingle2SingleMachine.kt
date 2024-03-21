@@ -4,6 +4,9 @@ import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
+import com.github.trcdevelopers.clayium.common.recipe.CRecipes
+import com.github.trcdevelopers.clayium.common.recipe.SimpleCeRecipe
+import com.github.trcdevelopers.clayium.common.recipe.registry.SimpleCeRecipeRegistry
 import com.github.trcdevelopers.clayium.common.util.NBTTypeUtils.hasCompoundTag
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -28,22 +31,31 @@ class TileSingle2SingleMachine : TileCeMachine() {
     private lateinit var outputItemHandler: ItemStackHandler
     private lateinit var combinedHandler: CombinedInvWrapper
 
+    private lateinit var recipeRegistry: SimpleCeRecipeRegistry
+    private var recipe: SimpleCeRecipe? = null
+    private var crafting = false
+
+    var requiredProgress: Int = 0
+    var craftingProgress: Int = 0
+
+    override fun getItemHandler() = combinedHandler
+
     override fun openGui(player: EntityPlayer, world: World, pos: BlockPos) {
         player.openGui(Clayium, GuiHandler.SINGLE_2_SINGLE, world, pos.x, pos.y, pos.z)
     }
-
-    override fun getItemHandler() = combinedHandler
 
     override fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
         super.initParams(tier, inputModes, outputModes)
         inputItemHandler = object : ItemStackHandler(1) {
             override fun onContentsChanged(slot: Int) {
-                this@TileSingle2SingleMachine.markDirty()
+                markDirty()
+                onInputSlotChanged()
             }
         }
         outputItemHandler = object : ItemStackHandler(1) {
             override fun onContentsChanged(slot: Int) {
-                this@TileSingle2SingleMachine.markDirty()
+                markDirty()
+                onOutputSlotChanged()
             }
 
             override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
@@ -57,9 +69,29 @@ class TileSingle2SingleMachine : TileCeMachine() {
         )
     }
 
+    override fun update() {
+        super.update()
+        if (world.isRemote) return
+        if (crafting) {
+            val currentRecipe = recipe ?: return
+            if (craftingProgress >= requiredProgress) {
+                craftingProgress = 0
+                requiredProgress = 0
+                recipe = null
+                crafting = false
+                val output = currentRecipe.getOutput(0)
+                outputItemHandler.insertItem(0, output, false)
+                inputItemHandler.extractItem(0, currentRecipe.inputs[0].amount, false)
+            } else {
+                craftingProgress++
+            }
+        }
+    }
+
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         compound.setTag("input_inventory", inputItemHandler.serializeNBT())
         compound.setTag("output_inventory", outputItemHandler.serializeNBT())
+        compound.setString("recipe_registry", recipeRegistry.registryName)
         return super.writeToNBT(compound)
     }
 
@@ -67,6 +99,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
         super.readFromNBT(compound)
         if (compound.hasCompoundTag("input_inventory")) inputItemHandler.deserializeNBT(compound.getCompoundTag("input_inventory"))
         if (compound.hasCompoundTag("output_inventory")) outputItemHandler.deserializeNBT(compound.getCompoundTag("output_inventory"))
+        if (compound.hasKey("recipe_registry")) recipeRegistry = CRecipes.getSimpleCeRecipeRegistry(compound.getString("recipe_registry")) ?: SimpleCeRecipeRegistry.EMPTY_1_1
     }
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
@@ -93,10 +126,47 @@ class TileSingle2SingleMachine : TileCeMachine() {
         return super.getCapability(capability, facing)
     }
 
+    private fun onInputSlotChanged() {
+        Clayium.LOGGER.info("input slot changed, recipe: $recipe, crafting: $crafting")
+        val inputStack = inputItemHandler.getStackInSlot(0)
+        if (inputStack.isEmpty) {
+            recipe = null
+            crafting = false
+            requiredProgress = 0
+            craftingProgress = 0
+            return
+        }
+        recipe = recipeRegistry.getRecipe(inputStack)
+        crafting = recipe?.getOutput(0)?.let { canOutputMerge(it) } ?: false
+
+        val recipeGot = recipe
+        if (recipeGot != null && crafting) {
+            requiredProgress = recipeGot.requiredTicks
+            craftingProgress = 0
+        }
+    }
+
+    private fun onOutputSlotChanged() {
+        Clayium.LOGGER.info("output slot changed, recipe: $recipe, crafting: $crafting")
+        crafting = recipe?.getOutput(0)?.let { canOutputMerge(it) } ?: false
+    }
+
+    private fun canOutputMerge(stack: ItemStack): Boolean {
+        val outputSlot = outputItemHandler.getStackInSlot(0)
+        if (outputSlot.isEmpty) return true
+
+        Clayium.LOGGER.info("onOutputSlotChanged. isItemEqual: ${outputSlot.isItemEqual(stack)}, metadata: ${outputSlot.metadata == stack.metadata}, areItemStackTagsEqual: ${ItemStack.areItemStackTagsEqual(outputSlot, stack)}, count: ${outputSlot.count + stack.count <= minOf(outputSlot.maxStackSize, outputItemHandler.getSlotLimit(0))}")
+        return outputSlot.isItemEqual(stack)
+                && (!stack.hasSubtypes || outputSlot.metadata == stack.metadata)
+                && ItemStack.areItemStackTagsEqual(outputSlot, stack)
+                && outputSlot.count + stack.count <= minOf(outputSlot.maxStackSize, outputItemHandler.getSlotLimit(0))
+    }
+
     companion object {
-        fun create(tier: Int): TileSingle2SingleMachine {
+        fun create(tier: Int, recipeRegistry: SimpleCeRecipeRegistry): TileSingle2SingleMachine {
             return TileSingle2SingleMachine().apply {
                 initParams(tier, MachineIoMode.Input.SINGLE, MachineIoMode.Output.SINGLE)
+                this.recipeRegistry = recipeRegistry
             }
         }
     }

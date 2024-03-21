@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack
 object CRecipes {
     val CLAY_WORK_TABLE = ClayWorkTableRecipeRegistry()
 
-    val BENDING = SimpleCeRecipeRegistry(1, 1)
+    val BENDING = SimpleCeRecipeRegistry(MachineBlocks.Name.BENDING, 1, 1)
 
     private val simpleCeRecipes = mapOf(
         MachineBlocks.Name.BENDING to BENDING

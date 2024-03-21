@@ -4,6 +4,7 @@ import com.github.trcdevelopers.clayium.common.recipe.SimpleCeRecipe
 import net.minecraft.item.ItemStack
 
 class SimpleCeRecipeRegistry(
+    val registryName: String,
     private val inputSize: Int,
     private val outputSize: Int,
 ) {
@@ -23,5 +24,9 @@ class SimpleCeRecipeRegistry(
             }
         }
         return null
+    }
+
+    companion object {
+        val EMPTY_1_1 = SimpleCeRecipeRegistry("empty", 1, 1)
     }
 }
