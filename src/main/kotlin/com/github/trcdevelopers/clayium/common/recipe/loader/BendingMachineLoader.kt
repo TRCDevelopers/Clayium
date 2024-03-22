@@ -20,7 +20,7 @@ object BendingMachineLoader {
                 registry.register {
                     input(OrePrefix.INGOT, material)
                     outputs(OreDictUnifier.get(OrePrefix.PLATE, material))
-                    requiredTicks(plateProp.recipeTime)
+                    requiredTicks(plateProp.requiredTick)
                     //todo
                     cePerTick(ClayEnergy.of(100))
                 }
@@ -31,7 +31,7 @@ object BendingMachineLoader {
                 registry.register {
                     input(OrePrefix.MATTER, material)
                     outputs(OreDictUnifier.get(OrePrefix.PLATE, material))
-                    requiredTicks(plateProp.recipeTime)
+                    requiredTicks(plateProp.requiredTick)
                     //todo
                     cePerTick(ClayEnergy.of(100))
                 }
