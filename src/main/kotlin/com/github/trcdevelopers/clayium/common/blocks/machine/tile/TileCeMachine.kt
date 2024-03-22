@@ -1,10 +1,12 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine.tile
 
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClay
 import com.github.trcdevelopers.clayium.common.util.NBTTypeUtils.hasLong
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.ItemStackHandler
 
 abstract class TileCeMachine : TileMachine() {
@@ -27,7 +29,34 @@ abstract class TileCeMachine : TileMachine() {
     var storedCe: ClayEnergy = ClayEnergy.of(0)
         protected set
 
-    fun extractCeFrom() {
+    override fun update() {
+        importEnergizedClay()
+        super.update()
+    }
+
+    protected fun isCeImporting(side: EnumFacing): Boolean {
+        return _inputs[side.index] == MachineIoMode.CE
+    }
+
+    private fun importEnergizedClay() {
+        val ceSlotLimit = ceSlot.getSlotLimit(0)
+        if (ceSlot.getStackInSlot(0).count >= ceSlotLimit) return
+        for (side in EnumFacing.entries) {
+            if (isCeImporting(side)) {
+                val from = world.getTileEntity(pos.offset(side))?.getCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: return
+                for (i in 0..<from.slots) {
+                    val stack = from.extractItem(i, ceSlotLimit, true)
+                    if (stack.isEmpty) continue
+                    if (ceSlot.insertItem(0, stack, true).count < stack.count) {
+                        ceSlot.insertItem(0, from.extractItem(i, ceSlotLimit, false), false)
+                        break
+                    }
+                }
+            }
+        }
+    }
+
+    fun extractCe() {
         val itemStack = ceSlot.getStackInSlot(0)
         val item = itemStack.item
         if (item !is IEnergizedClay) return
