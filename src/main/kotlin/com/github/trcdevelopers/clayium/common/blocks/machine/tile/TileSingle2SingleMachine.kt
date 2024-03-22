@@ -127,19 +127,14 @@ class TileSingle2SingleMachine : TileCeMachine() {
         if (world.isRemote) return
         val inputStack = inputItemHandler.getStackInSlot(0)
         if (inputStack.isEmpty) {
-            recipe = null
-            canStartCraft = false
-            requiredProgress = 0
-            craftingProgress = 0
+            resetRecipe()
             return
         }
 
         recipe = recipeRegistry.getRecipe(inputStack)
         val recipeGot = recipe
         if (recipeGot == null) {
-            canStartCraft = false
-            requiredProgress = 0
-            craftingProgress = 0
+            resetRecipe()
         } else {
             canStartCraft = canOutputMerge(recipeGot.getOutput(0))
             requiredProgress = recipeGot.requiredTicks
@@ -160,6 +155,13 @@ class TileSingle2SingleMachine : TileCeMachine() {
                 && (!stack.hasSubtypes || outputSlot.metadata == stack.metadata)
                 && ItemStack.areItemStackTagsEqual(outputSlot, stack)
                 && outputSlot.count + stack.count <= minOf(outputSlot.maxStackSize, outputItemHandler.getSlotLimit(0))
+    }
+
+    private fun resetRecipe() {
+        recipe = null
+        canStartCraft = false
+        requiredProgress = 0
+        craftingProgress = 0
     }
 
     companion object {
