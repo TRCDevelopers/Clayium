@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.integration.jei.simplecerecipe
 
 import com.github.trcdevelopers.clayium.common.recipe.SimpleCeRecipe
+import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import mezz.jei.api.ingredients.IIngredients
 import mezz.jei.api.ingredients.VanillaTypes
 import mezz.jei.api.recipe.IRecipeWrapper
@@ -22,7 +23,10 @@ class SimpleCeRecipeWrapper(
 
     override fun drawInfo(minecraft: Minecraft, recipeWidth: Int, recipeHeight: Int, mouseX: Int, mouseY: Int) {
         minecraft.fontRenderer.drawString("Tier: ${recipe.tier}", 6, 43, 0x404040)
-        minecraft.fontRenderer.drawString("CE Plateholder", 6, 52, 0x404040)
+        minecraft.fontRenderer.drawString(
+            "${recipe.cePerTick}CE/t x ${UtilLocale.craftTimeNumeral(recipe.requiredTicks.toLong())}t = ${(recipe.cePerTick * recipe.requiredTicks)}CE",
+            6, 52, 0x404040
+        )
         super.drawInfo(minecraft, recipeWidth, recipeHeight, mouseX, mouseY)
     }
 
