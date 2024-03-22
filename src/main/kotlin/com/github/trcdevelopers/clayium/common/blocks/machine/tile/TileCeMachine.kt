@@ -5,16 +5,35 @@ import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClay
 import com.github.trcdevelopers.clayium.common.util.NBTTypeUtils.hasLong
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraftforge.items.ItemStackHandler
 
 abstract class TileCeMachine : TileMachine() {
+
+    protected val ceSlot = object : ItemStackHandler(1) {
+        override fun onContentsChanged(slot: Int) {
+            markDirty()
+        }
+
+        override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
+            return stack.item is IEnergizedClay
+        }
+
+        override fun getSlotLimit(slot: Int): Int {
+            //todo upgradable
+            return 1
+        }
+    }
+
     var storedCe: ClayEnergy = ClayEnergy.of(0)
         protected set
 
-    fun extractCeFrom(itemStack: ItemStack) {
+    fun extractCeFrom() {
+        val itemStack = ceSlot.getStackInSlot(0)
         val item = itemStack.item
         if (item !is IEnergizedClay) return
 
         storedCe += item.getClayEnergy(itemStack)
+        ceSlot.extractItem(0, 1, false)
     }
 
     fun consumeCe(ce: ClayEnergy) {
