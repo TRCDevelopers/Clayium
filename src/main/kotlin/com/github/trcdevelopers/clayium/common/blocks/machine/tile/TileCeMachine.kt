@@ -9,7 +9,7 @@ import net.minecraftforge.items.ItemStackHandler
 
 abstract class TileCeMachine : TileMachine() {
 
-    protected val ceSlot = object : ItemStackHandler(1) {
+    val ceSlot = object : ItemStackHandler(1) {
         override fun onContentsChanged(slot: Int) {
             markDirty()
         }

@@ -2,6 +2,7 @@ package com.github.trcdevelopers.clayium.common.gui
 
 import com.github.trcdevelopers.clayium.common.blocks.machine.ContainerClayium
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileSingle2SingleMachine
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fml.relauncher.Side
@@ -25,6 +26,10 @@ class ContainerSingle2SingleMachine(
                 override fun isItemValid(stack: ItemStack) = false
             })
         )
+        addSlotToContainer(object : SlotItemHandler(tile.ceSlot, 0, 160, 60) {
+            override fun isItemValid(stack: ItemStack) = false
+            override fun canTakeStack(playerIn: EntityPlayer) = false
+        })
     }
 
     override fun detectAndSendChanges() {
