@@ -28,7 +28,7 @@ class JeiPlugin : IModPlugin {
 
     override fun registerCategories(registry: IRecipeCategoryRegistration) {
         registry.addRecipeCategories(ClayWorkTableRecipeCategory(registry.jeiHelpers.guiHelper))
-        registry.addRecipeCategories(SimpleCeRecipeCategory(registry.jeiHelpers.guiHelper))
+        registry.addRecipeCategories(SimpleCeRecipeCategory(registry.jeiHelpers.guiHelper, SimpleCeRecipeCategory.BENDING))
     }
 
     override fun register(registry: IModRegistry) {
@@ -37,9 +37,9 @@ class JeiPlugin : IModPlugin {
         registry.addRecipeCatalyst(ItemStack(ClayiumBlocks.CLAY_WORK_TABLE), ClayWorkTableRecipeCategory.UID)
         registry.addRecipes(CRecipes.CLAY_WORK_TABLE.recipes, ClayWorkTableRecipeCategory.UID)
 
-        registry.handleRecipes(SimpleCeRecipe::class.java, ::SimpleCeRecipeWrapper, SimpleCeRecipeCategory.UID)
-        MachineBlocks.BENDING_MACHINE.forEach { registry.addRecipeCatalyst(ItemStack(it.value), SimpleCeRecipeCategory.UID) }
-        registry.addRecipes(CRecipes.BENDING.recipes, SimpleCeRecipeCategory.UID)
+        registry.handleRecipes(SimpleCeRecipe::class.java, ::SimpleCeRecipeWrapper, SimpleCeRecipeCategory.BENDING)
+        MachineBlocks.BENDING_MACHINE.forEach { registry.addRecipeCatalyst(ItemStack(it.value), SimpleCeRecipeCategory.BENDING) }
+        registry.addRecipes(CRecipes.BENDING.recipes, SimpleCeRecipeCategory.BENDING)
     }
 
     companion object {

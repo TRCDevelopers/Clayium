@@ -9,10 +9,12 @@ import mezz.jei.api.ingredients.IIngredients
 import mezz.jei.api.ingredients.VanillaTypes
 import mezz.jei.api.recipe.IRecipeCategory
 import net.minecraft.client.Minecraft
+import net.minecraft.client.resources.I18n
 import net.minecraft.util.ResourceLocation
 
 class SimpleCeRecipeCategory(
-    guiHelper: IGuiHelper
+    guiHelper: IGuiHelper,
+    private val uid: String,
 ) : IRecipeCategory<SimpleCeRecipeWrapper> {
 
     private val background = guiHelper.createDrawable(
@@ -29,12 +31,11 @@ class SimpleCeRecipeCategory(
     )
 
     override fun getUid(): String {
-        return UID
+        return uid
     }
 
     override fun getTitle(): String {
-        //todo
-        return "Simple CE Recipe"
+        return I18n.format(uid, "")
     }
 
     override fun getModName(): String {
@@ -68,6 +69,6 @@ class SimpleCeRecipeCategory(
     }
 
     companion object {
-        const val UID = "clayium.simple_ce_recipe"
+        const val BENDING = "tile.clayium.bending_machine"
     }
 }
