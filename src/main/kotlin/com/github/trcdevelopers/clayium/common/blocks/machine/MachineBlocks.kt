@@ -25,7 +25,7 @@ object MachineBlocks {
     val CLAY_BUFFER = createMachine(Name.BUFFER, (4..13).toIntArray(), TileClayBuffer::create)
 
     val BENDING_MACHINE = createMachine(Name.BENDING, intArrayOf(1, 2, 3, 4, 5, 6, 7, 9)) { tier ->
-        TileSingle2SingleMachine.create(tier, CRecipes.BENDING)
+        TileSingle2SingleMachine.create(tier, CRecipes.BENDING, "tile.clayium.bending_machine")
     }
 
     private fun createMachine(name: String, tiers: IntArray, tileEntityProvider: (Int) -> TileMachine): Map<Int, BlockMachine> {

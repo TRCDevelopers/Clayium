@@ -8,6 +8,7 @@ import com.github.trcdevelopers.clayium.common.recipe.CRecipes
 import com.github.trcdevelopers.clayium.common.recipe.SimpleCeRecipe
 import com.github.trcdevelopers.clayium.common.recipe.registry.SimpleCeRecipeRegistry
 import com.github.trcdevelopers.clayium.common.util.NBTTypeUtils.hasCompoundTag
+import com.github.trcdevelopers.clayium.common.util.NBTTypeUtils.hasString
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -24,6 +25,9 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper
  * todo: add recipe support, implement things
  */
 class TileSingle2SingleMachine : TileCeMachine() {
+
+    var guiTranslationKey: String = ""
+        private set
 
     override lateinit var autoIoHandler: AutoIoHandler
 
@@ -89,6 +93,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
         compound.setTag("input_inventory", inputItemHandler.serializeNBT())
         compound.setTag("output_inventory", outputItemHandler.serializeNBT())
         compound.setString("recipe_registry", recipeRegistry.registryName)
+        compound.setString("gui_machine_name", guiTranslationKey)
         return super.writeToNBT(compound)
     }
 
@@ -96,7 +101,8 @@ class TileSingle2SingleMachine : TileCeMachine() {
         super.readFromNBT(compound)
         if (compound.hasCompoundTag("input_inventory")) inputItemHandler.deserializeNBT(compound.getCompoundTag("input_inventory"))
         if (compound.hasCompoundTag("output_inventory")) outputItemHandler.deserializeNBT(compound.getCompoundTag("output_inventory"))
-        if (compound.hasKey("recipe_registry")) recipeRegistry = CRecipes.getSimpleCeRecipeRegistry(compound.getString("recipe_registry")) ?: SimpleCeRecipeRegistry.EMPTY_1_1
+        if (compound.hasString("recipe_registry")) recipeRegistry = CRecipes.getSimpleCeRecipeRegistry(compound.getString("recipe_registry")) ?: SimpleCeRecipeRegistry.EMPTY_1_1
+        if (compound.hasString("gui_machine_name")) guiTranslationKey = compound.getString("gui_machine_name")
     }
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
@@ -165,10 +171,11 @@ class TileSingle2SingleMachine : TileCeMachine() {
     }
 
     companion object {
-        fun create(tier: Int, recipeRegistry: SimpleCeRecipeRegistry): TileSingle2SingleMachine {
+        fun create(tier: Int, recipeRegistry: SimpleCeRecipeRegistry, guiTranslationKey: String): TileSingle2SingleMachine {
             return TileSingle2SingleMachine().apply {
                 initParams(tier, MachineIoMode.Input.SINGLE, MachineIoMode.Output.SINGLE)
                 this.recipeRegistry = recipeRegistry
+                this.guiTranslationKey = guiTranslationKey
             }
         }
     }
