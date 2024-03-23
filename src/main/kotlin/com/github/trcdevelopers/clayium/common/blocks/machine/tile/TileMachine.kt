@@ -1,6 +1,5 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine.tile
 
-import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.IPipeConnectable
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
@@ -107,7 +106,6 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
     override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
         readDynamicData(pkt.nbtCompound)
         if (world.isRemote) {
-            Clayium.LOGGER.info("onDataPacket: facing: $currentFacing")
             world.markBlockRangeForRenderUpdate(pos, pos)
         }
     }
@@ -175,7 +173,6 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
                             val rotatedSide = side.rotateY()
                             _inputs[rotatedSide.index] = oldInputs[side.index]
                             _outputs[rotatedSide.index] = oldOutputs[side.index]
-                            Clayium.LOGGER.info("inputs: ${_inputs}")
                         }
                     }
                 }
@@ -222,7 +219,6 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         val o = side.opposite.index
         when (val neighborTile = world.getTileEntity(pos.offset(side))) {
             is TileMachine -> {
-                Clayium.LOGGER.info("neighborTile: $neighborTile")
                 this._connections[i] = (acceptInputFrom(side) && neighborTile.acceptOutputTo(side.opposite)) || (acceptOutputTo(side) && neighborTile.acceptInputFrom(side.opposite))
             }
             else -> {
