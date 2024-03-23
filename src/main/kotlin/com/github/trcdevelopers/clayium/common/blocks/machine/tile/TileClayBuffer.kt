@@ -102,6 +102,8 @@ class TileClayBuffer : TileMachine() {
 
     override fun acceptInputFrom(side: EnumFacing) = true
     override fun acceptOutputTo(side: EnumFacing) = true
+    override fun isAutoInput(side: EnumFacing) = _inputs[side.index] == MachineIoMode.ALL
+    override fun isAutoOutput(side: EnumFacing) = _outputs[side.index] == MachineIoMode.ALL
 
     override fun canAutoInput(side: EnumFacing) = _inputs[side.index] == MachineIoMode.ALL
     override fun canAutoOutput(side: EnumFacing) = _outputs[side.index] == MachineIoMode.ALL

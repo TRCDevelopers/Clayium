@@ -138,13 +138,8 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         return oldState.block != newSate.block
     }
 
-    override fun acceptInputFrom(side: EnumFacing): Boolean {
-        return _inputs[side.index] != MachineIoMode.NONE
-    }
-
-    override fun acceptOutputTo(side: EnumFacing): Boolean {
-        return _outputs[side.index] != MachineIoMode.NONE
-    }
+    override fun acceptInputFrom(side: EnumFacing) = _inputs[side.index] != MachineIoMode.NONE
+    override fun acceptOutputTo(side: EnumFacing) = _outputs[side.index] != MachineIoMode.NONE
 
     override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, worldIn: World, posIn: BlockPos, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         if (worldIn.isRemote) return
@@ -219,8 +214,8 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         val opposite = side.opposite
         when (val neighborTile = world.getTileEntity(pos.offset(side))) {
             is TileMachine -> {
-                this._connections[i] = (canAutoInput(side) && neighborTile.acceptOutputTo(opposite)) || (canAutoOutput(side) && neighborTile.acceptInputFrom(opposite))
-                        || (acceptInputFrom(side) && neighborTile.canAutoOutput(opposite)) || (acceptOutputTo(side) && neighborTile.canAutoInput(opposite))
+                this._connections[i] = (isAutoInput(side) && neighborTile.acceptOutputTo(opposite)) || (isAutoOutput(side) && neighborTile.acceptInputFrom(opposite))
+                        || (acceptInputFrom(side) && neighborTile.isAutoOutput(opposite)) || (acceptOutputTo(side) && neighborTile.isAutoInput(opposite))
             }
             else -> {
                 this._connections[i] = neighborTile?.hasCapability(ITEM_HANDLER_CAPABILITY, opposite) == true
@@ -229,15 +224,12 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
     }
 
     /**
-     * used by [AutoIoHandler]
+     * difference between this and [isAutoInput] is that this should return false when importing to special slot such as CE slot.
+     * If [side] is CE, isAutoInput is true, but this method should return false since we are not importing Energy Clay into the input slot.
      */
     protected open fun canAutoInput(side: EnumFacing): Boolean {
         return acceptInputFrom(side)
     }
-
-    /**
-     * used by [AutoIoHandler]
-     */
     protected open fun canAutoOutput(side: EnumFacing): Boolean {
         return acceptOutputTo(side)
     }

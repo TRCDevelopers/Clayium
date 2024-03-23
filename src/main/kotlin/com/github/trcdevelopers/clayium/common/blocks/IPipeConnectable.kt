@@ -10,4 +10,7 @@ import net.minecraft.util.EnumFacing
 interface IPipeConnectable {
     fun acceptInputFrom(side: EnumFacing): Boolean
     fun acceptOutputTo(side: EnumFacing): Boolean
+
+    fun isAutoInput(side: EnumFacing): Boolean = acceptInputFrom(side)
+    fun isAutoOutput(side: EnumFacing): Boolean = acceptOutputTo(side)
 }
