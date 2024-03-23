@@ -175,13 +175,14 @@ class BlockMachine(
     override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
         val tile = (worldIn.getTileEntity(pos) as? TileMachine) ?: return
         for (stack in tile.getDrops()) {
-            val f0 = worldIn.rand.nextFloat() * 0.6f + 0.1f
-            val f1 = worldIn.rand.nextFloat() * 0.6f + 0.1f
-            val f2 = worldIn.rand.nextFloat() * 0.6f + 0.1f
+            val f0 = worldIn.rand.nextFloat() * 0.8F + 0.1F;
+            val f1 = worldIn.rand.nextFloat() * 0.8F + 0.1F;
+            val f2 = worldIn.rand.nextFloat() * 0.8F + 0.1F;
+
             val entityItem = EntityItem(worldIn, (pos.x + f0).toDouble(), (pos.y + f1).toDouble(), (pos.z + f2).toDouble(), stack)
-            val f3 = 0.025f
+            val f3 = 0.05f
             entityItem.motionX = worldIn.rand.nextGaussian() * f3
-            entityItem.motionY = worldIn.rand.nextGaussian() * f3 + 0.1f
+            entityItem.motionY = worldIn.rand.nextGaussian() * f3 + 0.2f
             entityItem.motionZ = worldIn.rand.nextGaussian() * f3
             worldIn.spawnEntity(entityItem)
         }
