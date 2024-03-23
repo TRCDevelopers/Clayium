@@ -21,8 +21,6 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper
 
 /**
  * single input with single output
- *
- * todo: add recipe support, implement things
  */
 class TileSingle2SingleMachine : TileCeMachine() {
 
@@ -72,6 +70,8 @@ class TileSingle2SingleMachine : TileCeMachine() {
         autoIoHandler = AutoIoHandler(
             ConfigTierBalance.machineInterval[tier],
             ConfigTierBalance.machineAmount[tier],
+            inputItemHandler,
+            outputItemHandler,
         )
     }
 
@@ -106,12 +106,12 @@ class TileSingle2SingleMachine : TileCeMachine() {
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         if (capability === ITEM_HANDLER_CAPABILITY) {
-            return if (facing == null || (isImporting(facing) && isExporting(facing))) {
+            return if (facing == null || (canAutoInput(facing) && canAutoOutput(facing))) {
                 ITEM_HANDLER_CAPABILITY.cast(combinedHandler)
             } else {
-                if (isImporting(facing)) {
+                if (canAutoInput(facing)) {
                     ITEM_HANDLER_CAPABILITY.cast(inputItemHandler)
-                } else if (isExporting(facing)) {
+                } else if (canAutoOutput(facing)) {
                     ITEM_HANDLER_CAPABILITY.cast(outputItemHandler)
                 } else {
                     null
@@ -177,6 +177,14 @@ class TileSingle2SingleMachine : TileCeMachine() {
         canStartCraft = false
         requiredProgress = 0
         craftingProgress = 0
+    }
+
+    override fun canAutoInput(side: EnumFacing): Boolean {
+        return _inputs[side.index] == MachineIoMode.ALL
+    }
+
+    override fun canAutoOutput(side: EnumFacing): Boolean {
+        return _outputs[side.index] == MachineIoMode.ALL
     }
 
     companion object {

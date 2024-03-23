@@ -219,9 +219,25 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         }
     }
 
+    /**
+     * used by [AutoIoHandler]
+     */
+    protected open fun canAutoInput(side: EnumFacing): Boolean {
+        return isImporting(side)
+    }
+
+    /**
+     * used by [AutoIoHandler]
+     */
+    protected open fun canAutoOutput(side: EnumFacing): Boolean {
+        return isExporting(side)
+    }
+
     protected inner class AutoIoHandler(
         private val intervalTick: Int,
         private val amountPerAction: Int,
+        private val inputSlots: IItemHandler = getItemHandler(),
+        private val outputSlots: IItemHandler = getItemHandler(),
     ) {
 
         private var ticked = 0
@@ -236,16 +252,16 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
             var remainingImportWork = this.amountPerAction
             var remainingExportWork = this.amountPerAction
             for (side in EnumFacing.entries) {
-                if (remainingImportWork > 0 && isImporting(side)) {
+                if (remainingImportWork > 0 && canAutoInput(side)) {
                     remainingImportWork -= this.transferItemStack(
                         from = world.getTileEntity(pos.offset(side))?.getCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
-                        to = getItemHandler(),
+                        to = inputSlots,
                         amount = remainingImportWork,
                     )
                 }
-                if (remainingExportWork > 0 && isExporting(side)) {
+                if (remainingExportWork > 0 && canAutoOutput(side)) {
                     remainingExportWork -= this.transferItemStack(
-                        from = getItemHandler(),
+                        from = outputSlots,
                         to = world.getTileEntity(pos.offset(side))?.getCapability(ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
                         amount = remainingExportWork,
                     )

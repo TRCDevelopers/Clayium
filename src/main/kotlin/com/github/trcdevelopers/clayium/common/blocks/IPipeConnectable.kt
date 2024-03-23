@@ -5,7 +5,7 @@ import net.minecraft.util.EnumFacing
 /**
  * Interface for TileEntities that can be connected to piped machines.
  *
- * This interface is used to determine whether items should be transported to that direction, and whether a pipe should extend to that direction during rendering.
+ * This interface is used to determine whether a pipe should extend to that direction during rendering.
  */
 interface IPipeConnectable {
     fun isImporting(side: EnumFacing): Boolean
