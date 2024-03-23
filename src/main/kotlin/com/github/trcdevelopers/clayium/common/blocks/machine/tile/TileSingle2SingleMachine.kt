@@ -104,15 +104,16 @@ class TileSingle2SingleMachine : TileCeMachine() {
         return super.hasCapability(capability, facing)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         if (capability === ITEM_HANDLER_CAPABILITY) {
             return if (facing == null || (canAutoInput(facing) && canAutoOutput(facing))) {
-                ITEM_HANDLER_CAPABILITY.cast(combinedHandler)
+                combinedHandler as T
             } else {
                 if (canAutoInput(facing)) {
-                    ITEM_HANDLER_CAPABILITY.cast(inputItemHandler)
+                    inputItemHandler as T
                 } else if (canAutoOutput(facing)) {
-                    ITEM_HANDLER_CAPABILITY.cast(outputItemHandler)
+                    outputItemHandler as T
                 } else {
                     null
                 }
