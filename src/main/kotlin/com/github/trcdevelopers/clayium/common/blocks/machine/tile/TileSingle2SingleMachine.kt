@@ -109,14 +109,15 @@ class TileSingle2SingleMachine : TileCeMachine() {
         if (capability === ITEM_HANDLER_CAPABILITY) {
             return if (facing == null || (canAutoInput(facing) && canAutoOutput(facing))) {
                 combinedHandler as T
+            } else if (_inputs[facing.index] == MachineIoMode.CE) {
+                ceSlot as T
+            }
+            else if (canAutoInput(facing)) {
+                inputItemHandler as T
+            } else if (canAutoOutput(facing)) {
+                outputItemHandler as T
             } else {
-                if (canAutoInput(facing)) {
-                    inputItemHandler as T
-                } else if (canAutoOutput(facing)) {
-                    outputItemHandler as T
-                } else {
-                    null
-                }
+                null
             }
         }
         return super.getCapability(capability, facing)
