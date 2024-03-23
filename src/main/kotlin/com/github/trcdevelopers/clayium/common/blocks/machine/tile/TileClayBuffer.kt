@@ -50,13 +50,13 @@ class TileClayBuffer : TileMachine() {
             in 8..13 -> 9
             else -> 1
         }
+        this.itemStackHandler = object : ItemStackHandler(inventoryX * inventoryY) {
+            override fun onContentsChanged(slot: Int) = this@TileClayBuffer.markDirty()
+        }
         this.autoIoHandler = AutoIoHandler(
             ConfigTierBalance.bufferInterval[tier],
             ConfigTierBalance.bufferAmount[tier],
         )
-        this.itemStackHandler = object : ItemStackHandler(inventoryX * inventoryY) {
-            override fun onContentsChanged(slot: Int) = this@TileClayBuffer.markDirty()
-        }
     }
 
     override fun onBlockPlaced(player: EntityLivingBase, stack: ItemStack) {
