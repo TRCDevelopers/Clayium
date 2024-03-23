@@ -30,7 +30,7 @@ class ContainerSingle2SingleMachine(
                 override fun isItemValid(stack: ItemStack) = false
             })
         )
-        addSlotToContainer(object : SlotItemHandler(tile.ceSlot, 0, 160, 60) {
+        addSlotToContainer(object : SlotItemHandler(tile.ceSlot, 0, 155, 59) {
             override fun isItemValid(stack: ItemStack) = false
             override fun canTakeStack(playerIn: EntityPlayer) = false
         })

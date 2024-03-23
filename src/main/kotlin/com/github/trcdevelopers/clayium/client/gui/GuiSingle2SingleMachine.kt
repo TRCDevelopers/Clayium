@@ -33,7 +33,7 @@ class GuiSingle2SingleMachine(
         this.mc.textureManager.bindTexture(SLOT)
         this.drawTexturedModalRect(guiLeft + 39, guiTop + 30, 0, 32, 26, 26)
         this.drawTexturedModalRect(guiLeft + 111, guiTop + 30, 0, 32, 26, 26)
-        this.drawTexturedModalRect(guiLeft + 160, guiTop + 60, 96, 0, 18, 18)
+        this.drawTexturedModalRect(guiLeft + 154, guiTop + 58, 96, 0, 18, 18) // ce slot
 
         this.mc.textureManager.bindTexture(PROGRESS_BAR)
         val progress = if (tile.requiredProgress == 0) 0 else tile.craftingProgress * 24 / tile.requiredProgress
