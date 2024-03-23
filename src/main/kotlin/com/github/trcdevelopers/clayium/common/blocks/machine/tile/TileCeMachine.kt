@@ -27,7 +27,6 @@ abstract class TileCeMachine : TileMachine() {
     }
 
     var storedCe: ClayEnergy = ClayEnergy.of(0)
-        protected set
 
     override fun update() {
         importEnergizedClay()
