@@ -216,13 +216,14 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
 
     private fun refreshConnection(side: EnumFacing) {
         val i = side.index
-        val o = side.opposite.index
+        val opposite = side.opposite
         when (val neighborTile = world.getTileEntity(pos.offset(side))) {
             is TileMachine -> {
-                this._connections[i] = (acceptInputFrom(side) && neighborTile.acceptOutputTo(side.opposite)) || (acceptOutputTo(side) && neighborTile.acceptInputFrom(side.opposite))
+                this._connections[i] = (canAutoInput(side) && neighborTile.acceptOutputTo(opposite)) || (canAutoOutput(side) && neighborTile.acceptInputFrom(opposite))
+                        || (acceptInputFrom(side) && neighborTile.canAutoOutput(opposite)) || (acceptOutputTo(side) && neighborTile.canAutoInput(opposite))
             }
             else -> {
-                this._connections[i] = neighborTile?.hasCapability(ITEM_HANDLER_CAPABILITY, side.opposite) == true
+                this._connections[i] = neighborTile?.hasCapability(ITEM_HANDLER_CAPABILITY, opposite) == true
             }
         }
     }
