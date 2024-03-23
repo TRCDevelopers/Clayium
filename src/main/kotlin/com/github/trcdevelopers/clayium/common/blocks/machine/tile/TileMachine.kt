@@ -189,6 +189,18 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         this.refreshConnection(side)
     }
 
+    open fun getDrops(): List<ItemStack> {
+        val drops = mutableListOf<ItemStack>()
+        val handler = getItemHandler()
+        for (i in 0..<handler.slots) {
+            val stack = handler.getStackInSlot(i)
+            if (!stack.isEmpty) {
+                drops.add(stack)
+            }
+        }
+        return drops
+    }
+
     protected fun toggleInput(side: EnumFacing) {
         val current = _inputs[side.index]
         val next = validInputModes[(validInputModes.indexOf(current) + 1) % validInputModes.size]

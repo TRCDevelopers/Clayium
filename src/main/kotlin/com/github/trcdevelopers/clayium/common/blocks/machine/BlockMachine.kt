@@ -19,6 +19,7 @@ import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.BlockRenderLayer
@@ -169,6 +170,22 @@ class BlockMachine(
             tileMachine.onNeighborChange(side)
             world.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.DEFAULT)
         }
+    }
+
+    override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
+        val tile = (worldIn.getTileEntity(pos) as? TileMachine) ?: return
+        for (stack in tile.getDrops()) {
+            val f0 = worldIn.rand.nextFloat() * 0.6f + 0.1f
+            val f1 = worldIn.rand.nextFloat() * 0.6f + 0.1f
+            val f2 = worldIn.rand.nextFloat() * 0.6f + 0.1f
+            val entityItem = EntityItem(worldIn, (pos.x + f0).toDouble(), (pos.y + f1).toDouble(), (pos.z + f2).toDouble(), stack)
+            val f3 = 0.025f
+            entityItem.motionX = worldIn.rand.nextGaussian() * f3
+            entityItem.motionY = worldIn.rand.nextGaussian() * f3 + 0.1f
+            entityItem.motionZ = worldIn.rand.nextGaussian() * f3
+            worldIn.spawnEntity(entityItem)
+        }
+        super.breakBlock(worldIn, pos, state)
     }
 
     override fun canCreatureSpawn(state: IBlockState, world: IBlockAccess, pos: BlockPos, type: EntityLiving.SpawnPlacementType) = false

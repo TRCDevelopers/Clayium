@@ -83,6 +83,16 @@ abstract class TileCeMachine : TileMachine() {
         return true
     }
 
+    override fun getDrops(): List<ItemStack> {
+        val drops = mutableListOf<ItemStack>()
+        drops.addAll(super.getDrops())
+        val ceSlotStack = ceSlot.getStackInSlot(0)
+        if (!ceSlotStack.isEmpty) {
+            drops.add(ceSlotStack)
+        }
+        return drops
+    }
+
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         compound.setLong("stored_ce", storedCe.energy)
         return super.writeToNBT(compound)
