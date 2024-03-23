@@ -125,16 +125,14 @@ class TileSingle2SingleMachine : TileCeMachine() {
         if (!canStartCraft) return
 
         val currentRecipe = recipe ?: return
+        if (tryConsumeCe(currentRecipe.cePerTick)) {
+            craftingProgress++
+        }
         if (craftingProgress >= requiredProgress) {
             // craft finished. onInput/OutputSlotChanged will be called, so no need to reset params here
             val output = currentRecipe.getOutput(0)
             outputItemHandler.insertItem(0, output, false)
             inputItemHandler.extractItem(0, currentRecipe.inputs[0].amount, false)
-        } else if (storedCe >= currentRecipe.cePerTick) {
-            tryConsumeCe(currentRecipe.cePerTick)
-            craftingProgress++
-        } else {
-            extractCe()
         }
     }
 

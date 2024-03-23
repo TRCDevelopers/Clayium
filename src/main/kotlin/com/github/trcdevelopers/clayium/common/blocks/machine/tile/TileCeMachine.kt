@@ -67,11 +67,17 @@ abstract class TileCeMachine : TileMachine() {
     }
 
     /**
-     * if [storedCe] >= [ce], consume [ce] and return true. otherwise, do nothing and return false.
-     * @return
+     * Consume the given ce. Returns true if the machine has enough ClayEnergy and was successfully consumed.
+     * If the machine lacks ClayEnergy, it will try to extract CE from ceSlot, and if the generation is successful, it will recurse to this method.
+     * @return true if [ce] is consumed, false otherwise.
      */
     fun tryConsumeCe(ce: ClayEnergy): Boolean {
-        if (storedCe < ce) return false
+        if (storedCe < ce) {
+            if (extractCe()) {
+                return tryConsumeCe(ce)
+            }
+            return false
+        }
 
         storedCe -= ce
         return true
