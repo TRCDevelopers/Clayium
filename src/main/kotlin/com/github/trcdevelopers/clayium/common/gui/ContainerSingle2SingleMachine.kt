@@ -15,10 +15,10 @@ class ContainerSingle2SingleMachine(
     playerInv: IInventory,
     private val tile: TileSingle2SingleMachine,
 ) : ContainerClayium(playerInv, 84) {
-    private var lastCraftingProgress = 0
-    private var lastRequiredProgress = 0
-    private var lastCe1 = 0
-    private var lastCe2 = 0
+    private var lastCraftingProgress = -1
+    private var lastRequiredProgress = -1
+    private var lastCe1 = -1
+    private var lastCe2 = -1
 
     init {
         val itemHandler = tile.getItemHandler()
