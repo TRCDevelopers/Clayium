@@ -131,7 +131,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
             outputItemHandler.insertItem(0, output, false)
             inputItemHandler.extractItem(0, currentRecipe.inputs[0].amount, false)
         } else if (storedCe >= currentRecipe.cePerTick) {
-            consumeCe(currentRecipe.cePerTick)
+            tryConsumeCe(currentRecipe.cePerTick)
             craftingProgress++
         } else {
             extractCe()

@@ -55,18 +55,26 @@ abstract class TileCeMachine : TileMachine() {
         }
     }
 
-    fun extractCe() {
+    fun extractCe(): Boolean {
         val itemStack = ceSlot.getStackInSlot(0)
-        if (itemStack.isEmpty) return
+        if (itemStack.isEmpty) return false
         val item = itemStack.item
-        if (item !is IEnergizedClay) return
+        if (item !is IEnergizedClay) return false
 
         storedCe += item.getClayEnergy(itemStack)
         ceSlot.extractItem(0, 1, false)
+        return true
     }
 
-    fun consumeCe(ce: ClayEnergy) {
+    /**
+     * if [storedCe] >= [ce], consume [ce] and return true. otherwise, do nothing and return false.
+     * @return
+     */
+    fun tryConsumeCe(ce: ClayEnergy): Boolean {
+        if (storedCe < ce) return false
+
         storedCe -= ce
+        return true
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
