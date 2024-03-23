@@ -252,6 +252,7 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
 
             var remainingImportWork = this.amountPerAction
             var remainingExportWork = this.amountPerAction
+            // import before export to act like an insertion pipe from buildcraft
             for (side in EnumFacing.entries) {
                 if (remainingImportWork > 0 && canAutoInput(side)) {
                     remainingImportWork -= this.transferItemStack(
@@ -260,6 +261,9 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
                         amount = remainingImportWork,
                     )
                 }
+            }
+            // export after import within same tick
+            for (side in EnumFacing.entries) {
                 if (remainingExportWork > 0 && canAutoOutput(side)) {
                     remainingExportWork -= this.transferItemStack(
                         from = outputSlots,
