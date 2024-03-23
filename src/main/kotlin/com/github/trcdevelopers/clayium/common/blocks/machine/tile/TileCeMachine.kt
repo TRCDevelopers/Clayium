@@ -58,6 +58,7 @@ abstract class TileCeMachine : TileMachine() {
 
     fun extractCe() {
         val itemStack = ceSlot.getStackInSlot(0)
+        if (itemStack.isEmpty) return
         val item = itemStack.item
         if (item !is IEnergizedClay) return
 

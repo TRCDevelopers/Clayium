@@ -39,6 +39,8 @@ class TileSingle2SingleMachine : TileCeMachine() {
     private var recipe: SimpleCeRecipe? = null
     private var canStartCraft = false
 
+    private var canOutputMerge = false
+
     var requiredProgress: Int = 0
     var craftingProgress: Int = 0
 
@@ -76,17 +78,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
     override fun update() {
         super.update()
         if (world.isRemote) return
-        if (canStartCraft) {
-            val currentRecipe = recipe ?: return
-            if (craftingProgress >= requiredProgress) {
-                // craft finished. onInput/OutputSlotChanged will be called, so no need to reset params here
-                val output = currentRecipe.getOutput(0)
-                outputItemHandler.insertItem(0, output, false)
-                inputItemHandler.extractItem(0, currentRecipe.inputs[0].amount, false)
-            } else {
-                craftingProgress++
-            }
-        }
+        proceedCraft()
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
@@ -127,6 +119,22 @@ class TileSingle2SingleMachine : TileCeMachine() {
             }
         }
         return super.getCapability(capability, facing)
+    }
+
+    private fun proceedCraft() {
+        if (!canStartCraft) return
+
+        val currentRecipe = recipe ?: return
+        if (craftingProgress >= requiredProgress) {
+            // craft finished. onInput/OutputSlotChanged will be called, so no need to reset params here
+            val output = currentRecipe.getOutput(0)
+            outputItemHandler.insertItem(0, output, false)
+            inputItemHandler.extractItem(0, currentRecipe.inputs[0].amount, false)
+        } else if (storedCe >= currentRecipe.cePerTick) {
+            craftingProgress++
+        } else {
+            extractCe()
+        }
     }
 
     private fun onInputSlotChanged() {

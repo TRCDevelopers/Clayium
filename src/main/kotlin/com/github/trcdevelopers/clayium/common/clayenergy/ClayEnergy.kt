@@ -12,6 +12,7 @@ value class ClayEnergy(val energy: Long) {
     operator fun plus(other: ClayEnergy) = ClayEnergy(energy + other.energy)
     operator fun minus(other: ClayEnergy) = ClayEnergy(energy - other.energy)
     operator fun times(value: Int) = ClayEnergy(energy * value)
+    operator fun compareTo(other: ClayEnergy) = energy.compareTo(other.energy)
 
     companion object {
         fun micro(energy: Long): ClayEnergy {
