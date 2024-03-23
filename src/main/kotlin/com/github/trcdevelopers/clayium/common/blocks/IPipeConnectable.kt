@@ -8,6 +8,6 @@ import net.minecraft.util.EnumFacing
  * This interface is used to determine whether a pipe should extend to that direction during rendering.
  */
 interface IPipeConnectable {
-    fun isImporting(side: EnumFacing): Boolean
-    fun isExporting(side: EnumFacing): Boolean
+    fun acceptInputFrom(side: EnumFacing): Boolean
+    fun acceptOutputTo(side: EnumFacing): Boolean
 }

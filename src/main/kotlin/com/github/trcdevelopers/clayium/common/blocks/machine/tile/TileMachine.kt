@@ -140,11 +140,11 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         return oldState.block != newSate.block
     }
 
-    override fun isImporting(side: EnumFacing): Boolean {
+    override fun acceptInputFrom(side: EnumFacing): Boolean {
         return _inputs[side.index] != MachineIoMode.NONE
     }
 
-    override fun isExporting(side: EnumFacing): Boolean {
+    override fun acceptOutputTo(side: EnumFacing): Boolean {
         return _outputs[side.index] != MachineIoMode.NONE
     }
 
@@ -223,7 +223,7 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         when (val neighborTile = world.getTileEntity(pos.offset(side))) {
             is TileMachine -> {
                 Clayium.LOGGER.info("neighborTile: $neighborTile")
-                this._connections[i] = (isImporting(side) && neighborTile.isExporting(side.opposite)) || (isExporting(side) && neighborTile.isImporting(side.opposite))
+                this._connections[i] = (acceptInputFrom(side) && neighborTile.acceptOutputTo(side.opposite)) || (acceptOutputTo(side) && neighborTile.acceptInputFrom(side.opposite))
             }
             else -> {
                 this._connections[i] = neighborTile?.hasCapability(ITEM_HANDLER_CAPABILITY, side.opposite) == true
@@ -235,14 +235,14 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
      * used by [AutoIoHandler]
      */
     protected open fun canAutoInput(side: EnumFacing): Boolean {
-        return isImporting(side)
+        return acceptInputFrom(side)
     }
 
     /**
      * used by [AutoIoHandler]
      */
     protected open fun canAutoOutput(side: EnumFacing): Boolean {
-        return isExporting(side)
+        return acceptOutputTo(side)
     }
 
     protected inner class AutoIoHandler(

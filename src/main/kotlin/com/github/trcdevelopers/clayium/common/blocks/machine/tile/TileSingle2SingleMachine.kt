@@ -99,7 +99,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
         if (capability === ITEM_HANDLER_CAPABILITY) {
-            return if (facing == null) true else isImporting(facing) || isExporting(facing)
+            return if (facing == null) true else acceptInputFrom(facing) || acceptOutputTo(facing)
         }
         return super.hasCapability(capability, facing)
     }
