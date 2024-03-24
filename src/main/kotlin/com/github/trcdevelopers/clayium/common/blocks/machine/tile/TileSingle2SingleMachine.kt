@@ -8,6 +8,7 @@ import com.github.trcdevelopers.clayium.common.recipe.CRecipes
 import com.github.trcdevelopers.clayium.common.recipe.SimpleCeRecipe
 import com.github.trcdevelopers.clayium.common.recipe.registry.SimpleCeRecipeRegistry
 import com.github.trcdevelopers.clayium.common.util.NBTTypeUtils.hasCompoundTag
+import com.github.trcdevelopers.clayium.common.util.NBTTypeUtils.hasInt
 import com.github.trcdevelopers.clayium.common.util.NBTTypeUtils.hasString
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -41,6 +42,8 @@ class TileSingle2SingleMachine : TileCeMachine() {
 
     var requiredProgress: Int = 0
     var craftingProgress: Int = 0
+
+    private var recipeInitializedOnFirstTick = false
 
     override fun getItemHandler() = combinedHandler
 
@@ -77,7 +80,12 @@ class TileSingle2SingleMachine : TileCeMachine() {
 
     override fun update() {
         super.update()
-        if (world.isRemote) return
+        if (world == null || world.isRemote) return
+        if (!recipeInitializedOnFirstTick) {
+            onInputSlotChanged()
+            onOutputSlotChanged()
+            recipeInitializedOnFirstTick = true
+        }
         proceedCraft()
     }
 
@@ -86,6 +94,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
         compound.setTag("output_inventory", outputItemHandler.serializeNBT())
         compound.setString("recipe_registry", recipeRegistry.registryName)
         compound.setString("gui_machine_name", guiTranslationKey)
+        compound.setInteger("crafting_progress", craftingProgress)
         return super.writeToNBT(compound)
     }
 
@@ -95,6 +104,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
         if (compound.hasCompoundTag("output_inventory")) outputItemHandler.deserializeNBT(compound.getCompoundTag("output_inventory"))
         if (compound.hasString("recipe_registry")) recipeRegistry = CRecipes.getSimpleCeRecipeRegistry(compound.getString("recipe_registry")) ?: SimpleCeRecipeRegistry.EMPTY_1_1
         if (compound.hasString("gui_machine_name")) guiTranslationKey = compound.getString("gui_machine_name")
+        if (compound.hasInt("crafting_progress")) craftingProgress = compound.getInteger("crafting_progress")
     }
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
