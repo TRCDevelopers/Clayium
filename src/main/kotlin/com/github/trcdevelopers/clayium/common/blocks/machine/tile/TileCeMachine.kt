@@ -4,6 +4,7 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClay
 import com.github.trcdevelopers.clayium.common.util.NBTTypeUtils.hasLong
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
@@ -27,6 +28,13 @@ abstract class TileCeMachine : TileMachine() {
     }
 
     var storedCe: ClayEnergy = ClayEnergy.of(0)
+
+    override fun onBlockPlaced(player: EntityLivingBase, stack: ItemStack) {
+        super.onBlockPlaced(player, stack)
+        _inputs[EnumFacing.UP.index] = MachineIoMode.ALL
+        _inputs[player.horizontalFacing.index] = MachineIoMode.CE
+        _outputs[EnumFacing.DOWN.index] = MachineIoMode.ALL
+    }
 
     override fun update() {
         importEnergizedClay()

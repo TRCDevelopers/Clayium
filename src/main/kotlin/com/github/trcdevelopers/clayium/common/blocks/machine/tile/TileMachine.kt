@@ -23,6 +23,7 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
+import org.jetbrains.annotations.MustBeInvokedByOverriders
 
 /**
  * root of all tile machines
@@ -60,6 +61,7 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
         this.validOutputModes = outputModes
     }
 
+    @MustBeInvokedByOverriders
     open fun onBlockPlaced(player: EntityLivingBase, stack: ItemStack) {
         this.currentFacing = player.horizontalFacing.opposite
     }
