@@ -38,8 +38,6 @@ class TileSingle2SingleMachine : TileCeMachine() {
     private var recipe: SimpleCeRecipe? = null
     private var canStartCraft = false
 
-    private var canOutputMerge = false
-
     var requiredProgress: Int = 0
     var craftingProgress: Int = 0
 
