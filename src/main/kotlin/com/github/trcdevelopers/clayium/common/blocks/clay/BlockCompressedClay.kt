@@ -1,6 +1,5 @@
 package com.github.trcdevelopers.clayium.common.blocks.clay
 
-import com.github.trcdevelopers.clayium.common.Clayium
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -14,22 +13,18 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.NonNullList
-import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 class BlockCompressedClay : Block(Material.GROUND) {
 
     init {
-        creativeTab = Clayium.creativeTab
-        translationKey = "${Clayium.MOD_ID}.compressed_clay"
-        registryName = ResourceLocation(Clayium.MOD_ID, "compressed_clay")
-        blockHardness = 0.6f
-        soundType = SoundType.GROUND
-        lightValue = 0
+        setSoundType(SoundType.GROUND)
+        setLightLevel(0f)
+        setHardness(0.6f)
         setHarvestLevel("shovel", 0)
 
-        this.defaultState = this.blockState.baseState.withProperty(TIER, 0)
+        this.defaultState = this.blockState.baseState.withProperty(META, 0)
     }
 
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
@@ -39,15 +34,15 @@ class BlockCompressedClay : Block(Material.GROUND) {
     }
 
     override fun createBlockState(): BlockStateContainer {
-        return BlockStateContainer.Builder(this).add(TIER).build()
+        return BlockStateContainer.Builder(this).add(META).build()
     }
 
     override fun getMetaFromState(state: IBlockState): Int {
-        return state.getValue(TIER)
+        return state.getValue(META)
     }
 
     override fun getStateFromMeta(meta: Int): IBlockState {
-        return this.defaultState.withProperty(TIER, meta)
+        return this.defaultState.withProperty(META, meta)
     }
 
     override fun getStateForPlacement(world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand): IBlockState {
@@ -59,6 +54,6 @@ class BlockCompressedClay : Block(Material.GROUND) {
     }
 
     companion object {
-        val TIER: IProperty<Int> = PropertyInteger.create("tier", 0, 3)
+        val META: IProperty<Int> = PropertyInteger.create("meta", 0, 3)
     }
 }

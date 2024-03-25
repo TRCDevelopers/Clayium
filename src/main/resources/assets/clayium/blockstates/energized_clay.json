@@ -2,15 +2,60 @@
   "forge_marker": 1,
   "variants": {
     "meta": {
-      "0": { "model": "clayium:compressed_clay_4" },
-      "1": { "model": "clayium:compressed_clay_5" },
-      "2": { "model": "clayium:compressed_clay_6" },
-      "3": { "model": "clayium:compressed_clay_7" },
-      "4": { "model": "clayium:compressed_clay_8" },
-      "5": { "model": "clayium:compressed_clay_9" },
-      "6": { "model": "clayium:compressed_clay_10" },
-      "7": { "model": "clayium:compressed_clay_11" },
-      "8": { "model": "clayium:compressed_clay_12" }
+      "0": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier4"
+        },
+        "model": "cube_all"
+      },
+      "1": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier5"
+        },
+        "model": "cube_all"
+      },
+      "2": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier6"
+        },
+        "model": "cube_all"
+      },
+      "3": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier7"
+        },
+        "model": "cube_all"
+      },
+      "4": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier8"
+        },
+        "model": "cube_all"
+      },
+      "5": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier9"
+        },
+        "model": "cube_all"
+      },
+      "6": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier10"
+        },
+        "model": "cube_all"
+      },
+      "7": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier11"
+        },
+        "model": "cube_all"
+      },
+      "8": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier12"
+        },
+        "model": "cube_all"
+      }
     }
   }
 }

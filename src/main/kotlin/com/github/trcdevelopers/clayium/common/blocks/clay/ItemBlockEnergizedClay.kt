@@ -1,16 +1,14 @@
 package com.github.trcdevelopers.clayium.common.blocks.clay
 
-import com.github.trcdevelopers.clayium.common.ClayEnergy
+import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.interfaces.IEnergizedClay
+import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClay
 import com.github.trcdevelopers.clayium.common.util.CUtils
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
-import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.IRarity
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -20,8 +18,6 @@ class ItemBlockEnergizedClay(block: BlockEnergizedClay) : ItemBlock(block), IEne
 
     init {
         hasSubtypes = true
-        creativeTab = Clayium.creativeTab
-        registryName = block.registryName
     }
 
     override fun getMetadata(damage: Int): Int {
@@ -44,14 +40,5 @@ class ItemBlockEnergizedClay(block: BlockEnergizedClay) : ItemBlock(block), IEne
 
     override fun getClayEnergy(stack: ItemStack): ClayEnergy {
         return ClayEnergy.of(10.toDouble().pow(stack.metadata).toLong())
-    }
-
-    @SideOnly(Side.CLIENT)
-    fun registerModels() {
-        for (i in 4..12) {
-            ModelLoader.setCustomModelResourceLocation(this, i - 4,
-                ModelResourceLocation("${Clayium.MOD_ID}:compressed_clay_$i", "inventory")
-            )
-        }
     }
 }

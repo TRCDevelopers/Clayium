@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.common.unification.material
 
 import com.github.trcdevelopers.clayium.common.Clayium
+import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 
 sealed interface MaterialProperty {
@@ -19,7 +20,9 @@ sealed interface MaterialProperty {
     }
 
     class Plate(
-        val recipeTime: Int,
+        val cePerTick: ClayEnergy,
+        val requiredTick: Int,
+        val tier: Int,
     ) : MaterialProperty {
         override fun verify(material: Material) = material.hasProperty<Ingot>() || material.hasProperty<Matter>()
     }

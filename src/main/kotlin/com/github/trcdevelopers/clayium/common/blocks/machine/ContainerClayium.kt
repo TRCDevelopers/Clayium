@@ -11,6 +11,8 @@ abstract class ContainerClayium(
     playerInvOffsetY: Int,
 ) : Container() {
 
+    protected val machineInventorySlots = arrayListOf<Slot>()
+
     init {
         // add player inventory slots
         for (i in 0..2) {
@@ -29,29 +31,46 @@ abstract class ContainerClayium(
     }
 
     override fun transferStackInSlot(playerIn: EntityPlayer, index: Int): ItemStack {
-        var itemStack: ItemStack = ItemStack.EMPTY
-        val slot: Slot? = inventorySlots[index]
-        if (slot != null && slot.hasStack) {
-            val itemStack1 = slot.stack
-            itemStack = itemStack1.copy()
-            val containerSlots = inventorySlots.size - playerIn.inventory.mainInventory.size
-            if (index < containerSlots) {
-                if (!mergeItemStack(itemStack1, containerSlots, inventorySlots.size, true)) {
+        val slot = inventorySlots[index] ?: return ItemStack.EMPTY
+        if (!slot.hasStack) return ItemStack.EMPTY
+        val slotStack = slot.stack
+        val orgStack = slotStack.copy()
+
+        when (index) {
+            // player inventory -> container? -> hot bar
+            in 0..<27 -> {
+                if (!(mergeItemStack(slotStack, 36, inventorySlots.size, false)
+                            || mergeItemStack(slotStack, 27, 36, false))) {
                     return ItemStack.EMPTY
                 }
-            } else if (!mergeItemStack(itemStack1, 0, containerSlots, false)) {
-                return ItemStack.EMPTY
             }
-            if (itemStack1.count == 0) {
-                slot.putStack(ItemStack.EMPTY)
-            } else {
-                slot.onSlotChanged()
+            // hot bar -> container? -> player inventory
+            in 27..<36 -> {
+                if (!(mergeItemStack(slotStack, 36, inventorySlots.size, false)
+                            || mergeItemStack(slotStack, 0, 27, false))) {
+                    return ItemStack.EMPTY
+                }
             }
-            if (itemStack1.count == itemStack.count) {
-                return ItemStack.EMPTY
+            // container -> hot bar? -> player inventory
+            in 36..<inventorySlots.size -> {
+                if (!(mergeItemStack(slotStack, 27, 36, false)
+                        || mergeItemStack(slotStack, 0, 27, false))) {
+                    return ItemStack.EMPTY
+                }
             }
-            slot.onTake(playerIn, itemStack1)
         }
-        return itemStack
+
+        if (slotStack.isEmpty) {
+            slot.putStack(ItemStack.EMPTY)
+        } else {
+            slot.onSlotChanged()
+        }
+
+        // no changes were made
+        if (slotStack.count == orgStack.count) {
+            return ItemStack.EMPTY
+        }
+        slot.onTake(playerIn, slotStack)
+        return orgStack
     }
 }

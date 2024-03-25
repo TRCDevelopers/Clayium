@@ -81,22 +81,16 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         }
     }
 
-    companion object {
-        private val _metaItems = mutableListOf<MetaItemClayium>()
-        val META_ITEMS: List<MetaItemClayium> get() = _metaItems
-    }
-
     open inner class MetaValueItem(
         val meta: Short,
         val name: String,
     ) {
-
-        val stackForm = ItemStack(this@MetaItemClayium, 1, meta.toInt())
-
         val translationKey = "item.${Clayium.MOD_ID}.$name"
         val behaviors = mutableListOf<IItemBehavior>()
         var colorHandler: IItemColorHandler? = null
         var rarity: IRarity = EnumRarity.COMMON
+
+        fun getStackForm(count: Int = 1): ItemStack = ItemStack(this@MetaItemClayium, count, meta.toInt())
 
         fun addComponent(component: IItemComponent): MetaValueItem {
             when (component) {
@@ -124,9 +118,28 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         }
 
         fun oreDict(name: String): MetaValueItem {
-            OreDictionary.registerOre(name, stackForm)
+            OreDictionary.registerOre(name, getStackForm(1))
             return this
         }
 
+    }
+
+    companion object {
+        private val _metaItems = mutableListOf<MetaItemClayium>()
+        val META_ITEMS: List<MetaItemClayium> get() = _metaItems
+
+        @SideOnly(Side.CLIENT)
+        fun registerModels() {
+            for (item in META_ITEMS) {
+                item.registerModels()
+            }
+        }
+
+        @SideOnly(Side.CLIENT)
+        fun registerColors() {
+            for (item in META_ITEMS) {
+                item.registerColorHandler()
+            }
+        }
     }
 }

@@ -113,6 +113,20 @@ material.clayium.saltpeter=Saltpeter
 material.clayium.sodium_carbonate=Sodium Carbonate
 material.clayium.sulfur=Sulfur
 
+machine.clayium.tier1=Clay
+machine.clayium.tier2=Dense Clay
+machine.clayium.tier3=Simple
+machine.clayium.tier4=Basic
+machine.clayium.tier5=Advanced
+machine.clayium.tier6=Precision
+machine.clayium.tier7=Clay Steel
+machine.clayium.tier8=Clayium
+machine.clayium.tier9=Ultimate
+machine.clayium.tier10=Antimatter
+machine.clayium.tier11=Pure Antimatter
+machine.clayium.tier12=OEC
+machine.clayium.tier13=OPA
+
 recipe.clayium.ClayWorkTable=Clay Work Table
 
 recipe.clayium.BendingMachine=Clay Bending Machine
@@ -205,7 +219,7 @@ tile.clayium.blockAZ91DHull.name=AZ91D Alloy Hull
 tile.clayium.blockZK60AHull.name=ZK60A Alloy Hull
 
 tile.clayium.clay_work_table.name=Clay Work Table
-tile.clayium.clay_work_table.tooltip.line1=The first step to Clay Industry.
+tile.clayium.clay_work_table.tooltip=The first step to Clay Industry.
 tile.clayium.blockClayCraftingTable.name=Clay Crafting Board
 tile.clayium.blockClayCraftingTable.tooltip.line1=A convenient version of vanilla Crafting Table.
 tile.clayium.blockClayCraftingTable.tooltip.line2=__DETAIL__
@@ -217,15 +231,8 @@ tile.clayium.blockEnergeticClayCondenser.name=Energetic Clay Condenser Mk I
 tile.clayium.blockEnergeticClayCondenser.tooltip.line1=To obtain the first Energetic Clay.
 tile.clayium.blockEnergeticClayCondenserMK2.name=Energetic Clay Condenser Mk II
 
-tile.clayium.blockClayBendingMachine.name=Clay Bending Machine
-tile.clayium.blockClayBendingMachine.tooltip.line1=The first machine.
-tile.clayium.blockDenseClayBendingMachine.name=Dense Clay Bending Machine
-tile.clayium.blockSimpleBendingMachine.name=Simple Bending Machine
-tile.clayium.blockBasicBendingMachine.name=Basic Bending Machine
-tile.clayium.blockAdvancedBendingMachine.name=Advanced Bending Machine
-tile.clayium.blockPrecisionBendingMachine.name=Precision Bending Machine
-tile.clayium.blockClaySteelBendingMachine.name=Clay Steel Bending Machine
-tile.clayium.blockUltimateBendingMachine.name=Ultimate Bending Machine
+tile.clayium.bending_machine=%s Bending Machine
+#tile.clayium.blockClayBendingMachine.tooltip.line1=The first machine.
 
 tile.clayium.blockClayWireDrawingMachine.name=Clay Wire Drawing Machine
 tile.clayium.blockDenseClayWireDrawingMachine.name=Dense Clay Wire Drawing Machine
@@ -299,16 +306,7 @@ tile.clayium.blockClayiumSmelter.name=Clayium Smelter
 tile.clayium.blockUltimateSmelter.name=Ultimate Smelter
 tooltip.clayium.Smelter.line1=Furnace powered by CE.
 
-tile.clayium.clay_buffer_tier4.name=Basic Buffer
-tile.clayium.clay_buffer_tier5.name=Advanced Buffer
-tile.clayium.clay_buffer_tier6.name=Precision Buffer
-tile.clayium.clay_buffer_tier7.name=Clay Steel Buffer
-tile.clayium.clay_buffer_tier8.name=Clayium Buffer
-tile.clayium.clay_buffer_tier9.name=Ultimate Buffer
-tile.clayium.clay_buffer_tier10.name=Antimatter Buffer
-tile.clayium.clay_buffer_tier11.name=Pure Antimatter Buffer
-tile.clayium.clay_buffer_tier12.name=OEC Buffer
-tile.clayium.clay_buffer_tier13.name=OPA Buffer
+tile.clayium.clay_buffer=%s Buffer
 tooltip.clayium.buffer.line1=Transfers items. Acts as an item pipe.
 
 tile.clayium.blockBasicMultitrackBuffer.name=Basic Multitrack  Buffer
@@ -907,9 +905,9 @@ item.clayium.industrial_clay_shard.name=Industrial Clay Shard
 item.clayium.adv_industrial_clay_shard.name=Advanced Industrial Clay Shard
 
 item.clayium.clay_shovel.name=Clay Shovel
-item.clayium.clay_shovel.tooltip.line1=Can dig Clay Ores and increase drops.
+item.clayium.clay_shovel.tooltip=Can dig Clay Ores and increase drops.
 item.clayium.clay_pickaxe.name=Clay Pickaxe
-item.clayium.clay_pickaxe.tooltip.line1=Can harvest Clay Ores so fast and increase drops.
+item.clayium.clay_pickaxe.tooltip=Can harvest Clay Ores so fast and increase drops.
 
 item.clayium.itemFilterDuplicator.copy.name=Item Filter Duplicator
 item.clayium.itemFilterWhitelist.name=White List Item Filter

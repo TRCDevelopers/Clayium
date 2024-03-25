@@ -55,6 +55,8 @@ open class MetaPrefixItem private constructor(
     }
 
     companion object {
+
+
         fun create(name: String, orePrefix: OrePrefix): MetaPrefixItem {
             return when (orePrefix) {
                 OrePrefix.IMPURE_DUST -> MetaPrefixItemImpureDust

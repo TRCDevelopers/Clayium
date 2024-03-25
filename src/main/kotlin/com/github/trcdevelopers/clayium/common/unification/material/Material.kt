@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.unification.material
 
+import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.unification.material.MaterialProperty.Dust
 import com.github.trcdevelopers.clayium.common.unification.material.MaterialProperty.ImpureDust
 import com.github.trcdevelopers.clayium.common.unification.material.MaterialProperty.Ingot
@@ -18,48 +19,48 @@ enum class Material(
     // impure material but there is no impure -> pure dust recipe
     IMPURE_SILICON(0, "impure_silicon", 5,
         colors = intArrayOf(0x978F98, 0x533764, 0xA9A5A5),
-        properties = setOf(Ingot, Dust, Plate(20))
+        properties = setOf(Ingot, Dust, Plate(ClayEnergy.milli(1), 20, tier = 4))
     ),
     SILICONE(1, "silicone", 5,
         colors = intArrayOf(0xD2D2D2, 0xB4B4B4, 0xF0F0F0),
-        properties = setOf(Ingot, Dust, Plate(20))
+        properties = setOf(Ingot, Dust, Plate(ClayEnergy.milli(1), 4, tier = 4))
     ),
     SILICON(2, "silicon", 5,
         colors = intArrayOf(0x281C28, 0x191919, 0xFFFFFF),
-        properties = setOf(Ingot, Dust, Plate(20))
+        properties = setOf(Ingot, Dust, Plate(ClayEnergy.milli(1), 20, tier = 4))
     ),
     ALUMINUM(3, "aluminum", 6,
         colors =  intArrayOf(0xBEC8CA, 0x191919, 0xFFFFFF),
-        properties = setOf(Ingot, Dust, ImpureDust(0xBEC8CA, 0x78783C, 0xDCDCDC), Plate(20))
+        properties = setOf(Ingot, Dust, ImpureDust(0xBEC8CA, 0x78783C, 0xDCDCDC), Plate(ClayEnergy.milli(1), 20, tier = 4))
     ),
     CLAY_STEEL(4, "clay_steel", 7,
         colors =  intArrayOf(0x8890AD, 0x191919, 0xFFFFFF),
-        properties = setOf(Ingot, Dust, Plate(20))
+        properties = setOf(Ingot, Dust, Plate(ClayEnergy.milli(1), 60, tier = 4))
     ),
     CLAYIUM(5, "clayium", 8,
         colors =  intArrayOf(0x5AF0D2, 0x3F4855, 0xFFCDC8),
-        properties = setOf(Ingot, Dust, Plate(20))
+        properties = setOf(Ingot, Dust, Plate(ClayEnergy.milli(1), 120, tier = 4))
     ),
     ULTIMATE_ALLOY(6, "ultimate_alloy", 9,
         colors =  intArrayOf(0x55CD55, 0x191919, 0xF5A0FF),
-        properties = setOf(Ingot, Dust, Plate(20))
+        properties = setOf(Ingot, Dust, Plate(ClayEnergy.milli(1), 180, tier = 4))
     ),
     ANTIMATTER(7, "antimatter", 10,
         colors =  intArrayOf(0x0000EB, 0x000000, 0xFFFFFF),
-        properties = setOf(Matter(), Dust, Plate(20))
+        properties = setOf(Matter(), Dust, Plate(ClayEnergy.of(100), 20, tier = 9))
     ),
     PURE_ANTIMATTER_TIER0(8, "pure_antimatter", 11,
         colors =  intArrayOf(0xFF32FF, 0x000000, 0xFFFFFF),
-        properties = setOf(Matter(), Dust, Plate(20))
+        properties = setOf(Matter(), Dust, Plate(ClayEnergy.of(1000), 20, tier = 9))
     ),
     // specific case, block -> plate recipe should be added manually
     OCTUPLE_ENERGETIC_CLAY(9, "oec", 12,
         colors =  intArrayOf(0xFFFF00, 0x8C8C8C, 0xFFFFFF),
-        properties = setOf(Dust, Plate(20))
+        properties = setOf(Dust, Plate(ClayEnergy.of(10000), 20, tier = 9))
     ),
     PURE_ANTIMATTER_TIER8(10, "opa", 13,
         colors =  intArrayOf(0x960000, 0xC8C800, 0xFFFFFF),
-        properties = setOf(Matter("matter5"), Dust, Plate(20))
+        properties = setOf(Matter("matter5"), Dust, Plate(ClayEnergy.of(100_000), 20, tier = 9))
     ),
 
     /* pure antimatter 1x~7x */
@@ -73,11 +74,11 @@ enum class Material(
 
     AZ91D(18, "az91d", 6,
         colors = intArrayOf(0x828C87, 0x0A280A, 0xFFFFFF),
-        properties = setOf(Ingot, Dust, Plate(20))
+        properties = setOf(Ingot, Dust, Plate(ClayEnergy.milli(1), 20, tier = 4))
     ),
     ZK60A(19, "zk60a", 6,
         colors = intArrayOf(0x4B5550, 0x0A280A, 0xFFFFFF),
-        properties = setOf(Ingot, Dust, Plate(20))
+        properties = setOf(Ingot, Dust, Plate(ClayEnergy.milli(1), 20, tier = 4))
     ),
 
     BARIUM(20, "barium",
@@ -315,8 +316,8 @@ enum class Material(
     CALCIUM_CHLORIDE(1002, "calcium_chloride", properties = setOf(Dust)),
     CARBON(1003, "carbon", colors = intArrayOf(0x0A0A0A, 0x191919, 0x1E1E1E), properties = setOf(Dust)),
     CHARCOAL(1004, "charcoal", colors = intArrayOf(0x141414, 0x191919, 0x503232), properties = setOf(Dust)),
-    CLAY(1005, "clay", properties = setOf(Dust, Plate(20))),
-    DENSE_CLAY(1006, "dense_clay", properties = setOf(Dust, Plate(20))),
+    CLAY(1005, "clay", properties = setOf(Dust, Plate(ClayEnergy.micro(10), 1, tier = 0))),
+    DENSE_CLAY(1006, "dense_clay", properties = setOf(Dust, Plate(ClayEnergy.micro(10), 4, tier = 0))),
     COAL(1007, "coal", colors = intArrayOf(0x141414, 0x191919, 0x323250), properties = setOf(Dust)),
     LAPIS(1008, "lapis", colors = intArrayOf(0x3C64BE, 0x0A2B7A, 0x5A82E2), properties = setOf(Dust)),
     ORGANIC_CLAY(1009, "organic_clay", colors = intArrayOf(0x8890AD, 0x6A2C2B, 0x92A4B7), properties = setOf(Dust)),

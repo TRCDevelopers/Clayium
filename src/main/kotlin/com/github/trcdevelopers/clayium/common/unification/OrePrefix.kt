@@ -3,6 +3,7 @@ package com.github.trcdevelopers.clayium.common.unification
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.material.MaterialProperty
 import com.github.trcdevelopers.clayium.common.util.CUtils
+import com.google.common.base.CaseFormat
 
 enum class OrePrefix(
     val camel: String,
@@ -30,4 +31,6 @@ enum class OrePrefix(
     ;
 
     abstract fun doGenerateItem(material: Material): Boolean
+
+    fun concat(material: Material) = "$camel${CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, material.materialName)}"
 }

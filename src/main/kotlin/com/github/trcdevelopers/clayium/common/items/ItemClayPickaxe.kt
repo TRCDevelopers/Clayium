@@ -1,9 +1,9 @@
 package com.github.trcdevelopers.clayium.common.items
 
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.annotation.CItem
-import com.github.trcdevelopers.clayium.common.util.UtilLocale
+import com.github.trcdevelopers.clayium.common.blocks.ores.IClayOreBlock
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.ItemPickaxe
@@ -14,7 +14,6 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import javax.annotation.ParametersAreNonnullByDefault
 
-@CItem(registryName = "clay_pickaxe")
 class ItemClayPickaxe : ItemPickaxe(ToolMaterial.STONE) {
     private val efficiencyOnClayOre = 32.0f
 
@@ -32,16 +31,13 @@ class ItemClayPickaxe : ItemPickaxe(ToolMaterial.STONE) {
     }
 
     override fun getDestroySpeed(stack: ItemStack, state: IBlockState): Float {
-        if (state.block.registryName != null) {
-            val regName = state.block.registryName.toString()
-            if (regName.startsWith("clayium") && regName.endsWith("clay_ore")) {
-                val blockHarvestLevel = state.block.getHarvestLevel(state)
-                val itemHarvestLevel = stack.item.getHarvestLevel(stack, state.block.getHarvestTool(state) ?: "", null, state)
-                return if (blockHarvestLevel <= itemHarvestLevel) {
-                    efficiencyOnClayOre
-                } else {
-                    efficiencyOnClayOre * 100f / 30f
-                }
+        if (state.block is IClayOreBlock) {
+            val blockHarvestLevel = state.block.getHarvestLevel(state)
+            val itemHarvestLevel = stack.item.getHarvestLevel(stack, state.block.getHarvestTool(state) ?: "", null, state)
+            return if (blockHarvestLevel <= itemHarvestLevel) {
+                efficiencyOnClayOre
+            } else {
+                efficiencyOnClayOre * 100f / 30f
             }
         }
         return super.getDestroySpeed(stack, state)
@@ -49,16 +45,6 @@ class ItemClayPickaxe : ItemPickaxe(ToolMaterial.STONE) {
 
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        super.addInformation(stack, worldIn, tooltip, flagIn)
-        if (registryName == null) {
-            return
-        }
-        val list = UtilLocale.localizeTooltip(
-            "item." + registryName!!
-                .path + ".tooltip"
-        )
-        if (list != null) {
-            tooltip.addAll(list)
-        }
+        tooltip.add(I18n.format("item.clayium.clay_pickaxe.tooltip"))
     }
 }
