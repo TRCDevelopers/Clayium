@@ -15,7 +15,7 @@ import net.minecraft.util.NonNullList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
-@Suppress("")
+@Suppress("OVERRIDE_DEPRECATION")
 class BlockEnergizedClay : Block(Material.GROUND) {
 
     init {
