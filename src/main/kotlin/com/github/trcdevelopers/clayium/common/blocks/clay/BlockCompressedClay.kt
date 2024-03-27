@@ -16,6 +16,7 @@ import net.minecraft.util.NonNullList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
+@Suppress("OVERRIDE_DEPRECATION")
 class BlockCompressedClay : Block(Material.GROUND) {
 
     init {
