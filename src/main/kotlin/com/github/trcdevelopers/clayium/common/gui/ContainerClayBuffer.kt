@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer
+package com.github.trcdevelopers.clayium.common.gui
 
 import com.github.trcdevelopers.clayium.common.blocks.machine.ContainerClayium
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileClayBuffer

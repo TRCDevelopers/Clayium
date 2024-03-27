@@ -1,6 +1,7 @@
-package com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable
+package com.github.trcdevelopers.clayium.common.gui
 
 import com.github.trcdevelopers.clayium.common.blocks.machine.ContainerClayium
+import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IContainerListener
 import net.minecraft.inventory.IInventory
@@ -10,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.SlotItemHandler
 
-class ClayWorktableContainer(
+class ContainerClayWorkTable(
     playerInv: IInventory,
     private val tile: TileClayWorkTable,
 ) : ContainerClayium(playerInv, 84) {

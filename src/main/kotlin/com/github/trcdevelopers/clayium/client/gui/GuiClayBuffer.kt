@@ -1,7 +1,7 @@
 package com.github.trcdevelopers.clayium.client.gui
 
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.blocks.machine.claybuffer.ContainerClayBuffer
+import com.github.trcdevelopers.clayium.common.gui.ContainerClayBuffer
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileClayBuffer
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager
