@@ -18,9 +18,8 @@ import org.apache.logging.log4j.Logger
     modid = Clayium.MOD_ID,
     name = Clayium.MOD_NAME,
     version = Clayium.VERSION,
-    modLanguageAdapter = "io.github.chaosunity.forgelin.KotlinAdapter",
 )
-object Clayium {
+class Clayium {
     @Mod.EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(this)
@@ -37,20 +36,25 @@ object Clayium {
         proxy.postInit(event)
     }
 
-    const val MOD_ID = "clayium"
-    const val MOD_NAME = "Clayium"
-    const val VERSION = "1.0-SNAPSHOT"
+    companion object {
+        const val MOD_ID = "clayium"
+        const val MOD_NAME = "Clayium"
+        const val VERSION = "1.0-SNAPSHOT"
 
-    val creativeTab: CreativeTabs = object : CreativeTabs(getNextID(), MOD_ID) {
-        @SideOnly(Side.CLIENT)
-        override fun createIcon(): ItemStack {
-            return ItemStack(Items.CLAY_BALL)
+        val creativeTab: CreativeTabs = object : CreativeTabs(getNextID(), MOD_ID) {
+            @SideOnly(Side.CLIENT)
+            override fun createIcon(): ItemStack {
+                return ItemStack(Items.CLAY_BALL)
+            }
         }
+
+        @JvmField
+        val LOGGER: Logger = LogManager.getLogger(MOD_ID)
+
+        @SidedProxy(clientSide = "com.github.trcdevelopers.clayium.client.ClientProxy", serverSide = "com.github.trcdevelopers.clayium.common.CommonProxy")
+        lateinit var proxy: CommonProxy
+
+        @Mod.Instance
+        lateinit var INSTANCE: Clayium
     }
-
-    @JvmField
-    val LOGGER: Logger = LogManager.getLogger(MOD_ID)
-
-    @SidedProxy(clientSide = "com.github.trcdevelopers.clayium.client.ClientProxy", serverSide = "com.github.trcdevelopers.clayium.common.CommonProxy")
-    lateinit var proxy: CommonProxy
 }

@@ -46,7 +46,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
     override fun getItemHandler() = combinedHandler
 
     override fun openGui(player: EntityPlayer, world: World, pos: BlockPos) {
-        player.openGui(Clayium, GuiHandler.SINGLE_2_SINGLE, world, pos.x, pos.y, pos.z)
+        player.openGui(Clayium.INSTANCE, GuiHandler.SINGLE_2_SINGLE, world, pos.x, pos.y, pos.z)
     }
 
     override fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {

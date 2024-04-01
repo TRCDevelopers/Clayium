@@ -40,7 +40,7 @@ open class CommonProxy {
         MinecraftForge.EVENT_BUS.register(Clayium.proxy)
         this.registerTileEntities()
         GameRegistry.registerWorldGenerator(ClayOreGenerator(), 0)
-        NetworkRegistry.INSTANCE.registerGuiHandler(Clayium, GuiHandler)
+        NetworkRegistry.INSTANCE.registerGuiHandler(Clayium.INSTANCE, GuiHandler)
     }
 
     open fun init(event: FMLInitializationEvent) {
