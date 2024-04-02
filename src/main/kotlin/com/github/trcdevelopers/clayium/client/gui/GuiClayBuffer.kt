@@ -20,7 +20,7 @@ class GuiClayBuffer(
     }
 
     override fun drawGuiContainerForegroundLayer(mouseX: Int, mouseY: Int) {
-        fontRenderer.drawString(I18n.format("tile.clayium.clay_buffer_tier${tile.tier}.name"), 6, 6, 0x404040)
+        fontRenderer.drawString(I18n.format("tile.clayium.clay_buffer", I18n.format("machine.clayium.tier${tile.tier}")), 6, 6, 0x404040)
         fontRenderer.drawString(I18n.format("container.inventory"), 6, 18 + tile.inventoryY * 18, 0x404040)
     }
 
