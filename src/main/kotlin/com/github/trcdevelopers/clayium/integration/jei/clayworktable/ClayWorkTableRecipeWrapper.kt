@@ -1,7 +1,7 @@
 package com.github.trcdevelopers.clayium.integration.jei.clayworktable
 
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.ClayWorkTableMethod
 import com.github.trcdevelopers.clayium.common.recipe.ClayWorkTableRecipe
 import com.github.trcdevelopers.clayium.integration.jei.JeiPlugin
 import mezz.jei.api.gui.IDrawableAnimated

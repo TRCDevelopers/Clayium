@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable
+package com.github.trcdevelopers.clayium.common.blocks.clayworktable
 
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import net.minecraft.item.Item

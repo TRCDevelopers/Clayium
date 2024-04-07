@@ -1,6 +1,5 @@
 package com.github.trcdevelopers.clayium.common.gui
 
-import com.github.trcdevelopers.clayium.common.blocks.machine.ContainerClayium
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileSingle2SingleMachine
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import net.minecraft.entity.player.EntityPlayer

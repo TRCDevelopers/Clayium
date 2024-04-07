@@ -5,7 +5,7 @@ import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedCl
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
 import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
-import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileSingle2SingleMachine
@@ -40,7 +40,7 @@ open class CommonProxy {
         MinecraftForge.EVENT_BUS.register(Clayium.proxy)
         this.registerTileEntities()
         GameRegistry.registerWorldGenerator(ClayOreGenerator(), 0)
-        NetworkRegistry.INSTANCE.registerGuiHandler(Clayium, GuiHandler)
+        NetworkRegistry.INSTANCE.registerGuiHandler(Clayium.INSTANCE, GuiHandler)
     }
 
     open fun init(event: FMLInitializationEvent) {

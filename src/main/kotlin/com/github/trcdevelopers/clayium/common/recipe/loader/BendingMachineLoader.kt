@@ -35,6 +35,22 @@ object BendingMachineLoader {
                     tier(plateProp.tier)
                 }
             }
+
+            if (material.hasProperty<Plate>()) {
+                registerLargePlateRecipe(material)
+            }
         }
+    }
+
+    private fun registerLargePlateRecipe(material: Material) {
+        val plateProp = material.getProperty<Plate>() ?: return
+        CRecipes.getSimpleCeRecipeRegistry(MachineBlocks.Name.BENDING)
+            ?.register {
+                input(OrePrefix.PLATE, material, 4)
+                outputs(OreDictUnifier.get(OrePrefix.LARGE_PLATE, material))
+                cePerTick(plateProp.cePerTick)
+                requiredTicks(plateProp.requiredTick * 4)
+                tier(plateProp.tier)
+            }
     }
 }

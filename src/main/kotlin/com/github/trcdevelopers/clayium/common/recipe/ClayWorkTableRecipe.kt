@@ -1,6 +1,6 @@
 package com.github.trcdevelopers.clayium.common.recipe
 
-import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.ClayWorkTableMethod
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.Material

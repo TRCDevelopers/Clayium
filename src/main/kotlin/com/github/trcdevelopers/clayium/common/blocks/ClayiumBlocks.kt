@@ -4,7 +4,7 @@ import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockEnergizedClay
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
-import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.BlockClayWorkTable
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.BlockClayWorkTable
 import com.github.trcdevelopers.clayium.common.blocks.ores.BlockClayOre
 import com.github.trcdevelopers.clayium.common.blocks.ores.BlockDenseClayOre
 import com.google.common.collect.ImmutableMap
