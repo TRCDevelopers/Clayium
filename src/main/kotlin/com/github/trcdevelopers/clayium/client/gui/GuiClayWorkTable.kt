@@ -2,9 +2,9 @@ package com.github.trcdevelopers.clayium.client.gui
 
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.client.gui.button.GuiButtonImageToggleable
-import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.ClayWorkTableMethod
 import com.github.trcdevelopers.clayium.common.gui.ContainerClayWorkTable
-import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWorkTable
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager

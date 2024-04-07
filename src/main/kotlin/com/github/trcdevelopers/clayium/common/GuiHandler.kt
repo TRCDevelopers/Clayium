@@ -5,7 +5,7 @@ import com.github.trcdevelopers.clayium.client.gui.GuiClayWorkTable
 import com.github.trcdevelopers.clayium.client.gui.GuiSingle2SingleMachine
 import com.github.trcdevelopers.clayium.common.gui.ContainerClayBuffer
 import com.github.trcdevelopers.clayium.common.gui.ContainerClayWorkTable
-import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileSingle2SingleMachine
 import com.github.trcdevelopers.clayium.common.gui.ContainerSingle2SingleMachine

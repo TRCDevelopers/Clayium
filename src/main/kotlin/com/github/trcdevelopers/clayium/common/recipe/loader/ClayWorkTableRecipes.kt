@@ -1,11 +1,11 @@
 package com.github.trcdevelopers.clayium.common.recipe.loader
 
-import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod.CUT
-import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod.CUT_DISC
-import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod.CUT_PLATE
-import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod.PUNCH
-import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod.ROLLING_HAND
-import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod.ROLLING_PIN
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.ClayWorkTableMethod.CUT
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.ClayWorkTableMethod.CUT_DISC
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.ClayWorkTableMethod.CUT_PLATE
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.ClayWorkTableMethod.PUNCH
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.ClayWorkTableMethod.ROLLING_HAND
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.ClayWorkTableMethod.ROLLING_PIN
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts.CLAY_BLADE
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts.CLAY_CYLINDER
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts.CLAY_DISC

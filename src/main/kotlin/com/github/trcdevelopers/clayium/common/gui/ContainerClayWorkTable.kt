@@ -1,7 +1,6 @@
 package com.github.trcdevelopers.clayium.common.gui
 
-import com.github.trcdevelopers.clayium.common.blocks.machine.ContainerClayium
-import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.TileClayWorkTable
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWorkTable
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IContainerListener
 import net.minecraft.inventory.IInventory

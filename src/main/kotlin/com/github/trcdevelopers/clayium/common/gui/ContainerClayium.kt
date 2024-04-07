@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.common.blocks.machine
+package com.github.trcdevelopers.clayium.common.gui
 
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.Container

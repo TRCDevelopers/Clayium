@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable
+package com.github.trcdevelopers.clayium.common.blocks.clayworktable
 
 import com.github.trcdevelopers.clayium.common.recipe.CRecipes
 import com.github.trcdevelopers.clayium.common.recipe.ClayWorkTableRecipe

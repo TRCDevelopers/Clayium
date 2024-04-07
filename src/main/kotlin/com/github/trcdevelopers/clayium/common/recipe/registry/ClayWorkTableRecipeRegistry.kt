@@ -1,6 +1,6 @@
 package com.github.trcdevelopers.clayium.common.recipe.registry
 
-import com.github.trcdevelopers.clayium.common.blocks.machine.clayworktable.ClayWorkTableMethod
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.ClayWorkTableMethod
 import com.github.trcdevelopers.clayium.common.recipe.ClayWorkTableRecipe
 import com.github.trcdevelopers.clayium.common.recipe.RecipeInput
 import net.minecraft.item.ItemStack
