@@ -1,5 +1,19 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine.tile
 
+import com.cleanroommc.modularui.api.IGuiHolder
+import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.factory.PosGuiData
+import com.cleanroommc.modularui.factory.TileEntityGuiFactory
+import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandler
+import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.ParentWidget
+import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.TextWidget
+import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
@@ -17,20 +31,21 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemStackHandler
+import java.util.function.IntFunction
 
-class TileClayBuffer : TileMachine() {
+class TileClayBuffer : TileMachine(), IGuiHolder<PosGuiData> {
 
     override lateinit var autoIoHandler: AutoIoHandler
 
     private lateinit var itemStackHandler: ItemStackHandler
 
-    var inventoryY: Int = 1
+    var inventoryRowSize: Int = 1
         private set
-    var inventoryX: Int = 1
+    var inventoryColumnSize: Int = 1
         private set
 
     override fun openGui(player: EntityPlayer, world: World, pos: BlockPos) {
-        player.openGui(Clayium.INSTANCE, GuiHandler.CLAY_BUFFER, world, pos.x, pos.y, pos.z)
+        TileEntityGuiFactory.open(player, pos)
     }
 
     override fun getItemHandler(): IItemHandler {
@@ -39,18 +54,18 @@ class TileClayBuffer : TileMachine() {
 
     override fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
         super.initParams(tier, inputModes, outputModes)
-        this.inventoryY = when (tier) {
+        this.inventoryRowSize = when (tier) {
             in 4..7 -> tier - 3
             8, -> 4
             in 9..13 -> 6
             else -> 1
         }
-        this.inventoryX = when (tier) {
+        this.inventoryColumnSize = when (tier) {
             in 4..7 -> tier - 2
             in 8..13 -> 9
             else -> 1
         }
-        this.itemStackHandler = object : ItemStackHandler(inventoryX * inventoryY) {
+        this.itemStackHandler = object : ItemStackHandler(inventoryColumnSize * inventoryRowSize) {
             override fun onContentsChanged(slot: Int) = this@TileClayBuffer.markDirty()
         }
         this.autoIoHandler = AutoIoHandler(
@@ -107,6 +122,38 @@ class TileClayBuffer : TileMachine() {
 
     override fun canAutoInput(side: EnumFacing) = _inputs[side.index] == MachineIoMode.ALL
     override fun canAutoOutput(side: EnumFacing) = _outputs[side.index] == MachineIoMode.ALL
+
+    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+        syncManager.registerSlotGroup("buffer_inv", inventoryRowSize)
+        val columnStr = "I".repeat(inventoryColumnSize)
+        val matrixStr = (0..<inventoryRowSize).map { columnStr }
+
+        val panel = ModularPanel("clay_buffer")
+        panel.flex()
+            .size(176,  18 + inventoryRowSize * 18 + 94 + 2)
+            .align(Alignment.Center)
+        panel
+            .child(TextWidget(IKey.lang("tile.clayium.clay_buffer", IKey.lang("machine.clayium.tier$tier")))
+                .margin(6)
+                .align(Alignment.TopLeft))
+            .child(Column()
+                .marginTop(18)
+                .child(SlotGroupWidget.builder()
+                    .matrix(*matrixStr.toTypedArray())
+                    .key("I".single()) { index ->
+                        ItemSlot().slot(
+                            SyncHandlers.itemSlot(itemStackHandler, index)
+                                .slotGroup("buffer_inv")
+                        )
+                    }
+                    .build())
+                .child(TextWidget(IKey.lang("container.inventory"))
+                    .paddingTop(1)
+                    .paddingBottom(1)
+                    .left(6))
+                .child(SlotGroupWidget.playerInventory()))
+        return panel
+    }
 
     companion object {
         @JvmStatic
