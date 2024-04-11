@@ -1,5 +1,17 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine.tile
 
+import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.drawable.GuiTextures
+import com.cleanroommc.modularui.factory.PosGuiData
+import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.widgets.ProgressWidget
+import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Row
+import com.github.trcdevelopers.clayium.common.ClayConstants
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
@@ -129,6 +141,30 @@ class TileSingle2SingleMachine : TileCeMachine() {
             }
         }
         return super.getCapability(capability, facing)
+    }
+
+    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+        return ModularPanel("single_to_single_machine")
+            .flex {
+                it.align(Alignment.Center)
+            }
+            .child(IKey.lang(guiTranslationKey, IKey.lang("${ClayConstants.MACHINE_TIER_LANG_KEY}$tier")).asWidget()
+                .top(6)
+                .left(6))
+            .child(Column()
+                .sizeRel(0.5f, 0.4f)
+                .pos(39, 30)
+                .child(Row()
+                    .widthRel(1f).height(26)
+                    .child(ItemSlot()
+                        .slot(SyncHandlers.itemSlot(inputItemHandler, 0).singletonSlotGroup())
+                        .align(Alignment.CenterLeft))
+                    .child(ProgressWidget()
+                        .size(22, 22)
+                        .align(Alignment.Center)
+                        .progress { this.craftingProgress.toDouble() / this.requiredProgress.toDouble() }
+                        .texture(GuiTextures.PROGRESS_ARROW, 20))))
+            .bindPlayerInventory()
     }
 
     private fun proceedCraft() {

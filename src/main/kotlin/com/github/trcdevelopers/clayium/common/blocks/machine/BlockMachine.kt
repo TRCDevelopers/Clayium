@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine
 
+import com.cleanroommc.modularui.factory.TileEntityGuiFactory
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine.Companion.IS_PIPE
 import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
@@ -142,7 +143,7 @@ class BlockMachine(
 
         val tile = worldIn.getTileEntity(pos)
         return if (tile is TileMachine) {
-            tile.openGui(playerIn, worldIn, pos)
+            TileEntityGuiFactory.open(playerIn, pos)
             true
         } else {
             false

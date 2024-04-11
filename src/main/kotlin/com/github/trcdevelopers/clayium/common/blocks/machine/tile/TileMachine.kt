@@ -1,5 +1,7 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine.tile
 
+import com.cleanroommc.modularui.api.IGuiHolder
+import com.cleanroommc.modularui.factory.PosGuiData
 import com.github.trcdevelopers.clayium.common.blocks.IPipeConnectable
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
@@ -30,7 +32,7 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders
  *
  * - has auto IO handler
  */
-abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClayConfigTool.Listener {
+abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClayConfigTool.Listener, IGuiHolder<PosGuiData> {
 
     var tier: Int = -1
         private set
