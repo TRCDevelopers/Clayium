@@ -150,8 +150,8 @@ class TileClayBuffer : TileMachine(), IGuiHolder<PosGuiData> {
                 .child(TextWidget(IKey.lang("container.inventory"))
                     .paddingTop(1)
                     .paddingBottom(1)
-                    .left(6))
-                .child(SlotGroupWidget.playerInventory()))
+                    .left(6)))
+            .bindPlayerInventory()
         return panel
     }
 
