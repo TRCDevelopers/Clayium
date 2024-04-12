@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trcdevelopers.clayium.common.ClayConstants
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
@@ -165,11 +166,16 @@ class TileSingle2SingleMachine : TileCeMachine() {
                 .left(6))
             .child(Column()
                 .sizeRel(0.5f, 0.4f)
-                .pos(39, 30)
+                .align(Alignment.Center)
+                .top(30)
                 .child(Row()
                     .widthRel(1f).height(26)
                     .child(ItemSlot()
-                        .slot(SyncHandlers.itemSlot(inputItemHandler, 0).singletonSlotGroup(2))
+                        .slot(object : ModularSlot(inputItemHandler, 0) {
+                            override fun onSlotChanged() {
+                                onInputSlotChanged()
+                            }
+                        }.singletonSlotGroup(2))
                         .align(Alignment.CenterLeft))
                     .child(ProgressWidget()
                         .size(22, 17)
@@ -177,7 +183,11 @@ class TileSingle2SingleMachine : TileCeMachine() {
                         .progress { this.craftingProgress.toDouble() / this.requiredProgress.toDouble() }
                         .texture(ClayGuiTextures.PROGRESS_BAR, 22))
                     .child(ItemSlot()
-                        .slot(SyncHandlers.itemSlot(outputItemHandler, 0).singletonSlotGroup(1))
+                        .slot(object : ModularSlot(outputItemHandler, 0) {
+                            override fun onSlotChanged() {
+                                onOutputSlotChanged()
+                            }
+                        }.singletonSlotGroup(1))
                         .align(Alignment.CenterRight))))
             .bindPlayerInventory()
     }
@@ -198,6 +208,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
     }
 
     private fun onInputSlotChanged() {
+        Clayium.LOGGER.info("onInputSlotChanged")
         if (world.isRemote) return
         val inputStack = inputItemHandler.getStackInSlot(0)
         if (inputStack.isEmpty) {
@@ -214,11 +225,14 @@ class TileSingle2SingleMachine : TileCeMachine() {
             requiredProgress = recipeGot.requiredTicks
             craftingProgress = 0
         }
+        Clayium.LOGGER.info("canStartCraft In: $canStartCraft")
     }
 
     private fun onOutputSlotChanged() {
+        Clayium.LOGGER.info("onOutputSlotChanged")
         if (world.isRemote) return
         canStartCraft = recipe?.getOutput(0)?.let { canOutputMerge(it) } ?: false
+        Clayium.LOGGER.info("canStartCraft Out: $canStartCraft")
     }
 
     private fun canOutputMerge(stack: ItemStack): Boolean {
