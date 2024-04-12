@@ -16,6 +16,7 @@ import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
+import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.CRecipes
 import com.github.trcdevelopers.clayium.common.recipe.SimpleCeRecipe
 import com.github.trcdevelopers.clayium.common.recipe.registry.SimpleCeRecipeRegistry
@@ -31,6 +32,8 @@ import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.ItemStackHandler
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
+import java.util.function.IntConsumer
+import java.util.function.IntSupplier
 
 /**
  * single input with single output
@@ -65,14 +68,14 @@ class TileSingle2SingleMachine : TileCeMachine() {
         super.initParams(tier, inputModes, outputModes)
         inputItemHandler = object : ItemStackHandler(1) {
             override fun onContentsChanged(slot: Int) {
-                markDirty()
                 onInputSlotChanged()
+                markDirty()
             }
         }
         outputItemHandler = object : ItemStackHandler(1) {
             override fun onContentsChanged(slot: Int) {
-                markDirty()
                 onOutputSlotChanged()
+                markDirty()
             }
 
             override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
@@ -144,6 +147,15 @@ class TileSingle2SingleMachine : TileCeMachine() {
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+        syncManager.syncValue("requiredProgress", 0, SyncHandlers.intNumber(
+            { requiredProgress },
+            { rProgress -> requiredProgress = rProgress }
+        ))
+        syncManager.syncValue("craftingProgress", 1, SyncHandlers.intNumber(
+            { craftingProgress },
+            { cProgress -> craftingProgress = cProgress }
+        ))
+
         return ModularPanel("single_to_single_machine")
             .flex {
                 it.align(Alignment.Center)
@@ -157,13 +169,16 @@ class TileSingle2SingleMachine : TileCeMachine() {
                 .child(Row()
                     .widthRel(1f).height(26)
                     .child(ItemSlot()
-                        .slot(SyncHandlers.itemSlot(inputItemHandler, 0).singletonSlotGroup())
+                        .slot(SyncHandlers.itemSlot(inputItemHandler, 0).singletonSlotGroup(2))
                         .align(Alignment.CenterLeft))
                     .child(ProgressWidget()
-                        .size(22, 22)
+                        .size(22, 17)
                         .align(Alignment.Center)
                         .progress { this.craftingProgress.toDouble() / this.requiredProgress.toDouble() }
-                        .texture(GuiTextures.PROGRESS_ARROW, 20))))
+                        .texture(ClayGuiTextures.PROGRESS_BAR, 22))
+                    .child(ItemSlot()
+                        .slot(SyncHandlers.itemSlot(outputItemHandler, 0).singletonSlotGroup(1))
+                        .align(Alignment.CenterRight))))
             .bindPlayerInventory()
     }
 
