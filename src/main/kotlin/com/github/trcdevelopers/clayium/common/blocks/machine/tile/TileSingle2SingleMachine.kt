@@ -2,7 +2,6 @@ package com.github.trcdevelopers.clayium.common.blocks.machine.tile
 
 import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
@@ -11,10 +10,8 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.ProgressWidget
-import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget
 import com.github.trcdevelopers.clayium.common.ClayConstants
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
@@ -37,8 +34,7 @@ import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.ItemStackHandler
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
-import java.util.function.IntConsumer
-import java.util.function.IntSupplier
+import org.lwjgl.input.Keyboard
 
 /**
  * single input with single output
@@ -203,13 +199,18 @@ class TileSingle2SingleMachine : TileCeMachine() {
                         }
                     }.singletonSlotGroup(1))
                     .background(IDrawable.EMPTY)))
-            .child(ItemSlot().pos(154, 58)
+            .child(ItemSlot()
+                .right(7).top(58)
+                .setEnabledIf {
+                    // is shift key down
+                    Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54)
+                }
                 .slot(object : ModularSlot(ceSlot, 0) {
                     override fun canTakeStack(playerIn: EntityPlayer?): Boolean {
                         return false
                     }
                 })
-                .background(ClayGuiTextures.CLAY_SLOT))
+                .background(IDrawable.EMPTY))
             .child(IKey.dynamic { IKey.lang(ClayConstants.CE_LANG_KEY, storedCe.toString()).toString() }.asWidget()
                 .widthRel(0.5f)
                 .pos(6, 60))
