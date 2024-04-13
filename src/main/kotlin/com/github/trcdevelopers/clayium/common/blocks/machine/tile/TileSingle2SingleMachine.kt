@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.blocks.machine.tile
 
+import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.factory.PosGuiData
@@ -7,15 +8,18 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget
 import com.github.trcdevelopers.clayium.common.ClayConstants
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
+import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.CRecipes
@@ -156,6 +160,10 @@ class TileSingle2SingleMachine : TileCeMachine() {
             { craftingProgress },
             { cProgress -> craftingProgress = cProgress }
         ))
+        syncManager.syncValue("clayEnergy", 2, SyncHandlers.longNumber(
+            { storedCe.energy },
+            { storedCe = ClayEnergy(it) }
+        ))
 
         return ModularPanel("single_to_single_machine")
             .flex {
@@ -164,31 +172,37 @@ class TileSingle2SingleMachine : TileCeMachine() {
             .child(IKey.lang(guiTranslationKey, IKey.lang("${ClayConstants.MACHINE_TIER_LANG_KEY}$tier")).asWidget()
                 .top(6)
                 .left(6))
-            .child(Column()
-                .sizeRel(0.5f, 0.4f)
+            .child(Row()
+                .widthRel(0.6f).height(26)
                 .align(Alignment.Center)
                 .top(30)
-                .child(Row()
-                    .widthRel(1f).height(26)
-                    .child(ItemSlot()
-                        .slot(object : ModularSlot(inputItemHandler, 0) {
-                            override fun onSlotChanged() {
-                                onInputSlotChanged()
-                            }
-                        }.singletonSlotGroup(2))
-                        .align(Alignment.CenterLeft))
-                    .child(ProgressWidget()
-                        .size(22, 17)
-                        .align(Alignment.Center)
-                        .progress { this.craftingProgress.toDouble() / this.requiredProgress.toDouble() }
-                        .texture(ClayGuiTextures.PROGRESS_BAR, 22))
-                    .child(ItemSlot()
-                        .slot(object : ModularSlot(outputItemHandler, 0) {
-                            override fun onSlotChanged() {
-                                onOutputSlotChanged()
-                            }
-                        }.singletonSlotGroup(1))
-                        .align(Alignment.CenterRight))))
+                .child(Widget()
+                    .size(26, 26)
+                    .background(ClayGuiTextures.LARGE_SLOT)
+                    .align(Alignment.CenterLeft))
+                .child(ItemSlot().left(4).top(4)
+                    .slot(object : ModularSlot(inputItemHandler, 0) {
+                        override fun onSlotChanged() {
+                            onInputSlotChanged()
+                        }
+                    }.singletonSlotGroup(2))
+                    .background(IDrawable.EMPTY))
+                .child(ProgressWidget()
+                    .size(22, 17)
+                    .align(Alignment.Center)
+                    .progress { this.craftingProgress.toDouble() / this.requiredProgress.toDouble() }
+                    .texture(ClayGuiTextures.PROGRESS_BAR, 22))
+                .child(Widget()
+                    .size(26, 26)
+                    .background(ClayGuiTextures.LARGE_SLOT)
+                    .align(Alignment.CenterRight))
+                .child(ItemSlot().right(4).top(4)
+                    .slot(object : ModularSlot(outputItemHandler, 0) {
+                        override fun onSlotChanged() {
+                            onOutputSlotChanged()
+                        }
+                    }.singletonSlotGroup(1))
+                    .background(IDrawable.EMPTY)))
             .bindPlayerInventory()
     }
 
