@@ -203,6 +203,13 @@ class TileSingle2SingleMachine : TileCeMachine() {
                         }
                     }.singletonSlotGroup(1))
                     .background(IDrawable.EMPTY)))
+            .child(ItemSlot().pos(154, 58)
+                .slot(object : ModularSlot(ceSlot, 0) {
+                    override fun canTakeStack(playerIn: EntityPlayer?): Boolean {
+                        return false
+                    }
+                })
+                .background(ClayGuiTextures.CLAY_SLOT))
             .child(IKey.dynamic { IKey.lang(ClayConstants.CE_LANG_KEY, storedCe.toString()).toString() }.asWidget()
                 .widthRel(0.5f)
                 .pos(6, 60))
