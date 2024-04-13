@@ -177,11 +177,9 @@ class TileSingle2SingleMachine : TileCeMachine() {
                     .background(ClayGuiTextures.LARGE_SLOT)
                     .align(Alignment.CenterLeft))
                 .child(ItemSlot().left(4).top(4)
-                    .slot(object : ModularSlot(inputItemHandler, 0) {
-                        override fun onSlotChanged() {
-                            onInputSlotChanged()
-                        }
-                    }.singletonSlotGroup(2))
+                    .slot(SyncHandlers.itemSlot(inputItemHandler, 0)
+                        .changeListener { _, _, _, _ -> onInputSlotChanged() }
+                        .singletonSlotGroup(2))
                     .background(IDrawable.EMPTY))
                 .child(ProgressWidget()
                     .size(22, 17)
@@ -193,11 +191,9 @@ class TileSingle2SingleMachine : TileCeMachine() {
                     .background(ClayGuiTextures.LARGE_SLOT)
                     .align(Alignment.CenterRight))
                 .child(ItemSlot().right(4).top(4)
-                    .slot(object : ModularSlot(outputItemHandler, 0) {
-                        override fun onSlotChanged() {
-                            onOutputSlotChanged()
-                        }
-                    }.singletonSlotGroup(1))
+                    .slot(SyncHandlers.itemSlot(outputItemHandler, 0)
+                        .changeListener { _, _, _, _ -> onOutputSlotChanged() }
+                        .singletonSlotGroup(1))
                     .background(IDrawable.EMPTY)))
             .child(ItemSlot()
                 .right(7).top(58)
