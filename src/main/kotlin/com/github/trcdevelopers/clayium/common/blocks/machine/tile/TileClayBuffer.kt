@@ -44,10 +44,6 @@ class TileClayBuffer : TileMachine(), IGuiHolder<PosGuiData> {
     var inventoryColumnSize: Int = 1
         private set
 
-    override fun openGui(player: EntityPlayer, world: World, pos: BlockPos) {
-        TileEntityGuiFactory.open(player, pos)
-    }
-
     override fun getItemHandler(): IItemHandler {
         return itemStackHandler
     }

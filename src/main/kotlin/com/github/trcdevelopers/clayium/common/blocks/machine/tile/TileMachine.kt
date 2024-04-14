@@ -53,7 +53,6 @@ abstract class TileMachine : TileEntity(), ITickable, IPipeConnectable, ItemClay
     val outputs get() = _outputs.toList()
     val connections get() = _connections.copyOf()
 
-    abstract fun openGui(player: EntityPlayer, world: World, pos: BlockPos)
     abstract fun getItemHandler(): IItemHandler
 
     protected open fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
