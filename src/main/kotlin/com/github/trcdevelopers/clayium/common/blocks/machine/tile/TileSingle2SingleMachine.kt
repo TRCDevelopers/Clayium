@@ -13,8 +13,6 @@ import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trcdevelopers.clayium.common.ClayConstants
-import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.GuiHandler
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
@@ -29,8 +27,6 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.ItemStackHandler
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
@@ -51,8 +47,12 @@ class TileSingle2SingleMachine : TileCeMachine() {
     private lateinit var combinedHandler: CombinedInvWrapper
 
     private lateinit var recipeRegistry: SimpleCeRecipeRegistry
+
+    /**
+     * only set when this machine has valid inputs and enough space to output.
+     * inputs are consumed when recipe is set.
+     */
     private var recipe: SimpleCeRecipe? = null
-    private var canStartCraft = false
 
     var requiredProgress: Int = 0
     var craftingProgress: Int = 0
@@ -61,21 +61,16 @@ class TileSingle2SingleMachine : TileCeMachine() {
 
     override fun getItemHandler() = combinedHandler
 
-    override fun openGui(player: EntityPlayer, world: World, pos: BlockPos) {
-        player.openGui(Clayium.INSTANCE, GuiHandler.SINGLE_2_SINGLE, world, pos.x, pos.y, pos.z)
-    }
-
     override fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
         super.initParams(tier, inputModes, outputModes)
         inputItemHandler = object : ItemStackHandler(1) {
             override fun onContentsChanged(slot: Int) {
-                onInputSlotChanged()
+                setRecipeIfPresent()
                 markDirty()
             }
         }
         outputItemHandler = object : ItemStackHandler(1) {
             override fun onContentsChanged(slot: Int) {
-                onOutputSlotChanged()
                 markDirty()
             }
 
@@ -96,11 +91,19 @@ class TileSingle2SingleMachine : TileCeMachine() {
         super.update()
         if (world == null || world.isRemote) return
         if (!recipeInitializedOnFirstTick) {
-            onInputSlotChanged()
-            onOutputSlotChanged()
+            setRecipeIfPresent()
             recipeInitializedOnFirstTick = true
         }
-        proceedCraft()
+        val currentRecipe = recipe ?: return
+
+        if (tryConsumeCe(currentRecipe.cePerTick)) {
+            craftingProgress++
+        }
+        if (craftingProgress >= requiredProgress) {
+            outputItemHandler.insertItem(0, currentRecipe.getOutput(0), false)
+            resetRecipe()
+            setRecipeIfPresent()
+        }
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
@@ -178,7 +181,6 @@ class TileSingle2SingleMachine : TileCeMachine() {
                     .align(Alignment.CenterLeft))
                 .child(ItemSlot().left(4).top(4)
                     .slot(SyncHandlers.itemSlot(inputItemHandler, 0)
-                        .changeListener { _, _, client, init -> if (!(client || init)) onInputSlotChanged() }
                         .singletonSlotGroup(2))
                     .background(IDrawable.EMPTY))
                 .child(ProgressWidget()
@@ -192,7 +194,6 @@ class TileSingle2SingleMachine : TileCeMachine() {
                     .align(Alignment.CenterRight))
                 .child(ItemSlot().right(4).top(4)
                     .slot(SyncHandlers.itemSlot(outputItemHandler, 0)
-                        .changeListener { _, _, client, init -> if (!(client || init)) onOutputSlotChanged() }
                         .singletonSlotGroup(1))
                     .background(IDrawable.EMPTY)))
             .child(ItemSlot()
@@ -213,47 +214,24 @@ class TileSingle2SingleMachine : TileCeMachine() {
             .bindPlayerInventory()
     }
 
-    private fun proceedCraft() {
-        if (!canStartCraft) return
-
-        val currentRecipe = recipe ?: return
-        if (tryConsumeCe(currentRecipe.cePerTick)) {
-            craftingProgress++
-        }
-        if (craftingProgress >= requiredProgress) {
-            // craft finished. onInput/OutputSlotChanged will be called, so no need to reset params here
-            val output = currentRecipe.getOutput(0)
-            outputItemHandler.insertItem(0, output, false)
-            inputItemHandler.extractItem(0, currentRecipe.inputs[0].amount, false)
-        }
-    }
-
-    private fun onInputSlotChanged() {
-        Clayium.LOGGER.info("onInputSlotChanged")
-        if (world.isRemote) return
+    private fun setRecipeIfPresent() {
+        // when another recipe is in progress, do nothing
+        if (world.isRemote || recipe != null) return
         val inputStack = inputItemHandler.getStackInSlot(0)
         if (inputStack.isEmpty) {
             resetRecipe()
             return
         }
 
-        recipe = recipeRegistry.getRecipe(inputStack)
-        val recipeGot = recipe
-        if (recipeGot == null) {
+        val currentRecipe = recipeRegistry.getRecipe(inputStack)
+        if (currentRecipe == null || !canOutputMerge(currentRecipe.getOutput(0))) {
             resetRecipe()
         } else {
-            canStartCraft = canOutputMerge(recipeGot.getOutput(0))
-            requiredProgress = recipeGot.requiredTicks
+            recipe = currentRecipe
+            requiredProgress = currentRecipe.requiredTicks
             craftingProgress = 0
+            inputItemHandler.extractItem(0, currentRecipe.inputs[0].amount, false)
         }
-        Clayium.LOGGER.info("canStartCraft In: $canStartCraft")
-    }
-
-    private fun onOutputSlotChanged() {
-        Clayium.LOGGER.info("onOutputSlotChanged")
-        if (world.isRemote) return
-        canStartCraft = recipe?.getOutput(0)?.let { canOutputMerge(it) } ?: false
-        Clayium.LOGGER.info("canStartCraft Out: $canStartCraft")
     }
 
     private fun canOutputMerge(stack: ItemStack): Boolean {
@@ -268,7 +246,6 @@ class TileSingle2SingleMachine : TileCeMachine() {
 
     private fun resetRecipe() {
         recipe = null
-        canStartCraft = false
         requiredProgress = 0
         craftingProgress = 0
     }
