@@ -57,7 +57,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
     var requiredProgress: Int = 0
     var craftingProgress: Int = 0
 
-    private var recipeInitializedOnFirstTick = false
+    private var inputSlotChangedFlag = true
 
     override fun getItemHandler() = combinedHandler
 
@@ -65,12 +65,14 @@ class TileSingle2SingleMachine : TileCeMachine() {
         super.initParams(tier, inputModes, outputModes)
         inputItemHandler = object : ItemStackHandler(1) {
             override fun onContentsChanged(slot: Int) {
-                setRecipeIfPresent()
+                if (world == null || world.isRemote) return
+                markInputSlotChanged()
                 markDirty()
             }
         }
         outputItemHandler = object : ItemStackHandler(1) {
             override fun onContentsChanged(slot: Int) {
+                if (world == null || world.isRemote) return
                 markDirty()
             }
 
@@ -90,9 +92,25 @@ class TileSingle2SingleMachine : TileCeMachine() {
     override fun update() {
         super.update()
         if (world == null || world.isRemote) return
-        if (!recipeInitializedOnFirstTick) {
-            setRecipeIfPresent()
-            recipeInitializedOnFirstTick = true
+        if (inputSlotChangedFlag) {
+            // when another recipe is in progress, do nothing
+            if (recipe != null) return
+            val inputStack = inputItemHandler.getStackInSlot(0)
+            if (inputStack.isEmpty) {
+                resetRecipe()
+                return
+            }
+
+            val currentRecipe = recipeRegistry.getRecipe(inputStack)
+            if (currentRecipe == null || !canOutputMerge(currentRecipe.getOutput(0))) {
+                resetRecipe()
+            } else {
+                recipe = currentRecipe
+                requiredProgress = currentRecipe.requiredTicks
+                craftingProgress = 0
+                inputItemHandler.extractItem(0, currentRecipe.inputs[0].amount, false)
+            }
+            inputSlotChangedFlag = false
         }
         val currentRecipe = recipe ?: return
 
@@ -102,7 +120,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
         if (craftingProgress >= requiredProgress) {
             outputItemHandler.insertItem(0, currentRecipe.getOutput(0), false)
             resetRecipe()
-            setRecipeIfPresent()
+            markInputSlotChanged()
         }
     }
 
@@ -214,24 +232,9 @@ class TileSingle2SingleMachine : TileCeMachine() {
             .bindPlayerInventory()
     }
 
-    private fun setRecipeIfPresent() {
-        // when another recipe is in progress, do nothing
+    private fun markInputSlotChanged() {
         if (world.isRemote || recipe != null) return
-        val inputStack = inputItemHandler.getStackInSlot(0)
-        if (inputStack.isEmpty) {
-            resetRecipe()
-            return
-        }
-
-        val currentRecipe = recipeRegistry.getRecipe(inputStack)
-        if (currentRecipe == null || !canOutputMerge(currentRecipe.getOutput(0))) {
-            resetRecipe()
-        } else {
-            recipe = currentRecipe
-            requiredProgress = currentRecipe.requiredTicks
-            craftingProgress = 0
-            inputItemHandler.extractItem(0, currentRecipe.inputs[0].amount, false)
-        }
+        inputSlotChangedFlag = true
     }
 
     private fun canOutputMerge(stack: ItemStack): Boolean {
