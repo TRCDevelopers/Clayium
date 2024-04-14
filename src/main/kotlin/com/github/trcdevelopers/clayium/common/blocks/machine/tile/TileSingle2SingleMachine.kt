@@ -178,7 +178,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
                     .align(Alignment.CenterLeft))
                 .child(ItemSlot().left(4).top(4)
                     .slot(SyncHandlers.itemSlot(inputItemHandler, 0)
-                        .changeListener { _, _, _, _ -> onInputSlotChanged() }
+                        .changeListener { _, _, client, init -> if (!(client || init)) onInputSlotChanged() }
                         .singletonSlotGroup(2))
                     .background(IDrawable.EMPTY))
                 .child(ProgressWidget()
@@ -192,7 +192,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
                     .align(Alignment.CenterRight))
                 .child(ItemSlot().right(4).top(4)
                     .slot(SyncHandlers.itemSlot(outputItemHandler, 0)
-                        .changeListener { _, _, _, _ -> onOutputSlotChanged() }
+                        .changeListener { _, _, client, init -> if (!(client || init)) onOutputSlotChanged() }
                         .singletonSlotGroup(1))
                     .background(IDrawable.EMPTY)))
             .child(ItemSlot()
