@@ -220,11 +220,7 @@ class TileSingle2SingleMachine : TileCeMachine() {
                     // is shift key down
                     Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54)
                 }
-                .slot(object : ModularSlot(ceSlot, 0) {
-                    override fun canTakeStack(playerIn: EntityPlayer?): Boolean {
-                        return false
-                    }
-                })
+                .slot(SyncHandlers.itemSlot(ceSlot, 0).accessibility(false, false))
                 .background(IDrawable.EMPTY))
             .child(IKey.dynamic { IKey.lang(ClayConstants.CE_LANG_KEY, storedCe.toString()).toString() }.asWidget()
                 .widthRel(0.5f)
