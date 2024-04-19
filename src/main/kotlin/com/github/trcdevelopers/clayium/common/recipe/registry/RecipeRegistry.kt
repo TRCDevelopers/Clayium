@@ -3,13 +3,18 @@ package com.github.trcdevelopers.clayium.common.recipe.registry
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.recipe.Recipe
 import com.github.trcdevelopers.clayium.common.recipe.RecipeCategory
+import com.github.trcdevelopers.clayium.common.recipe.builder.RecipeBuilder
 import net.minecraft.item.ItemStack
 
-class RecipeRegistry(
+class RecipeRegistry<R: RecipeBuilder<R>>(
     val category: RecipeCategory,
+    private val builderSample: R,
     private val maxInputs: Int,
     private val maxOutputs: Int,
 ) {
+
+    constructor(translationKey: String, builderSample: R, maxInputs: Int, maxOutputs: Int) : this(RecipeCategory.create(Clayium.MOD_ID, translationKey, translationKey), builderSample, maxInputs, maxOutputs)
+
     val _recipes = mutableListOf<Recipe>()
 
     fun findRecipe(tier: Int, inputsIn: List<ItemStack>): Recipe? {

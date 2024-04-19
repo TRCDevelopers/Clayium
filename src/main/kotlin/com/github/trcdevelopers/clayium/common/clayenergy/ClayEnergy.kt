@@ -15,6 +15,8 @@ value class ClayEnergy(val energy: Long) {
     operator fun compareTo(other: ClayEnergy) = energy.compareTo(other.energy)
 
     companion object {
+        val ZERO = ClayEnergy(0)
+
         fun micro(energy: Long): ClayEnergy {
             require(energy % 10 == 0.toLong()) {
                 "10μ CE is a minimum unit of Clay Energy, but the given value is not a multiple of 10μ CE: $energy"

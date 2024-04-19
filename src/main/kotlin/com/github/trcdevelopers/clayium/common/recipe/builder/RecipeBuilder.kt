@@ -18,13 +18,15 @@ import net.minecraft.item.ItemStack
 
 @Suppress("UNCHECKED_CAST")
 abstract class RecipeBuilder<R: RecipeBuilder<R>>(
-    protected val recipeRegistry: RecipeRegistry,
+    protected val recipeRegistry: RecipeRegistry<R>,
     protected val inputs: MutableList<CRecipeInput>,
     protected val outputs: MutableList<ItemStack>,
     protected var duration: Int,
     protected var cePerTick: ClayEnergy,
     protected var tier: Int,
 ) {
+    constructor(recipeRegistry: RecipeRegistry<R>) : this(recipeRegistry, mutableListOf(), mutableListOf(), 0, ClayEnergy.ZERO, 0)
+
     abstract fun copy(): R
 
     fun input(input: CRecipeInput): R {
