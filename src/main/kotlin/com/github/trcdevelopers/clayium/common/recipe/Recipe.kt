@@ -9,9 +9,9 @@ import net.minecraftforge.items.IItemHandlerModifiable
 class Recipe(
     val inputs: List<CRecipeInput>,
     val outputs: List<ItemStack>,
-    val tier: Int,
     val duration: Int,
     val cePerTick: ClayEnergy,
+    val tier: Int,
 ) {
     fun matches(consumeOnMatch: Boolean, inputsIn: IItemHandlerModifiable): Boolean {
 
