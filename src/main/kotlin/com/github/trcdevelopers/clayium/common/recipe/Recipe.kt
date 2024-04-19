@@ -7,8 +7,8 @@ import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandlerModifiable
 
 class Recipe(
-    private val inputs: List<CRecipeInput>,
-    private val outputs: List<ItemStack>,
+    val inputs: List<CRecipeInput>,
+    val outputs: List<ItemStack>,
     val tier: Int,
     val duration: Int,
     val cePerTick: ClayEnergy,
@@ -24,6 +24,10 @@ class Recipe(
             }
         }
         return true
+    }
+
+    fun matches(inputsIn: List<ItemStack>): Boolean {
+        return matchesItems(inputsIn).first
     }
 
     private fun matchesItems(inputsIn: List<ItemStack>): Pair<Boolean, IntArray> {
@@ -50,5 +54,9 @@ class Recipe(
         }
         // all ingredients are matched
         return Pair(true, IntArray(indexed) { amountsToConsume[it] })
+    }
+
+    override fun toString(): String {
+        return "Recipe(inputs=$inputs, outputs=$outputs, tier=$tier, duration=$duration, cePerTick=$cePerTick)"
     }
 }
