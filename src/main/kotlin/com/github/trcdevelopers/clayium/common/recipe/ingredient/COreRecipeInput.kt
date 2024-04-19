@@ -7,6 +7,9 @@ class COreRecipeInput(
     val oreId: Int,
     override val amount: Int,
 ) : CRecipeInput() {
+
+    constructor(oreDict: String, amount: Int = 1) : this(OreDictionary.getOreID(oreDict), amount)
+
     override val stacks by lazy {
         OreDictionary.getOres(OreDictionary.getOreName(oreId)).map {
             it.copy().apply { count = amount }
