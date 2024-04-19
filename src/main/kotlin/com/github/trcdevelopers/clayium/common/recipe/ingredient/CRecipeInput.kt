@@ -20,8 +20,8 @@ class CRecipeInput(
     fun testItemStackAndAmount(stack: ItemStack): Boolean {
         return stacks.any {
             ItemStack.areItemsEqual(it, stack)
+                    && (!stack.hasSubtypes || stack.metadata == it.metadata || stack.metadata == 32767)
                     && stack.count >= amount
-                    && ItemStack.areItemStackTagsEqual(it, stack)
         }
     }
 }
