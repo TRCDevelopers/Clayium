@@ -6,6 +6,7 @@ import com.github.trcdevelopers.clayium.common.unification.material.MaterialProp
 import com.github.trcdevelopers.clayium.common.unification.material.MaterialProperty.Ingot
 import com.github.trcdevelopers.clayium.common.unification.material.MaterialProperty.Matter
 import com.github.trcdevelopers.clayium.common.unification.material.MaterialProperty.Plate
+import com.google.common.base.CaseFormat
 import net.minecraft.util.IntIdentityHashBiMap
 
 enum class Material(
@@ -346,6 +347,10 @@ enum class Material(
 
     inline fun <reified T : MaterialProperty> getProperty(): T? {
         return properties.first { it is T } as? T
+    }
+
+    fun toUpperCamel(): String {
+        return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, materialName)
     }
 
     companion object {
