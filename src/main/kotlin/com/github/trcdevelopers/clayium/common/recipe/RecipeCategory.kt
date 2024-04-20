@@ -19,7 +19,9 @@ class RecipeCategory private constructor(
         }
 
         private fun createUID(modid: String, name: String): String {
-            return "$modid/$name"
+            if (modid.isEmpty() || name.isEmpty())
+                throw IllegalArgumentException("modid and name must not be empty.")
+            return "$modid.$name"
         }
     }
 }
