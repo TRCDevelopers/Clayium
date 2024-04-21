@@ -111,4 +111,12 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
     override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean {
         return oldState.block != newSate.block
     }
+
+    fun getInput(side: EnumFacing): MachineIoMode {
+        return _inputs[side.index]
+    }
+
+    fun getOutput(side: EnumFacing): MachineIoMode {
+        return _outputs[side.index]
+    }
 }
