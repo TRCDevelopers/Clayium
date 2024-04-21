@@ -18,32 +18,42 @@ import net.minecraft.item.ItemStack
 
 @Suppress("UNCHECKED_CAST")
 abstract class RecipeBuilder<R: RecipeBuilder<R>>(
-    protected val recipeRegistry: RecipeRegistry<R>,
     protected val inputs: MutableList<CRecipeInput>,
     protected val outputs: MutableList<ItemStack>,
     protected var duration: Int,
     protected var cePerTick: ClayEnergy,
     protected var tier: Int,
 ) {
-    constructor(recipeRegistry: RecipeRegistry<R>) : this(recipeRegistry, mutableListOf(), mutableListOf(), 0, ClayEnergy.ZERO, 0)
+    constructor() : this(mutableListOf(), mutableListOf(), 0, ClayEnergy.ZERO, 0)
+
+    constructor(another: RecipeBuilder<R>) : this(another.inputs.toMutableList(), another.outputs.toMutableList(), another.duration, another.cePerTick, another.tier)
+
+    protected lateinit var recipeRegistry: RecipeRegistry<R>
 
     abstract fun copy(): R
 
-    fun input(input: CRecipeInput): R {
-        if (input.amount <= 0) {
-            Clayium.LOGGER.error("input amount must be greater than 0")
-            return this as R
-        }
-        inputs.add(input)
+    fun setRegistry(registry: RecipeRegistry<R>): R {
+        recipeRegistry = registry
         return this as R
     }
 
-    fun input(stack: ItemStack) = input(CItemRecipeInput(listOf(stack), stack.count))
+    fun inputs(vararg inputsIn: CRecipeInput): R {
+        inputsIn.forEach { input ->
+            if (input.amount <= 0) {
+                Clayium.LOGGER.error("input amount must be greater than 0")
+                return@forEach
+            }
+            inputs.add(input)
+        }
+        return this as R
+    }
+
+    fun input(stack: ItemStack) = inputs(CItemRecipeInput(listOf(stack), stack.count))
     fun input(item: Item, amount: Int = 1) = input(ItemStack(item, amount))
     fun input(metaItem: MetaItemClayium.MetaValueItem, amount: Int = 1) = input(metaItem.getStackForm(amount))
     fun input(block: Block, amount: Int = 1) = input(ItemStack(block, amount))
-    fun input(oreDict: String, amount: Int = 1) = input(COreRecipeInput(oreDict, amount))
-    fun input(orePrefix: OrePrefix, material: Material, amount: Int = 1) = input(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
+    fun input(oreDict: String, amount: Int = 1) = inputs(COreRecipeInput(oreDict, amount))
+    fun input(orePrefix: OrePrefix, material: Material, amount: Int = 1) = inputs(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
 
     fun outputs(vararg stacks: ItemStack): R {
         outputs.addAll(stacks)

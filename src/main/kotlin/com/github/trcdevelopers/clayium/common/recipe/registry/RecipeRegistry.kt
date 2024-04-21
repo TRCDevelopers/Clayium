@@ -15,7 +15,15 @@ class RecipeRegistry<R: RecipeBuilder<R>>(
 
     constructor(translationKey: String, builderSample: R, maxInputs: Int, maxOutputs: Int) : this(RecipeCategory.create(Clayium.MOD_ID, translationKey, translationKey), builderSample, maxInputs, maxOutputs)
 
-    val _recipes = mutableListOf<Recipe>()
+    init {
+        builderSample.setRegistry(this)
+    }
+
+    private val _recipes = mutableListOf<Recipe>()
+
+    fun builder(): R {
+        return builderSample.copy()
+    }
 
     fun findRecipe(tier: Int, inputsIn: List<ItemStack>): Recipe? {
         return _recipes.find {
