@@ -8,13 +8,14 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.ITickable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
-abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectable {
+abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectable, ITickable {
     var tier: Int = -1
         private set
     var frontFacing = EnumFacing.NORTH
@@ -26,6 +27,10 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
         protected set
     abstract var combinedInventory: IItemHandler
         protected set
+    open val autoIoHandler: AutoIoHandler by lazy {
+        require(tier != -1) { "Tier is not initialized" }
+        AutoIoHandler(this)
+    }
 
     protected val _inputs = MutableList(6) { MachineIoMode.NONE }
     protected val _outputs = MutableList(6) { MachineIoMode.NONE }
@@ -83,6 +88,10 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
             _connections[i] = tagConnections[i] == 1.toByte()
         }
         frontFacing = EnumFacing.byIndex(data.getInteger("frontFacing"))
+    }
+
+    override fun update() {
+        autoIoHandler.tick()
     }
 
     override fun getUpdateTag(): NBTTagCompound {
