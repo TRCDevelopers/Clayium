@@ -20,9 +20,12 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
     var frontFacing = EnumFacing.NORTH
         private set
 
-    protected abstract var inputInventory: IItemHandlerModifiable
-    protected abstract var outputInventory: IItemHandlerModifiable
-    protected abstract var combinedInventory: IItemHandler
+    abstract var inputInventory: IItemHandlerModifiable
+        protected set
+    abstract var outputInventory: IItemHandlerModifiable
+        protected set
+    abstract var combinedInventory: IItemHandler
+        protected set
 
     protected val _inputs = MutableList(6) { MachineIoMode.NONE }
     protected val _outputs = MutableList(6) { MachineIoMode.NONE }
