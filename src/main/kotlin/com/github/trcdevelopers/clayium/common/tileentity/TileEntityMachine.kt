@@ -108,12 +108,14 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
 
     override fun onNeighborChanged(facing: EnumFacing) {
         super.onNeighborChanged(facing)
+        val i = facing.index
         when (val neighbor = getNeighbor(facing)) {
             is TileEntityMachine -> {
-
+                _connections[i] = (this.inputs[i] != MachineIoMode.NONE && neighbor.outputs[facing.opposite.index] != MachineIoMode.NONE) ||
+                        (this.outputs[i] != MachineIoMode.NONE && neighbor.inputs[facing.opposite.index] != MachineIoMode.NONE)
             }
             else -> {
-                _connections[facing.index] = neighbor?.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.opposite) == true
+                _connections[i] = neighbor?.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.opposite) == true
             }
         }
     }
