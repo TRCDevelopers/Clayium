@@ -3,11 +3,15 @@ package com.github.trcdevelopers.clayium.common.tileentity
 import com.github.trcdevelopers.clayium.common.blocks.IPipeConnectable
 import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
+import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
+import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.*
 import com.github.trcdevelopers.clayium.common.util.CUtils
 import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.EnumHand
 import net.minecraft.util.ITickable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
@@ -15,7 +19,7 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
-abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectable, ITickable {
+abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectable, ITickable, ItemClayConfigTool.Listener {
     var tier: Int = -1
         private set
     var frontFacing = EnumFacing.NORTH
@@ -131,5 +135,53 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
 
     override fun getOutput(side: EnumFacing): MachineIoMode {
         return _outputs[side.index]
+    }
+
+    // ClayTool Listener
+    override fun onRightClicked(
+        toolType: ItemClayConfigTool.ToolType, worldIn: World, posIn: BlockPos, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float
+    ) {
+        when (toolType) {
+            PIPING -> worldIn.setBlockState(posIn, worldIn.getBlockState(posIn).cycleProperty(BlockMachine.IS_PIPE))
+            INSERTION -> toggleInput(clickedSide)
+            EXTRACTION -> toggleOutput(clickedSide)
+            ROTATION -> rotate(clickedSide)
+            FILTER_REMOVER -> TODO()
+        }
+    }
+
+    private fun toggleInput(side: EnumFacing) {
+        _inputs[side.index] = validInputModes[(_inputs[side.index].id + 1) % validInputModes.size]
+        this.markDirty()
+    }
+
+    private fun toggleOutput(side: EnumFacing) {
+        _outputs[side.index] = validOutputModes[(_outputs[side.index].id + 1) % validOutputModes.size]
+        this.markDirty()
+    }
+
+    private fun rotate(side: EnumFacing) {
+        if (side.axis.isVertical) return
+        if (frontFacing == side) {
+            frontFacing = frontFacing.opposite
+            val oldInputs = _inputs.toList()
+            val oldOutputs = _outputs.toList()
+            for (side in EnumFacing.HORIZONTALS) {
+                val rotatedSide = side.opposite
+                _inputs[rotatedSide.index] = oldInputs[side.index]
+                _outputs[rotatedSide.index] = oldOutputs[side.index]
+            }
+        } else {
+            while (frontFacing != side) {
+                val oldInputs = _inputs.toList()
+                val oldOutputs = _outputs.toList()
+                frontFacing = frontFacing.rotateY()
+                for (side in EnumFacing.HORIZONTALS) {
+                    val rotatedSide = side.rotateY()
+                    _inputs[rotatedSide.index] = oldInputs[side.index]
+                    _outputs[rotatedSide.index] = oldOutputs[side.index]
+                }
+            }
+        }
     }
 }
