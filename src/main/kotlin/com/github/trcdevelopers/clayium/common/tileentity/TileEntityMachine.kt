@@ -43,13 +43,13 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
     }
 
     override fun writeToNBT(data: NBTTagCompound): NBTTagCompound {
-        return super.writeToNBT(data)
         data.setInteger("tier", tier)
         data.setIntArray("validInputModes", IntArray(validInputModes.size) { validInputModes[it].id })
         data.setIntArray("validOutputModes", IntArray(validOutputModes.size) { validOutputModes[it].id})
         CUtils.writeItems(inputInventory, "inputInventory", data)
         CUtils.writeItems(outputInventory, "outputInventory", data)
         writeDynamic(data)
+        return super.writeToNBT(data)
     }
 
     override fun readFromNBT(data: NBTTagCompound) {
