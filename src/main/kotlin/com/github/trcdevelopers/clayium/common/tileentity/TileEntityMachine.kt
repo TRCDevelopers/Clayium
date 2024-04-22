@@ -111,8 +111,8 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
         val i = facing.index
         when (val neighbor = getNeighbor(facing)) {
             is TileEntityMachine -> {
-                _connections[i] = (this.inputs[i] != MachineIoMode.NONE && neighbor.outputs[facing.opposite.index] != MachineIoMode.NONE) ||
-                        (this.outputs[i] != MachineIoMode.NONE && neighbor.inputs[facing.opposite.index] != MachineIoMode.NONE)
+                _connections[i] = (this.canImportFrom(facing) && neighbor.canExportTo(facing.opposite)) ||
+                        (this.canExportTo(facing) && neighbor.canImportFrom(facing.opposite))
             }
             else -> {
                 _connections[i] = neighbor?.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.opposite) == true
@@ -120,18 +120,16 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
         }
     }
 
-    override fun acceptInputFrom(side: EnumFacing) = _inputs[side.index] != MachineIoMode.NONE
-    override fun acceptOutputTo(side: EnumFacing) = _outputs[side.index] != MachineIoMode.NONE
-
     override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean {
         return oldState.block != newSate.block
     }
 
-    fun getInput(side: EnumFacing): MachineIoMode {
+    // IPipeConnectable
+    override fun getInput(side: EnumFacing): MachineIoMode {
         return _inputs[side.index]
     }
 
-    fun getOutput(side: EnumFacing): MachineIoMode {
+    override fun getOutput(side: EnumFacing): MachineIoMode {
         return _outputs[side.index]
     }
 }
