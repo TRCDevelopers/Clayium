@@ -20,8 +20,8 @@ class AutoIoHandler(
 
     private var ticked = 0
 
-    private fun isImporting(side: EnumFacing): Boolean = tile.getInput(side) != MachineIoMode.NONE
-    private fun isExporting(side: EnumFacing): Boolean = tile.getOutput(side) != MachineIoMode.NONE
+    private fun isImporting(side: EnumFacing): Boolean = tile.getInput(side).allowAutoIo
+    private fun isExporting(side: EnumFacing): Boolean = tile.getOutput(side).allowAutoIo
 
     fun tick() {
         if (tile.world.isRemote) return

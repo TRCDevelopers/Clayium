@@ -5,12 +5,14 @@ import net.minecraft.util.IStringSerializable
 
 enum class MachineIoMode(
     val id: Int,
+    val allowAutoIo: Boolean = true,
 ) : IStringSerializable {
-    NONE(0),
+    NONE(0, false),
     FIRST(1),
     SECOND(2),
     ALL(3),
-    CE(4),
+    CE(4, /* only importing to CE Slot, not input inventory */ false),
+    // MultiTrack Buffer IO modes
     M_ALL(5),
     M_1(6),
     M_2(7),
