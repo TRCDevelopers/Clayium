@@ -9,6 +9,7 @@ import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.*
 import com.github.trcdevelopers.clayium.common.util.CUtils
 import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
@@ -124,6 +125,10 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
                 _connections[i] = neighbor?.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.opposite) == true
             }
         }
+    }
+
+    fun onBlockPlacedBy(placer: EntityLivingBase) {
+        frontFacing = placer.horizontalFacing
     }
 
     override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean {

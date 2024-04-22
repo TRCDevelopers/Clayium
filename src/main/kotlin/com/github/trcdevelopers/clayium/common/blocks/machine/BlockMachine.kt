@@ -9,6 +9,7 @@ import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedM
 import com.github.trcdevelopers.clayium.common.interfaces.ITiered
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.PIPING
+import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -36,6 +37,7 @@ import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.items.CapabilityItemHandler
 
 /**
  * Root of all Clayium BlockMachines.
@@ -46,7 +48,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 class BlockMachine(
     private val machineName: String,
     override val tier: Int,
-    val tileEntityProvider: (Int) -> TileMachine,
+    val tileEntityProvider: (Int) -> TileEntityMachine,
 ): Block(Material.IRON), ITiered, ItemClayConfigTool.Listener {
 
     init {
@@ -76,7 +78,7 @@ class BlockMachine(
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
         if (state.getValue(IS_PIPE)) {
-            val connections = (source.getTileEntity(pos) as? TileMachine)?.connections ?: return CENTER_AABB
+            val connections = (source.getTileEntity(pos) as? TileEntityMachine)?.connections ?: return CENTER_AABB
             var aabb = CENTER_AABB
             for (i in 0..5) {
                 if (connections[i]) {
@@ -97,7 +99,7 @@ class BlockMachine(
     ) {
         if (state.getValue(IS_PIPE)) {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, CENTER_AABB)
-            val connections = (worldIn.getTileEntity(pos) as? TileMachine)?.connections
+            val connections = (worldIn.getTileEntity(pos) as? TileEntityMachine)?.connections
                 ?: return super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState)
             for (i in 0..5) {
                 if (connections[i]) {
@@ -111,8 +113,8 @@ class BlockMachine(
 
     override fun getActualState(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): IBlockState {
         val tile = if (worldIn is ChunkCache) worldIn.getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) else worldIn.getTileEntity(pos)
-        return if (tile is TileMachine) {
-            state.withProperty(FACING_HORIZONTAL, tile.currentFacing)
+        return if (tile is TileEntityMachine) {
+            state.withProperty(FACING_HORIZONTAL, tile.frontFacing)
         } else {
             state
         }
@@ -122,7 +124,7 @@ class BlockMachine(
         val ext = state as? IExtendedBlockState ?: return state
         val te = if (world is ChunkCache) world.getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) else world.getTileEntity(pos)
 
-        return if (te is TileMachine) {
+        return if (te is TileEntityMachine) {
             ext.withProperty(INPUTS, te.inputs).withProperty(OUTPUTS, te.outputs).withProperty(CONNECTIONS, te.connections)
         } else {
             ext.withProperty(INPUTS, MachineIoMode.defaultStateList).withProperty(OUTPUTS, MachineIoMode.defaultStateList).withProperty(CONNECTIONS, BooleanArray(6))
@@ -134,7 +136,7 @@ class BlockMachine(
 
     override fun onBlockPlacedBy(worldIn: World, pos: BlockPos, state: IBlockState, placer: EntityLivingBase, stack: ItemStack) {
         if (worldIn.isRemote) return
-        (worldIn.getTileEntity(pos) as? TileMachine)?.onBlockPlaced(placer, stack)
+        (worldIn.getTileEntity(pos) as? TileEntityMachine)?.onBlockPlacedBy(placer)
         worldIn.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.DEFAULT)
     }
 
@@ -142,7 +144,7 @@ class BlockMachine(
         if (worldIn.isRemote) return true
 
         val tile = worldIn.getTileEntity(pos)
-        return if (tile is TileMachine) {
+        return if (tile is TileEntityMachine) {
             TileEntityGuiFactory.open(playerIn, pos)
             true
         } else {
@@ -164,18 +166,21 @@ class BlockMachine(
 
     override fun onNeighborChange(world: IBlockAccess, pos: BlockPos, neighbor: BlockPos) {
         if (world is World && !world.isRemote) {
-            val tileMachine = world.getTileEntity(pos) as? TileMachine ?: return
+            val tileMachine = world.getTileEntity(pos) as? TileEntityMachine ?: return
             val state = world.getBlockState(pos)
             val direction = neighbor.subtract(pos)
             val side = EnumFacing.getFacingFromVector(direction.x.toFloat(), direction.y.toFloat(), direction.z.toFloat())
-            tileMachine.onNeighborChange(side)
+            tileMachine.onNeighborChanged(side)
             world.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.DEFAULT)
         }
     }
 
     override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
-        val tile = (worldIn.getTileEntity(pos) as? TileMachine) ?: return
-        for (stack in tile.getDrops()) {
+        val handler = (worldIn.getTileEntity(pos) as? TileEntityMachine)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) ?: return
+        for (i in 0..<handler.slots) {
+            val stack = handler.getStackInSlot(i)
+            if (stack.isEmpty) continue
+
             val f0 = worldIn.rand.nextFloat() * 0.8F + 0.1F
             val f1 = worldIn.rand.nextFloat() * 0.8F + 0.1F
             val f2 = worldIn.rand.nextFloat() * 0.8F + 0.1F
