@@ -1,5 +1,7 @@
 package com.github.trcdevelopers.clayium.common.tileentity
 
+import com.cleanroommc.modularui.api.IGuiHolder
+import com.cleanroommc.modularui.factory.PosGuiData
 import com.github.trcdevelopers.clayium.common.blocks.IPipeConnectable
 import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
@@ -19,7 +21,7 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
-abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectable, ITickable, ItemClayConfigTool.Listener {
+abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectable, ITickable, ItemClayConfigTool.Listener, IGuiHolder<PosGuiData> {
     var tier: Int = -1
         private set
     var frontFacing = EnumFacing.NORTH
