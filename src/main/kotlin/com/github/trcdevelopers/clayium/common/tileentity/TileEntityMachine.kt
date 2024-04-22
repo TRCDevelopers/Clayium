@@ -56,13 +56,13 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
     }
 
     override fun readFromNBT(data: NBTTagCompound) {
-        super.readFromNBT(data)
         initializeByTier(data.getInteger("tier"))
         validInputModes = data.getIntArray("validInputModes").map { MachineIoMode.byId(it) }
         validOutputModes = data.getIntArray("validOutputModes").map { MachineIoMode.byId(it) }
         CUtils.readItems(inputInventory, "inputInventory", data)
         CUtils.readItems(outputInventory, "outputInventory", data)
         readDynamic(data)
+        super.readFromNBT(data)
     }
 
     protected open fun writeDynamic(data: NBTTagCompound): NBTTagCompound {
@@ -72,6 +72,7 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
         data.setInteger("frontFacing", frontFacing.index)
         return data
     }
+
     protected open fun readDynamic(data: NBTTagCompound) {
         val tagInputs = data.getIntArray("inputs")
         val tagOutputs = data.getIntArray("outputs")
