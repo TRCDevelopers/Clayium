@@ -49,7 +49,7 @@ class BlockMachine(
     private val machineName: String,
     override val tier: Int,
     val tileEntityProvider: (Int) -> TileEntityMachine,
-): Block(Material.IRON), ITiered, ItemClayConfigTool.Listener {
+): Block(Material.IRON), ITiered {
 
     init {
         setCreativeTab(Clayium.creativeTab)
@@ -149,18 +149,6 @@ class BlockMachine(
             true
         } else {
             false
-        }
-    }
-
-    override fun onRightClicked(toolType: ItemClayConfigTool.ToolType, worldIn: World, posIn: BlockPos, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
-        if (worldIn.isRemote) return
-        when (toolType) {
-            PIPING -> {
-                val state = worldIn.getBlockState(posIn)
-                worldIn.setBlockState(posIn, state.cycleProperty(IS_PIPE))
-                worldIn.markBlockRangeForRenderUpdate(posIn, posIn)
-            }
-            else -> { /* handled by tileEntity */ }
         }
     }
 
