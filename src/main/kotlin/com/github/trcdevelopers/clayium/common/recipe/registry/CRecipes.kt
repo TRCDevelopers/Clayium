@@ -1,8 +1,20 @@
 package com.github.trcdevelopers.clayium.common.recipe.registry
 
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
+import com.github.trcdevelopers.clayium.common.recipe.builder.RecipeBuilder
 import com.github.trcdevelopers.clayium.common.recipe.builder.SimpleRecipeBuilder
 
 object CRecipes {
-    val BENDING = RecipeRegistry(MachineBlocks.Name.BENDING, SimpleRecipeBuilder(), 1, 1)
+    private val REGISTRY = mutableMapOf<String, RecipeRegistry<*>>()
+    val BENDING = addRegistry("bending", SimpleRecipeBuilder(), 1, 1)
+
+    fun <R: RecipeBuilder<R>> addRegistry(name: String, buildSample: R, inputSize: Int, outputSize: Int): RecipeRegistry<R> {
+        val registry = RecipeRegistry(name, buildSample, inputSize, outputSize)
+        REGISTRY[name] = registry
+        return registry
+    }
+
+    fun findRegistry(name: String): RecipeRegistry<*>? {
+        return REGISTRY[name]
+    }
 }
