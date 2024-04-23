@@ -25,6 +25,12 @@ class RecipeRegistry<R: RecipeBuilder<R>>(
         return builderSample.copy()
     }
 
+    fun register(provider: R.() -> Unit) {
+        val builder = builder()
+        provider(builder)
+        builder.buildAndRegister()
+    }
+
     fun findRecipe(tier: Int, inputsIn: List<ItemStack>): Recipe? {
         return _recipes.find {
             it.tier >= tier && it.matches(inputsIn)

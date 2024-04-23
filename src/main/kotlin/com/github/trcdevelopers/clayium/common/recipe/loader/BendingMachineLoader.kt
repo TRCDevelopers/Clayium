@@ -1,7 +1,6 @@
 package com.github.trcdevelopers.clayium.common.recipe.loader
 
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
-import com.github.trcdevelopers.clayium.common.recipe.CRecipes
+import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
 import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.Material
@@ -11,7 +10,7 @@ import com.github.trcdevelopers.clayium.common.unification.material.MaterialProp
 
 object BendingMachineLoader {
     fun register() {
-        val registry = CRecipes.getSimpleCeRecipeRegistry(MachineBlocks.Name.BENDING)!!
+        val registry = CRecipes.BENDING
 
         for (material in Material.entries) {
             if (material.hasProperty<Ingot>() && material.hasProperty<Plate>()) {
@@ -20,7 +19,7 @@ object BendingMachineLoader {
                     input(OrePrefix.INGOT, material)
                     outputs(OreDictUnifier.get(OrePrefix.PLATE, material))
                     cePerTick(plateProp.cePerTick)
-                    requiredTicks(plateProp.requiredTick)
+                    duration(plateProp.requiredTick)
                     tier(plateProp.tier)
                 }
             }
@@ -31,7 +30,7 @@ object BendingMachineLoader {
                     input(OrePrefix.MATTER, material)
                     outputs(OreDictUnifier.get(OrePrefix.PLATE, material))
                     cePerTick(plateProp.cePerTick)
-                    requiredTicks(plateProp.requiredTick)
+                    duration(plateProp.requiredTick)
                     tier(plateProp.tier)
                 }
             }
@@ -43,14 +42,7 @@ object BendingMachineLoader {
     }
 
     private fun registerLargePlateRecipe(material: Material) {
-        val plateProp = material.getProperty<Plate>() ?: return
-        CRecipes.getSimpleCeRecipeRegistry(MachineBlocks.Name.BENDING)
-            ?.register {
-                input(OrePrefix.PLATE, material, 4)
-                outputs(OreDictUnifier.get(OrePrefix.LARGE_PLATE, material))
-                cePerTick(plateProp.cePerTick)
-                requiredTicks(plateProp.requiredTick * 4)
-                tier(plateProp.tier)
-            }
+        //todo
+        // recipe duration is not always normalPlate * 4
     }
 }
