@@ -34,6 +34,10 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
         protected set
     abstract var combinedInventory: IItemHandler
         protected set
+
+    var hasNotifiedInputs = false
+    var hasNotifiedOutputs = false
+
     open val autoIoHandler: AutoIoHandler by lazy {
         require(tier != -1) { "Tier is not initialized" }
         AutoIoHandler(this)
