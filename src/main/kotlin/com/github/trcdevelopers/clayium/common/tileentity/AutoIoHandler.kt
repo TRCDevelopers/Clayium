@@ -68,6 +68,7 @@ abstract class AutoIoHandler(
                     )
                 }
             }
+            ticked = 0
         }
     }
     open class Exporter(tile: TileEntityMachine, private val target: IItemHandler = tile.outputInventory, isBuffer: Boolean = false) : AutoIoHandler(tile, isBuffer) {
