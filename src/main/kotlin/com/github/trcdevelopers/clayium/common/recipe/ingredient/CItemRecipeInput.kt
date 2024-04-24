@@ -8,6 +8,10 @@ class CItemRecipeInput(
     override val amount: Int,
 ): CRecipeInput() {
 
+    init {
+        validateThis()
+    }
+
     override fun testItemStackAndAmount(stack: ItemStack): Boolean {
         return stacks.any {
             ItemStack.areItemsEqual(it, stack)

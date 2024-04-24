@@ -11,9 +11,11 @@ class COreRecipeInput(
     constructor(oreDict: String, amount: Int = 1) : this(OreDictionary.getOreID(oreDict), amount)
 
     override val stacks by lazy {
-        OreDictionary.getOres(OreDictionary.getOreName(oreId)).map {
+        val ores = OreDictionary.getOres(OreDictionary.getOreName(oreId)).map {
             it.copy().apply { count = amount }
         }
+        validateThis()
+        ores
     }
 
     override fun testItemStackAndAmount(stack: ItemStack): Boolean {
