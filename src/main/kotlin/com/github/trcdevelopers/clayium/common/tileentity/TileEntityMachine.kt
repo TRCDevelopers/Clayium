@@ -169,12 +169,14 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
     }
 
     protected fun toggleInput(side: EnumFacing) {
-        _inputs[side.index] = validInputModes[(_inputs[side.index].id + 1) % validInputModes.size]
+        val current = _inputs[side.index]
+        _inputs[side.index] = validInputModes[(validInputModes.indexOf(current) + 1) % validInputModes.size]
         this.markDirty()
     }
 
     protected fun toggleOutput(side: EnumFacing) {
-        _outputs[side.index] = validOutputModes[(_outputs[side.index].id + 1) % validOutputModes.size]
+        val current = _outputs[side.index]
+        _outputs[side.index] = validOutputModes[(validOutputModes.indexOf(current) + 1) % validOutputModes.size]
         this.markDirty()
     }
 
