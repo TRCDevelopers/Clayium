@@ -77,9 +77,9 @@ class TileClayBuffer : TileEntityMachine(), IGuiHolder<PosGuiData> {
         return capability === ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing)
     }
 
-    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+    override fun <T> getCapability(capability: Capability<T?>, facing: EnumFacing?): T? {
         if (capability === ITEM_HANDLER_CAPABILITY) {
-            return ITEM_HANDLER_CAPABILITY.cast(itemStackHandler)
+            return ITEM_HANDLER_CAPABILITY.cast(combinedInventory)
         }
         return super.getCapability(capability, facing)
     }

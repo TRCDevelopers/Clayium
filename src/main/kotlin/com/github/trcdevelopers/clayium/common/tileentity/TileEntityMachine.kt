@@ -19,6 +19,7 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.ITickable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
@@ -123,6 +124,21 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
         this.world?.markBlockRangeForRenderUpdate(this.pos, this.pos)
     }
 
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing)
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : Any?> getCapability(capability: Capability<T?>, facing: EnumFacing?): T? {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (facing == null) return combinedInventory as T
+            if (this.canImportFrom(facing) && this.canExportTo(facing)) return combinedInventory as T
+            if (this.canImportFrom(facing)) return inputInventory as T
+            if (this.canExportTo(facing)) return outputInventory as T
+        }
+        return super.getCapability(capability, facing)
+    }
+
     override fun onNeighborChanged(facing: EnumFacing) {
         super.onNeighborChanged(facing)
         val i = facing.index
@@ -202,6 +218,22 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
                     _outputs[rotatedSide.index] = oldOutputs[side.index]
                 }
             }
+        }
+    }
+
+    override fun canImportFrom(side: EnumFacing): Boolean {
+        val mode = getInput(side)
+        return when (mode) {
+            MachineIoMode.NONE, MachineIoMode.CE -> false
+            else -> true
+        }
+    }
+
+    override fun canExportTo(side: EnumFacing): Boolean {
+        val mode = getOutput(side)
+        return when (mode) {
+            MachineIoMode.NONE, MachineIoMode.CE -> false
+            else -> true
         }
     }
 }

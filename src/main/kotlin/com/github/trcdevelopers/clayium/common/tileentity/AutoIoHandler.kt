@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.tileentity
 
+import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
 import com.github.trcdevelopers.clayium.common.tileentity.trait.TETrait
 import net.minecraft.item.ItemStack
