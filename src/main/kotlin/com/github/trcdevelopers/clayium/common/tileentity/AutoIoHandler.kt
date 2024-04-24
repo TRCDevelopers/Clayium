@@ -53,7 +53,7 @@ abstract class AutoIoHandler(
         return remaining
     }
 
-    open class Importer(tile: TileEntityMachine, target: IItemHandler = tile.inputInventory, isBuffer: Boolean = false) : AutoIoHandler(tile, isBuffer) {
+    open class Importer(tile: TileEntityMachine, private val target: IItemHandler = tile.inputInventory, isBuffer: Boolean = false) : AutoIoHandler(tile, isBuffer) {
         override fun update() {
             if (tile.world?.isRemote == true) return
             ticked++
@@ -63,14 +63,14 @@ abstract class AutoIoHandler(
                 if (remainingImport > 0 && isImporting(side)) {
                     remainingImport -= transferItemStack(
                         from = tile.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
-                        to = tile.inputInventory,
+                        to = target,
                         amount = remainingImport,
                     )
                 }
             }
         }
     }
-    open class Exporter(tile: TileEntityMachine, target: IItemHandler = tile.outputInventory, isBuffer: Boolean = false) : AutoIoHandler(tile, isBuffer) {
+    open class Exporter(tile: TileEntityMachine, private val target: IItemHandler = tile.outputInventory, isBuffer: Boolean = false) : AutoIoHandler(tile, isBuffer) {
         override fun update() {
             if (tile.world?.isRemote == true) return
             ticked++
@@ -79,7 +79,7 @@ abstract class AutoIoHandler(
             for (side in EnumFacing.entries) {
                 if (remainingExport > 0 && isExporting(side)) {
                     remainingExport -= transferItemStack(
-                        from = tile.outputInventory,
+                        from = target,
                         to = tile.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
                         amount = remainingExport,
                     )
