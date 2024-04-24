@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trcdevelopers.clayium.common.ClayConstants
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import org.lwjgl.input.Keyboard
@@ -69,6 +70,7 @@ class Single2SingleMachineTileEntity : WorkableTileEntity() {
             return Single2SingleMachineTileEntity().apply {
                 this.recipeRegistry = recipeRegistry
                 this.initializeByTier(tier)
+                this.initValidIoModes(MachineIoMode.Input.SINGLE, MachineIoMode.Output.SINGLE)
             }
         }
     }
