@@ -2,7 +2,7 @@ package com.github.trcdevelopers.clayium.common.recipe
 
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.recipe.ingredient.CRecipeInput
-import com.github.trcdevelopers.clayium.common.util.CUtils.listView
+import com.github.trcdevelopers.clayium.common.util.CUtils
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandlerModifiable
 
@@ -16,7 +16,7 @@ class Recipe(
     fun matches(consumeOnMatch: Boolean, inputsIn: IItemHandlerModifiable, tierIn: Int): Boolean {
 
         if (this.tier > tierIn) return false
-        val (isItemsMatched, amountsToConsume) = matchesItems(inputsIn.listView())
+        val (isItemsMatched, amountsToConsume) = matchesItems(CUtils.handlerToList(inputsIn))
         if (!isItemsMatched) return false
 
         if (consumeOnMatch) {

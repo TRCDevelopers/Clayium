@@ -61,12 +61,12 @@ object CUtils {
         }
     }
 
-    internal fun IItemHandlerModifiable.listView(): List<ItemStack> {
+    fun handlerToList(handler: IItemHandlerModifiable): List<ItemStack> {
         return object : AbstractList<ItemStack>() {
-            override val size = this@listView.slots
+            override val size = handler.slots
 
             override fun get(index: Int): ItemStack {
-                return this@listView.getStackInSlot(index)
+                return handler.getStackInSlot(index)
             }
 
         }
