@@ -13,6 +13,7 @@ import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
+import com.github.trcdevelopers.clayium.common.items.handler.ClayiumItemStackHandler
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
@@ -60,9 +61,10 @@ class TileClayBuffer : TileEntityMachine(), IGuiHolder<PosGuiData> {
             in 8..13 -> 9
             else -> 1
         }
-        this.itemStackHandler = object : ItemStackHandler(inventoryColumnSize * inventoryRowSize) {
-            override fun onContentsChanged(slot: Int) = this@TileClayBuffer.markDirty()
-        }
+        this.itemStackHandler = ClayiumItemStackHandler(this, inventoryRowSize * inventoryColumnSize)
+        this.inputInventory = itemStackHandler
+        this.outputInventory = itemStackHandler
+        this.combinedInventory = itemStackHandler
         this.autoIoHandler = AutoIoHandler(this, true)
     }
 
