@@ -103,7 +103,7 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
     }
 
     override fun update() {
-        autoIoHandler.tick()
+        autoIoHandler.update()
     }
 
     override fun getUpdateTag(): NBTTagCompound {

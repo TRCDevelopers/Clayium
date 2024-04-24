@@ -1,56 +1,28 @@
 package com.github.trcdevelopers.clayium.common.tileentity
 
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
+import com.github.trcdevelopers.clayium.common.tileentity.trait.TETrait
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 
-class AutoIoHandler(
-    private val tile: TileEntityMachine,
+abstract class AutoIoHandler(
+    protected val tile: TileEntityMachine,
     isBuffer: Boolean = false,
-) {
+) : TETrait(tile, tile.tier) {
 
-    private val inputInventory = tile.inputInventory
-    private val outputInventory = tile.outputInventory
+    protected val intervalTick = if (isBuffer) ConfigTierBalance.bufferInterval[tile.tier] else ConfigTierBalance.machineInterval[tile.tier]
+    protected val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[tile.tier] else ConfigTierBalance.machineAmount[tile.tier]
 
-    private val intervalTick = if (isBuffer) ConfigTierBalance.bufferInterval[tile.tier] else ConfigTierBalance.machineInterval[tile.tier]
-    private val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[tile.tier] else ConfigTierBalance.machineAmount[tile.tier]
+    protected var ticked = 0
 
-    private var ticked = 0
+    protected fun isImporting(side: EnumFacing): Boolean = tile.getInput(side).allowAutoIo
+    protected fun isExporting(side: EnumFacing): Boolean = tile.getOutput(side).allowAutoIo
 
-    private fun isImporting(side: EnumFacing): Boolean = tile.getInput(side).allowAutoIo
-    private fun isExporting(side: EnumFacing): Boolean = tile.getOutput(side).allowAutoIo
+    abstract override fun update()
 
-    fun tick() {
-        if (tile.world.isRemote) return
-        ticked++
-        if (ticked < intervalTick) return
-        var remainingImport = amountPerAction
-        for (side in EnumFacing.entries) {
-            if (remainingImport > 0 && isImporting(side)) {
-                remainingImport -= transferItemStack(
-                    tile.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
-                    to = inputInventory,
-                    amount = remainingImport,
-                )
-            }
-        }
-        var remainingExport = amountPerAction
-        for (side in EnumFacing.entries) {
-            if (remainingExport > 0 && isExporting(side)) {
-                remainingExport -= transferItemStack(
-                    outputInventory,
-                    to = tile.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
-                    amount = remainingExport,
-                )
-            }
-        }
-        ticked = 0
-    }
-
-    private fun transferItemStack(
+    protected fun transferItemStack(
         from: IItemHandler,
         to: IItemHandler,
         amount: Int,
@@ -71,12 +43,57 @@ class AutoIoHandler(
      * @param stack The stack to insert. This stack will not be modified.
      * @return The remaining ItemStack that was not inserted (if the entire stack is accepted, then return an empty ItemStack)
      */
-    private fun insertToInventory(handler: IItemHandler, stack: ItemStack, simulate: Boolean): ItemStack {
+    protected fun insertToInventory(handler: IItemHandler, stack: ItemStack, simulate: Boolean): ItemStack {
         var remaining = stack.copy()
         for (i in 0..<handler.slots) {
             remaining = handler.insertItem(i, remaining, simulate)
             if (remaining.isEmpty) break
         }
         return remaining
+    }
+
+    class Importer(tile: TileEntityMachine, target: IItemHandler = tile.inputInventory, isBuffer: Boolean = false) : AutoIoHandler(tile, isBuffer) {
+        override fun update() {
+            if (tile.world?.isRemote == true) return
+            ticked++
+            if (ticked < intervalTick) return
+            var remainingImport = amountPerAction
+            for (side in EnumFacing.entries) {
+                if (remainingImport > 0 && isImporting(side)) {
+                    remainingImport -= transferItemStack(
+                        from = tile.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                        to = tile.inputInventory,
+                        amount = remainingImport,
+                    )
+                }
+            }
+        }
+    }
+    class Exporter(tile: TileEntityMachine, target: IItemHandler = tile.outputInventory, isBuffer: Boolean = false) : AutoIoHandler(tile, isBuffer) {
+        override fun update() {
+            if (tile.world?.isRemote == true) return
+            ticked++
+            if (ticked < intervalTick) return
+            var remainingExport = amountPerAction
+            for (side in EnumFacing.entries) {
+                if (remainingExport > 0 && isExporting(side)) {
+                    remainingExport -= transferItemStack(
+                        from = tile.outputInventory,
+                        to = tile.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                        amount = remainingExport,
+                    )
+                }
+            }
+            ticked = 0
+        }
+    }
+    class Combined(tile: TileEntityMachine, isBuffer: Boolean = false) : AutoIoHandler(tile, isBuffer) {
+        private val importer = Importer(tile)
+        private val exporter = Exporter(tile)
+
+        override fun update() {
+            importer.update()
+            exporter.update()
+        }
     }
 }

@@ -65,7 +65,7 @@ class TileClayBuffer : TileEntityMachine(), IGuiHolder<PosGuiData> {
         this.inputInventory = itemStackHandler
         this.outputInventory = itemStackHandler
         this.combinedInventory = itemStackHandler
-        this.autoIoHandler = AutoIoHandler(this, true)
+        this.autoIoHandler = AutoIoHandler.Combined(this, true)
     }
 
     override fun onBlockPlacedBy(player: EntityLivingBase) {

@@ -26,7 +26,7 @@ class Single2SingleMachineTileEntity : WorkableTileEntity() {
 
     override fun initializeByTier(tier: Int) {
         super.initializeByTier(tier)
-        autoIoHandler = AutoIoHandler(this)
+        autoIoHandler = AutoIoHandler.Combined(this)
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
