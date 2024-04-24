@@ -38,10 +38,7 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
     var hasNotifiedInputs = false
     var hasNotifiedOutputs = false
 
-    open val autoIoHandler: AutoIoHandler by lazy {
-        require(tier != -1) { "Tier is not initialized" }
-        AutoIoHandler(this)
-    }
+    abstract var autoIoHandler: AutoIoHandler
 
     protected val _inputs = MutableList(6) { MachineIoMode.NONE }
     protected val _outputs = MutableList(6) { MachineIoMode.NONE }
@@ -54,7 +51,9 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
     val outputs get() = _outputs.toList()
     val connections get() = _connections.copyOf()
 
-    protected open fun initializeByTier(tier: Int) {}
+    protected open fun initializeByTier(tier: Int) {
+        this.tier = tier
+    }
 
     fun initValidIoModes(validInputModes: List<MachineIoMode>, validOutputModes: List<MachineIoMode>) {
         this.validInputModes = validInputModes

@@ -14,11 +14,20 @@ import com.github.trcdevelopers.clayium.common.ClayConstants
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
+import com.github.trcdevelopers.clayium.common.tileentity.trait.BasicRecipeLogic
+import com.github.trcdevelopers.clayium.common.tileentity.trait.ClayEnergyHolder
 import org.lwjgl.input.Keyboard
 
 class Single2SingleMachineTileEntity : WorkableTileEntity() {
     override val inputSize: Int = 1
     override val outputSize: Int = 1
+
+    override lateinit var autoIoHandler: AutoIoHandler
+
+    override fun initializeByTier(tier: Int) {
+        super.initializeByTier(tier)
+        autoIoHandler = AutoIoHandler(this)
+    }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         workable.syncValues(syncManager)
@@ -68,9 +77,11 @@ class Single2SingleMachineTileEntity : WorkableTileEntity() {
     companion object {
         fun create(tier: Int, recipeRegistry: RecipeRegistry<*>): Single2SingleMachineTileEntity {
             return Single2SingleMachineTileEntity().apply {
-                this.recipeRegistry = recipeRegistry
                 this.initializeByTier(tier)
                 this.initValidIoModes(MachineIoMode.Input.SINGLE, MachineIoMode.Output.SINGLE)
+                this.recipeRegistry = recipeRegistry
+                this.ceSlot = ClayEnergyHolder(this, tier)
+                this.workable = BasicRecipeLogic(this, tier, ceSlot, recipeRegistry)
             }
         }
     }

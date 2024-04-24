@@ -48,6 +48,7 @@ class TileClayBuffer : TileEntityMachine(), IGuiHolder<PosGuiData> {
         private set
 
     override fun initializeByTier(tier: Int) {
+        super.initializeByTier(tier)
         this.inventoryRowSize = when (tier) {
             in 4..7 -> tier - 3
             8, -> 4
