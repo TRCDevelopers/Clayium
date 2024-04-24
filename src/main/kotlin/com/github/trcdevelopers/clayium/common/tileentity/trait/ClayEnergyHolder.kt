@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.common.tileentity.trait
 
 import com.cleanroommc.modularui.api.widget.IWidget
+import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
@@ -52,6 +53,13 @@ class ClayEnergyHolder(
         return ItemSlot()
             .slot(SyncHandlers.itemSlot(slot, 0)
                 .accessibility(false, false))
+    }
+
+    fun syncValues(syncManager: GuiSyncManager) {
+        syncManager.syncValue("clayEnergy", 2, SyncHandlers.longNumber(
+            { clayEnergy.energy },
+            { clayEnergy = ClayEnergy(it) }
+        ))
     }
 
     private fun tryConsumeEnergizedClay() {

@@ -2,6 +2,8 @@ package com.github.trcdevelopers.clayium.common.tileentity.trait
 
 import com.cleanroommc.modularui.api.widget.IWidget
 import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
@@ -109,6 +111,17 @@ class BasicRecipeLogic(
 
     fun getNormalizedProgress(): Double {
         return currentProgress.toDouble() / requiredProgress.toDouble()
+    }
+
+    fun syncValues(syncManager: GuiSyncManager) {
+        syncManager.syncValue("requiredProgress", 0, SyncHandlers.intNumber(
+            { requiredProgress },
+            { rProgress -> requiredProgress = rProgress }
+        ))
+        syncManager.syncValue("craftingProgress", 1, SyncHandlers.intNumber(
+            { currentProgress },
+            { cProgress -> currentProgress = cProgress }
+        ))
     }
 
     override fun writeToNBT(data: NBTTagCompound) {
