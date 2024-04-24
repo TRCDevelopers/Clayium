@@ -1,17 +1,28 @@
 package com.github.trcdevelopers.clayium.common.tileentity.trait
 
 import com.cleanroommc.modularui.api.widget.IWidget
+import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
+import com.github.trcdevelopers.clayium.common.recipe.Recipe
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
+import com.github.trcdevelopers.clayium.common.util.CUtils
+import net.minecraft.item.ItemStack
 
 class BasicRecipeLogic(
     tileEntityMachine: TileEntityMachine,
     tier: Int,
+    private val ceSlot: ClayEnergyHolder,
     private val recipeRegistry: RecipeRegistry<*>,
 ) : TETrait(tileEntityMachine, tier) {
 
+    private val inputInventory = tileEntity.inputInventory
+
+    private var previousRecipe: Recipe? = null
+    private var recipeCEt = ClayEnergy.ZERO
     private var requiredProgress = 0
     private var currentProgress = 0
+    // item stacks that will be produced when the recipe is done
+    private var itemOutputs: List<ItemStack> = emptyList()
 
     private var invalidInputsForRecipes = false
     private var outputsFull = false
@@ -27,6 +38,11 @@ class BasicRecipeLogic(
     }
 
     private fun updateRecipeProgress() {
+        if (ceSlot.drawEnergy(recipeCEt)) currentProgress++
+        if (currentProgress >= requiredProgress) {
+            currentProgress = 0
+            CUtils.insertToHandler(tileEntity.outputInventory, itemOutputs)
+        }
     }
 
     private fun shouldSearchNewRecipe(): Boolean {
@@ -50,6 +66,21 @@ class BasicRecipeLogic(
     }
 
     private fun trySearchNewRecipe() {
+        var currentRecipe: Recipe? = null
+        currentRecipe = if (previousRecipe?.matches(false, inputInventory, tier) == true) {
+            previousRecipe
+        } else {
+            recipeRegistry.findRecipe(tier, CUtils.handlerToList(inputInventory))
+        }
+
+        invalidInputsForRecipes = (currentRecipe == null)
+        if (invalidInputsForRecipes) return
+        // inputs are valid
+        // -> are outputs full? && has enough power?
+    }
+
+    private fun prepareRecipe(recipe: Recipe) {
+        if (!this.ceSlot.hasEnoughEnergy(recipe.cePerTick)) return
     }
 
     fun getProgressBar(): IWidget {
