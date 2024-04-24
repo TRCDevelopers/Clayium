@@ -17,8 +17,8 @@ abstract class AutoIoHandler(
 
     protected var ticked = 0
 
-    protected fun isImporting(side: EnumFacing): Boolean = tile.getInput(side).allowAutoIo
-    protected fun isExporting(side: EnumFacing): Boolean = tile.getOutput(side).allowAutoIo
+    protected open fun isImporting(side: EnumFacing): Boolean = tile.getInput(side).allowAutoIo
+    protected open fun isExporting(side: EnumFacing): Boolean = tile.getOutput(side).allowAutoIo
 
     abstract override fun update()
 
@@ -52,7 +52,7 @@ abstract class AutoIoHandler(
         return remaining
     }
 
-    class Importer(tile: TileEntityMachine, target: IItemHandler = tile.inputInventory, isBuffer: Boolean = false) : AutoIoHandler(tile, isBuffer) {
+    open class Importer(tile: TileEntityMachine, target: IItemHandler = tile.inputInventory, isBuffer: Boolean = false) : AutoIoHandler(tile, isBuffer) {
         override fun update() {
             if (tile.world?.isRemote == true) return
             ticked++
@@ -69,7 +69,7 @@ abstract class AutoIoHandler(
             }
         }
     }
-    class Exporter(tile: TileEntityMachine, target: IItemHandler = tile.outputInventory, isBuffer: Boolean = false) : AutoIoHandler(tile, isBuffer) {
+    open class Exporter(tile: TileEntityMachine, target: IItemHandler = tile.outputInventory, isBuffer: Boolean = false) : AutoIoHandler(tile, isBuffer) {
         override fun update() {
             if (tile.world?.isRemote == true) return
             ticked++

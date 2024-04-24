@@ -4,12 +4,15 @@ import com.cleanroommc.modularui.api.widget.IWidget
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
+import com.github.trcdevelopers.clayium.common.Clayium
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClay
 import com.github.trcdevelopers.clayium.common.tileentity.AutoIoHandler
 import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.ItemStackHandler
 
 class ClayEnergyHolder(
@@ -27,7 +30,11 @@ class ClayEnergyHolder(
         }
     }
 
-    private val energizedClayImporter = AutoIoHandler.Importer(tile, slot)
+    private val energizedClayImporter = object : AutoIoHandler.Importer(tile, slot) {
+        override fun isImporting(side: EnumFacing): Boolean {
+            return tile.getInput(side) == MachineIoMode.CE
+        }
+    }
 
     private var clayEnergy = ClayEnergy.ZERO
 
