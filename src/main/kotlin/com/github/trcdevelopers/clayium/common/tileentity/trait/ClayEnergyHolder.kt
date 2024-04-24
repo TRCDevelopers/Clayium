@@ -48,7 +48,7 @@ class ClayEnergyHolder(
         return this.clayEnergy >= energy
     }
 
-    fun getSlotWidget(): IWidget {
+    fun getSlotWidget(): ItemSlot {
         return ItemSlot()
             .slot(SyncHandlers.itemSlot(slot, 0)
                 .accessibility(false, false))

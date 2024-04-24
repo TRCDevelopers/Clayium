@@ -99,7 +99,7 @@ class BasicRecipeLogic(
         this.previousRecipe = recipe
     }
 
-    fun getProgressBar(): IWidget {
+    fun getProgressBar(): ProgressWidget {
         return ProgressWidget()
             .size(22, 17)
             .align(Alignment.Center)
