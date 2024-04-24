@@ -19,6 +19,8 @@ import com.github.trcdevelopers.clayium.common.GuiHandler
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
+import com.github.trcdevelopers.clayium.common.tileentity.AutoIoHandler
+import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -30,26 +32,26 @@ import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemStackHandler
 import java.util.function.IntFunction
 
-class TileClayBuffer : TileMachine(), IGuiHolder<PosGuiData> {
+class TileClayBuffer : TileEntityMachine(), IGuiHolder<PosGuiData> {
+
 
     override lateinit var autoIoHandler: AutoIoHandler
 
     private lateinit var itemStackHandler: ItemStackHandler
+    override lateinit var inputInventory: IItemHandlerModifiable
+    override lateinit var outputInventory: IItemHandlerModifiable
+    override lateinit var combinedInventory: IItemHandler
 
     var inventoryRowSize: Int = 1
         private set
     var inventoryColumnSize: Int = 1
         private set
 
-    override fun getItemHandler(): IItemHandler {
-        return itemStackHandler
-    }
-
-    override fun initParams(tier: Int, inputModes: List<MachineIoMode>, outputModes: List<MachineIoMode>) {
-        super.initParams(tier, inputModes, outputModes)
+    override fun initializeByTier(tier: Int) {
         this.inventoryRowSize = when (tier) {
             in 4..7 -> tier - 3
             8, -> 4
@@ -64,14 +66,11 @@ class TileClayBuffer : TileMachine(), IGuiHolder<PosGuiData> {
         this.itemStackHandler = object : ItemStackHandler(inventoryColumnSize * inventoryRowSize) {
             override fun onContentsChanged(slot: Int) = this@TileClayBuffer.markDirty()
         }
-        this.autoIoHandler = AutoIoHandler(
-            ConfigTierBalance.bufferInterval[tier],
-            ConfigTierBalance.bufferAmount[tier],
-        )
+        this.autoIoHandler = AutoIoHandler(this, true)
     }
 
-    override fun onBlockPlaced(player: EntityLivingBase, stack: ItemStack) {
-        super.onBlockPlaced(player, stack)
+    override fun onBlockPlacedBy(player: EntityLivingBase) {
+        super.onBlockPlacedBy(player)
         toggleInput(EnumFacing.getDirectionFromEntityLiving(pos, player).opposite)
     }
 
@@ -111,14 +110,6 @@ class TileClayBuffer : TileMachine(), IGuiHolder<PosGuiData> {
         }
     }
 
-    override fun acceptInputFrom(side: EnumFacing) = true
-    override fun acceptOutputTo(side: EnumFacing) = true
-    override fun isAutoInput(side: EnumFacing) = _inputs[side.index] == MachineIoMode.ALL
-    override fun isAutoOutput(side: EnumFacing) = _outputs[side.index] == MachineIoMode.ALL
-
-    override fun canAutoInput(side: EnumFacing) = _inputs[side.index] == MachineIoMode.ALL
-    override fun canAutoOutput(side: EnumFacing) = _outputs[side.index] == MachineIoMode.ALL
-
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.registerSlotGroup("buffer_inv", inventoryRowSize)
         val columnStr = "I".repeat(inventoryColumnSize)
@@ -157,7 +148,8 @@ class TileClayBuffer : TileMachine(), IGuiHolder<PosGuiData> {
 
         fun create(tier: Int): TileClayBuffer {
             return TileClayBuffer().apply {
-                initParams(tier, MachineIoMode.Input.BUFFER, MachineIoMode.Output.BUFFER)
+                initializeByTier(tier)
+                initValidIoModes(MachineIoMode.Input.BUFFER, MachineIoMode.Output.BUFFER)
             }
         }
     }

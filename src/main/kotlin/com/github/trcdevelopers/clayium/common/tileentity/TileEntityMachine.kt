@@ -131,7 +131,7 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
         }
     }
 
-    fun onBlockPlacedBy(placer: EntityLivingBase) {
+    open fun onBlockPlacedBy(placer: EntityLivingBase) {
         frontFacing = placer.horizontalFacing
     }
 
@@ -161,12 +161,12 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
         }
     }
 
-    private fun toggleInput(side: EnumFacing) {
+    protected fun toggleInput(side: EnumFacing) {
         _inputs[side.index] = validInputModes[(_inputs[side.index].id + 1) % validInputModes.size]
         this.markDirty()
     }
 
-    private fun toggleOutput(side: EnumFacing) {
+    protected fun toggleOutput(side: EnumFacing) {
         _outputs[side.index] = validOutputModes[(_outputs[side.index].id + 1) % validOutputModes.size]
         this.markDirty()
     }
