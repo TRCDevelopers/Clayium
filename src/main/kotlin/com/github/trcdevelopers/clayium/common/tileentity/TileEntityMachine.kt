@@ -12,12 +12,14 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ITickable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
@@ -108,12 +110,17 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
         return writeToNBT(NBTTagCompound())
     }
 
+    override fun handleUpdateTag(tag: NBTTagCompound) {
+        readDynamic(tag)
+    }
+
     override fun getUpdatePacket(): SPacketUpdateTileEntity {
         return SPacketUpdateTileEntity(pos, blockMetadata, writeDynamic(NBTTagCompound()))
     }
 
-    override fun handleUpdateTag(tag: NBTTagCompound) {
-        readDynamic(tag)
+    override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
+        this.readDynamic(pkt.nbtCompound)
+        this.world?.markBlockRangeForRenderUpdate(this.pos, this.pos)
     }
 
     override fun onNeighborChanged(facing: EnumFacing) {
@@ -158,6 +165,7 @@ abstract class TileEntityMachine : NeighborCacheTileEntityBase(), IPipeConnectab
             ROTATION -> rotate(clickedSide)
             FILTER_REMOVER -> TODO()
         }
+        worldIn.notifyBlockUpdate(posIn, worldIn.getBlockState(posIn), worldIn.getBlockState(posIn), Constants.BlockFlags.DEFAULT)
     }
 
     protected fun toggleInput(side: EnumFacing) {
