@@ -8,6 +8,7 @@ import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
 import com.github.trcdevelopers.clayium.common.util.CUtils
 import com.github.trcdevelopers.clayium.common.util.TransferUtils
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 
 class BasicRecipeLogic(
     tileEntityMachine: TileEntityMachine,
@@ -97,5 +98,19 @@ class BasicRecipeLogic(
 
     fun getProgressBar(): IWidget {
         return TODO()
+    }
+
+    override fun writeToNBT(data: NBTTagCompound) {
+        data.setInteger("currentProgress", currentProgress)
+        data.setInteger("requiredProgress", requiredProgress)
+        CUtils.writeItems(itemOutputs, "itemOutputs", data)
+        data.setLong("recipeCEt", recipeCEt.energy)
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        currentProgress = data.getInteger("currentProgress")
+        requiredProgress = data.getInteger("requiredProgress")
+        itemOutputs = mutableListOf<ItemStack>().apply { CUtils.readItems(this, "itemOutputs", data) }
+        recipeCEt = ClayEnergy(data.getLong("recipeCEt"))
     }
 }

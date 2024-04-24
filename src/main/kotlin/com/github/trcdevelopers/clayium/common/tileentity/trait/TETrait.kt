@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.common.tileentity.trait
 
 import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
+import net.minecraft.nbt.NBTTagCompound
 
 abstract class TETrait(
     protected val tileEntity: TileEntityMachine,
@@ -9,4 +10,6 @@ abstract class TETrait(
 
     open fun update() {}
 
+    open fun writeToNBT(data: NBTTagCompound) {}
+    open fun readFromNBT(data: NBTTagCompound) {}
 }

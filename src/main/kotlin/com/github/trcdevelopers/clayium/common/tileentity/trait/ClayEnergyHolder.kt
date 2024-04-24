@@ -7,6 +7,7 @@ import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClay
 import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.items.ItemStackHandler
 
 class ClayEnergyHolder(
@@ -24,14 +25,14 @@ class ClayEnergyHolder(
         }
     }
 
-    private var energy = ClayEnergy.ZERO
+    private var clayEnergy = ClayEnergy.ZERO
 
     /***
      * @return true if energy was drawn
      */
     fun drawEnergy(energy: ClayEnergy): Boolean {
         if (hasEnoughEnergy(energy)) {
-            this.energy -= energy
+            this.clayEnergy -= energy
             return true
         }
         return false
@@ -41,10 +42,10 @@ class ClayEnergyHolder(
      * tries to consume energized clay from the slot if the energy is not enough
      */
     fun hasEnoughEnergy(energy: ClayEnergy): Boolean {
-        if (this.energy < energy) {
+        if (this.clayEnergy < energy) {
             tryConsumeEnergizedClay()
         }
-        return this.energy >= energy
+        return this.clayEnergy >= energy
     }
 
     fun getSlotWidget(): IWidget {
@@ -57,7 +58,17 @@ class ClayEnergyHolder(
         val stack = this.slot.getStackInSlot(0)
         if (stack.isEmpty) return
         val item = stack.item as? IEnergizedClay ?: return
-        this.energy += item.getClayEnergy(stack)
+        this.clayEnergy += item.getClayEnergy(stack)
         this.slot.extractItem(0, 1, false)
+    }
+
+    override fun writeToNBT(data: NBTTagCompound) {
+        data.setTag("slot", slot.serializeNBT())
+        data.setLong("energy", clayEnergy.energy)
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        slot.deserializeNBT(data.getCompoundTag("slot"))
+        clayEnergy = ClayEnergy(data.getLong("energy"))
     }
 }
