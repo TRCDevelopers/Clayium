@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClay
+import com.github.trcdevelopers.clayium.common.tileentity.AutoIoHandler
 import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -26,7 +27,14 @@ class ClayEnergyHolder(
         }
     }
 
+    private val energizedClayImporter = AutoIoHandler.Importer(tile, slot)
+
     private var clayEnergy = ClayEnergy.ZERO
+
+    override fun update() {
+        super.update()
+        energizedClayImporter.update()
+    }
 
     /***
      * @return true if energy was drawn
