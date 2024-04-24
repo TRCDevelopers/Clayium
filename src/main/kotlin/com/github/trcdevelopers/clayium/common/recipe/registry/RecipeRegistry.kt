@@ -33,7 +33,7 @@ class RecipeRegistry<R: RecipeBuilder<R>>(
 
     fun findRecipe(tier: Int, inputsIn: List<ItemStack>): Recipe? {
         return _recipes.find {
-            it.tier >= tier && it.matches(inputsIn)
+            it.tier <= tier && it.matches(inputsIn)
         }
     }
 
@@ -57,5 +57,9 @@ class RecipeRegistry<R: RecipeBuilder<R>>(
             return Result.failure(IllegalArgumentException())
         }
         return Result.success(recipe)
+    }
+
+    fun getAllRecipes(): List<Recipe> {
+        return _recipes.toList()
     }
 }

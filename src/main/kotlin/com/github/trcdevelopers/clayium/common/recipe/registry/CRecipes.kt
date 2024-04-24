@@ -1,6 +1,5 @@
 package com.github.trcdevelopers.clayium.common.recipe.registry
 
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
 import com.github.trcdevelopers.clayium.common.recipe.builder.RecipeBuilder
 import com.github.trcdevelopers.clayium.common.recipe.builder.SimpleRecipeBuilder
 

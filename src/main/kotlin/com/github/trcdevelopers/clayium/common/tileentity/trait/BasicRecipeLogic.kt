@@ -5,6 +5,7 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ProgressWidget
+import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.Recipe
@@ -80,10 +81,11 @@ class BasicRecipeLogic(
             recipeRegistry.findRecipe(tier, CUtils.handlerToList(inputInventory))
         }
 
-        invalidInputsForRecipes = (currentRecipe == null)
-        if (invalidInputsForRecipes) return
-        // inputs are valid
-        // -> are outputs full? && has enough power?
+        if (currentRecipe == null) {
+            invalidInputsForRecipes = true
+            return
+        }
+        prepareRecipe(currentRecipe)
     }
 
     private fun prepareRecipe(recipe: Recipe) {

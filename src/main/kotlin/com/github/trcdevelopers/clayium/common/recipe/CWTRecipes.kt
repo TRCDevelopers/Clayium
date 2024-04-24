@@ -6,24 +6,10 @@ import com.github.trcdevelopers.clayium.common.recipe.registry.ClayWorkTableReci
 import com.github.trcdevelopers.clayium.common.recipe.registry.SimpleCeRecipeRegistry
 import net.minecraft.item.ItemStack
 
-object CRecipes {
+object CWTRecipes {
     val CLAY_WORK_TABLE = ClayWorkTableRecipeRegistry()
-
-    val BENDING = SimpleCeRecipeRegistry(MachineBlocks.Name.BENDING, 1, 1)
-
-    private val simpleCeRecipes = mapOf(
-        MachineBlocks.Name.BENDING to BENDING
-    )
-
-    fun getSimpleCeRecipeRegistry(name: String): SimpleCeRecipeRegistry? {
-        return simpleCeRecipes[name]
-    }
 
     fun getClayWorkTableRecipe(input: ItemStack, method: ClayWorkTableMethod): ClayWorkTableRecipe? {
         return CLAY_WORK_TABLE.getRecipe(input, method)
-    }
-
-    fun getBendingRecipe(input: ItemStack): SimpleCeRecipe? {
-        return simpleCeRecipes[MachineBlocks.Name.BENDING]?.getRecipe(input)
     }
 }
