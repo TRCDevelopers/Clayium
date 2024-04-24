@@ -48,5 +48,6 @@ abstract class WorkableTileEntity : TileEntityMachine() {
     override fun update() {
         super.update()
         workable.update()
+        ceSlot.update()
     }
 }
