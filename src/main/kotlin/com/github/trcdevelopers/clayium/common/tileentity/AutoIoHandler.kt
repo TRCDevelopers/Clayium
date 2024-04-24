@@ -31,9 +31,12 @@ abstract class AutoIoHandler(
         var remainingWork = amount
 
         for (i in 0..<from.slots) {
-            val extracted = from.extractItem(i, remainingWork, false)
+            val extracted = from.extractItem(i, remainingWork, true)
                 .takeUnless { it.isEmpty } ?: continue
-            val remain = insertToInventory(to, extracted, false)
+            val remain = insertToInventory(to, extracted, true)
+
+            val stackToInsert = from.extractItem(i, extracted.count - remain.count, false)
+            insertToInventory(to, stackToInsert, false)
             remainingWork -= extracted.count - remain.count
             if (remainingWork <= 0) break
         }
