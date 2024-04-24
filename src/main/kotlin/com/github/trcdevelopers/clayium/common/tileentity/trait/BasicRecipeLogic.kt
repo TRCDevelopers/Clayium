@@ -40,7 +40,7 @@ class BasicRecipeLogic(
 
     private fun updateRecipeProgress() {
         if (ceSlot.drawEnergy(recipeCEt)) currentProgress++
-        if (currentProgress >= requiredProgress) {
+        if (currentProgress > requiredProgress) {
             currentProgress = 0
             TransferUtils.insertToHandler(tileEntity.outputInventory, itemOutputs)
         }
@@ -82,6 +82,17 @@ class BasicRecipeLogic(
 
     private fun prepareRecipe(recipe: Recipe) {
         if (!this.ceSlot.hasEnoughEnergy(recipe.cePerTick)) return
+        val outputLimit = tileEntity.outputInventory.slots
+        val outputs = recipe.copyOutputs().subList(0, outputLimit - 1)
+        if (!TransferUtils.insertToHandler(tileEntity.outputInventory, outputs, true)) {
+            this.outputsFull = true
+            return
+        }
+        this.itemOutputs = outputs
+        this.recipeCEt = recipe.cePerTick
+        this.requiredProgress = recipe.duration
+        this.currentProgress = 1
+        this.previousRecipe = recipe
     }
 
     fun getProgressBar(): IWidget {
