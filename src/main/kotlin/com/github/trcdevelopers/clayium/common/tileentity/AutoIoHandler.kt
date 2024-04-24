@@ -34,6 +34,7 @@ abstract class AutoIoHandler(
                 .takeUnless { it.isEmpty } ?: continue
             val remain = insertToInventory(to, extracted, false)
             remainingWork -= extracted.count - remain.count
+            if (remainingWork <= 0) break
         }
         return remainingWork
     }
