@@ -1,8 +1,8 @@
 package com.github.trcdevelopers.clayium.common
 
 import com.github.trcdevelopers.clayium.client.gui.GuiClayWorkTable
-import com.github.trcdevelopers.clayium.common.gui.ContainerClayWorkTable
 import com.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWorkTable
+import com.github.trcdevelopers.clayium.common.gui.ContainerClayWorkTable
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World

@@ -2,7 +2,6 @@ package com.github.trcdevelopers.clayium.common.gui
 
 import com.cleanroommc.modularui.drawable.UITexture
 import com.github.trcdevelopers.clayium.common.Clayium
-import net.minecraft.util.ResourceLocation
 
 object ClayGuiTextures {
 

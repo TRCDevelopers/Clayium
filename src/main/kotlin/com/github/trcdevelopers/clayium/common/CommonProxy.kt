@@ -3,10 +3,9 @@ package com.github.trcdevelopers.clayium.common
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
+import com.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
-import com.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWorkTable
-import com.github.trcdevelopers.clayium.common.tileentity.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.ItemBlockTiered
@@ -14,6 +13,7 @@ import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trcdevelopers.clayium.common.recipe.loader.CRecipeLoader
 import com.github.trcdevelopers.clayium.common.tileentity.Single2SingleMachineTileEntity
+import com.github.trcdevelopers.clayium.common.tileentity.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
 import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import com.github.trcdevelopers.clayium.common.worldgen.ClayOreGenerator

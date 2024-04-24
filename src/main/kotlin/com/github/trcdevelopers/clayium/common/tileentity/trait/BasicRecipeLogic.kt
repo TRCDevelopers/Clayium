@@ -1,11 +1,9 @@
 package com.github.trcdevelopers.clayium.common.tileentity.trait
 
-import com.cleanroommc.modularui.api.widget.IWidget
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ProgressWidget
-import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.Recipe
@@ -91,11 +89,12 @@ class BasicRecipeLogic(
     private fun prepareRecipe(recipe: Recipe) {
         if (!this.ceSlot.hasEnoughEnergy(recipe.cePerTick)) return
         val outputLimit = tileEntity.outputInventory.slots
-        val outputs = recipe.copyOutputs().subList(0, outputLimit - 1)
+        val outputs = recipe.copyOutputs().subList(0, outputLimit)
         if (!TransferUtils.insertToHandler(tileEntity.outputInventory, outputs, true)) {
             this.outputsFull = true
             return
         }
+        if (!recipe.matches(true, inputInventory, tier)) return
         this.itemOutputs = outputs
         this.recipeCEt = recipe.cePerTick
         this.requiredProgress = recipe.duration

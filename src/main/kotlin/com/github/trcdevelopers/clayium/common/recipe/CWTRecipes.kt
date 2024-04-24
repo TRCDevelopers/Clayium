@@ -1,9 +1,7 @@
 package com.github.trcdevelopers.clayium.common.recipe
 
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
 import com.github.trcdevelopers.clayium.common.blocks.clayworktable.ClayWorkTableMethod
 import com.github.trcdevelopers.clayium.common.recipe.registry.ClayWorkTableRecipeRegistry
-import com.github.trcdevelopers.clayium.common.recipe.registry.SimpleCeRecipeRegistry
 import net.minecraft.item.ItemStack
 
 object CWTRecipes {

@@ -1,7 +1,6 @@
 package com.github.trcdevelopers.clayium.common.recipe.ingredient
 
 import net.minecraft.item.ItemStack
-import net.minecraftforge.oredict.OreDictionary
 
 class CItemRecipeInput(
     override val stacks: List<ItemStack>,

@@ -2,7 +2,9 @@ package com.github.trcdevelopers.clayium.common.config;
 
 import com.github.trcdevelopers.clayium.common.Clayium;
 import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.Config.*;
+import net.minecraftforge.common.config.Config.Comment;
+import net.minecraftforge.common.config.Config.LangKey;
+import net.minecraftforge.common.config.Config.RangeInt;
 
 @LangKey("clayium.config.tier")
 @Config(modid = Clayium.MOD_ID, name = Clayium.MOD_ID + "/tier_balance")
