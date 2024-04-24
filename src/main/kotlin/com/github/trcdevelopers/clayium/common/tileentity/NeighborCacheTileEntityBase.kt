@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.tileentity
 
+import com.github.trcdevelopers.clayium.common.Clayium
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
@@ -49,7 +50,7 @@ abstract class NeighborCacheTileEntityBase : TileEntity() {
         if (world == null || pos == null) return null
         val i = facing.index
         var neighbor = neighborCache[i]
-        if (neighbor == this || (neighbor?.isInvalid == true)) {
+        if (neighbor == null || neighbor == this || (neighbor.isInvalid == true)) {
             neighbor = world.getTileEntity(pos.offset(facing))
             neighborCache[i] = neighbor
             neighborsInvalidated = false
