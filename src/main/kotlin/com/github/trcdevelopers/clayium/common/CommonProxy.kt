@@ -6,15 +6,15 @@ import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedCla
 import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
 import com.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWorkTable
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileClayBuffer
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileSingle2SingleMachine
+import com.github.trcdevelopers.clayium.common.tileentity.TileClayBuffer
 import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.ItemBlockTiered
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trcdevelopers.clayium.common.recipe.loader.CRecipeLoader
+import com.github.trcdevelopers.clayium.common.tileentity.Single2SingleMachineTileEntity
+import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
 import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import com.github.trcdevelopers.clayium.common.worldgen.ClayOreGenerator
 import net.minecraft.block.Block
@@ -136,8 +136,8 @@ open class CommonProxy {
     open fun registerTileEntities() {
         GameRegistry.registerTileEntity(TileClayWorkTable::class.java, ResourceLocation(Clayium.MOD_ID, "tile_clay_work_table"))
 
-        GameRegistry.registerTileEntity(TileMachine::class.java, ResourceLocation(Clayium.MOD_ID, "tile_machine"))
-        GameRegistry.registerTileEntity(TileSingle2SingleMachine::class.java, ResourceLocation(Clayium.MOD_ID, "tile_simple_machine"))
+        GameRegistry.registerTileEntity(TileEntityMachine::class.java, ResourceLocation(Clayium.MOD_ID, "TileEntityMachine"))
+        GameRegistry.registerTileEntity(Single2SingleMachineTileEntity::class.java, ResourceLocation(Clayium.MOD_ID, "Single2SingleMachineTileEntity"))
         GameRegistry.registerTileEntity(TileClayBuffer::class.java, ResourceLocation(Clayium.MOD_ID, "tile_clay_buffer"))
     }
 

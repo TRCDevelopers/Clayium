@@ -16,8 +16,8 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.M_6
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.M_ALL
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.NONE
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.SECOND
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
+import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
 import net.minecraft.client.model.PositionTextureVertex
 import net.minecraft.client.model.TexturedQuad
 import net.minecraft.client.renderer.GlStateManager
@@ -28,7 +28,7 @@ import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 
-object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileMachine>() {
+object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileEntityMachine>() {
 
     // offset to prevent z-fighting
     private const val CUBE_OFFSET = 0.01f
@@ -69,7 +69,7 @@ object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileMachine>() {
     private val sideQuads = EnumFacing.entries.map { createQuadsFor(it) }
 
     override fun render(
-        te: TileMachine, x: Double, y: Double, z: Double,
+        te: TileEntityMachine, x: Double, y: Double, z: Double,
         partialTicks: Float,
         destroyStage: Int,
         alpha: Float

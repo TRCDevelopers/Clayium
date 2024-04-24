@@ -7,8 +7,8 @@ import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.CommonProxy
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
+import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraftforge.client.event.ModelRegistryEvent
@@ -31,7 +31,7 @@ class ClientProxy : CommonProxy() {
         super.preInit(event)
         ModelLoaderRegistry.registerLoader(MachineModelLoader)
         ModelLoaderRegistry.registerLoader(FacedMachineModelLoader)
-        ClientRegistry.bindTileEntitySpecialRenderer(TileMachine::class.java, ClayBufferPipeIoRenderer)
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMachine::class.java, ClayBufferPipeIoRenderer)
     }
 
     override fun init(event: FMLInitializationEvent) {

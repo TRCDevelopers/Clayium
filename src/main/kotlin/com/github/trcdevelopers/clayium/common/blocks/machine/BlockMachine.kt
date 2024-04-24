@@ -2,13 +2,9 @@ package com.github.trcdevelopers.clayium.common.blocks.machine
 
 import com.cleanroommc.modularui.factory.TileEntityGuiFactory
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine.Companion.IS_PIPE
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
 import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedMachineIo
 import com.github.trcdevelopers.clayium.common.interfaces.ITiered
-import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
-import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.PIPING
 import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType

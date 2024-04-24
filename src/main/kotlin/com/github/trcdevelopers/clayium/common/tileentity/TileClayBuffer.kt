@@ -1,29 +1,20 @@
-package com.github.trcdevelopers.clayium.common.blocks.machine.tile
+package com.github.trcdevelopers.clayium.common.tileentity
 
 import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
-import com.cleanroommc.modularui.factory.TileEntityGuiFactory
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandler
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
-import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.GuiHandler
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
-import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
-import com.github.trcdevelopers.clayium.common.tileentity.AutoIoHandler
-import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
@@ -34,7 +25,12 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemStackHandler
-import java.util.function.IntFunction
+import kotlin.apply
+import kotlin.collections.map
+import kotlin.collections.toList
+import kotlin.collections.toTypedArray
+import kotlin.text.repeat
+import kotlin.text.single
 
 class TileClayBuffer : TileEntityMachine(), IGuiHolder<PosGuiData> {
 
@@ -120,7 +116,8 @@ class TileClayBuffer : TileEntityMachine(), IGuiHolder<PosGuiData> {
             .size(176,  18 + inventoryRowSize * 18 + 94 + 2)
             .align(Alignment.Center)
         panel
-            .child(TextWidget(IKey.lang("tile.clayium.clay_buffer", IKey.lang("machine.clayium.tier$tier")))
+            .child(
+                TextWidget(IKey.lang("tile.clayium.clay_buffer", IKey.lang("machine.clayium.tier$tier")))
                 .margin(6)
                 .align(Alignment.TopLeft))
             .child(Column()
@@ -134,7 +131,8 @@ class TileClayBuffer : TileEntityMachine(), IGuiHolder<PosGuiData> {
                         )
                     }
                     .build())
-                .child(TextWidget(IKey.lang("container.inventory"))
+                .child(
+                    TextWidget(IKey.lang("container.inventory"))
                     .paddingTop(1)
                     .paddingBottom(1)
                     .left(6)))
