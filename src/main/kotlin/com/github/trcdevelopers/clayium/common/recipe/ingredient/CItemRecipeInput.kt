@@ -9,7 +9,7 @@ class CItemRecipeInput(
 ): CRecipeInput() {
 
     init {
-        validateThis()
+        validate(stacks)
     }
 
     override fun testItemStackAndAmount(stack: ItemStack): Boolean {

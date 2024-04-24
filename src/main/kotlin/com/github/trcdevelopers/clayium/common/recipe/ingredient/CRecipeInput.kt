@@ -9,7 +9,7 @@ abstract class CRecipeInput {
 
     abstract fun testItemStackAndAmount(stack: ItemStack): Boolean
 
-    fun validateThis() {
+    fun validate(stacks: List<ItemStack>) {
         require(stacks.isNotEmpty()) { "Stacks must not be empty" }
         require(stacks.all { it.count == amount }) { "All stacks must have the same amount" }
     }
