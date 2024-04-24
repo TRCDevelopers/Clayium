@@ -37,7 +37,7 @@ class Recipe(
 
         for (ingredient in this.inputs) {
             var isMatched = false
-            for (i in 0..inputsIn.size) {
+            for (i in 0..<inputsIn.size) {
                 val itemStack = inputsIn[i]
                 if (i == indexed) {
                     amountsToConsume[i] = 0
