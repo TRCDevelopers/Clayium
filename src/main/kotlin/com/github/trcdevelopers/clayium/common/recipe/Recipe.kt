@@ -13,8 +13,9 @@ class Recipe(
     val cePerTick: ClayEnergy,
     val tier: Int,
 ) {
-    fun matches(consumeOnMatch: Boolean, inputsIn: IItemHandlerModifiable): Boolean {
+    fun matches(consumeOnMatch: Boolean, inputsIn: IItemHandlerModifiable, tierIn: Int): Boolean {
 
+        if (this.tier > tierIn) return false
         val (isItemsMatched, amountsToConsume) = matchesItems(inputsIn.listView())
         if (!isItemsMatched) return false
 
