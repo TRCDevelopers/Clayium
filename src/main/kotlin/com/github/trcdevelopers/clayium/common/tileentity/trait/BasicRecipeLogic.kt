@@ -6,6 +6,7 @@ import com.github.trcdevelopers.clayium.common.recipe.Recipe
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
 import com.github.trcdevelopers.clayium.common.util.CUtils
+import com.github.trcdevelopers.clayium.common.util.TransferUtils
 import net.minecraft.item.ItemStack
 
 class BasicRecipeLogic(
@@ -41,7 +42,7 @@ class BasicRecipeLogic(
         if (ceSlot.drawEnergy(recipeCEt)) currentProgress++
         if (currentProgress >= requiredProgress) {
             currentProgress = 0
-            CUtils.insertToHandler(tileEntity.outputInventory, itemOutputs)
+            TransferUtils.insertToHandler(tileEntity.outputInventory, itemOutputs)
         }
     }
 

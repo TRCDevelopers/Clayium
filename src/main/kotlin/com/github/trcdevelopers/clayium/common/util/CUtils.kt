@@ -51,16 +51,6 @@ object CUtils {
         }
     }
 
-    fun insertToHandler(handler: IItemHandlerModifiable, stacks: List<ItemStack>) {
-        for (stack in stacks) {
-            var remain: ItemStack = stack
-            for (i in 0..<handler.slots) {
-                remain = handler.insertItem(i, remain, false)
-                if (remain.isEmpty) break
-            }
-        }
-    }
-
     fun handlerToList(handler: IItemHandlerModifiable): List<ItemStack> {
         return object : AbstractList<ItemStack>() {
             override val size = handler.slots
