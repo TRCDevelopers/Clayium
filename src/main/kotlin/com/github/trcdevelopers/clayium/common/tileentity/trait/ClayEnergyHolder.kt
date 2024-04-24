@@ -79,4 +79,8 @@ class ClayEnergyHolder(
         slot.deserializeNBT(data.getCompoundTag("slot"))
         clayEnergy = ClayEnergy(data.getLong("energy"))
     }
+
+    fun ceString(): String {
+        return clayEnergy.toString()
+    }
 }

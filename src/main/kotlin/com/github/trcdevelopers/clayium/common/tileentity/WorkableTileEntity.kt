@@ -12,7 +12,7 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper
 
 abstract class WorkableTileEntity : TileEntityMachine() {
 
-    private lateinit var recipeRegistry: RecipeRegistry<*>
+    protected lateinit var recipeRegistry: RecipeRegistry<*>
 
     protected abstract val inputSize: Int
     protected abstract val outputSize: Int
