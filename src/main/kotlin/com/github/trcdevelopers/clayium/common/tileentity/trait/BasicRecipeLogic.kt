@@ -1,7 +1,10 @@
 package com.github.trcdevelopers.clayium.common.tileentity.trait
 
 import com.cleanroommc.modularui.api.widget.IWidget
+import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
+import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.Recipe
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
@@ -97,7 +100,15 @@ class BasicRecipeLogic(
     }
 
     fun getProgressBar(): IWidget {
-        return TODO()
+        return ProgressWidget()
+            .size(22, 17)
+            .align(Alignment.Center)
+            .progress(this::getNormalizedProgress)
+            .texture(ClayGuiTextures.PROGRESS_BAR, 22)
+    }
+
+    fun getNormalizedProgress(): Double {
+        return currentProgress.toDouble() / requiredProgress.toDouble()
     }
 
     override fun writeToNBT(data: NBTTagCompound) {
