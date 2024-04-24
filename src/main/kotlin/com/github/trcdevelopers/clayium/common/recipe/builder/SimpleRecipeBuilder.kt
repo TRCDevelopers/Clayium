@@ -5,6 +5,7 @@ class SimpleRecipeBuilder() : RecipeBuilder<SimpleRecipeBuilder>() {
 
     override fun copy(): SimpleRecipeBuilder {
         return SimpleRecipeBuilder()
+            .setRegistry(this.recipeRegistry)
             .inputs(*inputs.toTypedArray())
             .outputs(*outputs.toTypedArray())
             .duration(duration)
