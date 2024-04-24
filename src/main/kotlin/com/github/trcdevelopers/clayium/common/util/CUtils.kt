@@ -27,9 +27,13 @@ object CUtils {
     }
 
     fun writeItems(handler: IItemHandlerModifiable, tagName: String, tag: NBTTagCompound) {
+        this.writeItems(this.handlerToList(handler), tagName, tag)
+    }
+
+    fun writeItems(items: List<ItemStack>, tagName: String, tag: NBTTagCompound) {
         val tagList = NBTTagList()
-        for (i in 0..<handler.slots) {
-            val stack = handler.getStackInSlot(i)
+        for (i in items.indices) {
+            val stack = items[i]
             if (!stack.isEmpty) {
                 val itemTag = NBTTagCompound()
                 itemTag.setByte("Slot", i.toByte())
@@ -47,6 +51,17 @@ object CUtils {
             val slot = itemTag.getByte("Slot").toInt()
             if (slot in 0 until handler.slots) {
                 handler.setStackInSlot(slot, ItemStack(itemTag))
+            }
+        }
+    }
+
+    fun readItems(items: MutableList<ItemStack>, tagName: String, tag: NBTTagCompound) {
+        val tagList = tag.getTagList(tagName, 10)
+        for (i in 0..<tagList.tagCount()) {
+            val itemTag = tagList.getCompoundTagAt(i)
+            val slot = itemTag.getByte("Slot").toInt()
+            if (slot in 0 until items.size) {
+                items[slot] = ItemStack(itemTag)
             }
         }
     }
