@@ -31,7 +31,6 @@ class Single2SingleMachineTileEntity : WorkableTileEntity() {
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         workable.syncValues(syncManager)
-        ceSlot.syncValues(syncManager)
 
         return ModularPanel("single_to_single_machine")
             .flex {
@@ -68,9 +67,7 @@ class Single2SingleMachineTileEntity : WorkableTileEntity() {
                     Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54)
                 }
                 .background(IDrawable.EMPTY))
-            .child(IKey.dynamic { IKey.lang(ClayConstants.CE_LANG_KEY, ceSlot.toString()).toString() }.asWidget()
-                .widthRel(0.5f)
-                .pos(6, 60))
+            .child(ceSlot.getCeStringWidget(syncManager))
             .bindPlayerInventory()
     }
 

@@ -1,8 +1,11 @@
 package com.github.trcdevelopers.clayium.common.tileentity.trait
 
+import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.widgets.TextWidget
+import com.github.trcdevelopers.clayium.common.ClayConstants
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClay
@@ -68,11 +71,15 @@ class ClayEnergyHolder(
                 .accessibility(false, false))
     }
 
-    fun syncValues(syncManager: GuiSyncManager) {
+    fun getCeStringWidget(syncManager: GuiSyncManager): TextWidget {
         syncManager.syncValue("clayEnergy", 2, SyncHandlers.longNumber(
             { clayEnergy.energy },
             { clayEnergy = ClayEnergy(it) }
         ))
+
+        return IKey.dynamic { IKey.lang(ClayConstants.CE_LANG_KEY, clayEnergy.toString()).toString() }.asWidget()
+            .widthRel(0.5f)
+            .pos(6, 60)
     }
 
     private fun tryConsumeEnergizedClay() {
