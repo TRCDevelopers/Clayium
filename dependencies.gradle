@@ -39,4 +39,6 @@
  */
 dependencies {
     api("com.cleanroommc:modularui:2.4.3")
+
+    testImplementation("io.kotest:kotest-runner-junit5:5.8.1")
 }
