@@ -3,8 +3,10 @@ package com.github.trcdevelopers.clayium.integration.jei
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.recipe.CWTRecipes
 import com.github.trcdevelopers.clayium.common.recipe.ClayWorkTableRecipe
+import com.github.trcdevelopers.clayium.common.recipe.Recipe
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import com.github.trcdevelopers.clayium.integration.jei.basic.ClayiumRecipeCategory
+import com.github.trcdevelopers.clayium.integration.jei.basic.ClayiumRecipeWrapper
 import com.github.trcdevelopers.clayium.integration.jei.clayworktable.ClayWorkTableRecipeCategory
 import com.github.trcdevelopers.clayium.integration.jei.clayworktable.ClayWorkTableRecipeWrapper
 import mezz.jei.api.IJeiHelpers
@@ -42,6 +44,7 @@ class JeiPlugin : IModPlugin {
         modRegistry.addRecipes(CWTRecipes.CLAY_WORK_TABLE.recipes, ClayWorkTableRecipeCategory.UID)
 
         for (recipeRegistry in CRecipes.ALL_REGISTRIES.values) {
+            modRegistry.handleRecipes(Recipe::class.java, ::ClayiumRecipeWrapper, recipeRegistry.category.uniqueId)
             modRegistry.addRecipes(recipeRegistry.getAllRecipes(), recipeRegistry.category.uniqueId)
         }
     }
