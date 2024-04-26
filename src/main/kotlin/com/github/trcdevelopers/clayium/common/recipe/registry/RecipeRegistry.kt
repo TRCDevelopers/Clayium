@@ -20,6 +20,7 @@ class RecipeRegistry<R: RecipeBuilder<R>>(
     }
 
     private val _recipes = mutableListOf<Recipe>()
+    val recipesList: List<Recipe> = _recipes
 
     fun builder(): R {
         return builderSample.copy()

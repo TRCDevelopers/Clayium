@@ -6,9 +6,10 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 class RecipeCategory private constructor(
     val modid: String = Clayium.MOD_ID,
     val categoryName: String,
-    val translationKey: String,
+    machineName: String,
 ) {
     val uniqueId = createUID(modid, categoryName)
+    val translationKey = "tile.clayium.${machineName}"
 
     companion object {
         val categories = Object2ObjectOpenHashMap<String, RecipeCategory>()
