@@ -1,12 +1,13 @@
-package com.github.trcdevelopers.clayium.common.tileentity
+package com.github.trcdevelopers.clayium.api.metatileentity
 
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.jetbrains.annotations.MustBeInvokedByOverriders
+import kotlin.collections.fill
 
-abstract class NeighborCacheTileEntityBase : TileEntity() {
+abstract class NeighborCacheTileEntityBase : SyncedTileEntityBase() {
     private val neighborCache = Array<TileEntity?>(6) { this }
     private var neighborsInvalidated = false
 
