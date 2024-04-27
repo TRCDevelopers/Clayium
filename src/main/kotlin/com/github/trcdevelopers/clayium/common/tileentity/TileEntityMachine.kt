@@ -7,7 +7,7 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.*
-import com.github.trcdevelopers.clayium.common.util.CUtils
+import com.github.trcdevelopers.clayium.api.util.CUtils
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer

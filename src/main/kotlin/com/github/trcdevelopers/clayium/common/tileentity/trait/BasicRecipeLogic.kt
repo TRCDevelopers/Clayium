@@ -9,7 +9,7 @@ import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.Recipe
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
-import com.github.trcdevelopers.clayium.common.util.CUtils
+import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.util.TransferUtils
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound

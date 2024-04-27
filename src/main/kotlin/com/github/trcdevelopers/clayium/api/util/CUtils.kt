@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.common.util
+package com.github.trcdevelopers.clayium.api.util
 
 import com.google.common.base.CaseFormat
 import net.minecraft.item.EnumRarity
@@ -7,6 +7,8 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
 import net.minecraftforge.common.IRarity
 import net.minecraftforge.items.IItemHandlerModifiable
+import kotlin.collections.indices
+import kotlin.ranges.until
 
 object CUtils {
     fun toUpperCamel(snakeCase: String): String {
