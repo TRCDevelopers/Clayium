@@ -2,6 +2,7 @@ package com.github.trcdevelopers.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.factory.PosGuiData
+import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_CONNECTIONS
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_FRONT_FACING
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_INPUT_MODE
@@ -15,6 +16,7 @@ import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.*
 import com.github.trcdevelopers.clayium.common.tileentity.AutoIoHandler
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.tileentity.TileEntity
@@ -159,6 +161,30 @@ abstract class MetaTileEntity(
             UPDATE_INPUT_MODE -> _inputModes[buf.readByte().toInt()] = MachineIoMode.entries[buf.readByte().toInt()]
             UPDATE_OUTPUT_MODE -> _outputModes[buf.readByte().toInt()] = MachineIoMode.entries[buf.readByte().toInt()]
             UPDATE_CONNECTIONS -> _connectionsCache[buf.readByte().toInt()] = buf.readBoolean()
+        }
+    }
+
+    open fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
+        clearInventory(itemBuffer, importItems)
+        clearInventory(itemBuffer, exportItems)
+    }
+
+    open fun onPlacement() {}
+    open fun onRemoval() {}
+
+    fun getStackForm(amount: Int = 1): ItemStack {
+        return ItemStack(ClayiumApi.BLOCK_MACHINE, amount, ClayiumApi.MTE_REGISTRY.getIdByKey(metaTileEntityId))
+    }
+
+    companion object {
+        protected fun clearInventory(itemBuffer: MutableList<ItemStack>, inventory: IItemHandlerModifiable) {
+            for (i in 0..<inventory.slots) {
+                val stack = inventory.getStackInSlot(i)
+                if (!stack.isEmpty) {
+                    itemBuffer.add(stack)
+                    inventory.setStackInSlot(i, ItemStack.EMPTY)
+                }
+            }
         }
     }
 }

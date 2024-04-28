@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.Constants.NBT
 
 class MetaTileEntityHolder : NeighborCacheTileEntityBase() {
     var metaTileEntity: MetaTileEntity? = null
-        set(sampleMetaTileEntity) {
+        private set(sampleMetaTileEntity) {
             if (sampleMetaTileEntity == null) {
                 field = null
                 return
@@ -23,7 +23,7 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase() {
             }
         }
 
-    fun setAndInitMetaTileEntity(sampleMetaTileEntity: MetaTileEntity): MetaTileEntity {
+    fun setMetaTileEntity(sampleMetaTileEntity: MetaTileEntity): MetaTileEntity {
         val mte = sampleMetaTileEntity.createMetaTileEntity()
         metaTileEntity = mte
         if (world?.isRemote == false) {
@@ -83,7 +83,7 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase() {
 
     private fun receiveMteInitializationData(buf: PacketBuffer) {
         val mteId = buf.readVarInt()
-        setAndInitMetaTileEntity(ClayiumApi.MTE_REGISTRY.getObjectById(mteId) ?: return).also {
+        setMetaTileEntity(ClayiumApi.MTE_REGISTRY.getObjectById(mteId) ?: return).also {
             it.receiveInitialSyncData(buf)
             scheduleRenderUpdate()
         }
