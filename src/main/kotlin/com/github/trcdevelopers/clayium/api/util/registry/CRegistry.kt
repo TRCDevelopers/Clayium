@@ -19,4 +19,8 @@ class CRegistry<K, V>(
     override fun putObject(key: K, value: V) {
         super.putObject(key, value)
     }
+
+    fun getIdByKey(key: K): Int {
+        return getObject(key)?.let { return getIDForObject(it) } ?: 0
+    }
 }

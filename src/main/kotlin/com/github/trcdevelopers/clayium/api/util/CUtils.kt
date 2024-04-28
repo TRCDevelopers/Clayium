@@ -1,10 +1,14 @@
 package com.github.trcdevelopers.clayium.api.util
 
+import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
+import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.google.common.base.CaseFormat
 import net.minecraft.item.EnumRarity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.IBlockAccess
 import net.minecraftforge.common.IRarity
 import net.minecraftforge.items.IItemHandlerModifiable
 import kotlin.collections.indices
@@ -77,5 +81,10 @@ object CUtils {
             }
 
         }
+    }
+
+    fun getMetaTileEntity(world: IBlockAccess?, pos: BlockPos?): MetaTileEntity? {
+        if (world == null || pos == null) return null
+        return (world.getTileEntity(pos) as? MetaTileEntityHolder)?.metaTileEntity
     }
 }
