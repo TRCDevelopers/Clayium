@@ -1,13 +1,11 @@
 package com.github.trcdevelopers.clayium.api.block
 
-import codechicken.lib.block.property.unlisted.UnlistedEnumFacingProperty
+import codechicken.lib.block.property.unlisted.UnlistedTileEntityProperty
 import com.cleanroommc.modularui.factory.TileEntityGuiFactory
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedBooleanArray
-import com.github.trcdevelopers.clayium.common.blocks.unlistedproperty.UnlistedMachineIo
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -26,6 +24,7 @@ import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
+import net.minecraftforge.common.property.IExtendedBlockState
 
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockMachine : Block(Material.IRON) {
@@ -44,8 +43,14 @@ class BlockMachine : Block(Material.IRON) {
     override fun createBlockState(): BlockStateContainer {
         return BlockStateContainer.Builder(this)
             .add(IS_PIPE)
-            .add(FACING, INPUT_MODES, OUTPUT_MODES, CONNECTIONS)
+            .add(TILE_ENTITY)
             .build()
+    }
+
+    override fun getExtendedState(state: IBlockState, world: IBlockAccess, pos: BlockPos): IBlockState {
+        val tileEntity = world.getTileEntity(pos) as? MetaTileEntityHolder ?: return state
+        return (state as IExtendedBlockState)
+            .withProperty(TILE_ENTITY, tileEntity)
     }
 
     override fun getStateFromMeta(meta: Int) = defaultState.withProperty(IS_PIPE, meta == 1)
@@ -99,10 +104,7 @@ class BlockMachine : Block(Material.IRON) {
     companion object {
         val IS_PIPE = PropertyBool.create("is_pipe")
 
-        val FACING = UnlistedEnumFacingProperty("facing")
-        val INPUT_MODES = UnlistedMachineIo("input_modes")
-        val OUTPUT_MODES = UnlistedMachineIo("output_modes")
-        val CONNECTIONS = UnlistedBooleanArray("connections")
+        val TILE_ENTITY = UnlistedTileEntityProperty("tile_entity")
 
         val CENTER_AABB = AxisAlignedBB(0.3125, 0.3125, 0.3125, 0.6875, 0.6875, 0.6875)
         val SIDE_AABBS = listOf(
