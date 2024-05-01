@@ -1,8 +1,9 @@
 package com.github.trcdevelopers.clayium.client.tesr
 
+import com.github.trcdevelopers.clayium.api.block.BlockMachine
+import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.client.ModelUtils
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.ALL
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.CE
@@ -17,7 +18,6 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.M_AL
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.NONE
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.SECOND
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
-import com.github.trcdevelopers.clayium.common.tileentity.TileEntityMachine
 import net.minecraft.client.model.PositionTextureVertex
 import net.minecraft.client.model.TexturedQuad
 import net.minecraft.client.renderer.GlStateManager
@@ -28,7 +28,8 @@ import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 
-object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileEntityMachine>() {
+// todo migrate to cc's renderer
+object PipedMachineIoRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
 
     // offset to prevent z-fighting
     private const val CUBE_OFFSET = 0.01f
@@ -69,25 +70,27 @@ object ClayBufferPipeIoRenderer : TileEntitySpecialRenderer<TileEntityMachine>()
     private val sideQuads = EnumFacing.entries.map { createQuadsFor(it) }
 
     override fun render(
-        te: TileEntityMachine, x: Double, y: Double, z: Double,
+        holder: MetaTileEntityHolder, x: Double, y: Double, z: Double,
         partialTicks: Float,
         destroyStage: Int,
         alpha: Float
     ) {
-        if (te.blockType !is BlockMachine) return
-        if (!world.getBlockState(te.pos).getValue(BlockMachine.IS_PIPE)) return
+        if (holder.blockType !is BlockMachine) return
+        if (!world.getBlockState(holder.pos).getValue(BlockMachine.IS_PIPE)) return
 
         val player = this.rendererDispatcher.entity as? EntityPlayer ?: return
         if (!isPipingTool(player.heldItemMainhand.item)) return
+
+        val mte = holder.metaTileEntity ?: return
 
         GlStateManager.pushMatrix()
         GlStateManager.translate(x, y, z)
 
         val buf = Tessellator.getInstance().buffer
 
-        val connections = te.connections
-        val inputs = te.inputs
-        val outputs = te.outputs
+        val connections = mte.connectionsCache
+        val inputs = mte.inputModes
+        val outputs = mte.outputModes
 
         for (side in EnumFacing.entries) {
             val i = side.index
