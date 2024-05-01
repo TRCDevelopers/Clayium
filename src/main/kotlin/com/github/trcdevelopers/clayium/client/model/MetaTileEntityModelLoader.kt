@@ -31,8 +31,7 @@ object MetaTileEntityModelLoader : ICustomModelLoader {
         Clayium.LOGGER.info("Loading model for $modelLocation")
         if (modelLocation !is ModelResourceLocation) return ModelLoaderRegistry.getMissingModel()
 
-        val propString = modelLocation.path.split("#").last()
-        val isPipe = propString.split("=").last().toBooleanStrict()
+        val isPipe = modelLocation.variant.split("=").last().toBooleanStrict()
         return MetaTileEntityModel(isPipe)
     }
 }
