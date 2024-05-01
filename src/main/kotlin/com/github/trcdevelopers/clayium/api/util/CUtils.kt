@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.api.util
 
 import com.github.trcdevelopers.clayium.api.CValues
+import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.google.common.base.CaseFormat
@@ -88,6 +89,10 @@ object CUtils {
     fun getMetaTileEntity(world: IBlockAccess?, pos: BlockPos?): MetaTileEntity? {
         if (world == null || pos == null) return null
         return (world.getTileEntity(pos) as? MetaTileEntityHolder)?.metaTileEntity
+    }
+
+    fun getMetaTileEntity(stack: ItemStack): MetaTileEntity? {
+        return ClayiumApi.MTE_REGISTRY.getObjectById(stack.itemDamage)
     }
 
     fun clayiumId(path: String): ResourceLocation {

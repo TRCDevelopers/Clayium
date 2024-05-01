@@ -18,6 +18,7 @@ import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.*
 import com.github.trcdevelopers.clayium.common.tileentity.AutoIoHandler
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -38,6 +39,8 @@ abstract class MetaTileEntity(
     val validInputModes: List<MachineIoMode>,
     val validOutputModes: List<MachineIoMode>,
 ) : ISyncedTileEntity, IGuiHolder<PosGuiData>, IPipeConnectable {
+
+    val translationKey = "${metaTileEntityId.namespace}.machine.${metaTileEntityId.path}"
 
     var holder: MetaTileEntityHolder? = null
     val world: World? get() = holder?.world
@@ -228,6 +231,8 @@ abstract class MetaTileEntity(
     fun getNeighbor(side: EnumFacing): TileEntity? {
         return holder?.getNeighbor(side)
     }
+
+    fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {}
 
     companion object {
         protected fun clearInventory(itemBuffer: MutableList<ItemStack>, inventory: IItemHandlerModifiable) {
