@@ -26,9 +26,9 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase() {
     fun setMetaTileEntity(sampleMetaTileEntity: MetaTileEntity): MetaTileEntity {
         val mte = sampleMetaTileEntity.createMetaTileEntity()
         metaTileEntity = mte
-        if (world?.isRemote == false) {
+        if (world != null && !world.isRemote) {
             writeCustomData(INITIALIZE_MTE) {
-                writeInt(ClayiumApi.MTE_REGISTRY.getIdByKey(sampleMetaTileEntity.metaTileEntityId))
+                writeVarInt(ClayiumApi.MTE_REGISTRY.getIdByKey(sampleMetaTileEntity.metaTileEntityId))
                 mte.writeInitialSyncData(this)
             }
             world.neighborChanged(pos, blockType, pos)
@@ -60,14 +60,14 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase() {
     override fun writeInitialSyncData(buf: PacketBuffer) {
         metaTileEntity?.let {
             buf.writeBoolean(true)
-            buf.writeInt(ClayiumApi.MTE_REGISTRY.getIdByKey(it.metaTileEntityId))
+            buf.writeVarInt(ClayiumApi.MTE_REGISTRY.getIdByKey(it.metaTileEntityId))
             it.writeInitialSyncData(buf)
         } ?: buf.writeBoolean(false)
     }
 
     override fun receiveInitialSyncData(buf: PacketBuffer) {
         if (buf.readBoolean()) {
-            ClayiumApi.MTE_REGISTRY.getObjectById(buf.readInt())?.also {
+            ClayiumApi.MTE_REGISTRY.getObjectById(buf.readVarInt())?.also {
                 it.receiveInitialSyncData(buf)
             }
         }

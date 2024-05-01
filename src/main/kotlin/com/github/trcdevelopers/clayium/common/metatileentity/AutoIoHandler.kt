@@ -1,26 +1,28 @@
 package com.github.trcdevelopers.clayium.common.tileentity
 
+import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
+import com.github.trcdevelopers.clayium.api.metatileentity.MTETrait
+import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
-import com.github.trcdevelopers.clayium.common.tileentity.trait.TETrait
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 
 abstract class AutoIoHandler(
-    protected val tile: TileEntityMachine,
+    metaTileEntity: MetaTileEntity,
     isBuffer: Boolean = false,
-) : TETrait(tile, tile.tier) {
+) : MTETrait(metaTileEntity) {
 
-    protected val intervalTick = if (isBuffer) ConfigTierBalance.bufferInterval[tile.tier] else ConfigTierBalance.machineInterval[tile.tier]
-    protected val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[tile.tier] else ConfigTierBalance.machineAmount[tile.tier]
+    override val name: String = ClayiumDataCodecs.AUTO_IO_HANDLER
+
+    protected val intervalTick = if (isBuffer) ConfigTierBalance.bufferInterval[metaTileEntity.tier] else ConfigTierBalance.machineInterval[metaTileEntity.tier]
+    protected val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[metaTileEntity.tier] else ConfigTierBalance.machineAmount[metaTileEntity.tier]
 
     protected var ticked = 0
 
-    protected open fun isImporting(side: EnumFacing): Boolean = tile.getInput(side).allowAutoIo
-    protected open fun isExporting(side: EnumFacing): Boolean = tile.getOutput(side).allowAutoIo
-
-    abstract override fun update()
+    protected open fun isImporting(side: EnumFacing): Boolean = metaTileEntity.getInput(side).allowAutoIo
+    protected open fun isExporting(side: EnumFacing): Boolean = metaTileEntity.getOutput(side).allowAutoIo
 
     protected fun transferItemStack(
         from: IItemHandler,
@@ -56,16 +58,16 @@ abstract class AutoIoHandler(
         return remaining
     }
 
-    open class Importer(tile: TileEntityMachine, private val target: IItemHandler = tile.inputInventory, isBuffer: Boolean = false) : AutoIoHandler(tile, isBuffer) {
+    open class Importer(metaTileEntity: MetaTileEntity, private val target: IItemHandler = metaTileEntity.importItems, isBuffer: Boolean = false) : AutoIoHandler(metaTileEntity, isBuffer) {
         override fun update() {
-            if (tile.world?.isRemote == true) return
+            if (metaTileEntity.world?.isRemote == true) return
             ticked++
             if (ticked < intervalTick) return
             var remainingImport = amountPerAction
             for (side in EnumFacing.entries) {
                 if (remainingImport > 0 && isImporting(side)) {
                     remainingImport -= transferItemStack(
-                        from = tile.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                        from = metaTileEntity.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
                         to = target,
                         amount = remainingImport,
                     )
@@ -74,9 +76,9 @@ abstract class AutoIoHandler(
             ticked = 0
         }
     }
-    open class Exporter(tile: TileEntityMachine, private val target: IItemHandler = tile.outputInventory, isBuffer: Boolean = false) : AutoIoHandler(tile, isBuffer) {
+    open class Exporter(metaTileEntity: MetaTileEntity, private val target: IItemHandler = metaTileEntity.exportItems, isBuffer: Boolean = false) : AutoIoHandler(metaTileEntity, isBuffer) {
         override fun update() {
-            if (tile.world?.isRemote == true) return
+            if (metaTileEntity.world?.isRemote == true) return
             ticked++
             if (ticked < intervalTick) return
             var remainingExport = amountPerAction
@@ -84,7 +86,7 @@ abstract class AutoIoHandler(
                 if (remainingExport > 0 && isExporting(side)) {
                     remainingExport -= transferItemStack(
                         from = target,
-                        to = tile.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                        to = metaTileEntity.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
                         amount = remainingExport,
                     )
                 }
@@ -92,9 +94,9 @@ abstract class AutoIoHandler(
             ticked = 0
         }
     }
-    class Combined(tile: TileEntityMachine, isBuffer: Boolean = false) : AutoIoHandler(tile, isBuffer) {
-        private val importer = Importer(tile)
-        private val exporter = Exporter(tile)
+    class Combined(metaTileEntity: MetaTileEntity, isBuffer: Boolean = false) : AutoIoHandler(metaTileEntity, isBuffer) {
+        private val importer = Importer(metaTileEntity)
+        private val exporter = Exporter(metaTileEntity)
 
         override fun update() {
             importer.update()

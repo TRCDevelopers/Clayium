@@ -10,4 +10,8 @@ object ClayiumDataCodecs {
     val UPDATE_INPUT_MODE = assignId()
     val UPDATE_OUTPUT_MODE = assignId()
     val UPDATE_CONNECTIONS = assignId()
+
+    val SYNC_MTE_TRAIT = assignId()
+
+    const val AUTO_IO_HANDLER = "autoIoHandler"
 }
