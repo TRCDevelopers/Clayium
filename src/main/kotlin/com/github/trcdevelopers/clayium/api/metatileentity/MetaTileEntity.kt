@@ -51,7 +51,7 @@ abstract class MetaTileEntity(
 
     abstract val importItems: IItemHandlerModifiable
     abstract val exportItems: IItemHandlerModifiable
-    open val itemInventory: IItemHandler = ItemHandlerProxy(inputInventory = importItems, outputInventory = exportItems)
+    abstract val itemInventory: IItemHandler
     abstract val autoIoHandler: AutoIoHandler
 
     abstract fun createMetaTileEntity(): MetaTileEntity
