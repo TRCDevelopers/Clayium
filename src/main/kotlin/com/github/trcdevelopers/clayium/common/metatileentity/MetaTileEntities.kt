@@ -33,4 +33,6 @@ object MetaTileEntities {
         ClayiumApi.MTE_REGISTRY.register(id, sampleMetaTileEntity.metaTileEntityId, sampleMetaTileEntity)
         return sampleMetaTileEntity
     }
+
+    fun init() {}
 }

@@ -11,6 +11,7 @@ import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.ItemBlockTiered
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
+import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
 import com.github.trcdevelopers.clayium.common.recipe.loader.CRecipeLoader
 import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import com.github.trcdevelopers.clayium.common.worldgen.ClayOreGenerator
@@ -35,6 +36,8 @@ open class CommonProxy {
         this.registerTileEntities()
         GameRegistry.registerWorldGenerator(ClayOreGenerator(), 0)
         NetworkRegistry.INSTANCE.registerGuiHandler(Clayium.INSTANCE, GuiHandler)
+
+        MetaTileEntities.init()
     }
 
     open fun init(event: FMLInitializationEvent) {
