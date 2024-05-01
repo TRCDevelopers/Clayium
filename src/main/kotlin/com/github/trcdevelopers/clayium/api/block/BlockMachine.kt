@@ -61,7 +61,8 @@ class BlockMachine : Block(Material.IRON) {
     override fun isOpaqueCube(state: IBlockState) = isFullBlock(state)
     override fun causesSuffocation(state: IBlockState) = isFullBlock(state)
 
-    override fun createTileEntity(world: World, state: IBlockState): TileEntity? {
+    override fun hasTileEntity(state: IBlockState) = true
+    override fun createTileEntity(world: World, state: IBlockState): TileEntity {
         return MetaTileEntityHolder()
     }
 
