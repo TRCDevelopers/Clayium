@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.client.model
 
 import com.github.trcdevelopers.clayium.api.CValues
+import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.IResourceManager
@@ -23,12 +24,11 @@ object MetaTileEntityModelLoader : ICustomModelLoader {
         // tier of a block model is not in the location. (e.g. "clayium:bending_machine#is_pipe=false")
         // tier of an item model is in the properties string (e.g. "clayium:bending_machine#tier=1")
         // this loader does not handle an item model.
-        if ("tier=" in modelLocation.variant) return false
-        val name = modelLocation.path.split("#").first()
-        return name in MetaTileEntities.names
+        return modelLocation.path == "machine"
     }
 
     override fun loadModel(modelLocation: ResourceLocation): IModel {
+        Clayium.LOGGER.info("Loading model for $modelLocation")
         if (modelLocation !is ModelResourceLocation) return ModelLoaderRegistry.getMissingModel()
 
         val propString = modelLocation.path.split("#").last()
