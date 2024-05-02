@@ -12,6 +12,7 @@ import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_
 import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils
+import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.IPipeConnectable
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
@@ -19,6 +20,7 @@ import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType
 import com.github.trcdevelopers.clayium.common.tileentity.AutoIoHandler
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import net.minecraft.client.util.ITooltipFlag
+import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -38,9 +40,9 @@ abstract class MetaTileEntity(
     val tier: Int,
     val validInputModes: List<MachineIoMode>,
     val validOutputModes: List<MachineIoMode>,
+    val translationKey: String,
+    val faceTexture: ResourceLocation? = null,
 ) : ISyncedTileEntity, IGuiHolder<PosGuiData>, IPipeConnectable {
-
-    val translationKey = "${metaTileEntityId.namespace}.machine.${metaTileEntityId.path}"
 
     var holder: MetaTileEntityHolder? = null
     val world: World? get() = holder?.world
@@ -233,6 +235,9 @@ abstract class MetaTileEntity(
     }
 
     fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {}
+    fun isInCreativeTab(tab: CreativeTabs): Boolean {
+        return tab === CreativeTabs.SEARCH || tab === Clayium.creativeTab
+    }
 
     companion object {
         protected fun clearInventory(itemBuffer: MutableList<ItemStack>, inventory: IItemHandlerModifiable) {

@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
+import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.tileentity.AutoIoHandler
@@ -19,7 +20,7 @@ class ClayBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: Int,
 ) : MetaTileEntity(metaTileEntityId, tier,
-    validInputModes = INPUT_MODES, validOutputModes = OUTPUT_MODES) {
+    validInputModes = INPUT_MODES, validOutputModes = OUTPUT_MODES, "${CValues.MOD_ID}.machine.clay_buffer", null) {
 
     val inventoryRowSize = when (tier) {
         in 4..7 -> tier - 3
