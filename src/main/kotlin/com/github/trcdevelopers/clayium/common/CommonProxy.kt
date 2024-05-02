@@ -1,7 +1,9 @@
 package com.github.trcdevelopers.clayium.common
 
+import com.cleanroommc.modularui.factory.GuiManager
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.block.ItemBlockMachine
+import com.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
@@ -38,6 +40,8 @@ open class CommonProxy {
         NetworkRegistry.INSTANCE.registerGuiHandler(Clayium.INSTANCE, GuiHandler)
 
         MetaTileEntities.init()
+
+        GuiManager.registerFactory(MetaTileEntityGuiFactory)
     }
 
     open fun init(event: FMLInitializationEvent) {

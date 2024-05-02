@@ -1,8 +1,8 @@
 package com.github.trcdevelopers.clayium.api.block
 
 import codechicken.lib.block.property.unlisted.UnlistedTileEntityProperty
-import com.cleanroommc.modularui.factory.TileEntityGuiFactory
 import com.github.trcdevelopers.clayium.api.ClayiumApi
+import com.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.Clayium
@@ -12,6 +12,7 @@ import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
@@ -87,18 +88,26 @@ class BlockMachine : Block(Material.IRON) {
     }
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        return if (worldIn.isRemote || worldIn.getTileEntity(pos) is MetaTileEntityHolder) {
-            false
-        } else {
-            TileEntityGuiFactory.open(playerIn, pos)
-            true
+        if (worldIn.isRemote) return true
+        if (worldIn.getTileEntity(pos) is MetaTileEntityHolder) {
+            MetaTileEntityGuiFactory.open(playerIn, pos)
+            return true
         }
+        return false
     }
 
     override fun onNeighborChange(world: IBlockAccess, pos: BlockPos, neighbor: BlockPos) {
         (world.getTileEntity(pos) as? MetaTileEntityHolder)?.let {
             val facing = EnumFacing.getFacingFromVector(neighbor.x - pos.x.toFloat(), neighbor.y - pos.y.toFloat(), neighbor.z - pos.z.toFloat())
             it.onNeighborChanged(facing)
+        }
+    }
+
+    override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
+        for (mte in ClayiumApi.MTE_REGISTRY) {
+            if (mte.isInCreativeTab(itemIn)) {
+                items.add(mte.getStackForm())
+            }
         }
     }
 
