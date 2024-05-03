@@ -4,6 +4,7 @@ import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trcdevelopers.clayium.common.Clayium
 import com.google.common.base.CaseFormat
 import net.minecraft.item.EnumRarity
 import net.minecraft.item.ItemStack
@@ -13,6 +14,8 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraftforge.common.IRarity
+import net.minecraftforge.common.util.Constants
+import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import kotlin.collections.indices
 import kotlin.ranges.until
@@ -35,7 +38,7 @@ object CUtils {
         }
     }
 
-    fun writeItems(handler: IItemHandlerModifiable, tagName: String, tag: NBTTagCompound) {
+    fun writeItems(handler: IItemHandler, tagName: String, tag: NBTTagCompound) {
         this.writeItems(this.handlerToList(handler), tagName, tag)
     }
 
@@ -54,11 +57,12 @@ object CUtils {
     }
 
     fun readItems(handler: IItemHandlerModifiable, tagName: String, tag: NBTTagCompound) {
-        val tagList = tag.getTagList(tagName, 10)
+        if (!tag.hasKey(tagName, Constants.NBT.TAG_LIST)) return
+        val tagList = tag.getTagList(tagName, Constants.NBT.TAG_COMPOUND)
         for (i in 0..<tagList.tagCount()) {
             val itemTag = tagList.getCompoundTagAt(i)
             val slot = itemTag.getByte("Slot").toInt()
-            if (slot in 0 until handler.slots) {
+            if (slot in 0..<handler.slots) {
                 handler.setStackInSlot(slot, ItemStack(itemTag))
             }
         }
@@ -75,7 +79,7 @@ object CUtils {
         }
     }
 
-    fun handlerToList(handler: IItemHandlerModifiable): List<ItemStack> {
+    fun handlerToList(handler: IItemHandler): List<ItemStack> {
         return object : AbstractList<ItemStack>() {
             override val size = handler.slots
 

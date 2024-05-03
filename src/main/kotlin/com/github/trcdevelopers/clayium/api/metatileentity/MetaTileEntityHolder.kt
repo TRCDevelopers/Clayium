@@ -6,12 +6,13 @@ import com.github.trcdevelopers.clayium.common.Clayium
 import net.minecraft.block.state.IBlockState
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
+import net.minecraft.util.ITickable
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.util.Constants.NBT
 
-class MetaTileEntityHolder : NeighborCacheTileEntityBase() {
+class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
     var metaTileEntity: MetaTileEntity? = null
         private set(sampleMetaTileEntity) {
             if (sampleMetaTileEntity == null) {
@@ -41,7 +42,7 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase() {
         super.writeToNBT(compound)
         metaTileEntity?.let { mte ->
             compound.setString("metaId", mte.metaTileEntityId.toString())
-            compound.setTag("metaTileEntityData", NBTTagCompound().also { mte.writeToNBT(it) })
+            compound.setTag("metaTileEntityData", NBTTagCompound().apply { mte.writeToNBT(this) })
         }
         return compound
     }
@@ -86,6 +87,10 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase() {
         mte.onPlacement()
         mte.receiveInitialSyncData(buf)
         scheduleRenderUpdate()
+    }
+
+    override fun update() {
+        metaTileEntity?.update()
     }
 
     private fun scheduleRenderUpdate() {

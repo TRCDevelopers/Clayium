@@ -75,17 +75,30 @@ abstract class MetaTileEntity(
 
     fun markDirty() = holder?.markDirty()
 
+    fun update() {
+        if (world?.isRemote == true) return
+        println(importItems.getStackInSlot(0))
+        println("UPDATE importItems address: ${importItems}")
+    }
+
     open fun writeToNBT(data: NBTTagCompound) {
         data.setByte("frontFacing", frontFacing.index.toByte())
         data.setByteArray("inputModes", ByteArray(6) { _inputModes[it].id.toByte() })
         data.setByteArray("outputModes", ByteArray(6) { _outputModes[it].id.toByte() })
+        CUtils.writeItems(importItems, "importInventory", data)
+        CUtils.writeItems(exportItems, "exportInventory", data)
     }
 
     open fun readFromNBT(data: NBTTagCompound) {
         frontFacing = EnumFacing.byIndex(data.getByte("frontFacing").toInt())
         data.getByteArray("inputModes").forEachIndexed { i, id -> _inputModes[i] = MachineIoMode.entries[id.toInt()] }
         data.getByteArray("outputModes").forEachIndexed { i, id -> _outputModes[i] = MachineIoMode.entries[id.toInt()] }
+        CUtils.readItems(importItems, "importInventory", data)
+        CUtils.readItems(exportItems, "exportInventory", data)
         EnumFacing.entries.forEach(this::refreshConnection)
+
+        println("readItems: ${importItems.getStackInSlot(0)}")
+        println("importItems address: ${importItems}")
     }
 
     override fun writeInitialSyncData(buf: PacketBuffer) {
