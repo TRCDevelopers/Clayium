@@ -9,7 +9,6 @@ import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_FRONT_FACING
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_INPUT_MODE
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_OUTPUT_MODE
-import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.Clayium
@@ -77,8 +76,6 @@ abstract class MetaTileEntity(
 
     fun update() {
         if (world?.isRemote == true) return
-        println(importItems.getStackInSlot(0))
-        println("UPDATE importItems address: ${importItems}")
     }
 
     open fun writeToNBT(data: NBTTagCompound) {
@@ -96,9 +93,6 @@ abstract class MetaTileEntity(
         CUtils.readItems(importItems, "importInventory", data)
         CUtils.readItems(exportItems, "exportInventory", data)
         EnumFacing.entries.forEach(this::refreshConnection)
-
-        println("readItems: ${importItems.getStackInSlot(0)}")
-        println("importItems address: ${importItems}")
     }
 
     override fun writeInitialSyncData(buf: PacketBuffer) {
