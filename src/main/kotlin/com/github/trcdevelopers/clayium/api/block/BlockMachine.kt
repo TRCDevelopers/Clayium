@@ -1,10 +1,13 @@
 package com.github.trcdevelopers.clayium.api.block
 
 import codechicken.lib.block.property.unlisted.UnlistedTileEntityProperty
+import codechicken.lib.render.particle.CustomParticleHandler
+import codechicken.lib.texture.TextureUtils
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.api.util.CUtils
+import com.github.trcdevelopers.clayium.client.model.ModelTextures
 import com.github.trcdevelopers.clayium.common.Clayium
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
@@ -12,7 +15,10 @@ import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.particle.ParticleManager
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
@@ -23,9 +29,13 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.NonNullList
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
+import net.minecraft.world.WorldServer
 import net.minecraftforge.common.property.IExtendedBlockState
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockMachine : Block(Material.IRON) {
@@ -109,6 +119,30 @@ class BlockMachine : Block(Material.IRON) {
                 items.add(mte.getStackForm())
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun addHitEffects(state: IBlockState, world: World, target: RayTraceResult, manager: ParticleManager): Boolean {
+        CustomParticleHandler.handleHitEffects(state, world, target, manager)
+        return true
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun addDestroyEffects(world: World, pos: BlockPos, manager: ParticleManager): Boolean {
+        CustomParticleHandler.handleDestroyEffects(world, pos, manager)
+        return true
+    }
+
+    override fun addRunningEffects(state: IBlockState, world: World, pos: BlockPos, entity: Entity): Boolean {
+        if (world.isRemote) {
+            CustomParticleHandler.handleRunningEffects(world, pos, state, entity)
+        }
+        return true
+    }
+
+    override fun addLandingEffects(state: IBlockState, worldObj: WorldServer, blockPosition: BlockPos, iblockstate: IBlockState, entity: EntityLivingBase, numberOfParticles: Int): Boolean {
+        CustomParticleHandler.handleLandingEffects(worldObj, blockPosition, entity, numberOfParticles)
+        return true
     }
 
     companion object {
