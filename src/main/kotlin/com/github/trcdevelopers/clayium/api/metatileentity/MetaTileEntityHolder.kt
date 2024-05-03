@@ -51,9 +51,10 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase() {
         if (compound.hasKey("metaId", NBT.TAG_STRING)) {
             val mteId = ResourceLocation(compound.getString("metaId"))
             ClayiumApi.MTE_REGISTRY.getObject(mteId)?.let { sampleMte ->
-                metaTileEntity = sampleMte.createMetaTileEntity().also { it.readFromNBT(compound.getCompoundTag("metaTileEntityData")) }
-            }
-                ?: Clayium.LOGGER.error("Failed to load MetaTileEntity with invalid id: $mteId")
+                val mte = sampleMte.createMetaTileEntity()
+                mte.readFromNBT(compound.getCompoundTag("metaTileEntityData"))
+                metaTileEntity = mte
+            } ?: Clayium.LOGGER.error("Failed to load MetaTileEntity with invalid id: $mteId")
         }
     }
 
@@ -67,9 +68,7 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase() {
 
     override fun receiveInitialSyncData(buf: PacketBuffer) {
         if (buf.readBoolean()) {
-            ClayiumApi.MTE_REGISTRY.getObjectById(buf.readVarInt())?.also {
-                it.receiveInitialSyncData(buf)
-            }
+            receiveMteInitializationData(buf)
         }
     }
 
@@ -82,11 +81,11 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase() {
     }
 
     private fun receiveMteInitializationData(buf: PacketBuffer) {
-        val mteId = buf.readVarInt()
-        setMetaTileEntity(ClayiumApi.MTE_REGISTRY.getObjectById(mteId) ?: return).also {
-            it.receiveInitialSyncData(buf)
-            scheduleRenderUpdate()
-        }
+        val mte = ClayiumApi.MTE_REGISTRY.getObjectById(buf.readVarInt()) ?: return
+        this.setMetaTileEntity(mte)
+        mte.onPlacement()
+        mte.receiveInitialSyncData(buf)
+        scheduleRenderUpdate()
     }
 
     private fun scheduleRenderUpdate() {
