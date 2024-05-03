@@ -15,13 +15,8 @@ import net.minecraftforge.common.util.Constants.NBT
 class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
     var metaTileEntity: MetaTileEntity? = null
         private set(sampleMetaTileEntity) {
-            if (sampleMetaTileEntity == null) {
-                field = null
-                return
-            }
-            field = sampleMetaTileEntity.createMetaTileEntity().also {
-                it.holder = this
-            }
+            sampleMetaTileEntity?.holder = this
+            field = sampleMetaTileEntity
         }
 
     fun setMetaTileEntity(sampleMetaTileEntity: MetaTileEntity): MetaTileEntity {
