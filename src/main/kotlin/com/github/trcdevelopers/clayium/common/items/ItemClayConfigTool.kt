@@ -30,8 +30,13 @@ class ItemClayConfigTool(
         val typeToSend = (if (player.isSneaking) typeWhenSneak else type)
             ?: return EnumActionResult.PASS
 
-        CUtils.getMetaTileEntity(world, pos)?.onToolClick(typeToSend, player, hand, side, hitX, hitY, hitZ)
-        return super.onItemUseFirst(player, world, pos, side, hitX, hitY, hitZ, hand)
+        val metaTileEntity = CUtils.getMetaTileEntity(world, pos)
+        if (metaTileEntity == null) {
+            return EnumActionResult.PASS
+        } else {
+            metaTileEntity.onToolClick(typeToSend, player, hand, side, hitX, hitY, hitZ)
+            return EnumActionResult.SUCCESS
+        }
     }
 
     enum class ToolType {
