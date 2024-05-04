@@ -24,6 +24,7 @@ import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.NonNullList
@@ -120,6 +121,9 @@ class BlockMachine : Block(Material.IRON) {
             }
         }
     }
+
+    @SideOnly(Side.CLIENT)
+    override fun getRenderLayer() = BlockRenderLayer.CUTOUT_MIPPED
 
     @SideOnly(Side.CLIENT)
     override fun addHitEffects(state: IBlockState, world: World, target: RayTraceResult, manager: ParticleManager): Boolean {
