@@ -23,9 +23,9 @@ class MetaTileEntityBakedModel(
     bakedTextureGetter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>,
 ) : IModelParticleProvider {
 
-    private val inputModeQuads: Map<MachineIoMode, List<BakedQuad>> = MachineIoMode.entries.associateWith { ioMode ->
+    private val inputModeQuads: Map<MachineIoMode, List<BakedQuad>?> = MachineIoMode.entries.associateWith { ioMode ->
         val textureName = when (ioMode) {
-            NONE -> return@associateWith emptyList()
+            NONE -> return@associateWith null
             FIRST -> "import_1"
             SECOND -> "import_2"
             ALL -> "import"
@@ -44,13 +44,13 @@ class MetaTileEntityBakedModel(
         }
     }
 
-    private val outputModeQuads: Map<MachineIoMode, List<BakedQuad>> = MachineIoMode.entries.associateWith { ioMode ->
+    private val outputModeQuads: Map<MachineIoMode, List<BakedQuad>?> = MachineIoMode.entries.associateWith { ioMode ->
         val textureName = when (ioMode) {
-            NONE -> return@associateWith emptyList()
+            NONE -> return@associateWith null
             FIRST -> "export_1"
             SECOND -> "export_2"
             ALL -> "export"
-            CE -> return@associateWith emptyList()
+            CE -> return@associateWith null
             M_ALL -> "export_m0"
             M_1 -> "export_m1"
             M_2 -> "export_m2"
@@ -69,22 +69,17 @@ class MetaTileEntityBakedModel(
         if (state == null || side == null || state !is IExtendedBlockState) return emptyList()
         val mte = (state.getValue(TILE_ENTITY) as? MetaTileEntityHolder)?.metaTileEntity ?: return emptyList()
 
-        return mutableListOf<BakedQuad>().also { quads ->
-            quads.add(ModelTextures.HULL_QUADS[mte.tier][side] ?: return@also)
-            mte.inputModes.forEachIndexed { facingIndex, mteInputMode ->
-                val sideToQuads = inputModeQuads[mteInputMode] ?: return@forEachIndexed
-                if (sideToQuads.isNotEmpty()) {
-                    quads.add(sideToQuads[facingIndex])
-                }
-            }
-            mte.outputModes.forEachIndexed { facingIndex, mteOutputMode ->
-                val sideToQuads = inputModeQuads[mteOutputMode] ?: return@forEachIndexed
-                if (sideToQuads.isNotEmpty()) {
-                    quads.add(sideToQuads[facingIndex])
-                }
-            }
+        val quads = mutableListOf(ModelTextures.HULL_QUADS[mte.tier][side] ?: return emptyList())
+        mte.inputModes.forEachIndexed { facingIndex, mteInputMode ->
+            val side2Quad = inputModeQuads[mteInputMode] ?: return@forEachIndexed
+            quads.add(side2Quad[facingIndex])
+        }
+        mte.outputModes.forEachIndexed { facingIndex, mteOutputMode ->
+            val side2Quad = outputModeQuads[mteOutputMode] ?: return@forEachIndexed
+            quads.add(side2Quad[facingIndex])
         }
 
+        return quads
     }
 
     override fun getHitEffects(traceResult: RayTraceResult, state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite> {
