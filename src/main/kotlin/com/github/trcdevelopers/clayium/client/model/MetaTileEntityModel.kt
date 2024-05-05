@@ -48,6 +48,10 @@ class MetaTileEntityModel(
         bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>
     ): IBakedModel {
         if (!ModelTextures.isInitialized) ModelTextures.initialize(bakedTextureGetter)
-        return MetaTileEntityBakedModel(bakedTextureGetter)
+        return if (isPipe) {
+            MetaTileEntityPipeBakedModel()
+        } else {
+            MetaTileEntityBakedModel(bakedTextureGetter)
+        }
     }
 }
