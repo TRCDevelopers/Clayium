@@ -1,8 +1,8 @@
 package com.github.trcdevelopers.clayium.common.recipe
 
+import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.recipe.ingredient.CRecipeInput
-import com.github.trcdevelopers.clayium.api.util.CUtils
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandlerModifiable
 

@@ -5,7 +5,6 @@ import codechicken.lib.texture.TextureUtils
 import com.github.trcdevelopers.clayium.api.block.BlockMachine
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.api.util.CUtils
-import com.github.trcdevelopers.clayium.client.ModelUtils
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.BlockFaceUV

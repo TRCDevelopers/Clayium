@@ -1,9 +1,9 @@
 package com.github.trcdevelopers.clayium.common.blocks.clay
 
+import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClay
-import com.github.trcdevelopers.clayium.api.util.CUtils
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemBlock

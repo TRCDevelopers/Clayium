@@ -1,7 +1,7 @@
 package com.github.trcdevelopers.clayium.common.items
 
-import com.github.trcdevelopers.clayium.common.interfaces.ITiered
 import com.github.trcdevelopers.clayium.api.util.CUtils
+import com.github.trcdevelopers.clayium.common.interfaces.ITiered
 import net.minecraft.block.Block
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack

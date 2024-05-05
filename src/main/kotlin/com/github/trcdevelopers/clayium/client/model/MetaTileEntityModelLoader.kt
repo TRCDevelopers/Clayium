@@ -2,7 +2,6 @@ package com.github.trcdevelopers.clayium.client.model
 
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.IResourceManager
 import net.minecraft.util.ResourceLocation

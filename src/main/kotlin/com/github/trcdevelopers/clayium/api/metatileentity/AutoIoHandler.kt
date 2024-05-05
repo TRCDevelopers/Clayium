@@ -1,9 +1,6 @@
-package com.github.trcdevelopers.clayium.common.tileentity
+package com.github.trcdevelopers.clayium.api.metatileentity
 
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
-import com.github.trcdevelopers.clayium.api.metatileentity.MTETrait
-import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
-import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing

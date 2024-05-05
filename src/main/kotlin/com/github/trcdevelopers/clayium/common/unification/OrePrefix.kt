@@ -1,8 +1,8 @@
 package com.github.trcdevelopers.clayium.common.unification
 
+import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.material.MaterialProperty
-import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.google.common.base.CaseFormat
 
 enum class OrePrefix(

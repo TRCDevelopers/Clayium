@@ -4,7 +4,6 @@ import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
-import com.github.trcdevelopers.clayium.common.Clayium
 import com.google.common.base.CaseFormat
 import net.minecraft.item.EnumRarity
 import net.minecraft.item.ItemStack
