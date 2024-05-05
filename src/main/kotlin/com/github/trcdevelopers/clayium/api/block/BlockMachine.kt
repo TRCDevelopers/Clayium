@@ -122,6 +122,10 @@ class BlockMachine : Block(Material.IRON) {
         }
     }
 
+    override fun getPickBlock(state: IBlockState, target: RayTraceResult, world: World, pos: BlockPos, player: EntityPlayer): ItemStack {
+        return CUtils.getMetaTileEntity(world, pos)?.getStackForm() ?: ItemStack.EMPTY
+    }
+
     @SideOnly(Side.CLIENT)
     override fun getRenderLayer() = BlockRenderLayer.CUTOUT_MIPPED
 
