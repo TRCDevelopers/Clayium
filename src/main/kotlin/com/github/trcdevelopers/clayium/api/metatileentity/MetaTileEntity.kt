@@ -75,7 +75,7 @@ abstract class MetaTileEntity(
     fun markDirty() = holder?.markDirty()
 
     fun update() {
-        if (world?.isRemote == true) return
+        mteTraits.values.forEach(MTETrait::update)
     }
 
     open fun writeToNBT(data: NBTTagCompound) {

@@ -37,7 +37,7 @@ class ClayBufferMetaTileEntity(
     override val itemInventory = ClayiumItemStackHandler(this, inventoryRowSize * inventoryColumnSize)
     override val importItems = itemInventory
     override val exportItems = itemInventory
-    override val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this,  isBuffer = true)
+    override val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this, isBuffer = true)
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayBufferMetaTileEntity(this.metaTileEntityId, this.tier)

@@ -6,9 +6,9 @@ import net.minecraft.network.PacketBuffer
 
 abstract class MTETrait(
     protected val metaTileEntity: MetaTileEntity,
+    val name: String,
 ) : ISyncedTileEntity {
 
-    abstract val name: String
     val networkId = idByName.computeIfAbsent(name) { nextId++ }
 
     init {

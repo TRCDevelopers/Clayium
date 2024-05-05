@@ -3,6 +3,7 @@ package com.github.trcdevelopers.clayium.common.tileentity
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
 import com.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
+import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
@@ -12,9 +13,7 @@ import net.minecraftforge.items.IItemHandler
 abstract class AutoIoHandler(
     metaTileEntity: MetaTileEntity,
     isBuffer: Boolean = false,
-) : MTETrait(metaTileEntity) {
-
-    override val name: String = ClayiumDataCodecs.AUTO_IO_HANDLER
+) : MTETrait(metaTileEntity, ClayiumDataCodecs.AUTO_IO_HANDLER) {
 
     protected val intervalTick = if (isBuffer) ConfigTierBalance.bufferInterval[metaTileEntity.tier] else ConfigTierBalance.machineInterval[metaTileEntity.tier]
     protected val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[metaTileEntity.tier] else ConfigTierBalance.machineAmount[metaTileEntity.tier]
@@ -23,6 +22,32 @@ abstract class AutoIoHandler(
 
     protected open fun isImporting(side: EnumFacing): Boolean = metaTileEntity.getInput(side).allowAutoIo
     protected open fun isExporting(side: EnumFacing): Boolean = metaTileEntity.getOutput(side).allowAutoIo
+
+    protected fun importFromNeighbors(importItems: IItemHandler) {
+        var remainingImport = amountPerAction
+        for (side in EnumFacing.entries) {
+            if (remainingImport > 0 && isImporting(side)) {
+                remainingImport -= transferItemStack(
+                    from = metaTileEntity.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                    to = importItems,
+                    amount = remainingImport,
+                )
+            }
+        }
+    }
+
+    protected fun exportToNeighbors(exportItems: IItemHandler) {
+        var remainingExport = amountPerAction
+        for (side in EnumFacing.entries) {
+            if (remainingExport > 0 && isExporting(side)) {
+                remainingExport -= transferItemStack(
+                    from = exportItems,
+                    to = metaTileEntity.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                    amount = remainingExport,
+                )
+            }
+        }
+    }
 
     protected fun transferItemStack(
         from: IItemHandler,
@@ -61,46 +86,31 @@ abstract class AutoIoHandler(
     open class Importer(metaTileEntity: MetaTileEntity, private val target: IItemHandler = metaTileEntity.importItems, isBuffer: Boolean = false) : AutoIoHandler(metaTileEntity, isBuffer) {
         override fun update() {
             if (metaTileEntity.world?.isRemote == true) return
-            ticked++
-            if (ticked < intervalTick) return
-            var remainingImport = amountPerAction
-            for (side in EnumFacing.entries) {
-                if (remainingImport > 0 && isImporting(side)) {
-                    remainingImport -= transferItemStack(
-                        from = metaTileEntity.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
-                        to = target,
-                        amount = remainingImport,
-                    )
-                }
-            }
+            if (ticked++ < intervalTick) return
+            importFromNeighbors(target)
             ticked = 0
         }
     }
+
     open class Exporter(metaTileEntity: MetaTileEntity, private val target: IItemHandler = metaTileEntity.exportItems, isBuffer: Boolean = false) : AutoIoHandler(metaTileEntity, isBuffer) {
         override fun update() {
             if (metaTileEntity.world?.isRemote == true) return
-            ticked++
-            if (ticked < intervalTick) return
-            var remainingExport = amountPerAction
-            for (side in EnumFacing.entries) {
-                if (remainingExport > 0 && isExporting(side)) {
-                    remainingExport -= transferItemStack(
-                        from = target,
-                        to = metaTileEntity.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
-                        amount = remainingExport,
-                    )
-                }
-            }
+            if (ticked++ < intervalTick) return
+            exportToNeighbors(target)
             ticked = 0
         }
     }
+
     class Combined(metaTileEntity: MetaTileEntity, isBuffer: Boolean = false) : AutoIoHandler(metaTileEntity, isBuffer) {
-        private val importer = Importer(metaTileEntity)
-        private val exporter = Exporter(metaTileEntity)
+        private val importItems = metaTileEntity.importItems
+        private val exportItems = metaTileEntity.exportItems
 
         override fun update() {
-            importer.update()
-            exporter.update()
+            if (metaTileEntity.world?.isRemote == true) return
+            if (ticked++ < intervalTick) return
+            importFromNeighbors(importItems)
+            exportToNeighbors(exportItems)
+            ticked = 0
         }
     }
 }
