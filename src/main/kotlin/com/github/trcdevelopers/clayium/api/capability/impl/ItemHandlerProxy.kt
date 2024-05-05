@@ -2,11 +2,15 @@ package com.github.trcdevelopers.clayium.api.capability.impl
 
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.items.ItemStackHandler
 
 class ItemHandlerProxy(
-    private val inputInventory: IItemHandler,
-    private val outputInventory: IItemHandler,
+    inputInventory: IItemHandler?,
+    outputInventory: IItemHandler?,
 ) : IItemHandler {
+
+    private val inputInventory: IItemHandler = inputInventory ?: ItemStackHandler(0)
+    private val outputInventory: IItemHandler = outputInventory ?: ItemStackHandler(0)
 
     override fun getSlots(): Int {
         return inputInventory.slots + outputInventory.slots
