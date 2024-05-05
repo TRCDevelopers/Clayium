@@ -80,7 +80,7 @@ class ClayBufferMetaTileEntity(
                 .marginTop(18)
                 .child(SlotGroupWidget.builder()
                     .matrix(*matrixStr.toTypedArray())
-                    .key("I".single()) { index ->
+                    .key('I') { index ->
                         ItemSlot().slot(
                             SyncHandlers.itemSlot(itemInventory, index)
                                 .slotGroup("buffer_inv")
