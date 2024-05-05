@@ -308,7 +308,7 @@ tile.clayium.blockClayiumSmelter.name=クレイウム精錬機
 tile.clayium.blockUltimateSmelter.name=究極精錬機
 tooltip.clayium.Smelter.line1=粘土エネルギーで動くかまど
 
-tile.clayium.clay_buffer=%sバッファー
+clayium.machine.clay_buffer=%sバッファー
 tooltip.clayium.buffer.line1=いわゆるアイテムパイプ
 
 tile.clayium.blockBasicMultitrackBuffer.name=複線バッファー

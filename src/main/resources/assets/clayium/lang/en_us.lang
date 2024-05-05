@@ -306,7 +306,7 @@ tile.clayium.blockClayiumSmelter.name=Clayium Smelter
 tile.clayium.blockUltimateSmelter.name=Ultimate Smelter
 tooltip.clayium.Smelter.line1=Furnace powered by CE.
 
-tile.clayium.clay_buffer=%s Buffer
+clayium.machine.clay_buffer=%s Buffer
 tooltip.clayium.buffer.line1=Transfers items. Acts as an item pipe.
 
 tile.clayium.blockBasicMultitrackBuffer.name=Basic Multitrack  Buffer
