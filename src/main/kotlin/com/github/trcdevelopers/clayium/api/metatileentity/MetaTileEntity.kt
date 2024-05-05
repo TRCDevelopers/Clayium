@@ -46,6 +46,9 @@ abstract class MetaTileEntity(
     val tier: Int,
     val validInputModes: List<MachineIoMode>,
     val validOutputModes: List<MachineIoMode>,
+    /**
+     * used in item/block name and gui title
+     */
     val translationKey: String,
     val faceTexture: ResourceLocation? = null,
 ) : ISyncedTileEntity, IGuiHolder<PosGuiData>, IPipeConnectable {
