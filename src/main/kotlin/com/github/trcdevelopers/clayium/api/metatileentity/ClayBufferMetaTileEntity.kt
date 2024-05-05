@@ -12,11 +12,17 @@ import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
+import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.tileentity.AutoIoHandler
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 
 class ClayBufferMetaTileEntity(
@@ -87,6 +93,11 @@ class ClayBufferMetaTileEntity(
                         .paddingBottom(1)
                         .left(6)))
             .bindPlayerInventory()
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun registerItemModel(item: Item, meta: Int) {
+        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("clay_buffer"), "tier=$tier"))
     }
 
     companion object {

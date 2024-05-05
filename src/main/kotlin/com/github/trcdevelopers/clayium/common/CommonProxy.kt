@@ -101,7 +101,7 @@ open class CommonProxy {
         registry.register(createItemBlock(ClayiumBlocks.DENSE_CLAY_ORE, ::ItemBlock))
         registry.register(createItemBlock(ClayiumBlocks.LARGE_DENSE_CLAY_ORE, ::ItemBlock))
 
-        registry.register(createItemBlock(ClayiumApi.BLOCK_MACHINE, ::ItemBlockMachine))
+        registry.register(ClayiumApi.ITEM_BLOCK_MACHINE)
     }
 
     open fun registerItem(registry: IForgeRegistry<Item>, item: Item) {

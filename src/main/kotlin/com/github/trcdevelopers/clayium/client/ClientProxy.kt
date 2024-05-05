@@ -4,6 +4,7 @@ import com.github.trcdevelopers.clayium.client.model.MetaTileEntityModelLoader
 import com.github.trcdevelopers.clayium.common.CommonProxy
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
+import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraftforge.client.event.ModelRegistryEvent
@@ -47,5 +48,6 @@ class ClientProxy : CommonProxy() {
     fun registerModels(event: ModelRegistryEvent) {
         MetaItemClayium.registerModels()
         ClayiumBlocks.registerItemBlockModels()
+        MetaTileEntities.registerItemModels()
     }
 }

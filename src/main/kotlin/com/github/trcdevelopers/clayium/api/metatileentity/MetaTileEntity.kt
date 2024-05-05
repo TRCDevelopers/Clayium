@@ -24,6 +24,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
@@ -34,6 +35,8 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
@@ -71,6 +74,9 @@ abstract class MetaTileEntity(
     open val hasFrontFacing = true
     var frontFacing = EnumFacing.NORTH
         protected set
+
+    @SideOnly(Side.CLIENT)
+    abstract fun registerItemModel(item: Item, meta: Int)
 
     fun addMetaTileEntityTrait(trait: MTETrait) {
         mteTraits.put(trait.name, trait)
@@ -263,6 +269,7 @@ abstract class MetaTileEntity(
         return holder?.getNeighbor(side)
     }
 
+    @SideOnly(Side.CLIENT)
     fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {}
     fun isInCreativeTab(tab: CreativeTabs): Boolean {
         return tab === CreativeTabs.SEARCH || tab === Clayium.creativeTab

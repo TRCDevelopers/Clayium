@@ -4,6 +4,8 @@ import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.metatileentity.ClayBufferMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 object MetaTileEntities {
 
@@ -35,4 +37,11 @@ object MetaTileEntities {
     }
 
     fun init() {}
+
+    @SideOnly(Side.CLIENT)
+    fun registerItemModels() {
+        for (metaTileEntity in ClayiumApi.MTE_REGISTRY) {
+            metaTileEntity.registerItemModel(ClayiumApi.ITEM_BLOCK_MACHINE, ClayiumApi.MTE_REGISTRY.getIDForObject(metaTileEntity))
+        }
+    }
 }
