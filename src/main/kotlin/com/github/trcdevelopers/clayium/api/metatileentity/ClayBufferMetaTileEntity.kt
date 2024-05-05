@@ -73,7 +73,7 @@ class ClayBufferMetaTileEntity(
                 it.align(Alignment.Center)
             }
             .child(
-                TextWidget(IKey.lang("tile.clayium.clay_buffer", IKey.lang("machine.clayium.tier$tier")))
+                TextWidget(IKey.lang(this.translationKey, IKey.lang("machine.clayium.tier$tier")))
                     .margin(6)
                     .align(Alignment.TopLeft))
             .child(Column()
