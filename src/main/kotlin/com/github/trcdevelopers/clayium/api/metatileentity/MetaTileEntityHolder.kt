@@ -6,10 +6,12 @@ import com.github.trcdevelopers.clayium.common.Clayium
 import net.minecraft.block.state.IBlockState
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ITickable
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants.NBT
 
 class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
@@ -86,6 +88,14 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
 
     override fun update() {
         metaTileEntity?.update()
+    }
+
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
+        return metaTileEntity?.getCapability(capability, facing) != null || super.hasCapability(capability, facing)
+    }
+
+    override fun <T> getCapability(capability: Capability<T?>, facing: EnumFacing?): T? {
+        return metaTileEntity?.getCapability(capability, facing) ?: super.getCapability(capability, facing)
     }
 
     private fun scheduleRenderUpdate() {

@@ -14,7 +14,10 @@ import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.tileentity.AutoIoHandler
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.items.CapabilityItemHandler
 
 class ClayBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -41,6 +44,13 @@ class ClayBufferMetaTileEntity(
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayBufferMetaTileEntity(this.metaTileEntityId, this.tier)
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemInventory)
+        }
+        return super.getCapability(capability, facing)
     }
 
     override fun buildUI(

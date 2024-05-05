@@ -9,11 +9,14 @@ import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_FRONT_FACING
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_INPUT_MODE
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_OUTPUT_MODE
+import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
+import com.github.trcdevelopers.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.IPipeConnectable
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.*
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.*
 import com.github.trcdevelopers.clayium.common.tileentity.AutoIoHandler
@@ -30,6 +33,7 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
@@ -57,8 +61,8 @@ abstract class MetaTileEntity(
 
     abstract fun createMetaTileEntity(): MetaTileEntity
 
-    private val _inputModes = MutableList(6) { MachineIoMode.NONE }
-    private val _outputModes = MutableList(6) { MachineIoMode.NONE }
+    private val _inputModes = MutableList(6) { NONE }
+    private val _outputModes = MutableList(6) { NONE }
     private val _connectionsCache = BooleanArray(6)
     val inputModes get() = _inputModes.toList()
     val outputModes get() = _outputModes.toList()
@@ -137,9 +141,27 @@ abstract class MetaTileEntity(
         }
     }
 
-    fun onToolClick(
-        toolType: ItemClayConfigTool.ToolType ,player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float
-    ) {
+    open fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (facing == null) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemInventory)
+            val inputSlots = when (inputModes[facing.index]) {
+                FIRST -> RangedItemHandlerProxy(importItems, availableSlot = 0)
+                SECOND -> RangedItemHandlerProxy(importItems, availableSlot = 1)
+                ALL -> importItems
+                else -> null
+            }
+            val outputSlots = when (outputModes[facing.index]) {
+                FIRST -> RangedItemHandlerProxy(exportItems, availableSlot = 0)
+                SECOND -> RangedItemHandlerProxy(exportItems, availableSlot = 1)
+                ALL -> exportItems
+                else -> null
+            }
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(ItemHandlerProxy(inputSlots, outputSlots))
+        }
+        return null
+    }
+
+    fun onToolClick(toolType: ItemClayConfigTool.ToolType, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         when (toolType) {
             PIPING -> {
                 val world = world ?: return
@@ -217,8 +239,8 @@ abstract class MetaTileEntity(
 
     protected fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
         val i = side.index
-        return (this._inputModes[i] != MachineIoMode.NONE && neighbor._outputModes[i] != MachineIoMode.NONE
-                || this._outputModes[i] != MachineIoMode.NONE && neighbor._inputModes[i] != MachineIoMode.NONE)
+        return (this._inputModes[i] != NONE && neighbor._outputModes[i] != NONE
+                || this._outputModes[i] != NONE && neighbor._inputModes[i] != NONE)
     }
 
     protected fun canConnectTo(neighbor: TileEntity, side: EnumFacing): Boolean {
