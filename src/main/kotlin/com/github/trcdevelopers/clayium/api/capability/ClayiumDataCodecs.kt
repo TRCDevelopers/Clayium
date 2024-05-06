@@ -14,4 +14,6 @@ object ClayiumDataCodecs {
     val SYNC_MTE_TRAIT = assignId()
 
     const val AUTO_IO_HANDLER = "autoIoHandler"
+    const val RECIPE_LOGIC = "recipeLogic"
+    const val ENERGY_HOLDER = "energyHolder"
 }
