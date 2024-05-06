@@ -2,6 +2,7 @@ package com.github.trcdevelopers.clayium.api.metatileentity
 
 import com.github.trcdevelopers.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 
 abstract class MTETrait(
@@ -17,6 +18,9 @@ abstract class MTETrait(
     }
 
     open fun update() {}
+
+    open fun serializeNBT(): NBTTagCompound = NBTTagCompound()
+    open fun deserializeNBT(data: NBTTagCompound) {}
 
     override fun writeInitialSyncData(buf: PacketBuffer) {}
     override fun receiveInitialSyncData(buf: PacketBuffer) {}
