@@ -133,10 +133,22 @@ abstract class MetaTileEntity(
 
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
         when (discriminator) {
-            UPDATE_FRONT_FACING -> frontFacing = EnumFacing.byIndex(buf.readByte().toInt())
-            UPDATE_INPUT_MODE -> _inputModes[buf.readByte().toInt()] = MachineIoMode.entries[buf.readByte().toInt()]
-            UPDATE_OUTPUT_MODE -> _outputModes[buf.readByte().toInt()] = MachineIoMode.entries[buf.readByte().toInt()]
-            UPDATE_CONNECTIONS -> _connectionsCache[buf.readByte().toInt()] = buf.readBoolean()
+            UPDATE_FRONT_FACING -> {
+                frontFacing = EnumFacing.byIndex(buf.readByte().toInt())
+                this.scheduleRenderUpdate()
+            }
+            UPDATE_INPUT_MODE -> {
+                _inputModes[buf.readByte().toInt()] = MachineIoMode.entries[buf.readByte().toInt()]
+                this.scheduleRenderUpdate()
+            }
+            UPDATE_OUTPUT_MODE -> {
+                _outputModes[buf.readByte().toInt()] = MachineIoMode.entries[buf.readByte().toInt()]
+                this.scheduleRenderUpdate()
+            }
+            UPDATE_CONNECTIONS -> {
+                _connectionsCache[buf.readByte().toInt()] = buf.readBoolean()
+                this.scheduleRenderUpdate()
+            }
             SYNC_MTE_TRAIT -> {
                 traitByNetworkId[buf.readVarInt()]?.receiveCustomData(buf.readVarInt(), buf)
             }
@@ -283,9 +295,8 @@ abstract class MetaTileEntity(
         return ItemStack(ClayiumApi.BLOCK_MACHINE, amount, ClayiumApi.MTE_REGISTRY.getIdByKey(metaTileEntityId))
     }
 
-    fun getNeighbor(side: EnumFacing): TileEntity? {
-        return holder?.getNeighbor(side)
-    }
+    fun getNeighbor(side: EnumFacing) = holder?.getNeighbor(side)
+    fun scheduleRenderUpdate() = holder?.scheduleRenderUpdate()
 
     @SideOnly(Side.CLIENT)
     fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {}
