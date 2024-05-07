@@ -28,6 +28,7 @@ import net.minecraft.util.NonNullList
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.RayTraceResult
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
@@ -69,6 +70,39 @@ class BlockMachine : Block(Material.IRON) {
     override fun isFullCube(state: IBlockState) = isFullBlock(state)
     override fun isOpaqueCube(state: IBlockState) = isFullBlock(state)
     override fun causesSuffocation(state: IBlockState) = isFullBlock(state)
+
+    @Suppress("DEPRECATION")
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
+        if (!state.getValue(IS_PIPE)) return super.getBoundingBox(state, source, pos)
+
+        val connections = CUtils.getMetaTileEntity(source, pos)?.connectionsCache ?: return super.getBoundingBox(state, source, pos)
+        var aabb = CENTER_AABB
+        for (i in 0..5) {
+            if (connections[i]) {
+                aabb = aabb.union(SIDE_AABBS[i])
+            }
+        }
+        return aabb
+    }
+
+    @Suppress("DEPRECATION")
+    override fun addCollisionBoxToList(
+        state: IBlockState, worldIn: World, pos: BlockPos,
+        entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, isActualState: Boolean
+    ) {
+        val metaTileEntity = CUtils.getMetaTileEntity(worldIn, pos) ?: return
+        if (state.getValue(IS_PIPE)) {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, CENTER_AABB)
+            val connections = metaTileEntity.connectionsCache
+            for (i in 0..5) {
+                if (connections[i]) {
+                    addCollisionBoxToList(pos, entityBox, collidingBoxes, SIDE_AABBS[i])
+                }
+            }
+        } else {
+            return super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState)
+        }
+    }
 
     override fun hasTileEntity(state: IBlockState) = true
     override fun createTileEntity(world: World, state: IBlockState): TileEntity {
