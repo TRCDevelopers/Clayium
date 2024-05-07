@@ -58,6 +58,13 @@ class ClayBufferMetaTileEntity(
         return super.getCapability(capability, facing)
     }
 
+    override fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
+        val i = side.index
+        val o = side.opposite.index
+        return (this.inputModes[i] != MachineIoMode.NONE || this.outputModes[i] != MachineIoMode.NONE)
+                || (neighbor.inputModes[o] != MachineIoMode.NONE || neighbor.outputModes[o] != MachineIoMode.NONE)
+    }
+
     override fun buildUI(
         data: PosGuiData,
         syncManager: GuiSyncManager

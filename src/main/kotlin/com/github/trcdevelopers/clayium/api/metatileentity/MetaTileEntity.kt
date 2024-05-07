@@ -185,19 +185,21 @@ abstract class MetaTileEntity(
 
     fun onToolClick(toolType: ItemClayConfigTool.ToolType, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         if (this.world?.isRemote == true) return
+        val world = this.world ?: return
+        val pos = this.pos ?: return
         when (toolType) {
             PIPING -> {
-                val world = this.world ?: return
-                val pos = this.pos ?: return
                 world.setBlockState(pos, world.getBlockState(pos).cycleProperty(IS_PIPE))
             }
             INSERTION -> {
                 this.toggleInput(clickedSide)
                 this.refreshConnection(clickedSide)
+                CUtils.getMetaTileEntity(world, pos.offset(clickedSide))?.refreshConnection(clickedSide.opposite)
             }
             EXTRACTION -> {
                 this.toggleOutput(clickedSide)
                 this.refreshConnection(clickedSide)
+                CUtils.getMetaTileEntity(world, pos.offset(clickedSide))?.refreshConnection(clickedSide.opposite)
             }
             ROTATION -> {
                 this.rotate(clickedSide)
@@ -258,10 +260,9 @@ abstract class MetaTileEntity(
         val neighborMetaTileEntity = (neighborTileEntity as? MetaTileEntityHolder)?.metaTileEntity
         val i = side.index
         if (neighborMetaTileEntity == null) {
-            _connectionsCache[i] = canConnectTo(neighborTileEntity, side)
-
+            _connectionsCache[i] = this.canConnectTo(neighborTileEntity, side)
         } else {
-            _connectionsCache[i] = canConnectToMte(neighborMetaTileEntity, side)
+            _connectionsCache[i] = this.canConnectToMte(neighborMetaTileEntity, side)
         }
         writeCustomData(UPDATE_CONNECTIONS) {
             writeByte(i)
@@ -269,10 +270,11 @@ abstract class MetaTileEntity(
         }
     }
 
-    protected fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
+    protected open fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
         val i = side.index
-        return (this._inputModes[i] != NONE && neighbor._outputModes[i] != NONE
-                || this._outputModes[i] != NONE && neighbor._inputModes[i] != NONE)
+        val o = side.opposite.index
+        return (this._inputModes[i] != NONE && neighbor._outputModes[o] != NONE
+                || this._outputModes[i] != NONE && neighbor._inputModes[o] != NONE)
     }
 
     protected fun canConnectTo(neighbor: TileEntity, side: EnumFacing): Boolean {
@@ -288,7 +290,10 @@ abstract class MetaTileEntity(
         clearInventory(itemBuffer, exportItems)
     }
 
-    open fun onPlacement() {}
+    open fun onPlacement() {
+        EnumFacing.entries.forEach(this::refreshConnection)
+    }
+
     open fun onRemoval() {}
 
     fun getStackForm(amount: Int = 1): ItemStack {
