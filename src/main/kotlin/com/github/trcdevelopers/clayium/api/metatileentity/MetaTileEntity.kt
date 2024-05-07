@@ -234,12 +234,14 @@ abstract class MetaTileEntity(
     protected fun refreshConnection(side: EnumFacing) {
         val neighborPos = pos?.offset(side) ?: return
         val mte = CUtils.getMetaTileEntity(world, neighborPos)
+        val neighborTileEntity = this.getNeighbor(side) ?: return
+        val neighborMetaTileEntity = (neighborTileEntity as? MetaTileEntityHolder)?.metaTileEntity
         val i = side.index
-        if (mte != null) {
-            _connectionsCache[i] = canConnectToMte(mte, side)
+        if (neighborMetaTileEntity == null) {
+            _connectionsCache[i] = canConnectTo(neighborTileEntity, side)
+
         } else {
-            val neighbor = world?.getTileEntity(neighborPos) ?: return
-            _connectionsCache[i] = canConnectTo(neighbor, side)
+            _connectionsCache[i] = canConnectToMte(neighborMetaTileEntity, side)
         }
         writeCustomData(UPDATE_CONNECTIONS) {
             writeByte(i)
