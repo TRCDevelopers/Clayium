@@ -172,15 +172,25 @@ abstract class MetaTileEntity(
     }
 
     fun onToolClick(toolType: ItemClayConfigTool.ToolType, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+        if (this.world?.isRemote == true) return
         when (toolType) {
             PIPING -> {
-                val world = world ?: return
-                val pos = pos ?: return
+                val world = this.world ?: return
+                val pos = this.pos ?: return
                 world.setBlockState(pos, world.getBlockState(pos).cycleProperty(IS_PIPE))
             }
-            INSERTION -> toggleInput(clickedSide)
-            EXTRACTION -> toggleOutput(clickedSide)
-            ROTATION -> rotate(clickedSide)
+            INSERTION -> {
+                this.toggleInput(clickedSide)
+                this.refreshConnection(clickedSide)
+            }
+            EXTRACTION -> {
+                this.toggleOutput(clickedSide)
+                this.refreshConnection(clickedSide)
+            }
+            ROTATION -> {
+                this.rotate(clickedSide)
+                EnumFacing.entries.forEach(this::refreshConnection)
+            }
             FILTER_REMOVER -> TODO()
         }
     }
@@ -232,8 +242,6 @@ abstract class MetaTileEntity(
     }
 
     protected fun refreshConnection(side: EnumFacing) {
-        val neighborPos = pos?.offset(side) ?: return
-        val mte = CUtils.getMetaTileEntity(world, neighborPos)
         val neighborTileEntity = this.getNeighbor(side) ?: return
         val neighborMetaTileEntity = (neighborTileEntity as? MetaTileEntityHolder)?.metaTileEntity
         val i = side.index
