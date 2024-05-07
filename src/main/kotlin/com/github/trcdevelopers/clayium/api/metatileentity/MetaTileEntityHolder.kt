@@ -98,6 +98,11 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
         return metaTileEntity?.getCapability(capability, facing) ?: super.getCapability(capability, facing)
     }
 
+    override fun onNeighborChanged(facing: EnumFacing) {
+        super.onNeighborChanged(facing)
+        metaTileEntity?.onNeighborChanged(facing)
+    }
+
     private fun scheduleRenderUpdate() {
         world?.markBlockRangeForRenderUpdate(pos, pos)
     }

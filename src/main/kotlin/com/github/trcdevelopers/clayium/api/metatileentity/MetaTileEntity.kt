@@ -257,6 +257,10 @@ abstract class MetaTileEntity(
         return neighbor.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite)
     }
 
+    open fun onNeighborChanged(facing: EnumFacing) {
+        this.refreshConnection(facing)
+    }
+
     open fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
         clearInventory(itemBuffer, importItems)
         clearInventory(itemBuffer, exportItems)
