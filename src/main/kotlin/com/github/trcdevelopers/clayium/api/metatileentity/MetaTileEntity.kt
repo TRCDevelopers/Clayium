@@ -20,6 +20,7 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.*
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.*
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
+import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.player.EntityPlayer
@@ -39,6 +40,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
+import org.jetbrains.annotations.MustBeInvokedByOverriders
 
 abstract class MetaTileEntity(
     val metaTileEntityId: ResourceLocation,
@@ -304,7 +306,11 @@ abstract class MetaTileEntity(
     fun scheduleRenderUpdate() = holder?.scheduleRenderUpdate()
 
     @SideOnly(Side.CLIENT)
-    open fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {}
+    @MustBeInvokedByOverriders
+    open fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        tooltip.add(I18n.format("tooltip.clayium.tier", tier))
+    }
+
     open fun isInCreativeTab(tab: CreativeTabs): Boolean {
         return tab === CreativeTabs.SEARCH || tab === Clayium.creativeTab
     }

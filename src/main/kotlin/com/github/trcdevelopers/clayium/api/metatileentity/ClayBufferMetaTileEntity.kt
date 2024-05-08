@@ -112,6 +112,7 @@ class ClayBufferMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        super.addInformation(stack, worldIn, tooltip, flagIn)
         UtilLocale.formatTooltips(tooltip, "machine.clayium.clay_buffer.tooltip")
     }
 
