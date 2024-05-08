@@ -2,7 +2,7 @@
 
 # __DETAIL__ for hide details while not sneaking
 
-itemGroup.clayium.clayium=Clayium
+itemGroup.clayium=Clayium
 itemGroup.clayium.clayiumcapsule=Clayium Fluid Capsules
 
 clayium.tooltip.HoldShiftForDetails=--§fHold §lShift§r For Details§7--
