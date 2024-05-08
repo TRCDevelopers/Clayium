@@ -17,6 +17,6 @@ open class ItemBlockTiered<T>(block: T) : ItemBlock(block), ITiered
     override val tier: Int = block.tier
 
     override fun getForgeRarity(stack: ItemStack): IRarity {
-        return CUtils.rarityBy(tier)
+        return CUtils.getRarityBy(tier)
     }
 }

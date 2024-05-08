@@ -308,7 +308,7 @@ abstract class MetaTileEntity(
     open fun isInCreativeTab(tab: CreativeTabs): Boolean {
         return tab === CreativeTabs.SEARCH || tab === Clayium.creativeTab
     }
-    open fun getRarity() = CUtils.rarityBy(this.tier)
+    open fun getRarity() = CUtils.getRarityBy(this.tier)
 
     companion object {
         protected fun clearInventory(itemBuffer: MutableList<ItemStack>, inventory: IItemHandlerModifiable) {

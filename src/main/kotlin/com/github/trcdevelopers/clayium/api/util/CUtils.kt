@@ -28,7 +28,7 @@ object CUtils {
         return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, camel)
     }
 
-    fun rarityBy(tier: Int): IRarity {
+    fun getRarityBy(tier: Int): IRarity {
         return when (tier) {
                 4, 5, 6, 7 -> EnumRarity.UNCOMMON
                 8, 9, 10, 11 -> EnumRarity.RARE

@@ -35,7 +35,7 @@ class ItemBlockEnergizedClay(block: BlockEnergizedClay) : ItemBlock(block), IEne
     }
 
     override fun getForgeRarity(stack: ItemStack): IRarity {
-        return CUtils.rarityBy(stack.metadata + 4)
+        return CUtils.getRarityBy(stack.metadata + 4)
     }
 
     override fun getClayEnergy(stack: ItemStack): ClayEnergy {
