@@ -22,17 +22,17 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
         }
 
     fun setMetaTileEntity(sampleMetaTileEntity: MetaTileEntity): MetaTileEntity {
-        val mte = sampleMetaTileEntity.createMetaTileEntity()
-        metaTileEntity = mte
+        val newMetaTileEntity = sampleMetaTileEntity.createMetaTileEntity()
+        metaTileEntity = newMetaTileEntity
         if (world != null && !world.isRemote) {
             writeCustomData(INITIALIZE_MTE) {
                 writeVarInt(ClayiumApi.MTE_REGISTRY.getIdByKey(sampleMetaTileEntity.metaTileEntityId))
-                mte.writeInitialSyncData(this)
+                newMetaTileEntity.writeInitialSyncData(this)
             }
             world.neighborChanged(pos, blockType, pos)
             markDirty()
         }
-        return mte
+        return newMetaTileEntity
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
@@ -49,9 +49,9 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
         if (compound.hasKey("metaId", NBT.TAG_STRING)) {
             val mteId = ResourceLocation(compound.getString("metaId"))
             ClayiumApi.MTE_REGISTRY.getObject(mteId)?.let { sampleMte ->
-                val mte = sampleMte.createMetaTileEntity()
-                mte.readFromNBT(compound.getCompoundTag("metaTileEntityData"))
-                metaTileEntity = mte
+                val newMte = sampleMte.createMetaTileEntity()
+                newMte.readFromNBT(compound.getCompoundTag("metaTileEntityData"))
+                metaTileEntity = newMte
             } ?: Clayium.LOGGER.error("Failed to load MetaTileEntity with invalid id: $mteId")
         }
     }
@@ -79,10 +79,10 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
     }
 
     private fun receiveMteInitializationData(buf: PacketBuffer) {
-        val mte = ClayiumApi.MTE_REGISTRY.getObjectById(buf.readVarInt()) ?: return
-        this.setMetaTileEntity(mte)
-        mte.onPlacement()
-        mte.receiveInitialSyncData(buf)
+        val sampleMetaTileEntity = ClayiumApi.MTE_REGISTRY.getObjectById(buf.readVarInt()) ?: return
+        val newMetaTileEntity = this.setMetaTileEntity(sampleMetaTileEntity)
+        newMetaTileEntity.onPlacement()
+        newMetaTileEntity.receiveInitialSyncData(buf)
         scheduleRenderUpdate()
     }
 
