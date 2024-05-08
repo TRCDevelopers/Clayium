@@ -1,8 +1,11 @@
 #PARSE_ESCAPES
+
+# __DETAIL__ for hide details while not sneaking
+
 itemGroup.clayium.clayium=Clayium
 itemGroup.clayium.clayiumcapsule=Clayium Fluid Capsules
 
-tooltip.clayium.HoldShiftForDetails=--§fHold §lShift§r For Details§7--
+clayium.tooltip.HoldShiftForDetails=--§fHold §lShift§r For Details§7--
 
 gui.clayium.clayLaser=Laser \: %1$s
 gui.clayium.resonance=Resonance %1$s
