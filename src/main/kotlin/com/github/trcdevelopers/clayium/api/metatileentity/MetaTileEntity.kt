@@ -112,7 +112,6 @@ abstract class MetaTileEntity(
         data.getByteArray("connections").forEachIndexed { i, b -> _connectionsCache[i] = (b == 1.toByte()) }
         CUtils.readItems(importItems, "importInventory", data)
         CUtils.readItems(exportItems, "exportInventory", data)
-        EnumFacing.entries.forEach(this::refreshConnection)
     }
 
     override fun writeInitialSyncData(buf: PacketBuffer) {
