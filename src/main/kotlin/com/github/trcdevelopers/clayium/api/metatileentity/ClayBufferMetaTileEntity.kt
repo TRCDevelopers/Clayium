@@ -32,7 +32,7 @@ class ClayBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: Int,
 ) : MetaTileEntity(metaTileEntityId, tier,
-    validInputModes = INPUT_MODES, validOutputModes = OUTPUT_MODES, "${CValues.MOD_ID}.machine.clay_buffer", null) {
+    validInputModes = INPUT_MODES, validOutputModes = OUTPUT_MODES, "machine.${CValues.MOD_ID}.clay_buffer", null) {
 
     val inventoryRowSize = when (tier) {
         in 4..7 -> tier - 3
@@ -112,7 +112,7 @@ class ClayBufferMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        UtilLocale.formatTooltips(tooltip, "clayium.tooltip.clay_buffer")
+        UtilLocale.formatTooltips(tooltip, "machine.clayium.clay_buffer.tooltip")
     }
 
     companion object {

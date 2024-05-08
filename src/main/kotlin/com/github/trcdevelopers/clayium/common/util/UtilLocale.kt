@@ -173,14 +173,20 @@ object UtilLocale {
         return if (ret.isEmpty()) listOf(str) else ret
     }
 
+    /**
+     * for translating multiline tooltips.
+     *
+     * @param tooltip tooltip list that is given in addInformation
+     * @param key translation key. line number is appended to this: `$key$i`
+     */
     fun formatTooltips(tooltip: MutableList<String>, key: String) {
         var i = 0
         while (i++ <= MAX_TOOLTIP_LINES) {
-            if (!I18n.hasKey("$key.line$i")) break
-            val localized = I18n.format("$key.line$i")
+            if (!I18n.hasKey("$key$i")) break
+            val localized = I18n.format("$key$i")
             if (localized == SHIFT_FOR_DETAILS) {
                 if (GuiScreen.isShiftKeyDown()) continue
-                tooltip.add(I18n.format("clayium.tooltip.HoldShiftForDetails"))
+                tooltip.add(I18n.format("tooltip.clayium.HoldShiftForDetails"))
                 break // ignore the rest of the lines while not sneaking
             } else {
                 tooltip.add(localized)
