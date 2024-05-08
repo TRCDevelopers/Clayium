@@ -6,6 +6,7 @@ import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
+import net.minecraftforge.common.IRarity
 
 class ItemBlockMachine(
     block: BlockMachine,
@@ -26,5 +27,10 @@ class ItemBlockMachine(
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         return CUtils.getMetaTileEntity(stack)?.addInformation(stack, worldIn, tooltip, flagIn)
             ?: super.addInformation(stack, worldIn, tooltip, flagIn)
+    }
+
+    override fun getForgeRarity(stack: ItemStack): IRarity {
+        return CUtils.getMetaTileEntity(stack)?.getRarity()
+            ?: super.getForgeRarity(stack)
     }
 }
