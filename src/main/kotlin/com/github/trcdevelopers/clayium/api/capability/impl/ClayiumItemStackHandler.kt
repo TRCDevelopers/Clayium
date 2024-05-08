@@ -3,7 +3,7 @@ package com.github.trcdevelopers.clayium.api.capability.impl
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import net.minecraftforge.items.ItemStackHandler
 
-class ClayiumItemStackHandler(
+open class ClayiumItemStackHandler(
     val metaTileEntity: MetaTileEntity,
     size: Int,
 ) : ItemStackHandler(size) {

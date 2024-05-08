@@ -104,6 +104,9 @@ abstract class MetaTileEntity(
         data.setByteArray("connections", ByteArray(6) { if (_connectionsCache[it]) 1 else 0 })
         CUtils.writeItems(importItems, "importInventory", data)
         CUtils.writeItems(exportItems, "exportInventory", data)
+        for ((name, trait) in mteTraits) {
+            data.setTag(name, trait.serializeNBT())
+        }
     }
 
     open fun readFromNBT(data: NBTTagCompound) {
@@ -113,6 +116,9 @@ abstract class MetaTileEntity(
         data.getByteArray("connections").forEachIndexed { i, b -> _connectionsCache[i] = (b == 1.toByte()) }
         CUtils.readItems(importItems, "importInventory", data)
         CUtils.readItems(exportItems, "exportInventory", data)
+        for ((name, trait) in mteTraits) {
+            trait.deserializeNBT(data.getCompoundTag(name))
+        }
     }
 
     override fun writeInitialSyncData(buf: PacketBuffer) {

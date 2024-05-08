@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack
 class RecipeRegistry<R: RecipeBuilder<R>>(
     val category: RecipeCategory,
     private val builderSample: R,
-    private val maxInputs: Int,
-    private val maxOutputs: Int,
+    val maxInputs: Int,
+    val maxOutputs: Int,
 ) {
 
     constructor(translationKey: String, builderSample: R, maxInputs: Int, maxOutputs: Int) : this(RecipeCategory.create(Clayium.MOD_ID, translationKey, translationKey), builderSample, maxInputs, maxOutputs)
