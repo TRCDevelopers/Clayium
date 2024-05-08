@@ -304,8 +304,8 @@ abstract class MetaTileEntity(
     fun scheduleRenderUpdate() = holder?.scheduleRenderUpdate()
 
     @SideOnly(Side.CLIENT)
-    fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {}
-    fun isInCreativeTab(tab: CreativeTabs): Boolean {
+    open fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {}
+    open fun isInCreativeTab(tab: CreativeTabs): Boolean {
         return tab === CreativeTabs.SEARCH || tab === Clayium.creativeTab
     }
 
