@@ -30,7 +30,7 @@ class ItemBlockMachine(
     }
 
     override fun getForgeRarity(stack: ItemStack): IRarity {
-        return CUtils.getMetaTileEntity(stack)?.getRarity()
+        return CUtils.getMetaTileEntity(stack)?.forgeRarity
             ?: super.getForgeRarity(stack)
     }
 }

@@ -54,6 +54,8 @@ abstract class MetaTileEntity(
     val faceTexture: ResourceLocation? = null,
 ) : ISyncedTileEntity, IGuiHolder<PosGuiData>, IPipeConnectable {
 
+    val forgeRarity = CUtils.getRarityBy(tier)
+
     var holder: MetaTileEntityHolder? = null
     val world: World? get() = holder?.world
     val pos: BlockPos? get() = holder?.pos
@@ -314,7 +316,6 @@ abstract class MetaTileEntity(
     open fun isInCreativeTab(tab: CreativeTabs): Boolean {
         return tab === CreativeTabs.SEARCH || tab === Clayium.creativeTab
     }
-    open fun getRarity() = CUtils.getRarityBy(this.tier)
 
     companion object {
         protected fun clearInventory(itemBuffer: MutableList<ItemStack>, inventory: IItemHandlerModifiable) {
