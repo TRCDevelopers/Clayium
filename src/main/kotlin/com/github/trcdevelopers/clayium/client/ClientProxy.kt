@@ -1,6 +1,8 @@
 package com.github.trcdevelopers.clayium.client
 
+import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.client.model.MetaTileEntityModelLoader
+import com.github.trcdevelopers.clayium.client.tesr.PipedMachineIoRenderer
 import com.github.trcdevelopers.clayium.common.CommonProxy
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
@@ -10,6 +12,7 @@ import net.minecraft.item.Item
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.client.model.ModelLoaderRegistry
+import net.minecraftforge.fml.client.registry.ClientRegistry
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
@@ -25,6 +28,7 @@ class ClientProxy : CommonProxy() {
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
         ModelLoaderRegistry.registerLoader(MetaTileEntityModelLoader)
+        ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, PipedMachineIoRenderer)
     }
 
     override fun init(event: FMLInitializationEvent) {
