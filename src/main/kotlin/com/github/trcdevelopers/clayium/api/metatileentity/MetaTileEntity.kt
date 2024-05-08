@@ -199,13 +199,9 @@ abstract class MetaTileEntity(
             }
             INSERTION -> {
                 this.toggleInput(clickedSide)
-                this.refreshConnection(clickedSide)
-                CUtils.getMetaTileEntity(world, pos.offset(clickedSide))?.refreshConnection(clickedSide.opposite)
             }
             EXTRACTION -> {
                 this.toggleOutput(clickedSide)
-                this.refreshConnection(clickedSide)
-                CUtils.getMetaTileEntity(world, pos.offset(clickedSide))?.refreshConnection(clickedSide.opposite)
             }
             ROTATION -> {
                 this.rotate(clickedSide)
@@ -246,6 +242,8 @@ abstract class MetaTileEntity(
     protected fun toggleInput(side: EnumFacing) {
         val current = _inputModes[side.index]
         _inputModes[side.index] = validInputModes[(validInputModes.indexOf(current) + 1) % validInputModes.size]
+        this.refreshConnection(side)
+        (this.getNeighbor(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
         writeCustomData(UPDATE_INPUT_MODE) {
             writeByte(side.index)
             writeByte(_inputModes[side.index].id)
@@ -255,6 +253,8 @@ abstract class MetaTileEntity(
     protected fun toggleOutput(side: EnumFacing) {
         val current = _outputModes[side.index]
         _outputModes[side.index] = validOutputModes[(validOutputModes.indexOf(current) + 1) % validOutputModes.size]
+        this.refreshConnection(side)
+        (this.getNeighbor(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
         writeCustomData(UPDATE_OUTPUT_MODE) {
             writeByte(side.index)
             writeByte(_outputModes[side.index].id)
@@ -287,10 +287,6 @@ abstract class MetaTileEntity(
         return neighbor.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite)
     }
 
-    open fun onNeighborChanged(facing: EnumFacing) {
-        this.refreshConnection(facing)
-    }
-
     open fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
         clearInventory(itemBuffer, importItems)
         clearInventory(itemBuffer, exportItems)
@@ -305,6 +301,10 @@ abstract class MetaTileEntity(
 
     fun getStackForm(amount: Int = 1): ItemStack {
         return ItemStack(ClayiumApi.BLOCK_MACHINE, amount, ClayiumApi.MTE_REGISTRY.getIdByKey(metaTileEntityId))
+    }
+
+    open fun onNeighborChanged(facing: EnumFacing) {
+        this.refreshConnection(facing)
     }
 
     fun getNeighbor(side: EnumFacing) = holder?.getNeighbor(side)
