@@ -23,6 +23,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -295,7 +296,8 @@ abstract class MetaTileEntity(
         clearInventory(itemBuffer, exportItems)
     }
 
-    open fun onPlacement() {
+    @MustBeInvokedByOverriders
+    open fun onPlacement(placer: EntityLivingBase) {
         EnumFacing.entries.forEach(this::refreshConnection)
     }
 

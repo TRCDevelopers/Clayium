@@ -81,7 +81,6 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
     private fun receiveMteInitializationData(buf: PacketBuffer) {
         val sampleMetaTileEntity = ClayiumApi.MTE_REGISTRY.getObjectById(buf.readVarInt()) ?: return
         val newMetaTileEntity = this.setMetaTileEntity(sampleMetaTileEntity)
-        newMetaTileEntity.onPlacement()
         newMetaTileEntity.receiveInitialSyncData(buf)
         scheduleRenderUpdate()
     }

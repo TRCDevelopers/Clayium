@@ -28,7 +28,6 @@ import net.minecraft.util.NonNullList
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.RayTraceResult
-import net.minecraft.util.math.Vec3d
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
@@ -111,8 +110,9 @@ class BlockMachine : Block(Material.IRON) {
 
     override fun onBlockPlacedBy(worldIn: World, pos: BlockPos, state: IBlockState, placer: EntityLivingBase, stack: ItemStack) {
         val holder = worldIn.getTileEntity(pos) as? MetaTileEntityHolder ?: return
-        val mte = ClayiumApi.MTE_REGISTRY.getObjectById(stack.itemDamage) ?: return
-        holder.setMetaTileEntity(mte)
+        val sampleMetaTileEntity = ClayiumApi.MTE_REGISTRY.getObjectById(stack.itemDamage) ?: return
+        val newMetaTileEntity = holder.setMetaTileEntity(sampleMetaTileEntity)
+        newMetaTileEntity.onPlacement(placer)
     }
 
     override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {

@@ -17,6 +17,7 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.util.ITooltipFlag
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
@@ -67,6 +68,11 @@ class ClayBufferMetaTileEntity(
         val o = side.opposite.index
         return (this.inputModes[i] != MachineIoMode.NONE || this.outputModes[i] != MachineIoMode.NONE)
                 || (neighbor.inputModes[o] != MachineIoMode.NONE || neighbor.outputModes[o] != MachineIoMode.NONE)
+    }
+
+    override fun onPlacement(placer: EntityLivingBase) {
+        super.onPlacement(placer)
+        this.toggleInput(EnumFacing.getDirectionFromEntityLiving(pos ?: return, placer).opposite)
     }
 
     override fun buildUI(
