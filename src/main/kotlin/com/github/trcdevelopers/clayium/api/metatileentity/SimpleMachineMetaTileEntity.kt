@@ -20,7 +20,9 @@ import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.util.ITooltipFlag
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
@@ -49,6 +51,17 @@ class SimpleMachineMetaTileEntity(
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return SimpleMachineMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey, faceTexture, recipeRegistry)
+    }
+
+    override fun onPlacement(placer: EntityLivingBase) {
+        this._inputModes[EnumFacing.UP.index] = MachineIoMode.ALL
+        this.refreshNeighborConnection(EnumFacing.UP)
+        this._outputModes[EnumFacing.DOWN.index] = MachineIoMode.ALL
+        this.refreshNeighborConnection(EnumFacing.DOWN)
+        val placerFacing = placer.horizontalFacing
+        this._inputModes[placerFacing.index] = MachineIoMode.CE
+        this.refreshNeighborConnection(placerFacing.opposite)
+        super.onPlacement(placer)
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {

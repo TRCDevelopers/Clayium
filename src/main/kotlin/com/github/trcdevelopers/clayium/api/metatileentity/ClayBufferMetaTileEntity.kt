@@ -35,6 +35,8 @@ class ClayBufferMetaTileEntity(
 ) : MetaTileEntity(metaTileEntityId, tier,
     validInputModes = INPUT_MODES, validOutputModes = OUTPUT_MODES, "machine.${CValues.MOD_ID}.clay_buffer") {
 
+    override val hasFrontFacing: Boolean = false
+
     val inventoryRowSize = when (tier) {
         in 4..7 -> tier - 3
         8, -> 4

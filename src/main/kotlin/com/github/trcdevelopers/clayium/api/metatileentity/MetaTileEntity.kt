@@ -74,8 +74,8 @@ abstract class MetaTileEntity(
 
     abstract fun createMetaTileEntity(): MetaTileEntity
 
-    private val _inputModes = MutableList(6) { NONE }
-    private val _outputModes = MutableList(6) { NONE }
+    protected val _inputModes = MutableList(6) { NONE }
+    protected val _outputModes = MutableList(6) { NONE }
     private val _connectionsCache = BooleanArray(6)
     val inputModes get() = _inputModes.toList()
     val outputModes get() = _outputModes.toList()
@@ -283,6 +283,10 @@ abstract class MetaTileEntity(
         }
     }
 
+    protected fun refreshNeighborConnection(side: EnumFacing) {
+        (this.getNeighbor(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
+    }
+
     protected open fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
         val i = side.index
         val o = side.opposite.index
@@ -301,6 +305,9 @@ abstract class MetaTileEntity(
 
     @MustBeInvokedByOverriders
     open fun onPlacement(placer: EntityLivingBase) {
+        if (this.hasFrontFacing) {
+            this.frontFacing = placer.horizontalFacing.opposite
+        }
         EnumFacing.entries.forEach(this::refreshConnection)
     }
 
