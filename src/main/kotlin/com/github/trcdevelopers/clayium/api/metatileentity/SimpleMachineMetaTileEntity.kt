@@ -115,6 +115,7 @@ class SimpleMachineMetaTileEntity(
                 .align(Alignment.CenterRight).right(4))
                 .child(ItemSlot().right(8).top(4)
                     .slot(SyncHandlers.itemSlot(exportItems, 0)
+                        .accessibility(false, true)
                         .singletonSlotGroup(0))
                     .background(IDrawable.EMPTY))
         } else if (importItems.slots == 2) {
@@ -125,6 +126,7 @@ class SimpleMachineMetaTileEntity(
                     .key('I') { index ->
                         ItemSlot().slot(
                             SyncHandlers.itemSlot(exportItems, index)
+                                .accessibility(false, true)
                                 .slotGroup("output_inv"))
                             .apply {
                                 if (index == 0)
