@@ -175,6 +175,7 @@ object UtilLocale {
 
     /**
      * for translating multiline tooltips.
+     * does nothing if the key does not exist.
      *
      * @param tooltip tooltip list that is given in addInformation
      * @param key translation key. line number is appended to this: `$key$i`

@@ -17,8 +17,14 @@ import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
+import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.client.gui.GuiScreen
+import net.minecraft.client.util.ITooltipFlag
+import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
+import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 class SimpleMachineMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -49,7 +55,7 @@ class SimpleMachineMetaTileEntity(
         val panel = ModularPanel.defaultPanel(this.metaTileEntityId.toString())
 
         // title
-        panel.child(IKey.lang("tile.clayium.${recipeRegistry.category.categoryName}", IKey.lang("${ClayiumDataCodecs.Translation.MACHINE_TIER}$tier")).asWidget()
+        panel.child(IKey.lang("machine.clayium.${recipeRegistry.category.categoryName}", IKey.lang("${ClayiumDataCodecs.Translation.MACHINE_TIER}$tier")).asWidget()
             .top(6)
             .left(6))
 
@@ -125,5 +131,11 @@ class SimpleMachineMetaTileEntity(
                 .pos(6, 60))
 
         return panel.bindPlayerInventory()
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        super.addInformation(stack, worldIn, tooltip, flagIn)
+        UtilLocale.formatTooltips(tooltip, "machine.clayium.${metaTileEntityId.path}.tooltip")
     }
 }
