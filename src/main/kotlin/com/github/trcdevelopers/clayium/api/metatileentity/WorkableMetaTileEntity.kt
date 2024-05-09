@@ -19,7 +19,7 @@ abstract class WorkableMetaTileEntity(
     validInputModes: List<MachineIoMode>,
     validOutputModes: List<MachineIoMode>,
     translationKey: String,
-    val faceTexture: ResourceLocation,
+    override val faceTexture: ResourceLocation,
     val recipeRegistry: RecipeRegistry<*>,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey) {
 

@@ -60,6 +60,8 @@ abstract class MetaTileEntity(
     val world: World? get() = holder?.world
     val pos: BlockPos? get() = holder?.pos
 
+    open val faceTexture: ResourceLocation? = null
+
     protected val mteTraits = mutableMapOf<String, MTETrait>()
     private val traitByNetworkId = Int2ObjectOpenHashMap<MTETrait>()
 
