@@ -52,7 +52,6 @@ abstract class MetaTileEntity(
      * used in item/block name and gui title
      */
     val translationKey: String,
-    val faceTexture: ResourceLocation? = null,
 ) : ISyncedTileEntity, IGuiHolder<PosGuiData>, IPipeConnectable {
 
     val forgeRarity = CUtils.getRarityBy(tier)

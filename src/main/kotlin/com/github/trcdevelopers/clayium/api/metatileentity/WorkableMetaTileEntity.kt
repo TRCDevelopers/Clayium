@@ -19,9 +19,9 @@ abstract class WorkableMetaTileEntity(
     validInputModes: List<MachineIoMode>,
     validOutputModes: List<MachineIoMode>,
     translationKey: String,
-    faceTexture: ResourceLocation?,
+    val faceTexture: ResourceLocation,
     val recipeRegistry: RecipeRegistry<*>,
-) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey, faceTexture) {
+) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey) {
 
     val inputSize = recipeRegistry.maxInputs
     val outputSize = recipeRegistry.maxOutputs
@@ -36,6 +36,6 @@ abstract class WorkableMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation("${metaTileEntityId.namespace}:${faceTexture}", "tier=$tier"))
+        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(faceTexture, "tier=$tier"))
     }
 }

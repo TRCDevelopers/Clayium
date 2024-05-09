@@ -33,7 +33,7 @@ class ClayBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: Int,
 ) : MetaTileEntity(metaTileEntityId, tier,
-    validInputModes = INPUT_MODES, validOutputModes = OUTPUT_MODES, "machine.${CValues.MOD_ID}.clay_buffer", null) {
+    validInputModes = INPUT_MODES, validOutputModes = OUTPUT_MODES, "machine.${CValues.MOD_ID}.clay_buffer") {
 
     val inventoryRowSize = when (tier) {
         in 4..7 -> tier - 3

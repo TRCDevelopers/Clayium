@@ -26,7 +26,7 @@ class SimpleMachineMetaTileEntity(
     validInputModes: List<MachineIoMode>,
     validOutputModes: List<MachineIoMode>,
     translationKey: String,
-    faceTexture: ResourceLocation?,
+    faceTexture: ResourceLocation,
     recipeRegistry: RecipeRegistry<*>,
 ) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey, faceTexture, recipeRegistry) {
 
