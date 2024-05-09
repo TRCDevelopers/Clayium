@@ -4,6 +4,7 @@ import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.google.common.base.CaseFormat
 import net.minecraft.item.EnumRarity
 import net.minecraft.item.ItemStack
@@ -100,5 +101,21 @@ object CUtils {
 
     fun clayiumId(path: String): ResourceLocation {
         return ResourceLocation(CValues.MOD_ID, path)
+    }
+
+    fun getValidInputModes(maxInputs: Int): List<MachineIoMode> {
+        return when (maxInputs) {
+            1 -> listOf(MachineIoMode.NONE, MachineIoMode.ALL)
+            2 -> listOf(MachineIoMode.NONE, MachineIoMode.FIRST, MachineIoMode.SECOND, MachineIoMode.ALL)
+            else -> listOf(MachineIoMode.NONE, MachineIoMode.ALL)
+        }
+    }
+
+    fun getValidOutputModes(maxOutputs: Int): List<MachineIoMode> {
+        return when (maxOutputs) {
+            1 -> listOf(MachineIoMode.NONE, MachineIoMode.ALL)
+            2 -> listOf(MachineIoMode.NONE, MachineIoMode.FIRST, MachineIoMode.SECOND, MachineIoMode.ALL)
+            else -> listOf(MachineIoMode.NONE, MachineIoMode.ALL)
+        }
     }
 }

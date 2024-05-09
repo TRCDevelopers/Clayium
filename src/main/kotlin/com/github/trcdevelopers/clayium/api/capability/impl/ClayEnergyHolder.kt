@@ -1,5 +1,10 @@
 package com.github.trcdevelopers.clayium.api.capability.impl
 
+import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.widgets.TextWidget
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
 import com.github.trcdevelopers.clayium.api.capability.IClayEnergyHolder
 import com.github.trcdevelopers.clayium.api.metatileentity.AutoIoHandler
@@ -8,6 +13,7 @@ import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClay
+import net.minecraft.client.resources.I18n
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.ItemStackHandler
@@ -55,6 +61,23 @@ class ClayEnergyHolder(
     override fun hasEnoughEnergy(ce: ClayEnergy): Boolean {
         if (this.clayEnergy < ce) tryConsumeEnergizedClay()
         return this.clayEnergy >= ce
+    }
+
+    fun createSlotWidget(): ItemSlot {
+        return ItemSlot()
+            .slot(SyncHandlers.itemSlot(slot, 0)
+                .accessibility(false, false))
+    }
+
+    fun createCeTextWidget(syncManager: GuiSyncManager, syncId: Int): TextWidget {
+        syncManager.syncValue(this.name, syncId, SyncHandlers.longNumber(
+            { clayEnergy.energy },
+            { clayEnergy = ClayEnergy(it) }
+        ))
+
+        return IKey.dynamic {
+            I18n.format(ClayiumDataCodecs.Translation.CLAY_ENERGY, this.clayEnergy.toString())
+        }.asWidget()
     }
 
     private fun tryConsumeEnergizedClay() {

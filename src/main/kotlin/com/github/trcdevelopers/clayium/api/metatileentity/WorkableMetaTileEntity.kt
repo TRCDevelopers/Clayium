@@ -1,8 +1,5 @@
 package com.github.trcdevelopers.clayium.api.metatileentity
 
-import com.cleanroommc.modularui.factory.PosGuiData
-import com.cleanroommc.modularui.screen.ModularPanel
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.capability.impl.NotifiableItemStackHandler
@@ -26,13 +23,6 @@ abstract class WorkableMetaTileEntity(
     val recipeRegistry: RecipeRegistry<*>,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey, faceTexture) {
 
-//    constructor(
-//        metaTileEntityId: ResourceLocation, tier: Int,
-//        validInputModes: List<MachineIoMode>, validOutputModes: List<MachineIoMode>,
-//        machineName: ResourceLocation,
-//        inputSize: Int, outputSize: Int
-//    ) : this(metaTileEntityId, tier, validInputModes, validOutputModes, "machine.${CValues.MOD_ID}.${machineName.path}", machineName, inputSize, outputSize)
-
     val inputSize = recipeRegistry.maxInputs
     val outputSize = recipeRegistry.maxOutputs
 
@@ -47,9 +37,5 @@ abstract class WorkableMetaTileEntity(
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
         ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation("${metaTileEntityId.namespace}:${faceTexture}", "tier=$tier"))
-    }
-
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        return ModularPanel.defaultPanel("$metaTileEntityId")
     }
 }
