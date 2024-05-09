@@ -105,8 +105,8 @@ object CUtils {
 
     fun getValidInputModes(maxInputs: Int): List<MachineIoMode> {
         return when (maxInputs) {
-            1 -> listOf(MachineIoMode.NONE, MachineIoMode.ALL)
-            2 -> listOf(MachineIoMode.NONE, MachineIoMode.FIRST, MachineIoMode.SECOND, MachineIoMode.ALL)
+            1 -> listOf(MachineIoMode.NONE, MachineIoMode.ALL, MachineIoMode.CE)
+            2 -> listOf(MachineIoMode.NONE, MachineIoMode.FIRST, MachineIoMode.SECOND, MachineIoMode.ALL, MachineIoMode.CE)
             else -> listOf(MachineIoMode.NONE, MachineIoMode.ALL)
         }
     }
