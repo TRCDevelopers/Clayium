@@ -102,8 +102,9 @@ class SimpleMachineMetaTileEntity(
                                     background(ClayGuiTextures.IMPORT_1_SLOT)
                                 else
                                     background(ClayGuiTextures.IMPORT_2_SLOT)
-                            }
-                    }.build()
+                            }}
+                    .build()
+                    .align(Alignment.CenterLeft)
             )
         }
 
@@ -130,8 +131,9 @@ class SimpleMachineMetaTileEntity(
                                     background(ClayGuiTextures.EXPORT_1_SLOT)
                                 else
                                     background(ClayGuiTextures.EXPORT_2_SLOT)
-                            }
-                    }.build()
+                            }}
+                    .build()
+                    .align(Alignment.CenterRight)
             )
         }
         panel.child(slotsAndProgressBar)
