@@ -19,6 +19,10 @@ object MetaTileEntities {
         SimpleMachineMetaTileEntity(clayiumId("bending_machine_tier$it"), it, CRecipes.BENDING)
     }
 
+    val ASSEMBLER = registerMetaTileEntities(19, intArrayOf(3, 4, 6, 10)) {
+        SimpleMachineMetaTileEntity(clayiumId("assembler_tier$it"), it, CRecipes.ASSEMBLER)
+    }
+
     /**
      * @param provider tier -> MetaTileEntity
      */
