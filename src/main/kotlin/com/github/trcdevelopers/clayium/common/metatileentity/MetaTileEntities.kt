@@ -3,7 +3,9 @@ package com.github.trcdevelopers.clayium.common.metatileentity
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.metatileentity.ClayBufferMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
+import com.github.trcdevelopers.clayium.api.metatileentity.SimpleMachineMetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
+import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
@@ -11,6 +13,10 @@ object MetaTileEntities {
 
     val CLAY_BUFFER = registerMetaTileEntities("clay_buffer", 1, (4..13)) {
         ClayBufferMetaTileEntity(clayiumId("clay_buffer_tier$it"), it)
+    }
+
+    val BENDING_MACHINE = registerMetaTileEntities(11, intArrayOf(1, 2, 3, 4, 5, 6, 7, 9)) {
+        SimpleMachineMetaTileEntity(clayiumId("bending_machine_tier$it"), it, CRecipes.BENDING)
     }
 
     /**

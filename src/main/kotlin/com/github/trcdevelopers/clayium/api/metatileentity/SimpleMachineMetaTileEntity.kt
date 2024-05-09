@@ -12,7 +12,7 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
-import com.github.trcdevelopers.clayium.api.capability.impl.AbstractRecipeLogic
+import com.github.trcdevelopers.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
@@ -39,8 +39,7 @@ class SimpleMachineMetaTileEntity(
         "machine.${metaTileEntityId.namespace}.${recipeRegistry.category.categoryName}", ResourceLocation(metaTileEntityId.namespace, recipeRegistry.category.categoryName),
         recipeRegistry)
 
-    override val workable: AbstractRecipeLogic
-        get() = TODO("Not yet implemented")
+    override val workable = RecipeLogicEnergy(this, recipeRegistry, clayEnergyHolder)
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return SimpleMachineMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey, faceTexture, recipeRegistry)
