@@ -53,7 +53,7 @@ class SimpleMachineMetaTileEntity(
         return SimpleMachineMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey, faceTexture, recipeRegistry)
     }
 
-    override fun onPlacement(placer: EntityLivingBase) {
+    override fun changeIoModesOnPlacement(placer: EntityLivingBase) {
         this._inputModes[EnumFacing.UP.index] = MachineIoMode.ALL
         this.refreshNeighborConnection(EnumFacing.UP)
         this._outputModes[EnumFacing.DOWN.index] = MachineIoMode.ALL
@@ -61,7 +61,7 @@ class SimpleMachineMetaTileEntity(
         val placerFacing = placer.horizontalFacing
         this._inputModes[placerFacing.index] = MachineIoMode.CE
         this.refreshNeighborConnection(placerFacing.opposite)
-        super.onPlacement(placer)
+        super.changeIoModesOnPlacement(placer)
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {

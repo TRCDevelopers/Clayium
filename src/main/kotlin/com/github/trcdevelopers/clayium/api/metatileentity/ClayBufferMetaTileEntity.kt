@@ -72,9 +72,9 @@ class ClayBufferMetaTileEntity(
                 || (neighbor.inputModes[o] != MachineIoMode.NONE || neighbor.outputModes[o] != MachineIoMode.NONE)
     }
 
-    override fun onPlacement(placer: EntityLivingBase) {
-        super.onPlacement(placer)
+    override fun changeIoModesOnPlacement(placer: EntityLivingBase) {
         this.toggleInput(EnumFacing.getDirectionFromEntityLiving(pos ?: return, placer).opposite)
+        super.changeIoModesOnPlacement(placer)
     }
 
     override fun buildUI(

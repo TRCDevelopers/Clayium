@@ -303,13 +303,19 @@ abstract class MetaTileEntity(
         clearInventory(itemBuffer, exportItems)
     }
 
+    /**
+     * called on both client and server.
+     */
     @MustBeInvokedByOverriders
-    open fun onPlacement(placer: EntityLivingBase) {
+    open fun changeIoModesOnPlacement(placer: EntityLivingBase) {
         if (this.hasFrontFacing) {
             this.frontFacing = placer.horizontalFacing.opposite
         }
         EnumFacing.entries.forEach(this::refreshConnection)
     }
+
+    @MustBeInvokedByOverriders
+    open fun onPlacement() {}
 
     open fun onRemoval() {}
 
