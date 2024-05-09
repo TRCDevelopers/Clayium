@@ -78,6 +78,9 @@ class MetaTileEntityBakedModel(
             val side2Quad = outputModeQuads[mteOutputMode] ?: return@forEachIndexed
             quads.add(side2Quad[facingIndex])
         }
+        if (mte.hasFrontFacing && mte.faceTexture != null && mte.frontFacing == side) {
+            ModelTextures.FACE_QUADS[mte.faceTexture]?.get(side)?.let { quads.add(it) }
+        }
 
         return quads
     }

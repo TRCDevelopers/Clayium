@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.client.model
 
 import com.github.trcdevelopers.clayium.api.CValues
+import com.github.trcdevelopers.clayium.api.ClayiumApi
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.BlockFaceUV
 import net.minecraft.client.renderer.block.model.BlockPartFace
@@ -29,6 +30,10 @@ object ModelTextures {
     lateinit var HULL_TEXTURES: List<TextureAtlasSprite>
         private set
 
+    // metaTileEntity.faceTexture -> map
+    private val _faceQuads: MutableMap<ResourceLocation, Map<EnumFacing, BakedQuad>> = mutableMapOf()
+    val FACE_QUADS: Map<ResourceLocation, Map<EnumFacing, BakedQuad>> get() = _faceQuads
+
     val faceBakery = FaceBakery()
     fun createQuad(side: EnumFacing, texture: TextureAtlasSprite): BakedQuad {
         return faceBakery.makeBakedQuad(
@@ -52,6 +57,14 @@ object ModelTextures {
         this.HULL_QUADS = mutableListOf<Map<EnumFacing, BakedQuad>>().apply {
             (0..13).forEach { i ->
                 add(EnumFacing.VALUES.associateWith { createQuad(it, HULL_TEXTURES[i]) })
+            }
+        }
+        for (metaTileEntity in ClayiumApi.MTE_REGISTRY) {
+            val faceTexture = metaTileEntity.faceTexture ?: continue
+            _faceQuads.computeIfAbsent(faceTexture) {
+                EnumFacing.entries.associateWith { side ->
+                    createQuad(side, getter.apply(faceTexture))
+                }
             }
         }
         isInitialized = true

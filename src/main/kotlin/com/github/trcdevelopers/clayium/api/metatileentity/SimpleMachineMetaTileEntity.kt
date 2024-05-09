@@ -36,7 +36,7 @@ class SimpleMachineMetaTileEntity(
         recipeRegistry: RecipeRegistry<*>,
     ) : this(metaTileEntityId, tier,
         CUtils.getValidInputModes(recipeRegistry.maxInputs), CUtils.getValidOutputModes(recipeRegistry.maxOutputs),
-        "machine.${metaTileEntityId.namespace}.${recipeRegistry.category.categoryName}", ResourceLocation(metaTileEntityId.namespace, recipeRegistry.category.categoryName),
+        "machine.${metaTileEntityId.namespace}.${recipeRegistry.category.categoryName}", ResourceLocation(metaTileEntityId.namespace, "blocks/${recipeRegistry.category.categoryName}"),
         recipeRegistry)
 
     override val workable = RecipeLogicEnergy(this, recipeRegistry, clayEnergyHolder)

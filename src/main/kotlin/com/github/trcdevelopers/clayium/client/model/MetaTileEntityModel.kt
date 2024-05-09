@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.client.model
 
+import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import net.minecraft.client.renderer.block.model.IBakedModel
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
@@ -14,32 +15,39 @@ class MetaTileEntityModel(
 ) : IModel {
 
     override fun getTextures(): Collection<ResourceLocation> {
-        return listOf(
+        return mutableListOf<ResourceLocation>().apply {
+            // machine face textures
+            ClayiumApi.MTE_REGISTRY.forEach { metaTileEntity ->
+                val faceTexture = metaTileEntity.faceTexture ?: return@forEach
+                if (!(this.isNotEmpty() && faceTexture == this.last())) {
+                    add(faceTexture)
+                }
+            }
             // io textures
-            clayiumId("blocks/import_energy"),
-            clayiumId("blocks/import"),
-            clayiumId("blocks/import_1"),
-            clayiumId("blocks/import_2"),
-            clayiumId("blocks/import_12"),
-            clayiumId("blocks/export"),
-            clayiumId("blocks/export_1"),
-            clayiumId("blocks/export_2"),
-            clayiumId("blocks/export_12"),
-            // machine hulls
-            clayiumId("blocks/machinehull_tier1"),
-            clayiumId("blocks/machinehull_tier2"),
-            clayiumId("blocks/machinehull_tier3"),
-            clayiumId("blocks/machinehull_tier4"),
-            clayiumId("blocks/machinehull_tier5"),
-            clayiumId("blocks/machinehull_tier6"),
-            clayiumId("blocks/machinehull_tier7"),
-            clayiumId("blocks/machinehull_tier8"),
-            clayiumId("blocks/machinehull_tier9"),
-            clayiumId("blocks/machinehull_tier10"),
-            clayiumId("blocks/machinehull_tier11"),
-            clayiumId("blocks/machinehull_tier12"),
-            clayiumId("blocks/machinehull_tier13"),
-        )
+            add(clayiumId("blocks/import_energy"))
+            add(clayiumId("blocks/import"))
+            add(clayiumId("blocks/import_1"))
+            add(clayiumId("blocks/import_2"))
+            add(clayiumId("blocks/import_12"))
+            add(clayiumId("blocks/export"))
+            add(clayiumId("blocks/export_1"))
+            add(clayiumId("blocks/export_2"))
+            add(clayiumId("blocks/export_12"))
+            // machine hulls)
+            add(clayiumId("blocks/machinehull_tier1"))
+            add(clayiumId("blocks/machinehull_tier2"))
+            add(clayiumId("blocks/machinehull_tier3"))
+            add(clayiumId("blocks/machinehull_tier4"))
+            add(clayiumId("blocks/machinehull_tier5"))
+            add(clayiumId("blocks/machinehull_tier6"))
+            add(clayiumId("blocks/machinehull_tier7"))
+            add(clayiumId("blocks/machinehull_tier8"))
+            add(clayiumId("blocks/machinehull_tier9"))
+            add(clayiumId("blocks/machinehull_tier10"))
+            add(clayiumId("blocks/machinehull_tier11"))
+            add(clayiumId("blocks/machinehull_tier12"))
+            add(clayiumId("blocks/machinehull_tier13"))
+        }
     }
 
     override fun bake(
