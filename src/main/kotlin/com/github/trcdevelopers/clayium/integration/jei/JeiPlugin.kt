@@ -1,5 +1,7 @@
 package com.github.trcdevelopers.clayium.integration.jei
 
+import com.github.trcdevelopers.clayium.api.ClayiumApi
+import com.github.trcdevelopers.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.recipe.CWTRecipes
 import com.github.trcdevelopers.clayium.common.recipe.ClayWorkTableRecipe
@@ -46,6 +48,13 @@ class JeiPlugin : IModPlugin {
         for (recipeRegistry in CRecipes.ALL_REGISTRIES.values) {
             modRegistry.handleRecipes(Recipe::class.java, ::ClayiumRecipeWrapper, recipeRegistry.category.uniqueId)
             modRegistry.addRecipes(recipeRegistry.getAllRecipes(), recipeRegistry.category.uniqueId)
+        }
+
+        for (metaTileEntity in ClayiumApi.MTE_REGISTRY) {
+            println("metatileEntity")
+            if (metaTileEntity !is WorkableMetaTileEntity) continue
+            println("metatileEntity is WorkableMetaTileEntity")
+            modRegistry.addRecipeCatalyst(metaTileEntity.getStackForm(), metaTileEntity.recipeRegistry.category.uniqueId)
         }
     }
 

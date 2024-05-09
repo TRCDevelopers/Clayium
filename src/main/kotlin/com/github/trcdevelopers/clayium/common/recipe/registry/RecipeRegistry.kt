@@ -13,7 +13,7 @@ class RecipeRegistry<R: RecipeBuilder<R>>(
     val maxOutputs: Int,
 ) {
 
-    constructor(translationKey: String, builderSample: R, maxInputs: Int, maxOutputs: Int) : this(RecipeCategory.create(Clayium.MOD_ID, translationKey, translationKey), builderSample, maxInputs, maxOutputs)
+    constructor(translationKey: String, builderSample: R, maxInputs: Int, maxOutputs: Int) : this(RecipeCategory.create(Clayium.MOD_ID, translationKey), builderSample, maxInputs, maxOutputs)
 
     init {
         builderSample.setRegistry(this)
