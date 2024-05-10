@@ -20,9 +20,6 @@ object MetaTileEntityModelLoader : ICustomModelLoader {
             return false
         }
 
-        // tier of a block model is not in the location. (e.g. "clayium:bending_machine#is_pipe=false")
-        // tier of an item model is in the properties string (e.g. "clayium:bending_machine#tier=1")
-        // this loader does not handle an item model.
         return modelLocation.path == "machine"
     }
 

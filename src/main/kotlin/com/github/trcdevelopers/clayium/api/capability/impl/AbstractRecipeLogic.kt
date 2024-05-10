@@ -36,7 +36,7 @@ abstract class AbstractRecipeLogic(
     /**
      * Draw energy from the energy container
      * @param ce the Clay Energy to remove
-     * @param whether to simulate energy extraction or not, default is false
+     * @param simulate whether to simulate energy extraction or not, default is false
      * @return true if energy can/was drained, otherwise false
      */
     protected abstract fun drawEnergy(ce: ClayEnergy, simulate: Boolean = false): Boolean
