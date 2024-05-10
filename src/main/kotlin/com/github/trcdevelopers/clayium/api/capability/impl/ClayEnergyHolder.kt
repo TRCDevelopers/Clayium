@@ -23,7 +23,7 @@ class ClayEnergyHolder(
     metaTileEntity: MetaTileEntity,
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.ENERGY_HOLDER), IClayEnergyHolder {
 
-    private val slot = object : ItemStackHandler(1) {
+    private val slot = object : ClayiumItemStackHandler(metaTileEntity, 1) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
             return stack.item is IEnergizedClay
         }
