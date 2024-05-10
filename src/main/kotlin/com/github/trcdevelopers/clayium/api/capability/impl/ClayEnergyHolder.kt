@@ -5,6 +5,7 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.TextWidget
+import com.github.trcdevelopers.clayium.api.CTranslation
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
 import com.github.trcdevelopers.clayium.api.capability.IClayEnergyHolder
 import com.github.trcdevelopers.clayium.api.metatileentity.AutoIoHandler
@@ -76,7 +77,7 @@ class ClayEnergyHolder(
         ))
 
         return IKey.dynamic {
-            I18n.format(ClayiumDataCodecs.Translation.CLAY_ENERGY, this.clayEnergy.toString())
+            I18n.format(CTranslation.CLAY_ENERGY, this.clayEnergy.toString())
         }.asWidget()
     }
 

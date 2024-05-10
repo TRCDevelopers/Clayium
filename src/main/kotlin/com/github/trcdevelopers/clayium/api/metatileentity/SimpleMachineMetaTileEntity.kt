@@ -11,7 +11,7 @@ import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
+import com.github.trcdevelopers.clayium.api.CTranslation
 import com.github.trcdevelopers.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
@@ -68,7 +68,7 @@ class SimpleMachineMetaTileEntity(
         val panel = ModularPanel.defaultPanel(this.metaTileEntityId.toString())
 
         // title
-        panel.child(IKey.lang("machine.clayium.${recipeRegistry.category.categoryName}", IKey.lang("${ClayiumDataCodecs.Translation.MACHINE_TIER}$tier")).asWidget()
+        panel.child(IKey.lang("machine.clayium.${recipeRegistry.category.categoryName}", IKey.lang("${CTranslation.MACHINE_TIER}$tier")).asWidget()
             .top(6)
             .left(6))
 

@@ -16,9 +16,4 @@ object ClayiumDataCodecs {
     const val AUTO_IO_HANDLER = "autoIoHandler"
     const val RECIPE_LOGIC = "recipeLogic"
     const val ENERGY_HOLDER = "energyHolder"
-
-    object Translation {
-        const val CLAY_ENERGY = "tooltip.clayium.ce"
-        const val MACHINE_TIER = "machine.clayium.tier"
-    }
 }
