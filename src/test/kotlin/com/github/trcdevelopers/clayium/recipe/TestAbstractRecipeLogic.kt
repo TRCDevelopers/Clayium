@@ -1,5 +1,6 @@
-package clayium.recipe
+package com.github.trcdevelopers.clayium.recipe
 
+import com.github.trcdevelopers.clayium.Bootstrap
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trcdevelopers.clayium.api.capability.impl.AbstractRecipeLogic
@@ -34,6 +35,7 @@ class TestAbstractRecipeLogic : StringSpec({
     lateinit var logic: AbstractRecipeLogic
 
     beforeTest {
+        Bootstrap.perform()
         // todo: move to somewhere
         mockWorld = mockk()
 //        every { mockWorld.isRemote } returns false
@@ -79,7 +81,7 @@ class TestAbstractRecipeLogic : StringSpec({
     }
 
     "fails with empty input" {
-        TODO()
+        logic.update()
     }
     "fails with invalid input" {
         TODO()

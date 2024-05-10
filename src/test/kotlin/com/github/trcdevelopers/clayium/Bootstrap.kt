@@ -1,4 +1,4 @@
-package clayium
+package com.github.trcdevelopers.clayium
 
 object Bootstrap {
 

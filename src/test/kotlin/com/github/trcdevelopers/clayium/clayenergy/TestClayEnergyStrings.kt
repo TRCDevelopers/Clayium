@@ -1,4 +1,4 @@
-package clayium.clayenergy
+package com.github.trcdevelopers.clayium.clayenergy
 
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import io.kotest.core.spec.style.StringSpec
