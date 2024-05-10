@@ -25,8 +25,10 @@ abstract class AbstractRecipeLogic(
 
     private var previousRecipe: Recipe? = null
     private var recipeCEt = ClayEnergy.ZERO
-    private var requiredProgress = 0
-    private var currentProgress = 0
+    var requiredProgress = 0
+        private set
+    var currentProgress = 0
+        private set
     // item stacks that will be produced when the recipe is done
     private var itemOutputs: List<ItemStack> = emptyList()
 

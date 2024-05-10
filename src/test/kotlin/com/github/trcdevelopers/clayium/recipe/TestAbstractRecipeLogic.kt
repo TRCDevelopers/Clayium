@@ -12,6 +12,7 @@ import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.recipe.builder.SimpleRecipeBuilder
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.shouldBe
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
@@ -38,7 +39,7 @@ class TestAbstractRecipeLogic : StringSpec({
         Bootstrap.perform()
         // todo: move to somewhere
         mockWorld = mockk()
-//        every { mockWorld.isRemote } returns false
+//        every { mockWorld.isRemote } answers { false }
         every { mockWorld.notifyBlockUpdate(any(), any(), any(), any()) } just Runs
         every { mockWorld.markChunkDirty(any(), any()) } just Runs
 
@@ -80,10 +81,24 @@ class TestAbstractRecipeLogic : StringSpec({
         }
     }
 
-    "fails with empty input" {
+    "recipe shouldn't be set with empty input" {
         logic.update()
+        dummyMte.holder?.world?.isRemote shouldBe false
+        logic.currentProgress shouldBe 0
     }
-    "fails with invalid input" {
-        TODO()
+    "recipe shouldn't be set with invalid input" {
+        dummyMte.importItems.setStackInSlot(0, ItemStack(Blocks.BARRIER))
+        logic.update()
+        logic.currentProgress shouldBe 0
+    }
+    "recipe shouldn't be set without enough energy" {
+        dummyMte.importItems.setStackInSlot(0, ItemStack(Blocks.STONE))
+        logic.update()
+        logic.currentProgress shouldBe 0
+    }
+    "recipe should be set with valid input and enough energy" {
+        dummyMte.importItems.setStackInSlot(0, ItemStack(Items.CLAY_BALL))
+        logic.update()
+        logic.currentProgress shouldBe 1
     }
 })
