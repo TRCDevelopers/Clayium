@@ -42,4 +42,5 @@ dependencies {
     api("codechicken:codechickenlib:3.2.3.358")
 
     testImplementation("io.kotest:kotest-runner-junit5:5.8.1")
+    testImplementation("io.mockk:mockk:1.13.10")
 }
