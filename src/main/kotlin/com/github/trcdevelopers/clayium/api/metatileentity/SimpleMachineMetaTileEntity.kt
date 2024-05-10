@@ -81,9 +81,8 @@ class SimpleMachineMetaTileEntity(
         //todo cleanup?
         if (importItems.slots == 1) {
             slotsAndProgressBar.child(Widget()
-                .size(26, 26)
-                .background(ClayGuiTextures.LARGE_SLOT)
-                .align(Alignment.CenterLeft).left(4))
+                .size(26, 26).left(4)
+                .background(ClayGuiTextures.LARGE_SLOT))
             .child(ItemSlot().left(8).top(4)
                 .slot(SyncHandlers.itemSlot(importItems, 0)
                     .singletonSlotGroup(2))
@@ -110,9 +109,8 @@ class SimpleMachineMetaTileEntity(
 
         if (exportItems.slots == 1) {
             slotsAndProgressBar.child(Widget()
-                .size(26, 26)
-                .background(ClayGuiTextures.LARGE_SLOT)
-                .align(Alignment.CenterRight).right(4))
+                .size(26, 26).right(4)
+                .background(ClayGuiTextures.LARGE_SLOT))
                 .child(ItemSlot().right(8).top(4)
                     .slot(SyncHandlers.itemSlot(exportItems, 0)
                         .accessibility(false, true)
