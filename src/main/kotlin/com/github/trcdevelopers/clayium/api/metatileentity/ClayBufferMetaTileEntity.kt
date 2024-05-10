@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
+import com.github.trcdevelopers.clayium.api.CTranslation
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
@@ -77,10 +78,7 @@ class ClayBufferMetaTileEntity(
         super.changeIoModesOnPlacement(placer)
     }
 
-    override fun buildUI(
-        data: PosGuiData,
-        syncManager: GuiSyncManager
-    ): ModularPanel? {
+    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.registerSlotGroup("buffer_inv", inventoryRowSize)
         val columnStr = "I".repeat(inventoryColumnSize)
         val matrixStr = (0..<inventoryRowSize).map { columnStr }
@@ -91,7 +89,7 @@ class ClayBufferMetaTileEntity(
                 it.align(Alignment.Center)
             }
             .child(
-                TextWidget(IKey.lang(this.translationKey, IKey.lang("machine.clayium.tier$tier")))
+                TextWidget(IKey.lang(this.translationKey, IKey.lang(CTranslation.tierPrefix(tier))))
                     .margin(6)
                     .align(Alignment.TopLeft))
             .child(Column()
