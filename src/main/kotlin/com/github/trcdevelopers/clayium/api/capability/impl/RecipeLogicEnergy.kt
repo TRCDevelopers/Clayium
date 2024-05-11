@@ -4,7 +4,7 @@ import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 
-class RecipeLogicEnergy(
+open class RecipeLogicEnergy(
     metaTileEntity: MetaTileEntity,
     recipeRegistry: RecipeRegistry<*>,
     private val energyHolder: ClayEnergyHolder,

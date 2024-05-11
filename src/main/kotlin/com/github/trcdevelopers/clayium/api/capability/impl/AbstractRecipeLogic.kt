@@ -21,19 +21,19 @@ abstract class AbstractRecipeLogic(
     private val recipeRegistry: RecipeRegistry<*>,
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.RECIPE_LOGIC) {
 
-    private val inputInventory = metaTileEntity.importItems
+    protected val inputInventory = metaTileEntity.importItems
 
-    private var previousRecipe: Recipe? = null
-    private var recipeCEt = ClayEnergy.ZERO
+    protected var previousRecipe: Recipe? = null
+    protected var recipeCEt = ClayEnergy.ZERO
     var requiredProgress = 0
-        private set
+        protected set
     var currentProgress = 0
-        private set
+        protected set
     // item stacks that will be produced when the recipe is done
-    private var itemOutputs: List<ItemStack> = emptyList()
+    protected var itemOutputs: List<ItemStack> = emptyList()
 
     private var invalidInputsForRecipes = false
-    private var outputsFull = false
+    protected var outputsFull = false
 
     /**
      * Draw energy from the energy container
@@ -81,7 +81,7 @@ abstract class AbstractRecipeLogic(
         return true
     }
 
-    private fun trySearchNewRecipe() {
+    protected open fun trySearchNewRecipe() {
         var currentRecipe: Recipe? = null
         currentRecipe = if (previousRecipe?.matches(false, inputInventory, tier) == true) {
             previousRecipe
@@ -96,7 +96,7 @@ abstract class AbstractRecipeLogic(
         prepareRecipe(currentRecipe)
     }
 
-    private fun prepareRecipe(recipe: Recipe) {
+    protected open fun prepareRecipe(recipe: Recipe) {
         if (!this.drawEnergy(recipe.cePerTick, simulate = true)) return
         val outputLimit = metaTileEntity.exportItems.slots
         val outputs = recipe.copyOutputs().subList(0, outputLimit)

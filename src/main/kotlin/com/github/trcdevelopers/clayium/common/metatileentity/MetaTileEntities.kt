@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.common.metatileentity
 
 import com.github.trcdevelopers.clayium.api.ClayiumApi
+import com.github.trcdevelopers.clayium.api.capability.impl.RecipeLogicClayFurnace
 import com.github.trcdevelopers.clayium.api.metatileentity.ClayBufferMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.SimpleMachineMetaTileEntity
@@ -48,8 +49,11 @@ object MetaTileEntities {
     val WIRE_DRAWING_MACHINE = registerMetaTileEntities(56, (1..4)) { //+4
         SimpleMachineMetaTileEntity(clayiumId("wire_drawing_machine_tier$it"), it, CRecipes.WIRE_DRAWING_MACHINE)
     }
+    val SMELTER = registerMetaTileEntities(60, (4..9)) { //+6
+        SimpleMachineMetaTileEntity(clayiumId("smelter_tier$it"), it, CRecipes.SMELTER, ::RecipeLogicClayFurnace)
+    }
 
-    val ASSEMBLER = registerMetaTileEntities(60, intArrayOf(3, 4, 6, 10)) { //+4
+    val ASSEMBLER = registerMetaTileEntities(66, intArrayOf(3, 4, 6, 10)) { //+4
         SimpleMachineMetaTileEntity(clayiumId("assembler_tier$it"), it, CRecipes.ASSEMBLER)
     }
 

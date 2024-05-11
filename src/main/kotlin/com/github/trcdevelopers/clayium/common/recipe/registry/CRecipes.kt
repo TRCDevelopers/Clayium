@@ -19,8 +19,9 @@ object CRecipes {
     val MILLING_MACHINE = addRegistry("milling_machine", SimpleRecipeBuilder(), 1, 1)
     val PIPE_DRAWING_MACHINE = addRegistry("pipe_drawing_machine", SimpleRecipeBuilder(), 1, 1)
     val WIRE_DRAWING_MACHINE = addRegistry("wire_drawing_machine", SimpleRecipeBuilder(), 1, 1)
+    val SMELTER = addRegistry("smelter", SimpleRecipeBuilder(), 1, 1)
     /**
-     * todo: (smelter, solar clay fabricator) are maybe special
+     * todo: solar clay fabricator is maybe special
      * todo: electrolysis reactor can be dynamic ore-prefixed recipe
      * todo: energetic clay decomposer
      */

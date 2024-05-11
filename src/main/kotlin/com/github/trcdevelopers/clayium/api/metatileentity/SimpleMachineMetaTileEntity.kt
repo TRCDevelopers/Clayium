@@ -12,6 +12,8 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trcdevelopers.clayium.api.CTranslation
+import com.github.trcdevelopers.clayium.api.capability.impl.AbstractRecipeLogic
+import com.github.trcdevelopers.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trcdevelopers.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
@@ -36,21 +38,27 @@ class SimpleMachineMetaTileEntity(
     translationKey: String,
     faceTexture: ResourceLocation,
     recipeRegistry: RecipeRegistry<*>,
+    // saved for createMetaTileEntity()
+    private val workableProvider: (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> AbstractRecipeLogic = ::RecipeLogicEnergy,
 ) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey, faceTexture, recipeRegistry) {
 
     constructor(
         metaTileEntityId: ResourceLocation,
         tier: Int,
         recipeRegistry: RecipeRegistry<*>,
-    ) : this(metaTileEntityId, tier,
+        workableProvider: (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> AbstractRecipeLogic = ::RecipeLogicEnergy,
+    ) : this(
+        metaTileEntityId, tier,
         CUtils.getValidInputModes(recipeRegistry.maxInputs), CUtils.getValidOutputModes(recipeRegistry.maxOutputs),
-        "machine.${metaTileEntityId.namespace}.${recipeRegistry.category.categoryName}", ResourceLocation(metaTileEntityId.namespace, "blocks/${recipeRegistry.category.categoryName}"),
-        recipeRegistry)
+        translationKey = "machine.${metaTileEntityId.namespace}.${recipeRegistry.category.categoryName}",
+        faceTexture = ResourceLocation(metaTileEntityId.namespace, "blocks/${recipeRegistry.category.categoryName}"),
+        recipeRegistry, workableProvider
+    )
 
-    override val workable = RecipeLogicEnergy(this, recipeRegistry, clayEnergyHolder)
+    override val workable = workableProvider(this, recipeRegistry, clayEnergyHolder)
 
     override fun createMetaTileEntity(): MetaTileEntity {
-        return SimpleMachineMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey, faceTexture, recipeRegistry)
+        return SimpleMachineMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey, faceTexture, recipeRegistry, workableProvider)
     }
 
     override fun changeIoModesOnPlacement(placer: EntityLivingBase) {
