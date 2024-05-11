@@ -1,5 +1,5 @@
 #PARSE_ESCAPES
-itemGroup.clayium.clayium=Clayium
+itemGroup.clayium=Clayium
 itemGroup.clayium.clayiumcapsule=Clayium 液体カプセル
 
 tooltip.clayium.HoldShiftForDetails=--§f詳細は§lShift§rキー§7--
@@ -131,7 +131,6 @@ machine.clayium.tier13=OPA
 
 recipe.clayium.ClayWorkTable=粘土作業台
 
-recipe.clayium.BendingMachine=粘土プレート作成機
 recipe.clayium.WireDrawingMachine=粘土ワイヤー圧延機
 recipe.clayium.PipeDrawingMachine=粘土パイプ圧延機
 recipe.clayium.CuttingMachine=粘土切断機
@@ -233,8 +232,8 @@ tile.clayium.blockEnergeticClayCondenser.name=エネルギー粘土凝縮機 Mk 
 tile.clayium.blockEnergeticClayCondenser.tooltip.line1=初めてのエネルギー粘土
 tile.clayium.blockEnergeticClayCondenserMK2.name=エネルギー粘土凝縮機 Mk II
 
-#tile.clayium.blockClayBendingMachine.tooltip.line1=初めての機械
-tile.clayium.bending_machine=%sプレート作成機
+machine.clayium.bending_machine=%sプレート作成機
+machine.clayium.bending_machine_tier1.tooltip1=初めての機械
 
 tile.clayium.blockClayWireDrawingMachine.name=粘土ワイヤー圧延機
 tile.clayium.blockDenseClayWireDrawingMachine.name=高密度粘土ワイヤー圧延機
@@ -285,11 +284,8 @@ tile.clayium.blockBasicDecomposer.name=分解機
 tile.clayium.blockSimpleMillingMachine.name=簡易フライス盤
 tile.clayium.blockBasicMillingMachine.name=フライス盤
 
-tile.clayium.blockSimpleAssembler.name=簡易組立機
-tile.clayium.blockBasicAssembler.name=組立機
-tile.clayium.blockPrecisionAssembler.name=精密組立機
-tile.clayium.blockAntimatterAssembler.name=反物質組立機
-tooltip.clayium.Assembler.line1=複雑なレシピにウンザリしたあなたへ
+machine.clayium.assembler=組立機
+machine.clayium.assembler.tooltip1=複雑なレシピにウンザリしたあなたへ
 
 tile.clayium.blockSimpleInscriber.name=簡易印刷機
 tile.clayium.blockBasicInscriber.name=印刷機
@@ -308,8 +304,8 @@ tile.clayium.blockClayiumSmelter.name=クレイウム精錬機
 tile.clayium.blockUltimateSmelter.name=究極精錬機
 tooltip.clayium.Smelter.line1=粘土エネルギーで動くかまど
 
-clayium.machine.clay_buffer=%sバッファー
-tooltip.clayium.buffer.line1=いわゆるアイテムパイプ
+machine.clayium.clay_buffer=%sバッファー
+machine.clayium.clay_buffer.tooltip1=いわゆるアイテムパイプ
 
 tile.clayium.blockBasicMultitrackBuffer.name=複線バッファー
 tile.clayium.blockAdvancedMultitrackBuffer.name=発展複線バッファー

@@ -151,6 +151,9 @@ class SimpleMachineMetaTileEntity(
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
+        // add the tier-specific tooltip first
         UtilLocale.formatTooltips(tooltip, "machine.clayium.${metaTileEntityId.path}.tooltip")
+        // then add the machine-specific tooltip
+        UtilLocale.formatTooltips(tooltip, "machine.clayium.${recipeRegistry.category.categoryName}.tooltip")
     }
 }

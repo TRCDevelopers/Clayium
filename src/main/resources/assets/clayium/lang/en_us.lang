@@ -5,7 +5,7 @@
 itemGroup.clayium=Clayium
 itemGroup.clayium.clayiumcapsule=Clayium Fluid Capsules
 
-clayium.tooltip.HoldShiftForDetails=--§fHold §lShift§r For Details§7--
+tooltip.clayium.HoldShiftForDetails=--§fHold §lShift§r For Details§7--
 
 gui.clayium.clayLaser=Laser \: %1$s
 gui.clayium.resonance=Resonance %1$s
@@ -132,7 +132,6 @@ machine.clayium.tier13=OPA
 
 recipe.clayium.ClayWorkTable=Clay Work Table
 
-recipe.clayium.BendingMachine=Clay Bending Machine
 recipe.clayium.WireDrawingMachine=Clay Wire Drawing Machine
 recipe.clayium.PipeDrawingMachine=Clay Pipe Drawing Machine
 recipe.clayium.CuttingMachine=Clay Cutting Machine
@@ -286,11 +285,8 @@ tile.clayium.blockBasicDecomposer.name=Basic Decomposer
 tile.clayium.blockSimpleMillingMachine.name=Simple Milling Machine
 tile.clayium.blockBasicMillingMachine.name=Basic Milling Machine
 
-tile.clayium.blockSimpleAssembler.name=Simple Assembler
-tile.clayium.blockBasicAssembler.name=Basic Assembler
-tile.clayium.blockPrecisionAssembler.name=Precision Assembler
-tile.clayium.blockAntimatterAssembler.name=Antimatter Assembler
-tooltip.clayium.Assembler.line1=Say goodbye to complicated craft.
+machine.clayium.assembler=%s Assembler
+machine.clayium.assembler.tooltip1=Say goodbye to complicated craft.
 
 tile.clayium.blockSimpleInscriber.name=Simple Inscriber
 tile.clayium.blockBasicInscriber.name=Basic Inscriber
