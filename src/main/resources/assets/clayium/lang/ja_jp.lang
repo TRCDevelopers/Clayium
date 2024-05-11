@@ -226,34 +226,22 @@ tile.clayium.blockClayCraftingTable.tooltip.line1=ちょっと便利な作業台
 tile.clayium.blockClayCraftingTable.tooltip.line2=__DETAIL__
 tile.clayium.blockClayCraftingTable.tooltip.line3=クラフト時隣接チェストにアクセス可能
 
-tile.clayium.blockElementalMillingMachine.name=初期型フライス盤
-tile.clayium.blockElementalMillingMachine.tooltip.line1=初めての回路
-tile.clayium.blockEnergeticClayCondenser.name=エネルギー粘土凝縮機 Mk I
-tile.clayium.blockEnergeticClayCondenser.tooltip.line1=初めてのエネルギー粘土
-tile.clayium.blockEnergeticClayCondenserMK2.name=エネルギー粘土凝縮機 Mk II
+machine.clayium.milling_machine=%sフライス盤
+machine.clayium.milling_machine_tier1.tooltip1=初めての回路
+
+machine.clayium.energetic_clay_condenser=%sエネルギー粘土凝縮機
+machine.clayium.energetic_clay_condenser_tier3.tooltip1=はじめてのエネルギー粘土
 
 machine.clayium.bending_machine=%sプレート作成機
 machine.clayium.bending_machine_tier1.tooltip1=初めての機械
 
-tile.clayium.blockClayWireDrawingMachine.name=粘土ワイヤー圧延機
-tile.clayium.blockDenseClayWireDrawingMachine.name=高密度粘土ワイヤー圧延機
-tile.clayium.blockSimpleWireDrawingMachine.name=簡易ワイヤー圧延機
-tile.clayium.blockBasicWireDrawingMachine.name=ワイヤー圧延機
+machine.clayium.wire_drawing_machine=%sワイヤー圧延機
 
-tile.clayium.blockClayPipeDrawingMachine.name=粘土パイプ圧延機
-tile.clayium.blockDenseClayPipeDrawingMachine.name=高密度粘土パイプ圧延機
-tile.clayium.blockSimplePipeDrawingMachine.name=簡易パイプ圧延機
-tile.clayium.blockBasicPipeDrawingMachine.name=パイプ圧延機
+machine.clayium.pipe_drawing_machine=%sパイプ圧延機
 
-tile.clayium.blockClayCuttingMachine.name=粘土切断機
-tile.clayium.blockDenseClayCuttingMachine.name=高密度粘土切断機
-tile.clayium.blockSimpleCuttingMachine.name=簡易切断機
-tile.clayium.blockBasicCuttingMachine.name=切断機
+machine.clayium.cutting_machine=%s切断機
 
-tile.clayium.blockClayLathe.name=粘土旋盤
-tile.clayium.blockDenseClayLathe.name=高密度粘土旋盤
-tile.clayium.blockSimpleLathe.name=簡易旋盤
-tile.clayium.blockBasicLathe.name=旋盤
+machine.clayium.lathe=%s旋盤
 
 tile.clayium.blockClayCobblestoneGenerator.name=粘土丸石製造機
 tile.clayium.blockDenseClayCobblestoneGenerator.name=高密度粘土丸石製造機
@@ -263,28 +251,17 @@ tile.clayium.blockAdvancedCobblestoneGenerator.name=発展丸石製造機
 tile.clayium.blockPrecisionCobblestoneGenerator.name=精密丸石製造機
 tile.clayium.blockClaySteelCobblestoneGenerator.name=粘土鋼丸石製造機
 
-tile.clayium.blockDenseClayCondenser.name=高密度粘土コンデンサー
-tile.clayium.blockSimpleCondenser.name=簡易コンデンサー
-tile.clayium.blockBasicCondenser.name=コンデンサー
-tile.clayium.blockAdvancedCondenser.name=発展コンデンサー
-tile.clayium.blockAntimatterCondenser.name=反物質コンデンサー
+machine.clayium.condenser=高密度粘土コンデンサー
 
-tile.clayium.blockDenseClayGrinder.name=高密度粘土粉砕機
-tile.clayium.blockDenseClayGrinder.tooltip.line1=高密度粘土鉱石を粉砕しよう
-tile.clayium.blockSimpleGrinder.name=簡易粉砕機
-tile.clayium.blockBasicGrinder.name=粉砕機
-tile.clayium.blockAdvancedGrinder.name=発展粉砕機
-tile.clayium.blockPrecisionGrinder.name=精密粉砕機
-tile.clayium.blockAntimatterGrinder.name=反物質粉砕機
+machine.clayium.grinder=高密度粘土粉砕機
+machine.clayium.grinder_tier2.tooltip1=高密度粘土鉱石を粉砕しよう
 
-tile.clayium.blockDenseClayDecomposer.name=高密度粘土分解機
-tile.clayium.blockSimpleDecomposer.name=簡易分解機
-tile.clayium.blockBasicDecomposer.name=分解機
+machine.clayium.decomposer=高密度粘土分解機
 
 tile.clayium.blockSimpleMillingMachine.name=簡易フライス盤
 tile.clayium.blockBasicMillingMachine.name=フライス盤
 
-machine.clayium.assembler=組立機
+machine.clayium.assembler=%s 組立機
 machine.clayium.assembler.tooltip1=複雑なレシピにウンザリしたあなたへ
 
 tile.clayium.blockSimpleInscriber.name=簡易印刷機
@@ -453,13 +430,8 @@ tile.clayium.blockClayReactor.tooltip.line8=X: マシン筐体か各種インタ
 tile.clayium.blockClayReactor.tooltip.line9=構成要素の Tier により参照されるレシピの Tier が決定される
 tile.clayium.blockClayReactor.tooltip.line10=レーザーのエネルギー値によりクラフト時間が短縮される
 
-tile.clayium.blockClaySteelTransformer.name=物質変換装置
-tile.clayium.blockClayiumTransformer.name=クレイウム物質変換装置
-tile.clayium.blockUltimateTransformer.name=究極物質変換装置
-tile.clayium.blockAntimatterTransformer.name=反物質物質変換装置
-tile.clayium.blockPureAntimatterTransformer.name=純反物質物質変換装置
-tile.clayium.blockOECTransformer.name=OEC 物質変換装置
-tooltip.clayium.Transformer.line1=莫大なエネルギーにより、全く別の物質に変化させる
+machine.clayium.matter_transformer=%s物質変換装置
+machine.clayium.matter_transformer.tooltip1=莫大なエネルギーにより、全く別の物質に変化させる
 
 tile.clayium.blockUltimateCACondenser.name=CA 凝縮機
 tile.clayium.blockAntimatterCACondenser.name=反物質 CA 凝縮機

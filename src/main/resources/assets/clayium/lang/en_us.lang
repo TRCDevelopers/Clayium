@@ -227,34 +227,22 @@ tile.clayium.blockClayCraftingTable.tooltip.line1=A convenient version of vanill
 tile.clayium.blockClayCraftingTable.tooltip.line2=__DETAIL__
 tile.clayium.blockClayCraftingTable.tooltip.line3=You can access the content of a nearby chest while using it.
 
-tile.clayium.blockElementalMillingMachine.name=Elemental Milling Machine
-tile.clayium.blockElementalMillingMachine.tooltip.line1=To obtain the first circuit.
-tile.clayium.blockEnergeticClayCondenser.name=Energetic Clay Condenser Mk I
-tile.clayium.blockEnergeticClayCondenser.tooltip.line1=To obtain the first Energetic Clay.
-tile.clayium.blockEnergeticClayCondenserMK2.name=Energetic Clay Condenser Mk II
+machine.clayium.milling_machine=%s Milling Machine
+machine.clayium.milling_machine_tier1.tooltip1=To obtain the first circuit.
+
+machine.clayium.energetic_clay_condenser=%s Energetic Clay Condenser
+machine.clayium.energetic_clay_condenser_tier3.tooltip1=To obtain the first Energetic Clay.
 
 machine.clayium.bending_machine=%s Bending Machine
 machine.clayium.bending_machine_tier1.tooltip1=The first machine.
 
-tile.clayium.blockClayWireDrawingMachine.name=Clay Wire Drawing Machine
-tile.clayium.blockDenseClayWireDrawingMachine.name=Dense Clay Wire Drawing Machine
-tile.clayium.blockSimpleWireDrawingMachine.name=Simple Wire Drawing Machine
-tile.clayium.blockBasicWireDrawingMachine.name=Basic Wire Drawing Machine
+machine.clayium.wire_drawing_machine=%s Wire Drawing Machine
 
-tile.clayium.blockClayPipeDrawingMachine.name=Clay Pipe Drawing Machine
-tile.clayium.blockDenseClayPipeDrawingMachine.name=Dense Clay Pipe Drawing Machine
-tile.clayium.blockSimplePipeDrawingMachine.name=Simple Pipe Drawing Machine
-tile.clayium.blockBasicPipeDrawingMachine.name=Basic Pipe Drawing Machine
+machine.clayium.pipe_drawing_machine=%s Pipe Drawing Machine
 
-tile.clayium.blockClayCuttingMachine.name=Clay Cutting Machine
-tile.clayium.blockDenseClayCuttingMachine.name=Dense Clay Cutting Machine
-tile.clayium.blockSimpleCuttingMachine.name=Simple Cutting Machine
-tile.clayium.blockBasicCuttingMachine.name=Basic Cutting Machine
+machine.clayium.cutting_machine=%s Cutting Machine
 
-tile.clayium.blockClayLathe.name=Clay Lathe
-tile.clayium.blockDenseClayLathe.name=Dense Clay Lathe
-tile.clayium.blockSimpleLathe.name=Simple Lathe
-tile.clayium.blockBasicLathe.name=Basic Lathe
+machine.clayium.lathe=%s Lathe
 
 tile.clayium.blockClayCobblestoneGenerator.name=Clay Cobblestone Generator
 tile.clayium.blockDenseClayCobblestoneGenerator.name=Dense Clay Cobblestone Generator
@@ -264,23 +252,12 @@ tile.clayium.blockAdvancedCobblestoneGenerator.name=Advanced Cobblestone Generat
 tile.clayium.blockPrecisionCobblestoneGenerator.name=Precision Cobblestone Generator
 tile.clayium.blockClaySteelCobblestoneGenerator.name=Clay Steel Cobblestone Generator
 
-tile.clayium.blockDenseClayCondenser.name=Dense Clay Condenser
-tile.clayium.blockSimpleCondenser.name=Simple Condenser
-tile.clayium.blockBasicCondenser.name=Basic Condenser
-tile.clayium.blockAdvancedCondenser.name=Advanced Condenser
-tile.clayium.blockAntimatterCondenser.name=Antimatter Condenser
+machine.clayium.condenser=%s Condenser
 
-tile.clayium.blockDenseClayGrinder.name=Dense Clay Grinder
-tile.clayium.blockDenseClayGrinder.tooltip.line1=Grinds Dense Clay Ores.
-tile.clayium.blockSimpleGrinder.name=Simple Grinder
-tile.clayium.blockBasicGrinder.name=Basic Grinder
-tile.clayium.blockAdvancedGrinder.name=Advanced Grinder
-tile.clayium.blockPrecisionGrinder.name=Precision Grinder
-tile.clayium.blockAntimatterGrinder.name=Antimatter Grinder
+machine.clayium.grinder=%s Grinder
+machine.clayium.grinder_tier2.tooltip1=Grinds Dense Clay Ores.
 
-tile.clayium.blockDenseClayDecomposer.name=Dense Clay Decomposer
-tile.clayium.blockSimpleDecomposer.name=Simple Decomposer
-tile.clayium.blockBasicDecomposer.name=Basic Decomposer
+machine.clayium.decomposer=%s Decomposer
 
 tile.clayium.blockSimpleMillingMachine.name=Simple Milling Machine
 tile.clayium.blockBasicMillingMachine.name=Basic Milling Machine
@@ -454,13 +431,8 @@ tile.clayium.blockClayReactor.tooltip.line8=X\: Machine hulls or Interfaces
 tile.clayium.blockClayReactor.tooltip.line9=Recipe tier depends on components' tier.
 tile.clayium.blockClayReactor.tooltip.line10=Time to craft depends on Laser's strength.
 
-tile.clayium.blockClaySteelTransformer.name=Matter Transformer
-tile.clayium.blockClayiumTransformer.name=Clayium Matter Transformer
-tile.clayium.blockUltimateTransformer.name=Ultimate Matter Transformer
-tile.clayium.blockAntimatterTransformer.name=Antimatter Transformer
-tile.clayium.blockPureAntimatterTransformer.name=Pure Antimatter Transformer
-tile.clayium.blockOECTransformer.name=OEC Transformer
-tooltip.clayium.Transformer.line1=Transforms things to others.
+machine.clayium.matter_transformer=%s Matter Transformer
+machine.clayium.matter_transformer.tooltip1=Transforms things to others.
 
 tile.clayium.blockUltimateCACondenser.name=CA Condenser
 tile.clayium.blockAntimatterCACondenser.name=Antimatter CA Condenser

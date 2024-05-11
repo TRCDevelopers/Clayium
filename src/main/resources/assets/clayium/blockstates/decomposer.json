@@ -1,0 +1,91 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "face": "clayium:blocks/decomposer"
+    },
+    "model": "clayium:machine"
+  },
+  "variants": {
+    "tier": {
+      "1": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier1"
+        },
+        "model": "clayium:machine"
+      },
+      "2": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier2"
+        },
+        "model": "clayium:machine"
+      },
+      "3": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier3"
+        },
+        "model": "clayium:machine"
+      },
+      "4": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier4"
+        },
+        "model": "clayium:machine"
+      },
+      "5": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier5"
+        },
+        "model": "clayium:machine"
+      },
+      "6": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier6"
+        },
+        "model": "clayium:machine"
+      },
+      "7": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier7"
+        },
+        "model": "clayium:machine"
+      },
+      "8": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier8"
+        },
+        "model": "clayium:machine"
+      },
+      "9": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier9"
+        },
+        "model": "clayium:machine"
+      },
+      "10": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier10"
+        },
+        "model": "clayium:machine"
+      },
+      "11": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier11"
+        },
+        "model": "clayium:machine"
+      },
+      "12": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier12"
+        },
+        "model": "clayium:machine"
+      },
+      "13": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier13"
+        },
+        "model": "clayium:machine"
+      }
+    }
+  }
+}
