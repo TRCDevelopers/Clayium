@@ -10,7 +10,8 @@ import net.minecraftforge.items.IItemHandler
 abstract class AutoIoHandler(
     metaTileEntity: MetaTileEntity,
     isBuffer: Boolean = false,
-) : MTETrait(metaTileEntity, ClayiumDataCodecs.AUTO_IO_HANDLER) {
+    traitName: String = ClayiumDataCodecs.AUTO_IO_HANDLER,
+) : MTETrait(metaTileEntity, traitName) {
 
     protected val intervalTick = if (isBuffer) ConfigTierBalance.bufferInterval[metaTileEntity.tier] else ConfigTierBalance.machineInterval[metaTileEntity.tier]
     protected val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[metaTileEntity.tier] else ConfigTierBalance.machineAmount[metaTileEntity.tier]
@@ -80,7 +81,12 @@ abstract class AutoIoHandler(
         return remaining
     }
 
-    open class Importer(metaTileEntity: MetaTileEntity, private val target: IItemHandler = metaTileEntity.importItems, isBuffer: Boolean = false) : AutoIoHandler(metaTileEntity, isBuffer) {
+    open class Importer(
+        metaTileEntity: MetaTileEntity,
+        private val target: IItemHandler = metaTileEntity.importItems,
+        isBuffer: Boolean = false,
+        traitName: String = ClayiumDataCodecs.AUTO_IO_HANDLER,
+    ) : AutoIoHandler(metaTileEntity, isBuffer, traitName) {
         override fun update() {
             if (metaTileEntity.world?.isRemote == true) return
             if (ticked++ < intervalTick) return
@@ -89,7 +95,12 @@ abstract class AutoIoHandler(
         }
     }
 
-    open class Exporter(metaTileEntity: MetaTileEntity, private val target: IItemHandler = metaTileEntity.exportItems, isBuffer: Boolean = false) : AutoIoHandler(metaTileEntity, isBuffer) {
+    open class Exporter(
+        metaTileEntity: MetaTileEntity,
+        private val target: IItemHandler = metaTileEntity.exportItems,
+        isBuffer: Boolean = false,
+        traitName: String = ClayiumDataCodecs.AUTO_IO_HANDLER,
+    ) : AutoIoHandler(metaTileEntity, isBuffer, traitName) {
         override fun update() {
             if (metaTileEntity.world?.isRemote == true) return
             if (ticked++ < intervalTick) return

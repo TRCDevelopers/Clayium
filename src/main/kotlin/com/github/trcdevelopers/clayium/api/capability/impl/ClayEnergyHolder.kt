@@ -34,7 +34,7 @@ class ClayEnergyHolder(
         }
     }
 
-    private val energizedClayImporter = object : AutoIoHandler.Importer(metaTileEntity, slot) {
+    private val energizedClayImporter = object : AutoIoHandler.Importer(metaTileEntity, slot, traitName = "${ClayiumDataCodecs.AUTO_IO_HANDLER}.${ClayiumDataCodecs.ENERGY_HOLDER}") {
         override fun isImporting(side: EnumFacing): Boolean {
             return metaTileEntity.getInput(side) == MachineIoMode.CE
         }
