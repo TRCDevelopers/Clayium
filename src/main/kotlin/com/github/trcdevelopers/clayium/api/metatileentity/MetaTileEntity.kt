@@ -275,7 +275,7 @@ abstract class MetaTileEntity(
         if (neighborMetaTileEntity == null) {
             _connectionsCache[i] = this.canConnectTo(neighborTileEntity, side)
         } else {
-            _connectionsCache[i] = this.canConnectToMte(neighborMetaTileEntity, side)
+            _connectionsCache[i] = (this.canConnectToMte(neighborMetaTileEntity, side) || neighborMetaTileEntity.canConnectToMte(this, side.opposite))
         }
         writeCustomData(UPDATE_CONNECTIONS) {
             writeByte(i)
