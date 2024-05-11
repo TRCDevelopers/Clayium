@@ -16,6 +16,7 @@ import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClay
 import net.minecraft.client.resources.I18n
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.ItemStackHandler
 
@@ -87,5 +88,16 @@ class ClayEnergyHolder(
         val item = stack.item as? IEnergizedClay ?: return
         this.clayEnergy += item.getClayEnergy(stack)
         this.slot.extractItem(0, 1, false)
+    }
+
+    override fun serializeNBT(): NBTTagCompound {
+        return super.serializeNBT().apply {
+            setLong("clayEnergy", clayEnergy.energy)
+        }
+    }
+
+    override fun deserializeNBT(data: NBTTagCompound) {
+        super.deserializeNBT(data)
+        clayEnergy = ClayEnergy(data.getLong("clayEnergy"))
     }
 }
