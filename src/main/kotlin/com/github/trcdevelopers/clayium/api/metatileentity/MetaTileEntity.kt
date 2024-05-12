@@ -33,6 +33,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
@@ -339,6 +340,13 @@ abstract class MetaTileEntity(
     open fun isInCreativeTab(tab: CreativeTabs): Boolean {
         return tab === CreativeTabs.SEARCH || tab === Clayium.creativeTab
     }
+
+    open fun shouldRenderInPass(pass: Int) = (pass == 0)
+    open fun getMaxRenderDistanceSquared(): Double = 4096.0
+    /**
+     * null for use TileEntity defaults.
+     */
+    open val renderBoundingBox: AxisAlignedBB? = null
 
     companion object {
         protected fun clearInventory(itemBuffer: MutableList<ItemStack>, inventory: IItemHandlerModifiable) {

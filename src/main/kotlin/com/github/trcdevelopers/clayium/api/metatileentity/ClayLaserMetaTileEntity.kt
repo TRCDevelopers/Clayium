@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
@@ -18,6 +19,8 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemStackHandler
+import kotlin.math.max
+import kotlin.math.min
 
 class ClayLaserMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -33,7 +36,30 @@ class ClayLaserMetaTileEntity(
         override fun update() {}
     }
 
-    val testClayLaser = ClayLaser(EnumFacing.NORTH, 1, 0, 0)
+    val testClayLaser = ClayLaser(EnumFacing.NORTH, 3, 3, 3)
+
+    override val renderBoundingBox by lazy {
+        val pos = holder?.pos ?: return@lazy null
+        val x = pos.x.toDouble()
+        val y = pos.y.toDouble()
+        val z = pos.z.toDouble()
+
+        val direction = testClayLaser.laserDirection
+        val xOffset = direction.xOffset.toDouble()
+        val yOffset = direction.yOffset.toDouble()
+        val zOffset = direction.zOffset.toDouble()
+
+        val l = testClayLaser.getLaserLength().toDouble()
+
+        val maxX = max(x, x + xOffset * l) + 1.0
+        val minX = min(x, x + xOffset * l)
+        val maxY = max(y, y + yOffset * l) + 1.0
+        val minY = min(y, y + yOffset * l)
+        val maxZ = max(z, z + zOffset * l) + 1.0
+        val minZ = min(z, z + zOffset * l)
+
+        AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ)
+    }
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayLaserMetaTileEntity(metaTileEntityId, tier)
@@ -54,4 +80,7 @@ class ClayLaserMetaTileEntity(
         }
         return super.getCapability(capability, facing)
     }
+
+    override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
+    override fun shouldRenderInPass(pass: Int) = (pass == 1)
 }
