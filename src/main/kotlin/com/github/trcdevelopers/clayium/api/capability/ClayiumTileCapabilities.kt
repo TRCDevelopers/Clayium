@@ -6,4 +6,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject
 object ClayiumTileCapabilities {
     @CapabilityInject(IClayEnergyHolder::class)
     lateinit var CAPABILITY_CLAY_ENERGY_HOLDER: Capability<IClayEnergyHolder>
+
+    @CapabilityInject(IClayLaser::class)
+    lateinit var CAPABILITY_CLAY_LASER: Capability<IClayLaser>
 }

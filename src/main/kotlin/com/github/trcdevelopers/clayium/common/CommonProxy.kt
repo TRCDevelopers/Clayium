@@ -2,6 +2,8 @@ package com.github.trcdevelopers.clayium.common
 
 import com.cleanroommc.modularui.factory.GuiManager
 import com.github.trcdevelopers.clayium.api.ClayiumApi
+import com.github.trcdevelopers.clayium.api.capability.IClayEnergyHolder
+import com.github.trcdevelopers.clayium.api.capability.SimpleCapabilityManager
 import com.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
@@ -21,6 +23,7 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.MinecraftForge
+import net.minecraftforge.common.capabilities.CapabilityManager
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
@@ -41,6 +44,8 @@ open class CommonProxy {
         MetaTileEntities.init()
 
         GuiManager.registerFactory(MetaTileEntityGuiFactory)
+
+        SimpleCapabilityManager.registerCapabilities()
     }
 
     open fun init(event: FMLInitializationEvent) {

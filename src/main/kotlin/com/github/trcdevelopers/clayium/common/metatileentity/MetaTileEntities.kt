@@ -3,6 +3,7 @@ package com.github.trcdevelopers.clayium.common.metatileentity
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.capability.impl.RecipeLogicClayFurnace
 import com.github.trcdevelopers.clayium.api.metatileentity.ClayBufferMetaTileEntity
+import com.github.trcdevelopers.clayium.api.metatileentity.ClayLaserMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.SimpleMachineMetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
@@ -55,6 +56,10 @@ object MetaTileEntities {
 
     val ASSEMBLER = registerMetaTileEntities(66, intArrayOf(3, 4, 6, 10)) { //+4
         SimpleMachineMetaTileEntity(clayiumId("assembler_tier$it"), it, CRecipes.ASSEMBLER)
+    }
+
+    val CLAY_LASER = registerMetaTileEntities(70, (7..10)) { //+4
+        ClayLaserMetaTileEntity(clayiumId("clay_laser_tier$it"), it)
     }
 
     /**
