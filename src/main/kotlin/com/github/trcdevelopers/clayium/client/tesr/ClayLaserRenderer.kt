@@ -8,8 +8,10 @@ import com.github.trcdevelopers.clayium.common.config.ConfigCore
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.util.EnumFacing.*
 import net.minecraft.util.ResourceLocation
+import org.lwjgl.opengl.GL11
 
 object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
     override fun render(holder: MetaTileEntityHolder, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
@@ -17,10 +19,20 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
         val metaTileEntity = holder.metaTileEntity ?: return
         val clayLaser = metaTileEntity.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER, null) ?: return
 
+        //reference: https://qiita.com/KrGit3/items/6b2673c6362a3f88ef7a
         GlStateManager.pushMatrix();
-        {
+        GlStateManager.disableLighting()
+        GlStateManager.enableBlend()
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+        GlStateManager.enableDepth()
+        GlStateManager.depthMask(false)
+        run {
+
+
+
             GlStateManager.color(1.0f, 1.0f, 1.0f, 0.75f)
             GlStateManager.translate(x + 0.5f, y + 0.5f, z + 0.5f)
+
             when (clayLaser.laserDirection) {
                 DOWN -> GlStateManager.rotate(180.0f, 1.0f, 0.0f, 0.0f)
                 UP -> GlStateManager.rotate(0.0f, 1.0f, 0.0f, 0.0f)
@@ -31,12 +43,12 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
             }
 
             val laserRgb = clayLaser.getLaserRgb()
-            val red = (laserRgb shr 16)
-            val green = (laserRgb shr 8 and 0xFF)
-            val blue = (laserRgb and 0xFF)
+            val rawLaserRed = (laserRgb shr 16)
+            val rawLaserGreen = (laserRgb shr 8 and 0xFF)
+            val rawLaserBlue = (laserRgb and 0xFF)
 
             val str = laserRgb
-            val max = maxOf(red, green, blue)
+            val max = maxOf(rawLaserRed, rawLaserGreen, rawLaserBlue)
             val scale = 1.0f - 14.0625f / (str + 14)
 
             GlStateManager.scale(scale, 1.0f, scale)
@@ -50,20 +62,27 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
             val f5 = 1.0F;
 
             val tessellator = Tessellator.getInstance()
-            val buffer = tessellator.buffer
+            val bufferBuilder = tessellator.buffer
 
             val laserQuality = ConfigCore.rendering.laserQuality
-            for (i in 0..laserQuality) {
-                buffer.color(red, green, blue, ((26.0f + scale * 26.0f) * 8 / laserQuality).toInt());
-//                buffer.addVertexData();
-//                tessellator.addVertexWithUV(0.0D, 1.0D, 0.5D, f14, f4);
-//                tessellator.addVertexWithUV(0.0D, 1.0D, -0.5D, f15, f4);
-//                tessellator.addVertexWithUV(0.0D, 0.0D, -0.5D, f15, f5);
-//                tessellator.addVertexWithUV(0.0D, 0.0D, 0.5D, f14, f5);
+
+            val r = 255 * rawLaserRed / max
+            val g = 255 * rawLaserGreen / max
+            val b = 255 * rawLaserBlue / max
+            val a = ((26.0f + scale * 26.0f) * 8 / laserQuality).toInt()
+
+            for (notUsed in 0..laserQuality) {
+                bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR)
+                bufferBuilder.pos(0.0, 1.0, 0.5).tex(f14.toDouble(), f4.toDouble()).color(r, g, b, a).endVertex()
+                bufferBuilder.pos(0.0, 1.0, -0.5).tex(f15.toDouble(), f4.toDouble()).color(r, g, b, a).endVertex()
+                bufferBuilder.pos(0.0, 0.0, -0.5).tex(f15.toDouble(), f5.toDouble()).color(r, g, b, a).endVertex()
+                bufferBuilder.pos(0.0, 0.0, 0.5).tex(f14.toDouble(), f5.toDouble()).color(r, g, b, a).endVertex()
                 tessellator.draw();
                 GlStateManager.rotate(180.0f / laserQuality, 0.0f, 1.0f, 0.0f);
             }
         }
+        GlStateManager.depthMask(true)
+        GlStateManager.enableDepth()
         GlStateManager.popMatrix()
     }
 }
