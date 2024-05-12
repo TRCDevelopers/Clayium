@@ -27,9 +27,6 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
         GlStateManager.enableDepth()
         GlStateManager.depthMask(false)
         run {
-
-
-
             GlStateManager.color(1.0f, 1.0f, 1.0f, 0.75f)
             GlStateManager.translate(x + 0.5f, y + 0.5f, z + 0.5f)
 
@@ -55,11 +52,7 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
             GlStateManager.translate(0.0f, -scale / 6.0f, 0.0f)
             GlStateManager.scale(1.0f, clayLaser.getLaserLength() + scale / 3.0f, 1.0f)
 
-            bindTexture(ResourceLocation(CValues.MOD_ID, "textures/blocks/laser.png"))
-            val f14 = 0.0F;
-            val f15 = 1.0F;
-            val f4 = 0.0F;
-            val f5 = 1.0F;
+            this.bindTexture(ResourceLocation(CValues.MOD_ID, "textures/blocks/laser.png"))
 
             val tessellator = Tessellator.getInstance()
             val bufferBuilder = tessellator.buffer
@@ -73,10 +66,10 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
 
             for (notUsed in 0..laserQuality) {
                 bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR)
-                bufferBuilder.pos(0.0, 1.0, 0.5).tex(f14.toDouble(), f4.toDouble()).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(0.0, 1.0, -0.5).tex(f15.toDouble(), f4.toDouble()).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(0.0, 0.0, -0.5).tex(f15.toDouble(), f5.toDouble()).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(0.0, 0.0, 0.5).tex(f14.toDouble(), f5.toDouble()).color(r, g, b, a).endVertex()
+                bufferBuilder.pos(0.0, 1.0, 0.5).tex(0.0, 0.0).color(r, g, b, a).endVertex()
+                bufferBuilder.pos(0.0, 1.0, -0.5).tex(1.0, 0.0).color(r, g, b, a).endVertex()
+                bufferBuilder.pos(0.0, 0.0, -0.5).tex(1.0, 1.0).color(r, g, b, a).endVertex()
+                bufferBuilder.pos(0.0, 0.0, 0.5).tex(0.0, 1.0).color(r, g, b, a).endVertex()
                 tessellator.draw();
                 GlStateManager.rotate(180.0f / laserQuality, 0.0f, 1.0f, 0.0f);
             }
