@@ -1,6 +1,5 @@
-package com.github.trcdevelopers.clayium.api.capability.impl
+package com.github.trcdevelopers.clayium.api.laser
 
-import com.github.trcdevelopers.clayium.api.capability.IClayLaser
 import net.minecraft.util.EnumFacing
 
 class ClayLaser(

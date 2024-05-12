@@ -13,7 +13,10 @@ object ClayiumDataCodecs {
 
     val SYNC_MTE_TRAIT = assignId()
 
+    val UPDATE_LASER_DIRECTION = assignId()
+
     const val AUTO_IO_HANDLER = "autoIoHandler"
     const val RECIPE_LOGIC = "recipeLogic"
     const val ENERGY_HOLDER = "energyHolder"
+    const val LASER_CONTROLLER = "laserController"
 }

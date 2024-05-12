@@ -96,7 +96,7 @@ abstract class MetaTileEntity(
 
     fun markDirty() = holder?.markDirty()
 
-    fun update() {
+    open fun update() {
         mteTraits.values.forEach(MTETrait::update)
     }
 

@@ -5,9 +5,10 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
-import com.github.trcdevelopers.clayium.api.capability.impl.ClayLaser
+import com.github.trcdevelopers.clayium.api.capability.impl.ClayLaserManager
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -36,20 +37,21 @@ class ClayLaserMetaTileEntity(
         override fun update() {}
     }
 
-    val testClayLaser = ClayLaser(EnumFacing.NORTH, 3, 3, 3)
+    val laserManager = ClayLaserManager(this)
 
     override val renderBoundingBox by lazy {
+        val laser = laserManager.laser
         val pos = holder?.pos ?: return@lazy null
         val x = pos.x.toDouble()
         val y = pos.y.toDouble()
         val z = pos.z.toDouble()
 
-        val direction = testClayLaser.laserDirection
+        val direction = laser.laserDirection
         val xOffset = direction.xOffset.toDouble()
         val yOffset = direction.yOffset.toDouble()
         val zOffset = direction.zOffset.toDouble()
 
-        val l = testClayLaser.getLaserLength().toDouble()
+        val l = laser.getLaserLength().toDouble()
 
         val maxX = max(x, x + xOffset * l) + 1.0
         val minX = min(x, x + xOffset * l)
@@ -59,6 +61,16 @@ class ClayLaserMetaTileEntity(
         val minZ = min(z, z + zOffset * l)
 
         AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ)
+    }
+
+    override fun changeIoModesOnPlacement(placer: EntityLivingBase) {
+        super.changeIoModesOnPlacement(placer)
+        this.frontFacing = EnumFacing.getDirectionFromEntityLiving(holder!!.pos, placer)
+        this.laserManager.updateDirection(frontFacing)
+    }
+
+    override fun update() {
+        super.update()
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
@@ -76,7 +88,7 @@ class ClayLaserMetaTileEntity(
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         if (capability === ClayiumTileCapabilities.CAPABILITY_CLAY_LASER) {
-            return testClayLaser as T
+            return ClayiumTileCapabilities.CAPABILITY_CLAY_LASER.cast(laserManager)
         }
         return super.getCapability(capability, facing)
     }

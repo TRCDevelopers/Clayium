@@ -17,10 +17,10 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
     override fun render(holder: MetaTileEntityHolder, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
         if (holder.blockType !is BlockMachine) return
         val metaTileEntity = holder.metaTileEntity ?: return
-        val clayLaser = metaTileEntity.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER, null) ?: return
+        val clayLaser = metaTileEntity.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER, null)?.laser ?: return
 
         //reference: https://qiita.com/KrGit3/items/6b2673c6362a3f88ef7a
-        GlStateManager.pushMatrix();
+        GlStateManager.pushMatrix()
         GlStateManager.disableLighting()
         GlStateManager.enableBlend()
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
@@ -70,8 +70,8 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
                 bufferBuilder.pos(0.0, 1.0, -0.5).tex(1.0, 0.0).color(r, g, b, a).endVertex()
                 bufferBuilder.pos(0.0, 0.0, -0.5).tex(1.0, 1.0).color(r, g, b, a).endVertex()
                 bufferBuilder.pos(0.0, 0.0, 0.5).tex(0.0, 1.0).color(r, g, b, a).endVertex()
-                tessellator.draw();
-                GlStateManager.rotate(180.0f / laserQuality, 0.0f, 1.0f, 0.0f);
+                tessellator.draw()
+                GlStateManager.rotate(180.0f / laserQuality, 0.0f, 1.0f, 0.0f)
             }
         }
         GlStateManager.depthMask(true)

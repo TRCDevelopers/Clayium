@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.api.capability
+package com.github.trcdevelopers.clayium.api.laser
 
 import net.minecraft.util.EnumFacing
 
