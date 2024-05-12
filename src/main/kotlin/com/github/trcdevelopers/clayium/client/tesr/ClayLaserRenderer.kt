@@ -44,7 +44,7 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
             val rawLaserGreen = (laserRgb shr 8 and 0xFF)
             val rawLaserBlue = (laserRgb and 0xFF)
 
-            val str = laserRgb
+            val str = rawLaserRed + rawLaserGreen + rawLaserBlue
             val max = maxOf(rawLaserRed, rawLaserGreen, rawLaserBlue)
             val scale = 1.0f - 14.0625f / (str + 14)
 
