@@ -90,7 +90,8 @@ abstract class MetaTileEntity(
     abstract fun registerItemModel(item: Item, meta: Int)
 
     fun addMetaTileEntityTrait(trait: MTETrait) {
-        mteTraits.put(trait.name, trait)
+        mteTraits[trait.name] = trait
+        traitByNetworkId[trait.networkId] = trait
     }
 
     fun markDirty() = holder?.markDirty()
