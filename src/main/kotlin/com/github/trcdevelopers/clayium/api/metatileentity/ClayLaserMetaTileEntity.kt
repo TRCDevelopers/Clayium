@@ -37,7 +37,7 @@ class ClayLaserMetaTileEntity(
         override fun update() {}
     }
 
-    val laserManager = ClayLaserManager(this)
+    val laserManager = ClayLaserManager(this, 3)
 
     override val renderBoundingBox by lazy {
         val laser = laserManager.laser

@@ -131,6 +131,11 @@ abstract class MetaTileEntity(
             buf.writeByte(_outputModes[i].id)
             buf.writeBoolean(_connectionsCache[i])
         }
+        buf.writeVarInt(traitByNetworkId.size)
+        for ((id, trait) in traitByNetworkId) {
+            buf.writeVarInt(id)
+            trait.writeInitialSyncData(buf)
+        }
     }
 
     override fun receiveInitialSyncData(buf: PacketBuffer) {
@@ -139,6 +144,12 @@ abstract class MetaTileEntity(
             _inputModes[i] = MachineIoMode.entries[buf.readByte().toInt()]
             _outputModes[i] = MachineIoMode.entries[buf.readByte().toInt()]
             _connectionsCache[i] = buf.readBoolean()
+        }
+        val numberOfTraits = buf.readVarInt()
+        for (i in 0..<numberOfTraits) {
+            val id = buf.readVarInt()
+            traitByNetworkId[id]?.receiveInitialSyncData(buf)
+                ?: Clayium.LOGGER.error("Could not find MTETrait with id $id at $pos")
         }
     }
 
