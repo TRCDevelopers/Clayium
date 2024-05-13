@@ -25,6 +25,7 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
         GlStateManager.enableBlend()
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
         GlStateManager.enableDepth()
+        GlStateManager.disableCull()
         GlStateManager.depthMask(false)
         run {
             GlStateManager.color(1.0f, 1.0f, 1.0f, 0.75f)
@@ -65,7 +66,7 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
             val a = ((26.0f + scale * 26.0f) * 8 / laserQuality).toInt()
 
             for (notUsed in 0..laserQuality) {
-                bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR)
+                bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR)
                 bufferBuilder.pos(0.0, 1.0, 0.5).tex(0.0, 0.0).color(r, g, b, a).endVertex()
                 bufferBuilder.pos(0.0, 1.0, -0.5).tex(1.0, 0.0).color(r, g, b, a).endVertex()
                 bufferBuilder.pos(0.0, 0.0, -0.5).tex(1.0, 1.0).color(r, g, b, a).endVertex()
@@ -74,6 +75,7 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
                 GlStateManager.rotate(180.0f / laserQuality, 0.0f, 1.0f, 0.0f)
             }
         }
+        GlStateManager.enableCull()
         GlStateManager.depthMask(true)
         GlStateManager.enableDepth()
         GlStateManager.popMatrix()
