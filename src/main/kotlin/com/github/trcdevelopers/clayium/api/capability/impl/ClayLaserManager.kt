@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.api.capability.impl
 
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
+import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_LASER_ACTIVATION
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_LASER_DIRECTION
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.IClayLaserManager
@@ -44,6 +45,9 @@ class ClayLaserManager(
                     ?.laserStopped(laser.laserDirection.opposite)
                 field = false
             }
+            writeCustomData(UPDATE_LASER_ACTIVATION) {
+                writeBoolean(value)
+            }
         }
 
     override fun updateDirection(direction: EnumFacing) {
@@ -59,17 +63,21 @@ class ClayLaserManager(
                 val direction = EnumFacing.byIndex(buf.readVarInt())
                 laser = ClayLaser(direction, 3, 3, 3)
             }
+            UPDATE_LASER_ACTIVATION -> {
+                isActive = buf.readBoolean()
+            }
         }
     }
 
     override fun writeInitialSyncData(buf: PacketBuffer) {
         buf.writeVarInt(laser.laserDirection.index)
+        buf.writeBoolean(isActive)
     }
 
     override fun receiveInitialSyncData(buf: PacketBuffer) {
         val direction = EnumFacing.byIndex(buf.readVarInt())
         laser = ClayLaser(direction, 3, 3, 3)
-        println(direction)
+        isActive = buf.readBoolean()
     }
 
     override fun serializeNBT(): NBTTagCompound {
