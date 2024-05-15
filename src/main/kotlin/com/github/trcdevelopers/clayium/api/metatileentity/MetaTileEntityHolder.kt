@@ -30,7 +30,7 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
         if (world != null && !world.isRemote) {
             writeCustomData(INITIALIZE_MTE) {
                 writeVarInt(ClayiumApi.MTE_REGISTRY.getIdByKey(sampleMetaTileEntity.metaTileEntityId))
-                if (placer != null) newMetaTileEntity.onPlacement()
+                newMetaTileEntity.onPlacement()
                 newMetaTileEntity.writeInitialSyncData(this)
             }
             world.neighborChanged(pos, blockType, pos)
