@@ -43,7 +43,7 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
                 EAST -> GlStateManager.rotate(90.0f, 0.0f, 0.0f, -1.0f)
             }
 
-            val laserRgb = clayLaser.getLaserRgb()
+            val laserRgb = clayLaser.laserRgb
             val rawLaserRed = (laserRgb shr 16)
             val rawLaserGreen = (laserRgb shr 8 and 0xFF)
             val rawLaserBlue = (laserRgb and 0xFF)
@@ -54,7 +54,7 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
 
             GlStateManager.scale(scale, 1.0f, scale)
             GlStateManager.translate(0.0f, -scale / 6.0f, 0.0f)
-            GlStateManager.scale(1.0f, clayLaser.getLaserLength() + scale / 3.0f, 1.0f)
+            GlStateManager.scale(1.0f, clayLaser.laserLength + scale / 3.0f, 1.0f)
 
             this.bindTexture(ResourceLocation(CValues.MOD_ID, "textures/blocks/laser.png"))
 

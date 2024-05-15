@@ -51,7 +51,7 @@ class ClayLaserMetaTileEntity(
         val yOffset = direction.yOffset.toDouble()
         val zOffset = direction.zOffset.toDouble()
 
-        val l = laser.getLaserLength().toDouble()
+        val l = laser.laserLength.toDouble()
 
         val maxX = max(x, x + xOffset * l) + 1.0
         val minX = min(x, x + xOffset * l)
@@ -63,16 +63,11 @@ class ClayLaserMetaTileEntity(
         AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ)
     }
 
-    override fun changeIoModesOnPlacement(placer: EntityLivingBase) {
-        super.changeIoModesOnPlacement(placer)
-        this.frontFacing = EnumFacing.getDirectionFromEntityLiving(holder!!.pos, placer)
-        this.laserManager.updateDirection(frontFacing)
-    }
-
     override fun onPlacement() {
         val world = holder?.world ?: return
         val pos = holder?.pos ?: return
         laserManager.onPlacement(world, pos)
+        laserManager.updateDirection(this.frontFacing)
         this.updateLaserActivation()
     }
 

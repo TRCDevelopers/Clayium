@@ -7,16 +7,22 @@ class ClayLaser(
     val laserRed: Int,
     val laserGreen: Int,
     val laserBlue: Int,
+    override val laserLength: Int,
 ) : IClayLaser {
-    override fun getLaserLength(): Int {
-        return 32
+
+    init {
+        require(laserLength in 0..MAX_LASER_LENGTH) { "laserLength must be in range 0..$MAX_LASER_LENGTH" }
     }
 
-    override fun getLaserEnergy(): Double {
-        return 1.0
+    override val laserEnergy: Int = 1
+    override val laserRgb: Int
+        get() = (laserRed shl 16) or (laserGreen shl 8) or laserBlue
+
+    fun changeDirection(direction: EnumFacing): ClayLaser {
+        return ClayLaser(direction, laserRed, laserGreen, laserBlue, laserLength)
     }
 
-    override fun getLaserRgb(): Int {
-        return (laserRed shl 16) or (laserGreen shl 8) or laserBlue
+    companion object {
+        const val MAX_LASER_LENGTH = 32
     }
 }
