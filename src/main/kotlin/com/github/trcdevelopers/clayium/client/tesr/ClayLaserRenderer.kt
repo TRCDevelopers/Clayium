@@ -17,7 +17,10 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
     override fun render(holder: MetaTileEntityHolder, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
         if (holder.blockType !is BlockMachine) return
         val metaTileEntity = holder.metaTileEntity ?: return
-        val clayLaser = metaTileEntity.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER, null)?.laser ?: return
+        val clayLaserManager = metaTileEntity.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER, null) ?: return
+        if (!clayLaserManager.isActive) return
+
+        val clayLaser = clayLaserManager.laser
 
         //reference: https://qiita.com/KrGit3/items/6b2673c6362a3f88ef7a
         GlStateManager.pushMatrix()
