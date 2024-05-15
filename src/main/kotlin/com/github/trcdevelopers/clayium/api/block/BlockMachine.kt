@@ -144,7 +144,7 @@ class BlockMachine : Block(Material.IRON) {
         }
     }
 
-    override fun neighborChanged(state: IBlockState, worldIn: World, pos: BlockPos, blockIn: Block, fromPos: BlockPos) {
+    override fun neighborChanged(state: IBlockState, worldIn: World, pos: BlockPos, blockIn: Block?, fromPos: BlockPos) {
         (worldIn.getTileEntity(pos) as? MetaTileEntityHolder)?.neighborChanged()
     }
 
