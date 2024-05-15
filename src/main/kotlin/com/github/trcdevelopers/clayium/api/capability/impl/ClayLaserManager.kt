@@ -31,6 +31,8 @@ class ClayLaserManager(
 
     override var laser = ClayLaser(metaTileEntity.frontFacing, laserRed, laserGreen, laserBlue)
     private var laserTarget: TileEntity? = null
+    var isActive = false
+        private set
 
     override fun updateDirection(direction: EnumFacing) {
         laser = ClayLaser(direction, laserRed, laserGreen, laserBlue)
@@ -80,6 +82,20 @@ class ClayLaserManager(
     private fun canGoThroughBlock(world: IBlockAccess, pos: BlockPos): Boolean {
         val material = world.getBlockState(pos).material
         return (material == Material.AIR) || (material == Material.GRASS)
+    }
+
+    fun activate() {
+        isActive = true
+        laserTarget
+            ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
+            ?.acceptLaser(laser.laserDirection.opposite, laser)
+    }
+
+    fun deactivate() {
+        isActive = false
+        laserTarget
+            ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
+            ?.laserStopped(laser.laserDirection.opposite)
     }
 
     private companion object {
