@@ -88,6 +88,7 @@ class ClayLaserManager(
             val targetPos = pos.offset(metaTileEntity.frontFacing, i)
             if (canGoThroughBlock(world, targetPos)) continue
             this.laserTarget = world.getTileEntity(targetPos)
+                ?.takeIf { it.hasCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER, laser.laserDirection.opposite) }
         }
     }
 
