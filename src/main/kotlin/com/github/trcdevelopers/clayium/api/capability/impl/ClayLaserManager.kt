@@ -99,11 +99,13 @@ class ClayLaserManager(
         return NBTTagCompound().apply {
             setByte("laserDirection", laser.laserDirection.index.toByte())
             setInteger("laserLength", laser.laserLength)
+            setBoolean("isActive", isActive)
         }
     }
 
     override fun deserializeNBT(data: NBTTagCompound) {
         laser = ClayLaser(EnumFacing.byIndex(data.getByte("laserDirection").toInt()), laserRed, laserGreen, laserBlue, data.getInteger("laserLength"))
+        isActive = data.getBoolean("isActive")
     }
 
     fun onPlacement(world: IBlockAccess, pos: BlockPos) {
