@@ -45,8 +45,10 @@ class ClayLaserManager(
                     ?.laserStopped(laser.laserDirection.opposite)
                 field = false
             }
-            writeCustomData(UPDATE_LASER_ACTIVATION) {
-                writeBoolean(value)
+            if (metaTileEntity.world?.isRemote == false) {
+                writeCustomData(UPDATE_LASER_ACTIVATION) {
+                    writeBoolean(value)
+                }
             }
         }
 
