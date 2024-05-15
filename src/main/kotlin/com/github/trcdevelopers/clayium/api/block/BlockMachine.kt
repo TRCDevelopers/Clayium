@@ -144,6 +144,10 @@ class BlockMachine : Block(Material.IRON) {
         }
     }
 
+    override fun neighborChanged(state: IBlockState, worldIn: World, pos: BlockPos, blockIn: Block, fromPos: BlockPos) {
+        (worldIn.getTileEntity(pos) as? MetaTileEntityHolder)?.neighborChanged()
+    }
+
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
         for (mte in ClayiumApi.MTE_REGISTRY) {
             if (mte.isInCreativeTab(itemIn)) {

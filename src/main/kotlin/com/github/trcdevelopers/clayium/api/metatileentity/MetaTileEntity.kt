@@ -339,6 +339,7 @@ abstract class MetaTileEntity(
     open fun onNeighborChanged(facing: EnumFacing) {
         this.refreshConnection(facing)
     }
+    open fun neighborChanged() {}
 
     fun getNeighbor(side: EnumFacing) = holder?.getNeighbor(side)
     fun scheduleRenderUpdate() = holder?.scheduleRenderUpdate()

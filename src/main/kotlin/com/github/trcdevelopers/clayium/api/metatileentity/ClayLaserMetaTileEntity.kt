@@ -81,6 +81,10 @@ class ClayLaserMetaTileEntity(
         this.updateLaserActivation()
     }
 
+    override fun neighborChanged() {
+        this.updateLaserActivation()
+    }
+
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayLaserMetaTileEntity(metaTileEntityId, tier)
     }

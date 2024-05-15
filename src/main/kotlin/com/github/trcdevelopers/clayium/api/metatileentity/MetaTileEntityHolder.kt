@@ -106,6 +106,10 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
         metaTileEntity?.onNeighborChanged(facing)
     }
 
+    fun neighborChanged() {
+        metaTileEntity?.neighborChanged()
+    }
+
     fun scheduleRenderUpdate() {
         world?.markBlockRangeForRenderUpdate(pos, pos)
     }
