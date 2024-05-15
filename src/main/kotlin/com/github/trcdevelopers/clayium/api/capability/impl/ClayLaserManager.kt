@@ -37,10 +37,12 @@ class ClayLaserManager(
                 laserTarget
                     ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
                     ?.acceptLaser(laser.laserDirection.opposite, laser)
+                field = true
             } else {
                 laserTarget
                     ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
                     ?.laserStopped(laser.laserDirection.opposite)
+                field = false
             }
         }
 
