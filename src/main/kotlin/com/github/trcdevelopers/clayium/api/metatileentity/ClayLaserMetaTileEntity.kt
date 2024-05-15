@@ -8,7 +8,6 @@ import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayLaserManager
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -64,10 +63,9 @@ class ClayLaserMetaTileEntity(
     }
 
     override fun onPlacement() {
-        val world = holder?.world ?: return
-        val pos = holder?.pos ?: return
+        val world = world ?: return
+        val pos = pos ?: return
         laserManager.onPlacement(world, pos)
-        laserManager.updateDirection(this.frontFacing)
         this.updateLaserActivation()
     }
 

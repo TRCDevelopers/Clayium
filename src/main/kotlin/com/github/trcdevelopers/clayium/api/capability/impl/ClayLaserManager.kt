@@ -15,7 +15,6 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
-import net.minecraft.world.World
 
 class ClayLaserManager(
     metaTileEntity: MetaTileEntity,
@@ -61,7 +60,7 @@ class ClayLaserManager(
         when (discriminator) {
             UPDATE_LASER -> {
                 val length = buf.readVarInt()
-                val direction = EnumFacing.byIndex(buf.readByte().toInt())
+                val direction = EnumFacing.byIndex(buf.readVarInt())
                 laser = ClayLaser(direction, laserRed, laserGreen, laserBlue, length)
             }
             UPDATE_LASER_ACTIVATION -> {
@@ -71,13 +70,15 @@ class ClayLaserManager(
     }
 
     override fun writeInitialSyncData(buf: PacketBuffer) {
+        buf.writeVarInt(laser.laserLength)
         buf.writeVarInt(laser.laserDirection.index)
         buf.writeBoolean(isActive)
     }
 
     override fun receiveInitialSyncData(buf: PacketBuffer) {
+        val length = buf.readVarInt()
         val direction = EnumFacing.byIndex(buf.readVarInt())
-        laser = ClayLaser(direction, 3, 3, 3, 32)
+        laser = ClayLaser(direction, 3, 3, 3, length)
         isActive = buf.readBoolean()
     }
 
@@ -92,16 +93,13 @@ class ClayLaserManager(
         laser = ClayLaser(EnumFacing.byIndex(data.getByte("laserDirection").toInt()), laserRed, laserGreen, laserBlue, data.getInteger("laserLength"))
     }
 
-    fun onPlacement(world: World, pos: BlockPos) {
-        if (world.isRemote) return
+    fun onPlacement(world: IBlockAccess, pos: BlockPos) {
         for (i in 1..ClayLaser.MAX_LASER_LENGTH) {
             val targetPos = pos.offset(metaTileEntity.frontFacing, i)
             if (canGoThroughBlock(world, targetPos)) continue
             this.laserTarget = world.getTileEntity(targetPos)
                 ?.takeIf { it.hasCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, metaTileEntity.frontFacing) }
-            this.laser = ClayLaser(metaTileEntity.frontFacing, laserRed, laserGreen, laserBlue, i - 1)
-            writeLaserData()
-            println("Laser length: ${laser.laserLength}")
+            this.laser = ClayLaser(metaTileEntity.frontFacing, laserRed, laserGreen, laserBlue, i)
             return
         }
         this.laser = ClayLaser(metaTileEntity.frontFacing, laserRed, laserGreen, laserBlue, ClayLaser.MAX_LASER_LENGTH)
@@ -115,7 +113,7 @@ class ClayLaserManager(
     private fun writeLaserData() {
         writeCustomData(UPDATE_LASER) {
             writeVarInt(laser.laserLength)
-            writeByte(laser.laserDirection.index)
+            writeVarInt(laser.laserDirection.index)
         }
     }
 }

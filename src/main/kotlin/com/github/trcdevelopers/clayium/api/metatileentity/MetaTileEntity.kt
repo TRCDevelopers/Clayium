@@ -176,7 +176,13 @@ abstract class MetaTileEntity(
                 this.scheduleRenderUpdate()
             }
             SYNC_MTE_TRAIT -> {
-                traitByNetworkId[buf.readVarInt()]?.receiveCustomData(buf.readVarInt(), buf)
+                val traitNetworkId = buf.readVarInt()
+                val trait = traitByNetworkId[traitNetworkId]
+                    ?: run {
+                        Clayium.LOGGER.error("Could not find MTETrait with id $traitNetworkId at $pos")
+                        return
+                    }
+                trait.receiveCustomData(buf.readVarInt(), buf)
             }
         }
     }
