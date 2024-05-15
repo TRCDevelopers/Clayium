@@ -73,10 +73,12 @@ class ClayLaserMetaTileEntity(
         val world = holder?.world ?: return
         val pos = holder?.pos ?: return
         laserManager.onPlacement(world, pos)
+        this.updateLaserActivation()
     }
 
-    override fun update() {
-        super.update()
+    override fun onNeighborChanged(facing: EnumFacing) {
+        super.onNeighborChanged(facing)
+        this.updateLaserActivation()
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
@@ -101,4 +103,12 @@ class ClayLaserMetaTileEntity(
 
     override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
     override fun shouldRenderInPass(pass: Int) = (pass == 1)
+
+    private fun updateLaserActivation() {
+        if (world?.isBlockPowered(this.pos ?: return) == true) {
+            laserManager.activate()
+        } else {
+            laserManager.deactivate()
+        }
+    }
 }
