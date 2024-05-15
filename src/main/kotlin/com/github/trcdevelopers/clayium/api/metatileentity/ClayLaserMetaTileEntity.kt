@@ -109,10 +109,6 @@ class ClayLaserMetaTileEntity(
     override fun shouldRenderInPass(pass: Int) = (pass == 1)
 
     private fun updateLaserActivation() {
-        if (world?.isBlockPowered(this.pos ?: return) == true) {
-            laserManager.activate()
-        } else {
-            laserManager.deactivate()
-        }
+        laserManager.isActive = (world?.isBlockPowered(this.pos ?: return) == true)
     }
 }

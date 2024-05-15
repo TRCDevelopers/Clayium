@@ -5,5 +5,6 @@ import net.minecraft.util.EnumFacing
 
 interface IClayLaserManager {
     val laser: IClayLaser
+    var isActive: Boolean
     fun updateDirection(direction: EnumFacing)
 }
