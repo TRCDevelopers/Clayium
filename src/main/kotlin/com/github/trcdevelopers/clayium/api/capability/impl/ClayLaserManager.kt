@@ -29,6 +29,7 @@ class ClayLaserManager(
      */
     constructor(metaTileEntity: MetaTileEntity, laserStrength: Int) : this(metaTileEntity, laserStrength, laserStrength, laserStrength)
 
+    private var ticked: ULong = 0u
     override var laser: ClayLaser = ClayLaser(EnumFacing.NORTH, laserRed, laserGreen, laserBlue, 1)
     private var laserTarget: TileEntity? = null
     override var isActive = false
@@ -50,6 +51,18 @@ class ClayLaserManager(
                 }
             }
         }
+
+    override fun update() {
+        if (metaTileEntity.world?.isRemote == true) return
+        if (ticked % 2u == 0u.toULong()) {
+            val previousLaserLength = laser.laserLength
+            updateLaserLength()
+            if (previousLaserLength != laser.laserLength) {
+                writeLaserData()
+            }
+        }
+        ticked++
+    }
 
     override fun updateDirection(direction: EnumFacing) {
         laser = laser.changeDirection(direction)
@@ -94,6 +107,12 @@ class ClayLaserManager(
     }
 
     fun onPlacement(world: IBlockAccess, pos: BlockPos) {
+        updateLaserLength()
+    }
+
+    private fun updateLaserLength() {
+        val pos = metaTileEntity.pos ?: return
+        val world = metaTileEntity.world ?: return
         for (i in 1..ClayLaser.MAX_LASER_LENGTH) {
             val targetPos = pos.offset(metaTileEntity.frontFacing, i)
             if (canGoThroughBlock(world, targetPos)) continue
