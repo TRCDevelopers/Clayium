@@ -69,6 +69,12 @@ class ClayLaserMetaTileEntity(
         this.laserManager.updateDirection(frontFacing)
     }
 
+    override fun onPlacement() {
+        val world = holder?.world ?: return
+        val pos = holder?.pos ?: return
+        laserManager.onPlacement(world, pos)
+    }
+
     override fun update() {
         super.update()
     }
