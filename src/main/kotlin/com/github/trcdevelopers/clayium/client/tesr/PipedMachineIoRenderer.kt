@@ -28,7 +28,6 @@ import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 
-// todo migrate to cc's renderer
 object PipedMachineIoRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
 
     // offset to prevent z-fighting

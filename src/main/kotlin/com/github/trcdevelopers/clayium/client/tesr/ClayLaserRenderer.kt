@@ -1,26 +1,22 @@
 package com.github.trcdevelopers.clayium.client.tesr
 
 import com.github.trcdevelopers.clayium.api.CValues
-import com.github.trcdevelopers.clayium.api.block.BlockMachine
-import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
-import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trcdevelopers.clayium.api.capability.IClayLaserManager
 import com.github.trcdevelopers.clayium.common.config.ConfigCore
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.util.EnumFacing.*
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.GL11
 
-object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
-    override fun render(holder: MetaTileEntityHolder, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
-        if (holder.blockType !is BlockMachine) return
-        val metaTileEntity = holder.metaTileEntity ?: return
-        val clayLaserManager = metaTileEntity.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER, null) ?: return
-        if (!clayLaserManager.isActive) return
-
-        val clayLaser = clayLaserManager.laser
+object ClayLaserRenderer {
+    fun renderLaser(
+        laserSource: IClayLaserManager, x: Double, y: Double, z: Double,
+        bindTexture: (ResourceLocation) -> Unit,
+    ) {
+        if (!laserSource.isActive) return
+        val clayLaser = laserSource.laser
 
         //reference: https://qiita.com/KrGit3/items/6b2673c6362a3f88ef7a
         GlStateManager.pushMatrix()
@@ -53,9 +49,9 @@ object ClayLaserRenderer : TileEntitySpecialRenderer<MetaTileEntityHolder>() {
 
             GlStateManager.scale(scale, 1.0f, scale)
             GlStateManager.translate(0.0f, -scale / 6.0f, 0.0f)
-            GlStateManager.scale(1.0f, clayLaserManager.laserLength + scale / 3.0f, 1.0f)
+            GlStateManager.scale(1.0f, laserSource.laserLength + scale / 3.0f, 1.0f)
 
-            this.bindTexture(ResourceLocation(CValues.MOD_ID, "textures/blocks/laser.png"))
+            bindTexture(ResourceLocation(CValues.MOD_ID, "textures/blocks/laser.png"))
 
             val tessellator = Tessellator.getInstance()
             val bufferBuilder = tessellator.buffer

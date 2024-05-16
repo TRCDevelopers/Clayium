@@ -2,10 +2,11 @@ package com.github.trcdevelopers.clayium.client
 
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.client.model.MetaTileEntityModelLoader
-import com.github.trcdevelopers.clayium.client.tesr.ClayLaserRenderer
-import com.github.trcdevelopers.clayium.client.tesr.PipedMachineIoRenderer
+import com.github.trcdevelopers.clayium.client.tesr.ClayLaserReflectorRenderer
+import com.github.trcdevelopers.clayium.client.tesr.MetaTileEntityRenderDispatcher
 import com.github.trcdevelopers.clayium.common.CommonProxy
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
+import com.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -29,8 +30,8 @@ class ClientProxy : CommonProxy() {
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
         ModelLoaderRegistry.registerLoader(MetaTileEntityModelLoader)
-        ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, PipedMachineIoRenderer)
-        ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, ClayLaserRenderer)
+        ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, MetaTileEntityRenderDispatcher)
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayLaserReflector::class.java, ClayLaserReflectorRenderer)
     }
 
     override fun init(event: FMLInitializationEvent) {
