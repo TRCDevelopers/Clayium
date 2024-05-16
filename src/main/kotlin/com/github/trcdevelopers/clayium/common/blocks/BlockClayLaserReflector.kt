@@ -1,6 +1,5 @@
 package com.github.trcdevelopers.clayium.common.blocks
 
-import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -8,7 +7,10 @@ import net.minecraft.block.properties.PropertyDirection
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLiving
+import net.minecraft.entity.EntityLivingBase
+import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
@@ -16,8 +18,6 @@ import net.minecraft.world.World
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockClayLaserReflector : Block(Material.GLASS) {
     init {
-        registryName = clayiumId("clay_laser_reflector")
-        translationKey = registryName.toString()
         soundType = SoundType.GLASS
     }
 
@@ -39,6 +39,15 @@ class BlockClayLaserReflector : Block(Material.GLASS) {
 
     override fun hasTileEntity(state: IBlockState) = true
     override fun createTileEntity(world: World, state: IBlockState) = TileEntityClayLaserReflector()
+
+    override fun getStateForPlacement(world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand): IBlockState {
+        val facing = EnumFacing.getDirectionFromEntityLiving(pos, placer)
+        return defaultState.withProperty(FACING, facing)
+    }
+
+    override fun getRenderLayer(): BlockRenderLayer {
+        return BlockRenderLayer.TRANSLUCENT
+    }
 
     companion object {
         val FACING = PropertyDirection.create("direction")

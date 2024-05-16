@@ -122,11 +122,9 @@ class ClayLaserManager(
             if (canGoThroughBlock(world, targetPos)) continue
             this.laserTarget = world.getTileEntity(targetPos)
                 ?.takeIf { it.hasCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, metaTileEntity.frontFacing) }
-            this.laser = ClayLaser(metaTileEntity.frontFacing, laserRed, laserGreen, laserBlue)
             this.laserLength = i
             return
         }
-        this.laser = ClayLaser(metaTileEntity.frontFacing, laserRed, laserGreen, laserBlue)
         this.laserLength = MAX_LASER_LENGTH
         this.laserTarget = null
     }

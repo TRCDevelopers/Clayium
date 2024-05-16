@@ -122,6 +122,7 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserManager,
         const val MAX_LASER_LENGTH = 32
 
         private fun mergeLasers(lasers: List<IClayLaser>, direction: EnumFacing): ClayLaser {
+            if (lasers.isEmpty()) return ClayLaser(direction, 0, 0, 0)
             val maxAge = lasers.maxOf { it.laserAge }
             if (maxAge >= MAX_LASER_AGE) {
                 return ClayLaser(

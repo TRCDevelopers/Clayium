@@ -6,7 +6,9 @@ import com.github.trcdevelopers.clayium.api.capability.IClayEnergyHolder
 import com.github.trcdevelopers.clayium.api.capability.SimpleCapabilityManager
 import com.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
+import com.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
 import com.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWorkTable
@@ -59,20 +61,9 @@ open class CommonProxy {
     fun registerBlocks(event: RegistryEvent.Register<Block>) {
         val registry: IForgeRegistry<Block> = event.registry
 
-        registerBlock(registry, ClayiumBlocks.CLAY_WORK_TABLE)
+        ClayiumBlocks.registerBlocks(event)
 
-        registerBlock(registry, ClayiumBlocks.COMPRESSED_CLAY)
-        registerBlock(registry, ClayiumBlocks.ENERGIZED_CLAY)
-
-        registerBlock(registry, ClayiumBlocks.CLAY_ORE)
-        registerBlock(registry, ClayiumBlocks.DENSE_CLAY_ORE)
-        registerBlock(registry, ClayiumBlocks.LARGE_DENSE_CLAY_ORE)
-
-        registerBlock(registry, ClayiumApi.BLOCK_MACHINE)
-    }
-
-    open fun registerBlock(registry: IForgeRegistry<Block>, block: Block) {
-        registry.register(block)
+        registry.register(ClayiumApi.BLOCK_MACHINE)
     }
 
     @SubscribeEvent
@@ -105,6 +96,8 @@ open class CommonProxy {
         registry.register(createItemBlock(ClayiumBlocks.DENSE_CLAY_ORE, ::ItemBlock))
         registry.register(createItemBlock(ClayiumBlocks.LARGE_DENSE_CLAY_ORE, ::ItemBlock))
 
+        registry.register(createItemBlock(ClayiumBlocks.LASER_REFLECTOR, ::ItemBlock))
+
         registry.register(ClayiumApi.ITEM_BLOCK_MACHINE)
     }
 
@@ -120,6 +113,7 @@ open class CommonProxy {
 
     open fun registerTileEntities() {
         GameRegistry.registerTileEntity(TileClayWorkTable::class.java, ResourceLocation(Clayium.MOD_ID, "clayWorkTable"))
+        GameRegistry.registerTileEntity(TileEntityClayLaserReflector::class.java, clayiumId("laser_reflector"))
         GameRegistry.registerTileEntity(MetaTileEntityHolder::class.java, ResourceLocation(Clayium.MOD_ID, "metaTileEntityHolder"))
     }
 }
