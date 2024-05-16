@@ -5,7 +5,12 @@ import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyDirection
+import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.EntityLiving
+import net.minecraft.util.EnumFacing
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
 @Suppress("OVERRIDE_DEPRECATION")
@@ -15,6 +20,17 @@ class BlockClayLaserReflector : Block(Material.GLASS) {
         translationKey = registryName.toString()
         soundType = SoundType.GLASS
     }
+
+    override fun canCreatureSpawn(state: IBlockState, world: IBlockAccess, pos: BlockPos, type: EntityLiving.SpawnPlacementType): Boolean {
+        return false
+    }
+
+    override fun createBlockState(): BlockStateContainer {
+        return BlockStateContainer(this, FACING)
+    }
+
+    override fun getStateFromMeta(meta: Int) = defaultState.withProperty(FACING, EnumFacing.byIndex(meta))
+    override fun getMetaFromState(state: IBlockState) = state.getValue(FACING).index
 
     override fun isFullBlock(state: IBlockState) = false
     override fun isFullCube(state: IBlockState) = isFullBlock(state)
