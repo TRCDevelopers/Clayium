@@ -9,6 +9,7 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.util.BlockRenderLayer
+import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
@@ -19,6 +20,7 @@ import net.minecraft.world.World
 class BlockClayLaserReflector : Block(Material.GLASS) {
     init {
         soundType = SoundType.GLASS
+        defaultState = defaultState.withProperty(FACING, EnumFacing.NORTH)
     }
 
     override fun canCreatureSpawn(state: IBlockState, world: IBlockAccess, pos: BlockPos, type: EntityLiving.SpawnPlacementType): Boolean {
@@ -45,9 +47,8 @@ class BlockClayLaserReflector : Block(Material.GLASS) {
         return defaultState.withProperty(FACING, facing)
     }
 
-    override fun getRenderLayer(): BlockRenderLayer {
-        return BlockRenderLayer.TRANSLUCENT
-    }
+    override fun getRenderLayer() = BlockRenderLayer.TRANSLUCENT
+    override fun getRenderType(state: IBlockState) = EnumBlockRenderType.INVISIBLE
 
     companion object {
         val FACING = PropertyDirection.create("direction")

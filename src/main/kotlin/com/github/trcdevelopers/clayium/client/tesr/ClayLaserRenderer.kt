@@ -18,6 +18,13 @@ object ClayLaserRenderer {
         if (!laserSource.isActive) return
         val clayLaser = laserSource.laser
 
+
+        val rawLaserRed = clayLaser.laserRed
+        val rawLaserGreen = clayLaser.laserGreen
+        val rawLaserBlue = clayLaser.laserBlue
+        val max = maxOf(rawLaserRed, rawLaserGreen, rawLaserBlue)
+        if (max == 0) return
+
         //reference: https://qiita.com/KrGit3/items/6b2673c6362a3f88ef7a
         GlStateManager.pushMatrix()
         GlStateManager.disableLighting()
@@ -39,12 +46,7 @@ object ClayLaserRenderer {
                 EAST -> GlStateManager.rotate(90.0f, 0.0f, 0.0f, -1.0f)
             }
 
-            val rawLaserRed = clayLaser.laserRed
-            val rawLaserGreen = clayLaser.laserGreen
-            val rawLaserBlue = clayLaser.laserBlue
-
             val str = rawLaserRed + rawLaserGreen + rawLaserBlue
-            val max = maxOf(rawLaserRed, rawLaserGreen, rawLaserBlue)
             val scale = 1.0f - 14.0625f / (str + 14)
 
             GlStateManager.scale(scale, 1.0f, scale)

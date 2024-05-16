@@ -32,8 +32,14 @@ class ClayLaserManager(
     private var ticked: ULong = 0u
     override var laser: ClayLaser = ClayLaser(EnumFacing.NORTH, laserRed, laserGreen, laserBlue, 1)
     override var laserLength: Int = MAX_LASER_LENGTH
+        set(value) {
+            field = value.coerceIn(1, MAX_LASER_LENGTH)
+            if (metaTileEntity.world?.isRemote == false) {
+                writeLaserData()
+            }
+        }
     private var laserTarget: TileEntity? = null
-    override var isActive = false
+    override var isActive: Boolean = false
         public set(value) {
             if (value) {
                 laserTarget
@@ -73,9 +79,9 @@ class ClayLaserManager(
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
         when (discriminator) {
             UPDATE_LASER -> {
-                val length = buf.readVarInt()
+                this.laserLength = buf.readVarInt()
                 val direction = EnumFacing.byIndex(buf.readVarInt())
-                laser = ClayLaser(direction, laserRed, laserGreen, laserBlue, length)
+                laser = ClayLaser(direction, laserRed, laserGreen, laserBlue, 1)
             }
             UPDATE_LASER_ACTIVATION -> {
                 isActive = buf.readBoolean()
@@ -120,8 +126,10 @@ class ClayLaserManager(
         for (i in 1..MAX_LASER_LENGTH) {
             val targetPos = pos.offset(metaTileEntity.frontFacing, i)
             if (canGoThroughBlock(world, targetPos)) continue
+            val prevTarget = laserTarget
             this.laserTarget = world.getTileEntity(targetPos)
                 ?.takeIf { it.hasCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, metaTileEntity.frontFacing) }
+            this.updateTarget(prevTarget, laserTarget)
             this.laserLength = i
             return
         }
@@ -132,6 +140,21 @@ class ClayLaserManager(
     private fun canGoThroughBlock(world: IBlockAccess, pos: BlockPos): Boolean {
         val material = world.getBlockState(pos).material
         return (material == Material.AIR) || (material == Material.GRASS)
+    }
+
+    private fun updateTarget(previousTarget: TileEntity?, target: TileEntity?) {
+        val targetFacing = metaTileEntity.frontFacing.opposite
+        if (previousTarget == null) {
+            // newly placed target
+            target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetFacing)
+                ?.acceptLaser(targetFacing, laser)
+        } else if (previousTarget != target) {
+            previousTarget.takeIf { !it.isInvalid }
+                ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetFacing)
+                ?.laserStopped(targetFacing)
+            target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetFacing)
+                ?.acceptLaser(targetFacing, laser)
+        }
     }
 
     private fun writeLaserData() {
