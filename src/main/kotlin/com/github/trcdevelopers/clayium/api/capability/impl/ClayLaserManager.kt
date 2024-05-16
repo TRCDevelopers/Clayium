@@ -54,7 +54,7 @@ class ClayLaserManager(
 
     override fun update() {
         if (metaTileEntity.world?.isRemote == true) return
-        if (ticked % 2u == 0u.toULong()) {
+        if (ticked % 2u == 0uL) {
             val previousLaserLength = laser.laserLength
             updateLaserLength()
             if (previousLaserLength != laser.laserLength) {
@@ -124,6 +124,7 @@ class ClayLaserManager(
             return
         }
         this.laser = ClayLaser(metaTileEntity.frontFacing, laserRed, laserGreen, laserBlue, ClayLaser.MAX_LASER_LENGTH)
+        this.laserTarget = null
     }
 
     private fun canGoThroughBlock(world: IBlockAccess, pos: BlockPos): Boolean {
