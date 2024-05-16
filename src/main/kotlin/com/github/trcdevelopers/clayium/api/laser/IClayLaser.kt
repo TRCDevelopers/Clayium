@@ -4,7 +4,11 @@ import net.minecraft.util.EnumFacing
 
 interface IClayLaser {
     val laserDirection: EnumFacing
-    val laserLength: Int
+
+    val laserRed: Int
+    val laserGreen: Int
+    val laserBlue: Int
+
     val laserEnergy: Int
-    val laserRgb: Int
+    val laserAge: Int
 }

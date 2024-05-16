@@ -50,7 +50,7 @@ class ClayLaserMetaTileEntity(
         val yOffset = direction.yOffset.toDouble()
         val zOffset = direction.zOffset.toDouble()
 
-        val l = laser.laserLength.toDouble()
+        val l = laserManager.laserLength.toDouble()
 
         val maxX = max(x, x + xOffset * l) + 1.0
         val minX = min(x, x + xOffset * l)

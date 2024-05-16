@@ -4,6 +4,7 @@ import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
+import net.minecraft.block.properties.PropertyDirection
 import net.minecraft.block.state.IBlockState
 import net.minecraft.world.World
 
@@ -22,4 +23,8 @@ class BlockClayLaserReflector : Block(Material.GLASS) {
 
     override fun hasTileEntity(state: IBlockState) = true
     override fun createTileEntity(world: World, state: IBlockState) = TileEntityClayLaserReflector()
+
+    companion object {
+        val FACING = PropertyDirection.create("direction")
+    }
 }

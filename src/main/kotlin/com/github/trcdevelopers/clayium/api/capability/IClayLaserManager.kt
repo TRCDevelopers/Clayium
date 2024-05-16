@@ -5,6 +5,11 @@ import net.minecraft.util.EnumFacing
 
 interface IClayLaserManager {
     val laser: IClayLaser
-    var isActive: Boolean
+
+    /**
+     * laser length is world bound.
+     */
+    val laserLength: Int
+    val isActive: Boolean
     fun updateDirection(direction: EnumFacing)
 }

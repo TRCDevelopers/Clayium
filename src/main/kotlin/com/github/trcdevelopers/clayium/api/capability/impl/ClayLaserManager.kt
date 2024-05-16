@@ -31,9 +31,10 @@ class ClayLaserManager(
 
     private var ticked: ULong = 0u
     override var laser: ClayLaser = ClayLaser(EnumFacing.NORTH, laserRed, laserGreen, laserBlue, 1)
+    override var laserLength: Int = MAX_LASER_LENGTH
     private var laserTarget: TileEntity? = null
     override var isActive = false
-        set(value) {
+        public set(value) {
             if (value) {
                 laserTarget
                     ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
@@ -55,9 +56,9 @@ class ClayLaserManager(
     override fun update() {
         if (metaTileEntity.world?.isRemote == true) return
         if (ticked % 2u == 0uL) {
-            val previousLaserLength = laser.laserLength
+            val previousLaserLength = laserLength
             updateLaserLength()
-            if (previousLaserLength != laser.laserLength) {
+            if (previousLaserLength != laserLength) {
                 writeLaserData()
             }
         }
@@ -83,7 +84,7 @@ class ClayLaserManager(
     }
 
     override fun writeInitialSyncData(buf: PacketBuffer) {
-        buf.writeVarInt(laser.laserLength)
+        buf.writeVarInt(laserLength)
         buf.writeVarInt(laser.laserDirection.index)
         buf.writeBoolean(isActive)
     }
@@ -98,13 +99,14 @@ class ClayLaserManager(
     override fun serializeNBT(): NBTTagCompound {
         return NBTTagCompound().apply {
             setByte("laserDirection", laser.laserDirection.index.toByte())
-            setInteger("laserLength", laser.laserLength)
+            setInteger("laserLength", laserLength)
             setBoolean("isActive", isActive)
         }
     }
 
     override fun deserializeNBT(data: NBTTagCompound) {
-        laser = ClayLaser(EnumFacing.byIndex(data.getByte("laserDirection").toInt()), laserRed, laserGreen, laserBlue, data.getInteger("laserLength"))
+        laser = ClayLaser(EnumFacing.byIndex(data.getByte("laserDirection").toInt()), laserRed, laserGreen, laserBlue)
+        laserLength = data.getInteger("laserLength")
         isActive = data.getBoolean("isActive")
     }
 
@@ -115,15 +117,17 @@ class ClayLaserManager(
     private fun updateLaserLength() {
         val pos = metaTileEntity.pos ?: return
         val world = metaTileEntity.world ?: return
-        for (i in 1..ClayLaser.MAX_LASER_LENGTH) {
+        for (i in 1..MAX_LASER_LENGTH) {
             val targetPos = pos.offset(metaTileEntity.frontFacing, i)
             if (canGoThroughBlock(world, targetPos)) continue
             this.laserTarget = world.getTileEntity(targetPos)
                 ?.takeIf { it.hasCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, metaTileEntity.frontFacing) }
-            this.laser = ClayLaser(metaTileEntity.frontFacing, laserRed, laserGreen, laserBlue, i)
+            this.laser = ClayLaser(metaTileEntity.frontFacing, laserRed, laserGreen, laserBlue)
+            this.laserLength = i
             return
         }
-        this.laser = ClayLaser(metaTileEntity.frontFacing, laserRed, laserGreen, laserBlue, ClayLaser.MAX_LASER_LENGTH)
+        this.laser = ClayLaser(metaTileEntity.frontFacing, laserRed, laserGreen, laserBlue)
+        this.laserLength = MAX_LASER_LENGTH
         this.laserTarget = null
     }
 
@@ -134,8 +138,12 @@ class ClayLaserManager(
 
     private fun writeLaserData() {
         writeCustomData(UPDATE_LASER) {
-            writeVarInt(laser.laserLength)
+            writeVarInt(laserLength)
             writeVarInt(laser.laserDirection.index)
         }
+    }
+
+    private companion object {
+        private const val MAX_LASER_LENGTH = 32
     }
 }
