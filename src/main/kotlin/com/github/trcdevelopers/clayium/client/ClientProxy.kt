@@ -1,9 +1,10 @@
 package com.github.trcdevelopers.clayium.client
 
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trcdevelopers.clayium.client.model.LaserReflectorModelLoader
 import com.github.trcdevelopers.clayium.client.model.MetaTileEntityModelLoader
-import com.github.trcdevelopers.clayium.client.tesr.ClayLaserReflectorRenderer
-import com.github.trcdevelopers.clayium.client.tesr.MetaTileEntityRenderDispatcher
+import com.github.trcdevelopers.clayium.client.renderer.ClayLaserReflectorRenderer
+import com.github.trcdevelopers.clayium.client.renderer.MetaTileEntityRenderDispatcher
 import com.github.trcdevelopers.clayium.common.CommonProxy
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
@@ -30,6 +31,7 @@ class ClientProxy : CommonProxy() {
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
         ModelLoaderRegistry.registerLoader(MetaTileEntityModelLoader)
+        ModelLoaderRegistry.registerLoader(LaserReflectorModelLoader)
         ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, MetaTileEntityRenderDispatcher)
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayLaserReflector::class.java, ClayLaserReflectorRenderer)
     }

@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.client.tesr
+package com.github.trcdevelopers.clayium.client.renderer
 
 import com.github.trcdevelopers.clayium.api.block.BlockMachine
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder

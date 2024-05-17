@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.client.tesr
+package com.github.trcdevelopers.clayium.client.renderer
 
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.IClayLaserManager
