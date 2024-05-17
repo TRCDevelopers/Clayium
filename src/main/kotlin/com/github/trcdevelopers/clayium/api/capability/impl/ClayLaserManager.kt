@@ -33,10 +33,9 @@ class ClayLaserManager(
     override var laser: ClayLaser = ClayLaser(EnumFacing.NORTH, laserRed, laserGreen, laserBlue, 1)
     override var laserLength: Int = MAX_LASER_LENGTH
         set(value) {
+            val syncFlag = field != value && (metaTileEntity.world?.isRemote == false)
             field = value.coerceIn(1, MAX_LASER_LENGTH)
-            if (metaTileEntity.world?.isRemote == false) {
-                writeLaserData()
-            }
+            if (syncFlag) { writeLaserData() }
         }
     private var laserTarget: TileEntity? = null
     override var isActive: Boolean = false
@@ -61,13 +60,7 @@ class ClayLaserManager(
 
     override fun update() {
         if (metaTileEntity.world?.isRemote == true) return
-        if (ticked % 2u == 0uL) {
-            val previousLaserLength = laserLength
-            updateLaserLength()
-            if (previousLaserLength != laserLength) {
-                writeLaserData()
-            }
-        }
+        if (ticked % 2u == 0uL) { updateLaserLength() }
         ticked++
     }
 
@@ -144,13 +137,9 @@ class ClayLaserManager(
 
     private fun updateTarget(previousTarget: TileEntity?, target: TileEntity?) {
         val targetFacing = metaTileEntity.frontFacing.opposite
-        if (previousTarget == null) {
-            // newly placed target
-            target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetFacing)
-                ?.acceptLaser(targetFacing, laser)
-        } else if (previousTarget != target) {
-            previousTarget.takeIf { !it.isInvalid }
-                ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetFacing)
+        if (previousTarget != target) {
+            previousTarget?.takeIf { !it.isInvalid }
+                ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetFacing).also { println(it) }
                 ?.laserStopped(targetFacing)
             target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetFacing)
                 ?.acceptLaser(targetFacing, laser)

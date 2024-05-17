@@ -80,12 +80,9 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserManager,
 
     private fun updateTarget(previousTarget: TileEntity?, target: TileEntity?) {
         val targetFacing = world.getBlockState(pos).getValue(BlockClayLaserReflector.FACING)
-        if (previousTarget == null) {
-            // newly placed target
-            target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetFacing)
-                ?.acceptLaser(targetFacing, laser)
-        } else if (previousTarget != target) {
-            previousTarget.takeIf { !it.isInvalid }
+        if (previousTarget != target) {
+            println(previousTarget?.isInvalid)
+            previousTarget?.takeIf { !it.isInvalid }
                 ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetFacing)
                 ?.laserStopped(targetFacing)
             target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetFacing)
@@ -97,7 +94,7 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserManager,
         this.laser = laser.changeDirection(direction)
     }
 
-    override fun acceptLaser(side: EnumFacing, laser: IClayLaser) {
+    override fun acceptLaser(irradiatedSide: EnumFacing, laser: IClayLaser) {
         this.receivedLasers.add(laser)
         val direction = this.world.getBlockState(this.pos).getValue(BlockClayLaserReflector.FACING)
         this.laser = mergeLasers(this.receivedLasers, direction)
@@ -107,8 +104,9 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserManager,
         this.world.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.SEND_TO_CLIENTS)
     }
 
-    override fun laserStopped(side: EnumFacing) {
-        this.receivedLasers.removeIf { it.laserDirection == side.opposite }
+    override fun laserStopped(irradiatedSide: EnumFacing) {
+        if (this.isInvalid) return
+        this.receivedLasers.removeIf { it.laserDirection.opposite == irradiatedSide }
         val direction = this.world.getBlockState(this.pos).getValue(BlockClayLaserReflector.FACING)
         this.laser = mergeLasers(this.receivedLasers, direction)
         val state = this.world.getBlockState(pos)
