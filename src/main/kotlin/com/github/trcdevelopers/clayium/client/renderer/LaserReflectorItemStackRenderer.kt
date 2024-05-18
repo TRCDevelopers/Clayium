@@ -24,8 +24,12 @@ object LaserReflectorItemStackRenderer : TileEntityItemStackRenderer() {
             GlStateManager.color(1f, 1f, 1f ,1f)
 
             GlStateManager.translate(0.5, 0.5, 0.5)
-            GlStateManager.rotate(90.0f, 1f, 1f, 0f)
+            GlStateManager.scale(0.8f, 0.8f, 0.8f)
+            GlStateManager.rotate(110f, 1f, 0f, 0f)
+            GlStateManager.rotate(45f, 0f, 0f, 1f)
             GlStateManager.translate(-0.5, -0.5, -0.5)
+            GlStateManager.translate(0.0, 0.1, 0.0)
+
 
             TileEntityRendererDispatcher.instance.renderEngine.bindTexture(clayiumId("textures/blocks/laserreflector.png"))
 
