@@ -136,13 +136,13 @@ class ClayLaserSource(
     }
 
     private fun updateTarget(previousTarget: TileEntity?, target: TileEntity?) {
-        val targetFacing = metaTileEntity.frontFacing.opposite
+        val targetSide = metaTileEntity.frontFacing.opposite
         if (previousTarget != target) {
             previousTarget?.takeIf { !it.isInvalid }
-                ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetFacing).also { println(it) }
-                ?.laserStopped(targetFacing)
-            target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetFacing)
-                ?.acceptLaser(targetFacing, laser)
+                ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide).also { println(it) }
+                ?.laserStopped(targetSide)
+            target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
+                ?.acceptLaser(targetSide, laser)
         }
     }
 

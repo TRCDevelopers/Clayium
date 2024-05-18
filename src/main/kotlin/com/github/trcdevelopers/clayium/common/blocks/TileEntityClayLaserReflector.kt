@@ -79,14 +79,14 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
     }
 
     private fun updateTarget(previousTarget: TileEntity?, target: TileEntity?) {
-        val targetFacing = world.getBlockState(pos).getValue(BlockClayLaserReflector.FACING)
+        val targetSide = world.getBlockState(pos).getValue(BlockClayLaserReflector.FACING).opposite
         if (previousTarget != target) {
             println(previousTarget?.isInvalid)
             previousTarget?.takeIf { !it.isInvalid }
-                ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetFacing)
-                ?.laserStopped(targetFacing)
-            target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetFacing)
-                ?.acceptLaser(targetFacing, laser)
+                ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
+                ?.laserStopped(targetSide)
+            target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
+                ?.acceptLaser(targetSide, laser)
         }
     }
 
