@@ -7,11 +7,15 @@ import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayLaserSource
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
+import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
@@ -25,7 +29,7 @@ import kotlin.math.min
 class ClayLaserMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: Int,
-) : MetaTileEntity(metaTileEntityId, tier, listOf(MachineIoMode.NONE, MachineIoMode.CE), listOf(MachineIoMode.NONE), "machine.${CValues.MOD_ID}.clay_laser") {
+) : MetaTileEntity(metaTileEntityId, tier, listOf(MachineIoMode.NONE, MachineIoMode.CE), listOf(MachineIoMode.NONE), "machine.${CValues.MOD_ID}.clay_laser_tier$tier") {
 
     override val faceTexture = ResourceLocation(CValues.MOD_ID, "blocks/clay_laser")
 
@@ -89,7 +93,8 @@ class ClayLaserMetaTileEntity(
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        return ModularPanel("aaa")
+        return ModularPanel.defaultPanel("clay_laser_tier$tier", 176, 32 + 94)
+            .bindPlayerInventory()
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
@@ -101,6 +106,14 @@ class ClayLaserMetaTileEntity(
 
     override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
     override fun shouldRenderInPass(pass: Int) = (pass == 1)
+
+    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        super.addInformation(stack, worldIn, tooltip, flagIn)
+        // add the tier-specific tooltip first
+        UtilLocale.formatTooltips(tooltip, "machine.clayium.${metaTileEntityId.path}.tooltip")
+        // then add the machine-specific tooltip
+        UtilLocale.formatTooltips(tooltip, "machine.clayium.clay_laser.tooltip")
+    }
 
     private fun updateLaserActivation() {
         laserManager.isActive = (world?.isBlockPowered(this.pos ?: return) == true)

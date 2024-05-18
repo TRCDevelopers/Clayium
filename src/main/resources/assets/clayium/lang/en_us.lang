@@ -567,20 +567,20 @@ gui.clayium.WaterWheel.progress=Progress\: %1$d
 gui.clayium.WaterWheel.durability=Durability\: %1$d
 gui.clayium.WaterWheel.surroundingWater=Water\: %1$d
 
-tile.clayium.blockClaySteelClayEnergyLaser.name=Blue Clay Laser
-tile.clayium.blockClayiumClayEnergyLaser.name=Green Clay Laser
-tile.clayium.blockUltimateClayEnergyLaser.name=Red Clay Laser
-tile.clayium.blockAntimatterClayEnergyLaser.name=White Clay Laser
-tile.clayium.blockAntimatterClayEnergyLaser.tooltip.line1=Equal to 3xBlue + 3xGreen + 3xRed.
-tooltip.clayium.ClayEnergyLaser.line1=__DETAIL__
-tooltip.clayium.ClayEnergyLaser.line2=Laser is used to run Clay Reactor
-tooltip.clayium.ClayEnergyLaser.line3=or to accelerate Area Miner.
-tooltip.clayium.ClayEnergyLaser.line4=Laser seems to have some effect on ores and saplings.
-tooltip.clayium.ClayEnergyLaser.line5=Laser irradiation will stop when a redstone signal is applied.
-tooltip.clayium.ClayEnergyLaser.energyConsumption=Power %1$s CE/t
+machine.clayium.clay_laser_tier7=Blue Clay Laser
+machine.clayium.clay_laser_tier8=Green Clay Laser
+machine.clayium.clay_laser_tier9=Red Clay Laser
+machine.clayium.clay_laser_tier10=White Clay Laser
+machine.clayium.clay_laser_tier10.tooltip1=Equal to 3xBlue + 3xGreen + 3xRed.
+machine.clayium.clay_laser.tooltip1=__DETAIL__
+machine.clayium.clay_laser.tooltip2=Laser is used to run Clay Reactor
+machine.clayium.clay_laser.tooltip3=or to accelerate Area Miner.
+machine.clayium.clay_laser.tooltip4=Laser seems to have some effect on ores and saplings.
+machine.clayium.clay_laser.tooltip5=Laser irradiation will stop when a redstone signal is applied.
+#machine.clayium.clay_laser.tooltip6=Power %1$s CE/t
 
-tile.clayium.blockLaserReflector.name=Laser Reflector
-tile.clayium.blockLaserReflector.tooltip.line1=Changes the direction of Laser.
+tile.clayium.laser_reflector.name=Laser Reflector
+tile.clayium.laser_reflector.tooltip1=Changes the direction of Laser.
 
 tile.clayium.blockClayTreeSapling.name=Clay Tree Sapling
 tile.clayium.blockClayTreeLog.name=Clay Tree Log
