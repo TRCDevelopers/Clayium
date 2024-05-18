@@ -130,6 +130,20 @@ machine.clayium.tier11=Pure Antimatter
 machine.clayium.tier12=OEC
 machine.clayium.tier13=OPA
 
+tier.clayium.clay=Clay
+tier.clayium.dense_clay=Dense Clay
+tier.clayium.simple=Simple
+tier.clayium.basic=Basic
+tier.clayium.advanced=Advanced
+tier.clayium.precision=Precision
+tier.clayium.clay_steel=Clay Steel
+tier.clayium.clayium=Clayium
+tier.clayium.ultimate=Ultimate
+tier.clayium.antimatter=Antimatter
+tier.clayium.pure_antimatter=Pure Antimatter
+tier.clayium.oec=OEC
+tier.clayium.opa=OPA
+
 recipe.clayium.ClayWorkTable=Clay Work Table
 
 recipe.clayium.WireDrawingMachine=Clay Wire Drawing Machine
