@@ -7,8 +7,8 @@ object ClayiumTileCapabilities {
     @CapabilityInject(IClayEnergyHolder::class)
     lateinit var CAPABILITY_CLAY_ENERGY_HOLDER: Capability<IClayEnergyHolder>
 
-    @CapabilityInject(IClayLaserManager::class)
-    lateinit var CAPABILITY_CLAY_LASER: Capability<IClayLaserManager>
+    @CapabilityInject(IClayLaserSource::class)
+    lateinit var CAPABILITY_CLAY_LASER: Capability<IClayLaserSource>
 
     @CapabilityInject(IClayLaserAcceptor::class)
     lateinit var CAPABILITY_CLAY_LASER_ACCEPTOR: Capability<IClayLaserAcceptor>

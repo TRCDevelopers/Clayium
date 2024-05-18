@@ -1,7 +1,7 @@
 package com.github.trcdevelopers.clayium.client.renderer
 
 import com.github.trcdevelopers.clayium.api.CValues
-import com.github.trcdevelopers.clayium.api.capability.IClayLaserManager
+import com.github.trcdevelopers.clayium.api.capability.IClayLaserSource
 import com.github.trcdevelopers.clayium.common.config.ConfigCore
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11
 
 object ClayLaserRenderer {
     fun renderLaser(
-        laserSource: IClayLaserManager, x: Double, y: Double, z: Double,
+        laserSource: IClayLaserSource, x: Double, y: Double, z: Double,
         bindTexture: (ResourceLocation) -> Unit,
     ) {
         if (!laserSource.isActive) return

@@ -20,7 +20,7 @@ object SimpleCapabilityManager {
 
     fun registerCapabilities() {
         registerCapabilityWithNoDefault(IClayEnergyHolder::class.java)
-        registerCapabilityWithNoDefault(IClayLaserManager::class.java)
+        registerCapabilityWithNoDefault(IClayLaserSource::class.java)
         registerCapabilityWithNoDefault(IClayLaserAcceptor::class.java)
     }
 }

@@ -5,10 +5,9 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
-import com.github.trcdevelopers.clayium.api.capability.impl.ClayLaserManager
+import com.github.trcdevelopers.clayium.api.capability.impl.ClayLaserSource
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -37,7 +36,7 @@ class ClayLaserMetaTileEntity(
         override fun update() {}
     }
 
-    val laserManager = ClayLaserManager(this, 3)
+    val laserManager = ClayLaserSource(this, 3)
 
     override val renderBoundingBox by lazy {
         val laser = laserManager.laser

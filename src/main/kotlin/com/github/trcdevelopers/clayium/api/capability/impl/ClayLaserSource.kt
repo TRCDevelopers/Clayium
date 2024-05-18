@@ -4,7 +4,7 @@ import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_LASER_ACTIVATION
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_LASER
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
-import com.github.trcdevelopers.clayium.api.capability.IClayLaserManager
+import com.github.trcdevelopers.clayium.api.capability.IClayLaserSource
 import com.github.trcdevelopers.clayium.api.laser.ClayLaser
 import com.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
@@ -16,15 +16,15 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 
-class ClayLaserManager(
+class ClayLaserSource(
     metaTileEntity: MetaTileEntity,
     private val laserRed: Int = 0,
     private val laserGreen: Int = 0,
     private val laserBlue: Int = 0,
-) : MTETrait(metaTileEntity, ClayiumDataCodecs.LASER_CONTROLLER), IClayLaserManager {
+) : MTETrait(metaTileEntity, ClayiumDataCodecs.LASER_CONTROLLER), IClayLaserSource {
 
     /**
-     * create a new [ClayLaserManager] with the same strength for all colors
+     * create a new [ClayLaserSource] with the same strength for all colors
      * @param laserStrength the strength of the laser
      */
     constructor(metaTileEntity: MetaTileEntity, laserStrength: Int) : this(metaTileEntity, laserStrength, laserStrength, laserStrength)

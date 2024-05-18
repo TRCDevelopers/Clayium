@@ -2,7 +2,7 @@ package com.github.trcdevelopers.clayium.common.blocks
 
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.IClayLaserAcceptor
-import com.github.trcdevelopers.clayium.api.capability.IClayLaserManager
+import com.github.trcdevelopers.clayium.api.capability.IClayLaserSource
 import com.github.trcdevelopers.clayium.api.laser.ClayLaser
 import com.github.trcdevelopers.clayium.api.laser.IClayLaser
 import net.minecraft.block.material.Material
@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
 
-class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserManager, IClayLaserAcceptor {
+class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, IClayLaserAcceptor {
 
     override var laser: ClayLaser = ClayLaser(EnumFacing.NORTH, 0, 0, 0, 1)
     override var laserLength: Int = MAX_LASER_LENGTH
