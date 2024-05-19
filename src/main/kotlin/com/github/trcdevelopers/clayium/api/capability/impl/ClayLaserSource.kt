@@ -42,11 +42,13 @@ class ClayLaserSource(
         public set(value) {
             if (value) {
                 laserTarget
+                    ?.takeUnless { it.isInvalid }
                     ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
                     ?.acceptLaser(laser.laserDirection.opposite, laser)
                 field = true
             } else {
                 laserTarget
+                    ?.takeUnless { it.isInvalid }
                     ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
                     ?.laserStopped(laser.laserDirection.opposite)
                 field = false
@@ -139,7 +141,7 @@ class ClayLaserSource(
         val targetSide = metaTileEntity.frontFacing.opposite
         if (previousTarget != target) {
             previousTarget?.takeIf { !it.isInvalid }
-                ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide).also { println(it) }
+                ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
                 ?.laserStopped(targetSide)
             target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
                 ?.acceptLaser(targetSide, laser)
