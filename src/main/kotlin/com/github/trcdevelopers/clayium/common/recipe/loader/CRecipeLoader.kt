@@ -4,5 +4,6 @@ object CRecipeLoader {
     fun load() {
         ClayWorkTableRecipes.register()
         BendingMachineLoader.register()
+        CondenserRecipeLoader.registerRecipes()
     }
 }

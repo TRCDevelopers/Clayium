@@ -251,7 +251,7 @@ tile.clayium.blockAdvancedCobblestoneGenerator.name=発展丸石製造機
 tile.clayium.blockPrecisionCobblestoneGenerator.name=精密丸石製造機
 tile.clayium.blockClaySteelCobblestoneGenerator.name=粘土鋼丸石製造機
 
-machine.clayium.condenser=高密度粘土コンデンサー
+machine.clayium.condenser=粘土コンデンサー
 
 machine.clayium.grinder=高密度粘土粉砕機
 machine.clayium.grinder_tier2.tooltip1=高密度粘土鉱石を粉砕しよう
