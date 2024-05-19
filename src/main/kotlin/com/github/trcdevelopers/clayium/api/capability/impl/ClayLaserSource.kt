@@ -44,13 +44,13 @@ class ClayLaserSource(
                 laserTarget
                     ?.takeUnless { it.isInvalid }
                     ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
-                    ?.acceptLaser(laser.laserDirection.opposite, laser)
+                    ?.laserChanged(laser.laserDirection.opposite, laser)
                 field = true
             } else {
                 laserTarget
                     ?.takeUnless { it.isInvalid }
                     ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
-                    ?.laserStopped(laser.laserDirection.opposite)
+                    ?.laserChanged(laser.laserDirection.opposite, null)
                 field = false
             }
             if (metaTileEntity.world?.isRemote == false) {
@@ -142,9 +142,9 @@ class ClayLaserSource(
         if (previousTarget != target) {
             previousTarget?.takeIf { !it.isInvalid }
                 ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
-                ?.laserStopped(targetSide)
+                ?.laserChanged(targetSide, null)
             target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
-                ?.acceptLaser(targetSide, laser)
+                ?.laserChanged(targetSide, laser)
         }
     }
 

@@ -4,6 +4,10 @@ import com.github.trcdevelopers.clayium.api.laser.IClayLaser
 import net.minecraft.util.EnumFacing
 
 interface IClayLaserAcceptor {
-    fun acceptLaser(side: EnumFacing, laser: IClayLaser)
-    fun laserStopped(side: EnumFacing)
+    /**
+     * Called when the side is irradiated with a laser or when there is a change in the irradiated laser.
+     * @param irradiatedSide the side that is irradiated by the laser
+     * @param laser if null, it means the laser irradiation has stopped.
+     */
+    fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?)
 }

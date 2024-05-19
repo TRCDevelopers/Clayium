@@ -5,6 +5,7 @@ import com.github.trcdevelopers.clayium.api.capability.IClayLaserAcceptor
 import com.github.trcdevelopers.clayium.api.capability.IClayLaserSource
 import com.github.trcdevelopers.clayium.api.laser.ClayLaser
 import com.github.trcdevelopers.clayium.api.laser.IClayLaser
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import net.minecraft.block.material.Material
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
@@ -20,11 +21,20 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
 
     override var laser: ClayLaser = ClayLaser(EnumFacing.NORTH, 0, 0, 0, 1)
     override var laserLength: Int = MAX_LASER_LENGTH
+        set(value) {
+            val syncFlag = field != value && !world.isRemote
+            field = value.coerceIn(1, MAX_LASER_LENGTH)
+            if (syncFlag) { notifyWorld() }
+        }
     private var laserTarget: TileEntity? = null
     override var isActive: Boolean = false
-    private var ticked = 0L
 
-    private val receivedLasers = mutableListOf<IClayLaser>()
+    /**
+     * flag to notify [laserTarget] that the irradiating laser has changed.
+     */
+    private var laserChangedAndToNotify = false
+
+    private val receivedLasers = Object2ObjectOpenHashMap<EnumFacing, IClayLaser>()
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
         return capability === ClayiumTileCapabilities.CAPABILITY_CLAY_LASER
@@ -46,15 +56,27 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
 
     override fun update() {
         if (world.isRemote) return
-        if (ticked % 2L == 0L) {
-            val previousLaserLength = laserLength
-            updateLaserLength()
-            if (laserLength != previousLaserLength) {
-                val state = world.getBlockState(pos)
-                world.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.SEND_TO_CLIENTS)
-            }
+        val previousLaserLength = laserLength
+        updateLaserLength()
+        updateTargetInstance()
+        if (laserChangedAndToNotify) {
+            laserChangedAndToNotify = false
+            laserTarget?.takeUnless { it.isInvalid }
+                ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
+                ?.laserChanged(laser.laserDirection.opposite, laser)
         }
-        ticked++
+        if (laserLength != previousLaserLength) {
+            val state = world.getBlockState(pos)
+            world.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.SEND_TO_CLIENTS)
+        }
+    }
+
+    override fun invalidate() {
+        val laserDirection = this.laser.laserDirection
+        this.laserTarget?.takeUnless { it.isInvalid }
+            ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laserDirection.opposite)
+            ?.laserChanged(laserDirection.opposite, null)
+        super.invalidate()
     }
 
     private fun updateLaserLength() {
@@ -62,10 +84,6 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
             val facing = world.getBlockState(pos).getValue(BlockClayLaserReflector.FACING)
             val targetPos = pos.offset(facing, i)
             if (canGoThroughBlock(targetPos)) continue
-            val previousTarget = this.laserTarget
-            this.laserTarget = world.getTileEntity(targetPos)
-                ?.takeIf { it.hasCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, facing.opposite) }
-            updateTarget(previousTarget, this.laserTarget)
             this.laserLength = i
             return
         }
@@ -78,15 +96,19 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
         return (material == Material.AIR) || (material == Material.GRASS)
     }
 
-    private fun updateTarget(previousTarget: TileEntity?, target: TileEntity?) {
-        val targetSide = world.getBlockState(pos).getValue(BlockClayLaserReflector.FACING).opposite
-        if (previousTarget != target) {
-            println(previousTarget?.isInvalid)
-            previousTarget?.takeIf { !it.isInvalid }
+    private fun updateTargetInstance() {
+        val targetSide = this.world.getBlockState(this.pos).getValue(BlockClayLaserReflector.FACING).opposite
+        val previousTarget = this.laserTarget
+        this.laserTarget = this.world.getTileEntity(this.pos.offset(this.laser.laserDirection, this.laserLength))
+            ?.takeIf { it.hasCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide) }
+        if (previousTarget != laserTarget) {
+            previousTarget?.takeUnless { it.isInvalid }
                 ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
-                ?.laserStopped(targetSide)
-            target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
-                ?.acceptLaser(targetSide, laser)
+                ?.laserChanged(targetSide, null)
+            laserTarget?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
+                ?.laserChanged(targetSide, this.laser)
+            val state = this.world.getBlockState(this.pos)
+            this.world.notifyBlockUpdate(this.pos, state, state, Constants.BlockFlags.SEND_TO_CLIENTS)
         }
     }
 
@@ -94,24 +116,17 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
         this.laser = laser.changeDirection(direction)
     }
 
-    override fun acceptLaser(irradiatedSide: EnumFacing, laser: IClayLaser) {
-        this.receivedLasers.add(laser)
-        val direction = this.world.getBlockState(this.pos).getValue(BlockClayLaserReflector.FACING)
-        this.laser = mergeLasers(this.receivedLasers, direction)
-        val state = this.world.getBlockState(pos)
-        updateLaserLength()
-        this.isActive = true
-        this.world.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.SEND_TO_CLIENTS)
-    }
-
-    override fun laserStopped(irradiatedSide: EnumFacing) {
-        if (this.isInvalid) return
-        this.receivedLasers.removeIf { it.laserDirection.opposite == irradiatedSide }
-        val direction = this.world.getBlockState(this.pos).getValue(BlockClayLaserReflector.FACING)
-        this.laser = mergeLasers(this.receivedLasers, direction)
-        val state = this.world.getBlockState(pos)
-        updateLaserLength()
-        this.isActive = receivedLasers.isNotEmpty()
+    override fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?) {
+        if (laser == null) {
+            this.receivedLasers.remove(irradiatedSide)
+        } else {
+            this.receivedLasers[irradiatedSide] = laser
+        }
+        val state = this.world.getBlockState(this.pos)
+        val mergedLaserDirection = state.getValue(BlockClayLaserReflector.FACING)
+        this.laser = mergeLasers(this.receivedLasers.values, mergedLaserDirection)
+        this.isActive = this.receivedLasers.isNotEmpty()
+        this.laserChangedAndToNotify = true
         this.world.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.SEND_TO_CLIENTS)
     }
 
@@ -141,11 +156,16 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
         this.isActive = data.getBoolean("isActive")
     }
 
+    private fun notifyWorld() {
+        val state = world.getBlockState(pos)
+        world.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.SEND_TO_CLIENTS)
+    }
+
     private companion object {
         const val MAX_LASER_AGE = 10
         const val MAX_LASER_LENGTH = 32
 
-        private fun mergeLasers(lasers: List<IClayLaser>, direction: EnumFacing): ClayLaser {
+        private fun mergeLasers(lasers: Collection<IClayLaser>, direction: EnumFacing): ClayLaser {
             if (lasers.isEmpty()) return ClayLaser(direction, 0, 0, 0)
             val maxAge = lasers.maxOf { it.laserAge }
             if (maxAge >= MAX_LASER_AGE) {
@@ -162,7 +182,7 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
                     lasers.sumOf { it.laserRed },
                     lasers.sumOf { it.laserGreen },
                     lasers.sumOf { it.laserBlue },
-                    maxAge,
+                    maxAge + 1,
                 )
             }
         }

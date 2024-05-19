@@ -2,7 +2,7 @@ package com.github.trcdevelopers.clayium.api.laser
 
 import net.minecraft.util.EnumFacing
 
-class ClayLaser(
+data class ClayLaser(
     override val laserDirection: EnumFacing,
     override val laserRed: Int,
     override val laserGreen: Int,

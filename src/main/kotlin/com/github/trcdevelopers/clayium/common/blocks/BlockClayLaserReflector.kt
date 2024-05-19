@@ -8,6 +8,7 @@ import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
@@ -49,6 +50,12 @@ class BlockClayLaserReflector : Block(Material.GLASS) {
 
     override fun getRenderLayer() = BlockRenderLayer.TRANSLUCENT
     override fun getRenderType(state: IBlockState) = EnumBlockRenderType.INVISIBLE
+
+    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        val tile = worldIn.getTileEntity(pos) as? TileEntityClayLaserReflector ?: return false
+        println("laser: ${tile.laser}, laserLength: ${tile.laserLength}, isActive: ${tile.isActive}")
+        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ)
+    }
 
     companion object {
         val FACING = PropertyDirection.create("direction")
