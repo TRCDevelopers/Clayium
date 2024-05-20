@@ -13,6 +13,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ITickable
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
@@ -159,6 +160,10 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
     private fun notifyWorld() {
         val state = world.getBlockState(pos)
         world.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.SEND_TO_CLIENTS)
+    }
+
+    override fun getRenderBoundingBox(): AxisAlignedBB {
+        return INFINITE_EXTENT_AABB
     }
 
     private companion object {
