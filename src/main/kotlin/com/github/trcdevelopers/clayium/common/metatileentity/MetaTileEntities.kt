@@ -59,7 +59,13 @@ object MetaTileEntities {
     }
 
     val CLAY_LASER = registerMetaTileEntities(70, (7..10)) { //+4
-        ClayLaserMetaTileEntity(clayiumId("clay_laser_tier$it"), it)
+        when (it) {
+            7 -> ClayLaserMetaTileEntity(clayiumId("clay_laser_tier$it"), it, laserBlue = 1)
+            8 -> ClayLaserMetaTileEntity(clayiumId("clay_laser_tier$it"), it, laserGreen = 1)
+            9 -> ClayLaserMetaTileEntity(clayiumId("clay_laser_tier$it"), it, laserRed = 1)
+            10 -> ClayLaserMetaTileEntity(clayiumId("clay_laser_tier$it"), it, 3, 3, 3)
+            else -> throw IllegalArgumentException("Invalid tier for Clay laser: $it")
+        }
     }
 
     /**

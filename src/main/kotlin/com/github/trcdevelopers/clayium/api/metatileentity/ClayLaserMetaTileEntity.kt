@@ -29,6 +29,9 @@ import kotlin.math.min
 class ClayLaserMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: Int,
+    private val laserRed: Int = 0,
+    private val laserGreen: Int = 0,
+    private val laserBlue: Int = 0,
 ) : MetaTileEntity(metaTileEntityId, tier, listOf(MachineIoMode.NONE, MachineIoMode.CE), listOf(MachineIoMode.NONE), "machine.${CValues.MOD_ID}.clay_laser_tier$tier") {
 
     override val faceTexture = ResourceLocation(CValues.MOD_ID, "blocks/clay_laser")
@@ -40,7 +43,8 @@ class ClayLaserMetaTileEntity(
         override fun update() {}
     }
 
-    val laserManager = ClayLaserSource(this, 3)
+
+    val laserManager = ClayLaserSource(this, laserRed, laserGreen, laserBlue)
 
     override val renderBoundingBox by lazy {
         val laser = laserManager.laser
@@ -85,7 +89,7 @@ class ClayLaserMetaTileEntity(
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
-        return ClayLaserMetaTileEntity(metaTileEntityId, tier)
+        return ClayLaserMetaTileEntity(metaTileEntityId, tier, laserRed, laserGreen, laserBlue)
     }
 
     @SideOnly(Side.CLIENT)

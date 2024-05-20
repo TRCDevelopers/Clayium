@@ -96,7 +96,7 @@ class ClayLaserSource(
         val length = buf.readVarInt()
         val direction = EnumFacing.byIndex(buf.readVarInt())
         laserLength = length
-        laser = ClayLaser(direction, 3, 3, 3, length)
+        laser = ClayLaser(direction, laserRed, laserGreen, laserBlue, length)
         isActive = buf.readBoolean()
     }
 
