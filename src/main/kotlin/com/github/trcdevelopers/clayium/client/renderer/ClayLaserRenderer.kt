@@ -2,7 +2,6 @@ package com.github.trcdevelopers.clayium.client.renderer
 
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.IClayLaserSource
-import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.config.ConfigCore
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator

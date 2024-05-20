@@ -1,8 +1,8 @@
 package com.github.trcdevelopers.clayium.recipe
 
-import com.github.trcdevelopers.clayium.Bootstrap
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.github.trcdevelopers.clayium.Bootstrap
 import com.github.trcdevelopers.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trcdevelopers.clayium.api.metatileentity.AutoIoHandler
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity

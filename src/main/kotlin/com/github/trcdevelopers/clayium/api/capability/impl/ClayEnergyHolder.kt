@@ -18,7 +18,6 @@ import net.minecraft.client.resources.I18n
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
-import net.minecraftforge.items.ItemStackHandler
 
 class ClayEnergyHolder(
     metaTileEntity: MetaTileEntity,

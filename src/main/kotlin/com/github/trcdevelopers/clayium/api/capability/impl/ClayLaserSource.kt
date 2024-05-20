@@ -1,8 +1,8 @@
 package com.github.trcdevelopers.clayium.api.capability.impl
 
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
-import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_LASER_ACTIVATION
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_LASER
+import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_LASER_ACTIVATION
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.IClayLaserSource
 import com.github.trcdevelopers.clayium.api.laser.ClayLaser
@@ -15,7 +15,6 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
-import net.minecraftforge.common.util.Constants
 
 class ClayLaserSource(
     metaTileEntity: MetaTileEntity,

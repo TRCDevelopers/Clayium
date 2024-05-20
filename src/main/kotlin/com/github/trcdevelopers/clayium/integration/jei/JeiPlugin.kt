@@ -51,9 +51,7 @@ class JeiPlugin : IModPlugin {
         }
 
         for (metaTileEntity in ClayiumApi.MTE_REGISTRY) {
-            println("metatileEntity")
             if (metaTileEntity !is WorkableMetaTileEntity) continue
-            println("metatileEntity is WorkableMetaTileEntity")
             modRegistry.addRecipeCatalyst(metaTileEntity.getStackForm(), metaTileEntity.recipeRegistry.category.uniqueId)
         }
     }
