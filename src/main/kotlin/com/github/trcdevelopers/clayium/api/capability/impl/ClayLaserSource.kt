@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
+import net.minecraftforge.common.util.Constants
 
 class ClayLaserSource(
     metaTileEntity: MetaTileEntity,
@@ -29,7 +30,6 @@ class ClayLaserSource(
      */
     constructor(metaTileEntity: MetaTileEntity, laserStrength: Int) : this(metaTileEntity, laserStrength, laserStrength, laserStrength)
 
-    private var ticked: ULong = 0u
     override var laser: ClayLaser = ClayLaser(EnumFacing.NORTH, laserRed, laserGreen, laserBlue, 1)
     override var laserLength: Int = MAX_LASER_LENGTH
         set(value) {
@@ -61,13 +61,15 @@ class ClayLaserSource(
         }
 
     override fun update() {
-        if (metaTileEntity.world?.isRemote == true) return
-        if (ticked % 2u == 0uL) { updateLaserLength() }
-        ticked++
+        if (metaTileEntity.world?.isRemote == true || !this.isActive) return
+        updateLaserLength()
+        updateTargetInstance()
     }
 
     override fun updateDirection(direction: EnumFacing) {
         laser = laser.changeDirection(direction)
+        updateLaserLength()
+        updateTargetInstance()
         writeLaserData()
     }
 
@@ -93,6 +95,7 @@ class ClayLaserSource(
     override fun receiveInitialSyncData(buf: PacketBuffer) {
         val length = buf.readVarInt()
         val direction = EnumFacing.byIndex(buf.readVarInt())
+        laserLength = length
         laser = ClayLaser(direction, 3, 3, 3, length)
         isActive = buf.readBoolean()
     }
@@ -111,8 +114,11 @@ class ClayLaserSource(
         isActive = data.getBoolean("isActive")
     }
 
-    fun onPlacement(world: IBlockAccess, pos: BlockPos) {
-        updateLaserLength()
+    fun onRemoval() {
+        laserTarget?.takeUnless { it.isInvalid }
+            ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
+            ?.laserChanged(laser.laserDirection.opposite, null)
+        writeLaserData()
     }
 
     private fun updateLaserLength() {
@@ -121,10 +127,6 @@ class ClayLaserSource(
         for (i in 1..MAX_LASER_LENGTH) {
             val targetPos = pos.offset(metaTileEntity.frontFacing, i)
             if (canGoThroughBlock(world, targetPos)) continue
-            val prevTarget = laserTarget
-            this.laserTarget = world.getTileEntity(targetPos)
-                ?.takeIf { it.hasCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, metaTileEntity.frontFacing) }
-            this.updateTarget(prevTarget, laserTarget)
             this.laserLength = i
             return
         }
@@ -132,20 +134,26 @@ class ClayLaserSource(
         this.laserTarget = null
     }
 
+    private fun updateTargetInstance() {
+        val pos = metaTileEntity.pos ?: return
+        val world = metaTileEntity.world ?: return
+        val targetSide = metaTileEntity.frontFacing.opposite
+        val previousTarget = this.laserTarget
+        this.laserTarget = world.getTileEntity(pos.offset(this.laser.laserDirection, this.laserLength))
+            ?.takeIf { it.hasCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide) }
+        if (previousTarget != laserTarget) {
+            previousTarget?.takeUnless { it.isInvalid }
+                ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
+                ?.laserChanged(targetSide, null)
+            laserTarget?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
+                ?.laserChanged(targetSide, this.laser)
+            writeLaserData()
+        }
+    }
+
     private fun canGoThroughBlock(world: IBlockAccess, pos: BlockPos): Boolean {
         val material = world.getBlockState(pos).material
         return (material == Material.AIR) || (material == Material.GRASS)
-    }
-
-    private fun updateTarget(previousTarget: TileEntity?, target: TileEntity?) {
-        val targetSide = metaTileEntity.frontFacing.opposite
-        if (previousTarget != target) {
-            previousTarget?.takeIf { !it.isInvalid }
-                ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
-                ?.laserChanged(targetSide, null)
-            target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
-                ?.laserChanged(targetSide, laser)
-        }
     }
 
     private fun writeLaserData() {
