@@ -4,6 +4,6 @@ import net.minecraftforge.common.IRarity
 
 interface ITier {
     val numeric: Int
-    val translationKey: String
+    val prefixTranslationKey: String
     val rarity: IRarity
 }

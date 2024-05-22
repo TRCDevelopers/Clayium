@@ -1,12 +1,11 @@
-package com.github.trcdevelopers.clayium.api
+package com.github.trcdevelopers.clayium.api.util
 
-import com.github.trcdevelopers.clayium.api.util.ITier
 import net.minecraft.item.EnumRarity
 import net.minecraftforge.common.IRarity
 
-enum class DefaultTiers(
+enum class ClayTiers(
     override val numeric: Int,
-    override val translationKey: String,
+    override val prefixTranslationKey: String,
     override val rarity: IRarity
 ) : ITier {
     DEFAULT(0, "tier.clayium.default", EnumRarity.COMMON),
