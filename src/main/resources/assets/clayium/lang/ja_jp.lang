@@ -129,6 +129,23 @@ machine.clayium.tier11=純反物質
 machine.clayium.tier12=OEC
 machine.clayium.tier13=OPA
 
+tier.clayium.clay=粘土
+tier.clayium.dense_clay=高密度粘土
+tier.clayium.simple=簡易
+tier.clayium.basic=
+tier.clayium.advanced=発展
+tier.clayium.precision=精密
+tier.clayium.clay_steel=粘土鋼
+tier.clayium.clayium=クレイウム
+tier.clayium.ultimate=究極
+tier.clayium.antimatter=反物質
+tier.clayium.pure_antimatter=純反物質
+tier.clayium.oec=OEC
+tier.clayium.opa=OPA
+
+tile.clayium.machine_hull=%sマシン筐体
+tile.clayium.machine_hull_tier4=基本マシン筐体
+
 recipe.clayium.ClayWorkTable=粘土作業台
 
 recipe.clayium.WireDrawingMachine=粘土ワイヤー圧延機
@@ -200,19 +217,6 @@ tile.clayium.compressed_clay_tier11.name=7重圧縮エネルギー粘土
 tile.clayium.compressed_clay_tier12.name=8重圧縮エネルギー粘土
 
 tile.clayium.blockRawClayMachineHull.0.name=生の粘土マシン筐体
-tile.clayium.blockMachineHull.0.name=粘土マシン筐体
-tile.clayium.blockMachineHull.1.name=高密度粘土マシン筐体
-tile.clayium.blockMachineHull.2.name=簡易マシン筐体
-tile.clayium.blockMachineHull.3.name=基本マシン筐体
-tile.clayium.blockMachineHull.4.name=発展マシン筐体
-tile.clayium.blockMachineHull.5.name=精密マシン筐体
-tile.clayium.blockMachineHull.6.name=粘土鋼マシン筐体
-tile.clayium.blockMachineHull.7.name=クレイウムマシン筐体
-tile.clayium.blockMachineHull.8.name=究極マシン筐体
-tile.clayium.blockMachineHull.9.name=反物質マシン筐体
-tile.clayium.blockMachineHull.10.name=純反物質マシン筐体
-tile.clayium.blockMachineHull.11.name=OEC マシン筐体
-tile.clayium.blockMachineHull.12.name=OPA マシン筐体
 
 #tile.blockOthersHull.0.name=AZ91D Alloy Hull
 #tile.blockOthersHull.1.name=ZK60A Alloy Hull
@@ -552,20 +556,20 @@ gui.clayium.WaterWheel.progress=進捗: %1$d
 gui.clayium.WaterWheel.durability=耐久度: %1$d
 gui.clayium.WaterWheel.surroundingWater=水流: %1$d
 
-tile.clayium.blockClaySteelClayEnergyLaser.name=青粘土レーザー
-tile.clayium.blockClayiumClayEnergyLaser.name=緑粘土レーザー
-tile.clayium.blockUltimateClayEnergyLaser.name=赤粘土レーザー
-tile.clayium.blockAntimatterClayEnergyLaser.name=白粘土レーザー
-tile.clayium.blockAntimatterClayEnergyLaser.tooltip.line1=3x青 + 3x緑 + 3x赤 と等しい
-tooltip.clayium.ClayEnergyLaser.line1=__DETAIL__
-tooltip.clayium.ClayEnergyLaser.line2=レーザーは粘土反応炉の稼動や、
-tooltip.clayium.ClayEnergyLaser.line3=範囲採掘機などの機械の加速に使用される
-tooltip.clayium.ClayEnergyLaser.line4=鉱石や苗木には何らかの影響を与えるようだ
-tooltip.clayium.ClayEnergyLaser.line5=赤石信号によりレーザー照射を止められる
-tooltip.clayium.ClayEnergyLaser.energyConsumption=消費: %1$s CE/t
+machine.clayium.clay_laser_tier7=青粘土レーザー
+machine.clayium.clay_laser_tier8=緑粘土レーザー
+machine.clayium.clay_laser_tier9=赤粘土レーザー
+machine.clayium.clay_laser_tier10=白粘土レーザー
+machine.clayium.clay_laser_tier10.tooltip1=3x青 + 3x緑 + 3x赤 と等しい
+machine.clayium.clay_laser.tooltip1=__DETAIL__
+machine.clayium.clay_laser.tooltip2=レーザーは粘土反応炉の稼動や、
+machine.clayium.clay_laser.tooltip3=範囲採掘機などの機械の加速に使用される
+machine.clayium.clay_laser.tooltip4=鉱石や苗木には何らかの影響を与えるようだ
+machine.clayium.clay_laser.tooltip5=赤石信号によりレーザー照射を止められる
+#machine.clayium.clay_laser.tooltip5tooltip.clayium.ClayEnergyLaser.energyConsumption=消費: %1$s CE/t
 
-tile.clayium.blockLaserReflector.name=レーザーリフレクター
-tile.clayium.blockLaserReflector.tooltip.line1=レーザーの向きを変える
+tile.clayium.laser_reflector.name=レーザーリフレクター
+tile.clayium.laser_reflector.tooltip1=レーザーの向きを変える
 
 tile.clayium.blockClayTreeSapling.name=粘土樹の苗木
 tile.clayium.blockClayTreeLog.name=粘土樹の原木
