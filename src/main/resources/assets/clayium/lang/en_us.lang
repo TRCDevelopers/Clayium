@@ -144,6 +144,8 @@ tier.clayium.pure_antimatter=Pure Antimatter
 tier.clayium.oec=OEC
 tier.clayium.opa=OPA
 
+tile.clayium.machine_hull=%s Machine Hull
+
 recipe.clayium.ClayWorkTable=Clay Work Table
 
 recipe.clayium.WireDrawingMachine=Clay Wire Drawing Machine
@@ -215,19 +217,6 @@ tile.clayium.compressed_clay_tier11.name=Septuple Compressed Energetic Clay
 tile.clayium.compressed_clay_tier12.name=Octuple Compressed Energetic Clay
 
 tile.clayium.blockRawClayMachineHull.0.name=Raw Clay Machine Hull
-tile.clayium.blockMachineHull.0.name=Clay Machine Hull
-tile.clayium.blockMachineHull.1.name=Dense Clay Machine Hull
-tile.clayium.blockMachineHull.2.name=Simple Machine Hull
-tile.clayium.blockMachineHull.3.name=Basic Machine Hull
-tile.clayium.blockMachineHull.4.name=Advanced Machine Hull
-tile.clayium.blockMachineHull.5.name=Precision Machine Hull
-tile.clayium.blockMachineHull.6.name=Clay Steel Machine Hull
-tile.clayium.blockMachineHull.7.name=Clayium Machine Hull
-tile.clayium.blockMachineHull.8.name=Ultimate Machine Hull
-tile.clayium.blockMachineHull.9.name=Antimatter Machine Hull
-tile.clayium.blockMachineHull.10.name=Pure Antimatter Machine Hull
-tile.clayium.blockMachineHull.11.name=OEC Machine Hull
-tile.clayium.blockMachineHull.12.name=OPA Machine Hull
 
 #tile.blockOthersHull.0.name=AZ91D Alloy Hull
 #tile.blockOthersHull.1.name=ZK60A Alloy Hull

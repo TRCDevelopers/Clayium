@@ -43,15 +43,8 @@ class BlockClayWorkTable : BlockContainer(Material.ROCK), ITieredBlock {
         if (worldIn.isRemote) {
             return true
         }
-        val te = worldIn.getTileEntity(pos) as TileClayWorkTable? ?: return false
         playerIn.openGui(Clayium.INSTANCE, GuiHandler.CLAY_WORK_TABLE, worldIn, pos.x, pos.y, pos.z)
         return true
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        tooltip.add(ITier.tierNumericTooltip(ClayTiers.DEFAULT))
-        tooltip.add(I18n.format("tile.clayium.clay_work_table.tooltip"))
     }
 
     override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
