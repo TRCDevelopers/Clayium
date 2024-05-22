@@ -19,6 +19,9 @@ import net.minecraftforge.fml.relauncher.SideOnly
 
 object ClayiumBlocks {
 
+    private val blocks: MutableMap<String, Block> = mutableMapOf()
+    val allBlocks: Map<String, Block> get() = ImmutableMap.copyOf(blocks)
+
     val CLAY_WORK_TABLE = createBlock("clay_work_table", BlockClayWorkTable())
 
     val COMPRESSED_CLAY = createBlock("compressed_clay", BlockCompressedClay())
@@ -30,44 +33,21 @@ object ClayiumBlocks {
 
     val LASER_REFLECTOR = createBlock("laser_reflector", BlockClayLaserReflector())
 
-    private val blocks: MutableMap<String, Block> = HashMap()
-    val allBlocks: Map<String, Block> get() = ImmutableMap.copyOf(blocks)
+    val MACHINE_HULL = createBlock("machine_hull", BlockMachineHull())
 
     private fun <T: Block> createBlock(key: String, block: T): T {
         return block.apply {
             setCreativeTab(Clayium.creativeTab)
             setRegistryName(clayiumId(key))
             setTranslationKey("${CValues.MOD_ID}.$key")
+            blocks[key] = this
         }
     }
 
-    fun registerBlocks(event: RegistryEvent.Register<Block>) {
-        val registry = event.registry
-        registry.register(CLAY_WORK_TABLE)
-
-        registry.register(COMPRESSED_CLAY)
-        registry.register(ENERGIZED_CLAY)
-
-        registry.register(CLAY_ORE)
-        registry.register(DENSE_CLAY_ORE)
-        registry.register(LARGE_DENSE_CLAY_ORE)
-
-        registry.register(LASER_REFLECTOR)
-    }
+    fun registerBlocks(event: RegistryEvent.Register<Block>) { blocks.values.forEach(event.registry::register) }
 
     @SideOnly(Side.CLIENT)
-    fun registerItemBlockModels() {
-        registerItemModel(CLAY_WORK_TABLE)
-
-        registerItemModel(COMPRESSED_CLAY)
-        registerItemModel(ENERGIZED_CLAY)
-
-        registerItemModel(CLAY_ORE)
-        registerItemModel(DENSE_CLAY_ORE)
-        registerItemModel(LARGE_DENSE_CLAY_ORE)
-
-        registerItemModel(LASER_REFLECTOR)
-    }
+    fun registerItemBlockModels() { blocks.values.forEach(this::registerItemModel) }
 
     @SideOnly(Side.CLIENT)
     private fun registerItemModel(block: Block) {

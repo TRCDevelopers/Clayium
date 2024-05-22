@@ -95,6 +95,10 @@ open class CommonProxy {
         registry.register(createItemBlock(ClayiumBlocks.DENSE_CLAY_ORE, ::ItemBlock))
         registry.register(createItemBlock(ClayiumBlocks.LARGE_DENSE_CLAY_ORE, ::ItemBlock))
 
+        registry.register(createItemBlock(ClayiumBlocks.MACHINE_HULL) { com.github.trcdevelopers.clayium.api.block.ItemBlockTiered(it).apply {
+            creativeTab = Clayium.creativeTab
+        } })
+
         registry.register(ItemBlock(ClayiumBlocks.LASER_REFLECTOR).apply {
             registryName = ClayiumBlocks.LASER_REFLECTOR.registryName
             translationKey = ClayiumBlocks.LASER_REFLECTOR.translationKey
