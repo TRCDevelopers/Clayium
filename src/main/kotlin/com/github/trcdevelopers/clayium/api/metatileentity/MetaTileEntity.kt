@@ -86,6 +86,10 @@ abstract class MetaTileEntity(
     var frontFacing = EnumFacing.NORTH
         protected set
 
+    private var timer = 0L
+    private val timerOffset = (0..19).random()
+    val offsetTimer: Long get() = timer + timerOffset
+
     @SideOnly(Side.CLIENT)
     abstract fun registerItemModel(item: Item, meta: Int)
 
