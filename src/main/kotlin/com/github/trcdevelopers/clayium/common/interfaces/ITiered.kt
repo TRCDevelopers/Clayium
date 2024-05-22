@@ -4,6 +4,7 @@ import net.minecraft.client.resources.I18n
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
+@Deprecated("todo: remove")
 interface ITiered {
     val tier: Int
 

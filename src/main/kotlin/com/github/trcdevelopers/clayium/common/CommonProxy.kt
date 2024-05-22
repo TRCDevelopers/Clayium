@@ -2,6 +2,7 @@ package com.github.trcdevelopers.clayium.common
 
 import com.cleanroommc.modularui.factory.GuiManager
 import com.github.trcdevelopers.clayium.api.ClayiumApi
+import com.github.trcdevelopers.clayium.api.block.ItemBlockTiered
 import com.github.trcdevelopers.clayium.api.capability.SimpleCapabilityManager
 import com.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
@@ -13,7 +14,6 @@ import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedCl
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
 import com.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
-import com.github.trcdevelopers.clayium.common.items.ItemBlockTiered
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
@@ -95,9 +95,7 @@ open class CommonProxy {
         registry.register(createItemBlock(ClayiumBlocks.DENSE_CLAY_ORE, ::ItemBlock))
         registry.register(createItemBlock(ClayiumBlocks.LARGE_DENSE_CLAY_ORE, ::ItemBlock))
 
-        registry.register(createItemBlock(ClayiumBlocks.MACHINE_HULL) { com.github.trcdevelopers.clayium.api.block.ItemBlockTiered(it).apply {
-            creativeTab = Clayium.creativeTab
-        } })
+        registry.register(createItemBlock(ClayiumBlocks.MACHINE_HULL, ::ItemBlockTiered))
 
         registry.register(ItemBlock(ClayiumBlocks.LASER_REFLECTOR).apply {
             registryName = ClayiumBlocks.LASER_REFLECTOR.registryName

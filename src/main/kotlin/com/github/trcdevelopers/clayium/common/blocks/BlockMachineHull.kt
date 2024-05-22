@@ -3,6 +3,7 @@ package com.github.trcdevelopers.clayium.common.blocks
 import com.github.trcdevelopers.clayium.api.block.ITieredBlock
 import com.github.trcdevelopers.clayium.api.util.ClayTiers
 import com.github.trcdevelopers.clayium.api.util.ITier
+import com.github.trcdevelopers.clayium.common.Clayium
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -23,10 +24,12 @@ import net.minecraft.world.World
 class BlockMachineHull : Block(Material.IRON), ITieredBlock {
 
     init {
+        creativeTab = Clayium.creativeTab
         setHardness(2.0f)
         setResistance(5.0f)
         setHarvestLevel("pickaxe", 0)
         setSoundType(SoundType.METAL)
+        defaultState = defaultState.withProperty(META, 1)
     }
 
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
