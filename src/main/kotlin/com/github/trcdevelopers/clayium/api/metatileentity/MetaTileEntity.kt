@@ -47,8 +47,8 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders
 abstract class MetaTileEntity(
     val metaTileEntityId: ResourceLocation,
     val tier: Int,
-    val validInputModes: List<MachineIoMode>,
-    val validOutputModes: List<MachineIoMode>,
+    open val validInputModes: List<MachineIoMode>,
+    open val validOutputModes: List<MachineIoMode>,
     /**
      * used in item/block name and gui title
      */
