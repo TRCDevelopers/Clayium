@@ -1,19 +1,25 @@
 package com.github.trcdevelopers.clayium.api.metatileentity
 
+import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trcdevelopers.clayium.api.CValues
+import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_STRUCTURE_VALIDITY
 import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.IMultiblockPart
+import com.github.trcdevelopers.clayium.api.util.CUtils
+import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.RelativeDirection
 import com.github.trcdevelopers.clayium.common.blocks.BlockMachineHull
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
-import net.minecraft.block.state.IBlockState
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
+import net.minecraft.network.PacketBuffer
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
+import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.items.ItemStackHandler
 
 class CLayBlastFurnaceMetaTileEntity(
@@ -25,6 +31,12 @@ class CLayBlastFurnaceMetaTileEntity(
     "machine.${CValues.MOD_ID}.clay_blast_furnace"
 ) {
 
+    private val faceWhenDeconstructed = clayiumId("blocks/blastfurnace")
+    private val faceWhenConstructed = clayiumId("blocks/blastfurnace_1")
+    override val allFaceTextures = listOf(faceWhenDeconstructed, faceWhenConstructed)
+    override var faceTexture = faceWhenDeconstructed
+        private set
+
     override val importItems = ItemStackHandler(1)
     override val exportItems = ItemStackHandler(1)
     override val itemInventory = ItemHandlerProxy(importItems, exportItems)
@@ -35,28 +47,36 @@ class CLayBlastFurnaceMetaTileEntity(
     }
 
     override fun registerItemModel(item: Item, meta: Int) {
-        TODO("Not yet implemented")
+        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("clay_blast_furnace"), "tier=$tier"))
     }
 
     override fun isConstructed(): Boolean {
         val world = world ?: return false
-        val pos = pos ?: return false
+        val controllerPos = pos ?: return false
         val mbParts = mutableListOf<IMultiblockPart>()
         for (yy in 0..1) {
             for (xx in -1..1) {
                 for (zz in 0..2) {
-                    val blockPos = getControllerRelativeCoord(pos, xx, yy, zz)
-                    val (isValid, mbPart) = isPosValidForMultiblock(world, blockPos)
-                    if (!isValid) return false
+                    val mbPartPos = getControllerRelativeCoord(controllerPos, xx, yy, zz)
+                    val (isValid, mbPart) = isPosValidForMultiblock(world, mbPartPos)
+                    if (!isValid) {
+                        writeCustomData(UPDATE_STRUCTURE_VALIDITY) { writeBoolean(false) }
+                        return false
+                    }
                     mbPart?.let { mbParts.add(it) }
                 }
             }
         }
         multiblockParts.addAll(mbParts)
+        if (!structureFormed) {
+            writeCustomData(UPDATE_STRUCTURE_VALIDITY) { writeBoolean(true) }
+        }
         return true
     }
 
     private fun isPosValidForMultiblock(world: IBlockAccess, pos: BlockPos): Pair<Boolean, IMultiblockPart?> {
+        if (CUtils.getMetaTileEntity(world, pos) == this) return Pair(true, null)
+
         world.getTileEntity(pos)?.let { tileEntity ->
             if (tileEntity is IMultiblockPart) {
                 multiblockParts.add(tileEntity)
@@ -68,7 +88,10 @@ class CLayBlastFurnaceMetaTileEntity(
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        TODO("Not yet implemented")
+        return ModularPanel.defaultPanel("notImplementedBlastFurnace")
+            .child(IKey.str("isConstructed: $structureFormed").asWidget()
+                .left(6).top(6))
+            .bindPlayerInventory()
     }
 
     // y
@@ -86,5 +109,18 @@ class CLayBlastFurnaceMetaTileEntity(
             pos.y + relRight.yOffset * right + relUp.yOffset * up + relBackwards.yOffset * backwards,
             pos.z + relRight.zOffset * right + relUp.zOffset * up + relBackwards.zOffset * backwards,
         )
+    }
+
+    override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
+        when (discriminator) {
+            UPDATE_STRUCTURE_VALIDITY -> {
+                val structureFormed = buf.readBoolean()
+                faceTexture = if (structureFormed) faceWhenConstructed else faceWhenDeconstructed
+                this.structureFormed = structureFormed
+                scheduleRenderUpdate()
+                println("Received structure validity update: $structureFormed")
+            }
+        }
+        super.receiveCustomData(discriminator, buf)
     }
 }

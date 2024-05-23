@@ -15,13 +15,10 @@ class MetaTileEntityModel(
 ) : IModel {
 
     override fun getTextures(): Collection<ResourceLocation> {
-        return mutableListOf<ResourceLocation>().apply {
+        return mutableSetOf<ResourceLocation>().apply {
             // machine face textures
             ClayiumApi.MTE_REGISTRY.forEach { metaTileEntity ->
-                val faceTexture = metaTileEntity.faceTexture ?: return@forEach
-                if (!(this.isNotEmpty() && faceTexture == this.last())) {
-                    add(faceTexture)
-                }
+                addAll(metaTileEntity.allFaceTextures.filterNotNull())
             }
             // io textures
             add(clayiumId("blocks/import_energy"))

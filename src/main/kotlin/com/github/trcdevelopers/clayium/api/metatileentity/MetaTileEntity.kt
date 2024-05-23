@@ -62,6 +62,7 @@ abstract class MetaTileEntity(
     val pos: BlockPos? get() = holder?.pos
 
     open val faceTexture: ResourceLocation? = null
+    open val allFaceTextures get() = listOf(faceTexture)
 
     protected val mteTraits = mutableMapOf<String, MTETrait>()
     private val traitByNetworkId = Int2ObjectOpenHashMap<MTETrait>()
@@ -102,6 +103,7 @@ abstract class MetaTileEntity(
 
     open fun update() {
         mteTraits.values.forEach(MTETrait::update)
+        timer++
     }
 
     open fun writeToNBT(data: NBTTagCompound) {
