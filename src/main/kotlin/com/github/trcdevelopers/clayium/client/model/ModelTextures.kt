@@ -60,10 +60,11 @@ object ModelTextures {
             }
         }
         for (metaTileEntity in ClayiumApi.MTE_REGISTRY) {
-            val faceTexture = metaTileEntity.faceTexture ?: continue
-            _faceQuads.computeIfAbsent(faceTexture) {
-                EnumFacing.entries.associateWith { side ->
-                    createQuad(side, getter.apply(faceTexture))
+            metaTileEntity.allFaceTextures.filterNotNull().forEach { faceTexture ->
+                _faceQuads.computeIfAbsent(faceTexture) {
+                    EnumFacing.entries.associateWith { side ->
+                        createQuad(side, getter.apply(faceTexture))
+                    }
                 }
             }
         }

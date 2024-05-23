@@ -118,7 +118,6 @@ class CLayBlastFurnaceMetaTileEntity(
                 faceTexture = if (structureFormed) faceWhenConstructed else faceWhenDeconstructed
                 this.structureFormed = structureFormed
                 scheduleRenderUpdate()
-                println("Received structure validity update: $structureFormed")
             }
         }
         super.receiveCustomData(discriminator, buf)
