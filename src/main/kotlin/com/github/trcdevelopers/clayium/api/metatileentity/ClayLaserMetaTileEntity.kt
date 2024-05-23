@@ -7,6 +7,7 @@ import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayLaserSource
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
+import com.github.trcdevelopers.clayium.common.config.ConfigCore
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.util.ITooltipFlag
@@ -42,7 +43,6 @@ class ClayLaserMetaTileEntity(
     override val autoIoHandler: AutoIoHandler = object : AutoIoHandler(this@ClayLaserMetaTileEntity) {
         override fun update() {}
     }
-
 
     val laserManager = ClayLaserSource(this, laserRed, laserGreen, laserBlue)
 
@@ -121,6 +121,7 @@ class ClayLaserMetaTileEntity(
     }
 
     private fun updateLaserActivation() {
-        laserManager.isActive = (world?.isBlockPowered(this.pos ?: return) == true)
+        // default->isNotPowered, inverted->isPowered
+        laserManager.isActive = (world?.isBlockPowered(this.pos ?: return) == ConfigCore.misc.invertClayLaserRsCondition)
     }
 }
