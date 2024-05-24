@@ -1,9 +1,13 @@
 package com.github.trcdevelopers.clayium.api.metatileentity
 
+import com.github.trcdevelopers.clayium.api.capability.impl.ClayEnergyHolder
+import com.github.trcdevelopers.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.IMultiblockPart
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
+import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import net.minecraft.util.ResourceLocation
 import org.jetbrains.annotations.MustBeInvokedByOverriders
+import kotlin.math.floor
 
 
 abstract class MultiblockControllerBase(
@@ -12,12 +16,16 @@ abstract class MultiblockControllerBase(
     validInputModes: List<MachineIoMode>,
     validOutputModes: List<MachineIoMode>,
     translationKey: String,
+    protected val recipeRegistry: RecipeRegistry<*>,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey) {
 
     protected val multiblockParts = mutableListOf<IMultiblockPart>()
-    protected var structureFormed = false
+    val clayEnergyHolder = ClayEnergyHolder(this)
+    var structureFormed = false
+        protected set
 
     abstract fun isConstructed(): Boolean
+    protected abstract val workable: MultiblockRecipeLogic
 
     @MustBeInvokedByOverriders
     open fun onConstructed() {
@@ -44,5 +52,9 @@ abstract class MultiblockControllerBase(
                 structureFormed = constructed
             }
         }
+    }
+
+    protected fun calcTier(tiers: Collection<Int>): Int {
+        return floor(tiers.average()).toInt()
     }
 }
