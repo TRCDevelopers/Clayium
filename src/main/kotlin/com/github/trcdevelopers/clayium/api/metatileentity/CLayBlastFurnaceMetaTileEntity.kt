@@ -28,6 +28,7 @@ import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.client.resources.I18n
 import net.minecraft.item.Item
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.ResourceLocation
@@ -82,6 +83,7 @@ class CLayBlastFurnaceMetaTileEntity(
                     val mbPartPos = getControllerRelativeCoord(controllerPos, xx, yy, zz)
                     val (isValid, mbPart, tier) = isPosValidForMultiblock(world, mbPartPos)
                     if (!isValid) {
+                        multiblockTier = 0
                         writeCustomData(UPDATE_STRUCTURE_VALIDITY) { writeBoolean(false) }
                         return false
                     }
@@ -142,7 +144,7 @@ class CLayBlastFurnaceMetaTileEntity(
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        syncManager.syncValue(3, SyncHandlers.intNumber({ multiblockTier }, { multiblockTier = it }))
+        syncManager.syncValue("mbTier", 3, SyncHandlers.intNumber({ multiblockTier }, { multiblockTier = it }))
         val panel = ModularPanel.defaultPanel(this.metaTileEntityId.toString())
 
         // title
@@ -202,7 +204,7 @@ class CLayBlastFurnaceMetaTileEntity(
                 .child(clayEnergyHolder.createCeTextWidget(syncManager, 2)
                     .widthRel(0.5f)
                     .pos(6, 60))
-                .child(IKey.lang("tooltip.clayium.tier", multiblockTier).asWidget()
+                .child(IKey.dynamic { I18n.format("tooltip.clayium.tier", multiblockTier) }.asWidget()
                     .align(Alignment.BottomCenter))
         )
 
