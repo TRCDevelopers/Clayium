@@ -41,7 +41,7 @@ class ClayBlastFurnaceMetaTileEntity(
     tier: Int,
 ) : MultiblockControllerBase(
     metaTileEntityId, tier,
-    listOf(MachineIoMode.NONE, MachineIoMode.ALL, MachineIoMode.CE), listOf(MachineIoMode.NONE, MachineIoMode.ALL, MachineIoMode.CE),
+    listOf(MachineIoMode.NONE, MachineIoMode.ALL, MachineIoMode.CE), listOf(MachineIoMode.NONE, MachineIoMode.ALL),
     "machine.${CValues.MOD_ID}.clay_blast_furnace",
     CRecipes.CLAY_BLAST_FURNACE,
 ) {
