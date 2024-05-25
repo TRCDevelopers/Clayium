@@ -12,17 +12,16 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
-import net.minecraft.util.math.BlockPos
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemStackHandler
-import kotlin.contracts.contract
 
 class ClayInterfaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -103,6 +102,10 @@ class ClayInterfaceMetaTileEntity(
     override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         val mimicTarget = this.mimicTarget ?: return
         mimicTarget.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
+    }
+
+    override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
+        // no-op, this block is a proxy
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {

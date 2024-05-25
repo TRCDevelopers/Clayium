@@ -384,7 +384,7 @@ abstract class MetaTileEntity(
     open val renderBoundingBox: AxisAlignedBB? = null
 
     companion object {
-        protected fun clearInventory(itemBuffer: MutableList<ItemStack>, inventory: IItemHandlerModifiable) {
+        fun clearInventory(itemBuffer: MutableList<ItemStack>, inventory: IItemHandlerModifiable) {
             for (i in 0..<inventory.slots) {
                 val stack = inventory.getStackInSlot(i)
                 if (!stack.isEmpty) {

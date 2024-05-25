@@ -9,6 +9,7 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
@@ -44,5 +45,10 @@ abstract class WorkableMetaTileEntity(
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         if (capability == ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER) return ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER.cast(clayEnergyHolder)
         return super.getCapability(capability, facing)
+    }
+
+    override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
+        super.clearMachineInventory(itemBuffer)
+        clearInventory(itemBuffer, clayEnergyHolder.energizedClayItemHandler)
     }
 }
