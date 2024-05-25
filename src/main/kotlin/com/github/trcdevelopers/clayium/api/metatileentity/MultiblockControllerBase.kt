@@ -27,10 +27,7 @@ abstract class MultiblockControllerBase(
     abstract fun isConstructed(): Boolean
     protected abstract val workable: MultiblockRecipeLogic
 
-    @MustBeInvokedByOverriders
-    open fun onConstructed() {
-        multiblockParts.forEach { it.addToMultiblock(this) }
-    }
+    open fun onConstructed() {}
 
     @MustBeInvokedByOverriders
     open fun onDeconstructed() {

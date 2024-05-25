@@ -36,7 +36,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraftforge.client.model.ModelLoader
 
-class CLayBlastFurnaceMetaTileEntity(
+class ClayBlastFurnaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: Int,
 ) : MultiblockControllerBase(
@@ -65,7 +65,7 @@ class CLayBlastFurnaceMetaTileEntity(
     private var multiblockTier: Int = 0
 
     override fun createMetaTileEntity(): MetaTileEntity {
-        return CLayBlastFurnaceMetaTileEntity(metaTileEntityId, tier)
+        return ClayBlastFurnaceMetaTileEntity(metaTileEntityId, tier)
     }
 
     override fun registerItemModel(item: Item, meta: Int) {
@@ -92,6 +92,7 @@ class CLayBlastFurnaceMetaTileEntity(
                 }
             }
         }
+        mbParts.forEach { it.addToMultiblock(this) }
         multiblockParts.addAll(mbParts)
         multiblockTier = calcTier(tiers.map { it.numeric })
         if (!structureFormed) {
