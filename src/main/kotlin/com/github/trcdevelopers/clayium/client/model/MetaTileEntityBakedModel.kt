@@ -72,7 +72,7 @@ class MetaTileEntityBakedModel(
 
         val quads = mutableListOf(ModelTextures.HULL_QUADS[mte.tier][side] ?: return emptyList())
         if (mte.hasFrontFacing && mte.faceTexture != null) {
-            if (mte is IMultiblockPart || side == mte.frontFacing) {
+            if (mte.useFaceForAllSides || side == mte.frontFacing) {
                 ModelTextures.FACE_QUADS[mte.faceTexture]?.get(side)?.let { quads.add(it) }
             }
         }

@@ -92,6 +92,11 @@ abstract class MetaTileEntity(
     private val timerOffset = (0..19).random()
     val offsetTimer: Long get() = timer + timerOffset
 
+    /**
+     * If true, [faceTexture] will be added to all [EnumFacing].
+     */
+    open val useFaceForAllSides = false
+
     @SideOnly(Side.CLIENT)
     abstract fun registerItemModel(item: Item, meta: Int)
 
