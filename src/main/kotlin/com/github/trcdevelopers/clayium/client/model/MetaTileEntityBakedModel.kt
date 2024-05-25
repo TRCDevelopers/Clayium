@@ -4,6 +4,7 @@ import codechicken.lib.render.particle.IModelParticleProvider
 import codechicken.lib.texture.TextureUtils
 import com.github.trcdevelopers.clayium.api.block.BlockMachine.Companion.TILE_ENTITY
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.IMultiblockPart
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
@@ -70,6 +71,11 @@ class MetaTileEntityBakedModel(
         val mte = (state.getValue(TILE_ENTITY) as? MetaTileEntityHolder)?.metaTileEntity ?: return emptyList()
 
         val quads = mutableListOf(ModelTextures.HULL_QUADS[mte.tier][side] ?: return emptyList())
+        if (mte.hasFrontFacing && mte.faceTexture != null) {
+            if (mte is IMultiblockPart || side == mte.frontFacing) {
+                ModelTextures.FACE_QUADS[mte.faceTexture]?.get(side)?.let { quads.add(it) }
+            }
+        }
         mte.inputModes.forEachIndexed { facingIndex, mteInputMode ->
             val side2Quad = inputModeQuads[mteInputMode] ?: return@forEachIndexed
             quads.add(side2Quad[facingIndex])
@@ -77,9 +83,6 @@ class MetaTileEntityBakedModel(
         mte.outputModes.forEachIndexed { facingIndex, mteOutputMode ->
             val side2Quad = outputModeQuads[mteOutputMode] ?: return@forEachIndexed
             quads.add(side2Quad[facingIndex])
-        }
-        if (mte.hasFrontFacing && mte.faceTexture != null && mte.frontFacing == side) {
-            ModelTextures.FACE_QUADS[mte.faceTexture]?.get(side)?.let { quads.add(it) }
         }
 
         return quads
