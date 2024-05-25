@@ -29,6 +29,7 @@ class ClayInterfaceMetaTileEntity(
 ) : MetaTileEntity(metaTileEntityId, tier, listOf(MachineIoMode.NONE), listOf(MachineIoMode.NONE), "machine.${CValues.MOD_ID}.interface"), IMultiblockPart {
 
     override val faceTexture = clayiumId("blocks/interface")
+    override val useFaceForAllSides = true
 
     override var importItems: IItemHandlerModifiable = ItemStackHandler(0)
     override var exportItems: IItemHandlerModifiable = ItemStackHandler(0)
