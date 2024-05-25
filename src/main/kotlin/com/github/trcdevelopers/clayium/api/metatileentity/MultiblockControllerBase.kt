@@ -16,16 +16,15 @@ abstract class MultiblockControllerBase(
     validInputModes: List<MachineIoMode>,
     validOutputModes: List<MachineIoMode>,
     translationKey: String,
-    protected val recipeRegistry: RecipeRegistry<*>,
-) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey) {
+    recipeRegistry: RecipeRegistry<*>,
+) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey, recipeRegistry) {
 
     protected val multiblockParts = mutableListOf<IMultiblockPart>()
-    val clayEnergyHolder = ClayEnergyHolder(this)
     var structureFormed = false
         protected set
 
     abstract fun isConstructed(): Boolean
-    protected abstract val workable: MultiblockRecipeLogic
+    abstract override val workable: MultiblockRecipeLogic
 
     open fun onConstructed() {}
 

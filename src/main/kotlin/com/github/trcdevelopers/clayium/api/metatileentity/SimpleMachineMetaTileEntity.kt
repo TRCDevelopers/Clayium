@@ -36,11 +36,11 @@ class SimpleMachineMetaTileEntity(
     validInputModes: List<MachineIoMode>,
     validOutputModes: List<MachineIoMode>,
     translationKey: String,
-    faceTexture: ResourceLocation,
+    override val faceTexture: ResourceLocation,
     recipeRegistry: RecipeRegistry<*>,
     // saved for createMetaTileEntity()
     private val workableProvider: (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> AbstractRecipeLogic = ::RecipeLogicEnergy,
-) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey, faceTexture, recipeRegistry) {
+) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey, recipeRegistry) {
 
     constructor(
         metaTileEntityId: ResourceLocation,
