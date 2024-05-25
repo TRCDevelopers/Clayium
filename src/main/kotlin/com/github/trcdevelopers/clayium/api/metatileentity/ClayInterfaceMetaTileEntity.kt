@@ -14,12 +14,14 @@ import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemStackHandler
+import kotlin.contracts.contract
 
 class ClayInterfaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -88,7 +90,17 @@ class ClayInterfaceMetaTileEntity(
         return false
     }
 
+    override fun canOpenGui(): Boolean {
+        return this.mimicTarget != null
+    }
+
+    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        println("this pos: $pos, mimicTarget: $mimicTarget")
+        val mimicTarget = this.mimicTarget ?: return false
+        return mimicTarget.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
+    }
+
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("no direct gui for clay interfaces")
     }
 }

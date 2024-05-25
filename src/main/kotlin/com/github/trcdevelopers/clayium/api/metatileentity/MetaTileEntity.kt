@@ -11,6 +11,7 @@ import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_OUTPUT_MODE
 import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.capability.impl.RangedItemHandlerProxy
+import com.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trcdevelopers.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.Clayium
@@ -220,6 +221,17 @@ abstract class MetaTileEntity(
         }
         return null
     }
+
+    open fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        val pos = this.pos ?: return false
+        if (this.canOpenGui()) {
+            MetaTileEntityGuiFactory.open(player, pos)
+            return true
+        }
+        return false
+    }
+
+    open fun canOpenGui() = true
 
     fun onToolClick(toolType: ItemClayConfigTool.ToolType, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         if (this.world?.isRemote == true) return

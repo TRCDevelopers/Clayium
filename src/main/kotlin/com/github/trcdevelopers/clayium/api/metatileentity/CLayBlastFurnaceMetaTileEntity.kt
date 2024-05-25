@@ -103,10 +103,10 @@ class CLayBlastFurnaceMetaTileEntity(
     private fun isPosValidForMultiblock(world: IBlockAccess, pos: BlockPos): Triple<Boolean, IMultiblockPart?, ITier?> {
         if (CUtils.getMetaTileEntity(world, pos) == this) return Triple(true, null, null)
 
-        world.getTileEntity(pos)?.let { tileEntity ->
-            if (tileEntity is IMultiblockPart) {
-                multiblockParts.add(tileEntity)
-                return Triple(true, tileEntity, ClayTiers.entries[tileEntity.tier])
+        CUtils.getMetaTileEntity(world, pos)?.let { metaTileEntity ->
+            if (metaTileEntity is IMultiblockPart) {
+                multiblockParts.add(metaTileEntity)
+                return Triple(true, metaTileEntity, ClayTiers.entries[metaTileEntity.tier])
             }
         }
 

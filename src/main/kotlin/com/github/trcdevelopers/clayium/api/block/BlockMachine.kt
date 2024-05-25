@@ -130,9 +130,9 @@ class BlockMachine : Block(Material.IRON) {
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         if (worldIn.isRemote) return true
-        if (worldIn.getTileEntity(pos) is MetaTileEntityHolder) {
-            MetaTileEntityGuiFactory.open(playerIn, pos)
-            return true
+        val tileEntity = worldIn.getTileEntity(pos)
+        if (tileEntity is MetaTileEntityHolder) {
+            return tileEntity.metaTileEntity?.onRightClick(playerIn, hand, facing, hitX, hitY, hitZ) == true
         }
         return false
     }

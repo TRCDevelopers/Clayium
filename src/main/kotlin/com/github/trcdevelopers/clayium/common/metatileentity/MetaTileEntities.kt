@@ -4,6 +4,7 @@ import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.capability.impl.RecipeLogicClayFurnace
 import com.github.trcdevelopers.clayium.api.metatileentity.CLayBlastFurnaceMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.ClayBufferMetaTileEntity
+import com.github.trcdevelopers.clayium.api.metatileentity.ClayInterfaceMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.ClayLaserMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.SimpleMachineMetaTileEntity
@@ -67,6 +68,10 @@ object MetaTileEntities {
             10 -> ClayLaserMetaTileEntity(clayiumId("clay_laser_tier$it"), it, 3, 3, 3)
             else -> throw IllegalArgumentException("Invalid tier for Clay laser: $it")
         }
+    }
+
+    val CLAY_INTERFACE = registerMetaTileEntities(141, (5..13)) {
+        ClayInterfaceMetaTileEntity(clayiumId("clay_interface_tier$it"), it)
     }
 
     val CLAY_BLAST_FURNACE = registerMetaTileEntity(150, CLayBlastFurnaceMetaTileEntity(clayiumId("clay_blast_furnace"), 6))
