@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.api.metatileentity
 
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
@@ -85,13 +86,22 @@ abstract class AutoIoHandler(
         metaTileEntity: MetaTileEntity,
         private val target: IItemHandler = metaTileEntity.importItems,
         isBuffer: Boolean = false,
-        traitName: String = ClayiumDataCodecs.AUTO_IO_HANDLER,
+        traitName : String = ClayiumDataCodecs.AUTO_IO_HANDLER,
     ) : AutoIoHandler(metaTileEntity, isBuffer, traitName) {
         override fun update() {
             if (metaTileEntity.world?.isRemote == true) return
             if (ticked++ < intervalTick) return
             importFromNeighbors(target)
             ticked = 0
+        }
+    }
+
+    class EcImporter(
+        metaTileEntity: MetaTileEntity,
+        private val energizedClayItemHandler: IItemHandler = metaTileEntity.importItems,
+    ) : Importer(metaTileEntity, energizedClayItemHandler, false, traitName = "${ClayiumDataCodecs.AUTO_IO_HANDLER}.${ClayiumDataCodecs.ENERGY_HOLDER}") {
+        override fun isImporting(side: EnumFacing): Boolean {
+            return metaTileEntity.getInput(side) == MachineIoMode.CE
         }
     }
 

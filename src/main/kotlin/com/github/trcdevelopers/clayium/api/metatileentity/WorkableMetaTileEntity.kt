@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.api.metatileentity
 
+import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
@@ -8,8 +9,10 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
@@ -36,5 +39,10 @@ abstract class WorkableMetaTileEntity(
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
         ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation("${recipeRegistry.category.modid}:${recipeRegistry.category.categoryName}", "tier=$tier"))
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability == ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER) return ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER.cast(clayEnergyHolder)
+        return super.getCapability(capability, facing)
     }
 }

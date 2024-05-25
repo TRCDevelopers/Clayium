@@ -1,8 +1,12 @@
 package com.github.trcdevelopers.clayium.api.capability
 
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
+import net.minecraftforge.items.IItemHandler
 
 interface IClayEnergyHolder {
+
+    val energizedClayItemHandler: IItemHandler
+
     fun getEnergyStored(): ClayEnergy
 
     /**

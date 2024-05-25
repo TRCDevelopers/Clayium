@@ -11,19 +11,17 @@ import com.github.trcdevelopers.clayium.api.capability.IClayEnergyHolder
 import com.github.trcdevelopers.clayium.api.metatileentity.AutoIoHandler
 import com.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClay
 import net.minecraft.client.resources.I18n
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.EnumFacing
 
 class ClayEnergyHolder(
     metaTileEntity: MetaTileEntity,
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.ENERGY_HOLDER), IClayEnergyHolder {
 
-    private val slot = object : ClayiumItemStackHandler(metaTileEntity, 1) {
+    override val energizedClayItemHandler = object : ClayiumItemStackHandler(metaTileEntity, 1) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
             return stack.item is IEnergizedClay
         }
@@ -34,11 +32,7 @@ class ClayEnergyHolder(
         }
     }
 
-    private val energizedClayImporter = object : AutoIoHandler.Importer(metaTileEntity, slot, traitName = "${ClayiumDataCodecs.AUTO_IO_HANDLER}.${ClayiumDataCodecs.ENERGY_HOLDER}") {
-        override fun isImporting(side: EnumFacing): Boolean {
-            return metaTileEntity.getInput(side) == MachineIoMode.CE
-        }
-    }
+    private val energizedClayImporter = AutoIoHandler.EcImporter(metaTileEntity, energizedClayItemHandler)
 
     private var clayEnergy: ClayEnergy = ClayEnergy.ZERO
 
@@ -66,7 +60,7 @@ class ClayEnergyHolder(
 
     fun createSlotWidget(): ItemSlot {
         return ItemSlot()
-            .slot(SyncHandlers.itemSlot(slot, 0)
+            .slot(SyncHandlers.itemSlot(energizedClayItemHandler, 0)
                 .accessibility(false, false))
     }
 
@@ -82,11 +76,11 @@ class ClayEnergyHolder(
     }
 
     private fun tryConsumeEnergizedClay() {
-        val stack = this.slot.getStackInSlot(0)
+        val stack = this.energizedClayItemHandler.getStackInSlot(0)
         if (stack.isEmpty) return
         val item = stack.item as? IEnergizedClay ?: return
         this.clayEnergy += item.getClayEnergy(stack)
-        this.slot.extractItem(0, 1, false)
+        this.energizedClayItemHandler.extractItem(0, 1, false)
     }
 
     override fun serializeNBT(): NBTTagCompound {

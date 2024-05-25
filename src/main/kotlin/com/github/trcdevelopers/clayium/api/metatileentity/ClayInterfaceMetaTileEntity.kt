@@ -4,6 +4,7 @@ import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trcdevelopers.clayium.api.CValues
+import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.IMultiblockPart
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
@@ -34,6 +35,7 @@ class ClayInterfaceMetaTileEntity(
     override var exportItems: IItemHandlerModifiable = ItemStackHandler(0)
     override var itemInventory: IItemHandler = ItemStackHandler(0)
     override var autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
+    private var ecImporter: AutoIoHandler.EcImporter? = null
 
     override var validInputModes: List<MachineIoMode> = listOf(MachineIoMode.NONE)
     override var validOutputModes: List<MachineIoMode> = listOf(MachineIoMode.NONE)
@@ -70,6 +72,9 @@ class ClayInterfaceMetaTileEntity(
         this.exportItems = target.exportItems
         this.itemInventory = ItemHandlerProxy(this.importItems, this.exportItems)
         this.autoIoHandler = AutoIoHandler.Combined(this)
+        target.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER, null)?.let { targetEnergyHolder ->
+            this.ecImporter = AutoIoHandler.EcImporter(this, targetEnergyHolder.energizedClayItemHandler)
+        }
 
         this.validInputModes = target.validInputModes
         this.validOutputModes = target.validOutputModes
@@ -81,6 +86,7 @@ class ClayInterfaceMetaTileEntity(
         this.exportItems = ItemStackHandler(0)
         this.itemInventory = ItemStackHandler(0)
         this.autoIoHandler = AutoIoHandler.Combined(this)
+        this.ecImporter = null
 
         this.validOutputModes = emptyList()
         this.validOutputModes = emptyList()
