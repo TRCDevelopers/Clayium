@@ -6,7 +6,7 @@ import com.github.trcdevelopers.clayium.common.recipe.ingredient.CRecipeInput
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandlerModifiable
 
-class Recipe(
+data class Recipe(
     val inputs: List<CRecipeInput>,
     val outputs: List<ItemStack>,
     val duration: Int,
@@ -59,9 +59,5 @@ class Recipe(
 
     fun copyOutputs(): List<ItemStack> {
         return outputs.map { it.copy() }
-    }
-
-    override fun toString(): String {
-        return "Recipe(inputs=$inputs, outputs=$outputs, tier=$tier, duration=$duration, cePerTick=$cePerTick)"
     }
 }

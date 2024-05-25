@@ -98,8 +98,7 @@ abstract class AbstractRecipeLogic(
 
     protected open fun prepareRecipe(recipe: Recipe) {
         if (!this.drawEnergy(recipe.cePerTick, simulate = true)) return
-        val outputLimit = metaTileEntity.exportItems.slots
-        val outputs = recipe.copyOutputs().subList(0, outputLimit)
+        val outputs = recipe.copyOutputs().take(metaTileEntity.exportItems.slots)
         if (!TransferUtils.insertToHandler(metaTileEntity.exportItems, outputs, true)) {
             this.outputsFull = true
             return
