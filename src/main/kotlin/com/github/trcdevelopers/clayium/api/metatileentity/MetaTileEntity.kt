@@ -222,13 +222,11 @@ abstract class MetaTileEntity(
         return null
     }
 
-    open fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        val pos = this.pos ?: return false
+    open fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+        val pos = this.pos ?: return
         if (this.canOpenGui()) {
             MetaTileEntityGuiFactory.open(player, pos)
-            return true
         }
-        return false
     }
 
     open fun canOpenGui() = true

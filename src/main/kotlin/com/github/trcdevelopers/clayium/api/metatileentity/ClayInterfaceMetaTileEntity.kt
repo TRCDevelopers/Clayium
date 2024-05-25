@@ -94,9 +94,9 @@ class ClayInterfaceMetaTileEntity(
         return this.mimicTarget != null
     }
 
-    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        val mimicTarget = this.mimicTarget ?: return false
-        return mimicTarget.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
+    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+        val mimicTarget = this.mimicTarget ?: return
+        mimicTarget.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {

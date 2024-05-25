@@ -132,7 +132,8 @@ class BlockMachine : Block(Material.IRON) {
         if (worldIn.isRemote) return true
         val tileEntity = worldIn.getTileEntity(pos)
         if (tileEntity is MetaTileEntityHolder) {
-            return tileEntity.metaTileEntity?.onRightClick(playerIn, hand, facing, hitX, hitY, hitZ) == true
+            tileEntity.metaTileEntity?.onRightClick(playerIn, hand, facing, hitX, hitY, hitZ)
+            return true
         }
         return false
     }
