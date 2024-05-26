@@ -17,6 +17,8 @@ object ClayiumDataCodecs {
     val UPDATE_LASER = assignId()
     val UPDATE_LASER_ACTIVATION = assignId()
 
+    val INTERFACE_SYNC_MIMIC_TARGET = assignId()
+
     const val AUTO_IO_HANDLER = "autoIoHandler"
     const val RECIPE_LOGIC = "recipeLogic"
     const val ENERGY_HOLDER = "energyHolder"
