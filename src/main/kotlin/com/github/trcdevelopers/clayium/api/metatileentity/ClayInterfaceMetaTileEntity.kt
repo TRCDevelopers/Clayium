@@ -11,6 +11,7 @@ import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.IMultiblockPart
 import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.MultiblockControllerBase
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
+import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.entity.player.EntityPlayer
@@ -30,7 +31,7 @@ import net.minecraftforge.items.ItemStackHandler
 
 class ClayInterfaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
-    tier: Int,
+    tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "machine.${CValues.MOD_ID}.interface"), IMultiblockPart, ISynchronizedInterface {
 
     override val faceTexture = clayiumId("blocks/interface")
@@ -62,7 +63,7 @@ class ClayInterfaceMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("interface"), "tier=$tier"))
+        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("interface"), "tier=${tier.numeric}"))
     }
 
     override fun isAttachedToMultiblock(): Boolean {

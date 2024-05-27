@@ -24,10 +24,10 @@ class RecipeLogicClayFurnace(
 
     override fun prepareRecipe(recipe: Recipe) {
         val multipliedRecipeCEt = ClayEnergy(
-            (recipe.cePerTick.energy.toDouble() * ConfigTierBalance.crafting.smelterConsumingEnergyMultiplier[metaTileEntity.tier - 4]).toLong()
+            (recipe.cePerTick.energy.toDouble() * ConfigTierBalance.crafting.smelterConsumingEnergyMultiplier[metaTileEntity.tier.numeric - 4]).toLong()
         )
         val multipliedRecipeTime = (
-            recipe.duration * ConfigTierBalance.crafting.smelterCraftTimeMultiplier[metaTileEntity.tier - 4]
+            recipe.duration * ConfigTierBalance.crafting.smelterCraftTimeMultiplier[metaTileEntity.tier.numeric - 4]
         ).toInt()
         if (!this.drawEnergy(multipliedRecipeCEt, simulate = true)) return
         val outputs = recipe.copyOutputs()
@@ -35,7 +35,7 @@ class RecipeLogicClayFurnace(
             this.outputsFull = true
             return
         }
-        if (!recipe.matches(true, inputInventory, tier)) return
+        if (!recipe.matches(true, inputInventory, tierNum)) return
         this.itemOutputs = outputs
         this.recipeCEt = multipliedRecipeCEt
         this.requiredProgress = multipliedRecipeTime
@@ -50,8 +50,9 @@ class RecipeLogicClayFurnace(
             return
         }
         this.inputInventory.extractItem(0, 1, false)
-        val multipliedRecipeCEt = ClayEnergy((BASE_CE_CONSUMPTION.energy.toDouble() * ConfigTierBalance.crafting.smelterConsumingEnergyMultiplier[metaTileEntity.tier - 4]).toLong())
-        val multipliedRecipeTime = (FURNACE_RECIPE_TIME * ConfigTierBalance.crafting.smelterCraftTimeMultiplier[metaTileEntity.tier - 4]).toInt()
+        val machineTierNum = metaTileEntity.tier.numeric
+        val multipliedRecipeCEt = ClayEnergy((BASE_CE_CONSUMPTION.energy.toDouble() * ConfigTierBalance.crafting.smelterConsumingEnergyMultiplier[machineTierNum - 4]).toLong())
+        val multipliedRecipeTime = (FURNACE_RECIPE_TIME * ConfigTierBalance.crafting.smelterCraftTimeMultiplier[machineTierNum - 4]).toInt()
 
         this.itemOutputs = listOf(smeltingResult)
         this.recipeCEt = multipliedRecipeCEt

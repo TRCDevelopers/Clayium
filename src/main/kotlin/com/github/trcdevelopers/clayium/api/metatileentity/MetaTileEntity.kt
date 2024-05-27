@@ -14,6 +14,7 @@ import com.github.trcdevelopers.clayium.api.capability.impl.RangedItemHandlerPro
 import com.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trcdevelopers.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils
+import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.IPipeConnectable
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
@@ -47,7 +48,7 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders
 
 abstract class MetaTileEntity(
     val metaTileEntityId: ResourceLocation,
-    val tier: Int,
+    val tier: ITier,
     open val validInputModes: List<MachineIoMode>,
     open val validOutputModes: List<MachineIoMode>,
     /**
@@ -56,7 +57,7 @@ abstract class MetaTileEntity(
     val translationKey: String,
 ) : ISyncedTileEntity, IGuiHolder<PosGuiData>, IPipeConnectable {
 
-    val forgeRarity = CUtils.getRarityBy(tier)
+    val forgeRarity = tier.rarity
 
     var holder: MetaTileEntityHolder? = null
     val world: World? get() = holder?.world
@@ -374,7 +375,7 @@ abstract class MetaTileEntity(
     @SideOnly(Side.CLIENT)
     @MustBeInvokedByOverriders
     open fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        tooltip.add(I18n.format("tooltip.clayium.tier", tier))
+        tooltip.add(I18n.format("tooltip.clayium.tier", tier.numeric))
     }
 
     open fun isInCreativeTab(tab: CreativeTabs): Boolean {

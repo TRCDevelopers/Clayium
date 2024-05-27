@@ -5,6 +5,8 @@ import codechicken.lib.texture.TextureUtils
 import com.github.trcdevelopers.clayium.api.block.BlockMachine
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.api.util.CUtils
+import com.github.trcdevelopers.clayium.api.util.ClayTiers
+import com.github.trcdevelopers.clayium.api.util.ITier
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.BlockFaceUV
@@ -32,7 +34,7 @@ class MetaTileEntityPipeBakedModel : IModelParticleProvider {
     )
 
     // Tier -> Pipe Cube Pos -> Side of a Cube -> Quad
-    val cubeQuads: List<List<List<BakedQuad>>> = (0..13).map { tier ->
+    val cubeQuads: Map<ITier, List<List<BakedQuad>>> = ClayTiers.entries.associateWith { iTier ->
         EnumFacing.entries.map { cubePos ->
             EnumFacing.entries
                 .filter { it != cubePos.opposite }
@@ -41,7 +43,7 @@ class MetaTileEntityPipeBakedModel : IModelParticleProvider {
                         sideCubes[cubePos.index].first,
                         sideCubes[cubePos.index].second,
                         BlockPartFace(null, 0, "", getUv(cubePos = cubePos, sideOfCube = quadSide)),
-                        ModelTextures.HULL_TEXTURES[tier],
+                        ModelTextures.getHullTexture(iTier),
                         quadSide, ModelRotation.X0_Y0,
                         null, true, true
                     )
@@ -50,13 +52,13 @@ class MetaTileEntityPipeBakedModel : IModelParticleProvider {
     }
 
     // Tier -> Side of a Center Cube -> Quad
-    val centerCubeQuads: List<List<BakedQuad>> = (0..13).map { tier ->
+    val centerCubeQuads: Map<ITier, List<BakedQuad>> = ClayTiers.entries.associateWith { tier ->
         EnumFacing.entries.map {
             ModelTextures.faceBakery.makeBakedQuad(
                 Vector3f(5f, 5f, 5f),
                 Vector3f(11f, 11f, 11f),
                 BlockPartFace(null, 0, "", BlockFaceUV(floatArrayOf(5f, 5f, 11f, 11f), 0)),
-                ModelTextures.HULL_TEXTURES[tier],
+                ModelTextures.getHullTexture(tier),
                 it, ModelRotation.X0_Y0,
                 null, true, true
             )
@@ -71,8 +73,8 @@ class MetaTileEntityPipeBakedModel : IModelParticleProvider {
         val connections = metaTileEntity.connectionsCache
 
         val quads = mutableListOf<BakedQuad>()
-        val sideCubeQuads = this.cubeQuads[tier]
-        val centerCubeQuads = this.centerCubeQuads[tier]
+        val sideCubeQuads = this.cubeQuads[tier] ?: return emptyList()
+        val centerCubeQuads = this.centerCubeQuads[tier] ?: return emptyList()
 
         for (i in 0..5) {
             if (connections[i]) {
@@ -87,12 +89,12 @@ class MetaTileEntityPipeBakedModel : IModelParticleProvider {
 
     override fun getHitEffects(traceResult: RayTraceResult, state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite> {
         val metaTileEntity = CUtils.getMetaTileEntity(world, pos) ?: return setOf(TextureUtils.getMissingSprite())
-        return setOf(ModelTextures.HULL_TEXTURES[metaTileEntity.tier])
+        return setOf(ModelTextures.getHullTexture(metaTileEntity.tier))
     }
 
     override fun getDestroyEffects(state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite> {
         val metaTileEntity = CUtils.getMetaTileEntity(world, pos) ?: return setOf(TextureUtils.getMissingSprite())
-        return setOf(ModelTextures.HULL_TEXTURES[metaTileEntity.tier])
+        return setOf(ModelTextures.getHullTexture(metaTileEntity.tier))
     }
 
     override fun isAmbientOcclusion() = true

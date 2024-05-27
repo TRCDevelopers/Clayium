@@ -70,7 +70,7 @@ class MetaTileEntityBakedModel(
         if (state == null || side == null || state !is IExtendedBlockState) return emptyList()
         val mte = (state.getValue(TILE_ENTITY) as? MetaTileEntityHolder)?.metaTileEntity ?: return emptyList()
 
-        val quads = mutableListOf(ModelTextures.HULL_QUADS[mte.tier][side] ?: return emptyList())
+        val quads = mutableListOf(ModelTextures.getHullQuads(mte.tier)?.get(side) ?: return emptyList())
         if (mte.hasFrontFacing && mte.faceTexture != null) {
             if (mte.useFaceForAllSides || side == mte.frontFacing) {
                 ModelTextures.FACE_QUADS[mte.faceTexture]?.get(side)?.let { quads.add(it) }
@@ -90,12 +90,12 @@ class MetaTileEntityBakedModel(
 
     override fun getHitEffects(traceResult: RayTraceResult, state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite> {
         val metaTileEntity = CUtils.getMetaTileEntity(world, pos) ?: return setOf(TextureUtils.getMissingSprite())
-        return setOf(ModelTextures.HULL_TEXTURES[metaTileEntity.tier])
+        return setOf(ModelTextures.getHullTexture(metaTileEntity.tier))
     }
 
     override fun getDestroyEffects(state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite> {
         val metaTileEntity = CUtils.getMetaTileEntity(world, pos) ?: return setOf(TextureUtils.getMissingSprite())
-        return setOf(ModelTextures.HULL_TEXTURES[metaTileEntity.tier])
+        return setOf(ModelTextures.getHullTexture(metaTileEntity.tier))
     }
 
     override fun isAmbientOcclusion() = true

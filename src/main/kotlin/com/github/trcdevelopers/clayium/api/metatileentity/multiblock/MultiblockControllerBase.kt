@@ -2,6 +2,7 @@ package com.github.trcdevelopers.clayium.api.metatileentity.multiblock
 
 import com.github.trcdevelopers.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trcdevelopers.clayium.api.metatileentity.WorkableMetaTileEntity
+import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import net.minecraft.util.ResourceLocation
@@ -13,7 +14,7 @@ import kotlin.math.floor
 
 abstract class MultiblockControllerBase(
     metaTileEntityId: ResourceLocation,
-    tier: Int,
+    tier: ITier,
     validInputModes: List<MachineIoMode>,
     validOutputModes: List<MachineIoMode>,
     translationKey: String,

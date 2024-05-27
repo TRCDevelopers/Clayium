@@ -5,6 +5,7 @@ import com.github.trcdevelopers.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.capability.impl.NotifiableItemStackHandler
+import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 
 abstract class WorkableMetaTileEntity(
     metaTileEntityId: ResourceLocation,
-    tier: Int,
+    tier: ITier,
     validInputModes: List<MachineIoMode>,
     validOutputModes: List<MachineIoMode>,
     translationKey: String,
@@ -39,7 +40,7 @@ abstract class WorkableMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation("${recipeRegistry.category.modid}:${recipeRegistry.category.categoryName}", "tier=$tier"))
+        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation("${recipeRegistry.category.modid}:${recipeRegistry.category.categoryName}", "tier=${tier.numeric}"))
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {

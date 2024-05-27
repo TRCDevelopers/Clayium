@@ -8,6 +8,7 @@ import com.github.trcdevelopers.clayium.api.metatileentity.AutoIoHandler
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
+import com.github.trcdevelopers.clayium.api.util.ClayTiers
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.recipe.builder.SimpleRecipeBuilder
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
@@ -43,7 +44,7 @@ class TestAbstractRecipeLogic : StringSpec({
         every { mockWorld.notifyBlockUpdate(any(), any(), any(), any()) } just Runs
         every { mockWorld.markChunkDirty(any(), any()) } just Runs
 
-        dummyMte = object : MetaTileEntity(clayiumId("test_metaTileEntity"), 1,  listOf(), listOf(), "") {
+        dummyMte = object : MetaTileEntity(clayiumId("test_metaTileEntity"), ClayTiers.CLAY,  listOf(), listOf(), "") {
             override val importItems: IItemHandlerModifiable = ItemStackHandler(1)
             override val exportItems: IItemHandlerModifiable = ItemStackHandler(1)
             override val itemInventory: IItemHandler = ItemStackHandler(1)

@@ -2,6 +2,8 @@ package com.github.trcdevelopers.clayium.client.model
 
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.ClayiumApi
+import com.github.trcdevelopers.clayium.api.util.ClayTiers
+import com.github.trcdevelopers.clayium.api.util.ITier
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.BlockFaceUV
 import net.minecraft.client.renderer.block.model.BlockPartFace
@@ -24,11 +26,9 @@ object ModelTextures {
     lateinit var MISSING: TextureAtlasSprite
         private set
 
-    lateinit var HULL_QUADS: List<Map<EnumFacing, BakedQuad>>
-        private set
+    private lateinit var HULL_QUADS: Map<String, Map<EnumFacing, BakedQuad>>
 
-    lateinit var HULL_TEXTURES: List<TextureAtlasSprite>
-        private set
+    private lateinit var HULL_TEXTURES: Map<String, TextureAtlasSprite>
 
     // metaTileEntity.faceTexture -> map
     private val _faceQuads: MutableMap<ResourceLocation, Map<EnumFacing, BakedQuad>> = mutableMapOf()
@@ -50,14 +50,17 @@ object ModelTextures {
         if (isInitialized) return
         MISSING = getter.apply(ModelLoader.MODEL_MISSING)
 
-        this.HULL_TEXTURES = (0..13).map { i ->
-            if (i == 0) MISSING
-            getter.apply(ResourceLocation(CValues.MOD_ID, "blocks/machinehull_tier$i"))
+//        this.HULL_TEXTURES = (0..13).map { i ->
+//            if (i == 0) MISSING
+//            getter.apply(ResourceLocation(CValues.MOD_ID, "blocks/machinehull_tier$i"))
+//        }
+        this.HULL_TEXTURES = ClayTiers.entries.associate {
+            it.prefixTranslationKey to getter.apply(ResourceLocation(CValues.MOD_ID, "blocks/machinehull_tier${it.numeric}"))
         }
-        this.HULL_QUADS = mutableListOf<Map<EnumFacing, BakedQuad>>().apply {
-            (0..13).forEach { i ->
-                add(EnumFacing.VALUES.associateWith { createQuad(it, HULL_TEXTURES[i]) })
-            }
+        this.HULL_QUADS = ClayTiers.entries.associate { tier ->
+            tier.prefixTranslationKey to (EnumFacing.VALUES.associateWith { side ->
+                createQuad(side, getHullTexture(tier))
+            })
         }
         for (metaTileEntity in ClayiumApi.MTE_REGISTRY) {
             metaTileEntity.allFaceTextures.filterNotNull().forEach { faceTexture ->
@@ -71,4 +74,11 @@ object ModelTextures {
         isInitialized = true
     }
 
+    fun getHullTexture(tier: ITier): TextureAtlasSprite {
+        return HULL_TEXTURES[tier.prefixTranslationKey] ?: MISSING
+    }
+
+    fun getHullQuads(tier: ITier): Map<EnumFacing, BakedQuad>? {
+        return HULL_QUADS[tier.prefixTranslationKey]
+    }
 }

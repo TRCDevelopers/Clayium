@@ -19,7 +19,7 @@ class ItemBlockMachine(
         return when (val mte = CUtils.getMetaTileEntity(stack)) {
             null -> "unnamed"
             else -> {
-                I18n.format(mte.translationKey, I18n.format("machine.clayium.tier${mte.tier}"))
+                I18n.format(mte.translationKey, I18n.format(mte.tier.prefixTranslationKey))
             }
         }
     }

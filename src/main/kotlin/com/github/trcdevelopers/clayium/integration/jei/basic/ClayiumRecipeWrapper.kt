@@ -16,7 +16,7 @@ class ClayiumRecipeWrapper(
     }
 
     override fun drawInfo(minecraft: Minecraft, recipeWidth: Int, recipeHeight: Int, mouseX: Int, mouseY: Int) {
-        minecraft.fontRenderer.drawString("Tier: ${recipe.tier}", 6, 43, 0x404040)
+        minecraft.fontRenderer.drawString("Tier: ${recipe.tierNumeric}", 6, 43, 0x404040)
         minecraft.fontRenderer.drawString(
             "${recipe.cePerTick}CE/t x ${UtilLocale.craftTimeNumeral(recipe.duration.toLong())}t = ${(recipe.cePerTick * recipe.duration)}CE",
             6, 52, 0x404040

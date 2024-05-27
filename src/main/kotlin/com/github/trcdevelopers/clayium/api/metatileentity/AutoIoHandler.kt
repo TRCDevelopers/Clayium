@@ -14,8 +14,8 @@ abstract class AutoIoHandler(
     traitName: String = ClayiumDataCodecs.AUTO_IO_HANDLER,
 ) : MTETrait(metaTileEntity, traitName) {
 
-    protected val intervalTick = if (isBuffer) ConfigTierBalance.bufferInterval[metaTileEntity.tier] else ConfigTierBalance.machineInterval[metaTileEntity.tier]
-    protected val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[metaTileEntity.tier] else ConfigTierBalance.machineAmount[metaTileEntity.tier]
+    protected val intervalTick = if (isBuffer) ConfigTierBalance.bufferInterval[metaTileEntity.tier.numeric] else ConfigTierBalance.machineInterval[metaTileEntity.tier.numeric]
+    protected val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[metaTileEntity.tier.numeric] else ConfigTierBalance.machineAmount[metaTileEntity.tier.numeric]
 
     protected var ticked = 0
 

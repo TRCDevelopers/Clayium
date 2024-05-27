@@ -83,10 +83,10 @@ abstract class AbstractRecipeLogic(
 
     protected open fun trySearchNewRecipe() {
         var currentRecipe: Recipe? = null
-        currentRecipe = if (previousRecipe?.matches(false, inputInventory, tier) == true) {
+        currentRecipe = if (previousRecipe?.matches(false, inputInventory, tierNum) == true) {
             previousRecipe
         } else {
-            recipeRegistry.findRecipe(tier, CUtils.handlerToList(inputInventory))
+            recipeRegistry.findRecipe(tierNum, CUtils.handlerToList(inputInventory))
         }
 
         if (currentRecipe == null) {
@@ -103,7 +103,7 @@ abstract class AbstractRecipeLogic(
             this.outputsFull = true
             return
         }
-        if (!recipe.matches(true, inputInventory, tier)) return
+        if (!recipe.matches(true, inputInventory, tierNum)) return
         this.itemOutputs = outputs
         this.recipeCEt = recipe.cePerTick
         this.requiredProgress = recipe.duration

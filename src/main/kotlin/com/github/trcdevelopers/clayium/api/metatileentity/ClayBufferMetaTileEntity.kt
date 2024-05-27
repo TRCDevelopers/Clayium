@@ -14,6 +14,7 @@ import com.github.trcdevelopers.clayium.api.CTranslation
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
+import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -32,20 +33,20 @@ import net.minecraftforge.items.CapabilityItemHandler
 
 class ClayBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
-    tier: Int,
+    tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier,
     validInputModes = INPUT_MODES, validOutputModes = OUTPUT_MODES, "machine.${CValues.MOD_ID}.clay_buffer") {
 
     override val hasFrontFacing: Boolean = false
 
-    val inventoryRowSize = when (tier) {
-        in 4..7 -> tier - 3
+    val inventoryRowSize = when (tier.numeric) {
+        in 4..7 -> tier.numeric - 3
         8, -> 4
         in 9..13 -> 6
         else -> 1
     }
-    val inventoryColumnSize = when (tier) {
-        in 4..7 -> tier - 2
+    val inventoryColumnSize = when (tier.numeric) {
+        in 4..7 -> tier.numeric - 2
         in 8..13 -> 9
         else -> 1
     }
@@ -89,7 +90,7 @@ class ClayBufferMetaTileEntity(
                 it.align(Alignment.Center)
             }
             .child(
-                TextWidget(IKey.lang(this.translationKey, IKey.lang(CTranslation.tierPrefix(tier))))
+                TextWidget(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)))
                     .margin(6)
                     .align(Alignment.TopLeft))
             .child(Column()
@@ -113,7 +114,7 @@ class ClayBufferMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("clay_buffer"), "tier=$tier"))
+        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("clay_buffer"), "tier=${tier.numeric}"))
     }
 
     @SideOnly(Side.CLIENT)

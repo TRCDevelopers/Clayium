@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayLaserSource
+import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigCore
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
@@ -29,7 +30,7 @@ import kotlin.math.min
 
 class ClayLaserMetaTileEntity(
     metaTileEntityId: ResourceLocation,
-    tier: Int,
+    tier: ITier,
     private val laserRed: Int = 0,
     private val laserGreen: Int = 0,
     private val laserBlue: Int = 0,
@@ -98,7 +99,7 @@ class ClayLaserMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation("${metaTileEntityId.namespace}:clay_laser", "tier=$tier"))
+        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation("${metaTileEntityId.namespace}:clay_laser", "tier=${tier.numeric}"))
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {

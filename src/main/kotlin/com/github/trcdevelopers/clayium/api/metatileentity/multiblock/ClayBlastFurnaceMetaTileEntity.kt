@@ -42,7 +42,7 @@ import kotlin.let
 
 class ClayBlastFurnaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
-    tier: Int,
+    tier: ITier,
 ) : MultiblockControllerBase(
     metaTileEntityId, tier,
     validInputModesLists[CRecipes.CLAY_BLAST_FURNACE.maxInputs], validOutputModesLists[CRecipes.CLAY_BLAST_FURNACE.maxOutputs],
@@ -74,7 +74,7 @@ class ClayBlastFurnaceMetaTileEntity(
 
     override fun registerItemModel(item: Item, meta: Int) {
         ModelLoader.setCustomModelResourceLocation(item, meta,
-            ModelResourceLocation(clayiumId("clay_blast_furnace"), "tier=$tier")
+            ModelResourceLocation(clayiumId("clay_blast_furnace"), "tier=${tier.numeric}")
         )
     }
 
@@ -107,6 +107,7 @@ class ClayBlastFurnaceMetaTileEntity(
         return true
     }
 
+    //todo: tier iranai
     private fun isPosValidForMultiblock(world: IBlockAccess, pos: BlockPos): Triple<Boolean, IMultiblockPart?, ITier?> {
         if (CUtils.getMetaTileEntity(world, pos) == this) return Triple(true, null, null)
 
@@ -115,7 +116,7 @@ class ClayBlastFurnaceMetaTileEntity(
                 // already formed -> part is attached to this
                 && (structureFormed || (!metaTileEntity.isAttachedToMultiblock() || metaTileEntity.canPartShare()))) {
                 multiblockParts.add(metaTileEntity)
-                return Triple(true, metaTileEntity, ClayTiers.entries[metaTileEntity.tier])
+                return Triple(true, metaTileEntity, metaTileEntity.tier)
             }
         }
 

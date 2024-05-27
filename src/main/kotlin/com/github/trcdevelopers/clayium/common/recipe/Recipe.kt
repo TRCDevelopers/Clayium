@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.common.recipe
 
 import com.github.trcdevelopers.clayium.api.util.CUtils
+import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.recipe.ingredient.CRecipeInput
 import net.minecraft.item.ItemStack
@@ -11,11 +12,14 @@ data class Recipe(
     val outputs: List<ItemStack>,
     val duration: Int,
     val cePerTick: ClayEnergy,
-    val tier: Int,
+    /**
+     * if `machine.tier.numeric < recipe.tier`, then the recipe is not matched
+     */
+    val tierNumeric: Int,
 ) {
-    fun matches(consumeOnMatch: Boolean, inputsIn: IItemHandlerModifiable, tierIn: Int): Boolean {
+    fun matches(consumeOnMatch: Boolean, inputsIn: IItemHandlerModifiable, tier: Int): Boolean {
 
-        if (this.tier > tierIn) return false
+        if (this.tierNumeric > tier) return false
         val (isItemsMatched, amountsToConsume) = matchesItems(CUtils.handlerToList(inputsIn))
         if (!isItemsMatched) return false
 

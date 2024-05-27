@@ -23,4 +23,6 @@ enum class ClayTiers(
     OEC(12, "tier.clayium.oec", EnumRarity.EPIC),
     OPA(13, "tier.clayium.opa", EnumRarity.EPIC),
     ;
+
+    override val lowerName = name.lowercase()
 }
