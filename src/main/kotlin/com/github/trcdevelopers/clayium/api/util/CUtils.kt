@@ -102,20 +102,4 @@ object CUtils {
     fun clayiumId(path: String): ResourceLocation {
         return ResourceLocation(CValues.MOD_ID, path)
     }
-
-    fun getValidInputModes(maxInputs: Int): List<MachineIoMode> {
-        return when (maxInputs) {
-            1 -> listOf(MachineIoMode.NONE, MachineIoMode.ALL, MachineIoMode.CE)
-            2 -> listOf(MachineIoMode.NONE, MachineIoMode.FIRST, MachineIoMode.SECOND, MachineIoMode.ALL, MachineIoMode.CE)
-            else -> listOf(MachineIoMode.NONE, MachineIoMode.ALL)
-        }
-    }
-
-    fun getValidOutputModes(maxOutputs: Int): List<MachineIoMode> {
-        return when (maxOutputs) {
-            1 -> listOf(MachineIoMode.NONE, MachineIoMode.ALL)
-            2 -> listOf(MachineIoMode.NONE, MachineIoMode.FIRST, MachineIoMode.SECOND, MachineIoMode.ALL)
-            else -> listOf(MachineIoMode.NONE, MachineIoMode.ALL)
-        }
-    }
 }

@@ -24,7 +24,6 @@ import com.github.trcdevelopers.clayium.api.util.ClayTiers
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.api.util.RelativeDirection
 import com.github.trcdevelopers.clayium.common.blocks.BlockMachineHull
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraft.client.gui.GuiScreen
@@ -46,7 +45,7 @@ class ClayBlastFurnaceMetaTileEntity(
     tier: Int,
 ) : MultiblockControllerBase(
     metaTileEntityId, tier,
-    listOf(MachineIoMode.NONE, MachineIoMode.ALL, MachineIoMode.CE), listOf(MachineIoMode.NONE, MachineIoMode.ALL),
+    validInputModesLists[CRecipes.CLAY_BLAST_FURNACE.maxInputs], validOutputModesLists[CRecipes.CLAY_BLAST_FURNACE.maxOutputs],
     "machine.${CValues.MOD_ID}.clay_blast_furnace",
     CRecipes.CLAY_BLAST_FURNACE,
 ) {

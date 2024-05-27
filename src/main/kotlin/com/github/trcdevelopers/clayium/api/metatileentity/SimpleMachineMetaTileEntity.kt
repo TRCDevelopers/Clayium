@@ -15,7 +15,6 @@ import com.github.trcdevelopers.clayium.api.CTranslation
 import com.github.trcdevelopers.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trcdevelopers.clayium.api.capability.impl.RecipeLogicEnergy
-import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
@@ -49,7 +48,7 @@ class SimpleMachineMetaTileEntity(
         workableProvider: (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> AbstractRecipeLogic = ::RecipeLogicEnergy,
     ) : this(
         metaTileEntityId, tier,
-        CUtils.getValidInputModes(recipeRegistry.maxInputs), CUtils.getValidOutputModes(recipeRegistry.maxOutputs),
+        validInputModesLists[recipeRegistry.maxInputs], validOutputModesLists[recipeRegistry.maxOutputs],
         translationKey = "machine.${metaTileEntityId.namespace}.${recipeRegistry.category.categoryName}",
         faceTexture = ResourceLocation(metaTileEntityId.namespace, "blocks/${recipeRegistry.category.categoryName}"),
         recipeRegistry, workableProvider

@@ -31,7 +31,7 @@ import net.minecraftforge.items.ItemStackHandler
 class ClayInterfaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: Int,
-) : MetaTileEntity(metaTileEntityId, tier, listOf(MachineIoMode.NONE), listOf(MachineIoMode.NONE), "machine.${CValues.MOD_ID}.interface"), IMultiblockPart, ISynchronizedInterface {
+) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "machine.${CValues.MOD_ID}.interface"), IMultiblockPart, ISynchronizedInterface {
 
     override val faceTexture = clayiumId("blocks/interface")
     override val useFaceForAllSides = true
@@ -42,8 +42,8 @@ class ClayInterfaceMetaTileEntity(
     override var autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
     private var ecImporter: AutoIoHandler.EcImporter? = null
 
-    override var validInputModes: List<MachineIoMode> = listOf(MachineIoMode.NONE)
-    override var validOutputModes: List<MachineIoMode> = listOf(MachineIoMode.NONE)
+    override var validInputModes: List<MachineIoMode> = onlyNoneList
+    override var validOutputModes: List<MachineIoMode> = onlyNoneList
 
     override var target: MetaTileEntity? = null
         private set
@@ -110,8 +110,8 @@ class ClayInterfaceMetaTileEntity(
         this.autoIoHandler = AutoIoHandler.Combined(this)
         this.ecImporter = null
 
-        this.validOutputModes = emptyList()
-        this.validOutputModes = emptyList()
+        this.validOutputModes = onlyNoneList
+        this.validOutputModes = onlyNoneList
         writeCustomData(INTERFACE_SYNC_MIMIC_TARGET) {
             writeBoolean(false)
         }
@@ -153,5 +153,9 @@ class ClayInterfaceMetaTileEntity(
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         throw UnsupportedOperationException("no direct gui for clay interfaces")
+    }
+
+    companion object {
+        private val onlyNoneList = listOf(MachineIoMode.NONE)
     }
 }
