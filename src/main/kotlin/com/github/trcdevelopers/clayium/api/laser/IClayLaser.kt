@@ -9,6 +9,6 @@ interface IClayLaser {
     val laserGreen: Int
     val laserBlue: Int
 
-    val laserEnergy: Int
+    val laserEnergy: Double
     val laserAge: Int
 }
