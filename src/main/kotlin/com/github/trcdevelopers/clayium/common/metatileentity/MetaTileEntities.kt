@@ -2,12 +2,12 @@ package com.github.trcdevelopers.clayium.common.metatileentity
 
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.capability.impl.RecipeLogicClayFurnace
-import com.github.trcdevelopers.clayium.api.metatileentity.ClayBlastFurnaceMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.ClayBufferMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.ClayInterfaceMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.ClayLaserMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.SimpleMachineMetaTileEntity
+import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.ClayBlastFurnaceMetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraftforge.fml.relauncher.Side
@@ -74,7 +74,9 @@ object MetaTileEntities {
         ClayInterfaceMetaTileEntity(clayiumId("clay_interface_tier$it"), it)
     }
 
-    val CLAY_BLAST_FURNACE = registerMetaTileEntity(150, ClayBlastFurnaceMetaTileEntity(clayiumId("clay_blast_furnace"), 6))
+    val CLAY_BLAST_FURNACE = registerMetaTileEntity(150,
+        ClayBlastFurnaceMetaTileEntity(clayiumId("clay_blast_furnace"), 6)
+    )
 
     /**
      * @param provider tier -> MetaTileEntity

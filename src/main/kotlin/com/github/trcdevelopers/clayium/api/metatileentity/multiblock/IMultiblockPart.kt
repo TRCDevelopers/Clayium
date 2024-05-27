@@ -1,7 +1,5 @@
 package com.github.trcdevelopers.clayium.api.metatileentity.multiblock
 
-import com.github.trcdevelopers.clayium.api.metatileentity.MultiblockControllerBase
-
 interface IMultiblockPart {
     val tier: Int
 

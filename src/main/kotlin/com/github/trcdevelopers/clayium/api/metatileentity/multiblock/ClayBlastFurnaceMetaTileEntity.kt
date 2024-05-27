@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.api.metatileentity
+package com.github.trcdevelopers.clayium.api.metatileentity.multiblock
 
 import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
@@ -16,7 +16,8 @@ import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_
 import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trcdevelopers.clayium.api.capability.impl.NotifiableItemStackHandler
-import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.IMultiblockPart
+import com.github.trcdevelopers.clayium.api.metatileentity.AutoIoHandler
+import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ClayTiers
@@ -35,6 +36,10 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraftforge.client.model.ModelLoader
+import kotlin.apply
+import kotlin.collections.forEach
+import kotlin.collections.map
+import kotlin.let
 
 class ClayBlastFurnaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -69,7 +74,9 @@ class ClayBlastFurnaceMetaTileEntity(
     }
 
     override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("clay_blast_furnace"), "tier=$tier"))
+        ModelLoader.setCustomModelResourceLocation(item, meta,
+            ModelResourceLocation(clayiumId("clay_blast_furnace"), "tier=$tier")
+        )
     }
 
     override fun isConstructed(): Boolean {

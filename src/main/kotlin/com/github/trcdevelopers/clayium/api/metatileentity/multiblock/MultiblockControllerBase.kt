@@ -1,12 +1,13 @@
-package com.github.trcdevelopers.clayium.api.metatileentity
+package com.github.trcdevelopers.clayium.api.metatileentity.multiblock
 
-import com.github.trcdevelopers.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trcdevelopers.clayium.api.capability.impl.MultiblockRecipeLogic
-import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.IMultiblockPart
+import com.github.trcdevelopers.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import net.minecraft.util.ResourceLocation
 import org.jetbrains.annotations.MustBeInvokedByOverriders
+import kotlin.collections.average
+import kotlin.collections.forEach
 import kotlin.math.floor
 
 

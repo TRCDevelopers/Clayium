@@ -1,6 +1,6 @@
 package com.github.trcdevelopers.clayium.api.capability.impl
 
-import com.github.trcdevelopers.clayium.api.metatileentity.MultiblockControllerBase
+import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.MultiblockControllerBase
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 

@@ -9,6 +9,7 @@ import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.ISynchronizedInterface
 import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.IMultiblockPart
+import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.MultiblockControllerBase
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
