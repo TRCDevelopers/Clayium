@@ -77,7 +77,7 @@ class ClayInterfaceMetaTileEntity(
         this.autoIoHandler = AutoIoHandler.Combined(this)
         this.ecImporter = null
 
-        this.validOutputModes = onlyNoneList
+        this.validInputModes = onlyNoneList
         this.validOutputModes = onlyNoneList
         writeTargetRemoved()
     }
