@@ -10,6 +10,7 @@ import com.github.trcdevelopers.clayium.api.capability.ISynchronizedInterface
 import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.IMultiblockPart
 import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.MultiblockControllerBase
+import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.ProxyMetaTileEntityBase
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
@@ -32,7 +33,7 @@ import net.minecraftforge.items.ItemStackHandler
 class ClayInterfaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "machine.${CValues.MOD_ID}.interface"), IMultiblockPart, ISynchronizedInterface {
+) : ProxyMetaTileEntityBase(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "machine.${CValues.MOD_ID}.interface"), IMultiblockPart, ISynchronizedInterface {
 
     override val faceTexture = clayiumId("blocks/interface")
     override val useFaceForAllSides = true
@@ -46,17 +47,6 @@ class ClayInterfaceMetaTileEntity(
     override var validInputModes: List<MachineIoMode> = onlyNoneList
     override var validOutputModes: List<MachineIoMode> = onlyNoneList
 
-    override var target: MetaTileEntity? = null
-        private set
-
-    /**
-     * used for rendering
-     */
-    override var targetPos: BlockPos? = null
-        private set
-    override var targetDimensionId: Int = -1
-        private set
-
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayInterfaceMetaTileEntity(metaTileEntityId, tier)
     }
@@ -66,22 +56,7 @@ class ClayInterfaceMetaTileEntity(
         ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("interface"), "tier=${tier.numeric}"))
     }
 
-    override fun isAttachedToMultiblock(): Boolean {
-        return this.target != null
-    }
-
-    override fun addToMultiblock(controller: MultiblockControllerBase) {
-        this.mimic(controller)
-    }
-
-    override fun removeFromMultiblock(controller: MultiblockControllerBase) {
-        this.reInitialize()
-    }
-
-    override fun canPartShare() = false
-
-    private fun mimic(target: MetaTileEntity) {
-        this.target = target
+    override fun onLink(target: MetaTileEntity) {
         this.importItems = target.importItems
         this.exportItems = target.exportItems
         this.itemInventory = ItemHandlerProxy(this.importItems, this.exportItems)
@@ -92,19 +67,10 @@ class ClayInterfaceMetaTileEntity(
 
         this.validInputModes = target.validInputModes
         this.validOutputModes = target.validOutputModes
-        val pos = target.pos
-        val world = target.world
-        if (pos != null && world != null) {
-            writeCustomData(INTERFACE_SYNC_MIMIC_TARGET) {
-                writeBoolean(true)
-                writeBlockPos(pos)
-                writeVarInt(world.provider.dimension)
-            }
-        }
+        writeTargetData(target)
     }
 
-    private fun reInitialize() {
-        this.target = null
+    override fun onUnlink() {
         this.importItems = ItemStackHandler(0)
         this.exportItems = ItemStackHandler(0)
         this.itemInventory = ItemStackHandler(0)
@@ -113,43 +79,18 @@ class ClayInterfaceMetaTileEntity(
 
         this.validOutputModes = onlyNoneList
         this.validOutputModes = onlyNoneList
-        writeCustomData(INTERFACE_SYNC_MIMIC_TARGET) {
-            writeBoolean(false)
-        }
+        writeTargetRemoved()
     }
 
     fun isSynchronized(): Boolean {
         return false
     }
 
-    override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
-        when (discriminator) {
-            INTERFACE_SYNC_MIMIC_TARGET -> {
-                val hasPos = buf.readBoolean()
-                if (hasPos) {
-                    this.targetPos = buf.readBlockPos()
-                    this.targetDimensionId = buf.readVarInt()
-                } else {
-                    this.targetPos = null
-                    this.targetDimensionId = -1
-                }
-                return
-            }
-        }
-        super.receiveCustomData(discriminator, buf)
-    }
-
-    override fun canOpenGui(): Boolean {
-        return this.target != null
-    }
-
     override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         val mimicTarget = this.target ?: return
-        mimicTarget.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
-    }
-
-    override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
-        // no-op, this block is a proxy
+        if (mimicTarget.canOpenGui()) {
+            mimicTarget.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
+        }
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
