@@ -391,6 +391,8 @@ abstract class MetaTileEntity(
 
     companion object {
 
+        val onlyNoneList = listOf(NONE)
+
         val validInputModesLists = listOf(
             listOf(NONE, CE),
             listOf(ALL, CE, NONE),
@@ -398,7 +400,7 @@ abstract class MetaTileEntity(
         )
 
         val validOutputModesLists = listOf(
-            listOf(NONE),
+            onlyNoneList,
             listOf(ALL, NONE),
             listOf(ALL, FIRST, SECOND, NONE)
         )

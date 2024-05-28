@@ -155,8 +155,4 @@ class ClayInterfaceMetaTileEntity(
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         throw UnsupportedOperationException("no direct gui for clay interfaces")
     }
-
-    companion object {
-        private val onlyNoneList = listOf(MachineIoMode.NONE)
-    }
 }
