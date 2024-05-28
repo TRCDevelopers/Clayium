@@ -11,9 +11,9 @@ data class ClayLaser(
     override val laserAge: Int = 0,
 ) : IClayLaser {
 
-    override val laserEnergy: Double = calcLaserEnergyPerColor(laserRed, bases[0], maxEnergies[0], dampingRates[0]) *
+    override val laserEnergy: Double = calcLaserEnergyPerColor(laserBlue, bases[0], maxEnergies[0], dampingRates[0]) *
                                        calcLaserEnergyPerColor(laserGreen, bases[1], maxEnergies[1], dampingRates[1]) *
-                                       calcLaserEnergyPerColor(laserBlue, bases[2], maxEnergies[2], dampingRates[2]) - 1
+                                       calcLaserEnergyPerColor(laserRed, bases[2], maxEnergies[2], dampingRates[2]) - 1
 
     fun changeDirection(direction: EnumFacing): ClayLaser {
         return ClayLaser(direction, laserRed, laserGreen, laserBlue)
@@ -25,7 +25,8 @@ data class ClayLaser(
         private val dampingRates = doubleArrayOf(0.1, 0.1, 0.1)
 
         /**
-         * the calculation is found at: [https://clayium.wiki.fc2.com/wiki/%E3%83%AC%E3%83%BC%E3%82%B6%E3%83%B]
+         * the calculation is found [here](https://clayium.wiki.fc2.com/wiki/%E3%83%AC%E3%83%BC%E3%82%B6%E3%83%BC)
+         * todo: wikiと計算結果が異なるので実際の動作確認が必要
          */
         private fun calcLaserEnergyPerColor(laserStrength: Int, base: Double, maxEnergy: Double, r: Double): Double {
             if (laserStrength <= 0 || r <= 0.0 || maxEnergy < 0.0 || base  < 1.0) return 1.0
