@@ -127,8 +127,8 @@ abstract class MetaTileEntity(
 
     open fun readFromNBT(data: NBTTagCompound) {
         frontFacing = EnumFacing.byIndex(data.getByte("frontFacing").toInt())
-        data.getByteArray("inputModes").forEachIndexed { i, id -> _inputModes[i] = MachineIoMode.entries[id.toInt()] }
-        data.getByteArray("outputModes").forEachIndexed { i, id -> _outputModes[i] = MachineIoMode.entries[id.toInt()] }
+        data.getByteArray("inputModes").forEachIndexed { i, id -> _inputModes[i] = MachineIoMode.byId(id.toInt()) }
+        data.getByteArray("outputModes").forEachIndexed { i, id -> _outputModes[i] = MachineIoMode.byId(id.toInt()) }
         data.getByteArray("connections").forEachIndexed { i, b -> _connectionsCache[i] = (b == 1.toByte()) }
         CUtils.readItems(importItems, "importInventory", data)
         CUtils.readItems(exportItems, "exportInventory", data)
@@ -154,8 +154,8 @@ abstract class MetaTileEntity(
     override fun receiveInitialSyncData(buf: PacketBuffer) {
         frontFacing = EnumFacing.byIndex(buf.readByte().toInt())
         for (i in 0..5) {
-            _inputModes[i] = MachineIoMode.entries[buf.readByte().toInt()]
-            _outputModes[i] = MachineIoMode.entries[buf.readByte().toInt()]
+            _inputModes[i] = MachineIoMode.byId(buf.readByte().toInt())
+            _outputModes[i] = MachineIoMode.byId(buf.readByte().toInt())
             _connectionsCache[i] = buf.readBoolean()
         }
         val numberOfTraits = buf.readVarInt()
@@ -177,11 +177,11 @@ abstract class MetaTileEntity(
                 this.scheduleRenderUpdate()
             }
             UPDATE_INPUT_MODE -> {
-                _inputModes[buf.readByte().toInt()] = MachineIoMode.entries[buf.readByte().toInt()]
+                _inputModes[buf.readByte().toInt()] = MachineIoMode.byId(buf.readByte().toInt())
                 this.scheduleRenderUpdate()
             }
             UPDATE_OUTPUT_MODE -> {
-                _outputModes[buf.readByte().toInt()] = MachineIoMode.entries[buf.readByte().toInt()]
+                _outputModes[buf.readByte().toInt()] = MachineIoMode.byId(buf.readByte().toInt())
                 this.scheduleRenderUpdate()
             }
             UPDATE_CONNECTIONS -> {
