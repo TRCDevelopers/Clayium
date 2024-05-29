@@ -414,6 +414,5 @@ abstract class MetaTileEntity(
                 }
             }
         }
-
     }
 }
