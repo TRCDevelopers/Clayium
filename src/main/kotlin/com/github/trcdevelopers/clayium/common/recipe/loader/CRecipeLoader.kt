@@ -5,6 +5,7 @@ object CRecipeLoader {
         BendingMachineLoader.register()
         ClayBlastFurnaceRecipeLoader.register()
         ClayWorkTableRecipes.register()
+        ClayReactorRecipeLoader.register()
         CondenserRecipeLoader.registerRecipes()
     }
 }

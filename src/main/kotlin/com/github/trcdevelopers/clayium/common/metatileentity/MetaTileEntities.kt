@@ -8,6 +8,7 @@ import com.github.trcdevelopers.clayium.api.metatileentity.ClayLaserMetaTileEnti
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.SimpleMachineMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.ClayBlastFurnaceMetaTileEntity
+import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.ClayReactorMetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ClayTiers
 import com.github.trcdevelopers.clayium.api.util.ITier
@@ -79,6 +80,10 @@ object MetaTileEntities {
 
     val CLAY_BLAST_FURNACE = registerMetaTileEntity(150,
         ClayBlastFurnaceMetaTileEntity(clayiumId("clay_blast_furnace"), ClayTiers.PRECISION)
+    )
+
+    val CLAY_REACTOR = registerMetaTileEntity(151,
+        ClayReactorMetaTileEntity(clayiumId("clay_reactor"), ClayTiers.CLAY_STEEL)
     )
 
     /**
