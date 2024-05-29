@@ -344,13 +344,19 @@ abstract class MetaTileEntity(
         clearInventory(itemBuffer, exportItems)
     }
 
+    open fun isFacingValid(facing: EnumFacing) = facing.axis.isHorizontal
+
     /**
      * called on both client and server.
      */
     @MustBeInvokedByOverriders
     open fun changeIoModesOnPlacement(placer: EntityLivingBase) {
+        val pos = this.pos
         if (this.hasFrontFacing) {
-            this.frontFacing = placer.horizontalFacing.opposite
+            this.frontFacing = if (isFacingValid(EnumFacing.UP) && pos != null)
+                EnumFacing.getDirectionFromEntityLiving(pos, placer)
+            else
+                placer.horizontalFacing.opposite
         }
         EnumFacing.entries.forEach(this::refreshConnection)
     }

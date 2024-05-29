@@ -7,7 +7,7 @@ itemGroup.clayium.clayiumcapsule=Clayium Fluid Capsules
 
 tooltip.clayium.HoldShiftForDetails=--§fHold §lShift§r For Details§7--
 
-gui.clayium.clayLaser=Laser \: %1$s
+gui.clayium.laser_energy=Laser \: %1$s
 gui.clayium.resonance=Resonance %1$s
 gui.clayium.overclockFactor=Overclock x%1$s
 

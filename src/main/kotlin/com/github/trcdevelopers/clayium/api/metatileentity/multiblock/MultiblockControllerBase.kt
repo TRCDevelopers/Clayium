@@ -41,12 +41,16 @@ abstract class MultiblockControllerBase(
      */
     protected var recipeLogicTier: Int = 0
 
-    open fun onConstructed() {}
+    open fun onConstructed() {
+        writeStructureValidity(true)
+    }
 
     @MustBeInvokedByOverriders
     open fun onDeconstructed() {
         multiblockParts.forEach { it.removeFromMultiblock(this) }
         multiblockParts.clear()
+        recipeLogicTier = 0
+        writeStructureValidity(false)
     }
 
     override fun update() {

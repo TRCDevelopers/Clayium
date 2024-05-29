@@ -12,23 +12,28 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trcdevelopers.clayium.api.CValues
+import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.IClayLaserAcceptor
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayReactorRecipeLogic
 import com.github.trcdevelopers.clayium.api.capability.impl.MultiblockRecipeLogic
+import com.github.trcdevelopers.clayium.api.laser.ClayLaser
 import com.github.trcdevelopers.clayium.api.laser.IClayLaser
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
+import com.github.trcdevelopers.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.BlockMachineHull
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
+import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.resources.I18n
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import net.minecraftforge.common.capabilities.Capability
 
 class ClayReactorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -56,13 +61,14 @@ class ClayReactorMetaTileEntity(
         for (yy in -1..1) {
             for (xx in -1..1) {
                 for (zz in 0..2) {
+                    if (yy == 1 && xx == 0 && zz == 1) {
+                        val laserProxy = getLaserProxy(controllerPos.add(xx, yy, zz)) ?: return false
+                        mbParts.add(laserProxy)
+                        tiers.add(laserProxy.tier)
+                    }
                     val mbPartPos = getControllerRelativeCoord(controllerPos, xx, yy, zz)
                     val (isValid, mbPart, tier) = isPosValidForMultiblock(world, mbPartPos)
-                    if (!isValid) {
-                        recipeLogicTier = 0
-                        writeStructureValidity(false)
-                        return false
-                    }
+                    if (!isValid) return false
                     mbPart?.let { mbParts.add(it) }
                     tier?.let { tiers.add(it) }
                 }
@@ -71,10 +77,12 @@ class ClayReactorMetaTileEntity(
         mbParts.forEach { it.addToMultiblock(this) }
         multiblockParts.addAll(mbParts)
         recipeLogicTier = calcTier(tiers.map { it.numeric })
-        if (!structureFormed) {
-            writeStructureValidity(true)
-        }
         return true
+    }
+
+    private fun getLaserProxy(pos: BlockPos): LaserProxyMetaTileEntity? {
+        val metaTileEntity = CUtils.getMetaTileEntity(world, pos)
+        return if (metaTileEntity is LaserProxyMetaTileEntity) metaTileEntity else null
     }
 
     private fun isPosValidForMultiblock(world: World, pos: BlockPos): Triple<Boolean, IMultiblockPart?, ITier?> {
@@ -101,73 +109,41 @@ class ClayReactorMetaTileEntity(
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.syncValue("mbTier", 3, SyncHandlers.intNumber({ recipeLogicTier }, { recipeLogicTier = it }))
-        val panel = ModularPanel.defaultPanel(this.metaTileEntityId.toString())
-
-        // title
-        panel.child(IKey.lang("machine.clayium.clay_blast_furnace").asWidget()
-            .top(6)
-            .left(6))
-
-        val slotsAndProgressBar = Row()
-            .widthRel(0.7f).height(26)
-            .align(Alignment.Center)
-            .top(30)
-            .child(workable.getProgressBar(syncManager))
-
-        syncManager.registerSlotGroup("input_inv", 1)
-        slotsAndProgressBar.child(
-            SlotGroupWidget.builder()
-                .matrix("II")
-                .key('I') { index ->
-                    ItemSlot().slot(
-                        SyncHandlers.itemSlot(importItems, index)
-                            .slotGroup("input_inv"))
-                        .apply {
-                            if (index == 0)
-                                background(ClayGuiTextures.IMPORT_1_SLOT)
-                            else
-                                background(ClayGuiTextures.IMPORT_2_SLOT)
-                        }}
-                .build()
-                .align(Alignment.CenterLeft)
-        )
-
-        syncManager.registerSlotGroup("output_inv", 1)
-        slotsAndProgressBar.child(
-            SlotGroupWidget.builder()
-                .matrix("II")
-                .key('I') { index ->
-                    ItemSlot().slot(
-                        SyncHandlers.itemSlot(exportItems, index)
-                            .accessibility(false, true)
-                            .slotGroup("output_inv"))
-                        .apply {
-                            if (index == 0)
-                                background(ClayGuiTextures.EXPORT_1_SLOT)
-                            else
-                                background(ClayGuiTextures.EXPORT_2_SLOT)
-                        }}
-                .build()
-                .align(Alignment.CenterRight)
-        )
+        syncManager.syncValue("laser", 4, SyncHandlers.intNumber(
+            {
+                val laser = this.laser ?: return@intNumber 0
+                return@intNumber (laser.laserRed shl 16) or (laser.laserGreen shl 8) or laser.laserBlue
+            },
+            {
+                if (it == 0) {
+                    this.laser = null
+                    return@intNumber
+                }
+                val laserRed = (it shr 16) and 0xFF
+                val laserGreen = (it shr 8) and 0xFF
+                val laserBlue = it and 0xFF
+                this.laser = ClayLaser(EnumFacing.NORTH, laserRed, laserGreen, laserBlue)
+            }
+        ))
+        val panel = super.buildUI(data, syncManager)
         panel.child(
-            Column().sizeRel(1f, 0.45f).top(0)
-                .child(slotsAndProgressBar)
-                .child(clayEnergyHolder.createSlotWidget()
-                    .right(7).top(58)
-                    .setEnabledIf { GuiScreen.isShiftKeyDown() }
-                    .background(IDrawable.EMPTY))
-                .child(clayEnergyHolder.createCeTextWidget(syncManager, 2)
-                    .widthRel(0.5f)
-                    .pos(6, 60))
+            Column().sizeRel(0.6f, 0.1f).topRel(0.4f).right(6)
                 .child(IKey.dynamic { I18n.format("tooltip.clayium.tier", recipeLogicTier) }.asWidget()
-                    .align(Alignment.BottomCenter))
+                    .align(Alignment.BottomLeft))
+                .child(IKey.dynamic { I18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.laserEnergy?.toLong() ?: 0L)) }.asWidget()
+                    .align(Alignment.BottomRight))
         )
-
-        return panel.bindPlayerInventory()
+        return panel
     }
 
     override fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?) {
         this.laser = laser
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability == ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR) {
+            return ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR.cast(this)
+        }
+        return super.getCapability(capability, facing)
     }
 }

@@ -9,6 +9,7 @@ import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.SimpleMachineMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.ClayBlastFurnaceMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.ClayReactorMetaTileEntity
+import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.LaserProxyMetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ClayTiers
 import com.github.trcdevelopers.clayium.api.util.ITier
@@ -74,8 +75,12 @@ object MetaTileEntities {
         }
     }
 
-    val CLAY_INTERFACE = registerMetaTileEntities(141, (5..13)) {
+    val CLAY_INTERFACE = registerMetaTileEntities(133, (5..13)) {
         ClayInterfaceMetaTileEntity(clayiumId("clay_interface.${it.lowerName}"), it)
+    }
+
+    val LASER_PROXY = registerMetaTileEntities(143, (7..13)) {
+        LaserProxyMetaTileEntity(clayiumId("laser_proxy.${it.lowerName}"), it)
     }
 
     val CLAY_BLAST_FURNACE = registerMetaTileEntity(150,

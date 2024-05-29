@@ -58,6 +58,7 @@ class ClayInterfaceMetaTileEntity(
     }
 
     override fun onLink(target: MetaTileEntity) {
+        super.onLink(target)
         this.importItems = target.importItems
         this.exportItems = target.exportItems
         this.itemInventory = ItemHandlerProxy(this.importItems, this.exportItems)
@@ -68,10 +69,10 @@ class ClayInterfaceMetaTileEntity(
 
         this.validInputModes = target.validInputModes
         this.validOutputModes = target.validOutputModes
-        writeTargetData(target)
     }
 
     override fun onUnlink() {
+        super.onUnlink()
         this.importItems = EmptyItemStackHandler
         this.exportItems = EmptyItemStackHandler
         this.itemInventory = EmptyItemStackHandler
@@ -80,7 +81,6 @@ class ClayInterfaceMetaTileEntity(
 
         this.validInputModes = onlyNoneList
         this.validOutputModes = onlyNoneList
-        writeTargetRemoved()
     }
 
     fun isSynchronized(): Boolean {

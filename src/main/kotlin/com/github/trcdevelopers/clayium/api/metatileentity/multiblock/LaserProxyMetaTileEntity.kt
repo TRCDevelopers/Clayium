@@ -19,6 +19,7 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
@@ -28,13 +29,17 @@ class LaserProxyMetaTileEntity(
 ) : ProxyMetaTileEntityBase(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "machine.${CValues.MOD_ID}.laser_proxy"), IClayLaserAcceptor {
 
     private var laser: IClayLaser? = null
+    override val faceTexture: ResourceLocation = clayiumId("blocks/laserinterface")
 
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val exportItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val itemInventory: IItemHandler = EmptyItemStackHandler
     override val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
 
+    override fun isFacingValid(facing: EnumFacing) = true
+
     override fun onLink(target: MetaTileEntity) {
+        super.onLink(target)
         if (this.laser != null) {
             target.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
                 ?.laserChanged(this.frontFacing.opposite, this.laser)
@@ -42,6 +47,7 @@ class LaserProxyMetaTileEntity(
     }
 
     override fun onUnlink() {
+        super.onUnlink()
         this.target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
             ?.laserChanged(this.frontFacing.opposite, null)
     }
@@ -64,6 +70,7 @@ class LaserProxyMetaTileEntity(
     }
 
     override fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?) {
+        println("Laser changed: $laser")
         if (irradiatedSide == this.frontFacing) {
             this.laser = laser
             this.target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
@@ -76,5 +83,12 @@ class LaserProxyMetaTileEntity(
         if (laser?.laserDirection != this.frontFacing.opposite) {
             this.laser = null
         }
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability == ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR && facing == this.frontFacing) {
+            return ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR.cast(this)
+        }
+        return super.getCapability(capability, facing)
     }
 }

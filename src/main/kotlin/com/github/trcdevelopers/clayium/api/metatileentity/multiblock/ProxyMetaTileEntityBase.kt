@@ -1,14 +1,18 @@
 package com.github.trcdevelopers.clayium.api.metatileentity.multiblock
 
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.INTERFACE_SYNC_MIMIC_TARGET
+import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.ISynchronizedInterface
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketBuffer
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
+import net.minecraftforge.common.capabilities.Capability
+import org.jetbrains.annotations.MustBeInvokedByOverriders
 
 abstract class ProxyMetaTileEntityBase(
     metaTileEntityId: ResourceLocation,
@@ -50,8 +54,16 @@ abstract class ProxyMetaTileEntityBase(
         this.onUnlink()
     }
 
-    abstract fun onLink(target: MetaTileEntity)
-    abstract fun onUnlink()
+    @MustBeInvokedByOverriders
+    open fun onLink(target: MetaTileEntity) {
+        writeTargetData(target)
+    }
+
+    @MustBeInvokedByOverriders
+    open fun onUnlink() {
+        writeTargetRemoved()
+    }
+
     open fun canLink(target: MetaTileEntity): Boolean = true
 
     override fun canPartShare() = false
@@ -91,5 +103,9 @@ abstract class ProxyMetaTileEntityBase(
             }
         }
         super.receiveCustomData(discriminator, buf)
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        return super.getCapability(capability, facing)
     }
 }
