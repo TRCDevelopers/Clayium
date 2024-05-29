@@ -39,18 +39,20 @@ abstract class ProxyMetaTileEntityBase(
         return target != null
     }
 
-    override fun addToMultiblock(controller: MultiblockControllerBase) {
+    final override fun addToMultiblock(controller: MultiblockControllerBase) {
+        if (!canLink(controller)) return
         this.target = controller
         this.onLink(controller)
     }
 
-    override fun removeFromMultiblock(controller: MultiblockControllerBase) {
+    final override fun removeFromMultiblock(controller: MultiblockControllerBase) {
         this.target = null
         this.onUnlink()
     }
 
     abstract fun onLink(target: MetaTileEntity)
     abstract fun onUnlink()
+    open fun canLink(target: MetaTileEntity): Boolean = true
 
     override fun canPartShare() = false
 

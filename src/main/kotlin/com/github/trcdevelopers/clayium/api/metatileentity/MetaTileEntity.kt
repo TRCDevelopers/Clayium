@@ -237,7 +237,7 @@ abstract class MetaTileEntity(
 
     open fun canOpenGui() = true
 
-    fun onToolClick(toolType: ItemClayConfigTool.ToolType, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+    open fun onToolClick(toolType: ItemClayConfigTool.ToolType, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         if (this.world?.isRemote == true) return
         val world = this.world ?: return
         val pos = this.pos ?: return
