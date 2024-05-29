@@ -7,6 +7,7 @@ import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.INTERFACE_SYNC_MIMIC_TARGET
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.ISynchronizedInterface
+import com.github.trcdevelopers.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.IMultiblockPart
 import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.MultiblockControllerBase
@@ -38,9 +39,9 @@ class ClayInterfaceMetaTileEntity(
     override val faceTexture = clayiumId("blocks/interface")
     override val useFaceForAllSides = true
 
-    override var importItems: IItemHandlerModifiable = ItemStackHandler(0)
-    override var exportItems: IItemHandlerModifiable = ItemStackHandler(0)
-    override var itemInventory: IItemHandler = ItemStackHandler(0)
+    override var importItems: IItemHandlerModifiable = EmptyItemStackHandler
+    override var exportItems: IItemHandlerModifiable = EmptyItemStackHandler
+    override var itemInventory: IItemHandler = EmptyItemStackHandler
     override var autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
     private var ecImporter: AutoIoHandler.EcImporter? = null
 
@@ -71,9 +72,9 @@ class ClayInterfaceMetaTileEntity(
     }
 
     override fun onUnlink() {
-        this.importItems = ItemStackHandler(0)
-        this.exportItems = ItemStackHandler(0)
-        this.itemInventory = ItemStackHandler(0)
+        this.importItems = EmptyItemStackHandler
+        this.exportItems = EmptyItemStackHandler
+        this.itemInventory = EmptyItemStackHandler
         this.autoIoHandler = AutoIoHandler.Combined(this)
         this.ecImporter = null
 

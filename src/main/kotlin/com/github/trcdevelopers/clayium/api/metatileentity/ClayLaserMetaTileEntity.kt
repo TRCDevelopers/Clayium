@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayLaserSource
+import com.github.trcdevelopers.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigCore
@@ -42,9 +43,9 @@ class ClayLaserMetaTileEntity(
 
     override val faceTexture = ResourceLocation(CValues.MOD_ID, "blocks/clay_laser")
 
-    override val importItems: IItemHandlerModifiable = ItemStackHandler(0)
-    override val exportItems: IItemHandlerModifiable = ItemStackHandler(0)
-    override val itemInventory: IItemHandler = ItemStackHandler(0)
+    override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
+    override val exportItems: IItemHandlerModifiable = EmptyItemStackHandler
+    override val itemInventory: IItemHandler = EmptyItemStackHandler
     override val autoIoHandler: AutoIoHandler = object : AutoIoHandler(this@ClayLaserMetaTileEntity) {
         override fun update() {}
     }

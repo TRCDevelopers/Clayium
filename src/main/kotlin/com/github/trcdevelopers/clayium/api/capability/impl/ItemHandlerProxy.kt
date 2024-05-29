@@ -9,8 +9,8 @@ class ItemHandlerProxy(
     outputInventory: IItemHandler?,
 ) : IItemHandler {
 
-    private val inputInventory: IItemHandler = inputInventory ?: ItemStackHandler(0)
-    private val outputInventory: IItemHandler = outputInventory ?: ItemStackHandler(0)
+    private val inputInventory: IItemHandler = inputInventory ?: EmptyItemStackHandler
+    private val outputInventory: IItemHandler = outputInventory ?: EmptyItemStackHandler
 
     override fun getSlots(): Int {
         return inputInventory.slots + outputInventory.slots
