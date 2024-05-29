@@ -10,7 +10,7 @@ import net.minecraftforge.items.IItemHandlerModifiable
 data class Recipe(
     val inputs: List<CRecipeInput>,
     val outputs: List<ItemStack>,
-    val duration: Int,
+    val duration: Long,
     val cePerTick: ClayEnergy,
     /**
      * if `machine.tier.numeric < recipe.tier`, then the recipe is not matched

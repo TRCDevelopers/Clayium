@@ -25,9 +25,9 @@ abstract class AbstractRecipeLogic(
 
     protected var previousRecipe: Recipe? = null
     protected var recipeCEt = ClayEnergy.ZERO
-    var requiredProgress = 0
+    var requiredProgress = 0L
         protected set
-    var currentProgress = 0
+    var currentProgress = 0L
         protected set
     // item stacks that will be produced when the recipe is done
     protected var itemOutputs: List<ItemStack> = emptyList()
@@ -45,15 +45,15 @@ abstract class AbstractRecipeLogic(
 
     override fun update() {
         if (metaTileEntity.world?.isRemote == true) return
-        if (currentProgress != 0) {
+        if (currentProgress != 0L) {
             updateRecipeProgress()
         }
-        if (currentProgress == 0 && shouldSearchNewRecipe()) {
+        if (currentProgress == 0L && shouldSearchNewRecipe()) {
             trySearchNewRecipe()
         }
     }
 
-    private fun updateRecipeProgress() {
+    protected open fun updateRecipeProgress() {
         if (drawEnergy(recipeCEt)) currentProgress++
         if (currentProgress > requiredProgress) {
             currentProgress = 0
@@ -112,11 +112,11 @@ abstract class AbstractRecipeLogic(
     }
 
     fun getProgressBar(syncManager: GuiSyncManager): ProgressWidget {
-        syncManager.syncValue("requiredProgress", 0, SyncHandlers.intNumber(
+        syncManager.syncValue("requiredProgress", 0, SyncHandlers.longNumber(
             { requiredProgress },
             { rProgress -> requiredProgress = rProgress }
         ))
-        syncManager.syncValue("craftingProgress", 1, SyncHandlers.intNumber(
+        syncManager.syncValue("craftingProgress", 1, SyncHandlers.longNumber(
             { currentProgress },
             { cProgress -> currentProgress = cProgress }
         ))
@@ -134,16 +134,16 @@ abstract class AbstractRecipeLogic(
 
     override fun serializeNBT(): NBTTagCompound {
         val data = super.serializeNBT()
-        data.setInteger("currentProgress", currentProgress)
-        data.setInteger("requiredProgress", requiredProgress)
+        data.setLong("currentProgress", currentProgress)
+        data.setLong("requiredProgress", requiredProgress)
         CUtils.writeItems(itemOutputs, "itemOutputs", data)
         data.setLong("recipeCEt", recipeCEt.energy)
         return data
     }
 
     override fun deserializeNBT(data: NBTTagCompound) {
-        currentProgress = data.getInteger("currentProgress")
-        requiredProgress = data.getInteger("requiredProgress")
+        currentProgress = data.getLong("currentProgress")
+        requiredProgress = data.getLong("requiredProgress")
         itemOutputs = mutableListOf<ItemStack>().apply { CUtils.readItems(this, "itemOutputs", data) }
         recipeCEt = ClayEnergy(data.getLong("recipeCEt"))
     }

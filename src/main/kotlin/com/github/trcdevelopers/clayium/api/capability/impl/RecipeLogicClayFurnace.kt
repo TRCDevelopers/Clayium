@@ -28,7 +28,7 @@ class RecipeLogicClayFurnace(
         )
         val multipliedRecipeTime = (
             recipe.duration * ConfigTierBalance.crafting.smelterCraftTimeMultiplier[metaTileEntity.tier.numeric - 4]
-        ).toInt()
+        ).toLong()
         if (!this.drawEnergy(multipliedRecipeCEt, simulate = true)) return
         val outputs = recipe.copyOutputs()
         if (!TransferUtils.insertToHandler(metaTileEntity.exportItems, outputs, true)) {
@@ -52,7 +52,7 @@ class RecipeLogicClayFurnace(
         this.inputInventory.extractItem(0, 1, false)
         val machineTierNum = metaTileEntity.tier.numeric
         val multipliedRecipeCEt = ClayEnergy((BASE_CE_CONSUMPTION.energy.toDouble() * ConfigTierBalance.crafting.smelterConsumingEnergyMultiplier[machineTierNum - 4]).toLong())
-        val multipliedRecipeTime = (FURNACE_RECIPE_TIME * ConfigTierBalance.crafting.smelterCraftTimeMultiplier[machineTierNum - 4]).toInt()
+        val multipliedRecipeTime = (FURNACE_RECIPE_TIME * ConfigTierBalance.crafting.smelterCraftTimeMultiplier[machineTierNum - 4]).toLong()
 
         this.itemOutputs = listOf(smeltingResult)
         this.recipeCEt = multipliedRecipeCEt

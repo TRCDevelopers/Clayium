@@ -20,7 +20,7 @@ import net.minecraft.item.ItemStack
 abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     protected val inputs: MutableList<CRecipeInput>,
     protected val outputs: MutableList<ItemStack>,
-    protected var duration: Int,
+    protected var duration: Long,
     protected var cePerTick: ClayEnergy,
     protected var tier: Int,
 ) {
@@ -67,7 +67,8 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun output(oreDict: String, amount: Int = 1) = outputs(OreDictUnifier.get(oreDict, amount))
     fun output(orePrefix: OrePrefix, material: Material, amount: Int = 1) = outputs(OreDictUnifier.get(orePrefix, material, amount))
 
-    fun duration(duration: Int): R {
+    fun duration(duration: Int) = duration(duration.toLong())
+    fun duration(duration: Long): R {
         this.duration = duration
         return this as R
     }

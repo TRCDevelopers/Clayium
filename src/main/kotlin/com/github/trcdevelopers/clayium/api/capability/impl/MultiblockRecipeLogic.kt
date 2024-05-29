@@ -4,7 +4,7 @@ import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.Multiblock
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 
-class MultiblockRecipeLogic(
+open class MultiblockRecipeLogic(
     private val controller: MultiblockControllerBase,
     recipeRegistry: RecipeRegistry<*>,
 ) : RecipeLogicEnergy(controller, recipeRegistry, controller.clayEnergyHolder) {
