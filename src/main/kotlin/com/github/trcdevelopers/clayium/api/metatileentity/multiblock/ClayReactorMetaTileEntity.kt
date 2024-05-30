@@ -62,7 +62,7 @@ class ClayReactorMetaTileEntity(
             for (xx in -1..1) {
                 for (zz in 0..2) {
                     if (yy == 1 && xx == 0 && zz == 1) {
-                        val laserProxy = getLaserProxy(controllerPos.add(xx, yy, zz)) ?: return false
+                        val laserProxy = getLaserProxy(getControllerRelativeCoord(controllerPos, xx, yy, zz)) ?: return false
                         mbParts.add(laserProxy)
                         tiers.add(laserProxy.tier)
                     }
