@@ -1,7 +1,7 @@
 # Laser Energy Calculation
 
 > [!NOTE]
-> The content of this page is mostly an English translation of the official [Japanese wiki](https://clayium.wiki.fc2.com/wiki/%E3%83%AC%E3%83%BC%E3%82%B6%E3%83%B.
+> The content of this page is mostly an English translation of the official [Japanese wiki](https://clayium.wiki.fc2.com/wiki/%E3%83%AC%E3%83%BC%E3%82%B6%E3%83%B).
  
 First, calculate the energy values ($E_1, E_2, E_3$) for each color.
 
