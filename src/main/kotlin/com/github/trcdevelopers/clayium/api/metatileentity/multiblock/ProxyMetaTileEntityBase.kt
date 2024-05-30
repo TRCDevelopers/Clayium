@@ -3,6 +3,8 @@ package com.github.trcdevelopers.clayium.api.metatileentity.multiblock
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.INTERFACE_SYNC_MIMIC_TARGET
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.ISynchronizedInterface
+import com.github.trcdevelopers.clayium.api.capability.impl.EmptyItemStackHandler
+import com.github.trcdevelopers.clayium.api.metatileentity.AutoIoHandler
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
@@ -12,15 +14,16 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.items.IItemHandlerModifiable
 import org.jetbrains.annotations.MustBeInvokedByOverriders
 
 abstract class ProxyMetaTileEntityBase(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-    validInputModes: List<MachineIoMode>, validOutputModes: List<MachineIoMode>,
     translationKey: String,
 ) : MetaTileEntity(
-    metaTileEntityId, tier, validInputModes, validOutputModes, translationKey
+    metaTileEntityId, tier, onlyNoneList, onlyNoneList, translationKey
 ), IMultiblockPart, ISynchronizedInterface {
 
     /**
@@ -34,6 +37,11 @@ abstract class ProxyMetaTileEntityBase(
 
     override var targetDimensionId: Int = -1
         protected set
+
+    override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
+    override val exportItems: IItemHandlerModifiable = EmptyItemStackHandler
+    override val itemInventory: IItemHandler = EmptyItemStackHandler
+    override val autoIoHandler: AutoIoHandler = AutoIoHandler.Empty(this)
 
     override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
         // no-op, this block is a proxy

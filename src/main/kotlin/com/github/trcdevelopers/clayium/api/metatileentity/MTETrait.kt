@@ -4,6 +4,8 @@ import com.github.trcdevelopers.clayium.api.metatileentity.interfaces.ISyncedTil
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
+import net.minecraft.util.EnumFacing
+import net.minecraftforge.common.capabilities.Capability
 
 abstract class MTETrait(
     protected val metaTileEntity: MetaTileEntity,
@@ -30,6 +32,10 @@ abstract class MTETrait(
     }
 
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {}
+
+    open fun <T> getCapability(capability: Capability<T>, facing: EnumFacing? = null): T? {
+        return null
+    }
 
     companion object {
         private val idByName = Object2IntOpenHashMap<String>().apply { defaultReturnValue(-1) }

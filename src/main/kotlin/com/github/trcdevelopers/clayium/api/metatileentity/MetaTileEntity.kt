@@ -225,7 +225,7 @@ abstract class MetaTileEntity(
             }
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(ItemHandlerProxy(inputSlots, outputSlots))
         }
-        return null
+        return mteTraits.values.firstNotNullOfOrNull { it.getCapability(capability, facing) }
     }
 
     open fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
@@ -374,6 +374,10 @@ abstract class MetaTileEntity(
         this.refreshConnection(facing)
     }
     open fun neighborChanged() {}
+
+    open fun canConnectRedstone(side: EnumFacing?) = false
+
+    open fun getWeakPower(side: EnumFacing?): Int = 0
 
     fun getNeighbor(side: EnumFacing) = holder?.getNeighbor(side)
     fun scheduleRenderUpdate() = holder?.scheduleRenderUpdate()

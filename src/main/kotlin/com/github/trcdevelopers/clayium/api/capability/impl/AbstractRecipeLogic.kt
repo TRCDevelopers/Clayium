@@ -5,6 +5,7 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
+import com.github.trcdevelopers.clayium.api.capability.IControllable
 import com.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils
@@ -19,7 +20,7 @@ import net.minecraft.nbt.NBTTagCompound
 abstract class AbstractRecipeLogic(
     metaTileEntity: MetaTileEntity,
     private val recipeRegistry: RecipeRegistry<*>,
-) : MTETrait(metaTileEntity, ClayiumDataCodecs.RECIPE_LOGIC) {
+) : MTETrait(metaTileEntity, ClayiumDataCodecs.RECIPE_LOGIC), IControllable {
 
     protected val inputInventory = metaTileEntity.importItems
 
@@ -34,6 +35,9 @@ abstract class AbstractRecipeLogic(
 
     private var invalidInputsForRecipes = false
     protected var outputsFull = false
+
+    override val isWorking: Boolean get() = currentProgress != 0L
+    override var isWorkingEnabled: Boolean = false
 
     /**
      * Draw energy from the energy container

@@ -131,4 +131,8 @@ abstract class AutoIoHandler(
             ticked = 0
         }
     }
+
+    class Empty(metaTileEntity: MetaTileEntity) : AutoIoHandler(metaTileEntity) {
+        override fun update() {}
+    }
 }

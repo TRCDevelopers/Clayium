@@ -14,6 +14,7 @@ import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ClayTiers
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.Clayium
+import com.github.trcdevelopers.clayium.common.metatileentity.multiblock.RedstoneProxyMetaTileEntity
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -75,8 +76,12 @@ object MetaTileEntities {
         }
     }
 
-    val CLAY_INTERFACE = registerMetaTileEntities(133, (5..13)) {
+    val CLAY_INTERFACE = registerMetaTileEntities(123, (5..13)) {
         ClayInterfaceMetaTileEntity(clayiumId("clay_interface.${it.lowerName}"), it)
+    }
+
+    val REDSTONE_PROXY = registerMetaTileEntities(133, (5..13)) {
+        RedstoneProxyMetaTileEntity(clayiumId("redstone_proxy.${it.lowerName}"), it)
     }
 
     val LASER_PROXY = registerMetaTileEntities(143, (7..13)) {

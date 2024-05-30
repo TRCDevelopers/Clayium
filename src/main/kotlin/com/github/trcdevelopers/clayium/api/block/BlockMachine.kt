@@ -161,6 +161,20 @@ class BlockMachine : Block(Material.IRON) {
         return CUtils.getMetaTileEntity(world, pos)?.getStackForm() ?: ItemStack.EMPTY
     }
 
+    override fun canConnectRedstone(state: IBlockState, world: IBlockAccess, pos: BlockPos, side: EnumFacing?): Boolean {
+        return CUtils.getMetaTileEntity(world, pos)?.canConnectRedstone(side?.opposite) ?: false
+    }
+
+    override fun shouldCheckWeakPower(state: IBlockState, world: IBlockAccess, pos: BlockPos, side: EnumFacing): Boolean {
+        // The check in [World.getRedstonePower] in the vanilla code base is reversed.
+        // Setting this to false will actually cause getWeakPower to be called, rather than prevent it.
+        return false
+    }
+
+    override fun getWeakPower(state: IBlockState, world: IBlockAccess, pos: BlockPos, side: EnumFacing): Int {
+        return CUtils.getMetaTileEntity(world, pos)?.getWeakPower(side) ?: 0
+    }
+
     @SideOnly(Side.CLIENT)
     override fun getRenderLayer() = BlockRenderLayer.CUTOUT_MIPPED
 

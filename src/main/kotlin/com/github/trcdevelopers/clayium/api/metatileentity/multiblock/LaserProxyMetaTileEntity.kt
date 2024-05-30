@@ -26,7 +26,7 @@ import net.minecraftforge.items.IItemHandlerModifiable
 class LaserProxyMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : ProxyMetaTileEntityBase(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "machine.${CValues.MOD_ID}.laser_proxy"), IClayLaserAcceptor {
+) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "machine.${CValues.MOD_ID}.laser_proxy"), IClayLaserAcceptor {
 
     private var laser: IClayLaser? = null
     override val faceTexture: ResourceLocation = clayiumId("blocks/laserinterface")
@@ -34,7 +34,7 @@ class LaserProxyMetaTileEntity(
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val exportItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val itemInventory: IItemHandler = EmptyItemStackHandler
-    override val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
+    override val autoIoHandler: AutoIoHandler = AutoIoHandler.Empty(this)
 
     override fun isFacingValid(facing: EnumFacing) = true
 

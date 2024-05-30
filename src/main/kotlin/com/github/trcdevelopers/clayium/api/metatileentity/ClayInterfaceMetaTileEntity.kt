@@ -34,7 +34,7 @@ import net.minecraftforge.items.ItemStackHandler
 class ClayInterfaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : ProxyMetaTileEntityBase(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "machine.${CValues.MOD_ID}.interface"), IMultiblockPart, ISynchronizedInterface {
+) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "machine.${CValues.MOD_ID}.interface"), IMultiblockPart, ISynchronizedInterface {
 
     override val faceTexture = clayiumId("blocks/interface")
     override val useFaceForAllSides = true
