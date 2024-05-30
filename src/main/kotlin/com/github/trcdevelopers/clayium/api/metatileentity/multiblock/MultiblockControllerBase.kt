@@ -78,16 +78,28 @@ abstract class MultiblockControllerBase(
     // | /
     // |/
     // - - - > x
-    protected fun getControllerRelativeCoord(pos: BlockPos, right: Int, up: Int, backwards: Int): BlockPos {
+    protected fun getControllerRelativeCoord(controllerPos: BlockPos, right: Int, up: Int, backwards: Int): BlockPos {
         val frontFacing = this.frontFacing
         val relRight = RelativeDirection.RIGHT.getActualFacing(frontFacing)
         val relUp = RelativeDirection.UP.getActualFacing(frontFacing)
         val relBackwards = RelativeDirection.BACK.getActualFacing(frontFacing)
         return BlockPos(
-            pos.x + relRight.xOffset * right + relUp.xOffset * up + relBackwards.xOffset * backwards,
-            pos.y + relRight.yOffset * right + relUp.yOffset * up + relBackwards.yOffset * backwards,
-            pos.z + relRight.zOffset * right + relUp.zOffset * up + relBackwards.zOffset * backwards,
+            controllerPos.x + relRight.xOffset * right + relUp.xOffset * up + relBackwards.xOffset * backwards,
+            controllerPos.y + relRight.yOffset * right + relUp.yOffset * up + relBackwards.yOffset * backwards,
+            controllerPos.z + relRight.zOffset * right + relUp.zOffset * up + relBackwards.zOffset * backwards,
         )
+    }
+
+    override fun writeInitialSyncData(buf: PacketBuffer) {
+        super.writeInitialSyncData(buf)
+        buf.writeBoolean(structureFormed)
+    }
+
+    override fun receiveInitialSyncData(buf: PacketBuffer) {
+        super.receiveInitialSyncData(buf)
+        structureFormed = buf.readBoolean()
+        faceTexture = if (structureFormed) faceWhenConstructed else faceWhenDeconstructed
+        scheduleRenderUpdate()
     }
 
     protected fun writeStructureValidity(valid: Boolean) {
