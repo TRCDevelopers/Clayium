@@ -37,7 +37,11 @@ abstract class AbstractRecipeLogic(
     protected var outputsFull = false
 
     override val isWorking: Boolean get() = currentProgress != 0L
-    override var isWorkingEnabled: Boolean = false
+    override var isWorkingEnabled: Boolean = true
+        set(value) {
+            field = value
+            metaTileEntity.markDirty()
+        }
 
     /**
      * Draw energy from the energy container
@@ -49,6 +53,7 @@ abstract class AbstractRecipeLogic(
 
     override fun update() {
         if (metaTileEntity.world?.isRemote == true) return
+        if (!isWorkingEnabled) return
         if (currentProgress != 0L) {
             updateRecipeProgress()
         }
