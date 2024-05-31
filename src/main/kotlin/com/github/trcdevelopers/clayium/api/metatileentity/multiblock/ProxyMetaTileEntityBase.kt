@@ -1,18 +1,18 @@
 package com.github.trcdevelopers.clayium.api.metatileentity.multiblock
 
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.INTERFACE_SYNC_MIMIC_TARGET
-import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.ISynchronizedInterface
 import com.github.trcdevelopers.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trcdevelopers.clayium.api.metatileentity.AutoIoHandler
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
+import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.api.util.ITier
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
+import net.minecraftforge.common.DimensionManager
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
@@ -60,6 +60,16 @@ abstract class ProxyMetaTileEntityBase(
     final override fun removeFromMultiblock(controller: MultiblockControllerBase) {
         this.target = null
         this.onUnlink()
+    }
+
+    final override fun synchronize(pos: BlockPos, dimensionId: Int): Boolean {
+        val world = DimensionManager.getWorld(dimensionId) ?: return false
+        val metaTileEntity = CUtils.getMetaTileEntity(world, pos) ?: return false
+        if (!canLink(metaTileEntity)) return false
+
+        this.target = metaTileEntity
+        this.onLink(metaTileEntity)
+        return true
     }
 
     @MustBeInvokedByOverriders
