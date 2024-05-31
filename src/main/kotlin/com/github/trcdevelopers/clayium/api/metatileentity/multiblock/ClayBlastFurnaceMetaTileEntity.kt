@@ -117,7 +117,7 @@ class ClayBlastFurnaceMetaTileEntity(
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        syncManager.syncValue("mbTier", 3, SyncHandlers.intNumber({ recipeLogicTier }, { recipeLogicTier = it }))
+        syncManager.syncValue("multiblock_tier", SyncHandlers.intNumber({ recipeLogicTier }, { recipeLogicTier = it }))
         val panel = ModularPanel.defaultPanel(this.metaTileEntityId.toString())
 
         // title
@@ -174,7 +174,7 @@ class ClayBlastFurnaceMetaTileEntity(
                     .right(7).top(58)
                     .setEnabledIf { GuiScreen.isShiftKeyDown() }
                     .background(IDrawable.EMPTY))
-                .child(clayEnergyHolder.createCeTextWidget(syncManager, 2)
+                .child(clayEnergyHolder.createCeTextWidget(syncManager)
                     .widthRel(0.5f)
                     .pos(6, 60))
                 .child(IKey.dynamic { I18n.format("tooltip.clayium.tier", recipeLogicTier) }.asWidget()

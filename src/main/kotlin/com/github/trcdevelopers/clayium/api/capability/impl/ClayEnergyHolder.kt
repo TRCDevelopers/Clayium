@@ -64,8 +64,8 @@ class ClayEnergyHolder(
                 .accessibility(false, false))
     }
 
-    fun createCeTextWidget(syncManager: GuiSyncManager, syncId: Int): TextWidget {
-        syncManager.syncValue(this.name, syncId, SyncHandlers.longNumber(
+    fun createCeTextWidget(syncManager: GuiSyncManager): TextWidget {
+        syncManager.syncValue("${this.name}.text", SyncHandlers.longNumber(
             { clayEnergy.energy },
             { clayEnergy = ClayEnergy(it) }
         ))

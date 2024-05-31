@@ -144,7 +144,7 @@ abstract class WorkableMetaTileEntity(
                 .right(7).top(58)
                 .setEnabledIf { GuiScreen.isShiftKeyDown() }
                 .background(IDrawable.EMPTY))
-            .child(clayEnergyHolder.createCeTextWidget(syncManager, 0)
+            .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .widthRel(0.5f)
                 .pos(6, 60))
 

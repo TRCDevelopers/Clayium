@@ -121,11 +121,11 @@ abstract class AbstractRecipeLogic(
     }
 
     fun getProgressBar(syncManager: GuiSyncManager): ProgressWidget {
-        syncManager.syncValue("requiredProgress", 0, SyncHandlers.longNumber(
+        syncManager.syncValue("requiredProgress", SyncHandlers.longNumber(
             { requiredProgress },
             { rProgress -> requiredProgress = rProgress }
         ))
-        syncManager.syncValue("craftingProgress", 1, SyncHandlers.longNumber(
+        syncManager.syncValue("craftingProgress", SyncHandlers.longNumber(
             { currentProgress },
             { cProgress -> currentProgress = cProgress }
         ))
