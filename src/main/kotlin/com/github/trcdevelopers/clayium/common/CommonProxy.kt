@@ -85,6 +85,7 @@ open class CommonProxy {
 
         registerItem(registry, ClayiumItems.CLAY_PICKAXE)
         registerItem(registry, ClayiumItems.CLAY_SHOVEL)
+        registerItem(registry, ClayiumItems.SYNCHRONIZER)
 
         registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ::ItemBlockTiered))
 
