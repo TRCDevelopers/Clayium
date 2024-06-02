@@ -110,9 +110,14 @@ abstract class MetaTileEntity(
     fun markDirty() = holder?.markDirty()
 
     open fun update() {
+        if (timer == 0L) {
+            onFirstTick()
+        }
         mteTraits.values.forEach(MTETrait::update)
         timer++
     }
+
+    open fun onFirstTick() {}
 
     open fun writeToNBT(data: NBTTagCompound) {
         data.setByte("frontFacing", frontFacing.index.toByte())

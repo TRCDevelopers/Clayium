@@ -9,6 +9,7 @@ import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.api.util.ITier
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -63,6 +64,39 @@ abstract class ProxyMetaTileEntityBase(
     override val itemInventory: IItemHandler = EmptyItemStackHandler
     override val autoIoHandler: AutoIoHandler = AutoIoHandler.Empty(this)
 
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        data.setLong("targetPos", this.targetPos?.toLong() ?: -1)
+        data.setInteger("targetDimensionId", this.targetDimensionId)
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        // We don't set the target here because the target may not be loaded yet. It will be set at onFirstTick.
+        this.targetPos = BlockPos.fromLong(data.getLong("targetPos"))
+        this.targetDimensionId = data.getInteger("targetDimensionId")
+    }
+
+    override fun writeInitialSyncData(buf: PacketBuffer) {
+        super.writeInitialSyncData(buf)
+        val target = this.target
+        if (target != null) {
+            this.writeTargetData(target)
+        }
+    }
+
+    override fun onFirstTick() {
+        super.onFirstTick()
+        if (this.targetPos != null && this.targetDimensionId != -1) {
+            val world = DimensionManager.getWorld(this.targetDimensionId) ?: return
+            val metaTileEntity = CUtils.getMetaTileEntity(world, this.targetPos) ?: return
+            if (canLink(metaTileEntity)) {
+                this.target = metaTileEntity
+                this.onLink(metaTileEntity)
+            }
+        }
+    }
+
     override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
         // no-op, this block is a proxy
     }
@@ -89,8 +123,8 @@ abstract class ProxyMetaTileEntityBase(
         return true
     }
 
-    open fun onLink(target: MetaTileEntity) {}
-    open fun onUnlink() {}
+    open fun onLink(target: MetaTileEntity) { markDirty() }
+    open fun onUnlink() { markDirty() }
 
     /**
      * called when a player attempts to establish a link using a synchronizer.
