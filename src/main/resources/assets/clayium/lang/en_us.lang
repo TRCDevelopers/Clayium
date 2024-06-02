@@ -932,15 +932,17 @@ item.clayium.itemClayShooter3.name=Sniper Clay Shooter Pro
 item.clayium.itemInstantTeleporter.name=Instant Teleporter
 item.clayium.itemInstantTeleporter.tooltip.line1=Teleports you to the point of impact.
 
-item.clayium.itemSynchronizer.name=Synchronizer
-item.clayium.itemSynchronizer.tooltip.line1=Synchronizes Interfaces with machines or buffers.
-item.clayium.itemSynchronizer.tooltip.line2=__DETAIL__
-item.clayium.itemSynchronizer.tooltip.line3=It enables you to control machines with
-item.clayium.itemSynchronizer.tooltip.line4=redstone signal through Redstone Interfaces
-item.clayium.itemSynchronizer.tooltip.line5=or to teleport items via Item Interfaces.
-item.clayium.itemSynchronizer.tooltip.line6=1. R-click the interface with Synchronous Parts.
-item.clayium.itemSynchronizer.tooltip.line7=2. Record the coord of the machine by R-clicking with this.
-item.clayium.itemSynchronizer.tooltip.line8=3. Synchronize the interface by R-clicking with it.
+item.clayium.synchronizer.name=Synchronizer
+item.clayium.synchronizer.position_saved=Position saved %s
+item.clayium.synchronizer.synchronized=Link established %s
+item.clayium.synchronizer.tooltip1=Synchronizes Interfaces with machines or buffers.
+item.clayium.synchronizer.tooltip2=__DETAIL__
+item.clayium.synchronizer.tooltip3=It enables you to control machines with
+item.clayium.synchronizer.tooltip4=redstone signal through Redstone Interfaces
+item.clayium.synchronizer.tooltip5=or to teleport items via Item Interfaces.
+item.clayium.synchronizer.tooltip6=1. R-click the interface with Synchronous Parts.
+item.clayium.synchronizer.tooltip7=2. Record the coord of the machine by R-clicking with this.
+item.clayium.synchronizer.tooltip8=3. Synchronize the interface by R-clicking with it.
 
 item.clayium.itemCapsule.name=Clay Fluid Capsule
 item.clayium.itemCapsule0125.name=Clay Fluid Capsule (125mB)

@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.api.metatileentity.multiblock
 
+import com.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.INTERFACE_SYNC_MIMIC_TARGET
 import com.github.trcdevelopers.clayium.api.capability.ISynchronizedInterface
 import com.github.trcdevelopers.clayium.api.capability.impl.EmptyItemStackHandler
@@ -124,6 +125,9 @@ abstract class ProxyMetaTileEntityBase(
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === ClayiumCapabilities.SYNCHRONIZED_INTERFACE) {
+            return ClayiumCapabilities.SYNCHRONIZED_INTERFACE.cast(this)
+        }
         return super.getCapability(capability, facing)
     }
 }

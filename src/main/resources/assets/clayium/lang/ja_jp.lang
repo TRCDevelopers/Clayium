@@ -4,7 +4,7 @@ itemGroup.clayium.clayiumcapsule=Clayium 液体カプセル
 
 tooltip.clayium.HoldShiftForDetails=--§f詳細は§lShift§rキー§7--
 
-gui.clayium.clayLaser=レーザー %1$s
+gui.clayium.laser_energy=レーザー %1$s
 gui.clayium.resonance=共鳴率 %1$s
 gui.clayium.overclockFactor=オーバークロック x%1$s
 
@@ -932,15 +932,15 @@ item.clayium.itemClayShooter3.name=スナイパー粘土銃プロ
 item.clayium.itemInstantTeleporter.name=テレポートシューター
 item.clayium.itemInstantTeleporter.tooltip.line1=着弾点にテレポートする
 
-item.clayium.itemSynchronizer.name=シンクロナイザー
-item.clayium.itemSynchronizer.tooltip.line1=インターフェースを装置に同期させる
-item.clayium.itemSynchronizer.tooltip.line2=__DETAIL__
-item.clayium.itemSynchronizer.tooltip.line3=赤石インターフェースを使用することで赤石制御が
-item.clayium.itemSynchronizer.tooltip.line4=できるようになるだけでなく、インターフェースの
-item.clayium.itemSynchronizer.tooltip.line5=同期によりアイテムのテレポートが可能になる
-item.clayium.itemSynchronizer.tooltip.line6=1. シンクロパーツでインターフェースを右クリック
-item.clayium.itemSynchronizer.tooltip.line7=2. シンクロナイザーで右クリックして装置の座標を記録
-item.clayium.itemSynchronizer.tooltip.line8=3. 続いてインターフェースを右クリックして同期させる
+item.clayium.synchronizer.name=シンクロナイザー
+item.clayium.synchronizer.tooltip1=インターフェースを装置に同期させる
+item.clayium.synchronizer.tooltip2=__DETAIL__
+item.clayium.synchronizer.tooltip3=赤石インターフェースを使用することで赤石制御が
+item.clayium.synchronizer.tooltip4=できるようになるだけでなく、インターフェースの
+item.clayium.synchronizer.tooltip5=同期によりアイテムのテレポートが可能になる
+item.clayium.synchronizer.tooltip6=1. シンクロパーツでインターフェースを右クリック
+item.clayium.synchronizer.tooltip7=2. シンクロナイザーで右クリックして装置の座標を記録
+item.clayium.synchronizer.tooltip8=3. 続いてインターフェースを右クリックして同期させる
 
 item.clayium.itemCapsule.name=粘土液体カプセル
 item.clayium.itemCapsule0125.name=粘土液体カプセル (125mB)
