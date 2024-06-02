@@ -27,17 +27,36 @@ abstract class ProxyMetaTileEntityBase(
     metaTileEntityId, tier, onlyNoneList, onlyNoneList, translationKey
 ), IMultiblockPart, ISynchronizedInterface {
 
+    final override var isAttachedToMultiblock = false
+        private set
+
     /**
      * only available on the server side.
      */
     override var target: MetaTileEntity? = null
-        protected set
+        get() {
+            if (field?.isInvalid == true) {
+                field = null
+            }
+            return field
+        }
+        protected set(value) {
+            field = value
+            if (value != null) {
+                this.targetPos = value.pos
+                this.targetDimensionId = value.world?.provider?.dimension ?: -1
+                writeTargetData(value)
+            } else {
+                this.targetPos = null
+                this.targetDimensionId = -1
+                writeTargetRemoved()
+            }
+        }
 
-    override var targetPos: BlockPos? = null
-        protected set
-
-    override var targetDimensionId: Int = -1
-        protected set
+    final override var targetPos: BlockPos? = null
+        private set
+    final override var targetDimensionId: Int = -1
+        private set
 
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val exportItems: IItemHandlerModifiable = EmptyItemStackHandler
@@ -48,17 +67,14 @@ abstract class ProxyMetaTileEntityBase(
         // no-op, this block is a proxy
     }
 
-    override fun isAttachedToMultiblock(): Boolean {
-        return target != null
-    }
-
     final override fun addToMultiblock(controller: MultiblockControllerBase) {
-        if (!canLink(controller)) return
+        this.isAttachedToMultiblock = true
         this.target = controller
         this.onLink(controller)
     }
 
     final override fun removeFromMultiblock(controller: MultiblockControllerBase) {
+        this.isAttachedToMultiblock = false
         this.target = null
         this.onUnlink()
     }
@@ -73,17 +89,17 @@ abstract class ProxyMetaTileEntityBase(
         return true
     }
 
-    @MustBeInvokedByOverriders
-    open fun onLink(target: MetaTileEntity) {
-        writeTargetData(target)
-    }
+    open fun onLink(target: MetaTileEntity) {}
+    open fun onUnlink() {}
 
+    /**
+     * called when a player attempts to establish a link using a synchronizer.
+     * not called when validating the multiblock structure.
+     */
     @MustBeInvokedByOverriders
-    open fun onUnlink() {
-        writeTargetRemoved()
+    open fun canLink(target: MetaTileEntity): Boolean {
+        return this.canPartShare() || !this.isAttachedToMultiblock
     }
-
-    open fun canLink(target: MetaTileEntity): Boolean = true
 
     override fun canPartShare() = false
 

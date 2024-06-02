@@ -106,7 +106,7 @@ class ClayBlastFurnaceMetaTileEntity(
         CUtils.getMetaTileEntity(world, pos)?.let { metaTileEntity ->
             if (metaTileEntity is IMultiblockPart
                 // already formed -> part is attached to this
-                && (structureFormed || (!metaTileEntity.isAttachedToMultiblock() || metaTileEntity.canPartShare()))) {
+                && (structureFormed || (!metaTileEntity.isAttachedToMultiblock || metaTileEntity.canPartShare()))) {
                 multiblockParts.add(metaTileEntity)
                 return Triple(true, metaTileEntity, metaTileEntity.tier)
             }

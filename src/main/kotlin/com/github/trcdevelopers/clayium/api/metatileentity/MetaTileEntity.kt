@@ -62,6 +62,7 @@ abstract class MetaTileEntity(
     var holder: MetaTileEntityHolder? = null
     val world: World? get() = holder?.world
     val pos: BlockPos? get() = holder?.pos
+    val isInvalid get() = holder?.isInvalid ?: true
 
     open val faceTexture: ResourceLocation? = null
     open val allFaceTextures get() = listOf(faceTexture)

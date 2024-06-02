@@ -933,8 +933,9 @@ item.clayium.itemInstantTeleporter.name=Instant Teleporter
 item.clayium.itemInstantTeleporter.tooltip.line1=Teleports you to the point of impact.
 
 item.clayium.synchronizer.name=Synchronizer
-item.clayium.synchronizer.position_saved=Position saved %s
-item.clayium.synchronizer.synchronized=Link established %s
+item.clayium.synchronizer.position_saved=Position saved %s.
+item.clayium.synchronizer.synchronized=Link established %s.
+item.clayium.synchronizer.synchronize_failed=Link cannot be established.
 item.clayium.synchronizer.tooltip1=Synchronizes Interfaces with machines or buffers.
 item.clayium.synchronizer.tooltip2=__DETAIL__
 item.clayium.synchronizer.tooltip3=It enables you to control machines with

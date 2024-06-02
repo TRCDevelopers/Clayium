@@ -53,7 +53,7 @@ class LaserProxyMetaTileEntity(
     }
 
     override fun canLink(target: MetaTileEntity): Boolean {
-        return target.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, this.frontFacing.opposite) != null
+        return super.canLink(target) && target.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, this.frontFacing.opposite) != null
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {

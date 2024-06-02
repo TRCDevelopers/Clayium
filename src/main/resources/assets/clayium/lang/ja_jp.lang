@@ -933,6 +933,9 @@ item.clayium.itemInstantTeleporter.name=テレポートシューター
 item.clayium.itemInstantTeleporter.tooltip.line1=着弾点にテレポートする
 
 item.clayium.synchronizer.name=シンクロナイザー
+item.clayium.synchronizer.position_saved=ブロックの位置を記録しました %s
+item.clayium.synchronizer.synchronized=%sとの接続を確立しました
+item.clayium.synchronizer.synchronize_failed=%sとの接続を確立できません
 item.clayium.synchronizer.tooltip1=インターフェースを装置に同期させる
 item.clayium.synchronizer.tooltip2=__DETAIL__
 item.clayium.synchronizer.tooltip3=赤石インターフェースを使用することで赤石制御が

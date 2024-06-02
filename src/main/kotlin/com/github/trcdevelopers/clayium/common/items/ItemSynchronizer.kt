@@ -32,8 +32,11 @@ class ItemSynchronizer : Item() {
             if (proxy != null) {
                 val targetPos = BlockPos.fromLong(stackTag.getLong("pos"))
                 val targetWorld = stackTag.getInteger("world")
-                proxy.synchronize(targetPos, targetWorld)
-                player.sendMessage(TextComponentTranslation("item.clayium.synchronizer.synchronized", createPosTooltip(targetPos, targetWorld)))
+                if (proxy.synchronize(targetPos, targetWorld)) {
+                    player.sendMessage(TextComponentTranslation("item.clayium.synchronizer.synchronized", createPosTooltip(targetPos, targetWorld)))
+                } else {
+                    player.sendMessage(TextComponentTranslation("item.clayium.synchronizer.synchronize_failed", createPosTooltip(targetPos, targetWorld)))
+                }
                 return EnumActionResult.SUCCESS
             }
         }

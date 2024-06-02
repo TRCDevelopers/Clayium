@@ -67,7 +67,7 @@ class RedstoneProxyMetaTileEntity(
     }
 
     override fun canLink(target: MetaTileEntity): Boolean {
-        return target.getCapability(ClayiumTileCapabilities.CONTROLLABLE, null) != null
+        return super.canLink(target) && target.getCapability(ClayiumTileCapabilities.CONTROLLABLE, null) != null
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
