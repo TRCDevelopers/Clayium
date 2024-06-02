@@ -138,7 +138,8 @@ abstract class AbstractRecipeLogic(
     }
 
     fun getNormalizedProgress(): Double {
-        return currentProgress.toDouble() / requiredProgress.toDouble()
+        if (currentProgress == 0L || requiredProgress == 0L) return 0.0
+        return (currentProgress.toDouble() - 1.0) / requiredProgress.toDouble()
     }
 
     override fun serializeNBT(): NBTTagCompound {
