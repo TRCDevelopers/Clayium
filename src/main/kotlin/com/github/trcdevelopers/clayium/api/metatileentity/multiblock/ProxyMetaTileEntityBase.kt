@@ -38,8 +38,13 @@ abstract class ProxyMetaTileEntityBase(
         get() {
             if (field?.isInvalid == true) {
                 field = null
+                return null
             }
-            return field
+            val targetPos = this.targetPos ?: return null
+            if (DimensionManager.getWorld(targetDimensionId)?.isBlockLoaded(targetPos) == true) {
+                return field
+            }
+            return null
         }
         protected set(value) {
             field = value
