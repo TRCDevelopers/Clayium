@@ -22,25 +22,28 @@ abstract class AutoIoHandler(
     protected open fun isImporting(side: EnumFacing): Boolean = metaTileEntity.getInput(side).allowAutoIo
     protected open fun isExporting(side: EnumFacing): Boolean = metaTileEntity.getOutput(side).allowAutoIo
 
-    protected fun importFromNeighbors(importItems: IItemHandler) {
+    protected open fun getImportItems(side: EnumFacing): IItemHandler? = metaTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)
+    protected open fun getExportItems(side: EnumFacing): IItemHandler? = metaTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)
+
+    protected fun importFromNeighbors() {
         var remainingImport = amountPerAction
         for (side in EnumFacing.entries) {
             if (remainingImport > 0 && isImporting(side)) {
                 remainingImport -= transferItemStack(
                     from = metaTileEntity.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
-                    to = importItems,
+                    to = getImportItems(side) ?: continue,
                     amount = remainingImport,
                 )
             }
         }
     }
 
-    protected fun exportToNeighbors(exportItems: IItemHandler) {
+    protected fun exportToNeighbors() {
         var remainingExport = amountPerAction
         for (side in EnumFacing.entries) {
             if (remainingExport > 0 && isExporting(side)) {
                 remainingExport -= transferItemStack(
-                    from = exportItems,
+                    from = getExportItems(side) ?: continue,
                     to = metaTileEntity.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
                     amount = remainingExport,
                 )
@@ -84,14 +87,13 @@ abstract class AutoIoHandler(
 
     open class Importer(
         metaTileEntity: MetaTileEntity,
-        private val target: IItemHandler = metaTileEntity.importItems,
         isBuffer: Boolean = false,
         traitName : String = ClayiumDataCodecs.AUTO_IO_HANDLER,
     ) : AutoIoHandler(metaTileEntity, isBuffer, traitName) {
         override fun update() {
             if (metaTileEntity.world?.isRemote == true) return
             if (ticked++ < intervalTick) return
-            importFromNeighbors(target)
+            importFromNeighbors()
             ticked = 0
         }
     }
@@ -99,35 +101,35 @@ abstract class AutoIoHandler(
     class EcImporter(
         metaTileEntity: MetaTileEntity,
         private val energizedClayItemHandler: IItemHandler = metaTileEntity.importItems,
-    ) : Importer(metaTileEntity, energizedClayItemHandler, false, traitName = "${ClayiumDataCodecs.AUTO_IO_HANDLER}.${ClayiumDataCodecs.ENERGY_HOLDER}") {
+    ) : Importer(metaTileEntity, false, traitName = "${ClayiumDataCodecs.AUTO_IO_HANDLER}.${ClayiumDataCodecs.ENERGY_HOLDER}") {
         override fun isImporting(side: EnumFacing): Boolean {
             return metaTileEntity.getInput(side) == MachineIoMode.CE
+        }
+
+        override fun getImportItems(side: EnumFacing): IItemHandler? {
+            return energizedClayItemHandler
         }
     }
 
     open class Exporter(
         metaTileEntity: MetaTileEntity,
-        private val target: IItemHandler = metaTileEntity.exportItems,
         isBuffer: Boolean = false,
         traitName: String = ClayiumDataCodecs.AUTO_IO_HANDLER,
     ) : AutoIoHandler(metaTileEntity, isBuffer, traitName) {
         override fun update() {
             if (metaTileEntity.world?.isRemote == true) return
             if (ticked++ < intervalTick) return
-            exportToNeighbors(target)
+            exportToNeighbors()
             ticked = 0
         }
     }
 
     class Combined(metaTileEntity: MetaTileEntity, isBuffer: Boolean = false) : AutoIoHandler(metaTileEntity, isBuffer) {
-        private val importItems = metaTileEntity.importItems
-        private val exportItems = metaTileEntity.exportItems
-
         override fun update() {
             if (metaTileEntity.world?.isRemote == true) return
             if (ticked++ < intervalTick) return
-            importFromNeighbors(importItems)
-            exportToNeighbors(exportItems)
+            importFromNeighbors()
+            exportToNeighbors()
             ticked = 0
         }
     }
