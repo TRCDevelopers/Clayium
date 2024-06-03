@@ -22,6 +22,8 @@ object ClayiumBlocks {
     private val blocks: MutableMap<String, Block> = mutableMapOf()
     val allBlocks: Map<String, Block> get() = ImmutableMap.copyOf(blocks)
 
+    val CREATIVE_ENERGY_SOURCE = createBlock("creative_energy_source", BlockSimpleTileEntityHolder(::TileEntityCreativeEnergySource))
+
     val CLAY_WORK_TABLE = createBlock("clay_work_table", BlockClayWorkTable())
 
     val COMPRESSED_CLAY = createBlock("compressed_clay", BlockCompressedClay())
