@@ -35,7 +35,7 @@ class ClayBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier,
-    validInputModes = INPUT_MODES, validOutputModes = OUTPUT_MODES, "machine.${CValues.MOD_ID}.clay_buffer") {
+    validInputModes = bufferValidInputModes, validOutputModes = validOutputModesLists[1], "machine.${CValues.MOD_ID}.clay_buffer") {
 
     override val hasFrontFacing: Boolean = false
 
@@ -121,10 +121,5 @@ class ClayBufferMetaTileEntity(
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
         UtilLocale.formatTooltips(tooltip, "machine.clayium.clay_buffer.tooltip")
-    }
-
-    companion object {
-        private val INPUT_MODES = listOf(MachineIoMode.NONE, MachineIoMode.ALL)
-        private val OUTPUT_MODES = listOf(MachineIoMode.NONE, MachineIoMode.ALL)
     }
 }

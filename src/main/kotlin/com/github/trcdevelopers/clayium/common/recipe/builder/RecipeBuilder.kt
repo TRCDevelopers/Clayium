@@ -83,7 +83,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
         return this as R
     }
 
-    fun buildAndRegister() {
+    open fun buildAndRegister() {
         recipeRegistry.addRecipe(
             Recipe(inputs, outputs, duration, cePerTick, tier)
         )

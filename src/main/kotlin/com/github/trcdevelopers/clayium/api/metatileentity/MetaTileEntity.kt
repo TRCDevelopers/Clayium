@@ -408,6 +408,7 @@ abstract class MetaTileEntity(
     companion object {
 
         val onlyNoneList = listOf(NONE)
+        val bufferValidInputModes = listOf(NONE, ALL)
 
         val validInputModesLists = listOf(
             listOf(NONE, CE),

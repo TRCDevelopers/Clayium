@@ -1,9 +1,18 @@
 package com.github.trcdevelopers.clayium.common.clayenergy
 
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
+import net.minecraft.client.resources.I18n
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 @JvmInline
 value class ClayEnergy(val energy: Long) {
+
+    // todo replace toString with this
+    @SideOnly(Side.CLIENT)
+    fun format(): String {
+        return I18n.format("tooltip.clayium.ce", UtilLocale.ClayEnergyNumeral(energy.toDouble()))
+    }
 
     override fun toString(): String {
         return UtilLocale.ClayEnergyNumeral(energy.toDouble())

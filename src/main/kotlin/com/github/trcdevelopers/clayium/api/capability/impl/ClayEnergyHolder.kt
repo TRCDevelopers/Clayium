@@ -12,7 +12,7 @@ import com.github.trcdevelopers.clayium.api.metatileentity.AutoIoHandler
 import com.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
-import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClay
+import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClayItem
 import net.minecraft.client.resources.I18n
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -23,7 +23,7 @@ class ClayEnergyHolder(
 
     override val energizedClayItemHandler = object : ClayiumItemStackHandler(metaTileEntity, 1) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
-            return stack.item is IEnergizedClay
+            return stack.item is IEnergizedClayItem
         }
 
         override fun getStackLimit(slot: Int, stack: ItemStack): Int {
@@ -78,7 +78,7 @@ class ClayEnergyHolder(
     private fun tryConsumeEnergizedClay() {
         val stack = this.energizedClayItemHandler.getStackInSlot(0)
         if (stack.isEmpty) return
-        val item = stack.item as? IEnergizedClay ?: return
+        val item = stack.item as? IEnergizedClayItem ?: return
         this.clayEnergy += item.getClayEnergy(stack)
         this.energizedClayItemHandler.extractItem(0, 1, false)
     }

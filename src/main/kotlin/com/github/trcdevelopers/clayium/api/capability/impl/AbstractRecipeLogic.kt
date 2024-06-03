@@ -65,9 +65,13 @@ abstract class AbstractRecipeLogic(
     protected open fun updateRecipeProgress() {
         if (drawEnergy(recipeCEt)) currentProgress++
         if (currentProgress > requiredProgress) {
-            currentProgress = 0
-            TransferUtils.insertToHandler(metaTileEntity.exportItems, itemOutputs)
+            completeRecipe()
         }
+    }
+
+    protected open fun completeRecipe() {
+        currentProgress = 0
+        TransferUtils.insertToHandler(metaTileEntity.exportItems, itemOutputs)
     }
 
     private fun shouldSearchNewRecipe(): Boolean {
