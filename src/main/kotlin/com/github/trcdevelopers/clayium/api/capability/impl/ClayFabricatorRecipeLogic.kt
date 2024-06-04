@@ -9,7 +9,7 @@ import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.recipe.builder.ClayFabricatorRecipeBuilder
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 
-abstract class ClayFabricatorRecipeLogic(
+open class ClayFabricatorRecipeLogic(
     metaTileEntity: MetaTileEntity,
     recipeRegistry: RecipeRegistry<ClayFabricatorRecipeBuilder>,
 ) : AbstractRecipeLogic(metaTileEntity, recipeRegistry) {
