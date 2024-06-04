@@ -76,6 +76,10 @@ object MetaTileEntities {
         }
     }
 
+    val SOLAR_CLAY_FABRICATOR = registerMetaTileEntities(74, (5..7)) {
+        SolarClayFabricatorMetaTileEntity(clayiumId("solar_clay_fabricator.${it.lowerName}"), it)
+    }
+
     val CLAY_INTERFACE = registerMetaTileEntities(123, (5..13)) {
         ClayInterfaceMetaTileEntity(clayiumId("clay_interface.${it.lowerName}"), it)
     }

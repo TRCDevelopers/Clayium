@@ -64,4 +64,8 @@ data class Recipe(
     fun copyOutputs(): List<ItemStack> {
         return outputs.map { it.copy() }
     }
+
+    override fun toString(): String {
+        return "Recipe(inputs=$inputs, outputs=$outputs, duration=$duration, cePerTick=$cePerTick, tierNumeric=$tierNumeric)"
+    }
 }

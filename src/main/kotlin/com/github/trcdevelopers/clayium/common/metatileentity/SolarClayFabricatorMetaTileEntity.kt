@@ -42,12 +42,12 @@ class SolarClayFabricatorMetaTileEntity(
 
     override val faceTexture: ResourceLocation = clayiumId("blocks/solar")
 
-    private val workable = SolarClayFabricatorRecipeLogic()
-
     override val importItems: IItemHandlerModifiable = NotifiableItemStackHandler(this, 1, this, false)
     override val exportItems: IItemHandlerModifiable = NotifiableItemStackHandler(this, 1, this, true)
     override val itemInventory: IItemHandler = ItemHandlerProxy(importItems, exportItems)
     override val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
+
+    private val workable = SolarClayFabricatorRecipeLogic()
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return SolarClayFabricatorMetaTileEntity(metaTileEntityId, tier)
