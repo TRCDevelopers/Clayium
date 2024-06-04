@@ -26,7 +26,9 @@ import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.Item
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
@@ -42,6 +44,7 @@ class SolarClayFabricatorMetaTileEntity(
 
     override val faceTexture: ResourceLocation = clayiumId("blocks/solar")
 
+
     override val importItems: IItemHandlerModifiable = NotifiableItemStackHandler(this, 1, this, false)
     override val exportItems: IItemHandlerModifiable = NotifiableItemStackHandler(this, 1, this, true)
     override val itemInventory: IItemHandler = ItemHandlerProxy(importItems, exportItems)
@@ -51,6 +54,14 @@ class SolarClayFabricatorMetaTileEntity(
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return SolarClayFabricatorMetaTileEntity(metaTileEntityId, tier)
+    }
+
+    override fun isFacingValid(facing: EnumFacing): Boolean {
+        return facing == EnumFacing.UP
+    }
+
+    override fun changeIoModesOnPlacement(placer: EntityLivingBase) {
+        this.frontFacing = EnumFacing.UP
     }
 
     @SideOnly(Side.CLIENT)

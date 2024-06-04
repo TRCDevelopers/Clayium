@@ -88,7 +88,9 @@ abstract class MetaTileEntity(
 
     open val hasFrontFacing = true
     var frontFacing = EnumFacing.NORTH
-        protected set
+        protected set(value) {
+            if (isFacingValid(value)) field = value
+        }
 
     private var timer = 0L
     private val timerOffset = (0..19).random()
