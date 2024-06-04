@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.recipe.registry
 
+import com.github.trcdevelopers.clayium.common.recipe.builder.ClayFabricatorRecipeBuilder
 import com.github.trcdevelopers.clayium.common.recipe.builder.RecipeBuilder
 import com.github.trcdevelopers.clayium.common.recipe.builder.SimpleRecipeBuilder
 
@@ -20,6 +21,7 @@ object CRecipes {
     val PIPE_DRAWING_MACHINE = addRegistry("pipe_drawing_machine", SimpleRecipeBuilder(), 1, 1)
     val WIRE_DRAWING_MACHINE = addRegistry("wire_drawing_machine", SimpleRecipeBuilder(), 1, 1)
     val SMELTER = addRegistry("smelter", SimpleRecipeBuilder(), 1, 1)
+    val SOLAR_CLAY_FABRICATOR = addRegistry("solar_clay_fabricator", ClayFabricatorRecipeBuilder(ClayFabricatorRecipeBuilder::solarClayFabricator), 1, 1)
     /**
      * todo: solar clay fabricator is maybe special
      * todo: electrolysis reactor can be dynamic ore-prefixed recipe

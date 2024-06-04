@@ -11,7 +11,9 @@ import com.github.trcdevelopers.clayium.common.blocks.ores.BlockDenseClayOre
 import com.google.common.collect.ImmutableMap
 import net.minecraft.block.Block
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.init.Blocks
 import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.relauncher.Side
@@ -47,6 +49,12 @@ object ClayiumBlocks {
     }
 
     fun registerBlocks(event: RegistryEvent.Register<Block>) { blocks.values.forEach(event.registry::register) }
+
+    fun getCompressedClayStack(tier: Int): ItemStack {
+        if (tier < 4) return ItemStack(COMPRESSED_CLAY, 1, tier)
+        if (tier < 13) return ItemStack(ENERGIZED_CLAY, 1, tier - 4)
+        return ItemStack(Blocks.CLAY, 1)
+    }
 
     @SideOnly(Side.CLIENT)
     fun registerItemBlockModels() { blocks.values.forEach(this::registerItemModel) }

@@ -7,5 +7,6 @@ object CRecipeLoader {
         ClayWorkTableRecipes.register()
         ClayReactorRecipeLoader.register()
         CondenserRecipeLoader.registerRecipes()
+        SolarClayFabricatorRecipeLoader.register()
     }
 }
