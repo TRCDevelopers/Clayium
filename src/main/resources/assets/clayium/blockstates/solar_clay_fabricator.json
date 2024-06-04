@@ -4,7 +4,7 @@
     "textures": {
       "face": "clayium:blocks/solar"
     },
-    "model": "clayium:machine"
+    "model": "clayium:solar"
   },
   "variants": {
     "tier": {
@@ -12,55 +12,55 @@
         "textures": {
           "base": "clayium:blocks/machinehull_tier5"
         },
-        "model": "clayium:overlay"
+        "model": "clayium:solar"
       },
       "precision": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier6"
         },
-        "model": "clayium:overlay"
+        "model": "clayium:solar"
       },
       "clay_steel": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier7"
         },
-        "model": "clayium:overlay"
+        "model": "clayium:solar"
       },
       "clayium": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier8"
         },
-        "model": "clayium:overlay"
+        "model": "clayium:solar"
       },
       "ultimate": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier9"
         },
-        "model": "clayium:overlay"
+        "model": "clayium:solar"
       },
       "antimatter": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier10"
         },
-        "model": "clayium:overlay"
+        "model": "clayium:solar"
       },
       "pure_antimatter": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier11"
         },
-        "model": "clayium:overlay"
+        "model": "clayium:solar"
       },
       "oec": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier12"
         },
-        "model": "clayium:overlay"
+        "model": "clayium:solar"
       },
       "opa": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier13"
         },
-        "model": "clayium:overlay"
+        "model": "clayium:solar"
       }
     }
   }
