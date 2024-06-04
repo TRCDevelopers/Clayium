@@ -23,7 +23,7 @@ class ClayFabricatorRecipeBuilder(
         val inputTier: Int = input[0].stacks
             .filter { it.item is ITieredItem }
             .map { (it.item as ITieredItem).getTier(it) }
-            .minOf { it.numeric }
+            .minOfOrNull { it.numeric } ?: 0
         val output = ClayiumBlocks.getCompressedClayStack(inputTier + 1)
 
         val recipe = Recipe(
@@ -33,6 +33,8 @@ class ClayFabricatorRecipeBuilder(
             cePerTick = ClayEnergy.ZERO,
             tierNumeric = tier
         )
+
+        recipeRegistry.addRecipe(recipe)
     }
 
     override fun copy(): ClayFabricatorRecipeBuilder {
