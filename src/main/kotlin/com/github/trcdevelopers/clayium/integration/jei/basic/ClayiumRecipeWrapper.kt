@@ -7,7 +7,7 @@ import mezz.jei.api.ingredients.VanillaTypes
 import mezz.jei.api.recipe.IRecipeWrapper
 import net.minecraft.client.Minecraft
 
-class ClayiumRecipeWrapper(
+open class ClayiumRecipeWrapper(
     val recipe: Recipe,
 ) : IRecipeWrapper {
     override fun getIngredients(ingredients: IIngredients) {
@@ -21,6 +21,5 @@ class ClayiumRecipeWrapper(
             "${recipe.cePerTick}CE/t x ${UtilLocale.craftTimeNumeral(recipe.duration.toLong())}t = ${(recipe.cePerTick * recipe.duration)}CE",
             6, 52, 0x404040
         )
-        super.drawInfo(minecraft, recipeWidth, recipeHeight, mouseX, mouseY)
     }
 }

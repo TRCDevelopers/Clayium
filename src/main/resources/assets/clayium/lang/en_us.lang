@@ -146,6 +146,8 @@ tier.clayium.opa=OPA
 
 tile.clayium.machine_hull=%s Machine Hull
 
+recipe.clayium.second=%1$s sec
+
 recipe.clayium.ClayWorkTable=Clay Work Table
 
 recipe.clayium.WireDrawingMachine=Clay Wire Drawing Machine

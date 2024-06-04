@@ -1,18 +1,18 @@
 package com.github.trcdevelopers.clayium.common.recipe.builder
 
 import com.github.trcdevelopers.clayium.api.item.ITieredItem
-import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
+import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClayItem
 import com.github.trcdevelopers.clayium.common.recipe.Recipe
-import net.minecraft.item.ItemStack
 
 /**
  * Builder for creating a recipe for the (solar) clay fabricator.
  *
- * Only input, tier are required to create a recipe. Output is clay block that has `input.tierNumeric + 1`.
+ * Only input, tier are required to create a recipe. Output is clay block that has `input.tierNumeric + 1`, or can be set manually.
+ * If input is not tiered, the output will be clay block with tier 0.
  * Duration is calculated by [requiredTicksCalculator], or can be set manually.
- * Calling [output] does not add the output to the recipe.
+ * [cePerTick] is automatically calculated.
  */
 class ClayFabricatorRecipeBuilder(
     private val requiredTicksCalculator: (machineTier: Int, inputTier: Int) -> (Long),
@@ -23,14 +23,17 @@ class ClayFabricatorRecipeBuilder(
         val inputTier: Int = input[0].stacks
             .filter { it.item is ITieredItem }
             .map { (it.item as ITieredItem).getTier(it) }
-            .minOfOrNull { it.numeric } ?: 0
-        val output = ClayiumBlocks.getCompressedClayStack(inputTier + 1)
+            .minOfOrNull { it.numeric } ?: -1
+        val outputStack = ClayiumBlocks.getCompressedClayStack(inputTier + 1)
+        val duration = if (duration == 0L) requiredTicksCalculator(this.tier, inputTier) else duration
+        val ceProduced = (outputStack.item as? IEnergizedClayItem)?.getClayEnergy(outputStack) ?: ClayEnergy.ZERO
+        val cePerTick = if (duration == 0L) ClayEnergy.ZERO else ClayEnergy(ceProduced.energy / duration)
 
         val recipe = Recipe(
             inputs = input,
-            outputs = listOf(output),
-            duration = if (duration <= 0) requiredTicksCalculator(this.tier, inputTier) else duration,
-            cePerTick = ClayEnergy.ZERO,
+            outputs = listOf(outputStack),
+            duration = duration,
+            cePerTick = cePerTick,
             tierNumeric = tier
         )
 
