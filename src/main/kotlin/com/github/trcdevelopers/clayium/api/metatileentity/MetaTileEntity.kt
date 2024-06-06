@@ -22,6 +22,7 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.*
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.*
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
+import net.minecraft.block.state.IBlockState
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
@@ -295,6 +296,34 @@ abstract class MetaTileEntity(
     override fun getInput(side: EnumFacing) = _inputModes[side.index]
     override fun getOutput(side: EnumFacing) = _outputModes[side.index]
 
+    /**
+     * If [mode] is not in [validInputModes], it will not be set.
+     */
+    fun setInput(side: EnumFacing, mode: MachineIoMode) {
+        if (mode !in this.validInputModes) return
+        _inputModes[side.index] = mode
+        this.refreshConnection(side)
+        (this.getNeighbor(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
+        writeCustomData(UPDATE_INPUT_MODE) {
+            writeByte(side.index)
+            writeByte(_inputModes[side.index].id)
+        }
+    }
+
+    /**
+     * If [mode] is not in [validOutputModes], it will not be set.
+     */
+    fun setOutput(side: EnumFacing, mode: MachineIoMode) {
+        if (mode !in this.validOutputModes) return
+        _outputModes[side.index] = mode
+        this.refreshConnection(side)
+        (this.getNeighbor(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
+        writeCustomData(UPDATE_OUTPUT_MODE) {
+            writeByte(side.index)
+            writeByte(_outputModes[side.index].id)
+        }
+    }
+
     protected fun toggleInput(side: EnumFacing) {
         val current = _inputModes[side.index]
         _inputModes[side.index] = validInputModes[(validInputModes.indexOf(current) + 1) % validInputModes.size]
@@ -389,6 +418,20 @@ abstract class MetaTileEntity(
 
     fun getNeighbor(side: EnumFacing) = holder?.getNeighbor(side)
     fun scheduleRenderUpdate() = holder?.scheduleRenderUpdate()
+
+    /**
+     * @return null if the neighbor is not loaded.
+     */
+    fun getNeighborBlockState(side: EnumFacing): IBlockState? {
+        val world = this.world ?: return null
+        val pos = this.pos?.offset(side) ?: return null
+
+        return if (world.isBlockLoaded(pos)) {
+            world.getBlockState(pos)
+        } else {
+            null
+        }
+    }
 
     @SideOnly(Side.CLIENT)
     @MustBeInvokedByOverriders

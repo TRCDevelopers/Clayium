@@ -13,7 +13,6 @@ import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.LaserProxy
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ClayTiers
 import com.github.trcdevelopers.clayium.api.util.ITier
-import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.metatileentity.multiblock.RedstoneProxyMetaTileEntity
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraftforge.fml.relauncher.Side
@@ -79,6 +78,11 @@ object MetaTileEntities {
     val SOLAR_CLAY_FABRICATOR = registerMetaTileEntities(74, (5..7)) {
         SolarClayFabricatorMetaTileEntity(clayiumId("solar_clay_fabricator.${it.lowerName}"), it)
     }
+
+    val COBBLESTONE_GENERATOR = registerMetaTileEntities(77, (1..7)) {
+        CobblestoneGeneratorMetaTileEntity(clayiumId("cobblestone_generator.${it.lowerName}"), it)
+    }
+
 
     val CLAY_INTERFACE = registerMetaTileEntities(123, (5..13)) {
         ClayInterfaceMetaTileEntity(clayiumId("clay_interface.${it.lowerName}"), it)
