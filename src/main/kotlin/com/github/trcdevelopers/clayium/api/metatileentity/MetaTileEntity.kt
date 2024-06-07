@@ -14,6 +14,7 @@ import com.github.trcdevelopers.clayium.api.capability.impl.RangedItemHandlerPro
 import com.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trcdevelopers.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils
+import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.IPipeConnectable
@@ -23,6 +24,7 @@ import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.*
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
@@ -39,6 +41,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -104,6 +107,10 @@ abstract class MetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     abstract fun registerItemModel(item: Item, meta: Int)
+    @SideOnly(Side.CLIENT)
+    fun registerItemModelDefault(item: Item, meta: Int, name: String) {
+        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId(name), "tier=${tier.lowerName}"))
+    }
 
     fun addMetaTileEntityTrait(trait: MTETrait) {
         mteTraits[trait.name] = trait
