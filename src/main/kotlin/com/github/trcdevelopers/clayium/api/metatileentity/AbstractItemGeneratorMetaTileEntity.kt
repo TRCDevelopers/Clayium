@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trcdevelopers.clayium.api.capability.impl.EmptyItemStackHandler
+import com.github.trcdevelopers.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.util.TransferUtils
@@ -18,7 +19,6 @@ import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.items.ItemStackHandler
 import kotlin.math.min
 
 /**
@@ -49,12 +49,13 @@ abstract class AbstractItemGeneratorMetaTileEntity(
         else -> 1
     }
 
-    override val itemInventory = ItemStackHandler(inventoryRowSize * inventoryColumnSize)
+    override val itemInventory = NotifiableItemStackHandler(this, inventoryRowSize * inventoryColumnSize, this, isExport = true)
     override val importItems = EmptyItemStackHandler
     override val exportItems = itemInventory
     override val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this, isBuffer = true)
 
-    private var canWork = false
+    private var isTerrainValid = false
+    private var outputFull = false
     private var progress = 0
     abstract val progressPerItem: Int
     abstract val progressPerTick: Int
@@ -70,16 +71,17 @@ abstract class AbstractItemGeneratorMetaTileEntity(
 
     override fun changeIoModesOnPlacement(placer: EntityLivingBase) {
         super.changeIoModesOnPlacement(placer)
-        setOutput(this.frontFacing.opposite, MachineIoMode.ALL)
+        setOutput(this.frontFacing, MachineIoMode.ALL)
     }
 
     override fun update() {
         super.update()
         if (world?.isRemote == true) return
-        if (offsetTimer % 20 == 0L) canWork = canWork()
-        if (!canWork) return
+        if (offsetTimer % 20 == 0L) isTerrainValid = isTerrainValid()
+        if (hasNotifiedOutputs) outputFull = false
+        if (!isTerrainValid || outputFull) return // don't progress if terrain is invalid or output is full.
 
-        progress += progressPerTick
+        if (canProgress()) progress += progressPerTick
         if (progress >= progressPerItem) {
             var generatingItemAmount = progress / progressPerItem
             val items = mutableListOf<ItemStack>()
@@ -88,12 +90,27 @@ abstract class AbstractItemGeneratorMetaTileEntity(
                 items.add(generatingItem.copy().apply { count = amount })
                 generatingItemAmount -= 64
             }
-            TransferUtils.insertToHandler(itemInventory, items)
+            if (TransferUtils.insertToHandler(itemInventory, items, simulate = true)) {
+                TransferUtils.insertToHandler(itemInventory, items, simulate = false)
+            } else {
+                outputFull = true
+            }
             progress %= progressPerItem
         }
     }
 
-    abstract fun canWork(): Boolean
+    /**
+     * not called every tick.
+     */
+    abstract fun isTerrainValid(): Boolean
+
+    /**
+     * called every tick.
+     * energy draining, etc.
+     *
+     * @return whether the machine can progress.
+     */
+    open fun canProgress(): Boolean = true
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.registerSlotGroup("machine_inventory", inventoryRowSize)

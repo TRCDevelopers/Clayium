@@ -44,7 +44,7 @@ class CobblestoneGeneratorMetaTileEntity(
         return CobblestoneGeneratorMetaTileEntity(this.metaTileEntityId, this.tier)
     }
 
-    override fun canWork(): Boolean {
+    override fun isTerrainValid(): Boolean {
         var hasWaterNeighbor = false
         var hasLavaNeighbor = false
         for (side in EnumFacing.entries) {

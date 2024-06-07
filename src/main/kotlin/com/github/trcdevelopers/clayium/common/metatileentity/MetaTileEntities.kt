@@ -83,6 +83,10 @@ object MetaTileEntities {
         CobblestoneGeneratorMetaTileEntity(clayiumId("cobblestone_generator.${it.lowerName}"), it)
     }
 
+    val SALT_EXTRACTOR = registerMetaTileEntities(84, (4..7)) {
+        SaltExtractorMetaTileEntity(clayiumId("salt_extractor.${it.lowerName}"), it)
+    }
+
 
     val CLAY_INTERFACE = registerMetaTileEntities(123, (5..13)) {
         ClayInterfaceMetaTileEntity(clayiumId("clay_interface.${it.lowerName}"), it)
