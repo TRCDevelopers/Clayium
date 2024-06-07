@@ -36,5 +36,12 @@ data class ClayLaser(
             val E_i = Math.pow(m_i, ai) * ((1 + r * n_i * Math.pow(C_i, nd)) / (1 + r * Math.pow(C_i, nd)))
             return max(1.0, E_i)
         }
+
+        fun fromInt(color: Int, direction: EnumFacing): ClayLaser {
+            val red = color shr 16 and 0xFF
+            val green = color shr 8 and 0xFF
+            val blue = color and 0xFF
+            return ClayLaser(direction, red, green, blue)
+        }
     }
 }

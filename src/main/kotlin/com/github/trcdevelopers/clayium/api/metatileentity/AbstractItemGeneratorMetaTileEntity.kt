@@ -118,16 +118,14 @@ abstract class AbstractItemGeneratorMetaTileEntity(
         val matrixStr = (0..<inventoryRowSize).map { columnStr }
 
         return ModularPanel("simple_item_generator")
-            .flex {
-                it.size(176,  18 + inventoryRowSize * 18 + 94 + 2)
-                it.align(Alignment.Center)
-            }
-            .child(
-                TextWidget(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)))
-                    .margin(6)
-                    .align(Alignment.TopLeft))
+            .size(176,  18 + inventoryRowSize * 18 + 94 + 2)
+            .align(Alignment.Center)
             .child(Column()
-                .marginTop(18)
+                .widthRel(1f).height(18 + inventoryRowSize * 18 + 10)
+                .child(
+                    TextWidget(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)))
+                        .margin(6)
+                        .align(Alignment.TopLeft))
                 .child(SlotGroupWidget.builder()
                     .matrix(*matrixStr.toTypedArray())
                     .key('I') { index ->
@@ -135,13 +133,10 @@ abstract class AbstractItemGeneratorMetaTileEntity(
                             SyncHandlers.itemSlot(itemInventory, index)
                                 .slotGroup("machine_inventory")
                         )
-                    }
-                    .build())
-                .child(
-                    TextWidget(IKey.lang("container.inventory"))
-                        .paddingTop(1)
-                        .paddingBottom(1)
-                        .left(6)))
+                    }.build()
+                    .marginTop(18))
+                .child(playerInventoryTitle()
+                    .align(Alignment.BottomLeft).left(8)))
             .bindPlayerInventory()
     }
 }

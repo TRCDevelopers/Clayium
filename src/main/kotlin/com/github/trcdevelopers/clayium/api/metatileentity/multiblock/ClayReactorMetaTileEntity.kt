@@ -107,33 +107,15 @@ class ClayReactorMetaTileEntity(
         return ClayReactorMetaTileEntity(metaTileEntityId, tier)
     }
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        syncManager.syncValue("mbTier", 3, SyncHandlers.intNumber({ recipeLogicTier }, { recipeLogicTier = it }))
-        syncManager.syncValue("laser", 4, SyncHandlers.intNumber(
-            {
-                val laser = this.laser ?: return@intNumber 0
-                return@intNumber (laser.laserRed shl 16) or (laser.laserGreen shl 8) or laser.laserBlue
-            },
-            {
-                if (it == 0) {
-                    this.laser = null
-                    return@intNumber
-                }
-                val laserRed = (it shr 16) and 0xFF
-                val laserGreen = (it shr 8) and 0xFF
-                val laserBlue = it and 0xFF
-                this.laser = ClayLaser(EnumFacing.NORTH, laserRed, laserGreen, laserBlue)
-            }
+    override fun createBaseUi(syncManager: GuiSyncManager): Column {
+        syncManager.syncValue("clayLaser", SyncHandlers.intNumber(
+            { laser?.toInt() ?: -1 },
+            { this.laser = if (it == -1) null else ClayLaser.fromInt(it, EnumFacing.UP) }
         ))
-        val panel = super.buildUI(data, syncManager)
-        panel.child(
-            Column().sizeRel(0.6f, 0.1f).topRel(0.4f).right(6)
-                .child(IKey.dynamic { I18n.format("tooltip.clayium.tier", recipeLogicTier) }.asWidget()
-                    .align(Alignment.BottomLeft))
-                .child(IKey.dynamic { I18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.laserEnergy?.toLong() ?: 0L)) }.asWidget()
-                    .align(Alignment.BottomRight))
-        )
-        return panel
+        return super.createBaseUi(syncManager)
+            .child(IKey.dynamic { I18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.laserEnergy?.toLong() ?: 0L)) }.asWidget()
+                .align(Alignment.BottomRight))
+
     }
 
     override fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?) {

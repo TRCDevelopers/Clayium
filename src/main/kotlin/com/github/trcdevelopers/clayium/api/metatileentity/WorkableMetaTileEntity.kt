@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trcdevelopers.clayium.api.CTranslation
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
@@ -71,7 +72,7 @@ abstract class WorkableMetaTileEntity(
         val panel = ModularPanel.defaultPanel(this.metaTileEntityId.toString())
 
         // title
-        panel.child(IKey.lang("machine.clayium.${recipeRegistry.category.categoryName}", IKey.lang("${CTranslation.MACHINE_TIER}$tier")).asWidget()
+        panel.child(IKey.lang("machine.clayium.${recipeRegistry.category.categoryName}", IKey.lang("${CTranslation.MACHINE_TIER}${tier.lowerName}")).asWidget()
             .top(6)
             .left(6))
 
@@ -139,15 +140,22 @@ abstract class WorkableMetaTileEntity(
                     .align(Alignment.CenterRight)
             )
         }
-        panel.child(slotsAndProgressBar)
-            .child(clayEnergyHolder.createSlotWidget()
-                .right(7).top(58)
-                .setEnabledIf { GuiScreen.isShiftKeyDown() }
-                .background(IDrawable.EMPTY))
-            .child(clayEnergyHolder.createCeTextWidget(syncManager)
-                .widthRel(0.5f)
-                .pos(6, 60))
+        panel.child(createBaseUi(syncManager)
+                .child(slotsAndProgressBar)
+                .child(clayEnergyHolder.createSlotWidget()
+                    .right(7).top(58)
+                    .setEnabledIf { GuiScreen.isShiftKeyDown() }
+                    .background(IDrawable.EMPTY))
+                .child(clayEnergyHolder.createCeTextWidget(syncManager)
+                    .widthRel(0.5f)
+                    .pos(6, 60))
+                .child(playerInventoryTitle()
+                    .align(Alignment.BottomLeft).left(8)))
 
         return panel.bindPlayerInventory()
+    }
+
+    protected open fun createBaseUi(syncManager: GuiSyncManager): Column {
+        return Column().widthRel(1f).height(166 - 86)
     }
 }

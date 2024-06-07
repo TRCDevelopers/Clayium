@@ -102,6 +102,7 @@ class SolarClayFabricatorMetaTileEntity(
         panel.child(workable.createCeTextWidget(syncManager)
             .widthRel(0.3f)
             .pos(6, 60))
+            .child(playerInventoryTitle())
 
         return panel.bindPlayerInventory()
     }

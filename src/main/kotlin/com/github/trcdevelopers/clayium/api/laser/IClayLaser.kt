@@ -11,4 +11,8 @@ interface IClayLaser {
 
     val laserEnergy: Double
     val laserAge: Int
+
+    fun toInt(): Int {
+        return (laserRed shl 16) or (laserGreen shl 8) or laserBlue
+    }
 }

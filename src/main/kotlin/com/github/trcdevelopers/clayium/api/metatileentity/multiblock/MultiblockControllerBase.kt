@@ -1,5 +1,13 @@
 package com.github.trcdevelopers.clayium.api.metatileentity.multiblock
 
+import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.factory.PosGuiData
+import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.screen.ModularScreen
+import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_STRUCTURE_VALIDITY
 import com.github.trcdevelopers.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trcdevelopers.clayium.api.metatileentity.WorkableMetaTileEntity
@@ -7,6 +15,7 @@ import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.api.util.RelativeDirection
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
+import net.minecraft.client.resources.I18n
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
@@ -116,5 +125,12 @@ abstract class MultiblockControllerBase(
             }
         }
         super.receiveCustomData(discriminator, buf)
+    }
+
+    override fun createBaseUi(syncManager: GuiSyncManager): Column {
+        syncManager.syncValue("multiblock_tier", SyncHandlers.intNumber({ recipeLogicTier }, { recipeLogicTier = it }))
+        return super.createBaseUi(syncManager)
+            .child(IKey.dynamic { I18n.format("tooltip.clayium.tier", recipeLogicTier) }.asWidget()
+                    .align(Alignment.BottomCenter))
     }
 }

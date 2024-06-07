@@ -1,7 +1,9 @@
 package com.github.trcdevelopers.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.api.IGuiHolder
+import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
+import com.cleanroommc.modularui.utils.Alignment
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.block.BlockMachine.Companion.IS_PIPE
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
@@ -484,5 +486,8 @@ abstract class MetaTileEntity(
                 }
             }
         }
+
+        fun playerInventoryTitle() = IKey.lang("container.inventory").asWidget()
+            .debugName("player inventory title")
     }
 }
