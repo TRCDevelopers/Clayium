@@ -40,7 +40,7 @@ class SolarClayFabricatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier,
-    validInputModes, validOutputModesLists[1], "machine.${CValues.MOD_ID}.solar_clay_fabricator") {
+    validInputModes, validOutputModesLists[1], "machine.${CValues.MOD_ID}.solar_clay_fabricator.${tier.lowerName}") {
 
     override val faceTexture: ResourceLocation = clayiumId("blocks/solar")
 
