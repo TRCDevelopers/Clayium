@@ -2,6 +2,7 @@ package com.github.trcdevelopers.clayium.client.model
 
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.ClayiumApi
+import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.ClayTiers
 import com.github.trcdevelopers.clayium.api.util.ITier
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -48,6 +49,7 @@ object ModelTextures {
 
     fun initialize(getter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>) {
         if (isInitialized) return
+        ClayiumApi.MTE_REGISTRY.forEach { it.bakeQuads(getter, faceBakery) }
         MISSING = getter.apply(ModelLoader.MODEL_MISSING)
 
 //        this.HULL_TEXTURES = (0..13).map { i ->

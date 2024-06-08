@@ -1,0 +1,41 @@
+{
+  "parent": "block/block",
+  "textures":{
+    "base": "clayium:blocks/az91dhull",
+    "face": "clayium:blocks/storage_container",
+    "side": "clayium:blocks/storage_container_side",
+    "top": "clayium:blocks/storage_container_top"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "down": {"texture": "#base", "uv": [0, 0, 16, 16]},
+        "up": {"texture": "#base", "uv": [0, 0, 16, 16]},
+        "north": {"texture": "#base", "uv": [0, 0, 16, 16]},
+        "south": {"texture": "#base", "uv": [0, 0, 16, 16]},
+        "west": {"texture": "#base", "uv": [0, 0, 16, 16]},
+        "east": {"texture": "#base", "uv": [0, 0, 16, 16]}
+      }
+    },
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": {"texture": "#side", "uv": [0, 0, 16, 16]},
+        "south": {"texture": "#side", "uv": [0, 0, 16, 16]},
+        "west": {"texture": "#side", "uv": [0, 0, 16, 16]},
+        "east": {"texture": "#side", "uv": [0, 0, 16, 16]}
+      }
+    },
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": {"texture": "#face", "uv": [0, 0, 16, 16]},
+        "up": {"texture": "#top", "uv": [0, 0, 16, 16]}
+      }
+    }
+  ]
+}

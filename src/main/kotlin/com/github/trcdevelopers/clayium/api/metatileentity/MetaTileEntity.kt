@@ -26,7 +26,10 @@ import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.*
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.renderer.block.model.BakedQuad
+import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
@@ -458,6 +461,21 @@ abstract class MetaTileEntity(
      * null for use TileEntity defaults.
      */
     open val renderBoundingBox: AxisAlignedBB? = null
+
+    @SideOnly(Side.CLIENT)
+    open fun bakeQuads(getter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {}
+
+    /**
+     * @return [emptyList] if default model should be used.
+     */
+    @SideOnly(Side.CLIENT)
+    open fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> = emptyList()
+
+    /**
+     * the overlay will be added to the default model. above the machine hull model, but below the IO mode models.
+     */
+    @SideOnly(Side.CLIENT)
+    open fun getOverlayQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> = emptyList()
 
     companion object {
 
