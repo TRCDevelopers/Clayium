@@ -26,7 +26,7 @@ import net.minecraftforge.items.IItemHandlerModifiable
 class ClayInterfaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "machine.${CValues.MOD_ID}.interface") {
+) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "machine.${CValues.MOD_ID}.proxy") {
 
     override val faceTexture = clayiumId("blocks/interface")
     override val useFaceForAllSides = true

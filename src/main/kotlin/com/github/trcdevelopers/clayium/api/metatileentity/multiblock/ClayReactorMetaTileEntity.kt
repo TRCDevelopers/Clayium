@@ -41,7 +41,7 @@ class ClayReactorMetaTileEntity(
 ): MultiblockControllerBase(
     metaTileEntityId, tier,
     validInputModesLists[2], validOutputModesLists[2],
-    "machine.${CValues.MOD_ID}.clay_blast_furnace",
+    "machine.${CValues.MOD_ID}.clay_reactor",
     CRecipes.CLAY_REACTOR
 ), IClayLaserAcceptor {
 

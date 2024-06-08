@@ -25,6 +25,7 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.*
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.*
+import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -451,6 +452,7 @@ abstract class MetaTileEntity(
     @MustBeInvokedByOverriders
     open fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         tooltip.add(I18n.format("tooltip.clayium.tier", tier.numeric))
+        UtilLocale.formatTooltips(tooltip, "$translationKey.tooltip")
     }
 
     open fun isInCreativeTab(tab: CreativeTabs): Boolean {

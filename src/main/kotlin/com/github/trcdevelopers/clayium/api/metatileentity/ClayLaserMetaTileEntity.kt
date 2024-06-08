@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.api.metatileentity
 
+import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
@@ -38,7 +39,7 @@ class ClayLaserMetaTileEntity(
 ) : MetaTileEntity(
     metaTileEntityId, tier,
     validInputModesLists[0], validOutputModesLists[0],
-    "machine.${CValues.MOD_ID}.clay_laser_tier$tier",
+    "machine.${CValues.MOD_ID}.clay_laser.${tier.lowerName}",
 ) {
 
     override val faceTexture = ResourceLocation(CValues.MOD_ID, "blocks/clay_laser")
@@ -105,6 +106,9 @@ class ClayLaserMetaTileEntity(
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("clay_laser_tier$tier", 176, 32 + 94)
+            .child(IKey.lang("machine.clayium.clay_laser.${tier.lowerName}", IKey.lang(tier.prefixTranslationKey)).asWidget()
+                .top(6)
+                .left(6))
             .bindPlayerInventory()
     }
 

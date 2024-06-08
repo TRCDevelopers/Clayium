@@ -13,6 +13,7 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trcdevelopers.clayium.api.CTranslation
+import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayEnergyHolder
@@ -22,12 +23,15 @@ import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
+import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
@@ -72,12 +76,12 @@ abstract class WorkableMetaTileEntity(
         val panel = ModularPanel.defaultPanel(this.metaTileEntityId.toString())
 
         // title
-        panel.child(IKey.lang("machine.clayium.${recipeRegistry.category.categoryName}", IKey.lang("${CTranslation.MACHINE_TIER}${tier.lowerName}")).asWidget()
+        panel.child(IKey.lang("machine.clayium.${recipeRegistry.category.categoryName}", IKey.lang(tier.prefixTranslationKey)).asWidget()
             .top(6)
             .left(6))
 
         val slotsAndProgressBar = Row()
-            .widthRel(0.7f).height(26)
+
             .align(Alignment.Center)
             .top(30)
             .child(workable.getProgressBar(syncManager))

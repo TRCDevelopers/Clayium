@@ -146,6 +146,8 @@ tier.clayium.opa=OPA
 tile.clayium.machine_hull=%sマシン筐体
 tile.clayium.machine_hull_tier4=基本マシン筐体
 
+recipe.clayium.second=%1$s秒
+
 recipe.clayium.ClayWorkTable=粘土作業台
 
 recipe.clayium.WireDrawingMachine=粘土ワイヤー圧延機
@@ -247,13 +249,7 @@ machine.clayium.cutting_machine=%s切断機
 
 machine.clayium.lathe=%s旋盤
 
-tile.clayium.blockClayCobblestoneGenerator.name=粘土丸石製造機
-tile.clayium.blockDenseClayCobblestoneGenerator.name=高密度粘土丸石製造機
-tile.clayium.blockSimpleCobblestoneGenerator.name=簡易丸石製造機
-tile.clayium.blockBasicCobblestoneGenerator.name=丸石製造機
-tile.clayium.blockAdvancedCobblestoneGenerator.name=発展丸石製造機
-tile.clayium.blockPrecisionCobblestoneGenerator.name=精密丸石製造機
-tile.clayium.blockClaySteelCobblestoneGenerator.name=粘土鋼丸石製造機
+machine.clayium.cobblestone_generator=%s丸石製造機
 
 machine.clayium.condenser=粘土コンデンサー
 
@@ -277,13 +273,8 @@ tile.clayium.blockAdvancedCentrifuge.name=発展遠心分離機
 tile.clayium.blockPrecisionCentrifuge.name=精密遠心分離機
 tooltip.clayium.Centrifuge.line1=全自動粘土工場を作ろう
 
-tile.clayium.blockBasicSmelter.name=精錬機
-tile.clayium.blockAdvancedSmelter.name=発展精錬機
-tile.clayium.blockPrecisionSmelter.name=精密精錬機
-tile.clayium.blockClaySteelSmelter.name=粘土鋼精錬機
-tile.clayium.blockClayiumSmelter.name=クレイウム精錬機
-tile.clayium.blockUltimateSmelter.name=究極精錬機
-tooltip.clayium.Smelter.line1=粘土エネルギーで動くかまど
+machine.clayium.smelter=%s精錬機
+machine.clayium.smelter.tooltip1=粘土エネルギーで動くかまど
 
 machine.clayium.clay_buffer=%sバッファー
 machine.clayium.clay_buffer.tooltip1=いわゆるアイテムパイプ
@@ -308,13 +299,10 @@ tile.clayium.blockBasicChemicalReactor.name=化学反応機
 tile.clayium.blockAdvancedChemicalReactor.name=発展化学反応機
 tile.clayium.blockClayiumChemicalReactor.name=クレイウム化学反応機
 
-tile.clayium.blockBasicSaltExtractor.name=塩析出装置
-tile.clayium.blockAdvancedSaltExtractor.name=発展塩析出装置
-tile.clayium.blockPrecisionSaltExtractor.name=精密塩析出装置
-tile.clayium.blockClaySteelSaltExtractor.name=粘土鋼塩析出装置
-tooltip.clayium.SaltExtractor.line1=水から塩分を抽出する
-tooltip.clayium.SaltExtractor.line2=__DETAIL__
-tooltip.clayium.SaltExtractor.line3=隣に水源を置き、粘土エネルギーを与えること。
+machine.clayium.salt_extractor=%s塩析出装置
+machine.clayium.salt_extractor.tooltip1=水から塩分を抽出する
+machine.clayium.salt_extractor.tooltip2=__DETAIL__
+machine.clayium.salt_extractor.tooltip3=隣に水源を置き、粘土エネルギーを与えること。
 
 tile.clayium.blockAutoClayCondenser.name=全自動粘土圧縮機 Mk I
 tile.clayium.blockAutoClayCondenser.tooltip.line1=全自動粘土工場の効率化に
@@ -363,42 +351,26 @@ tile.clayium.blockClayFabricatorMK3.tooltip.line1=あらゆる粘土を瞬時に
 tile.clayium.blockPrecisionAlloySmelter.name=合金精錬機
 
 tile.clayium.blockChemicalMetalSeparator.name=金属分離機
-tile.clayium.blockClayBlastFurnace.name=粘土高炉
-tile.clayium.blockClayBlastFurnace.tooltip.line1=__DETAIL__
-tile.clayium.blockClayBlastFurnace.tooltip.line2=[マルチブロック]
-tile.clayium.blockClayBlastFurnace.tooltip.line3=XXX XXX
-tile.clayium.blockClayBlastFurnace.tooltip.line4=XXX XXX
-tile.clayium.blockClayBlastFurnace.tooltip.line5=XFX XXX
-tile.clayium.blockClayBlastFurnace.tooltip.line6=F: 粘土高炉ブロック
-tile.clayium.blockClayBlastFurnace.tooltip.line7=X: マシン筐体か各種インターフェース
-tile.clayium.blockClayBlastFurnace.tooltip.line8=構成要素の Tier により参照されるレシピの Tier が決定される
+machine.clayium.clay_blast_furnace=粘土高炉
+machine.clayium.clay_blast_furnace.tooltip1=__DETAIL__
+machine.clayium.clay_blast_furnace.tooltip2=[マルチブロック]
+machine.clayium.clay_blast_furnace.tooltip3=XXX XXX
+machine.clayium.clay_blast_furnace.tooltip4=XXX XXX
+machine.clayium.clay_blast_furnace.tooltip5=XFX XXX
+machine.clayium.clay_blast_furnace.tooltip6=F: 粘土高炉ブロック
+machine.clayium.clay_blast_furnace.tooltip7=X: マシン筐体か各種インターフェース
+machine.clayium.clay_blast_furnace.tooltip8=構成要素の Tier により参照されるレシピの Tier が決定される
 
-tile.clayium.blockAdvancedClayInterface.name=インターフェース
-tile.clayium.blockPrecisionClayInterface.name=精密インターフェース
-tile.clayium.blockClaySteelClayInterface.name=粘土鋼インターフェース
-tile.clayium.blockClayiumClayInterface.name=クレイウムインターフェース
-tile.clayium.blockUltimateClayInterface.name=究極インターフェース
-tile.clayium.blockAntimatterClayInterface.name=反物質インターフェース
-tile.clayium.blockPureAntimatterClayInterface.name=純反物質インターフェース
-tile.clayium.blockOECClayInterface.name=OEC インターフェース
-tile.clayium.blockOPAClayInterface.name=OPA インターフェース
-tooltip.clayium.Interface.line1=マルチブロック装置の搬入出口に使用
-tooltip.clayium.Interface.line2=__DETAIL__
-tooltip.clayium.Interface.line3=アイテムのテレポートにはシンクロパーツが必要
+machine.clayium.proxy=%sインターフェース
+machine.clayium.proxy.tooltip1=マルチブロック装置の搬入出口に使用
+machine.clayium.proxy.tooltip2=__DETAIL__
+machine.clayium.proxy.tooltip3=アイテムのテレポートにはシンクロパーツが必要
 
-tile.clayium.blockAdvancedRedstoneInterface.name=赤石インターフェース
-tile.clayium.blockPrecisionRedstoneInterface.name=精密赤石インターフェース
-tile.clayium.blockClaySteelRedstoneInterface.name=粘土鋼赤石インターフェース
-tile.clayium.blockClayiumRedstoneInterface.name=クレイウム赤石インターフェース
-tile.clayium.blockUltimateRedstoneInterface.name=究極赤石インターフェース
-tile.clayium.blockAntimatterRedstoneInterface.name=反物質赤石インターフェース
-tile.clayium.blockPureAntimatterRedstoneInterface.name=純反物質赤石インターフェース
-tile.clayium.blockOECRedstoneInterface.name=OEC 赤石インターフェース
-tile.clayium.blockOPARedstoneInterface.name=OPA 赤石インターフェース
-tooltip.clayium.RedstoneInterface.line1=マルチブロック装置の赤石入出力に使用
-tooltip.clayium.RedstoneInterface.line2=__DETAIL__
-tooltip.clayium.RedstoneInterface.line3=マルチブロック装置でなくても、これと
-tooltip.clayium.RedstoneInterface.line4=シンクロナイザーを用いれば赤石入出力が利用可能
+machine.clayium.redstone_proxy=OPA 赤石インターフェース
+machine.clayium.redstone_proxy.tooltip1=マルチブロック装置の赤石入出力に使用
+machine.clayium.redstone_proxy.tooltip2=__DETAIL__
+machine.clayium.redstone_proxy.tooltip3=マルチブロック装置でなくても、これと
+machine.clayium.redstone_proxy.tooltip4=シンクロナイザーを用いれば赤石入出力が利用可能
 
 tile.clayium.blockPrecisionElectrolysisReactor.name=電気精錬機
 tile.clayium.blockClaySteelElectrolysisReactor.name=粘土鋼電気精錬機
@@ -410,29 +382,23 @@ tile.clayium.blockClayiumDistributor.name=クレイウム分配機
 tile.clayium.blockUltimateDistributor.name=究極分配機
 tooltip.clayium.Distributor.line1=内部のアイテムを出来るだけ均等に分配しようとする
 
-tile.clayium.blockClaySteelLaserClayInterface.name=レーザーインターフェース
-tile.clayium.blockClayiumLaserClayInterface.name=クレイウムレーザーインターフェース
-tile.clayium.blockUltimateLaserClayInterface.name=究極レーザーインターフェース
-tile.clayium.blockAntimatterLaserClayInterface.name=反物質レーザーインターフェース
-tile.clayium.blockPureAntimatterLaserClayInterface.name=純反物質レーザーインターフェース
-tile.clayium.blockOECLaserClayInterface.name=OEC レーザーインターフェース
-tile.clayium.blockOPALaserClayInterface.name=OPA レーザーインターフェース
-tooltip.clayium.LaserInterface.line1=粘土反応炉に使用
-tooltip.clayium.LaserInterface.line2=__DETAIL__
-tooltip.clayium.LaserInterface.line3=マルチブロック装置でなくても、
-tooltip.clayium.LaserInterface.line4=シンクロナイザーを用いて遠隔レーザー照射が可能
+machine.clayium.laser_proxy=OPA レーザーインターフェース
+machine.clayium.laser_proxy.tooltip1=粘土反応炉に使用
+machine.clayium.laser_proxy.tooltip2=__DETAIL__
+machine.clayium.laser_proxy.tooltip3=マルチブロック装置でなくても、
+machine.clayium.laser_proxy.tooltip4=シンクロナイザーを用いて遠隔レーザー照射が可能
 
-tile.clayium.blockClayReactor.name=粘土反応炉
-tile.clayium.blockClayReactor.tooltip.line1=__DETAIL__
-tile.clayium.blockClayReactor.tooltip.line2=[マルチブロック]
-tile.clayium.blockClayReactor.tooltip.line3=XXX XXX XXX
-tile.clayium.blockClayReactor.tooltip.line4=XXX XXX XLX
-tile.clayium.blockClayReactor.tooltip.line5=XXX XRX XXX
-tile.clayium.blockClayReactor.tooltip.line6=R: 粘土反応炉ブロック
-tile.clayium.blockClayReactor.tooltip.line7=L: レーザーインターフェース
-tile.clayium.blockClayReactor.tooltip.line8=X: マシン筐体か各種インターフェース
-tile.clayium.blockClayReactor.tooltip.line9=構成要素の Tier により参照されるレシピの Tier が決定される
-tile.clayium.blockClayReactor.tooltip.line10=レーザーのエネルギー値によりクラフト時間が短縮される
+machine.clayium.clay_reactor=粘土反応炉
+machine.clayium.clay_reactor.tooltip1=__DETAIL__
+machine.clayium.clay_reactor.tooltip2=[マルチブロック]
+machine.clayium.clay_reactor.tooltip3=XXX XXX XXX
+machine.clayium.clay_reactor.tooltip4=XXX XXX XLX
+machine.clayium.clay_reactor.tooltip5=XXX XRX XXX
+machine.clayium.clay_reactor.tooltip6=R: 粘土反応炉ブロック
+machine.clayium.clay_reactor.tooltip7=L: レーザーインターフェース
+machine.clayium.clay_reactor.tooltip8=X: マシン筐体か各種インターフェース
+machine.clayium.clay_reactor.tooltip9=構成要素の Tier により参照されるレシピの Tier が決定される
+machine.clayium.clay_reactor.tooltip10=レーザーのエネルギー値によりクラフト時間が短縮される
 
 machine.clayium.matter_transformer=%s物質変換装置
 machine.clayium.matter_transformer.tooltip1=莫大なエネルギーにより、全く別の物質に変化させる
@@ -556,11 +522,11 @@ gui.clayium.WaterWheel.progress=進捗: %1$d
 gui.clayium.WaterWheel.durability=耐久度: %1$d
 gui.clayium.WaterWheel.surroundingWater=水流: %1$d
 
-machine.clayium.clay_laser_tier7=青粘土レーザー
-machine.clayium.clay_laser_tier8=緑粘土レーザー
-machine.clayium.clay_laser_tier9=赤粘土レーザー
-machine.clayium.clay_laser_tier10=白粘土レーザー
-machine.clayium.clay_laser_tier10.tooltip1=3x青 + 3x緑 + 3x赤 と等しい
+machine.clayium.clay_laser.clay_steel=青粘土レーザー
+machine.clayium.clay_laser.clayium=緑粘土レーザー
+machine.clayium.clay_laser.ultimate=赤粘土レーザー
+machine.clayium.clay_laser.antimatter=白粘土レーザー
+machine.clayium.clay_laser.antimatter.tooltip1=3x青 + 3x緑 + 3x赤 と等しい
 machine.clayium.clay_laser.tooltip1=__DETAIL__
 machine.clayium.clay_laser.tooltip2=レーザーは粘土反応炉の稼動や、
 machine.clayium.clay_laser.tooltip3=範囲採掘機などの機械の加速に使用される
