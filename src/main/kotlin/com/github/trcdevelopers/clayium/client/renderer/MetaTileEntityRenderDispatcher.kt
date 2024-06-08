@@ -22,4 +22,8 @@ object MetaTileEntityRenderDispatcher : TileEntitySpecialRenderer<MetaTileEntity
             PipedMachineIoRenderer.renderPipeIoIcons(holder, x, y, z, this.rendererDispatcher.entity as? EntityPlayer ?: return, this::bindTexture)
         }
     }
+
+    override fun isGlobalRenderer(te: MetaTileEntityHolder): Boolean {
+        return te.metaTileEntity?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER, null) != null
+    }
 }

@@ -75,4 +75,8 @@ object ClayLaserReflectorRenderer : TileEntitySpecialRenderer<TileEntityClayLase
 
         ClayLaserRenderer.renderLaser(laserSource, x, y, z, this::bindTexture)
     }
+
+    override fun isGlobalRenderer(te: TileEntityClayLaserReflector): Boolean {
+        return true
+    }
 }
