@@ -9,10 +9,8 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.modularui.widgets.ItemSlot
-import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trcdevelopers.clayium.api.CValues
-import com.github.trcdevelopers.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayFabricatorRecipeLogic
 import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.capability.impl.NotifiableItemStackHandler
@@ -24,7 +22,6 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
-import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.Item

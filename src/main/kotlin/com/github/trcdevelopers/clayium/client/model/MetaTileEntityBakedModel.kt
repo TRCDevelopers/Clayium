@@ -4,7 +4,6 @@ import codechicken.lib.render.particle.IModelParticleProvider
 import codechicken.lib.texture.TextureUtils
 import com.github.trcdevelopers.clayium.api.block.BlockMachine.Companion.TILE_ENTITY
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
-import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.IMultiblockPart
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode

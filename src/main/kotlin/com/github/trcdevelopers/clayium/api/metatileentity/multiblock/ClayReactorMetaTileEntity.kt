@@ -1,16 +1,10 @@
 package com.github.trcdevelopers.clayium.api.metatileentity.multiblock
 
-import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.factory.PosGuiData
-import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widgets.ItemSlot
-import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
-import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.IClayLaserAcceptor
@@ -19,15 +13,12 @@ import com.github.trcdevelopers.clayium.api.capability.impl.MultiblockRecipeLogi
 import com.github.trcdevelopers.clayium.api.laser.ClayLaser
 import com.github.trcdevelopers.clayium.api.laser.IClayLaser
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
-import com.github.trcdevelopers.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.BlockMachineHull
-import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
-import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.resources.I18n
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation

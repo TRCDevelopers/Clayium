@@ -9,7 +9,6 @@ import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayLaserSource
 import com.github.trcdevelopers.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trcdevelopers.clayium.api.util.ITier
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigCore
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -26,7 +25,6 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
-import net.minecraftforge.items.ItemStackHandler
 import kotlin.math.max
 import kotlin.math.min
 

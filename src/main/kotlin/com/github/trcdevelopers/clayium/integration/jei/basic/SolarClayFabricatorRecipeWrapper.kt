@@ -1,10 +1,6 @@
 package com.github.trcdevelopers.clayium.integration.jei.basic
 
 import com.github.trcdevelopers.clayium.common.recipe.Recipe
-import com.github.trcdevelopers.clayium.common.util.UtilLocale
-import mezz.jei.api.ingredients.IIngredients
-import mezz.jei.api.ingredients.VanillaTypes
-import mezz.jei.api.recipe.IRecipeWrapper
 import net.minecraft.client.Minecraft
 import net.minecraft.client.resources.I18n
 

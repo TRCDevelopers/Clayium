@@ -1,6 +1,5 @@
 package com.github.trcdevelopers.clayium.client.model
 
-import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.util.ClayTiers
 import com.github.trcdevelopers.clayium.api.util.ITier

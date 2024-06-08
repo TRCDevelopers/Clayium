@@ -2,7 +2,6 @@ package com.github.trcdevelopers.clayium.api.capability.impl
 
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandler
-import net.minecraftforge.items.ItemStackHandler
 
 class ItemHandlerProxy(
     inputInventory: IItemHandler?,

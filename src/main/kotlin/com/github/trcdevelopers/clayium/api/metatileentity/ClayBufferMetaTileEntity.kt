@@ -10,7 +10,6 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
-import com.github.trcdevelopers.clayium.api.CTranslation
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId

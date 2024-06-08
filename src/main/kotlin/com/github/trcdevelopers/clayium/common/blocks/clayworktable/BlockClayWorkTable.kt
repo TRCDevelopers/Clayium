@@ -2,14 +2,11 @@ package com.github.trcdevelopers.clayium.common.blocks.clayworktable
 
 import com.github.trcdevelopers.clayium.api.block.ITieredBlock
 import com.github.trcdevelopers.clayium.api.util.ClayTiers
-import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.GuiHandler
 import net.minecraft.block.BlockContainer
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
-import net.minecraft.client.resources.I18n
-import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -20,8 +17,6 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 
 @Suppress("OVERRIDE_DEPRECATION")

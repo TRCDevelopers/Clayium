@@ -3,7 +3,6 @@ package com.github.trcdevelopers.clayium.api.block
 import codechicken.lib.block.property.unlisted.UnlistedTileEntityProperty
 import codechicken.lib.render.particle.CustomParticleHandler
 import com.github.trcdevelopers.clayium.api.ClayiumApi
-import com.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.Clayium
