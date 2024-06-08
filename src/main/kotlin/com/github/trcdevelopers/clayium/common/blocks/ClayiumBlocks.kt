@@ -1,25 +1,30 @@
 package com.github.trcdevelopers.clayium.common.blocks
 
+import com.github.trcdevelopers.clayium.api.CValues
+import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockEnergizedClay
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
 import com.github.trcdevelopers.clayium.common.blocks.clayworktable.BlockClayWorkTable
 import com.github.trcdevelopers.clayium.common.blocks.ores.BlockClayOre
 import com.github.trcdevelopers.clayium.common.blocks.ores.BlockDenseClayOre
 import com.google.common.collect.ImmutableMap
 import net.minecraft.block.Block
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.init.Blocks
 import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
 import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-/**
- * holds non-functional blocks and non-BlockMachine machines (e.g. ClayWorkTable, ClayBuffer)
- * for functional blocks, see [MachineBlocks]
- */
 object ClayiumBlocks {
+
+    private val blocks: MutableMap<String, Block> = mutableMapOf()
+    val allBlocks: Map<String, Block> get() = ImmutableMap.copyOf(blocks)
+
+    val CREATIVE_ENERGY_SOURCE = createBlock("creative_energy_source", BlockSimpleTileEntityHolder(::TileEntityCreativeEnergySource))
 
     val CLAY_WORK_TABLE = createBlock("clay_work_table", BlockClayWorkTable())
 
@@ -30,28 +35,29 @@ object ClayiumBlocks {
     val DENSE_CLAY_ORE = createBlock("dense_clay_ore", BlockDenseClayOre())
     val LARGE_DENSE_CLAY_ORE = createBlock("large_dense_clay_ore", BlockDenseClayOre())
 
-    private val blocks: MutableMap<String, Block> = HashMap()
-    val allBlocks: Map<String, Block> get() = ImmutableMap.copyOf(blocks)
+    val LASER_REFLECTOR = createBlock("laser_reflector", BlockClayLaserReflector())
+
+    val MACHINE_HULL = createBlock("machine_hull", BlockMachineHull())
 
     private fun <T: Block> createBlock(key: String, block: T): T {
         return block.apply {
             setCreativeTab(Clayium.creativeTab)
-            setRegistryName(Clayium.MOD_ID, key)
-            setTranslationKey("${Clayium.MOD_ID}.$key")
+            setRegistryName(clayiumId(key))
+            setTranslationKey("${CValues.MOD_ID}.$key")
+            blocks[key] = this
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    fun registerItemBlockModels() {
-        registerItemModel(CLAY_WORK_TABLE)
+    fun registerBlocks(event: RegistryEvent.Register<Block>) { blocks.values.forEach(event.registry::register) }
 
-        registerItemModel(COMPRESSED_CLAY)
-        registerItemModel(ENERGIZED_CLAY)
-
-        registerItemModel(CLAY_ORE)
-        registerItemModel(DENSE_CLAY_ORE)
-        registerItemModel(LARGE_DENSE_CLAY_ORE)
+    fun getCompressedClayStack(tier: Int): ItemStack {
+        if (tier < 4) return ItemStack(COMPRESSED_CLAY, 1, tier)
+        if (tier < 13) return ItemStack(ENERGIZED_CLAY, 1, tier - 4)
+        return ItemStack(Blocks.CLAY, 1)
     }
+
+    @SideOnly(Side.CLIENT)
+    fun registerItemBlockModels() { blocks.values.forEach(this::registerItemModel) }
 
     @SideOnly(Side.CLIENT)
     private fun registerItemModel(block: Block) {

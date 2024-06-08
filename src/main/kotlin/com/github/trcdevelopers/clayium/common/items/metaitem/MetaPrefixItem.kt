@@ -1,11 +1,11 @@
 package com.github.trcdevelopers.clayium.common.items.metaitem
 
+import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.items.metaitem.component.IItemColorHandler
 import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.material.MaterialProperty
-import com.github.trcdevelopers.clayium.common.util.CUtils
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.I18n
 import net.minecraft.item.ItemStack

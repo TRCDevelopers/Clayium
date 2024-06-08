@@ -1,10 +1,13 @@
 #PARSE_ESCAPES
-itemGroup.clayium.clayium=Clayium
+
+# __DETAIL__ for hide details while not sneaking
+
+itemGroup.clayium=Clayium
 itemGroup.clayium.clayiumcapsule=Clayium Fluid Capsules
 
 tooltip.clayium.HoldShiftForDetails=--§fHold §lShift§r For Details§7--
 
-gui.clayium.clayLaser=Laser \: %1$s
+gui.clayium.laser_energy=Laser \: %1$s
 gui.clayium.resonance=Resonance %1$s
 gui.clayium.overclockFactor=Overclock x%1$s
 
@@ -127,9 +130,26 @@ machine.clayium.tier11=Pure Antimatter
 machine.clayium.tier12=OEC
 machine.clayium.tier13=OPA
 
+tier.clayium.clay=Clay
+tier.clayium.dense_clay=Dense Clay
+tier.clayium.simple=Simple
+tier.clayium.basic=Basic
+tier.clayium.advanced=Advanced
+tier.clayium.precision=Precision
+tier.clayium.clay_steel=Clay Steel
+tier.clayium.clayium=Clayium
+tier.clayium.ultimate=Ultimate
+tier.clayium.antimatter=Antimatter
+tier.clayium.pure_antimatter=Pure Antimatter
+tier.clayium.oec=OEC
+tier.clayium.opa=OPA
+
+tile.clayium.machine_hull=%s Machine Hull
+
+recipe.clayium.second=%1$s sec
+
 recipe.clayium.ClayWorkTable=Clay Work Table
 
-recipe.clayium.BendingMachine=Clay Bending Machine
 recipe.clayium.WireDrawingMachine=Clay Wire Drawing Machine
 recipe.clayium.PipeDrawingMachine=Clay Pipe Drawing Machine
 recipe.clayium.CuttingMachine=Clay Cutting Machine
@@ -199,19 +219,6 @@ tile.clayium.compressed_clay_tier11.name=Septuple Compressed Energetic Clay
 tile.clayium.compressed_clay_tier12.name=Octuple Compressed Energetic Clay
 
 tile.clayium.blockRawClayMachineHull.0.name=Raw Clay Machine Hull
-tile.clayium.blockMachineHull.0.name=Clay Machine Hull
-tile.clayium.blockMachineHull.1.name=Dense Clay Machine Hull
-tile.clayium.blockMachineHull.2.name=Simple Machine Hull
-tile.clayium.blockMachineHull.3.name=Basic Machine Hull
-tile.clayium.blockMachineHull.4.name=Advanced Machine Hull
-tile.clayium.blockMachineHull.5.name=Precision Machine Hull
-tile.clayium.blockMachineHull.6.name=Clay Steel Machine Hull
-tile.clayium.blockMachineHull.7.name=Clayium Machine Hull
-tile.clayium.blockMachineHull.8.name=Ultimate Machine Hull
-tile.clayium.blockMachineHull.9.name=Antimatter Machine Hull
-tile.clayium.blockMachineHull.10.name=Pure Antimatter Machine Hull
-tile.clayium.blockMachineHull.11.name=OEC Machine Hull
-tile.clayium.blockMachineHull.12.name=OPA Machine Hull
 
 #tile.blockOthersHull.0.name=AZ91D Alloy Hull
 #tile.blockOthersHull.1.name=ZK60A Alloy Hull
@@ -225,69 +232,37 @@ tile.clayium.blockClayCraftingTable.tooltip.line1=A convenient version of vanill
 tile.clayium.blockClayCraftingTable.tooltip.line2=__DETAIL__
 tile.clayium.blockClayCraftingTable.tooltip.line3=You can access the content of a nearby chest while using it.
 
-tile.clayium.blockElementalMillingMachine.name=Elemental Milling Machine
-tile.clayium.blockElementalMillingMachine.tooltip.line1=To obtain the first circuit.
-tile.clayium.blockEnergeticClayCondenser.name=Energetic Clay Condenser Mk I
-tile.clayium.blockEnergeticClayCondenser.tooltip.line1=To obtain the first Energetic Clay.
-tile.clayium.blockEnergeticClayCondenserMK2.name=Energetic Clay Condenser Mk II
+machine.clayium.milling_machine=%s Milling Machine
+machine.clayium.milling_machine_tier1.tooltip1=To obtain the first circuit.
 
-tile.clayium.bending_machine=%s Bending Machine
-#tile.clayium.blockClayBendingMachine.tooltip.line1=The first machine.
+machine.clayium.energetic_clay_condenser=%s Energetic Clay Condenser
+machine.clayium.energetic_clay_condenser_tier3.tooltip1=To obtain the first Energetic Clay.
 
-tile.clayium.blockClayWireDrawingMachine.name=Clay Wire Drawing Machine
-tile.clayium.blockDenseClayWireDrawingMachine.name=Dense Clay Wire Drawing Machine
-tile.clayium.blockSimpleWireDrawingMachine.name=Simple Wire Drawing Machine
-tile.clayium.blockBasicWireDrawingMachine.name=Basic Wire Drawing Machine
+machine.clayium.bending_machine=%s Bending Machine
+machine.clayium.bending_machine_tier1.tooltip1=The first machine.
 
-tile.clayium.blockClayPipeDrawingMachine.name=Clay Pipe Drawing Machine
-tile.clayium.blockDenseClayPipeDrawingMachine.name=Dense Clay Pipe Drawing Machine
-tile.clayium.blockSimplePipeDrawingMachine.name=Simple Pipe Drawing Machine
-tile.clayium.blockBasicPipeDrawingMachine.name=Basic Pipe Drawing Machine
+machine.clayium.wire_drawing_machine=%s Wire Drawing Machine
 
-tile.clayium.blockClayCuttingMachine.name=Clay Cutting Machine
-tile.clayium.blockDenseClayCuttingMachine.name=Dense Clay Cutting Machine
-tile.clayium.blockSimpleCuttingMachine.name=Simple Cutting Machine
-tile.clayium.blockBasicCuttingMachine.name=Basic Cutting Machine
+machine.clayium.pipe_drawing_machine=%s Pipe Drawing Machine
 
-tile.clayium.blockClayLathe.name=Clay Lathe
-tile.clayium.blockDenseClayLathe.name=Dense Clay Lathe
-tile.clayium.blockSimpleLathe.name=Simple Lathe
-tile.clayium.blockBasicLathe.name=Basic Lathe
+machine.clayium.cutting_machine=%s Cutting Machine
 
-tile.clayium.blockClayCobblestoneGenerator.name=Clay Cobblestone Generator
-tile.clayium.blockDenseClayCobblestoneGenerator.name=Dense Clay Cobblestone Generator
-tile.clayium.blockSimpleCobblestoneGenerator.name=Simple Cobblestone Generator
-tile.clayium.blockBasicCobblestoneGenerator.name=Basic Cobblestone Generator
-tile.clayium.blockAdvancedCobblestoneGenerator.name=Advanced Cobblestone Generator
-tile.clayium.blockPrecisionCobblestoneGenerator.name=Precision Cobblestone Generator
-tile.clayium.blockClaySteelCobblestoneGenerator.name=Clay Steel Cobblestone Generator
+machine.clayium.lathe=%s Lathe
 
-tile.clayium.blockDenseClayCondenser.name=Dense Clay Condenser
-tile.clayium.blockSimpleCondenser.name=Simple Condenser
-tile.clayium.blockBasicCondenser.name=Basic Condenser
-tile.clayium.blockAdvancedCondenser.name=Advanced Condenser
-tile.clayium.blockAntimatterCondenser.name=Antimatter Condenser
+machine.clayium.cobblestone_generator=%s Cobblestone Generator
 
-tile.clayium.blockDenseClayGrinder.name=Dense Clay Grinder
-tile.clayium.blockDenseClayGrinder.tooltip.line1=Grinds Dense Clay Ores.
-tile.clayium.blockSimpleGrinder.name=Simple Grinder
-tile.clayium.blockBasicGrinder.name=Basic Grinder
-tile.clayium.blockAdvancedGrinder.name=Advanced Grinder
-tile.clayium.blockPrecisionGrinder.name=Precision Grinder
-tile.clayium.blockAntimatterGrinder.name=Antimatter Grinder
+machine.clayium.condenser=%s Condenser
 
-tile.clayium.blockDenseClayDecomposer.name=Dense Clay Decomposer
-tile.clayium.blockSimpleDecomposer.name=Simple Decomposer
-tile.clayium.blockBasicDecomposer.name=Basic Decomposer
+machine.clayium.grinder=%s Grinder
+machine.clayium.grinder_tier2.tooltip1=Grinds Dense Clay Ores.
+
+machine.clayium.decomposer=%s Decomposer
 
 tile.clayium.blockSimpleMillingMachine.name=Simple Milling Machine
 tile.clayium.blockBasicMillingMachine.name=Basic Milling Machine
 
-tile.clayium.blockSimpleAssembler.name=Simple Assembler
-tile.clayium.blockBasicAssembler.name=Basic Assembler
-tile.clayium.blockPrecisionAssembler.name=Precision Assembler
-tile.clayium.blockAntimatterAssembler.name=Antimatter Assembler
-tooltip.clayium.Assembler.line1=Say goodbye to complicated craft.
+machine.clayium.assembler=%s Assembler
+machine.clayium.assembler.tooltip1=Say goodbye to complicated craft.
 
 tile.clayium.blockSimpleInscriber.name=Simple Inscriber
 tile.clayium.blockBasicInscriber.name=Basic Inscriber
@@ -298,16 +273,11 @@ tile.clayium.blockAdvancedCentrifuge.name=Advanced Centrifuge
 tile.clayium.blockPrecisionCentrifuge.name=Precision Centrifuge
 tooltip.clayium.Centrifuge.line1=The most important component of the first clay factory.
 
-tile.clayium.blockBasicSmelter.name=Basic Smelter
-tile.clayium.blockAdvancedSmelter.name=Advanced Smelter
-tile.clayium.blockPrecisionSmelter.name=Precision Smelter
-tile.clayium.blockClaySteelSmelter.name=Clay Steel Smelter
-tile.clayium.blockClayiumSmelter.name=Clayium Smelter
-tile.clayium.blockUltimateSmelter.name=Ultimate Smelter
-tooltip.clayium.Smelter.line1=Furnace powered by CE.
+machine.clayium.smelter=Ultimate Smelter
+machine.clayium.smelter.tooltip1=Furnace powered by CE.
 
-tile.clayium.clay_buffer=%s Buffer
-tooltip.clayium.buffer.line1=Transfers items. Acts as an item pipe.
+machine.clayium.clay_buffer=%s Buffer
+machine.clayium.clay_buffer.tooltip1=Transfers items. Acts as an item pipe.
 
 tile.clayium.blockBasicMultitrackBuffer.name=Basic Multitrack  Buffer
 tile.clayium.blockAdvancedMultitrackBuffer.name=Advanced Multitrack Buffer
@@ -329,13 +299,10 @@ tile.clayium.blockBasicChemicalReactor.name=Basic Chemical Reactor
 tile.clayium.blockAdvancedChemicalReactor.name=Advanced Chemical Reactor
 tile.clayium.blockClayiumChemicalReactor.name=Clayium Chemical Reactor
 
-tile.clayium.blockBasicSaltExtractor.name=Basic Salt Extractor
-tile.clayium.blockAdvancedSaltExtractor.name=Advanced Salt Extractor
-tile.clayium.blockPrecisionSaltExtractor.name=Precision Salt Extractor
-tile.clayium.blockClaySteelSaltExtractor.name=Clay Steel Salt Extractor
-tooltip.clayium.SaltExtractor.line1=Extracts salt from water.
-tooltip.clayium.SaltExtractor.line2=__DETAIL__
-tooltip.clayium.SaltExtractor.line3=Requires CE and water source next to it.
+machine.clayium.salt_extractor=Basic Salt Extractor
+machine.clayium.salt_extractor.tooltip1=Extracts salt from water.
+machine.clayium.salt_extractor.tooltip2=__DETAIL__
+machine.clayium.salt_extractor.tooltip3=Requires CE and water source next to it.
 
 tile.clayium.blockAutoClayCondenser.name=Automatic Clay Condenser Mk I
 tile.clayium.blockAutoClayCondenser.tooltip.line1=Condenses clay automatically.
@@ -349,77 +316,61 @@ tile.clayium.blockQuartzCrucible.tooltip.line3=1. Drop Impure Silicon Ingots.
 tile.clayium.blockQuartzCrucible.tooltip.line4=2. Wait a few minutes.
 tile.clayium.blockQuartzCrucible.tooltip.line5=3. Drop a string.
 
-tile.clayium.blockSolarClayFabricatorMK1.name=Solar Clay Fabricator Mk I
-tile.clayium.blockSolarClayFabricatorMK1.tooltip.line1=Increases the number of compression of clay
-tile.clayium.blockSolarClayFabricatorMK1.tooltip.line2=by 1 with solar energy.
-tile.clayium.blockSolarClayFabricatorMK1.tooltip.line3=__DETAIL__
-tile.clayium.blockSolarClayFabricatorMK1.tooltip.line4=Can accept up to Advanced Industrious Clay.
-tile.clayium.blockSolarClayFabricatorMK2.name=Solar Clay Fabricator Mk II
-tile.clayium.blockSolarClayFabricatorMK2.tooltip.line1=Increases the number of compression of clay
-tile.clayium.blockSolarClayFabricatorMK2.tooltip.line2=by 1 with solar energy.
-tile.clayium.blockSolarClayFabricatorMK2.tooltip.line3=__DETAIL__
-tile.clayium.blockSolarClayFabricatorMK2.tooltip.line4=Can accept up to Compressed Energetic Clay.
-tile.clayium.blockLithiumSolarClayFabricator.name=Lithium-Solar Clay Fabricator
-tile.clayium.blockLithiumSolarClayFabricator.tooltip.line1=Increases the number of compression of clay
-tile.clayium.blockLithiumSolarClayFabricator.tooltip.line2=by 1 with solar energy.
-tile.clayium.blockLithiumSolarClayFabricator.tooltip.line3=__DETAIL__
-tile.clayium.blockLithiumSolarClayFabricator.tooltip.line4=Can accept up to Quadruple Compressed Energetic Clay.
-tile.clayium.blockLithiumSolarClayFabricator.tooltip.line5=You can use a lithium ingot instead of
-tile.clayium.blockLithiumSolarClayFabricator.tooltip.line6=a Triple Compressed Energetic Clay Block.
-tile.clayium.blockClayFabricatorMK1.name=Clay Fabricator Mk I
-tile.clayium.blockClayFabricatorMK1.tooltip.line1=Duplicates clay.
-tile.clayium.blockClayFabricatorMK1.tooltip.line2=__DETAIL__
-tile.clayium.blockClayFabricatorMK1.tooltip.line3=Can accept up to Sextuple Compressed Energetic Clay.
-tile.clayium.blockClayFabricatorMK1.tooltip.line4=The production speed rate depends on
-tile.clayium.blockClayFabricatorMK1.tooltip.line5=the clay block's tier and stack size.
-tile.clayium.blockClayFabricatorMK2.name=Clay Fabricator Mk II
-tile.clayium.blockClayFabricatorMK2.tooltip.line1=Duplicates clay.
-tile.clayium.blockClayFabricatorMK2.tooltip.line2=__DETAIL__
-tile.clayium.blockClayFabricatorMK2.tooltip.line3=Mk I is suitable for up to Sextuple Compressed Energetic Clay.
-tile.clayium.blockClayFabricatorMK2.tooltip.line4=The production speed rate depends on
-tile.clayium.blockClayFabricatorMK2.tooltip.line5=the clay block's tier and stack size.
-tile.clayium.blockClayFabricatorMK3.name=Clay Fabricator Mk III
-tile.clayium.blockClayFabricatorMK3.tooltip.line1=Duplicates clay instantly.
+machine.clayium.solar_clay_fabricator.advanced=Solar Clay Fabricator Mk I
+machine.clayium.solar_clay_fabricator.advanced.tooltip1=Increases the number of compression of clay
+machine.clayium.solar_clay_fabricator.advanced.tooltip2=by 1 with solar energy.
+machine.clayium.solar_clay_fabricator.advanced.tooltip3=__DETAIL__
+machine.clayium.solar_clay_fabricator.advanced.tooltip4=Can accept up to Advanced Industrious Clay.
+machine.clayium.solar_clay_fabricator.precision=Solar Clay Fabricator Mk II
+machine.clayium.solar_clay_fabricator.precision.tooltip1=Increases the number of compression of clay
+machine.clayium.solar_clay_fabricator.precision.tooltip2=by 1 with solar energy.
+machine.clayium.solar_clay_fabricator.precision.tooltip3=__DETAIL__
+machine.clayium.solar_clay_fabricator.precision.tooltip4=Can accept up to Compressed Energetic Clay.
+machine.clayium.solar_clay_fabricator.clay_steel=Lithium-Solar Clay Fabricator
+machine.clayium.solar_clay_fabricator.clay_steel.tooltip1=Increases the number of compression of clay
+machine.clayium.solar_clay_fabricator.clay_steel.tooltip2=by 1 with solar energy.
+machine.clayium.solar_clay_fabricator.clay_steel.tooltip3=__DETAIL__
+machine.clayium.solar_clay_fabricator.clay_steel.tooltip4=Can accept up to Quadruple Compressed Energetic Clay.
+machine.clayium.solar_clay_fabricator.clay_steel.tooltip5=You can use a lithium ingot instead of
+machine.clayium.solar_clay_fabricator.clay_steel.tooltip6=a Triple Compressed Energetic Clay Block.
+machine.clayium.blockClayFabricatorMK1.name=Clay Fabricator Mk I
+machine.clayium.blockClayFabricatorMK1.tooltip.line1=Duplicates clay.
+machine.clayium.blockClayFabricatorMK1.tooltip.line2=__DETAIL__
+machine.clayium.blockClayFabricatorMK1.tooltip.line3=Can accept up to Sextuple Compressed Energetic Clay.
+machine.clayium.blockClayFabricatorMK1.tooltip.line4=The production speed rate depends on
+machine.clayium.blockClayFabricatorMK1.tooltip.line5=the clay block's tier and stack size.
+machine.clayium.blockClayFabricatorMK2.name=Clay Fabricator Mk II
+machine.clayium.blockClayFabricatorMK2.tooltip.line1=Duplicates clay.
+machine.clayium.blockClayFabricatorMK2.tooltip.line2=__DETAIL__
+machine.clayium.blockClayFabricatorMK2.tooltip.line3=Mk I is suitable for up to Sextuple Compressed Energetic Clay.
+machine.clayium.blockClayFabricatorMK2.tooltip.line4=The production speed rate depends on
+machine.clayium.blockClayFabricatorMK2.tooltip.line5=the clay block's tier and stack size.
+machine.clayium.blockClayFabricatorMK3.name=Clay Fabricator Mk III
+machine.clayium.blockClayFabricatorMK3.tooltip.line1=Duplicates clay instantly.
 
 tile.clayium.blockPrecisionAlloySmelter.name=Alloy Smelter
 
 tile.clayium.blockChemicalMetalSeparator.name=Chemical Metal Separator
-tile.clayium.blockClayBlastFurnace.name=Clay Blast Furnace
-tile.clayium.blockClayBlastFurnace.tooltip.line1=__DETAIL__
-tile.clayium.blockClayBlastFurnace.tooltip.line2=[Multiblock]
-tile.clayium.blockClayBlastFurnace.tooltip.line3=XXX XXX
-tile.clayium.blockClayBlastFurnace.tooltip.line4=XXX XXX
-tile.clayium.blockClayBlastFurnace.tooltip.line5=XFX XXX
-tile.clayium.blockClayBlastFurnace.tooltip.line6=F\: Clay Blast Furnace Block
-tile.clayium.blockClayBlastFurnace.tooltip.line7=X\: Machine hulls or Interfaces
-tile.clayium.blockClayBlastFurnace.tooltip.line8=Recipe tier depends on components' tier.
+machine.clayium.clay_blast_furnace=Clay Blast Furnace
+machine.clayium.clay_blast_furnace.tooltip1=__DETAIL__
+machine.clayium.clay_blast_furnace.tooltip2=[Multiblock]
+machine.clayium.clay_blast_furnace.tooltip3=XXX XXX
+machine.clayium.clay_blast_furnace.tooltip4=XXX XXX
+machine.clayium.clay_blast_furnace.tooltip5=XFX XXX
+machine.clayium.clay_blast_furnace.tooltip6=F\: Clay Blast Furnace Block
+machine.clayium.clay_blast_furnace.tooltip7=X\: Machine hulls or Interfaces
+machine.clayium.clay_blast_furnace.tooltip8=Recipe tier depends on components' tier.
 
-tile.clayium.blockAdvancedClayInterface.name=Clay Interface
-tile.clayium.blockPrecisionClayInterface.name=Precision Interface
-tile.clayium.blockClaySteelClayInterface.name=Clay Steel Interface
-tile.clayium.blockClayiumClayInterface.name=Clayium Interface
-tile.clayium.blockUltimateClayInterface.name=Ultimate Interface
-tile.clayium.blockAntimatterClayInterface.name=Antimatter Interface
-tile.clayium.blockPureAntimatterClayInterface.name=Pure Antimatter Interface
-tile.clayium.blockOECClayInterface.name=OEC Interface
-tile.clayium.blockOPAClayInterface.name=OPA Interface
-tooltip.clayium.Interface.line1=Used for Multiblock I/O.
-tooltip.clayium.Interface.line2=__DETAIL__
-tooltip.clayium.Interface.line3=Requires Synchronous parts to teleport items.
+machine.clayium.proxy=%s Interface
+machine.clayium.proxy.tooltip1=Used for Multiblock I/O.
+machine.clayium.proxy.tooltip2=__DETAIL__
+machine.clayium.proxy.tooltip3=Requires Synchronous parts to teleport items.
 
-tile.clayium.blockAdvancedRedstoneInterface.name=Redstone Interface
-tile.clayium.blockPrecisionRedstoneInterface.name=Precision Redstone Interface
-tile.clayium.blockClaySteelRedstoneInterface.name=Clay Steel Redstone Interface
-tile.clayium.blockClayiumRedstoneInterface.name=Clayium Redstone Interface
-tile.clayium.blockUltimateRedstoneInterface.name=Ultimate Redstone Interface
-tile.clayium.blockAntimatterRedstoneInterface.name=Antimatter Redstone Interface
-tile.clayium.blockPureAntimatterRedstoneInterface.name=Pure Antimatter Redstone Interface
-tile.clayium.blockOECRedstoneInterface.name=OEC Redstone Interface
-tile.clayium.blockOPARedstoneInterface.name=OPA Redstone Interface
-tooltip.clayium.RedstoneInterface.line1=Used for Multiblock RS I/O.
-tooltip.clayium.RedstoneInterface.line2=__DETAIL__
-tooltip.clayium.RedstoneInterface.line3=Synchronizer is used to apply an RSInterface
-tooltip.clayium.RedstoneInterface.line4=to a non-multiblock machine.
+machine.clayium.redstone_proxy=%s Redstone Interface
+machine.clayium.redstone_proxy.tooltip1=Used for Multiblock RS I/O.
+machine.clayium.redstone_proxy.tooltip2=__DETAIL__
+machine.clayium.redstone_proxy.tooltip3=Synchronizer is used to apply an RSInterface
+machine.clayium.redstone_proxy.tooltip4=to a non-multiblock machine.
 
 tile.clayium.blockPrecisionElectrolysisReactor.name=Electrolysis Reactor
 tile.clayium.blockClaySteelElectrolysisReactor.name=Clay Steel Electrolysis Reactor
@@ -431,37 +382,26 @@ tile.clayium.blockClayiumDistributor.name=Clayium Distributor
 tile.clayium.blockUltimateDistributor.name=Ultimate Distributor
 tooltip.clayium.Distributor.line1=Distributes items that pass through itself equally.
 
-tile.clayium.blockClaySteelLaserClayInterface.name=Laser Interface
-tile.clayium.blockClayiumLaserClayInterface.name=Clayium Laser Interface
-tile.clayium.blockUltimateLaserClayInterface.name=Ultimate Laser Interface
-tile.clayium.blockAntimatterLaserClayInterface.name=Antimatter Laser Interface
-tile.clayium.blockPureAntimatterLaserClayInterface.name=Pure Antimatter Laser Interface
-tile.clayium.blockOECLaserClayInterface.name=OEC Laser Interface
-tile.clayium.blockOPALaserClayInterface.name=OPA Laser Interface
-tooltip.clayium.LaserInterface.line1=Used for Clay Reactor.
-tooltip.clayium.LaserInterface.line2=__DETAIL__
-tooltip.clayium.LaserInterface.line3=Synchronizer is used to apply a Laser Interface
-tooltip.clayium.LaserInterface.line4=to a non-multiblock machine.
+machine.clayium.laser_proxy=%s Laser Interface
+machine.clayium.laser_proxy.tooltip1=Used for Clay Reactor.
+machine.clayium.laser_proxy.tooltip2=__DETAIL__
+machine.clayium.laser_proxy.tooltip3=Synchronizer is used to apply a Laser Interface
+machine.clayium.laser_proxy.tooltip4=to a non-multiblock machine.
 
-tile.clayium.blockClayReactor.name=Clay Reactor
-tile.clayium.blockClayReactor.tooltip.line1=__DETAIL__
-tile.clayium.blockClayReactor.tooltip.line2=[Multiblock]
-tile.clayium.blockClayReactor.tooltip.line3=XXX XXX XXX
-tile.clayium.blockClayReactor.tooltip.line4=XXX XXX XLX
-tile.clayium.blockClayReactor.tooltip.line5=XXX XRX XXX
-tile.clayium.blockClayReactor.tooltip.line6=R\: Clay Reactor Block
-tile.clayium.blockClayReactor.tooltip.line7=L\: Laser Interface
-tile.clayium.blockClayReactor.tooltip.line8=X\: Machine hulls or Interfaces
-tile.clayium.blockClayReactor.tooltip.line9=Recipe tier depends on components' tier.
-tile.clayium.blockClayReactor.tooltip.line10=Time to craft depends on Laser's strength.
+machine.clayium.clay_reactor=Clay Reactor
+machine.clayium.clay_reactor.tooltip1=__DETAIL__
+machine.clayium.clay_reactor.tooltip2=[Multiblock]
+machine.clayium.clay_reactor.tooltip3=XXX XXX XXX
+machine.clayium.clay_reactor.tooltip4=XXX XXX XLX
+machine.clayium.clay_reactor.tooltip5=XXX XRX XXX
+machine.clayium.clay_reactor.tooltip6=R\: Clay Reactor Block
+machine.clayium.clay_reactor.tooltip7=L\: Laser Interface
+machine.clayium.clay_reactor.tooltip8=X\: Machine hulls or Interfaces
+machine.clayium.clay_reactor.tooltip9=Recipe tier depends on components' tier.
+machine.clayium.clay_reactor.tooltip10=Time to craft depends on Laser's strength.
 
-tile.clayium.blockClaySteelTransformer.name=Matter Transformer
-tile.clayium.blockClayiumTransformer.name=Clayium Matter Transformer
-tile.clayium.blockUltimateTransformer.name=Ultimate Matter Transformer
-tile.clayium.blockAntimatterTransformer.name=Antimatter Transformer
-tile.clayium.blockPureAntimatterTransformer.name=Pure Antimatter Transformer
-tile.clayium.blockOECTransformer.name=OEC Transformer
-tooltip.clayium.Transformer.line1=Transforms things to others.
+machine.clayium.matter_transformer=%s Matter Transformer
+machine.clayium.matter_transformer.tooltip1=Transforms things to others.
 
 tile.clayium.blockUltimateCACondenser.name=CA Condenser
 tile.clayium.blockAntimatterCACondenser.name=Antimatter CA Condenser
@@ -582,20 +522,20 @@ gui.clayium.WaterWheel.progress=Progress\: %1$d
 gui.clayium.WaterWheel.durability=Durability\: %1$d
 gui.clayium.WaterWheel.surroundingWater=Water\: %1$d
 
-tile.clayium.blockClaySteelClayEnergyLaser.name=Blue Clay Laser
-tile.clayium.blockClayiumClayEnergyLaser.name=Green Clay Laser
-tile.clayium.blockUltimateClayEnergyLaser.name=Red Clay Laser
-tile.clayium.blockAntimatterClayEnergyLaser.name=White Clay Laser
-tile.clayium.blockAntimatterClayEnergyLaser.tooltip.line1=Equal to 3xBlue + 3xGreen + 3xRed.
-tooltip.clayium.ClayEnergyLaser.line1=__DETAIL__
-tooltip.clayium.ClayEnergyLaser.line2=Laser is used to run Clay Reactor
-tooltip.clayium.ClayEnergyLaser.line3=or to accelerate Area Miner.
-tooltip.clayium.ClayEnergyLaser.line4=Laser seems to have some effect on ores and saplings.
-tooltip.clayium.ClayEnergyLaser.line5=Laser irradiation will stop when a redstone signal is applied.
-tooltip.clayium.ClayEnergyLaser.energyConsumption=Power %1$s CE/t
+machine.clayium.clay_laser.clay_steel=Blue Clay Laser
+machine.clayium.clay_laser.clayium=Green Clay Laser
+machine.clayium.clay_laser.ultimate=Red Clay Laser
+machine.clayium.clay_laser.antimatter=White Clay Laser
+machine.clayium.clay_laser.antimatter.tooltip1=Equal to 3xBlue + 3xGreen + 3xRed.
+machine.clayium.clay_laser.tooltip1=__DETAIL__
+machine.clayium.clay_laser.tooltip2=Laser is used to run Clay Reactor
+machine.clayium.clay_laser.tooltip3=or to accelerate Area Miner.
+machine.clayium.clay_laser.tooltip4=Laser seems to have some effect on ores and saplings.
+machine.clayium.clay_laser.tooltip5=Laser irradiation will stop when a redstone signal is applied.
+#machine.clayium.clay_laser.tooltip6=Power %1$s CE/t
 
-tile.clayium.blockLaserReflector.name=Laser Reflector
-tile.clayium.blockLaserReflector.tooltip.line1=Changes the direction of Laser.
+tile.clayium.laser_reflector.name=Laser Reflector
+tile.clayium.laser_reflector.tooltip1=Changes the direction of Laser.
 
 tile.clayium.blockClayTreeSapling.name=Clay Tree Sapling
 tile.clayium.blockClayTreeLog.name=Clay Tree Log
@@ -958,15 +898,18 @@ item.clayium.itemClayShooter3.name=Sniper Clay Shooter Pro
 item.clayium.itemInstantTeleporter.name=Instant Teleporter
 item.clayium.itemInstantTeleporter.tooltip.line1=Teleports you to the point of impact.
 
-item.clayium.itemSynchronizer.name=Synchronizer
-item.clayium.itemSynchronizer.tooltip.line1=Synchronizes Interfaces with machines or buffers.
-item.clayium.itemSynchronizer.tooltip.line2=__DETAIL__
-item.clayium.itemSynchronizer.tooltip.line3=It enables you to control machines with
-item.clayium.itemSynchronizer.tooltip.line4=redstone signal through Redstone Interfaces
-item.clayium.itemSynchronizer.tooltip.line5=or to teleport items via Item Interfaces.
-item.clayium.itemSynchronizer.tooltip.line6=1. R-click the interface with Synchronous Parts.
-item.clayium.itemSynchronizer.tooltip.line7=2. Record the coord of the machine by R-clicking with this.
-item.clayium.itemSynchronizer.tooltip.line8=3. Synchronize the interface by R-clicking with it.
+item.clayium.synchronizer.name=Synchronizer
+item.clayium.synchronizer.position_saved=Position saved %s.
+item.clayium.synchronizer.synchronized=Link established %s.
+item.clayium.synchronizer.synchronize_failed=Link cannot be established.
+item.clayium.synchronizer.tooltip1=Synchronizes Interfaces with machines or buffers.
+item.clayium.synchronizer.tooltip2=__DETAIL__
+item.clayium.synchronizer.tooltip3=It enables you to control machines with
+item.clayium.synchronizer.tooltip4=redstone signal through Redstone Interfaces
+item.clayium.synchronizer.tooltip5=or to teleport items via Item Interfaces.
+item.clayium.synchronizer.tooltip6=1. R-click the interface with Synchronous Parts.
+item.clayium.synchronizer.tooltip7=2. Record the coord of the machine by R-clicking with this.
+item.clayium.synchronizer.tooltip8=3. Synchronize the interface by R-clicking with it.
 
 item.clayium.itemCapsule.name=Clay Fluid Capsule
 item.clayium.itemCapsule0125.name=Clay Fluid Capsule (125mB)

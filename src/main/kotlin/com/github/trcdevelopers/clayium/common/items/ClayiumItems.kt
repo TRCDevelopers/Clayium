@@ -13,6 +13,8 @@ object ClayiumItems {
     val CLAY_WRENCH = createItem("clay_wrench", ItemClayConfigTool(maxDamage = 0, type = ItemClayConfigTool.ToolType.ROTATION))
     val CLAY_IO_CONFIGURATOR = createItem("clay_io_configurator", ItemClayConfigTool(maxDamage = 0, type = ItemClayConfigTool.ToolType.INSERTION, typeWhenSneak = ItemClayConfigTool.ToolType.EXTRACTION))
     val CLAY_PIPING_TOOL = createItem("clay_piping_tool", ItemClayConfigTool(maxDamage = 0, type = ItemClayConfigTool.ToolType.PIPING, typeWhenSneak = ItemClayConfigTool.ToolType.ROTATION))
+
+    val SYNCHRONIZER = createItem("synchronizer", ItemSynchronizer())
     //endregion
 
     val CLAY_PICKAXE = createItem("clay_pickaxe", ItemClayPickaxe())

@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.items
 
+import com.github.trcdevelopers.clayium.api.util.CUtils
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -29,32 +30,13 @@ class ItemClayConfigTool(
         val typeToSend = (if (player.isSneaking) typeWhenSneak else type)
             ?: return EnumActionResult.PASS
 
-        val block = world.getBlockState(pos).block
-        val tile = world.getTileEntity(pos)
-        if (block is Listener || tile is Listener) {
-            (block as? Listener)?.onRightClicked(typeToSend, world, pos, player, hand, side, hitX, hitY, hitZ)
-            (tile as? Listener)?.onRightClicked(typeToSend, world, pos, player, hand, side, hitX, hitY, hitZ)
+        val metaTileEntity = CUtils.getMetaTileEntity(world, pos)
+        if (metaTileEntity == null) {
+            return EnumActionResult.PASS
+        } else {
+            metaTileEntity.onToolClick(typeToSend, player, hand, side, hitX, hitY, hitZ)
             return EnumActionResult.SUCCESS
         }
-        return super.onItemUseFirst(player, world, pos, side, hitX, hitY, hitZ, hand)
-    }
-
-    /**
-     * can be applied to blocks or tile entities
-     */
-    interface Listener {
-        /**
-         * called when the player right-clicks a block or tile entity with the [ItemClayConfigTool]
-         */
-        fun onRightClicked(
-            toolType: ToolType,
-            worldIn: World,
-            posIn: BlockPos,
-            player: EntityPlayer,
-            hand: EnumHand,
-            clickedSide: EnumFacing,
-            hitX: Float, hitY: Float, hitZ: Float
-        )
     }
 
     enum class ToolType {

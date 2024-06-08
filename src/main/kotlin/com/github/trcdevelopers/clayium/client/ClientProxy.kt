@@ -1,14 +1,15 @@
 package com.github.trcdevelopers.clayium.client
 
-import com.github.trcdevelopers.clayium.client.loader.FacedMachineModelLoader
-import com.github.trcdevelopers.clayium.client.loader.MachineModelLoader
-import com.github.trcdevelopers.clayium.client.tesr.ClayBufferPipeIoRenderer
-import com.github.trcdevelopers.clayium.common.Clayium
+import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trcdevelopers.clayium.client.model.LaserReflectorModelLoader
+import com.github.trcdevelopers.clayium.client.model.MetaTileEntityModelLoader
+import com.github.trcdevelopers.clayium.client.renderer.ClayLaserReflectorRenderer
+import com.github.trcdevelopers.clayium.client.renderer.MetaTileEntityRenderDispatcher
 import com.github.trcdevelopers.clayium.common.CommonProxy
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
-import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
+import com.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
+import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraftforge.client.event.ModelRegistryEvent
@@ -29,9 +30,10 @@ class ClientProxy : CommonProxy() {
 
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
-        ModelLoaderRegistry.registerLoader(MachineModelLoader)
-        ModelLoaderRegistry.registerLoader(FacedMachineModelLoader)
-        ClientRegistry.bindTileEntitySpecialRenderer(TileMachine::class.java, ClayBufferPipeIoRenderer)
+        ModelLoaderRegistry.registerLoader(MetaTileEntityModelLoader)
+        ModelLoaderRegistry.registerLoader(LaserReflectorModelLoader)
+        ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, MetaTileEntityRenderDispatcher)
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayLaserReflector::class.java, ClayLaserReflectorRenderer)
     }
 
     override fun init(event: FMLInitializationEvent) {
@@ -51,15 +53,10 @@ class ClientProxy : CommonProxy() {
         ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(item.registryName!!, "inventory"))
     }
 
-    override fun registerMachineItemBlock(registry: IForgeRegistry<Item>, machineName: String, tier: Int, block: BlockMachine): Item {
-        return super.registerMachineItemBlock(registry, machineName, tier, block).also {
-            ModelLoader.setCustomModelResourceLocation(it, 0, ModelResourceLocation("${Clayium.MOD_ID}:$machineName", "tier=$tier"))
-        }
-    }
-
     @SubscribeEvent
     fun registerModels(event: ModelRegistryEvent) {
         MetaItemClayium.registerModels()
         ClayiumBlocks.registerItemBlockModels()
+        MetaTileEntities.registerItemModels()
     }
 }

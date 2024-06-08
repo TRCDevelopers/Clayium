@@ -1,6 +1,6 @@
 package com.github.trcdevelopers.clayium.common.blocks.clayworktable
 
-import com.github.trcdevelopers.clayium.common.recipe.CRecipes
+import com.github.trcdevelopers.clayium.common.recipe.CWTRecipes
 import com.github.trcdevelopers.clayium.common.recipe.ClayWorkTableRecipe
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -54,7 +54,7 @@ class TileClayWorkTable : TileEntity() {
         val input = itemHandler.getStackInSlot(0)
         val method: ClayWorkTableMethod = ClayWorkTableMethod.fromId(id)
             ?: throw IllegalArgumentException("Invalid button id.")
-        val recipe = CRecipes.getClayWorkTableRecipe(input, method)
+        val recipe = CWTRecipes.getClayWorkTableRecipe(input, method)
             ?: throw NullPointerException("Button pushed without any valid recipe! This should not happen.")
         if (currentRecipe !== recipe) {
             currentRecipe = recipe
@@ -74,7 +74,7 @@ class TileClayWorkTable : TileEntity() {
     }
 
     private fun canStartCraft(input: ItemStack, method: ClayWorkTableMethod): Boolean {
-        val recipe = CRecipes.getClayWorkTableRecipe(input, method) ?: return false
+        val recipe = CWTRecipes.getClayWorkTableRecipe(input, method) ?: return false
         if (!method.isValidTool(currentTool)) return false
 
         val outputSlot = itemHandler.getStackInSlot(2)

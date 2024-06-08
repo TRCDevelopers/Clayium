@@ -1,31 +1,32 @@
 package com.github.trcdevelopers.clayium.common
 
+import com.cleanroommc.modularui.factory.GuiManager
+import com.github.trcdevelopers.clayium.api.ClayiumApi
+import com.github.trcdevelopers.clayium.api.block.ItemBlockTiered
+import com.github.trcdevelopers.clayium.api.capability.SimpleCapabilityManager
+import com.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
+import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
+import com.github.trcdevelopers.clayium.client.renderer.LaserReflectorItemStackRenderer
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
+import com.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
+import com.github.trcdevelopers.clayium.common.blocks.TileEntityCreativeEnergySource
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
-import com.github.trcdevelopers.clayium.common.blocks.machine.BlockMachine
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineBlocks
 import com.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWorkTable
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileClayBuffer
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileMachine
-import com.github.trcdevelopers.clayium.common.blocks.machine.tile.TileSingle2SingleMachine
-import com.github.trcdevelopers.clayium.common.interfaces.IShiftRightClickable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
-import com.github.trcdevelopers.clayium.common.items.ItemBlockTiered
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
+import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
 import com.github.trcdevelopers.clayium.common.recipe.loader.CRecipeLoader
 import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import com.github.trcdevelopers.clayium.common.worldgen.ClayOreGenerator
 import net.minecraft.block.Block
-import net.minecraft.client.resources.I18n
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
-import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.RegistryEvent
-import net.minecraftforge.event.entity.player.PlayerInteractEvent
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
@@ -41,6 +42,12 @@ open class CommonProxy {
         this.registerTileEntities()
         GameRegistry.registerWorldGenerator(ClayOreGenerator(), 0)
         NetworkRegistry.INSTANCE.registerGuiHandler(Clayium.INSTANCE, GuiHandler)
+
+        MetaTileEntities.init()
+
+        GuiManager.registerFactory(MetaTileEntityGuiFactory)
+
+        SimpleCapabilityManager.registerCapabilities()
     }
 
     open fun init(event: FMLInitializationEvent) {
@@ -54,24 +61,9 @@ open class CommonProxy {
     fun registerBlocks(event: RegistryEvent.Register<Block>) {
         val registry: IForgeRegistry<Block> = event.registry
 
-        registerBlock(registry, ClayiumBlocks.CLAY_WORK_TABLE)
+        ClayiumBlocks.registerBlocks(event)
 
-        registerBlock(registry, ClayiumBlocks.COMPRESSED_CLAY)
-        registerBlock(registry, ClayiumBlocks.ENERGIZED_CLAY)
-
-        registerBlock(registry, ClayiumBlocks.CLAY_ORE)
-        registerBlock(registry, ClayiumBlocks.DENSE_CLAY_ORE)
-        registerBlock(registry, ClayiumBlocks.LARGE_DENSE_CLAY_ORE)
-
-        for (machines in MachineBlocks.ALL_MACHINES) {
-            for (machine in machines.value) {
-                registerBlock(registry, machine.value)
-            }
-        }
-    }
-
-    open fun registerBlock(registry: IForgeRegistry<Block>, block: Block) {
-        registry.register(block)
+        registry.register(ClayiumApi.BLOCK_MACHINE)
     }
 
     @SubscribeEvent
@@ -94,6 +86,9 @@ open class CommonProxy {
 
         registerItem(registry, ClayiumItems.CLAY_PICKAXE)
         registerItem(registry, ClayiumItems.CLAY_SHOVEL)
+        registerItem(registry, ClayiumItems.SYNCHRONIZER)
+
+        registry.register(createItemBlock(ClayiumBlocks.CREATIVE_ENERGY_SOURCE, ::ItemBlock))
 
         registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ::ItemBlockTiered))
 
@@ -104,12 +99,15 @@ open class CommonProxy {
         registry.register(createItemBlock(ClayiumBlocks.DENSE_CLAY_ORE, ::ItemBlock))
         registry.register(createItemBlock(ClayiumBlocks.LARGE_DENSE_CLAY_ORE, ::ItemBlock))
 
-        for (machines in MachineBlocks.ALL_MACHINES) {
-            val machineName = machines.key
-            for (machine in machines.value) {
-                registerMachineItemBlock(registry, machineName, machine.key, machine.value)
-            }
-        }
+        registry.register(createItemBlock(ClayiumBlocks.MACHINE_HULL, ::ItemBlockTiered))
+
+        registry.register(ItemBlock(ClayiumBlocks.LASER_REFLECTOR).apply {
+            registryName = ClayiumBlocks.LASER_REFLECTOR.registryName
+            translationKey = ClayiumBlocks.LASER_REFLECTOR.translationKey
+            tileEntityItemStackRenderer = LaserReflectorItemStackRenderer
+        })
+
+        registry.register(ClayiumApi.ITEM_BLOCK_MACHINE)
     }
 
     open fun registerItem(registry: IForgeRegistry<Item>, item: Item) {
@@ -122,36 +120,10 @@ open class CommonProxy {
         }
     }
 
-    open fun registerMachineItemBlock(registry: IForgeRegistry<Item>, machineName: String, tier: Int, block: BlockMachine): Item {
-        val itemBlock = object : ItemBlockTiered<BlockMachine>(block) {
-            override fun getItemStackDisplayName(stack: ItemStack): String {
-                return I18n.format("tile.clayium.${machineName}", I18n.format("machine.clayium.tier${tier}"))
-            }
-        }
-
-        registry.register(itemBlock.setRegistryName(block.registryName!!))
-        return itemBlock
-    }
-
     open fun registerTileEntities() {
-        GameRegistry.registerTileEntity(TileClayWorkTable::class.java, ResourceLocation(Clayium.MOD_ID, "tile_clay_work_table"))
-
-        GameRegistry.registerTileEntity(TileMachine::class.java, ResourceLocation(Clayium.MOD_ID, "tile_machine"))
-        GameRegistry.registerTileEntity(TileSingle2SingleMachine::class.java, ResourceLocation(Clayium.MOD_ID, "tile_simple_machine"))
-        GameRegistry.registerTileEntity(TileClayBuffer::class.java, ResourceLocation(Clayium.MOD_ID, "tile_clay_buffer"))
-    }
-
-    // todo: move this to item
-    @SubscribeEvent
-    fun onBlockRightClicked(e: PlayerInteractEvent.RightClickBlock) {
-        val world = e.world
-        val blockState = world.getBlockState(e.pos)
-        val block = blockState.block
-
-        if (block is IShiftRightClickable && e.entityPlayer.isSneaking) {
-            val (cancel, swing) = block.onShiftRightClicked(world, e.pos, blockState, e.entityPlayer, e.hand, e.face ?: return, e.hitVec.x.toFloat(), e.hitVec.y.toFloat(), e.hitVec.z.toFloat())
-            e.isCanceled = cancel
-            if (swing) e.entityPlayer.swingArm(e.hand)
-        }
+        GameRegistry.registerTileEntity(TileClayWorkTable::class.java, ResourceLocation(Clayium.MOD_ID, "clayWorkTable"))
+        GameRegistry.registerTileEntity(TileEntityClayLaserReflector::class.java, clayiumId("laser_reflector"))
+        GameRegistry.registerTileEntity(TileEntityCreativeEnergySource::class.java, ResourceLocation(Clayium.MOD_ID, "creativeEnergySource"))
+        GameRegistry.registerTileEntity(MetaTileEntityHolder::class.java, ResourceLocation(Clayium.MOD_ID, "metaTileEntityHolder"))
     }
 }

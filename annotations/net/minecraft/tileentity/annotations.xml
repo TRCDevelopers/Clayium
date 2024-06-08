@@ -1,0 +1,5 @@
+<root>
+    <item name='net.minecraft.tileentity.TileEntity net.minecraft.world.World getWorld()'>
+        <annotation name='org.jetbrains.annotations.Nullable'/>
+    </item>
+</root>

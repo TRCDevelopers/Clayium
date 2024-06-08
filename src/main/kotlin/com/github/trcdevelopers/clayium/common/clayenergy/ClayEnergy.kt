@@ -1,9 +1,18 @@
 package com.github.trcdevelopers.clayium.common.clayenergy
 
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
+import net.minecraft.client.resources.I18n
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 @JvmInline
 value class ClayEnergy(val energy: Long) {
+
+    // todo replace toString with this
+    @SideOnly(Side.CLIENT)
+    fun format(): String {
+        return I18n.format("tooltip.clayium.ce", UtilLocale.ClayEnergyNumeral(energy.toDouble()))
+    }
 
     override fun toString(): String {
         return UtilLocale.ClayEnergyNumeral(energy.toDouble())
@@ -12,9 +21,12 @@ value class ClayEnergy(val energy: Long) {
     operator fun plus(other: ClayEnergy) = ClayEnergy(energy + other.energy)
     operator fun minus(other: ClayEnergy) = ClayEnergy(energy - other.energy)
     operator fun times(value: Int) = ClayEnergy(energy * value)
+    operator fun times(value: Long) = ClayEnergy(energy * value)
     operator fun compareTo(other: ClayEnergy) = energy.compareTo(other.energy)
 
     companion object {
+        val ZERO = ClayEnergy(0)
+
         fun micro(energy: Long): ClayEnergy {
             require(energy % 10 == 0.toLong()) {
                 "10μ CE is a minimum unit of Clay Energy, but the given value is not a multiple of 10μ CE: $energy"

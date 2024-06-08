@@ -10,11 +10,12 @@ import kotlin.math.log10
 import kotlin.math.min
 import kotlin.math.pow
 
-//everything from Original Clayium
+//mostly copied from the original version of Clayium
 object UtilLocale {
     var CENumerals = arrayOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y")
     var SNumerals = arrayOf("", "k", "M", "G", "T", "P", "E", "Z", "Y")
-    private const val maxLineTooltip = 12
+    private const val MAX_TOOLTIP_LINES = 12
+    private const val SHIFT_FOR_DETAILS = "__DETAIL__"
     fun ClayEnergyNumeral(ce: Double, flag: Boolean): String {
         var n = ce * 10.0
         var s = ""
@@ -155,7 +156,7 @@ object UtilLocale {
         var flag = true
         var i = 0
         val ret = ArrayList<String>()
-        while (flag && i < maxLineTooltip) {
+        while (flag && i < MAX_TOOLTIP_LINES) {
             val loc = localizeUnsafe(str + ".line" + ++i)
             if (loc != null) {
                 if (loc == "__DETAIL__") {
@@ -170,5 +171,27 @@ object UtilLocale {
             flag = false
         }
         return if (ret.isEmpty()) listOf(str) else ret
+    }
+
+    /**
+     * for translating multiline tooltips.
+     * does nothing if the key does not exist.
+     *
+     * @param tooltip tooltip list that is given in addInformation
+     * @param key translation key. line number is appended to this: `$key$i`
+     */
+    fun formatTooltips(tooltip: MutableList<String>, key: String) {
+        var i = 0
+        while (i++ <= MAX_TOOLTIP_LINES) {
+            if (!I18n.hasKey("$key$i")) break
+            val localized = I18n.format("$key$i")
+            if (localized == SHIFT_FOR_DETAILS) {
+                if (GuiScreen.isShiftKeyDown()) continue
+                tooltip.add(I18n.format("tooltip.clayium.HoldShiftForDetails"))
+                break // ignore the rest of the lines while not sneaking
+            } else {
+                tooltip.add(localized)
+            }
+        }
     }
 }
