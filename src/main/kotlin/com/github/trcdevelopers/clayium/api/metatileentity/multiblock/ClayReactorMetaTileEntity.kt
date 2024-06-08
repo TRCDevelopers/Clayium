@@ -51,7 +51,7 @@ class ClayReactorMetaTileEntity(
     override val faceWhenDeconstructed: ResourceLocation = clayiumId("blocks/reactor")
     override val faceWhenConstructed: ResourceLocation = clayiumId("blocks/reactor_1")
     override var faceTexture: ResourceLocation? = faceWhenDeconstructed
-    override val allFaceTextures: List<ResourceLocation> = listOf(faceWhenDeconstructed, faceWhenConstructed)
+    override val requiredTextures: List<ResourceLocation> = listOf(faceWhenDeconstructed, faceWhenConstructed)
 
     override fun isConstructed(): Boolean {
         val world = world ?: return false

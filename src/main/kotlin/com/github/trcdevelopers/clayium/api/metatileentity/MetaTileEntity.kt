@@ -3,9 +3,9 @@ package com.github.trcdevelopers.clayium.api.metatileentity
 import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
-import com.cleanroommc.modularui.utils.Alignment
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.block.BlockMachine.Companion.IS_PIPE
+import com.github.trcdevelopers.clayium.api.block.BlockMachine.Companion.TILE_ENTITY
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_CONNECTIONS
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_FRONT_FACING
@@ -18,6 +18,7 @@ import com.github.trcdevelopers.clayium.api.metatileentity.interfaces.ISyncedTil
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ITier
+import com.github.trcdevelopers.clayium.client.model.ModelTextures
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.IPipeConnectable
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
@@ -48,6 +49,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
@@ -74,7 +76,7 @@ abstract class MetaTileEntity(
     val isInvalid get() = holder?.isInvalid ?: true
 
     open val faceTexture: ResourceLocation? = null
-    open val allFaceTextures get() = listOf(faceTexture)
+    open val requiredTextures get() = listOf(faceTexture)
 
     protected val mteTraits = mutableMapOf<String, MTETrait>()
     private val traitByNetworkId = Int2ObjectOpenHashMap<MTETrait>()
@@ -465,17 +467,17 @@ abstract class MetaTileEntity(
     @SideOnly(Side.CLIENT)
     open fun bakeQuads(getter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {}
 
-    /**
-     * @return [emptyList] if default model should be used.
-     */
     @SideOnly(Side.CLIENT)
-    open fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> = emptyList()
-
-    /**
-     * the overlay will be added to the default model. above the machine hull model, but below the IO mode models.
-     */
-    @SideOnly(Side.CLIENT)
-    open fun getOverlayQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> = emptyList()
+    open fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): MutableList<BakedQuad> {
+        if (state == null || side == null || state !is IExtendedBlockState) return mutableListOf()
+        val quads = mutableListOf(ModelTextures.getHullQuads(this.tier)?.get(side) ?: return mutableListOf())
+        if (this.hasFrontFacing && this.faceTexture != null) {
+            if (this.useFaceForAllSides || side == this.frontFacing) {
+                ModelTextures.FACE_QUADS[this.faceTexture]?.get(side)?.let { quads.add(it) }
+            }
+        }
+        return quads
+    }
 
     companion object {
 

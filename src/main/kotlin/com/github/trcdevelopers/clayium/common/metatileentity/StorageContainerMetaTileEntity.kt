@@ -1,7 +1,6 @@
 package com.github.trcdevelopers.clayium.common.metatileentity
 
 import com.cleanroommc.modularui.api.drawable.IDrawable
-import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
@@ -28,10 +27,8 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemStackHandler
-import java.util.function.Function
 
 class StorageContainerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -39,6 +36,7 @@ class StorageContainerMetaTileEntity(
 ) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, validOutputModesLists[1], "machine.${CValues.MOD_ID}.storage_container") {
 
     override val faceTexture = clayiumId("blocks/storage_container")
+    override val requiredTextures = listOf(faceTexture, clayiumId("blocks/storage_container_side"), clayiumId("blocks/storage_container_top"))
 
     override val itemInventory: IItemHandlerModifiable = ItemStackHandler(1)
     override val importItems: IItemHandlerModifiable = itemInventory
@@ -86,28 +84,29 @@ class StorageContainerMetaTileEntity(
     }
 
     @SideOnly(Side.CLIENT)
-    override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
+    override fun bakeQuads(bakedTexGetter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
         sideQuads = EnumFacing.HORIZONTALS.associateWith {
-            listOf(ModelTextures.createQuad(it, getter.apply(clayiumId("blocks/storage_container_side"))))
+            ModelTextures.createQuad(it, bakedTexGetter.apply(clayiumId("blocks/storage_container_side")))
         }
-        topQuad = listOf(ModelTextures.createQuad(EnumFacing.UP, getter.apply(clayiumId("blocks/storage_container_top"))))
+        topQuad = ModelTextures.createQuad(EnumFacing.UP, bakedTexGetter.apply(clayiumId("blocks/storage_container_top")))
     }
 
     @SideOnly(Side.CLIENT)
-    override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> {
-        if (state == null || side == null) return emptyList()
-        if (side.axis.isHorizontal) {
-            if (side == frontFacing) return emptyList()
-            return sideQuads[side] ?: emptyList()
+    override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): MutableList<BakedQuad> {
+        if (state == null || side == null) return super.getQuads(state, side, rand)
+        val quads = super.getQuads(state, side, rand)
+        when {
+            side.axis.isHorizontal -> sideQuads[side]?.let { quads.add(it) }
+            side == EnumFacing.UP -> quads.add(topQuad)
         }
-        return if (side == EnumFacing.UP) topQuad else emptyList()
+        return quads
     }
 
     companion object {
         @SideOnly(Side.CLIENT)
-        private lateinit var sideQuads: Map<EnumFacing, List<BakedQuad>>
+        private lateinit var sideQuads: Map<EnumFacing, BakedQuad>
 
         @SideOnly(Side.CLIENT)
-        private lateinit var topQuad: List<BakedQuad>
+        private lateinit var topQuad: BakedQuad
     }
 }

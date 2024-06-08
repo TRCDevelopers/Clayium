@@ -51,7 +51,7 @@ class ClayBlastFurnaceMetaTileEntity(
 
     override val faceWhenDeconstructed = clayiumId("blocks/blastfurnace")
     override val faceWhenConstructed = clayiumId("blocks/blastfurnace_1")
-    override val allFaceTextures = listOf(faceWhenDeconstructed, faceWhenConstructed)
+    override val requiredTextures = listOf(faceWhenDeconstructed, faceWhenConstructed)
     override var faceTexture: ResourceLocation? = faceWhenDeconstructed
 
     override val importItems = NotifiableItemStackHandler(this, 2, this, isExport = false)

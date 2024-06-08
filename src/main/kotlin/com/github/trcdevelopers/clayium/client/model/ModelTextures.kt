@@ -2,7 +2,6 @@ package com.github.trcdevelopers.clayium.client.model
 
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.ClayiumApi
-import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.ClayTiers
 import com.github.trcdevelopers.clayium.api.util.ITier
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -49,15 +48,10 @@ object ModelTextures {
 
     fun initialize(getter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>) {
         if (isInitialized) return
-        ClayiumApi.MTE_REGISTRY.forEach { it.bakeQuads(getter, faceBakery) }
         MISSING = getter.apply(ModelLoader.MODEL_MISSING)
 
-//        this.HULL_TEXTURES = (0..13).map { i ->
-//            if (i == 0) MISSING
-//            getter.apply(ResourceLocation(CValues.MOD_ID, "blocks/machinehull_tier$i"))
-//        }
         this.HULL_TEXTURES = ClayTiers.entries.associate {
-            it.prefixTranslationKey to getter.apply(ResourceLocation(CValues.MOD_ID, "blocks/machinehull_tier${it.numeric}"))
+            it.prefixTranslationKey to getter.apply(it.hullLocation)
         }
         this.HULL_QUADS = ClayTiers.entries.associate { tier ->
             tier.prefixTranslationKey to (EnumFacing.VALUES.associateWith { side ->
@@ -65,7 +59,7 @@ object ModelTextures {
             })
         }
         for (metaTileEntity in ClayiumApi.MTE_REGISTRY) {
-            metaTileEntity.allFaceTextures.filterNotNull().forEach { faceTexture ->
+            metaTileEntity.requiredTextures.filterNotNull().forEach { faceTexture ->
                 _faceQuads.computeIfAbsent(faceTexture) {
                     EnumFacing.entries.associateWith { side ->
                         createQuad(side, getter.apply(faceTexture))
@@ -73,6 +67,7 @@ object ModelTextures {
                 }
             }
         }
+        ClayiumApi.MTE_REGISTRY.forEach { it.bakeQuads(getter, faceBakery) }
         isInitialized = true
     }
 

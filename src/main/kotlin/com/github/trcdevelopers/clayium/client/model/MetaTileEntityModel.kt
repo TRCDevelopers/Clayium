@@ -18,7 +18,7 @@ class MetaTileEntityModel(
         return mutableSetOf<ResourceLocation>().apply {
             // machine face textures
             ClayiumApi.MTE_REGISTRY.forEach { metaTileEntity ->
-                addAll(metaTileEntity.allFaceTextures.filterNotNull())
+                addAll(metaTileEntity.requiredTextures.filterNotNull())
             }
             // io textures
             add(clayiumId("blocks/import_energy"))
@@ -44,6 +44,7 @@ class MetaTileEntityModel(
             add(clayiumId("blocks/machinehull_tier11"))
             add(clayiumId("blocks/machinehull_tier12"))
             add(clayiumId("blocks/machinehull_tier13"))
+            add(clayiumId("blocks/az91d_hull"))
         }
     }
 

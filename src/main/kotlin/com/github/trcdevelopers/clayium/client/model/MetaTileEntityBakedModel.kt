@@ -69,16 +69,8 @@ class MetaTileEntityBakedModel(
     override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> {
         if (state == null || side == null || state !is IExtendedBlockState) return emptyList()
         val mte = (state.getValue(TILE_ENTITY) as? MetaTileEntityHolder)?.metaTileEntity ?: return emptyList()
-        val mteQuads = mte.getQuads(state, side, rand)
-        if (mteQuads.isNotEmpty()) return mteQuads
 
-        val quads = mutableListOf(ModelTextures.getHullQuads(mte.tier)?.get(side) ?: return emptyList())
-        if (mte.hasFrontFacing && mte.faceTexture != null) {
-            if (mte.useFaceForAllSides || side == mte.frontFacing) {
-                ModelTextures.FACE_QUADS[mte.faceTexture]?.get(side)?.let { quads.add(it) }
-            }
-        }
-        quads.addAll(mte.getOverlayQuads(state, side, rand))
+        val quads = mte.getQuads(state, side, rand)
         mte.inputModes.forEachIndexed { facingIndex, mteInputMode ->
             val side2Quad = inputModeQuads[mteInputMode] ?: return@forEachIndexed
             quads.add(side2Quad[facingIndex])
