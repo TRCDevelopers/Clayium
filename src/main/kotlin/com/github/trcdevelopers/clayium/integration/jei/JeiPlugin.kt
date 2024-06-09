@@ -24,10 +24,8 @@ import net.minecraft.item.ItemStack
 @JEIPlugin
 class JeiPlugin : IModPlugin {
 
-    lateinit var jeiRuntime: IJeiRuntime
-
     override fun onRuntimeAvailable(jeiRuntime: IJeiRuntime) {
-        this.jeiRuntime = jeiRuntime
+        JeiPlugin.jeiRuntime = jeiRuntime
     }
 
     override fun registerCategories(jeiRegistry: IRecipeCategoryRegistration) {
@@ -69,5 +67,6 @@ class JeiPlugin : IModPlugin {
 
     companion object {
         lateinit var jeiHelpers: IJeiHelpers
+        lateinit var jeiRuntime: IJeiRuntime
     }
 }

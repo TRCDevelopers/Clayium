@@ -76,7 +76,7 @@ abstract class WorkableMetaTileEntity(
             .left(6))
 
         val slotsAndProgressBar = Row()
-
+            .widthRel(0.7f).height(26)
             .align(Alignment.Center)
             .top(30)
             .child(workable.getProgressBar(syncManager))

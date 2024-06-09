@@ -1,5 +1,7 @@
 package com.github.trcdevelopers.clayium.api.capability.impl
 
+import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.api.widget.IGuiAction
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
@@ -14,6 +16,7 @@ import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.Recipe
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import com.github.trcdevelopers.clayium.common.util.TransferUtils
+import com.github.trcdevelopers.clayium.integration.jei.JeiPlugin
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 
@@ -139,6 +142,13 @@ abstract class AbstractRecipeLogic(
             .align(Alignment.Center)
             .progress(this::getNormalizedProgress)
             .texture(ClayGuiTextures.PROGRESS_BAR, 22)
+            .addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
+            .listenGuiAction(IGuiAction.MousePressed { _ ->
+                JeiPlugin.jeiRuntime.recipesGui.showCategories(
+                    listOf(this.recipeRegistry.category.uniqueId)
+                )
+                true
+            })
     }
 
     fun getNormalizedProgress(): Double {
