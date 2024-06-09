@@ -11,6 +11,7 @@ import com.github.trcdevelopers.clayium.api.capability.IControllable
 import com.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils
+import com.github.trcdevelopers.clayium.api.util.Mods
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.Recipe
@@ -137,18 +138,22 @@ abstract class AbstractRecipeLogic(
             { cProgress -> currentProgress = cProgress }
         ))
 
-        return ProgressWidget()
+        val widget = ProgressWidget()
             .size(22, 17)
             .align(Alignment.Center)
             .progress(this::getNormalizedProgress)
             .texture(ClayGuiTextures.PROGRESS_BAR, 22)
-            .addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
-            .listenGuiAction(IGuiAction.MousePressed { _ ->
-                JeiPlugin.jeiRuntime.recipesGui.showCategories(
-                    listOf(this.recipeRegistry.category.uniqueId)
-                )
-                true
-            })
+            if (Mods.JustEnoughItems.isModLoaded) {
+                widget.addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
+                    .listenGuiAction(IGuiAction.MousePressed { _ ->
+                    JeiPlugin.jeiRuntime.recipesGui.showCategories(
+                        listOf(this@AbstractRecipeLogic.recipeRegistry.category.uniqueId)
+                    )
+                    true
+                })
+            }
+
+        return widget
     }
 
     fun getNormalizedProgress(): Double {
