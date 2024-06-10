@@ -12,61 +12,9 @@ import kotlin.math.pow
 
 //mostly copied from the original version of Clayium
 object UtilLocale {
-    var CENumerals = arrayOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y")
     var SNumerals = arrayOf("", "k", "M", "G", "T", "P", "E", "Z", "Y")
     private const val MAX_TOOLTIP_LINES = 12
     private const val SHIFT_FOR_DETAILS = "__DETAIL__"
-    fun ClayEnergyNumeral(ce: Double, flag: Boolean): String {
-        var n = ce * 10.0
-        var s = ""
-        if (n == 0.0) {
-            return n.toString()
-        }
-        if (n < 0.0) {
-            n -= 1.0
-            s = "-"
-        }
-        val k = floor(log10(n)).toInt()
-        val p = min((k / 3).toDouble(), (CENumerals.size - 1).toDouble()).toInt()
-        val d: Int = (n * 1000.0 / 10.0.pow((p * 3).toDouble())).toInt()
-        return s + ClayEnergyNumeral(d, p, p == 0 || flag)
-    }
-
-    fun ClayEnergyNumeral(ce: Double): String {
-        return ClayEnergyNumeral(ce, true)
-    }
-
-    fun ClayEnergyNumeral(ce: Long, flag: Boolean): String {
-        var n = ce * 10L
-        var s = ""
-        if (n == 0L) {
-            return n.toString()
-        }
-        if (n < 0L) {
-            --n
-            s = "-"
-        }
-        val k = floor(log10(n.toDouble())).toInt()
-        val p = min((k / 3).toDouble(), (CENumerals.size - 1).toDouble()).toInt()
-        val d: Int = (n.toDouble() * 1000.0 / 10.0.pow((p * 3).toDouble())).toInt()
-        return s + ClayEnergyNumeral(d, p, p == 0 || flag)
-    }
-
-    fun ClayEnergyNumeral(ce: Long): String {
-        return ClayEnergyNumeral(ce, true)
-    }
-
-    internal fun ClayEnergyNumeral(d: Int, p: Int, flag: Boolean): String {
-        if (d % 10 != 0 || !flag) {
-            return (d / 1000).toString() + "." + d / 100 % 10 + d / 10 % 10 + d % 10 + CENumerals[p]
-        }
-        if (d % 100 != 0) {
-            return (d / 1000).toString() + "." + d / 100 % 10 + d / 10 % 10 + CENumerals[p]
-        }
-        return if (d % 1000 != 0) {
-            (d / 1000).toString() + "." + d / 100 % 10 + CENumerals[p]
-        } else (d / 1000).toString() + CENumerals[p]
-    }
 
     internal fun StackSizeNumeral(stackSize: Long, flag: Boolean): String {
         var k: Int

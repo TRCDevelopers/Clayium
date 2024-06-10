@@ -1,21 +1,25 @@
 package com.github.trcdevelopers.clayium.common.clayenergy
 
-import com.github.trcdevelopers.clayium.common.util.UtilLocale
-import net.minecraft.client.resources.I18n
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
+import kotlin.math.abs
+import kotlin.math.pow
 
 @JvmInline
 value class ClayEnergy(val energy: Long) {
 
     // todo replace toString with this
-    @SideOnly(Side.CLIENT)
     fun format(): String {
-        return I18n.format("tooltip.clayium.ce", UtilLocale.ClayEnergyNumeral(energy.toDouble()))
+        if (energy == 0L) return "0 CE"
+        val digits = abs(energy).toString().length + 1
+        val microCe = energy.toDouble() * 10.0
+        val unitIndex = digits / 3
+        val displayValue = String.format("%.3f", microCe / 10.0.pow(unitIndex * 3))
+            .replace(matchesExcessZero, "")
+            .replace(matchesExcessDecimalPoint, "")
+        return "$displayValue${units[unitIndex]} CE"
     }
 
     override fun toString(): String {
-        return UtilLocale.ClayEnergyNumeral(energy.toDouble())
+        return "ClayEnergy(energy=$energy)"
     }
 
     operator fun plus(other: ClayEnergy) = ClayEnergy(energy + other.energy)
@@ -26,6 +30,10 @@ value class ClayEnergy(val energy: Long) {
 
     companion object {
         val ZERO = ClayEnergy(0)
+
+        val units = listOf("μ", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y")
+        private val matchesExcessZero = Regex("0+\$")
+        private val matchesExcessDecimalPoint = Regex("\\.$")
 
         fun micro(energy: Long): ClayEnergy {
             require(energy % 10 == 0.toLong()) {
