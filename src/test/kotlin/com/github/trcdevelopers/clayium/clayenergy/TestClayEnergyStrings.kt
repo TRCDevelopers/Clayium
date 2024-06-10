@@ -4,33 +4,30 @@ import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 
+@Suppress("unused")
 class TestClayEnergyStrings : StringSpec({
-    // X" CE" is not included, they're defined in lang files.
-    "test 0 CE" {
-        ClayEnergy.ZERO.toString() shouldBe "0"
+    "-10μ CE" {
+        ClayEnergy.micro(-10).format() shouldBe "-10μ CE"
     }
-    "micro 1: 10" {
-        ClayEnergy.micro(10).toString() shouldBe "10u"
+    "0 CE" {
+        ClayEnergy.ZERO.format() shouldBe "0 CE"
     }
-    "micro 2: 240" {
-        ClayEnergy.micro(240).toString() shouldBe "240u"
+    "10μ CE - minimum unit value" {
+        ClayEnergy.micro(10).format() shouldBe "10μ CE"
     }
-    "milli: 13" {
-        ClayEnergy.milli(13).toString() shouldBe "13m"
+    "13m CE - small value" {
+        ClayEnergy.milli(13).format() shouldBe "13m CE"
     }
     "57 CE" {
-        ClayEnergy.of(57).toString() shouldBe "57"
+        ClayEnergy.of(57).format() shouldBe "57 CE"
     }
-    "kilo: 96k CE" {
-        ClayEnergy.of(96_000).toString() shouldBe "96k"
+    "6k CE - kilo value" {
+        ClayEnergy.of(6000).format() shouldBe "6k CE"
     }
-    "mega: 38M CE" {
-        ClayEnergy.of(38_000_000).toString() shouldBe "38M"
+    "53T CE - big value" {
+        ClayEnergy.of(53_000_000_000_000).format() shouldBe "53T CE"
     }
-    "giga: 77G CE" {
-        ClayEnergy.of(77_000_000_000).toString() shouldBe "77G"
-    }
-    "tera: 53T CE" {
-        ClayEnergy.of(53_000_000_000_000).toString() shouldBe "53T"
+    "1.234k CE - decimal value" {
+        ClayEnergy.of(1234).format() shouldBe "1.234k CE"
     }
 })

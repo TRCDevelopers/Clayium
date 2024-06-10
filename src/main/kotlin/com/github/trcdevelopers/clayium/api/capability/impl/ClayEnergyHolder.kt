@@ -71,7 +71,7 @@ class ClayEnergyHolder(
         ))
 
         return IKey.dynamic {
-            I18n.format(CTranslation.CLAY_ENERGY, this.clayEnergy.toString())
+            I18n.format(CTranslation.CLAY_ENERGY, this.clayEnergy.format())
         }.asWidget()
     }
 
