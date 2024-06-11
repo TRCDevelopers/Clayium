@@ -10,6 +10,7 @@ import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_FRONT_FACING
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_INPUT_MODE
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_OUTPUT_MODE
+import com.github.trcdevelopers.clayium.api.capability.IItemFilter
 import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
@@ -24,6 +25,7 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.*
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.*
+import com.github.trcdevelopers.clayium.common.items.filter.FilterType
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import net.minecraft.block.state.IBlockState
@@ -56,6 +58,7 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import org.jetbrains.annotations.MustBeInvokedByOverriders
+import kotlin.collections.AbstractList
 
 abstract class MetaTileEntity(
     val metaTileEntityId: ResourceLocation,
@@ -96,6 +99,12 @@ abstract class MetaTileEntity(
     val inputModes get() = _inputModes.toList()
     val outputModes get() = _outputModes.toList()
     val connectionsCache get() = _connectionsCache.copyOf()
+
+    private val filterAndTypes = MutableList<FilterAndType?>(6) { null }
+    val filters: List<IItemFilter?> = object : AbstractList<IItemFilter?>() {
+        override val size get() = filterAndTypes.size
+        override fun get(index: Int) = filterAndTypes[index]?.filter
+    }
 
     open val hasFrontFacing = true
     var frontFacing = EnumFacing.NORTH
@@ -141,6 +150,11 @@ abstract class MetaTileEntity(
         data.setByteArray("inputModes", ByteArray(6) { _inputModes[it].id.toByte() })
         data.setByteArray("outputModes", ByteArray(6) { _outputModes[it].id.toByte() })
         data.setByteArray("connections", ByteArray(6) { if (_connectionsCache[it]) 1 else 0 })
+        filterAndTypes.forEachIndexed { i, filterAndType ->
+            if (filterAndType == null) return@forEachIndexed
+            data.setInteger("filterType$i", filterAndType.type.id)
+            data.setTag("filter$i", filterAndType.filter.serializeNBT())
+        }
         CUtils.writeItems(importItems, "importInventory", data)
         CUtils.writeItems(exportItems, "exportInventory", data)
         for ((name, trait) in mteTraits) {
@@ -153,6 +167,14 @@ abstract class MetaTileEntity(
         data.getByteArray("inputModes").forEachIndexed { i, id -> _inputModes[i] = MachineIoMode.byId(id.toInt()) }
         data.getByteArray("outputModes").forEachIndexed { i, id -> _outputModes[i] = MachineIoMode.byId(id.toInt()) }
         data.getByteArray("connections").forEachIndexed { i, b -> _connectionsCache[i] = (b == 1.toByte()) }
+        filterAndTypes.forEachIndexed { i, filter ->
+            if (data.hasKey("filterType$i") && data.hasKey("filter$i")) {
+                val type = FilterType.byId(data.getInteger("filterType$i"))
+                val filter = type.factory()
+                filter.deserializeNBT(data.getCompoundTag("filter$i"))
+                filterAndTypes[i] = FilterAndType(filter, type)
+            }
+        }
         CUtils.readItems(importItems, "importInventory", data)
         CUtils.readItems(exportItems, "exportInventory", data)
         for ((name, trait) in mteTraits) {
@@ -479,6 +501,8 @@ abstract class MetaTileEntity(
         }
         return quads
     }
+
+    private data class FilterAndType(val filter: IItemFilter, val type: FilterType)
 
     companion object {
 
