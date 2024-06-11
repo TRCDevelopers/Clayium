@@ -1,6 +1,12 @@
 package com.github.trcdevelopers.clayium.api.capability
 
 import net.minecraft.item.ItemStack
-import java.util.function.Predicate
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraftforge.common.util.INBTSerializable
 
-interface IItemFilter : Predicate<ItemStack>
+/**
+ * It is similar to the Predicate<ItemStack>, but it is impossible to serialize the nested lambda.
+ */
+interface IItemFilter : INBTSerializable<NBTTagCompound> {
+    fun test(stack: ItemStack): Boolean
+}
