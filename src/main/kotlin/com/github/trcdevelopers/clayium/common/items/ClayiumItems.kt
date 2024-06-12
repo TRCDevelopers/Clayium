@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.common.items
 
 import com.github.trcdevelopers.clayium.common.Clayium
+import com.github.trcdevelopers.clayium.common.items.filter.ItemSimpleItemFilter
 import net.minecraft.item.Item
 
 object ClayiumItems {
@@ -19,6 +20,8 @@ object ClayiumItems {
 
     val CLAY_PICKAXE = createItem("clay_pickaxe", ItemClayPickaxe())
     val CLAY_SHOVEL = createItem("clay_shovel", ItemClayShovel())
+
+    val simpleItemFilter = createItem("simple_item_filter", ItemSimpleItemFilter())
 
     private fun <T: Item> createItem(name: String, item: T): T {
         return item.apply {
