@@ -850,7 +850,7 @@ item.clayium.clay_pickaxe.name=粘土ツルハシ
 item.clayium.clay_pickaxe.tooltip=粘土鉱石を素早く採掘し、そのドロップ数を上昇させる
 
 item.clayium.itemFilterDuplicator.copy.name=アイテムフィルター複製機
-item.clayium.itemFilterWhitelist.name=ホワイトリストアイテムフィルター
+item.clayium.simple_item_filter.name=アイテムフィルター
 item.clayium.itemFilterWhitelist.copy.name=ホワイトリストアイテムフィルター (コピー)
 item.clayium.itemFilterBlacklist.name=ブラックリストアイテムフィルター
 item.clayium.itemFilterBlacklist.copy.name=ブラックリストアイテムフィルター (コピー)

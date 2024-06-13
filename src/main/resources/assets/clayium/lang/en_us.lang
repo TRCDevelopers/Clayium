@@ -850,7 +850,7 @@ item.clayium.clay_pickaxe.name=Clay Pickaxe
 item.clayium.clay_pickaxe.tooltip=Can harvest Clay Ores so fast and increase drops.
 
 item.clayium.itemFilterDuplicator.copy.name=Item Filter Duplicator
-item.clayium.itemFilterWhitelist.name=White List Item Filter
+item.clayium.simple_item_filter.name=Item Filter
 item.clayium.itemFilterWhitelist.copy.name=White List Item Filter (Copy)
 item.clayium.itemFilterBlacklist.name=Black List Item Filter
 item.clayium.itemFilterBlacklist.copy.name=Black List Item Filter (Copy)

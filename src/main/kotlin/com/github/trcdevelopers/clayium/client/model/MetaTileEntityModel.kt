@@ -30,6 +30,7 @@ class MetaTileEntityModel(
             add(clayiumId("blocks/export_1"))
             add(clayiumId("blocks/export_2"))
             add(clayiumId("blocks/export_12"))
+            add(clayiumId("blocks/filter"))
             // machine hulls)
             add(clayiumId("blocks/machinehull_tier1"))
             add(clayiumId("blocks/machinehull_tier2"))

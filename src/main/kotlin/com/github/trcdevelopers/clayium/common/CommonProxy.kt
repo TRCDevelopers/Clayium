@@ -87,6 +87,7 @@ open class CommonProxy {
         registerItem(registry, ClayiumItems.CLAY_PICKAXE)
         registerItem(registry, ClayiumItems.CLAY_SHOVEL)
         registerItem(registry, ClayiumItems.SYNCHRONIZER)
+        registerItem(registry, ClayiumItems.simpleItemFilter)
 
         registry.register(createItemBlock(ClayiumBlocks.CREATIVE_ENERGY_SOURCE, ::ItemBlock))
 

@@ -173,7 +173,7 @@ abstract class AbstractRecipeLogic(
     override fun deserializeNBT(data: NBTTagCompound) {
         currentProgress = data.getLong("currentProgress")
         requiredProgress = data.getLong("requiredProgress")
-        itemOutputs = mutableListOf<ItemStack>().apply { CUtils.readItems(this, "itemOutputs", data) }
+        itemOutputs = CUtils.readItems("itemOutputs", data)
         recipeCEt = ClayEnergy(data.getLong("recipeCEt"))
     }
 }
