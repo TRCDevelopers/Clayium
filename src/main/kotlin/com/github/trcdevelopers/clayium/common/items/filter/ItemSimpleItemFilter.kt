@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
+import com.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
 import com.github.trcdevelopers.clayium.api.capability.IItemFilter
 import com.github.trcdevelopers.clayium.api.capability.impl.SimpleItemFilter
 import com.github.trcdevelopers.clayium.api.util.CUtils
@@ -92,10 +93,9 @@ class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
         return object : ItemCapabilityProvider {
             override fun <T> getCapability(capability: Capability<T>): T? {
                 if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-                    return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(
-                        object : ItemStackItemHandler(stack, FILTER_SIZE_X * FILTER_SIZE_Y) {
-                            override fun getSlotLimit(slot: Int) = 1
-                        })
+                    return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(ItemStackItemHandler(stack, FILTER_SIZE_X * FILTER_SIZE_Y))
+                } else if (capability === ClayiumCapabilities.ITEM_FILTER) {
+                    return ClayiumCapabilities.ITEM_FILTER.cast(createFilter(stack))
                 }
                 return null
             }
