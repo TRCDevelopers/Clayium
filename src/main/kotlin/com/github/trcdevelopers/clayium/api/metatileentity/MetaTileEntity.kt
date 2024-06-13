@@ -190,6 +190,7 @@ abstract class MetaTileEntity(
             buf.writeByte(_inputModes[i].id)
             buf.writeByte(_outputModes[i].id)
             buf.writeBoolean(_connectionsCache[i])
+            buf.writeVarInt(filterAndTypes[i]?.type?.id ?: -1)
         }
         buf.writeVarInt(traitByNetworkId.size)
         for ((id, trait) in traitByNetworkId) {
@@ -204,6 +205,11 @@ abstract class MetaTileEntity(
             _inputModes[i] = MachineIoMode.byId(buf.readByte().toInt())
             _outputModes[i] = MachineIoMode.byId(buf.readByte().toInt())
             _connectionsCache[i] = buf.readBoolean()
+            val typeId = buf.readVarInt()
+            if (typeId != -1) {
+                val filterType = FilterType.byId(typeId)
+                this.setFilter(EnumFacing.byIndex(i), filterType.factory(), filterType)
+            }
         }
         val numberOfTraits = buf.readVarInt()
         for (i in 0..<numberOfTraits) {
