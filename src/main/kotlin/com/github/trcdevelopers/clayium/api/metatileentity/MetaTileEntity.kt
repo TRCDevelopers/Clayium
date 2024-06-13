@@ -12,6 +12,7 @@ import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_INPUT_MODE
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_OUTPUT_MODE
 import com.github.trcdevelopers.clayium.api.capability.IItemFilter
+import com.github.trcdevelopers.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
@@ -264,21 +265,31 @@ abstract class MetaTileEntity(
     open fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (facing == null) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemInventory)
-            val inputSlots = when (inputModes[facing.index]) {
-                FIRST -> RangedItemHandlerProxy(importItems, availableSlot = 0)
-                SECOND -> RangedItemHandlerProxy(importItems, availableSlot = 1)
-                ALL -> importItems
+            val i = facing.index
+            val filter = filters[i]
+            val inputSlots = when (inputModes[i]) {
+                FIRST ->  createFilteredHandler(RangedItemHandlerProxy(importItems, availableSlot = 0), filter)
+                SECOND -> createFilteredHandler(RangedItemHandlerProxy(importItems, availableSlot = 1), filter)
+                ALL -> createFilteredHandler(importItems, filter)
                 else -> null
             }
-            val outputSlots = when (outputModes[facing.index]) {
-                FIRST -> RangedItemHandlerProxy(exportItems, availableSlot = 0)
-                SECOND -> RangedItemHandlerProxy(exportItems, availableSlot = 1)
-                ALL -> exportItems
+            val outputSlots = when (outputModes[i]) {
+                FIRST ->  createFilteredHandler(RangedItemHandlerProxy(exportItems, availableSlot = 0), filter)
+                SECOND -> createFilteredHandler(RangedItemHandlerProxy(exportItems, availableSlot = 1), filter)
+                ALL -> createFilteredHandler(exportItems, filter)
                 else -> null
             }
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(ItemHandlerProxy(inputSlots, outputSlots))
         }
         return mteTraits.values.firstNotNullOfOrNull { it.getCapability(capability, facing) }
+    }
+
+    protected fun createFilteredHandler(handler: IItemHandler, filter: IItemFilter?): IItemHandler {
+        return if (filter == null) {
+            handler
+        } else {
+            FilteredItemHandler(handler, filter)
+        }
     }
 
     open fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
