@@ -239,9 +239,14 @@ abstract class MetaTileEntity(
             }
             UPDATE_FILTER -> {
                 val side = buf.readVarInt()
-                val type = FilterType.byId(buf.readVarInt())
-                // on the client side, the filter is only used to rendering, so we don't have to deserialize it.
-                filterAndTypes[side] = FilterAndType(type.factory(), type)
+                val typeId = buf.readVarInt()
+                if (typeId == -1) {
+                    filterAndTypes[side] = null
+                } else {
+                    val type = FilterType.byId(typeId)
+                    // on the client side, the filter is only used to rendering, so we don't have to deserialize it.
+                    filterAndTypes[side] = FilterAndType(type.factory(), type)
+                }
                 this.scheduleRenderUpdate()
             }
             UPDATE_CONNECTIONS -> {
@@ -326,7 +331,7 @@ abstract class MetaTileEntity(
                 EnumFacing.entries.forEach(this::refreshConnection)
             }
             FILTER_REMOVER -> {
-                this.filterAndTypes[clickedSide.index] = null
+                this.removeFilter(clickedSide)
             }
         }
     }
@@ -429,6 +434,14 @@ abstract class MetaTileEntity(
         writeCustomData(UPDATE_FILTER) {
             writeVarInt(side.index)
             writeVarInt(type.id)
+        }
+    }
+
+    fun removeFilter(side: EnumFacing) {
+        filterAndTypes[side.index] = null
+        writeCustomData(UPDATE_FILTER) {
+            writeVarInt(side.index)
+            writeVarInt(-1)
         }
     }
 
