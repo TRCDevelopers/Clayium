@@ -14,6 +14,9 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
+import com.github.trcdevelopers.clayium.api.capability.IItemFilter
+import com.github.trcdevelopers.clayium.api.capability.impl.SimpleItemFilter
+import com.github.trcdevelopers.clayium.api.util.CUtils
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.Item
@@ -21,7 +24,9 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumActionResult
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
+import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
@@ -60,6 +65,27 @@ class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
             ItemGuiFactory.open(playerIn as EntityPlayerMP, handIn)
         }
         return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
+    }
+
+    override fun onItemUseFirst(player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, hand: EnumHand): EnumActionResult {
+        val metaTileEntity = CUtils.getMetaTileEntity(world, pos) ?: return EnumActionResult.PASS
+        if (world.isRemote) return EnumActionResult.SUCCESS
+        metaTileEntity.setFilter(side, createFilter(player.getHeldItem(hand)), FilterType.SIMPLE)
+        return EnumActionResult.SUCCESS
+    }
+
+    private fun createFilter(stack: ItemStack): IItemFilter {
+        val itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable
+        if (itemHandler == null) return SimpleItemFilter()
+
+        val stacksMutableList = mutableListOf<ItemStack>()
+        for (i in 0..<itemHandler.slots) {
+            val handlerStack = itemHandler.getStackInSlot(i)
+            if (!handlerStack.isEmpty) {
+                stacksMutableList.add(handlerStack.copy())
+            }
+        }
+        return SimpleItemFilter(stacksMutableList)
     }
 
     override fun initCapabilities(stack: ItemStack, nbt: NBTTagCompound?): ICapabilityProvider? {
