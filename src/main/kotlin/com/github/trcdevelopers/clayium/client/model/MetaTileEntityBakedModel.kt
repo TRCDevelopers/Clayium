@@ -65,6 +65,11 @@ class MetaTileEntityBakedModel(
         }
     }
 
+    private val filterQuads = EnumFacing.entries.map { side ->
+        val atlasSprite = bakedTextureGetter.apply(clayiumId("blocks/filter"))
+        ModelTextures.createQuad(side, atlasSprite)
+    }
+
     override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> {
         if (state == null || side == null || state !is IExtendedBlockState) return emptyList()
         val mte = (state.getValue(TILE_ENTITY) as? MetaTileEntityHolder)?.metaTileEntity ?: return emptyList()
@@ -77,6 +82,9 @@ class MetaTileEntityBakedModel(
         mte.outputModes.forEachIndexed { facingIndex, mteOutputMode ->
             val side2Quad = outputModeQuads[mteOutputMode] ?: return@forEachIndexed
             quads.add(side2Quad[facingIndex])
+        }
+        mte.filters.forEachIndexed { i, filter ->
+            if (filter != null) quads.add(filterQuads[i])
         }
         return quads
     }

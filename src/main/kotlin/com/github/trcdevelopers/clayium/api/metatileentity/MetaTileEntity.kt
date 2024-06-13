@@ -7,6 +7,7 @@ import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.block.BlockMachine.Companion.IS_PIPE
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_CONNECTIONS
+import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_FRONT_FACING
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_INPUT_MODE
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_OUTPUT_MODE
@@ -229,6 +230,13 @@ abstract class MetaTileEntity(
                 _outputModes[buf.readByte().toInt()] = MachineIoMode.byId(buf.readByte().toInt())
                 this.scheduleRenderUpdate()
             }
+            UPDATE_FILTER -> {
+                val side = buf.readVarInt()
+                val type = FilterType.byId(buf.readVarInt())
+                // on the client side, the filter is only used to rendering, so we don't have to deserialize it.
+                filterAndTypes[side] = FilterAndType(type.factory(), type)
+                this.scheduleRenderUpdate()
+            }
             UPDATE_CONNECTIONS -> {
                 _connectionsCache[buf.readByte().toInt()] = buf.readBoolean()
                 this.scheduleRenderUpdate()
@@ -300,7 +308,9 @@ abstract class MetaTileEntity(
                 this.rotate(clickedSide)
                 EnumFacing.entries.forEach(this::refreshConnection)
             }
-            FILTER_REMOVER -> TODO()
+            FILTER_REMOVER -> {
+                this.filterAndTypes[clickedSide.index] = null
+            }
         }
     }
 
@@ -394,6 +404,14 @@ abstract class MetaTileEntity(
         writeCustomData(UPDATE_CONNECTIONS) {
             writeByte(i)
             writeBoolean(_connectionsCache[i])
+        }
+    }
+
+    fun setFilter(side: EnumFacing, filter: IItemFilter, type: FilterType) {
+        filterAndTypes[side.index] = FilterAndType(filter, type)
+        writeCustomData(UPDATE_FILTER) {
+            writeVarInt(side.index)
+            writeVarInt(type.id)
         }
     }
 
