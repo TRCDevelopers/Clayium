@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 
 class SimpleItemFilter(
-    private val stacks: MutableList<ItemStack> = mutableListOf(),
+    private var stacks: List<ItemStack> = listOf(),
     private var whitelist: Boolean = true,
 ) : IItemFilter {
     override fun test(stack: ItemStack): Boolean {
@@ -21,8 +21,7 @@ class SimpleItemFilter(
     }
 
     override fun deserializeNBT(nbt: NBTTagCompound) {
-        stacks.clear()
-        CUtils.readItems(stacks, "stacks", nbt)
-        whitelist = nbt.getBoolean("whitelist")
+        this.stacks = CUtils.readItems("stacks", nbt)
+        this.whitelist = nbt.getBoolean("whitelist")
     }
 }

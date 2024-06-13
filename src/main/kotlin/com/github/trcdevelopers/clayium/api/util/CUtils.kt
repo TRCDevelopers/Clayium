@@ -17,7 +17,6 @@ import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import kotlin.collections.indices
-import kotlin.ranges.until
 
 object CUtils {
     fun toUpperCamel(snakeCase: String): String {
@@ -47,7 +46,6 @@ object CUtils {
             val stack = items[i]
             if (!stack.isEmpty) {
                 val itemTag = NBTTagCompound()
-                itemTag.setByte("Slot", i.toByte())
                 stack.writeToNBT(itemTag)
                 tagList.appendTag(itemTag)
             }
@@ -67,15 +65,14 @@ object CUtils {
         }
     }
 
-    fun readItems(items: MutableList<ItemStack>, tagName: String, tag: NBTTagCompound) {
-        val tagList = tag.getTagList(tagName, 10)
+    fun readItems(tagName: String, tag: NBTTagCompound): List<ItemStack> {
+        val items = mutableListOf<ItemStack>()
+        val tagList = tag.getTagList(tagName, Constants.NBT.TAG_COMPOUND)
         for (i in 0..<tagList.tagCount()) {
             val itemTag = tagList.getCompoundTagAt(i)
-            val slot = itemTag.getByte("Slot").toInt()
-            if (slot in 0 until items.size) {
-                items[slot] = ItemStack(itemTag)
-            }
+            items.add(ItemStack(itemTag))
         }
+        return items
     }
 
     fun handlerToList(handler: IItemHandler): List<ItemStack> {
