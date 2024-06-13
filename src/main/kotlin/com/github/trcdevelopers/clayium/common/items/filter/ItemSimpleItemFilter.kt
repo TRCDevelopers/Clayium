@@ -2,6 +2,8 @@ package com.github.trcdevelopers.clayium.common.items.filter
 
 import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.drawable.DynamicDrawable
+import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.factory.HandGuiData
 import com.cleanroommc.modularui.factory.ItemGuiFactory
 import com.cleanroommc.modularui.screen.ModularPanel
@@ -9,8 +11,10 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.ItemCapabilityProvider
 import com.cleanroommc.modularui.utils.ItemStackItemHandler
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.IntSyncValue
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
+import com.cleanroommc.modularui.widgets.CycleButtonWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
@@ -31,12 +35,14 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
+import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
 class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
     override fun buildUI(data: HandGuiData, syncManager: GuiSyncManager): ModularPanel {
-        val itemHandler = data.usedItemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable
+        val stack = data.usedItemStack
+        val itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable
             ?: return ModularPanel.defaultPanel("simple_item_filter_error")
 
         syncManager.registerSlotGroup("filter", FILTER_SIZE_X)
@@ -44,13 +50,42 @@ class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
             (0..<FILTER_SIZE_Y).map { column }.toTypedArray()
         }
 
+        val isWhiteListSyncHandler = IntSyncValue(
+            {
+                val tag = data.usedItemStack.tagCompound
+                if (tag == null || !tag.hasKey("isWhiteList", Constants.NBT.TAG_INT)) {
+                    1
+                } else {
+                    tag.getInteger("isWhiteList")
+                }
+            },
+            { value ->
+                val tag = stack.tagCompound ?: NBTTagCompound()
+                tag.setInteger("isWhiteList", value)
+                stack.tagCompound = tag
+            })
+
         return ModularPanel.defaultPanel("simple_item_filter")
             .child(Column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.str(data.usedItemStack.displayName).asWidget()
+                    .child(IKey.str(stack.displayName).asWidget()
                         .align(Alignment.TopLeft))
                     .child(IKey.lang("container.inventory").asWidget()
                         .align(Alignment.BottomLeft))
+                    .child(CycleButtonWidget()
+                        .length(2)
+                        .align(Alignment.CenterRight)
+                        .value(isWhiteListSyncHandler)
+                        .overlay(DynamicDrawable {
+                            if (isWhiteListSyncHandler.value == 1) {
+                                GuiTextures.FILTER
+                            } else {
+                                GuiTextures.CLOSE
+                            }
+                        })
+                        .addTooltip(0, "Deny")
+                        .addTooltip(1, "Allow")
+                    )
                     .child(SlotGroupWidget.builder()
                         .matrix(*matrix)
                         .key('I') { i -> ItemSlot().slot(SyncHandlers.phantomItemSlot(itemHandler, i)
@@ -86,7 +121,8 @@ class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
                 stacksMutableList.add(handlerStack.copy())
             }
         }
-        return SimpleItemFilter(stacksMutableList)
+        val isWhiteList = (stack.tagCompound?.getInteger("isWhiteList") == 1)
+        return SimpleItemFilter(stacksMutableList, isWhiteList)
     }
 
     override fun initCapabilities(stack: ItemStack, nbt: NBTTagCompound?): ICapabilityProvider? {
