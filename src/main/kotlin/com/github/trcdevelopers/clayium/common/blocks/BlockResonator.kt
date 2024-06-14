@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.blocks
 
+import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.block.IResonatingBlock
 import com.github.trcdevelopers.clayium.api.block.ITieredBlock
 import com.github.trcdevelopers.clayium.api.util.ClayTiers
@@ -10,6 +11,8 @@ import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyInteger
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.resources.I18n
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
@@ -19,14 +22,16 @@ import net.minecraft.util.NonNullList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockResonator : Block(Material.IRON), IResonatingBlock, ITieredBlock {
     init {
         setSoundType(SoundType.METAL)
-        setHardness(2.0f);
-        setResistance(5.0f);
-        setHarvestLevel("pickaxe", 0);
+        setHardness(2.0f)
+        setResistance(5.0f)
+        setHarvestLevel("pickaxe", 0)
     }
 
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
@@ -52,6 +57,11 @@ class BlockResonator : Block(Material.IRON), IResonatingBlock, ITieredBlock {
 
     override fun getTier(world: IBlockAccess, pos: BlockPos): ITier {
         return ClayTiers.entries[world.getBlockState(pos).getValue(META) + MIN_TIER]
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        tooltip.add(I18n.format("gui.${CValues.MOD_ID}.resonance", RESONANCE[stack.metadata]))
     }
 
     companion object {
