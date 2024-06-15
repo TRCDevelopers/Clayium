@@ -31,7 +31,7 @@ value class ClayEnergy(val energy: Long) {
     companion object {
         val ZERO = ClayEnergy(0)
 
-        val units = listOf("μ", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y")
+        val units = listOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y")
         private val matchesExcessZero = Regex("0+\$")
         private val matchesExcessDecimalPoint = Regex("\\.$")
 

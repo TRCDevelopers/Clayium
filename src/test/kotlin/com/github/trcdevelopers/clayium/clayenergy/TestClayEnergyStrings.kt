@@ -7,13 +7,13 @@ import io.kotest.matchers.shouldBe
 @Suppress("unused")
 class TestClayEnergyStrings : StringSpec({
     "-10μ CE" {
-        ClayEnergy.micro(-10).format() shouldBe "-10μCE"
+        ClayEnergy.micro(-10).format() shouldBe "-10uCE"
     }
     "0 CE" {
         ClayEnergy.ZERO.format() shouldBe "0CE"
     }
     "10μ CE - minimum unit value" {
-        ClayEnergy.micro(10).format() shouldBe "10μCE"
+        ClayEnergy.micro(10).format() shouldBe "10uCE"
     }
     "13m CE - small value" {
         ClayEnergy.milli(13).format() shouldBe "13mCE"
