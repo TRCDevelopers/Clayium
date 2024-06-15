@@ -32,7 +32,7 @@ class ItemBlockEnergizedClay(block: BlockEnergizedClay) : ItemBlock(block), IEne
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         tooltip.add(I18n.format("tooltip.${Clayium.MOD_ID}.tier", getTier(stack).numeric))
-        tooltip.add(I18n.format("tooltip.${Clayium.MOD_ID}.ce", ClayEnergy.of(10.toDouble().pow(stack.metadata).toLong()).format()))
+        tooltip.add(ClayEnergy.of(10.toDouble().pow(stack.metadata).toLong()).format())
     }
 
     override fun getForgeRarity(stack: ItemStack): IRarity {
