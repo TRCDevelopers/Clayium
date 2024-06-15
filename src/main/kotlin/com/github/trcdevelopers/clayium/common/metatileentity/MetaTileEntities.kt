@@ -110,6 +110,8 @@ object MetaTileEntities {
 
     val STORAGE_CONTAINER = registerMetaTileEntity(152, StorageContainerMetaTileEntity(clayiumId("storage_container"), ClayTiers.AZ91D))
 
+    val CA_RESONATING_COLLECTOR = registerMetaTileEntity(153, ResonatingCollectorMetaTileEntity(clayiumId("resonating_collector"), ClayTiers.ANTIMATTER))
+
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)
      * @param provider tier -> MetaTileEntity

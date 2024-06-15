@@ -415,9 +415,9 @@ tile.clayium.blockOECCAInjector.name=OEC CA 注入機
 tile.clayium.blockOPACAInjector.name=OPA CA 注入機
 tooltip.clayium.CAInjector.line1=反物質を注入することで、物質に変化を与える
 
-tile.clayium.blockCACollector.name=共鳴型反物質収集機
-tile.clayium.blockCACollector.tooltip.line1=共鳴により反物質を収集する
-tile.clayium.blockCACollector.tooltip.line2=稼動には共鳴装置が必要
+machine.clayium.resonating_collector=共鳴型反物質収集機
+machine.clayium.resonating_collector.tooltip1=共鳴により反物質を収集する
+machine.clayium.resonating_collector.tooltip2=稼動には共鳴装置が必要
 
 tile.clayium.blockResonator.antimatter.name=反物質共鳴装置
 tile.clayium.blockResonator.pureantimatter.name=純反物質共鳴装置

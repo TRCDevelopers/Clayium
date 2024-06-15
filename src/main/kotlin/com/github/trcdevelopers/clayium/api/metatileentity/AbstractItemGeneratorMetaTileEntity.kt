@@ -37,21 +37,21 @@ abstract class AbstractItemGeneratorMetaTileEntity(
     translationKey,
 ) {
 
-    val inventoryRowSize = when (tier.numeric) {
+    open val inventoryRowSize = when (tier.numeric) {
         in 4..7 -> tier.numeric - 3
         8, -> 4
         in 9..13 -> 6
         else -> 1
     }
-    val inventoryColumnSize = when (tier.numeric) {
+    open val inventoryColumnSize = when (tier.numeric) {
         in 4..7 -> tier.numeric - 2
         in 8..13 -> 9
         else -> 1
     }
 
-    override val itemInventory = NotifiableItemStackHandler(this, inventoryRowSize * inventoryColumnSize, this, isExport = true)
     override val importItems = EmptyItemStackHandler
-    override val exportItems = itemInventory
+    override val exportItems = NotifiableItemStackHandler(this, inventoryRowSize * inventoryColumnSize, this, isExport = true)
+    override val itemInventory = exportItems
     override val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this, isBuffer = true)
 
     private var isTerrainValid = false

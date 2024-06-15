@@ -415,9 +415,9 @@ tile.clayium.blockOECCAInjector.name=OEC CA Injector
 tile.clayium.blockOPACAInjector.name=OPA CA Injector
 tooltip.clayium.CAInjector.line1=Injects antimatter into things.
 
-tile.clayium.blockCACollector.name=CA Resonating Collector
-tile.clayium.blockCACollector.tooltip.line1=Collects antimatter with resonance.
-tile.clayium.blockCACollector.tooltip.line2=Requires Resonators.
+machine.clayium.resonating_collector=CA Resonating Collector
+machine.clayium.resonating_collector.tooltip1=Collects antimatter with resonance.
+machine.clayium.resonating_collector.tooltip2=Requires Resonators.
 
 tile.clayium.blockResonator.antimatter.name=Antimatter Resonator
 tile.clayium.blockResonator.pureantimatter.name=Pure Antimatter Resonator
