@@ -41,6 +41,10 @@ abstract class WorkableMetaTileEntity(
     val recipeRegistry: RecipeRegistry<*>,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey) {
 
+    constructor(metaTileEntityId: ResourceLocation, tier: ITier, recipeRegistry: RecipeRegistry<*>)
+            : this(metaTileEntityId, tier, validInputModesLists[recipeRegistry.maxInputs], validOutputModesLists[recipeRegistry.maxOutputs],
+        "machine.${metaTileEntityId.namespace}.${recipeRegistry.category.categoryName}", recipeRegistry)
+
     val inputSize = recipeRegistry.maxInputs
     val outputSize = recipeRegistry.maxOutputs
 

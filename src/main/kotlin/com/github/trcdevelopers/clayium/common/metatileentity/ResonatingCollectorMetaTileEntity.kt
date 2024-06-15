@@ -85,9 +85,4 @@ class ResonatingCollectorMetaTileEntity(
                 .child(SlotGroupWidget.playerInventory(0))
             )
     }
-
-    override fun writeToNBT(data: NBTTagCompound) {
-        super.writeToNBT(data)
-        println("AAAAAAAAAAAAAAAAAAAA")
-    }
 }

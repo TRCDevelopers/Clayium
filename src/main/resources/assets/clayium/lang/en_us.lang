@@ -408,12 +408,9 @@ tile.clayium.blockAntimatterCACondenser.name=Antimatter CA Condenser
 tile.clayium.blockPureAntimatterCACondenser.name=Pure Antimatter CA Condenser
 tooltip.clayium.CACondenser.line1=Condenses antimatter seeds.
 
-tile.clayium.blockUltimateCAInjector.name=CA Injector
-tile.clayium.blockAntimatterCAInjector.name=Antimatter CA Injector
-tile.clayium.blockPureAntimatterCAInjector.name=Pure Antimatter CA Injector
-tile.clayium.blockOECCAInjector.name=OEC CA Injector
-tile.clayium.blockOPACAInjector.name=OPA CA Injector
-tooltip.clayium.CAInjector.line1=Injects antimatter into things.
+machine.clayium.ca_injector.ultimate=CA Injector
+machine.clayium.ca_injector=%s CA Injector
+machine.clayium.ca_injector.tooltip1=Injects antimatter into things.
 
 machine.clayium.resonating_collector=CA Resonating Collector
 machine.clayium.resonating_collector.tooltip1=Collects antimatter with resonance.

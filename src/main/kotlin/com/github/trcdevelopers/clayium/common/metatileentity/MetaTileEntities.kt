@@ -112,6 +112,10 @@ object MetaTileEntities {
 
     val CA_RESONATING_COLLECTOR = registerMetaTileEntity(153, ResonatingCollectorMetaTileEntity(clayiumId("resonating_collector"), ClayTiers.ANTIMATTER))
 
+    val CA_INJECTOR = registerMetaTileEntities(154, (9..13)) {
+        CaInjectorMetaTileEntity(clayiumId("ca_injector.${it.lowerName}"), it)
+    }
+
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)
      * @param provider tier -> MetaTileEntity

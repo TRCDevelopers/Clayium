@@ -408,12 +408,9 @@ tile.clayium.blockAntimatterCACondenser.name=反物質 CA 凝縮機
 tile.clayium.blockPureAntimatterCACondenser.name=純反物質 CA 凝縮機
 tooltip.clayium.CACondenser.line1=反物質の種から反物質を精製する
 
-tile.clayium.blockUltimateCAInjector.name=CA 注入機
-tile.clayium.blockAntimatterCAInjector.name=反物質 CA 注入機
-tile.clayium.blockPureAntimatterCAInjector.name=純反物質 CA 注入機
-tile.clayium.blockOECCAInjector.name=OEC CA 注入機
-tile.clayium.blockOPACAInjector.name=OPA CA 注入機
-tooltip.clayium.CAInjector.line1=反物質を注入することで、物質に変化を与える
+machine.clayium.ca_injector.ultimate=CA 注入機
+machine.clayium.ca_injector=%s CA 注入機
+machine.clayium.ca_injector.tooltip1=反物質を注入することで、物質に変化を与える
 
 machine.clayium.resonating_collector=共鳴型反物質収集機
 machine.clayium.resonating_collector.tooltip1=共鳴により反物質を収集する
