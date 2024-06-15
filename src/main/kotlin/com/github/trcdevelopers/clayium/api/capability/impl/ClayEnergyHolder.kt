@@ -5,7 +5,6 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.TextWidget
-import com.github.trcdevelopers.clayium.api.CTranslation
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
 import com.github.trcdevelopers.clayium.api.capability.IClayEnergyHolder
 import com.github.trcdevelopers.clayium.api.metatileentity.AutoIoHandler
@@ -70,9 +69,7 @@ class ClayEnergyHolder(
             { clayEnergy = ClayEnergy(it) }
         ))
 
-        return IKey.dynamic {
-            I18n.format(CTranslation.CLAY_ENERGY, this.clayEnergy.format())
-        }.asWidget()
+        return IKey.dynamic { this.clayEnergy.format() }.asWidget()
     }
 
     private fun tryConsumeEnergizedClay() {

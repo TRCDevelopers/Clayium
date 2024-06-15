@@ -8,14 +8,14 @@ value class ClayEnergy(val energy: Long) {
 
     // todo replace toString with this
     fun format(): String {
-        if (energy == 0L) return "0 CE"
-        val digits = abs(energy).toString().length + 1
+        if (energy == 0L) return "0CE"
+        val digits = abs(energy).toString().length
         val microCe = energy.toDouble() * 10.0
         val unitIndex = digits / 3
         val displayValue = String.format("%.3f", microCe / 10.0.pow(unitIndex * 3))
             .replace(matchesExcessZero, "")
             .replace(matchesExcessDecimalPoint, "")
-        return "$displayValue${units[unitIndex]} CE"
+        return "$displayValue${units[unitIndex]}CE"
     }
 
     override fun toString(): String {
@@ -31,7 +31,7 @@ value class ClayEnergy(val energy: Long) {
     companion object {
         val ZERO = ClayEnergy(0)
 
-        val units = listOf("μ", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y")
+        val units = listOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y")
         private val matchesExcessZero = Regex("0+\$")
         private val matchesExcessDecimalPoint = Regex("\\.$")
 
