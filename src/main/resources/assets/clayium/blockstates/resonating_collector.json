@@ -1,0 +1,19 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "face": "clayium:blocks/ca_resonating_collector"
+    },
+    "model": "clayium:machine"
+  },
+  "variants": {
+    "tier": {
+      "antimatter": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier10"
+        },
+        "model": "clayium:machine"
+      }
+    }
+  }
+}

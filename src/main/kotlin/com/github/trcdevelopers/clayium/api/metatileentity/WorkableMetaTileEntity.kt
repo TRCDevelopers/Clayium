@@ -41,6 +41,10 @@ abstract class WorkableMetaTileEntity(
     val recipeRegistry: RecipeRegistry<*>,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey) {
 
+    constructor(metaTileEntityId: ResourceLocation, tier: ITier, recipeRegistry: RecipeRegistry<*>)
+            : this(metaTileEntityId, tier, validInputModesLists[recipeRegistry.maxInputs], validOutputModesLists[recipeRegistry.maxOutputs],
+        "machine.${metaTileEntityId.namespace}.${recipeRegistry.category.categoryName}", recipeRegistry)
+
     val inputSize = recipeRegistry.maxInputs
     val outputSize = recipeRegistry.maxOutputs
 
@@ -60,6 +64,13 @@ abstract class WorkableMetaTileEntity(
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         if (capability == ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER) return ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER.cast(clayEnergyHolder)
         return super.getCapability(capability, facing)
+    }
+
+    override fun onPlacement() {
+        super.onPlacement()
+        this.setInput(EnumFacing.UP, MachineIoMode.ALL)
+        this.setOutput(EnumFacing.DOWN, MachineIoMode.ALL)
+        this.setInput(this.frontFacing.opposite, MachineIoMode.CE)
     }
 
     override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {

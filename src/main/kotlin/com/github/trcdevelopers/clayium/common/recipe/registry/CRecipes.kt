@@ -22,6 +22,7 @@ object CRecipes {
     val WIRE_DRAWING_MACHINE = addRegistry("wire_drawing_machine", SimpleRecipeBuilder(), 1, 1)
     val SMELTER = addRegistry("smelter", SimpleRecipeBuilder(), 1, 1)
     val SOLAR_CLAY_FABRICATOR = addRegistry("solar_clay_fabricator", ClayFabricatorRecipeBuilder(ClayFabricatorRecipeBuilder::solarClayFabricator), 1, 1)
+    val CA_CONDENSER = addRegistry("ca_condenser", SimpleRecipeBuilder(), 1, 1)
     /**
      * todo: solar clay fabricator is maybe special
      * todo: electrolysis reactor can be dynamic ore-prefixed recipe
@@ -32,6 +33,7 @@ object CRecipes {
     val ASSEMBLER = addRegistry("assembler", SimpleRecipeBuilder(), 2, 1)
     val INSCRIBER = addRegistry("inscriber", SimpleRecipeBuilder(), 2, 1)
     val ALLOT_SMELTER = addRegistry("allot_smelter", SimpleRecipeBuilder(), 2, 1)
+    val CA_INJECTOR = addRegistry("ca_injector", SimpleRecipeBuilder(), 2, 1) //todo special registry or builder?
 
     // others
     val CHEMICAL_REACTOR = addRegistry("chemical_reactor", SimpleRecipeBuilder(), 2, 2)

@@ -403,21 +403,17 @@ machine.clayium.clay_reactor.tooltip10=Time to craft depends on Laser's strength
 machine.clayium.matter_transformer=%s Matter Transformer
 machine.clayium.matter_transformer.tooltip1=Transforms things to others.
 
-tile.clayium.blockUltimateCACondenser.name=CA Condenser
-tile.clayium.blockAntimatterCACondenser.name=Antimatter CA Condenser
-tile.clayium.blockPureAntimatterCACondenser.name=Pure Antimatter CA Condenser
-tooltip.clayium.CACondenser.line1=Condenses antimatter seeds.
+machine.clayium.ca_condenser.ultimate=CA Condenser
+machine.clayium.ca_condenser=%s CA Condenser
+machine.clayium.ca_condenser.tooltip1=Condenses antimatter seeds.
 
-tile.clayium.blockUltimateCAInjector.name=CA Injector
-tile.clayium.blockAntimatterCAInjector.name=Antimatter CA Injector
-tile.clayium.blockPureAntimatterCAInjector.name=Pure Antimatter CA Injector
-tile.clayium.blockOECCAInjector.name=OEC CA Injector
-tile.clayium.blockOPACAInjector.name=OPA CA Injector
-tooltip.clayium.CAInjector.line1=Injects antimatter into things.
+machine.clayium.ca_injector.ultimate=CA Injector
+machine.clayium.ca_injector=%s CA Injector
+machine.clayium.ca_injector.tooltip1=Injects antimatter into things.
 
-tile.clayium.blockCACollector.name=CA Resonating Collector
-tile.clayium.blockCACollector.tooltip.line1=Collects antimatter with resonance.
-tile.clayium.blockCACollector.tooltip.line2=Requires Resonators.
+machine.clayium.resonating_collector=CA Resonating Collector
+machine.clayium.resonating_collector.tooltip1=Collects antimatter with resonance.
+machine.clayium.resonating_collector.tooltip2=Requires Resonators.
 
 tile.clayium.blockResonator.antimatter.name=Antimatter Resonator
 tile.clayium.blockResonator.pureantimatter.name=Pure Antimatter Resonator
