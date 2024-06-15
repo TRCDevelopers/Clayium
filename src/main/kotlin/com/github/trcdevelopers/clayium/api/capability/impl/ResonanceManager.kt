@@ -7,17 +7,19 @@ import com.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import net.minecraft.network.PacketBuffer
 
-class ResonanceListener(
+class ResonanceManager(
     metaTileEntity: MetaTileEntity,
+    private val range: Int
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.RESONANCE_LISTENER) {
-    val range = 2
 
     var resonance = 1.0
         private set(value) {
             val syncFlag = (metaTileEntity.world?.isRemote == false) && (field != value)
             field = value
-            writeCustomData(UPDATE_RESONANCE) {
-                writeDouble(value)
+            if (syncFlag) {
+                writeCustomData(UPDATE_RESONANCE) {
+                    writeDouble(value)
+                }
             }
         }
 
