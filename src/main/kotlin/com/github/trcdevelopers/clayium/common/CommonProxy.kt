@@ -8,6 +8,7 @@ import com.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.client.renderer.LaserReflectorItemStackRenderer
+import com.github.trcdevelopers.clayium.common.blocks.BlockQuartzCrucible
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
 import com.github.trcdevelopers.clayium.common.blocks.TileEntityCreativeEnergySource
@@ -103,6 +104,8 @@ open class CommonProxy {
         registry.register(createItemBlock(ClayiumBlocks.MACHINE_HULL, ::ItemBlockTiered))
         registry.register(createItemBlock(ClayiumBlocks.RESONATOR, ::ItemBlockTiered))
 
+        registry.register(createItemBlock(ClayiumBlocks.QUARTZ_CRUCIBLE, ::ItemBlockTiered))
+
         registry.register(ItemBlock(ClayiumBlocks.LASER_REFLECTOR).apply {
             registryName = ClayiumBlocks.LASER_REFLECTOR.registryName
             translationKey = ClayiumBlocks.LASER_REFLECTOR.translationKey
@@ -127,5 +130,6 @@ open class CommonProxy {
         GameRegistry.registerTileEntity(TileEntityClayLaserReflector::class.java, clayiumId("laser_reflector"))
         GameRegistry.registerTileEntity(TileEntityCreativeEnergySource::class.java, ResourceLocation(Clayium.MOD_ID, "creativeEnergySource"))
         GameRegistry.registerTileEntity(MetaTileEntityHolder::class.java, ResourceLocation(Clayium.MOD_ID, "metaTileEntityHolder"))
+        GameRegistry.registerTileEntity(BlockQuartzCrucible.QuartzCrucibleTileEntity::class.java, clayiumId("quartzCrucibleTileEntity"))
     }
 }

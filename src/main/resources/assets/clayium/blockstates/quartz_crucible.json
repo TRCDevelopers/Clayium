@@ -1,0 +1,40 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+      "model": "clayium:quartz_crucible/empty"
+  },
+  "variants": {
+    "meta": {
+      "0": {
+        "__comment": "using default. empty crucible."
+      },
+      "1": {
+        "submodel": "clayium:quartz_crucible/level_1"
+      },
+      "2": {
+        "submodel": "clayium:quartz_crucible/level_2"
+      },
+      "3": {
+        "submodel": "clayium:quartz_crucible/level_3"
+      },
+      "4": {
+        "submodel": "clayium:quartz_crucible/level_4"
+      },
+      "5": {
+        "submodel": "clayium:quartz_crucible/level_5"
+      },
+      "6": {
+        "submodel": "clayium:quartz_crucible/level_6"
+      },
+      "7": {
+        "submodel": "clayium:quartz_crucible/level_7"
+      },
+      "8": {
+        "submodel": "clayium:quartz_crucible/level_8"
+      },
+      "9": {
+        "submodel": "clayium:quartz_crucible/level_9"
+      }
+    }
+  }
+}
