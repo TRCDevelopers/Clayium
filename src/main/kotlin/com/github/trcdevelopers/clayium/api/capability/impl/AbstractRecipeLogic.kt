@@ -146,10 +146,9 @@ abstract class AbstractRecipeLogic(
             if (Mods.JustEnoughItems.isModLoaded) {
                 widget.addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
                     .listenGuiAction(IGuiAction.MousePressed { _ ->
-                    JeiPlugin.jeiRuntime.recipesGui.showCategories(
-                        listOf(this@AbstractRecipeLogic.recipeRegistry.category.uniqueId)
-                    )
-                    true
+                        if (!widget.isBelowMouse) return@MousePressed false
+                        JeiPlugin.jeiRuntime.recipesGui.showCategories(listOf(this@AbstractRecipeLogic.recipeRegistry.category.uniqueId))
+                        return@MousePressed true
                 })
             }
 
