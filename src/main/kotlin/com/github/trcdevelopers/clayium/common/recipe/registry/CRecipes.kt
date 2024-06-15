@@ -22,6 +22,7 @@ object CRecipes {
     val WIRE_DRAWING_MACHINE = addRegistry("wire_drawing_machine", SimpleRecipeBuilder(), 1, 1)
     val SMELTER = addRegistry("smelter", SimpleRecipeBuilder(), 1, 1)
     val SOLAR_CLAY_FABRICATOR = addRegistry("solar_clay_fabricator", ClayFabricatorRecipeBuilder(ClayFabricatorRecipeBuilder::solarClayFabricator), 1, 1)
+    val CA_CONDENSER = addRegistry("ca_condenser", SimpleRecipeBuilder(), 1, 1)
     /**
      * todo: solar clay fabricator is maybe special
      * todo: electrolysis reactor can be dynamic ore-prefixed recipe

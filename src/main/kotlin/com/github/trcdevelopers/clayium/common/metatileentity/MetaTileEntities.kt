@@ -18,6 +18,7 @@ import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
+@Suppress("unused")
 object MetaTileEntities {
 
     val CLAY_BUFFER = registerMetaTileEntities(1, (4..13)) {
@@ -114,6 +115,10 @@ object MetaTileEntities {
 
     val CA_INJECTOR = registerMetaTileEntities(154, (9..13)) {
         CaInjectorMetaTileEntity(clayiumId("ca_injector.${it.lowerName}"), it)
+    }
+
+    val CA_CONDENSER = registerMetaTileEntities(159, (9..11)) {
+        CaCondenserMetaTileEntity(clayiumId("ca_condenser.${it.lowerName}"), it)
     }
 
     /**

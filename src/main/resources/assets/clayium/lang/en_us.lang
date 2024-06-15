@@ -403,10 +403,9 @@ machine.clayium.clay_reactor.tooltip10=Time to craft depends on Laser's strength
 machine.clayium.matter_transformer=%s Matter Transformer
 machine.clayium.matter_transformer.tooltip1=Transforms things to others.
 
-tile.clayium.blockUltimateCACondenser.name=CA Condenser
-tile.clayium.blockAntimatterCACondenser.name=Antimatter CA Condenser
-tile.clayium.blockPureAntimatterCACondenser.name=Pure Antimatter CA Condenser
-tooltip.clayium.CACondenser.line1=Condenses antimatter seeds.
+machine.clayium.ca_condenser.ultimate=CA Condenser
+machine.clayium.ca_condenser=%s CA Condenser
+machine.clayium.ca_condenser.tooltip1=Condenses antimatter seeds.
 
 machine.clayium.ca_injector.ultimate=CA Injector
 machine.clayium.ca_injector=%s CA Injector
