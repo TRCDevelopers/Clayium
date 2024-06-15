@@ -9,7 +9,7 @@ value class ClayEnergy(val energy: Long) {
     // todo replace toString with this
     fun format(): String {
         if (energy == 0L) return "0 CE"
-        val digits = abs(energy).toString().length + 1
+        val digits = abs(energy).toString().length
         val microCe = energy.toDouble() * 10.0
         val unitIndex = digits / 3
         val displayValue = String.format("%.3f", microCe / 10.0.pow(unitIndex * 3))

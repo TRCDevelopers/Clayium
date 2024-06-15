@@ -18,11 +18,20 @@ class TestClayEnergyStrings : StringSpec({
     "13m CE - small value" {
         ClayEnergy.milli(13).format() shouldBe "13m CE"
     }
+    "1 CE" {
+        ClayEnergy.of(1).format() shouldBe "1 CE"
+    }
     "57 CE" {
         ClayEnergy.of(57).format() shouldBe "57 CE"
     }
+    "250 CE" {
+        ClayEnergy.of(250).format() shouldBe "250 CE"
+    }
     "6k CE - kilo value" {
         ClayEnergy.of(6000).format() shouldBe "6k CE"
+    }
+    "500k CE" {
+        ClayEnergy.of(500_000).format() shouldBe "500k CE"
     }
     "53T CE - big value" {
         ClayEnergy.of(53_000_000_000_000).format() shouldBe "53T CE"
