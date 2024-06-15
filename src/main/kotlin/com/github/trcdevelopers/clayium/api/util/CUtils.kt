@@ -5,18 +5,15 @@ import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.google.common.base.CaseFormat
-import net.minecraft.item.EnumRarity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
-import net.minecraftforge.common.IRarity
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
-import kotlin.collections.indices
 
 object CUtils {
     fun toUpperCamel(snakeCase: String): String {
@@ -27,27 +24,30 @@ object CUtils {
         return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, camel)
     }
 
-    fun getRarityBy(tier: Int): IRarity {
-        return when (tier) {
-                4, 5, 6, 7 -> EnumRarity.UNCOMMON
-                8, 9, 10, 11 -> EnumRarity.RARE
-                12, 13, 14, 15 -> EnumRarity.EPIC
-                else -> EnumRarity.COMMON
-        }
-    }
-
     fun writeItems(handler: IItemHandler, tagName: String, tag: NBTTagCompound) {
-        this.writeItems(this.handlerToList(handler), tagName, tag)
+        val tagList = NBTTagList()
+        for (i in 0..<handler.slots) {
+            val stack = handler.getStackInSlot(i)
+            if (stack.isEmpty) continue
+
+            val stackTag = NBTTagCompound()
+            stackTag.setInteger("Slot", i)
+            stack.writeToNBT(stackTag)
+            tagList.appendTag(stackTag)
+        }
+        tag.setTag(tagName, tagList)
     }
 
     fun writeItems(items: List<ItemStack>, tagName: String, tag: NBTTagCompound) {
         val tagList = NBTTagList()
-        for (i in items.indices) {
-            val stack = items[i]
-            if (!stack.isEmpty) {
-                val itemTag = NBTTagCompound()
-                stack.writeToNBT(itemTag)
-                tagList.appendTag(itemTag)
+        items.forEachIndexed { i, stack ->
+            if (stack.isEmpty) {
+                tagList.appendTag(NBTTagCompound())
+            } else {
+                val stackTag = NBTTagCompound()
+                stackTag.setInteger("Slot", i)
+                stack.writeToNBT(stackTag)
+                tagList.appendTag(stackTag)
             }
         }
         tag.setTag(tagName, tagList)
@@ -58,7 +58,7 @@ object CUtils {
         val tagList = tag.getTagList(tagName, Constants.NBT.TAG_COMPOUND)
         for (i in 0..<tagList.tagCount()) {
             val itemTag = tagList.getCompoundTagAt(i)
-            val slot = itemTag.getByte("Slot").toInt()
+            val slot = itemTag.getInteger("Slot").toInt()
             if (slot in 0..<handler.slots) {
                 handler.setStackInSlot(slot, ItemStack(itemTag))
             }
@@ -69,8 +69,12 @@ object CUtils {
         val items = mutableListOf<ItemStack>()
         val tagList = tag.getTagList(tagName, Constants.NBT.TAG_COMPOUND)
         for (i in 0..<tagList.tagCount()) {
-            val itemTag = tagList.getCompoundTagAt(i)
-            items.add(ItemStack(itemTag))
+            val stackTag = tagList.getCompoundTagAt(i)
+            if (stackTag.hasKey("Slot"))  {
+                items.add(ItemStack(stackTag))
+            } else {
+                items.add(ItemStack.EMPTY)
+            }
         }
         return items
     }
