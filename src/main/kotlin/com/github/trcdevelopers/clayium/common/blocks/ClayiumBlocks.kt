@@ -36,6 +36,7 @@ object ClayiumBlocks {
     val LARGE_DENSE_CLAY_ORE = createBlock("large_dense_clay_ore", BlockDenseClayOre())
 
     val LASER_REFLECTOR = createBlock("laser_reflector", BlockClayLaserReflector())
+    val QUARTZ_CRUCIBLE = createBlock("quartz_crucible", BlockQuartzCrucible())
     val MACHINE_HULL = createBlock("machine_hull", BlockMachineHull())
     val RESONATOR = createBlock("resonator", BlockResonator())
 
