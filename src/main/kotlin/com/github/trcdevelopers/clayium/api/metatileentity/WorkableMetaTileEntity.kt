@@ -66,6 +66,13 @@ abstract class WorkableMetaTileEntity(
         return super.getCapability(capability, facing)
     }
 
+    override fun onPlacement() {
+        super.onPlacement()
+        this.setInput(EnumFacing.UP, MachineIoMode.ALL)
+        this.setOutput(EnumFacing.DOWN, MachineIoMode.ALL)
+        this.setInput(this.frontFacing.opposite, MachineIoMode.CE)
+    }
+
     override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
         super.clearMachineInventory(itemBuffer)
         clearInventory(itemBuffer, clayEnergyHolder.energizedClayItemHandler)
