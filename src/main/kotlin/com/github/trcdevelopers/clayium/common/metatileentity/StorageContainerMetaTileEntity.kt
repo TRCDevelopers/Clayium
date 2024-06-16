@@ -32,11 +32,13 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.common.util.Constants
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.IItemHandler
@@ -66,7 +68,7 @@ class StorageContainerMetaTileEntity(
     override val exportItems: IItemHandlerModifiable = ClayiumItemStackHandler(this, 1)
     override val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
 
-    // phantom slot. should I support "IItemFilter"? not supported in original version.
+    // phantom slot. should I support "IItemFilter"? not supported in the original version.
     private val filterSlot = ItemStackHandler(1)
     private var currentInsertedStack = ItemStack.EMPTY
 
@@ -76,14 +78,12 @@ class StorageContainerMetaTileEntity(
     private var itemsStored = 0
         set(value) { field = value; markDirty() }
 
-
     private var previousStoredItems = 0
     override fun update() {
         super.update()
         if (world?.isRemote == true) return
 
         if (itemsStored < maxStoredItems) {
-            Clayium.LOGGER.info("prev: $itemsStored")
             val inputStack = importItems.getStackInSlot(0)
             if (!inputStack.isEmpty) {
                 TransferUtils.moveItems(importItems, itemInventory)
@@ -110,6 +110,26 @@ class StorageContainerMetaTileEntity(
             UPDATE_MAX_ITEMS_STORED -> maxStoredItems = buf.readVarInt()
             else -> super.receiveCustomData(discriminator, buf)
         }
+    }
+
+    override fun writeInitialSyncData(buf: PacketBuffer) {
+        super.writeInitialSyncData(buf)
+        writeCustomData(UPDATE_ITEMS_STORED) { writeVarInt(itemsStored) }
+        writeCustomData(UPDATE_MAX_ITEMS_STORED) { writeVarInt(maxStoredItems) }
+    }
+
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        data.setInteger("maxStoredItems", maxStoredItems)
+        data.setInteger("itemsStored", itemsStored)
+        data.setTag("storedStack", currentInsertedStack.serializeNBT())
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        if (data.hasKey("maxStoredItems", Constants.NBT.TAG_INT)) { maxStoredItems = data.getInteger("maxStoredItems") }
+        if (data.hasKey("itemsStored", Constants.NBT.TAG_INT)) { itemsStored = data.getInteger("itemsStored") }
+        if (data.hasKey("storedStack", Constants.NBT.TAG_COMPOUND)) { currentInsertedStack = ItemStack(data.getCompoundTag("storedStack")) }
     }
 
     @SideOnly(Side.CLIENT)
