@@ -1,8 +1,15 @@
 package com.github.trcdevelopers.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.api.IGuiHolder
+import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
+import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.ParentWidget
+import com.cleanroommc.modularui.widget.Widget
+import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.block.BlockMachine.Companion.IS_PIPE
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
@@ -25,6 +32,7 @@ import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.IPipeConnectable
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.*
+import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.*
 import com.github.trcdevelopers.clayium.common.items.filter.FilterType
@@ -549,6 +557,13 @@ abstract class MetaTileEntity(
         }
         return quads
     }
+
+    protected fun largeSlot(slot: ModularSlot) = ParentWidget()
+                .size(26, 26)
+                .background(ClayGuiTextures.LARGE_SLOT)
+                .child(ItemSlot().align(Alignment.Center)
+                    .slot(slot)
+                    .background(IDrawable.EMPTY))
 
     private data class FilterAndType(val filter: IItemFilter, val type: FilterType)
 
