@@ -19,9 +19,8 @@ import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.client.model.ModelTextures
-import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
-import com.github.trcdevelopers.clayium.common.util.TransferUtils
+import com.github.trcdevelopers.clayium.common.util.transferTo
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -91,9 +90,8 @@ class StorageContainerMetaTileEntity(
         if (itemsStored < maxStoredItems) {
             val inputStack = importItems.getStackInSlot(0)
             if (!inputStack.isEmpty) {
-                TransferUtils.moveItems(importItems, itemInventory)
+                importItems.transferTo(itemInventory)
             }
-            Clayium.LOGGER.info(itemsStored)
             if (previousStoredItems != itemsStored) {
                 writeCustomData(UPDATE_ITEMS_STORED) { writeVarInt(itemsStored) }
                 previousStoredItems = itemsStored
@@ -101,7 +99,7 @@ class StorageContainerMetaTileEntity(
         }
 
         if (itemsStored > 0) {
-            TransferUtils.moveItems(itemInventory, exportItems)
+            itemInventory.transferTo(exportItems)
         }
     }
 
