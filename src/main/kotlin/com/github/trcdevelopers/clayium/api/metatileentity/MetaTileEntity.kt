@@ -562,6 +562,9 @@ abstract class MetaTileEntity(
         return quads
     }
 
+    @SideOnly(Side.CLIENT)
+    open fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {}
+
     protected fun largeSlot(slot: ModularSlot) = ParentWidget()
                 .size(26, 26)
                 .background(ClayGuiTextures.LARGE_SLOT)

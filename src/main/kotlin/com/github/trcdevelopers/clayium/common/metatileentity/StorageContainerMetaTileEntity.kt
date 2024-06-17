@@ -22,8 +22,11 @@ import com.github.trcdevelopers.clayium.client.model.ModelTextures
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.util.transferTo
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.Minecraft
+import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.entity.player.EntityPlayer
@@ -192,6 +195,37 @@ class StorageContainerMetaTileEntity(
             side == EnumFacing.UP -> quads.add(topQuad)
         }
         return quads
+    }
+
+    override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
+        val stack = if (currentInsertedStack.isEmpty) exportItems.getStackInSlot(0) else currentInsertedStack
+        if (stack.isEmpty) return
+
+        val mc = Minecraft.getMinecraft()
+        GlStateManager.pushMatrix()
+        run {
+            GlStateManager.translate(x + 0.5, y, z)
+
+            when (this.frontFacing) {
+                EnumFacing.NORTH -> GlStateManager.rotate(180f, 0f, 1f, 0f)
+                EnumFacing.WEST -> GlStateManager.rotate(270f, 0f, 1f, 0f)
+                EnumFacing.EAST -> GlStateManager.rotate(90f, 0f, 1f, 0f)
+                else -> {}
+            }
+
+            GlStateManager.translate(0.0, 0.125, 0.0)
+
+            val itemName = stack.displayName
+            mc.fontRenderer.drawString(itemName, -mc.fontRenderer.getStringWidth(itemName) / 2, 10, 0x000000)
+
+            GlStateManager.translate(0.0, 0.0625 * 7, 0.0)
+
+            GlStateManager.pushMatrix()
+            mc.renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED)
+            GlStateManager.popMatrix()
+        }
+        GlStateManager.popMatrix()
+
     }
 
     private fun ItemStack.canActuallyStack(stack: ItemStack): Boolean {
