@@ -7,11 +7,9 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
-import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_ITEMS_STORED
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_MAX_ITEMS_STORED
@@ -22,20 +20,17 @@ import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.client.model.ModelTextures
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.util.TransferUtils
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
-import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.util.Constants
@@ -62,7 +57,9 @@ class StorageContainerMetaTileEntity(
         }
 
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
-            return checkFilterSlot(stack) && checkCurrentStack(stack)
+            return filterSlot.getStackInSlot(0).canActuallyStack(stack)
+                    && currentInsertedStack.canActuallyStack(stack)
+                    && exportItems.getStackInSlot(0).canActuallyStack(stack)
         }
     }
     override val exportItems: IItemHandlerModifiable = ClayiumItemStackHandler(this, 1)
@@ -178,13 +175,8 @@ class StorageContainerMetaTileEntity(
         return quads
     }
 
-    private fun checkFilterSlot(stack: ItemStack): Boolean {
-        val filterStack = filterSlot.getStackInSlot(0)
-        return filterStack.isEmpty || ItemHandlerHelper.canItemStacksStack(stack, filterStack)
-    }
-
-    private fun checkCurrentStack(stack: ItemStack): Boolean {
-        return currentInsertedStack.isEmpty || ItemHandlerHelper.canItemStacksStack(stack, currentInsertedStack)
+    private fun ItemStack.canActuallyStack(stack: ItemStack): Boolean {
+        return this.isEmpty || stack.isEmpty || ItemHandlerHelper.canItemStacksStack(this, stack)
     }
 
     private inner class StorageContainerItemHandler : IItemHandler {
@@ -200,7 +192,9 @@ class StorageContainerMetaTileEntity(
 
         override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
             if (stack.isEmpty) return ItemStack.EMPTY
-            if (!(checkFilterSlot(stack) && checkCurrentStack(stack))) return stack
+            if (!(filterSlot.getStackInSlot(0).canActuallyStack(stack)
+                        && currentInsertedStack.canActuallyStack(stack)
+                        && exportItems.getStackInSlot(0).canActuallyStack(stack))) return stack
 
             val amountToInsert = stack.count.coerceAtMost(maxStoredItems - itemsStored)
             val copiedStack = stack.copy()
@@ -226,10 +220,6 @@ class StorageContainerMetaTileEntity(
                 if (itemsStored == 0) currentInsertedStack = ItemStack.EMPTY
             }
             return extractedStack
-        }
-
-        override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
-            return super.isItemValid(slot, stack)
         }
     }
 
