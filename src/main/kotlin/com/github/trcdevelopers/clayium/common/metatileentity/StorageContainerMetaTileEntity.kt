@@ -72,7 +72,7 @@ class StorageContainerMetaTileEntity(
 
     // phantom slot. should I support "IItemFilter"? not supported in the original version.
     private val filterSlot = ItemStackHandler(1)
-    private var currentInsertedStack = ItemStack.EMPTY
+    private var currentInsertedStack: ItemStack = ItemStack.EMPTY
 
     private var maxStoredItems = INITIAL_MAX_AMOUNT
         set(value) {
@@ -133,8 +133,27 @@ class StorageContainerMetaTileEntity(
 
     override fun writeInitialSyncData(buf: PacketBuffer) {
         super.writeInitialSyncData(buf)
-        writeCustomData(UPDATE_ITEMS_STORED) { writeVarInt(itemsStored) }
-        writeCustomData(UPDATE_MAX_ITEMS_STORED) { writeVarInt(maxStoredItems) }
+        buf.writeVarInt(maxStoredItems)
+        buf.writeVarInt(itemsStored)
+        if (currentInsertedStack.isEmpty) {
+            buf.writeBoolean(true)
+            buf.writeItemStack(exportItems.getStackInSlot(0))
+        } else {
+            buf.writeBoolean(false)
+            buf.writeItemStack(currentInsertedStack)
+        }
+    }
+
+    override fun receiveInitialSyncData(buf: PacketBuffer) {
+        super.receiveInitialSyncData(buf)
+        maxStoredItems = buf.readVarInt()
+        itemsStored = buf.readVarInt()
+        if (buf.readBoolean()) {
+            currentInsertedStack = ItemStack.EMPTY
+            exportItems.setStackInSlot(0, buf.readItemStack())
+        } else {
+            currentInsertedStack = buf.readItemStack()
+        }
     }
 
     override fun writeToNBT(data: NBTTagCompound) {
