@@ -220,7 +220,7 @@ class StorageContainerMetaTileEntity(
         val mc = Minecraft.getMinecraft()
         GlStateManager.pushMatrix()
         run {
-            GlStateManager.translate(x + 0.5, y, z)
+            GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5)
 
             when (this.frontFacing) {
                 EnumFacing.NORTH -> GlStateManager.rotate(180f, 0f, 1f, 0f)
@@ -229,13 +229,7 @@ class StorageContainerMetaTileEntity(
                 else -> {}
             }
 
-            GlStateManager.translate(0.0, 0.125, 0.0)
-
-            val itemName = stack.displayName
-            mc.fontRenderer.drawString(itemName, -mc.fontRenderer.getStringWidth(itemName) / 2, 10, 0x000000)
-
-            GlStateManager.translate(0.0, 0.0625 * 7, 0.0)
-
+            GlStateManager.translate(0.0F, -0.03F, 0.51F)
             GlStateManager.pushMatrix()
             mc.renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED)
             GlStateManager.popMatrix()
