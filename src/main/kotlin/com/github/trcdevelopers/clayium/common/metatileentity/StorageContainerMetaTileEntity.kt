@@ -151,6 +151,22 @@ class StorageContainerMetaTileEntity(
         if (data.hasKey("storedStack", Constants.NBT.TAG_COMPOUND)) { currentInsertedStack = ItemStack(data.getCompoundTag("storedStack")) }
     }
 
+    override fun writeItemStackNbt(data: NBTTagCompound) {
+        data.setBoolean("upgraded", maxStoredItems == UPGRADED_MAX_AMOUNT)
+        data.setInteger("itemsStored", itemsStored)
+        data.setTag("storedStack", currentInsertedStack.serializeNBT())
+        data.setTag("outputStack", exportItems.getStackInSlot(0).serializeNBT())
+    }
+
+    override fun readItemStackNbt(data: NBTTagCompound) {
+        this.maxStoredItems = if (data.getBoolean("upgraded")) UPGRADED_MAX_AMOUNT else INITIAL_MAX_AMOUNT
+        this.itemsStored = data.getInteger("itemsStored")
+        this.currentInsertedStack = ItemStack(data.getCompoundTag("storedStack"))
+        this.exportItems.setStackInSlot(0, ItemStack(data.getCompoundTag("outputStack")))
+    }
+
+    override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {}
+
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
         ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("storage_container"), "inventory"))
