@@ -503,6 +503,9 @@ abstract class MetaTileEntity(
         return ItemStack(ClayiumApi.BLOCK_MACHINE, amount, ClayiumApi.MTE_REGISTRY.getIdByKey(metaTileEntityId))
     }
 
+    open fun writeItemStackNbt(data: NBTTagCompound) {}
+    open fun readItemStackNbt(data: NBTTagCompound) {}
+
     open fun onNeighborChanged(facing: EnumFacing) {
         this.refreshConnection(facing)
     }

@@ -5,6 +5,7 @@ import codechicken.lib.render.particle.CustomParticleHandler
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.api.util.CUtils
+import com.github.trcdevelopers.clayium.api.util.getMetaTileEntity
 import com.github.trcdevelopers.clayium.common.Clayium
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
@@ -19,6 +20,7 @@ import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumFacing
@@ -111,6 +113,9 @@ class BlockMachine : Block(Material.IRON) {
         val holder = worldIn.getTileEntity(pos) as? MetaTileEntityHolder ?: return
         val sampleMetaTileEntity = ClayiumApi.MTE_REGISTRY.getObjectById(stack.itemDamage) ?: return
         val newMetaTileEntity = holder.setMetaTileEntity(sampleMetaTileEntity, placer)
+        if (stack.hasTagCompound()) {
+            newMetaTileEntity.readItemStackNbt(stack.tagCompound!!)
+        }
     }
 
     override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
@@ -124,7 +129,10 @@ class BlockMachine : Block(Material.IRON) {
     }
 
     override fun getDrops(drops: NonNullList<ItemStack>, world: IBlockAccess, pos: BlockPos, state: IBlockState, fortune: Int) {
-        CUtils.getMetaTileEntity(world, pos)?.let { drops.add(it.getStackForm()) }
+        val metaTileEntity = world.getMetaTileEntity(pos) ?: return
+        val stack = metaTileEntity.getStackForm()
+        val data = NBTTagCompound().apply { metaTileEntity.writeItemStackNbt(this) }
+        if (!data.isEmpty) stack.tagCompound = data
     }
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
