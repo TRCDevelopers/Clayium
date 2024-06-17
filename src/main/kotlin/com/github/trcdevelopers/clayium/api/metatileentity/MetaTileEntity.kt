@@ -312,6 +312,9 @@ abstract class MetaTileEntity(
         }
     }
 
+    /**
+     * only called on the server side.
+     */
     open fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         val pos = this.pos ?: return
         if (this.canOpenGui()) {

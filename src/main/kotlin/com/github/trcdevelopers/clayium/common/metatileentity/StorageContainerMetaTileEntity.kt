@@ -20,17 +20,20 @@ import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.client.model.ModelTextures
 import com.github.trcdevelopers.clayium.common.Clayium
+import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.util.TransferUtils
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.util.Constants
@@ -70,7 +73,12 @@ class StorageContainerMetaTileEntity(
     private var currentInsertedStack = ItemStack.EMPTY
 
     private var maxStoredItems = INITIAL_MAX_AMOUNT
-        set(value) { field = value; markDirty() }
+        set(value) {
+            val syncFlag = !isRemote && field != value
+            field = value
+            markDirty()
+            if (syncFlag) writeCustomData(UPDATE_MAX_ITEMS_STORED) { writeVarInt(value) }
+        }
 
     private var itemsStored = 0
         set(value) { field = value; markDirty() }
@@ -97,6 +105,16 @@ class StorageContainerMetaTileEntity(
         }
     }
 
+    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+        val stack = player.getHeldItem(hand)
+        //todo use capability
+        if (ItemStack.areItemStacksEqual(stack, MetaItemClayParts.CLAY_CORE.getStackForm())) {
+            maxStoredItems = UPGRADED_MAX_AMOUNT
+            stack.shrink(1)
+        }
+        super.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
+    }
+
     override fun createMetaTileEntity(): MetaTileEntity {
         return StorageContainerMetaTileEntity(this.metaTileEntityId, this.tier)
     }
@@ -104,7 +122,10 @@ class StorageContainerMetaTileEntity(
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
         when (discriminator) {
             UPDATE_ITEMS_STORED -> itemsStored = buf.readVarInt()
-            UPDATE_MAX_ITEMS_STORED -> maxStoredItems = buf.readVarInt()
+            UPDATE_MAX_ITEMS_STORED -> {
+                maxStoredItems = buf.readVarInt()
+                scheduleRenderUpdate()
+            }
             else -> super.receiveCustomData(discriminator, buf)
         }
     }
