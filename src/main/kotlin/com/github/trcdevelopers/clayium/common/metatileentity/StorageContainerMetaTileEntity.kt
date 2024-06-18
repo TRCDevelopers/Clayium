@@ -248,8 +248,9 @@ class StorageContainerMetaTileEntity(
                 else -> {}
             }
 
-            GlStateManager.translate(0.0F, -0.03F, 0.51F)
             GlStateManager.pushMatrix()
+            GlStateManager.translate(0.0, 0.125, 0.51)
+            GlStateManager.scale(0.5f, 0.5f, 0.5f)
             mc.renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED)
             GlStateManager.popMatrix()
         }
