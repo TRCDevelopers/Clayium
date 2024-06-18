@@ -4,6 +4,7 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.utils.NumberFormat
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
@@ -252,6 +253,15 @@ class StorageContainerMetaTileEntity(
             GlStateManager.translate(0.0, 0.125, 0.51)
             GlStateManager.scale(0.5f, 0.5f, 0.5f)
             mc.renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED)
+            GlStateManager.popMatrix()
+
+            GlStateManager.pushMatrix()
+            val amountText: String = NumberFormat.formatWithMaxDecimals(itemsStored.toDouble(), 4)
+            val fRenderer = mc.fontRenderer
+            GlStateManager.rotate(180.0f, 0.0f, 1.0f, 0.0f)
+            GlStateManager.translate(0.0, -0.15, -0.55)
+            GlStateManager.scale(-0.025f, -0.025f, 0.025f)
+            fRenderer.drawString(amountText, -fRenderer.getStringWidth(amountText) / 2, 0, 0)
             GlStateManager.popMatrix()
         }
         GlStateManager.popMatrix()
