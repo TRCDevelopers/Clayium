@@ -96,7 +96,7 @@ class StorageContainerMetaTileEntity(
             if (!inputStack.isEmpty) {
                 importItems.transferTo(itemInventory)
             }
-            if (previousStoredItems != itemsStored) {
+            if (offsetTimer % 10L == 0L && previousStoredItems != itemsStored) {
                 writeCustomData(UPDATE_ITEMS_STORED) { writeVarInt(itemsStored) }
                 previousStoredItems = itemsStored
             }
