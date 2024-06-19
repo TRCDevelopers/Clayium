@@ -20,6 +20,7 @@ import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.client.model.ModelTextures
+import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.util.transferTo
 import net.minecraft.block.state.IBlockState
@@ -39,9 +40,11 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
@@ -117,6 +120,20 @@ class StorageContainerMetaTileEntity(
             return
         }
         super.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return capability.cast(createFilteredItemHandler(itemInventory, facing))
+        }
+        return super.getCapability(capability, facing)
+    }
+
+    override fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
+        val i = side.index
+        val o = side.opposite.index
+        return (this.inputModes[i] != MachineIoMode.NONE || this.outputModes[i] != MachineIoMode.NONE)
+                || (neighbor.inputModes[o] != MachineIoMode.NONE || neighbor.outputModes[o] != MachineIoMode.NONE)
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {

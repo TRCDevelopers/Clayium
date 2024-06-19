@@ -304,12 +304,25 @@ abstract class MetaTileEntity(
         return mteTraits.values.firstNotNullOfOrNull { it.getCapability(capability, facing) }
     }
 
+    //todo
+    @Deprecated("use createFilteredItemHandler(handler, facing) instead")
     protected fun createFilteredHandler(handler: IItemHandler, filter: IItemFilter?): IItemHandler {
         return if (filter == null) {
             handler
         } else {
             FilteredItemHandler(handler, filter)
         }
+    }
+
+    /**
+     * this is intended to be used in [getCapability] to create an [IItemHandler] with a filter.
+     *
+     * @param side if null, it returns original [handler].
+     */
+    protected fun createFilteredItemHandler(handler: IItemHandler, side: EnumFacing?): IItemHandler {
+        if (side == null) return handler
+        val filter = filters[side.index]
+        return if (filter == null) handler else FilteredItemHandler(handler, filter)
     }
 
     /**

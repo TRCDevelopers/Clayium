@@ -61,9 +61,8 @@ class ClayBufferMetaTileEntity(
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            val filter = facing?.let { filters[facing.index] }
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(
-                createFilteredHandler(itemInventory, filter)
+                createFilteredItemHandler(itemInventory, facing)
             )
         }
         return super.getCapability(capability, facing)
