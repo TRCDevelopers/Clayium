@@ -3,9 +3,9 @@ package com.github.trcdevelopers.clayium.api.block
 import codechicken.lib.block.property.unlisted.UnlistedTileEntityProperty
 import codechicken.lib.render.particle.CustomParticleHandler
 import com.github.trcdevelopers.clayium.api.ClayiumApi
+import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.api.util.CUtils
-import com.github.trcdevelopers.clayium.api.util.getMetaTileEntity
 import com.github.trcdevelopers.clayium.common.Clayium
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
@@ -118,21 +118,31 @@ class BlockMachine : Block(Material.IRON) {
         }
     }
 
+    val beingBrokenMetaTileEntity = ThreadLocal<MetaTileEntity>()
+
     override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
         CUtils.getMetaTileEntity(worldIn, pos)?.let { mte ->
             mutableListOf<ItemStack>().apply { mte.clearMachineInventory(this) }
                 .forEach { spawnAsEntity(worldIn, pos, it) }
 
             mte.onRemoval()
+            beingBrokenMetaTileEntity.set(mte)
         }
         super.breakBlock(worldIn, pos, state)
     }
 
+    override fun harvestBlock(worldIn: World, player: EntityPlayer, pos: BlockPos, state: IBlockState, te: TileEntity?, stack: ItemStack) {
+        if ((te as? MetaTileEntityHolder) != null) beingBrokenMetaTileEntity.set(te.metaTileEntity)
+        super.harvestBlock(worldIn, player, pos, state, te, stack)
+        beingBrokenMetaTileEntity.remove()
+    }
+
     override fun getDrops(drops: NonNullList<ItemStack>, world: IBlockAccess, pos: BlockPos, state: IBlockState, fortune: Int) {
-        val metaTileEntity = world.getMetaTileEntity(pos) ?: return
+        val metaTileEntity = beingBrokenMetaTileEntity.get()
         val stack = metaTileEntity.getStackForm()
         val data = NBTTagCompound().apply { metaTileEntity.writeItemStackNbt(this) }
         if (!data.isEmpty) stack.tagCompound = data
+        drops.add(stack)
     }
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
