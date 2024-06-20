@@ -57,7 +57,11 @@ class StorageContainerMetaTileEntity(
 ) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, validOutputModesLists[1], "machine.${CValues.MOD_ID}.storage_container") {
 
     override val faceTexture = clayiumId("blocks/storage_container")
-    override val requiredTextures = listOf(faceTexture, clayiumId("blocks/storage_container_side"), clayiumId("blocks/storage_container_top"))
+    override val requiredTextures = listOf(
+        faceTexture,
+        clayiumId("blocks/storage_container_side"), clayiumId("blocks/storage_container_upgraded"),
+        clayiumId("blocks/storage_container_top")
+    )
 
     override val itemInventory: IItemHandler = StorageContainerItemHandler()
     override val importItems: IItemHandlerModifiable = object : ClayiumItemStackHandler(this, 1) {
@@ -237,11 +241,14 @@ class StorageContainerMetaTileEntity(
     }
 
     @SideOnly(Side.CLIENT)
-    override fun bakeQuads(bakedTexGetter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
+    override fun bakeQuads(getter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
         sideQuads = EnumFacing.HORIZONTALS.associateWith {
-            ModelTextures.createQuad(it, bakedTexGetter.apply(clayiumId("blocks/storage_container_side")))
+            ModelTextures.createQuad(it, getter.apply(clayiumId("blocks/storage_container_side")))
         }
-        topQuad = ModelTextures.createQuad(EnumFacing.UP, bakedTexGetter.apply(clayiumId("blocks/storage_container_top")))
+        sideQuadsUpgraded = EnumFacing.HORIZONTALS.associateWith {
+            ModelTextures.createQuad(it, getter.apply(clayiumId("blocks/storage_container_upgraded")))
+        }
+        topQuad = ModelTextures.createQuad(EnumFacing.UP, getter.apply(clayiumId("blocks/storage_container_top")))
     }
 
     @SideOnly(Side.CLIENT)
@@ -249,7 +256,12 @@ class StorageContainerMetaTileEntity(
         if (state == null || side == null) return super.getQuads(state, side, rand)
         val quads = super.getQuads(state, side, rand)
         when {
-            side.axis.isHorizontal -> sideQuads[side]?.let { quads.add(it) }
+            side.axis.isHorizontal -> {
+                sideQuads[side]?.let(quads::add)
+                if (this.itemsStored == UPGRADED_MAX_AMOUNT) {
+                    sideQuadsUpgraded[side]?.let(quads::add)
+                }
+            }
             side == EnumFacing.UP -> quads.add(topQuad)
         }
         return quads
@@ -348,7 +360,8 @@ class StorageContainerMetaTileEntity(
 
         @SideOnly(Side.CLIENT)
         private lateinit var sideQuads: Map<EnumFacing, BakedQuad>
-
+        @SideOnly(Side.CLIENT)
+        private lateinit var sideQuadsUpgraded: Map<EnumFacing, BakedQuad>
         @SideOnly(Side.CLIENT)
         private lateinit var topQuad: BakedQuad
     }

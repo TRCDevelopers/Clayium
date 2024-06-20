@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.block.model.ModelRotation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.client.event.ModelBakeEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -58,6 +59,7 @@ object ModelTextures {
             })
         }
         for (metaTileEntity in ClayiumApi.MTE_REGISTRY) {
+            metaTileEntity.bakeQuads(getter, faceBakery)
             metaTileEntity.requiredTextures.filterNotNull().forEach { faceTexture ->
                 _faceQuads.computeIfAbsent(faceTexture) {
                     EnumFacing.entries.associateWith { side ->
@@ -66,7 +68,6 @@ object ModelTextures {
                 }
             }
         }
-        ClayiumApi.MTE_REGISTRY.forEach { it.bakeQuads(getter, faceBakery) }
         isInitialized = true
     }
 
