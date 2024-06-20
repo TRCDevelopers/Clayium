@@ -218,7 +218,6 @@ class StorageContainerMetaTileEntity(
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        syncManager.syncValue("itemsStored", SyncHandlers.intNumber(::itemsStored, ::itemsStored::set))
         return ModularPanel.defaultPanel("storage_container")
             .child(Column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
