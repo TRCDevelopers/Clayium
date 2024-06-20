@@ -441,12 +441,12 @@ abstract class MetaTileEntity(
 
     protected fun refreshConnection(side: EnumFacing) {
         val neighborTileEntity = this.getNeighbor(side) ?: return
-        val neighborMetaTileEntity = (neighborTileEntity as? MetaTileEntityHolder)?.metaTileEntity
         val i = side.index
-        if (neighborMetaTileEntity == null) {
-            _connectionsCache[i] = this.canConnectTo(neighborTileEntity, side)
+        if (neighborTileEntity is MetaTileEntityHolder) {
+            val neighborMetaTileEntity = neighborTileEntity.metaTileEntity ?: return
+            _connectionsCache[i] = (this.canConnectToMte(neighborMetaTileEntity, side) && neighborMetaTileEntity.canConnectToMte(this, side.opposite))
         } else {
-            _connectionsCache[i] = (this.canConnectToMte(neighborMetaTileEntity, side) || neighborMetaTileEntity.canConnectToMte(this, side.opposite))
+            _connectionsCache[i] = this.canConnectTo(neighborTileEntity, side)
         }
         writeCustomData(UPDATE_CONNECTIONS) {
             writeByte(i)
