@@ -566,18 +566,33 @@ abstract class MetaTileEntity(
     @SideOnly(Side.CLIENT)
     open fun bakeQuads(getter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {}
 
+    /**
+     * Adds base textures such as Machine hulls.
+     */
     @SideOnly(Side.CLIENT)
     open fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): MutableList<BakedQuad> {
         if (state == null || side == null || state !is IExtendedBlockState) return mutableListOf()
         val quads = mutableListOf(ModelTextures.getHullQuads(this.tier)?.get(side) ?: return mutableListOf())
+        return quads
+    }
+
+    /**
+     * Adds overlay textures such as Machine faces.
+     * This is called after [getQuads], but before adding IO textures.
+     */
+    @SideOnly(Side.CLIENT)
+    open fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
         if (this.hasFrontFacing && this.faceTexture != null) {
             if (this.useFaceForAllSides || side == this.frontFacing) {
                 ModelTextures.FACE_QUADS[this.faceTexture]?.get(side)?.let { quads.add(it) }
             }
         }
-        return quads
     }
 
+    /**
+     * You can use GlStateManager to render extra things if needed.
+     * todo: cc render?
+     */
     @SideOnly(Side.CLIENT)
     open fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {}
 
