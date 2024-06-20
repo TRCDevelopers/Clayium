@@ -289,7 +289,7 @@ class StorageContainerMetaTileEntity(
             GlStateManager.popMatrix()
 
             GlStateManager.pushMatrix()
-            val amountText: String = NumberFormat.formatWithMaxDecimals(itemsStored.toDouble(), 4)
+            val amountText: String = NumberFormat.formatWithMaxDigits(itemsStored.toDouble(), 3)
             val fRenderer = mc.fontRenderer
             GlStateManager.rotate(180.0f, 0.0f, 1.0f, 0.0f)
             GlStateManager.translate(0.0, -0.15, -0.55)
