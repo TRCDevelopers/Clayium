@@ -152,6 +152,7 @@ class StorageContainerMetaTileEntity(
                 maxStoredItems = buf.readVarInt()
                 scheduleRenderUpdate()
             }
+            UPDATE_STORED_ITEMSTACK -> currentInsertedStack = buf.readItemStack()
             else -> super.receiveCustomData(discriminator, buf)
         }
     }
@@ -329,6 +330,7 @@ class StorageContainerMetaTileEntity(
                 if (currentInsertedStack.isEmpty) {
                     currentInsertedStack = stack.copy().apply { count = 1 }
                     itemsStored = amountToInsert
+                    writeCustomData(UPDATE_STORED_ITEMSTACK) { writeItemStack(currentInsertedStack) }
                 } else {
                     itemsStored += amountToInsert
                 }

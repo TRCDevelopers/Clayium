@@ -20,6 +20,7 @@ object ClayiumDataCodecs {
 
     val UPDATE_ITEMS_STORED = assignId()
     val UPDATE_MAX_ITEMS_STORED = assignId()
+    val UPDATE_STORED_ITEMSTACK = assignId()
 
     val UPDATE_RESONANCE = assignId()
 
