@@ -15,11 +15,13 @@ import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.block.BlockMachine
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_ITEMS_STORED
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_MAX_ITEMS_STORED
+import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_STORED_ITEMSTACK
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trcdevelopers.clayium.api.metatileentity.AutoIoHandler
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ITier
+import com.github.trcdevelopers.clayium.api.util.copyWithSize
 import com.github.trcdevelopers.clayium.client.model.ModelTextures
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
@@ -50,6 +52,7 @@ import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.ItemStackHandler
+import kotlin.math.min
 
 class StorageContainerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -64,6 +67,7 @@ class StorageContainerMetaTileEntity(
     )
 
     override val itemInventory: IItemHandler = StorageContainerItemHandler()
+    override val exportItems: IItemHandlerModifiable = StorageContainerExportItems()
     override val importItems: IItemHandlerModifiable = object : ClayiumItemStackHandler(this, 1) {
         override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
             if (!isItemValid(slot, stack)) return stack
@@ -76,7 +80,6 @@ class StorageContainerMetaTileEntity(
                     && exportItems.getStackInSlot(0).canActuallyStack(stack)
         }
     }
-    override val exportItems: IItemHandlerModifiable = ClayiumItemStackHandler(this, 1)
     override val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
 
     // phantom slot. should I support "IItemFilter"? not supported in the original version.
@@ -109,10 +112,6 @@ class StorageContainerMetaTileEntity(
         if (previousStoredItems != itemsStored) {
             writeCustomData(UPDATE_ITEMS_STORED) { writeVarInt(itemsStored) }
             previousStoredItems = itemsStored
-        }
-
-        if (itemsStored > 0) {
-            itemInventory.transferTo(exportItems)
         }
     }
 
@@ -346,6 +345,33 @@ class StorageContainerMetaTileEntity(
                 if (itemsStored == 0) currentInsertedStack = ItemStack.EMPTY
             }
             return extractedStack
+        }
+    }
+
+    private inner class StorageContainerExportItems : IItemHandlerModifiable {
+        override fun setStackInSlot(slot: Int, stack: ItemStack) {
+            // this method should be called only for exporting item.
+            if (slot != 0 || stack.isItemEqual(currentInsertedStack)) return
+            val currentSlotAmount = min(itemsStored, 64)
+            val amountAfterExtraction = stack.count
+            val extractedAmount = currentSlotAmount - amountAfterExtraction
+            if (extractedAmount > 0) {
+                extractItem(0, extractedAmount, false)
+            }
+        }
+        override fun getSlots() = 1
+        override fun getSlotLimit(slot: Int) = 64
+
+        override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
+            return itemInventory.insertItem(0, stack, simulate)
+        }
+        override fun extractItem(slot: Int, amount: Int, simulate: Boolean): ItemStack {
+            return itemInventory.extractItem(0, amount, simulate)
+        }
+
+        override fun getStackInSlot(slot: Int): ItemStack {
+            val stackSize = min(itemsStored, 64)
+            return currentInsertedStack.copyWithSize(stackSize)
         }
     }
 

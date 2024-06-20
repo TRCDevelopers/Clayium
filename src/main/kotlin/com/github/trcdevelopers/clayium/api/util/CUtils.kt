@@ -20,6 +20,12 @@ fun IBlockAccess?.getMetaTileEntity(pos: BlockPos?): MetaTileEntity? {
     return (this.getTileEntity(pos) as? MetaTileEntityHolder)?.metaTileEntity
 }
 
+fun ItemStack.copyWithSize(size: Int): ItemStack {
+    val stack = copy()
+    stack.count = size
+    return stack
+}
+
 object CUtils {
     fun toUpperCamel(snakeCase: String): String {
         return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, snakeCase)
