@@ -92,17 +92,18 @@ class StorageContainerMetaTileEntity(
     private var previousStoredItems = 0
     override fun update() {
         super.update()
-        if (world?.isRemote == true) return
+        if (isRemote) return
 
         if (itemsStored < maxStoredItems) {
             val inputStack = importItems.getStackInSlot(0)
             if (!inputStack.isEmpty) {
                 importItems.transferTo(itemInventory)
             }
-            if (offsetTimer % 10L == 0L && previousStoredItems != itemsStored) {
-                writeCustomData(UPDATE_ITEMS_STORED) { writeVarInt(itemsStored) }
-                previousStoredItems = itemsStored
-            }
+        }
+
+        if (previousStoredItems != itemsStored) {
+            writeCustomData(UPDATE_ITEMS_STORED) { writeVarInt(itemsStored) }
+            previousStoredItems = itemsStored
         }
 
         if (itemsStored > 0) {
