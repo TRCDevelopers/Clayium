@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trcdevelopers.clayium.api.CValues
+import com.github.trcdevelopers.clayium.api.block.BlockMachine
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_ITEMS_STORED
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_MAX_ITEMS_STORED
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
@@ -254,7 +255,11 @@ class StorageContainerMetaTileEntity(
         return quads
     }
 
+    @SideOnly(Side.CLIENT)
     override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
+        val pos = this.pos ?: return
+        if (world?.getBlockState(pos)?.getValue(BlockMachine.IS_PIPE) == true) return
+
         val stack = if (currentInsertedStack.isEmpty) exportItems.getStackInSlot(0) else currentInsertedStack
         if (stack.isEmpty) return
 
