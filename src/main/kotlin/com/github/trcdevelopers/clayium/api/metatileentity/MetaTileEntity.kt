@@ -440,13 +440,14 @@ abstract class MetaTileEntity(
     }
 
     protected fun refreshConnection(side: EnumFacing) {
-        val neighborTileEntity = this.getNeighbor(side) ?: return
         val i = side.index
-        if (neighborTileEntity is MetaTileEntityHolder) {
-            val neighborMetaTileEntity = neighborTileEntity.metaTileEntity ?: return
-            _connectionsCache[i] = (this.canConnectToMte(neighborMetaTileEntity, side) && neighborMetaTileEntity.canConnectToMte(this, side.opposite))
-        } else {
-            _connectionsCache[i] = this.canConnectTo(neighborTileEntity, side)
+        when (val neighborTileEntity = this.getNeighbor(side)) {
+            is MetaTileEntityHolder -> {
+                val neighborMetaTileEntity = neighborTileEntity.metaTileEntity ?: return
+                _connectionsCache[i] = (this.canConnectToMte(neighborMetaTileEntity, side) || neighborMetaTileEntity.canConnectToMte(this, side.opposite))
+            }
+            null -> _connectionsCache[i] = false
+            else -> _connectionsCache[i] = this.canConnectTo(neighborTileEntity, side)
         }
         writeCustomData(UPDATE_CONNECTIONS) {
             writeByte(i)
@@ -468,10 +469,6 @@ abstract class MetaTileEntity(
             writeVarInt(side.index)
             writeVarInt(-1)
         }
-    }
-
-    protected fun refreshNeighborConnection(side: EnumFacing) {
-        (this.getNeighbor(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
     }
 
     protected open fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {

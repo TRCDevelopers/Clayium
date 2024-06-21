@@ -135,10 +135,7 @@ class StorageContainerMetaTileEntity(
     }
 
     override fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
-        val i = side.index
-        val o = side.opposite.index
-        return (this.inputModes[i] != MachineIoMode.NONE || this.outputModes[i] != MachineIoMode.NONE)
-                || (neighbor.inputModes[o] != MachineIoMode.NONE || neighbor.outputModes[o] != MachineIoMode.NONE)
+        return neighbor.getInput(side.opposite) != MachineIoMode.NONE || neighbor.getOutput(side.opposite) != MachineIoMode.NONE
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
