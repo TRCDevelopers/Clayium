@@ -120,7 +120,10 @@ abstract class MetaTileEntity(
     open val hasFrontFacing = true
     var frontFacing = EnumFacing.NORTH
         set(value) {
+            val syncFlag = !(isRemote || field == value)
             if (isFacingValid(value)) field = value
+            markDirty()
+            if (syncFlag) writeCustomData(UPDATE_FRONT_FACING) { writeByte(value.index) }
         }
 
     private var timer = 0L
