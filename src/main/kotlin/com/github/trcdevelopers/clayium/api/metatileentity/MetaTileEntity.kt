@@ -440,6 +440,7 @@ abstract class MetaTileEntity(
     }
 
     protected fun refreshConnection(side: EnumFacing) {
+        val previous = _connectionsCache[side.index]
         val i = side.index
         when (val neighborTileEntity = this.getNeighbor(side)) {
             is MetaTileEntityHolder -> {
@@ -449,9 +450,11 @@ abstract class MetaTileEntity(
             null -> _connectionsCache[i] = false
             else -> _connectionsCache[i] = this.canConnectTo(neighborTileEntity, side)
         }
-        writeCustomData(UPDATE_CONNECTIONS) {
-            writeByte(i)
-            writeBoolean(_connectionsCache[i])
+        if (previous != _connectionsCache[i]) {
+            writeCustomData(UPDATE_CONNECTIONS) {
+                writeByte(i)
+                writeBoolean(_connectionsCache[i])
+            }
         }
     }
 
@@ -491,7 +494,7 @@ abstract class MetaTileEntity(
 
     @MustBeInvokedByOverriders
     open fun onPlacement() {
-        EnumFacing.entries.forEach(this::refreshConnection)
+        if (!isRemote) EnumFacing.entries.forEach(this::refreshConnection)
     }
 
     open fun onRemoval() {}
@@ -504,9 +507,10 @@ abstract class MetaTileEntity(
     open fun readItemStackNbt(data: NBTTagCompound) {}
 
     open fun onNeighborChanged(facing: EnumFacing) {
-        this.refreshConnection(facing)
     }
-    open fun neighborChanged() {}
+    open fun neighborChanged() {
+        EnumFacing.entries.forEach(this::refreshConnection)
+    }
 
     open fun canConnectRedstone(side: EnumFacing?) = false
 
