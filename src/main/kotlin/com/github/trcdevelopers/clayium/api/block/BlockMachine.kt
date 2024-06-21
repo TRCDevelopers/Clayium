@@ -112,10 +112,17 @@ class BlockMachine : Block(Material.IRON) {
     override fun onBlockPlacedBy(worldIn: World, pos: BlockPos, state: IBlockState, placer: EntityLivingBase, stack: ItemStack) {
         val holder = worldIn.getTileEntity(pos) as? MetaTileEntityHolder ?: return
         val sampleMetaTileEntity = ClayiumApi.MTE_REGISTRY.getObjectById(stack.itemDamage) ?: return
-        val newMetaTileEntity = holder.setMetaTileEntity(sampleMetaTileEntity, placer)
+        val newMetaTileEntity = holder.setMetaTileEntity(sampleMetaTileEntity)
+        newMetaTileEntity.frontFacing = if (newMetaTileEntity.isFacingValid(EnumFacing.UP))  {
+            EnumFacing.getDirectionFromEntityLiving(pos, placer)
+        } else {
+            placer.horizontalFacing.opposite
+        }
         if (stack.hasTagCompound()) {
             newMetaTileEntity.readItemStackNbt(stack.tagCompound!!)
         }
+
+        newMetaTileEntity.onPlacement()
     }
 
     val beingBrokenMetaTileEntity = ThreadLocal<MetaTileEntity>()

@@ -68,13 +68,17 @@ class ClayBufferMetaTileEntity(
         return super.getCapability(capability, facing)
     }
 
+    override fun isFacingValid(facing: EnumFacing): Boolean {
+        return true
+    }
+
     override fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
         return neighbor.getInput(side.opposite) != MachineIoMode.NONE || neighbor.getOutput(side.opposite) != MachineIoMode.NONE
     }
 
-    override fun changeIoModesOnPlacement(placer: EntityLivingBase) {
-        this.toggleInput(EnumFacing.getDirectionFromEntityLiving(pos ?: return, placer).opposite)
-        super.changeIoModesOnPlacement(placer)
+    override fun onPlacement() {
+        this.toggleInput(this.frontFacing.opposite)
+        super.onPlacement()
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {

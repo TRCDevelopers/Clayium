@@ -57,8 +57,9 @@ class SolarClayFabricatorMetaTileEntity(
         return facing == EnumFacing.UP
     }
 
-    override fun changeIoModesOnPlacement(placer: EntityLivingBase) {
+    override fun onPlacement() {
         this.frontFacing = EnumFacing.UP
+        super.onPlacement()
     }
 
     @SideOnly(Side.CLIENT)

@@ -67,10 +67,10 @@ abstract class WorkableMetaTileEntity(
     }
 
     override fun onPlacement() {
-        super.onPlacement()
         this.setInput(EnumFacing.UP, MachineIoMode.ALL)
         this.setOutput(EnumFacing.DOWN, MachineIoMode.ALL)
         this.setInput(this.frontFacing.opposite, MachineIoMode.CE)
+        super.onPlacement()
     }
 
     override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {

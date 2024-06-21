@@ -119,7 +119,7 @@ abstract class MetaTileEntity(
 
     open val hasFrontFacing = true
     var frontFacing = EnumFacing.NORTH
-        protected set(value) {
+        set(value) {
             if (isFacingValid(value)) field = value
         }
 
@@ -489,23 +489,10 @@ abstract class MetaTileEntity(
 
     open fun isFacingValid(facing: EnumFacing) = facing.axis.isHorizontal
 
-    /**
-     * called on both client and server.
-     */
     @MustBeInvokedByOverriders
-    open fun changeIoModesOnPlacement(placer: EntityLivingBase) {
-        val pos = this.pos
-        if (this.hasFrontFacing) {
-            this.frontFacing = if (isFacingValid(EnumFacing.UP) && pos != null)
-                EnumFacing.getDirectionFromEntityLiving(pos, placer)
-            else
-                placer.horizontalFacing.opposite
-        }
+    open fun onPlacement() {
         EnumFacing.entries.forEach(this::refreshConnection)
     }
-
-    @MustBeInvokedByOverriders
-    open fun onPlacement() {}
 
     open fun onRemoval() {}
 

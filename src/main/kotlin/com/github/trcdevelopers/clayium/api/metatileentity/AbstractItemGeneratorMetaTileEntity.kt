@@ -69,9 +69,9 @@ abstract class AbstractItemGeneratorMetaTileEntity(
         return true
     }
 
-    override fun changeIoModesOnPlacement(placer: EntityLivingBase) {
-        super.changeIoModesOnPlacement(placer)
+    override fun onPlacement() {
         setOutput(this.frontFacing, MachineIoMode.ALL)
+        super.onPlacement()
     }
 
     override fun update() {

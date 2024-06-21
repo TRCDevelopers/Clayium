@@ -48,9 +48,9 @@ class SaltExtractorMetaTileEntity(
         return SaltExtractorMetaTileEntity(this.metaTileEntityId, this.tier)
     }
 
-    override fun changeIoModesOnPlacement(placer: EntityLivingBase) {
-        super.changeIoModesOnPlacement(placer)
+    override fun onPlacement() {
         setInput(this.frontFacing.opposite, MachineIoMode.CE)
+        super.onPlacement()
     }
 
     override fun isTerrainValid(): Boolean {
