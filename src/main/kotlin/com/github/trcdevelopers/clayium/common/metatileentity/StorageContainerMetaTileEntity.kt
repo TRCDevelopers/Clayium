@@ -84,7 +84,6 @@ class StorageContainerMetaTileEntity(
     }
     override val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
 
-    // phantom slot. should I support "IItemFilter"? not supported in the original version.
     private val filterSlot = ItemStackHandler(1)
     private var currentInsertedStack: ItemStack = ItemStack.EMPTY
 
