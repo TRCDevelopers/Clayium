@@ -205,6 +205,11 @@ class StorageContainerMetaTileEntity(
         this.itemsStored = data.getInteger("itemsStored")
         this.currentInsertedStack = ItemStack(data.getCompoundTag("storedStack"))
         this.exportItems.setStackInSlot(0, ItemStack(data.getCompoundTag("outputStack")))
+
+        previousStoredItems = itemsStored
+        // maxStoredItems doesn't change often, so it's synced in the setter.
+        writeCustomData(UPDATE_ITEMS_STORED) { writeVarInt(itemsStored) }
+        writeCustomData(UPDATE_STORED_ITEMSTACK) { writeItemStack(currentInsertedStack) }
     }
 
     override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {}
