@@ -11,6 +11,7 @@ object MetaTileEntityRenderDispatcher : TileEntitySpecialRenderer<MetaTileEntity
     override fun render(holder: MetaTileEntityHolder, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
         if (holder.blockType !is BlockMachine) return
         val metaTileEntity = holder.metaTileEntity ?: return
+        metaTileEntity.renderMetaTileEntity(x, y, z, partialTicks)
         val clayLaserManager = metaTileEntity.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER, null)
         if (clayLaserManager?.isActive == true) {
             ClayLaserRenderer.renderLaser(clayLaserManager, x, y, z, this::bindTexture)

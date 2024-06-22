@@ -4,7 +4,6 @@ import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.INITIALIZE_MTE
 import com.github.trcdevelopers.clayium.common.Clayium
 import net.minecraft.block.state.IBlockState
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
@@ -22,14 +21,12 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
             field = sampleMetaTileEntity
         }
 
-    fun setMetaTileEntity(sampleMetaTileEntity: MetaTileEntity, placer: EntityLivingBase? = null): MetaTileEntity {
+    fun setMetaTileEntity(sampleMetaTileEntity: MetaTileEntity): MetaTileEntity {
         val newMetaTileEntity = sampleMetaTileEntity.createMetaTileEntity()
         metaTileEntity = newMetaTileEntity
-        if (placer != null) newMetaTileEntity.changeIoModesOnPlacement(placer)
         if (world != null && !world.isRemote) {
             writeCustomData(INITIALIZE_MTE) {
                 writeVarInt(ClayiumApi.MTE_REGISTRY.getIdByKey(sampleMetaTileEntity.metaTileEntityId))
-                newMetaTileEntity.onPlacement()
                 newMetaTileEntity.writeInitialSyncData(this)
             }
             world.neighborChanged(pos, blockType, pos)

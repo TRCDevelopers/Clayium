@@ -12,7 +12,6 @@ import com.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClayItem
-import net.minecraft.client.resources.I18n
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 

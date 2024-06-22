@@ -18,7 +18,6 @@ import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.util.ITooltipFlag
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
@@ -61,24 +60,24 @@ class ClayBufferMetaTileEntity(
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            val filter = facing?.let { filters[facing.index] }
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(
-                createFilteredHandler(itemInventory, filter)
+                createFilteredItemHandler(itemInventory, facing)
             )
         }
         return super.getCapability(capability, facing)
     }
 
-    override fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
-        val i = side.index
-        val o = side.opposite.index
-        return (this.inputModes[i] != MachineIoMode.NONE || this.outputModes[i] != MachineIoMode.NONE)
-                || (neighbor.inputModes[o] != MachineIoMode.NONE || neighbor.outputModes[o] != MachineIoMode.NONE)
+    override fun isFacingValid(facing: EnumFacing): Boolean {
+        return true
     }
 
-    override fun changeIoModesOnPlacement(placer: EntityLivingBase) {
-        this.toggleInput(EnumFacing.getDirectionFromEntityLiving(pos ?: return, placer).opposite)
-        super.changeIoModesOnPlacement(placer)
+    override fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
+        return neighbor.getInput(side.opposite) != MachineIoMode.NONE || neighbor.getOutput(side.opposite) != MachineIoMode.NONE
+    }
+
+    override fun onPlacement() {
+        this.toggleInput(this.frontFacing.opposite)
+        super.onPlacement()
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {

@@ -18,6 +18,11 @@ object ClayiumDataCodecs {
     val UPDATE_LASER = assignId()
     val UPDATE_LASER_ACTIVATION = assignId()
 
+    val UPDATE_ITEMS_STORED = assignId()
+    val UPDATE_MAX_ITEMS_STORED = assignId()
+    val UPDATE_STORED_ITEMSTACK = assignId()
+    val UPDATE_FILTER_ITEM = assignId()
+
     val UPDATE_RESONANCE = assignId()
 
     val INTERFACE_SYNC_MIMIC_TARGET = assignId()

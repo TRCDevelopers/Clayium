@@ -1,8 +1,13 @@
 package com.github.trcdevelopers.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.api.IGuiHolder
+import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
+import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.widget.ParentWidget
+import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.block.BlockMachine.Companion.IS_PIPE
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
@@ -25,6 +30,7 @@ import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.IPipeConnectable
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.*
+import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.*
 import com.github.trcdevelopers.clayium.common.items.filter.FilterType
@@ -38,7 +44,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -79,6 +84,7 @@ abstract class MetaTileEntity(
     val world: World? get() = holder?.world
     val pos: BlockPos? get() = holder?.pos
     val isInvalid get() = holder?.isInvalid ?: true
+    val isRemote get() = world?.isRemote ?: true
 
     open val faceTexture: ResourceLocation? = null
     open val requiredTextures get() = listOf(faceTexture)
@@ -110,8 +116,11 @@ abstract class MetaTileEntity(
 
     open val hasFrontFacing = true
     var frontFacing = EnumFacing.NORTH
-        protected set(value) {
+        set(value) {
+            val syncFlag = !(isRemote || field == value)
             if (isFacingValid(value)) field = value
+            markDirty()
+            if (syncFlag) writeCustomData(UPDATE_FRONT_FACING) { writeByte(value.index) }
         }
 
     private var timer = 0L
@@ -212,6 +221,7 @@ abstract class MetaTileEntity(
             }
         }
         val numberOfTraits = buf.readVarInt()
+        @Suppress("unused")
         for (i in 0..<numberOfTraits) {
             val id = buf.readVarInt()
             traitByNetworkId[id]?.receiveInitialSyncData(buf)
@@ -277,17 +287,16 @@ abstract class MetaTileEntity(
         if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (facing == null) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemInventory)
             val i = facing.index
-            val filter = filters[i]
             val inputSlots = when (inputModes[i]) {
-                FIRST ->  createFilteredHandler(RangedItemHandlerProxy(importItems, availableSlot = 0), filter)
-                SECOND -> createFilteredHandler(RangedItemHandlerProxy(importItems, availableSlot = 1), filter)
-                ALL -> createFilteredHandler(importItems, filter)
+                FIRST ->  createFilteredItemHandler(RangedItemHandlerProxy(importItems, availableSlot = 0), facing)
+                SECOND -> createFilteredItemHandler(RangedItemHandlerProxy(importItems, availableSlot = 1), facing)
+                ALL -> createFilteredItemHandler(importItems, facing)
                 else -> null
             }
             val outputSlots = when (outputModes[i]) {
-                FIRST ->  createFilteredHandler(RangedItemHandlerProxy(exportItems, availableSlot = 0), filter)
-                SECOND -> createFilteredHandler(RangedItemHandlerProxy(exportItems, availableSlot = 1), filter)
-                ALL -> createFilteredHandler(exportItems, filter)
+                FIRST ->  createFilteredItemHandler(RangedItemHandlerProxy(exportItems, availableSlot = 0), facing)
+                SECOND -> createFilteredItemHandler(RangedItemHandlerProxy(exportItems, availableSlot = 1), facing)
+                ALL -> createFilteredItemHandler(exportItems, facing)
                 else -> null
             }
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(ItemHandlerProxy(inputSlots, outputSlots))
@@ -295,14 +304,20 @@ abstract class MetaTileEntity(
         return mteTraits.values.firstNotNullOfOrNull { it.getCapability(capability, facing) }
     }
 
-    protected fun createFilteredHandler(handler: IItemHandler, filter: IItemFilter?): IItemHandler {
-        return if (filter == null) {
-            handler
-        } else {
-            FilteredItemHandler(handler, filter)
-        }
+    /**
+     * this is intended to be used in [getCapability] to create an [IItemHandler] with a filter.
+     *
+     * @param side if null, it returns original [handler].
+     */
+    protected fun createFilteredItemHandler(handler: IItemHandler, side: EnumFacing?): IItemHandler {
+        if (side == null) return handler
+        val filter = filters[side.index]
+        return if (filter == null) handler else FilteredItemHandler(handler, filter)
     }
 
+    /**
+     * only called on the server side.
+     */
     open fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         val pos = this.pos ?: return
         if (this.canOpenGui()) {
@@ -415,17 +430,21 @@ abstract class MetaTileEntity(
     }
 
     protected fun refreshConnection(side: EnumFacing) {
-        val neighborTileEntity = this.getNeighbor(side) ?: return
-        val neighborMetaTileEntity = (neighborTileEntity as? MetaTileEntityHolder)?.metaTileEntity
+        val previous = _connectionsCache[side.index]
         val i = side.index
-        if (neighborMetaTileEntity == null) {
-            _connectionsCache[i] = this.canConnectTo(neighborTileEntity, side)
-        } else {
-            _connectionsCache[i] = (this.canConnectToMte(neighborMetaTileEntity, side) || neighborMetaTileEntity.canConnectToMte(this, side.opposite))
+        when (val neighborTileEntity = this.getNeighbor(side)) {
+            is MetaTileEntityHolder -> {
+                val neighborMetaTileEntity = neighborTileEntity.metaTileEntity ?: return
+                _connectionsCache[i] = (this.canConnectToMte(neighborMetaTileEntity, side) || neighborMetaTileEntity.canConnectToMte(this, side.opposite))
+            }
+            null -> _connectionsCache[i] = false
+            else -> _connectionsCache[i] = this.canConnectTo(neighborTileEntity, side)
         }
-        writeCustomData(UPDATE_CONNECTIONS) {
-            writeByte(i)
-            writeBoolean(_connectionsCache[i])
+        if (previous != _connectionsCache[i]) {
+            writeCustomData(UPDATE_CONNECTIONS) {
+                writeByte(i)
+                writeBoolean(_connectionsCache[i])
+            }
         }
     }
 
@@ -443,10 +462,6 @@ abstract class MetaTileEntity(
             writeVarInt(side.index)
             writeVarInt(-1)
         }
-    }
-
-    protected fun refreshNeighborConnection(side: EnumFacing) {
-        (this.getNeighbor(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
     }
 
     protected open fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
@@ -467,23 +482,10 @@ abstract class MetaTileEntity(
 
     open fun isFacingValid(facing: EnumFacing) = facing.axis.isHorizontal
 
-    /**
-     * called on both client and server.
-     */
     @MustBeInvokedByOverriders
-    open fun changeIoModesOnPlacement(placer: EntityLivingBase) {
-        val pos = this.pos
-        if (this.hasFrontFacing) {
-            this.frontFacing = if (isFacingValid(EnumFacing.UP) && pos != null)
-                EnumFacing.getDirectionFromEntityLiving(pos, placer)
-            else
-                placer.horizontalFacing.opposite
-        }
-        EnumFacing.entries.forEach(this::refreshConnection)
+    open fun onPlacement() {
+        if (!isRemote) EnumFacing.entries.forEach(this::refreshConnection)
     }
-
-    @MustBeInvokedByOverriders
-    open fun onPlacement() {}
 
     open fun onRemoval() {}
 
@@ -491,10 +493,14 @@ abstract class MetaTileEntity(
         return ItemStack(ClayiumApi.BLOCK_MACHINE, amount, ClayiumApi.MTE_REGISTRY.getIdByKey(metaTileEntityId))
     }
 
+    open fun writeItemStackNbt(data: NBTTagCompound) {}
+    open fun readItemStackNbt(data: NBTTagCompound) {}
+
     open fun onNeighborChanged(facing: EnumFacing) {
-        this.refreshConnection(facing)
     }
-    open fun neighborChanged() {}
+    open fun neighborChanged() {
+        EnumFacing.entries.forEach(this::refreshConnection)
+    }
 
     open fun canConnectRedstone(side: EnumFacing?) = false
 
@@ -538,17 +544,42 @@ abstract class MetaTileEntity(
     @SideOnly(Side.CLIENT)
     open fun bakeQuads(getter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {}
 
+    /**
+     * Adds base textures such as Machine hulls.
+     */
     @SideOnly(Side.CLIENT)
     open fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): MutableList<BakedQuad> {
         if (state == null || side == null || state !is IExtendedBlockState) return mutableListOf()
         val quads = mutableListOf(ModelTextures.getHullQuads(this.tier)?.get(side) ?: return mutableListOf())
+        return quads
+    }
+
+    /**
+     * Adds overlay textures such as Machine faces.
+     * This is called after [getQuads], but before adding IO textures.
+     */
+    @SideOnly(Side.CLIENT)
+    open fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
         if (this.hasFrontFacing && this.faceTexture != null) {
             if (this.useFaceForAllSides || side == this.frontFacing) {
                 ModelTextures.FACE_QUADS[this.faceTexture]?.get(side)?.let { quads.add(it) }
             }
         }
-        return quads
     }
+
+    /**
+     * You can use GlStateManager to render extra things if needed.
+     * todo: cc render?
+     */
+    @SideOnly(Side.CLIENT)
+    open fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {}
+
+    protected fun largeSlot(slot: ModularSlot) = ParentWidget()
+                .size(26, 26)
+                .background(ClayGuiTextures.LARGE_SLOT)
+                .child(ItemSlot().align(Alignment.Center)
+                    .slot(slot)
+                    .background(IDrawable.EMPTY))
 
     private data class FilterAndType(val filter: IItemFilter, val type: FilterType)
 

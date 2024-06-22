@@ -58,6 +58,7 @@ object ModelTextures {
             })
         }
         for (metaTileEntity in ClayiumApi.MTE_REGISTRY) {
+            metaTileEntity.bakeQuads(getter, faceBakery)
             metaTileEntity.requiredTextures.filterNotNull().forEach { faceTexture ->
                 _faceQuads.computeIfAbsent(faceTexture) {
                     EnumFacing.entries.associateWith { side ->
@@ -66,7 +67,6 @@ object ModelTextures {
                 }
             }
         }
-        ClayiumApi.MTE_REGISTRY.forEach { it.bakeQuads(getter, faceBakery) }
         isInitialized = true
     }
 

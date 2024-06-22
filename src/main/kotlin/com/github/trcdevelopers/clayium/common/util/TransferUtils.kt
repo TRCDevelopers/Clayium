@@ -1,7 +1,23 @@
 package com.github.trcdevelopers.clayium.common.util
 
 import net.minecraft.item.ItemStack
+import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
+import net.minecraftforge.items.ItemHandlerHelper
+
+fun IItemHandler.transferTo(to: IItemHandler) {
+    for (i in 0..<this.slots) {
+        val sourceStack = this.extractItem(i, Int.MAX_VALUE, true)
+        if (sourceStack.isEmpty) continue
+
+        val remain = ItemHandlerHelper.insertItem(to, sourceStack, true)
+        val amountToInsert = sourceStack.count - remain.count
+        if (amountToInsert <= 0) continue
+
+        val extracted = this.extractItem(i, amountToInsert, false)
+        ItemHandlerHelper.insertItem(to, extracted, false)
+    }
+}
 
 object TransferUtils {
     /**
@@ -33,4 +49,5 @@ object TransferUtils {
             return allStackInserted
         }
     }
+
 }

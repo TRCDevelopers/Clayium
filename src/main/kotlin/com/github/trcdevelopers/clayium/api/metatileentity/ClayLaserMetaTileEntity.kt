@@ -76,6 +76,7 @@ class ClayLaserMetaTileEntity(
     }
 
     override fun onPlacement() {
+        super.onPlacement()
         laserManager.updateDirection(this.frontFacing)
         this.updateLaserActivation()
     }

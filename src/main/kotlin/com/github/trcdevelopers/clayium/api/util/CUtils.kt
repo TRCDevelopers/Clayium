@@ -15,6 +15,17 @@ import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
+fun IBlockAccess?.getMetaTileEntity(pos: BlockPos?): MetaTileEntity? {
+    if (this == null || pos == null) return null
+    return (this.getTileEntity(pos) as? MetaTileEntityHolder)?.metaTileEntity
+}
+
+fun ItemStack.copyWithSize(size: Int): ItemStack {
+    val stack = copy()
+    stack.count = size
+    return stack
+}
+
 object CUtils {
     fun toUpperCamel(snakeCase: String): String {
         return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, snakeCase)

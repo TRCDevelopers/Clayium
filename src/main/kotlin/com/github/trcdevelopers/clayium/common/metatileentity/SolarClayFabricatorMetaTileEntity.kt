@@ -23,7 +23,6 @@ import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -57,8 +56,9 @@ class SolarClayFabricatorMetaTileEntity(
         return facing == EnumFacing.UP
     }
 
-    override fun changeIoModesOnPlacement(placer: EntityLivingBase) {
+    override fun onPlacement() {
         this.frontFacing = EnumFacing.UP
+        super.onPlacement()
     }
 
     @SideOnly(Side.CLIENT)

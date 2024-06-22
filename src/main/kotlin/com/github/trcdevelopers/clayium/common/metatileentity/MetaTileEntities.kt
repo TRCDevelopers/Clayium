@@ -109,15 +109,16 @@ object MetaTileEntities {
         ClayReactorMetaTileEntity(clayiumId("clay_reactor"), ClayTiers.CLAY_STEEL)
     )
 
-    val STORAGE_CONTAINER = registerMetaTileEntity(152, StorageContainerMetaTileEntity(clayiumId("storage_container"), ClayTiers.AZ91D))
+    val STORAGE_CONTAINER = registerMetaTileEntity(152, StorageContainerMetaTileEntity(clayiumId("storage_container"), ClayTiers.AZ91D, false))
+    val STORAGE_CONTAINER_UPGRADED = registerMetaTileEntity(153, StorageContainerMetaTileEntity(clayiumId("storage_container_upgraded"), ClayTiers.AZ91D, true))
 
-    val CA_RESONATING_COLLECTOR = registerMetaTileEntity(153, ResonatingCollectorMetaTileEntity(clayiumId("resonating_collector"), ClayTiers.ANTIMATTER))
+    val CA_RESONATING_COLLECTOR = registerMetaTileEntity(154, ResonatingCollectorMetaTileEntity(clayiumId("resonating_collector"), ClayTiers.ANTIMATTER))
 
-    val CA_INJECTOR = registerMetaTileEntities(154, (9..13)) {
+    val CA_INJECTOR = registerMetaTileEntities(155, (9..13)) {
         CaInjectorMetaTileEntity(clayiumId("ca_injector.${it.lowerName}"), it)
     }
 
-    val CA_CONDENSER = registerMetaTileEntities(159, (9..11)) {
+    val CA_CONDENSER = registerMetaTileEntities(160, (9..11)) {
         CaCondenserMetaTileEntity(clayiumId("ca_condenser.${it.lowerName}"), it)
     }
 

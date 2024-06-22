@@ -3,6 +3,7 @@ package com.github.trcdevelopers.clayium.api.block
 import codechicken.lib.block.property.unlisted.UnlistedTileEntityProperty
 import codechicken.lib.render.particle.CustomParticleHandler
 import com.github.trcdevelopers.clayium.api.ClayiumApi
+import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.Clayium
@@ -19,6 +20,7 @@ import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumFacing
@@ -110,8 +112,20 @@ class BlockMachine : Block(Material.IRON) {
     override fun onBlockPlacedBy(worldIn: World, pos: BlockPos, state: IBlockState, placer: EntityLivingBase, stack: ItemStack) {
         val holder = worldIn.getTileEntity(pos) as? MetaTileEntityHolder ?: return
         val sampleMetaTileEntity = ClayiumApi.MTE_REGISTRY.getObjectById(stack.itemDamage) ?: return
-        val newMetaTileEntity = holder.setMetaTileEntity(sampleMetaTileEntity, placer)
+        val newMetaTileEntity = holder.setMetaTileEntity(sampleMetaTileEntity)
+        newMetaTileEntity.frontFacing = if (newMetaTileEntity.isFacingValid(EnumFacing.UP))  {
+            EnumFacing.getDirectionFromEntityLiving(pos, placer)
+        } else {
+            placer.horizontalFacing.opposite
+        }
+        if (stack.hasTagCompound()) {
+            newMetaTileEntity.readItemStackNbt(stack.tagCompound!!)
+        }
+
+        newMetaTileEntity.onPlacement()
     }
+
+    val beingBrokenMetaTileEntity = ThreadLocal<MetaTileEntity>()
 
     override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
         CUtils.getMetaTileEntity(worldIn, pos)?.let { mte ->
@@ -119,12 +133,23 @@ class BlockMachine : Block(Material.IRON) {
                 .forEach { spawnAsEntity(worldIn, pos, it) }
 
             mte.onRemoval()
+            beingBrokenMetaTileEntity.set(mte)
         }
         super.breakBlock(worldIn, pos, state)
     }
 
+    override fun harvestBlock(worldIn: World, player: EntityPlayer, pos: BlockPos, state: IBlockState, te: TileEntity?, stack: ItemStack) {
+        if ((te as? MetaTileEntityHolder) != null) beingBrokenMetaTileEntity.set(te.metaTileEntity)
+        super.harvestBlock(worldIn, player, pos, state, te, stack)
+        beingBrokenMetaTileEntity.remove()
+    }
+
     override fun getDrops(drops: NonNullList<ItemStack>, world: IBlockAccess, pos: BlockPos, state: IBlockState, fortune: Int) {
-        CUtils.getMetaTileEntity(world, pos)?.let { drops.add(it.getStackForm()) }
+        val metaTileEntity = beingBrokenMetaTileEntity.get()
+        val stack = metaTileEntity.getStackForm()
+        val data = NBTTagCompound().apply { metaTileEntity.writeItemStackNbt(this) }
+        if (!data.isEmpty) stack.tagCompound = data
+        drops.add(stack)
     }
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
@@ -175,7 +200,7 @@ class BlockMachine : Block(Material.IRON) {
     }
 
     @SideOnly(Side.CLIENT)
-    override fun getRenderLayer() = BlockRenderLayer.CUTOUT_MIPPED
+    override fun getRenderLayer() = BlockRenderLayer.TRANSLUCENT
 
     @SideOnly(Side.CLIENT)
     override fun addHitEffects(state: IBlockState, world: World, target: RayTraceResult, manager: ParticleManager): Boolean {

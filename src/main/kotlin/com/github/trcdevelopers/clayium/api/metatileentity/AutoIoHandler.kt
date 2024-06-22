@@ -3,10 +3,10 @@ package com.github.trcdevelopers.clayium.api.metatileentity
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.config.ConfigTierBalance
-import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.items.ItemHandlerHelper
 
 abstract class AutoIoHandler(
     metaTileEntity: MetaTileEntity,
@@ -61,28 +61,14 @@ abstract class AutoIoHandler(
         for (i in 0..<from.slots) {
             val extracted = from.extractItem(i, remainingWork, true)
                 .takeUnless { it.isEmpty } ?: continue
-            val remain = insertToInventory(to, extracted, true)
+            val remain = ItemHandlerHelper.insertItem(to, extracted, true)
 
             val stackToInsert = from.extractItem(i, extracted.count - remain.count, false)
-            insertToInventory(to, stackToInsert, false)
+            ItemHandlerHelper.insertItem(to, stackToInsert, false)
             remainingWork -= extracted.count - remain.count
             if (remainingWork <= 0) break
         }
         return remainingWork
-    }
-
-    /**
-     * @param handler The target inventory of the insertion
-     * @param stack The stack to insert. This stack will not be modified.
-     * @return The remaining ItemStack that was not inserted (if the entire stack is accepted, then return an empty ItemStack)
-     */
-    protected fun insertToInventory(handler: IItemHandler, stack: ItemStack, simulate: Boolean): ItemStack {
-        var remaining = stack.copy()
-        for (i in 0..<handler.slots) {
-            remaining = handler.insertItem(i, remaining, simulate)
-            if (remaining.isEmpty) break
-        }
-        return remaining
     }
 
     open class Importer(
