@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trcdevelopers.clayium.api.CValues
+import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.block.BlockMachine
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_ITEMS_STORED
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_MAX_ITEMS_STORED
@@ -57,6 +58,7 @@ import kotlin.math.min
 class StorageContainerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
+    isUpgraded: Boolean,
 ) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, validOutputModesLists[1], "machine.${CValues.MOD_ID}.storage_container") {
 
     override val faceTexture = clayiumId("blocks/storage_container")
@@ -86,7 +88,7 @@ class StorageContainerMetaTileEntity(
     private val filterSlot = ItemStackHandler(1)
     private var currentInsertedStack: ItemStack = ItemStack.EMPTY
 
-    private var maxStoredItems = INITIAL_MAX_AMOUNT
+    private var maxStoredItems = if (isUpgraded) UPGRADED_MAX_AMOUNT else INITIAL_MAX_AMOUNT
         set(value) {
             val syncFlag = !isRemote && field != value
             field = value
@@ -120,9 +122,15 @@ class StorageContainerMetaTileEntity(
         val clayCore = MetaItemClayParts.CLAY_CORE.getStackForm()
         //todo use capability
         if (stack.isItemEqual(clayCore) && stack.metadata == clayCore.metadata && maxStoredItems == INITIAL_MAX_AMOUNT) {
-            maxStoredItems = UPGRADED_MAX_AMOUNT
-            stack.shrink(1)
-            return
+            val world = this.world
+            val pos = this.pos
+            if (!(world == null || pos == null)) {
+                val upgradedStorageContainerStack = MetaTileEntities.STORAGE_CONTAINER_UPGRADED.getStackForm()
+                upgradedStorageContainerStack.tagCompound = NBTTagCompound().apply { writeItemStackNbt(this) }
+                ClayiumApi.BLOCK_MACHINE.onBlockPlacedBy(world, pos, world.getBlockState(pos), player, upgradedStorageContainerStack)
+                stack.shrink(1)
+                return
+            }
         }
         super.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
     }
@@ -139,7 +147,7 @@ class StorageContainerMetaTileEntity(
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
-        return StorageContainerMetaTileEntity(this.metaTileEntityId, this.tier)
+        return StorageContainerMetaTileEntity(this.metaTileEntityId, this.tier, maxStoredItems == UPGRADED_MAX_AMOUNT)
     }
 
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
@@ -194,20 +202,17 @@ class StorageContainerMetaTileEntity(
     }
 
     override fun writeItemStackNbt(data: NBTTagCompound) {
-        data.setBoolean("upgraded", maxStoredItems == UPGRADED_MAX_AMOUNT)
         data.setInteger("itemsStored", itemsStored)
         data.setTag("storedStack", currentInsertedStack.serializeNBT())
         data.setTag("outputStack", exportItems.getStackInSlot(0).serializeNBT())
     }
 
     override fun readItemStackNbt(data: NBTTagCompound) {
-        this.maxStoredItems = if (data.getBoolean("upgraded")) UPGRADED_MAX_AMOUNT else INITIAL_MAX_AMOUNT
         this.itemsStored = data.getInteger("itemsStored")
         this.currentInsertedStack = ItemStack(data.getCompoundTag("storedStack"))
         this.exportItems.setStackInSlot(0, ItemStack(data.getCompoundTag("outputStack")))
 
         previousStoredItems = itemsStored
-        // maxStoredItems doesn't change often, so it's synced in the setter.
         writeCustomData(UPDATE_ITEMS_STORED) { writeVarInt(itemsStored) }
         writeCustomData(UPDATE_STORED_ITEMSTACK) { writeItemStack(currentInsertedStack) }
     }
@@ -216,7 +221,7 @@ class StorageContainerMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("storage_container"), "inventory"))
+        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(this.metaTileEntityId, "inventory"))
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
