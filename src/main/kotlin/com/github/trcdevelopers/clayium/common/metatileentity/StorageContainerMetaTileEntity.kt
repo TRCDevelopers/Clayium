@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.block.BlockMachine
+import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER_ITEM
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_ITEMS_STORED
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_MAX_ITEMS_STORED
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_STORED_ITEMSTACK
@@ -157,6 +158,7 @@ class StorageContainerMetaTileEntity(
                 scheduleRenderUpdate()
             }
             UPDATE_STORED_ITEMSTACK -> currentInsertedStack = buf.readItemStack()
+            UPDATE_FILTER_ITEM -> filterSlot.deserializeNBT(buf.readCompoundTag())
             else -> super.receiveCustomData(discriminator, buf)
         }
     }
@@ -172,6 +174,7 @@ class StorageContainerMetaTileEntity(
             buf.writeBoolean(false)
             buf.writeItemStack(currentInsertedStack)
         }
+        buf.writeCompoundTag(filterSlot.serializeNBT())
     }
 
     override fun receiveInitialSyncData(buf: PacketBuffer) {
@@ -184,6 +187,7 @@ class StorageContainerMetaTileEntity(
         } else {
             currentInsertedStack = buf.readItemStack()
         }
+        filterSlot.deserializeNBT(buf.readCompoundTag())
     }
 
     override fun writeToNBT(data: NBTTagCompound) {
@@ -191,6 +195,7 @@ class StorageContainerMetaTileEntity(
         data.setInteger("maxStoredItems", maxStoredItems)
         data.setInteger("itemsStored", itemsStored)
         data.setTag("storedStack", currentInsertedStack.serializeNBT())
+        data.setTag("filterSlot", filterSlot.serializeNBT())
     }
 
     override fun readFromNBT(data: NBTTagCompound) {
@@ -198,22 +203,26 @@ class StorageContainerMetaTileEntity(
         if (data.hasKey("maxStoredItems", Constants.NBT.TAG_INT)) { maxStoredItems = data.getInteger("maxStoredItems") }
         if (data.hasKey("itemsStored", Constants.NBT.TAG_INT)) { itemsStored = data.getInteger("itemsStored") }
         if (data.hasKey("storedStack", Constants.NBT.TAG_COMPOUND)) { currentInsertedStack = ItemStack(data.getCompoundTag("storedStack")) }
+        if (data.hasKey("filterSlot", Constants.NBT.TAG_COMPOUND)) { filterSlot.deserializeNBT(data.getCompoundTag("filterSlot")) }
     }
 
     override fun writeItemStackNbt(data: NBTTagCompound) {
         data.setInteger("itemsStored", itemsStored)
         data.setTag("storedStack", currentInsertedStack.serializeNBT())
         data.setTag("outputStack", exportItems.getStackInSlot(0).serializeNBT())
+        data.setTag("filterSlot", filterSlot.serializeNBT())
     }
 
     override fun readItemStackNbt(data: NBTTagCompound) {
         this.itemsStored = data.getInteger("itemsStored")
         this.currentInsertedStack = ItemStack(data.getCompoundTag("storedStack"))
         this.exportItems.setStackInSlot(0, ItemStack(data.getCompoundTag("outputStack")))
+        this.filterSlot.deserializeNBT(data.getCompoundTag("filterSlot"))
 
         previousStoredItems = itemsStored
         writeCustomData(UPDATE_ITEMS_STORED) { writeVarInt(itemsStored) }
         writeCustomData(UPDATE_STORED_ITEMSTACK) { writeItemStack(currentInsertedStack) }
+        writeCustomData(UPDATE_FILTER_ITEM) { writeCompoundTag(filterSlot.serializeNBT()) }
     }
 
     override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {}
