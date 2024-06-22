@@ -273,7 +273,7 @@ class StorageContainerMetaTileEntity(
         val pos = this.pos ?: return
         if (world?.getBlockState(pos)?.getValue(BlockMachine.IS_PIPE) == true) return
 
-        val stack = if (currentInsertedStack.isEmpty) exportItems.getStackInSlot(0) else currentInsertedStack
+        val stack = if (currentInsertedStack.isEmpty) filterSlot.getStackInSlot(0) else currentInsertedStack
         if (stack.isEmpty) return
 
         val mc = Minecraft.getMinecraft()
