@@ -221,6 +221,7 @@ abstract class MetaTileEntity(
             }
         }
         val numberOfTraits = buf.readVarInt()
+        @Suppress("unused")
         for (i in 0..<numberOfTraits) {
             val id = buf.readVarInt()
             traitByNetworkId[id]?.receiveInitialSyncData(buf)
@@ -286,32 +287,21 @@ abstract class MetaTileEntity(
         if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (facing == null) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemInventory)
             val i = facing.index
-            val filter = filters[i]
             val inputSlots = when (inputModes[i]) {
-                FIRST ->  createFilteredHandler(RangedItemHandlerProxy(importItems, availableSlot = 0), filter)
-                SECOND -> createFilteredHandler(RangedItemHandlerProxy(importItems, availableSlot = 1), filter)
-                ALL -> createFilteredHandler(importItems, filter)
+                FIRST ->  createFilteredItemHandler(RangedItemHandlerProxy(importItems, availableSlot = 0), facing)
+                SECOND -> createFilteredItemHandler(RangedItemHandlerProxy(importItems, availableSlot = 1), facing)
+                ALL -> createFilteredItemHandler(importItems, facing)
                 else -> null
             }
             val outputSlots = when (outputModes[i]) {
-                FIRST ->  createFilteredHandler(RangedItemHandlerProxy(exportItems, availableSlot = 0), filter)
-                SECOND -> createFilteredHandler(RangedItemHandlerProxy(exportItems, availableSlot = 1), filter)
-                ALL -> createFilteredHandler(exportItems, filter)
+                FIRST ->  createFilteredItemHandler(RangedItemHandlerProxy(exportItems, availableSlot = 0), facing)
+                SECOND -> createFilteredItemHandler(RangedItemHandlerProxy(exportItems, availableSlot = 1), facing)
+                ALL -> createFilteredItemHandler(exportItems, facing)
                 else -> null
             }
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(ItemHandlerProxy(inputSlots, outputSlots))
         }
         return mteTraits.values.firstNotNullOfOrNull { it.getCapability(capability, facing) }
-    }
-
-    //todo
-    @Deprecated("use createFilteredItemHandler(handler, facing) instead")
-    protected fun createFilteredHandler(handler: IItemHandler, filter: IItemFilter?): IItemHandler {
-        return if (filter == null) {
-            handler
-        } else {
-            FilteredItemHandler(handler, filter)
-        }
     }
 
     /**
