@@ -9,5 +9,6 @@ object CRecipeLoader {
         ClayReactorRecipeLoader.register()
         CondenserRecipeLoader.registerRecipes()
         SolarClayFabricatorRecipeLoader.register()
+        MatterTransformerRecipeLoader.registerRecipes()
     }
 }
