@@ -15,6 +15,9 @@ data class Material(
         return metaItemSubId.compareTo(other.metaItemSubId)
     }
 
+    fun hasProperty(key: PropertyKey<*>) = properties.hasProperty(key)
+    fun <T : MaterialProperty> getProperty(key: PropertyKey<T>) = properties.getProperty(key)
+
     class Builder(
         private val metaItemSubId: Int,
         private val metaItemId: ResourceLocation,

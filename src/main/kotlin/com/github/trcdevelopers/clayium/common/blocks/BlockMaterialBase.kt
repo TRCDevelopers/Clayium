@@ -6,7 +6,9 @@ import com.github.trcdevelopers.clayium.common.unification.material.Material
 import net.minecraft.block.Block
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.ItemStack
+import net.minecraft.util.NonNullList
 
 @Suppress("OVERRIDE_DEPRECATION")
 abstract class BlockMaterialBase(material: net.minecraft.block.material.Material) : Block(material) {
@@ -39,4 +41,10 @@ abstract class BlockMaterialBase(material: net.minecraft.block.material.Material
     }
 
     override fun damageDropped(state: IBlockState) = getMetaFromState(state)
+
+    override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
+        for (state in blockState.validStates) {
+            items.add(state.toItemStack())
+        }
+    }
 }
