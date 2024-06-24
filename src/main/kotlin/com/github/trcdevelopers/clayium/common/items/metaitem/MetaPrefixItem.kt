@@ -4,7 +4,7 @@ import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.items.metaitem.component.IItemColorHandler
 import com.github.trcdevelopers.clayium.common.unification.OrePrefix
-import com.github.trcdevelopers.clayium.common.unification.material.Material
+import com.github.trcdevelopers.clayium.common.unification.material.EnumMaterial
 import com.github.trcdevelopers.clayium.common.unification.material.MaterialProperty
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.I18n
@@ -17,7 +17,7 @@ open class MetaPrefixItem private constructor(
 ) : MetaItemClayium(name) {
 
     open fun registerSubItems() {
-        for (material in Material.entries) {
+        for (material in EnumMaterial.entries) {
             if (!orePrefix.doGenerateItem(material)) continue
 
             addItem(material.uniqueId.toShort(), material.materialName) {
@@ -46,12 +46,12 @@ open class MetaPrefixItem private constructor(
         return I18n.format("oreprefix.${Clayium.MOD_ID}.${orePrefix.camel}", I18n.format("material.${Clayium.MOD_ID}.${material.materialName}"))
     }
 
-    private fun getMaterial(stack: ItemStack): Material? {
-        return Material.fromId(stack.itemDamage)
+    private fun getMaterial(stack: ItemStack): EnumMaterial? {
+        return EnumMaterial.fromId(stack.itemDamage)
     }
 
-    private fun getMaterial(id: Int): Material? {
-        return Material.fromId(id)
+    private fun getMaterial(id: Int): EnumMaterial? {
+        return EnumMaterial.fromId(id)
     }
 
     companion object {
@@ -65,7 +65,7 @@ open class MetaPrefixItem private constructor(
                         for (item in metaValueItems.values) {
                             ModelLoader.setCustomModelResourceLocation(
                                 this, item.meta.toInt(),
-                                Material.fromId(item.meta.toInt())?.getProperty<MaterialProperty.Matter>()?.modelLocation ?: ModelLoader.MODEL_MISSING
+                                EnumMaterial.fromId(item.meta.toInt())?.getProperty<MaterialProperty.Matter>()?.modelLocation ?: ModelLoader.MODEL_MISSING
                             )
                         }
                     }
@@ -77,7 +77,7 @@ open class MetaPrefixItem private constructor(
 
     private object MetaPrefixItemImpureDust : MetaPrefixItem("meta_impure_dust", OrePrefix.IMPURE_DUST) {
        override fun registerSubItems() {
-            for (material in Material.entries) {
+            for (material in EnumMaterial.entries) {
                 if (OrePrefix.IMPURE_DUST.doGenerateItem(material)) {
                     val impureDust  = material.getProperty<MaterialProperty.ImpureDust>()!!
                     addItem(material.uniqueId.toShort(), material.materialName)

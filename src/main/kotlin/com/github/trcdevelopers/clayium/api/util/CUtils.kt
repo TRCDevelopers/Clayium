@@ -26,6 +26,10 @@ fun ItemStack.copyWithSize(size: Int): ItemStack {
     return stack
 }
 
+fun clayiumId(path: String): ResourceLocation {
+    return ResourceLocation(CValues.MOD_ID, path)
+}
+
 object CUtils {
     fun toUpperCamel(snakeCase: String): String {
         return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, snakeCase)

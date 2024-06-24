@@ -20,7 +20,7 @@ import com.github.trcdevelopers.clayium.common.recipe.CWTRecipes
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
 import com.github.trcdevelopers.clayium.common.unification.OrePrefix.LARGE_PLATE
 import com.github.trcdevelopers.clayium.common.unification.OrePrefix.PLATE
-import com.github.trcdevelopers.clayium.common.unification.material.Material.CLAY
+import com.github.trcdevelopers.clayium.common.unification.material.EnumMaterial.CLAY
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 

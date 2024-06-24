@@ -3,6 +3,10 @@ package com.github.trcdevelopers.clayium.common.unification.material
 class MaterialProperties {
     private val properties: MutableMap<PropertyKey<*>, MaterialProperty> = mutableMapOf()
 
+    fun <T : MaterialProperty> setProperty(key: PropertyKey<T>, value: T) {
+        properties[key] = value
+    }
+
     fun hasProperty(key: PropertyKey<*>): Boolean {
         return properties.containsKey(key)
     }
