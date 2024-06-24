@@ -341,6 +341,10 @@ enum class Material(
         set.toSet()
     }
 
+    fun <T : MaterialProperty> hasProperty(key: PropertyKey<T>): Boolean {
+        return false
+    }
+
     inline fun <reified T : MaterialProperty> hasProperty(): Boolean {
         return properties.firstOrNull { it is T } != null
     }
