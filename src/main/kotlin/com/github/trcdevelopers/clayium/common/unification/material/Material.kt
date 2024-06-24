@@ -5,11 +5,16 @@ import net.minecraft.util.ResourceLocation
 
 data class Material(
     val metaItemSubId: Int,
-    val metaItemId: ResourceLocation,
+    val materialId: ResourceLocation,
     val properties: MaterialProperties,
     val tier: Int = NO_TIER,
     val colors: IntArray? = null,
-) {
+) : Comparable<Material> {
+
+    override fun compareTo(other: Material): Int {
+        return metaItemSubId.compareTo(other.metaItemSubId)
+    }
+
     class Builder(
         private val metaItemSubId: Int,
         private val metaItemId: ResourceLocation,
@@ -41,6 +46,7 @@ data class Material(
 
         fun build() = Material(metaItemSubId, metaItemId, properties, tier, colors)
     }
+
     companion object {
         const val NO_TIER = -1
 
