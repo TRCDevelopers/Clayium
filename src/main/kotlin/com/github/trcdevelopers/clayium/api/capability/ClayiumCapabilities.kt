@@ -9,4 +9,7 @@ object ClayiumCapabilities {
 
     @CapabilityInject(IItemFilter::class)
     lateinit var ITEM_FILTER: Capability<IItemFilter>
+
+    @CapabilityInject(IClayEnergyProvider::class)
+    lateinit var ENERGIZED_CLAY: Capability<IClayEnergyProvider>
 }
