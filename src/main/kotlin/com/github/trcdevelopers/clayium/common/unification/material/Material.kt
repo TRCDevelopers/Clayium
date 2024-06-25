@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.unification.material
 
+import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import net.minecraft.util.ResourceLocation
 
@@ -47,7 +48,16 @@ data class Material(
             return this
         }
 
-        fun build() = Material(metaItemSubId, metaItemId, properties, tier, colors)
+        fun energizedClay(clayEnergy: ClayEnergy): Builder {
+            properties.setProperty(PropertyKey.ENERGIZED_CLAY, EnergizedClay(clayEnergy))
+            return this
+        }
+
+        fun build(): Material{
+            val material = Material(metaItemSubId, metaItemId, properties, tier, colors)
+            ClayiumApi.materialRegistry.register(metaItemSubId, metaItemId, material)
+            return material
+        }
     }
 
     companion object {

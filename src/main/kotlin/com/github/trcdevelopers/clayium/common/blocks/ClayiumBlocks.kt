@@ -1,14 +1,17 @@
 package com.github.trcdevelopers.clayium.common.blocks
 
 import com.github.trcdevelopers.clayium.api.CValues
-import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
+import com.github.trcdevelopers.clayium.api.ClayiumApi
+import com.github.trcdevelopers.clayium.api.util.clayiumId
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.blocks.clay.BlockCompressedClay
-import com.github.trcdevelopers.clayium.common.blocks.clay.BlockEnergizedClay
 import com.github.trcdevelopers.clayium.common.blocks.clayworktable.BlockClayWorkTable
 import com.github.trcdevelopers.clayium.common.blocks.ores.BlockClayOre
 import com.github.trcdevelopers.clayium.common.blocks.ores.BlockDenseClayOre
+import com.github.trcdevelopers.clayium.common.unification.material.Material
+import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
 import com.google.common.collect.ImmutableMap
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import net.minecraft.block.Block
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.init.Blocks
@@ -29,7 +32,6 @@ object ClayiumBlocks {
     val CLAY_WORK_TABLE = createBlock("clay_work_table", BlockClayWorkTable())
 
     val COMPRESSED_CLAY = createBlock("compressed_clay", BlockCompressedClay())
-    val ENERGIZED_CLAY = createBlock("energized_clay", BlockEnergizedClay())
 
     val CLAY_ORE = createBlock("clay_ore", BlockClayOre())
     val DENSE_CLAY_ORE = createBlock("dense_clay_ore", BlockDenseClayOre())
@@ -39,6 +41,12 @@ object ClayiumBlocks {
     val QUARTZ_CRUCIBLE = createBlock("quartz_crucible", BlockQuartzCrucible())
     val MACHINE_HULL = createBlock("machine_hull", BlockMachineHull())
     val RESONATOR = createBlock("resonator", BlockResonator())
+
+    val ENERGIZED_CLAY_BLOCKS = mutableListOf<BlockEnergizedClay>()
+
+    init {
+        createMaterialBlock({ material -> material.hasProperty(PropertyKey.ENERGIZED_CLAY) }, this::createEnergizedClayBlock)
+    }
 
     private fun <T: Block> createBlock(key: String, block: T): T {
         return block.apply {
@@ -51,9 +59,29 @@ object ClayiumBlocks {
 
     fun registerBlocks(event: RegistryEvent.Register<Block>) { blocks.values.forEach(event.registry::register) }
 
+    fun createMaterialBlock(filter: (material: Material) -> Boolean, generator: (metaMaterialMap: Map<Int, Material>, index: Int) -> Unit) {
+        var currentId = 0
+        var mapping = Int2ObjectArrayMap<Material>(17)
+        for (materials in ClayiumApi.materialRegistry.chunked(16)) {
+            for (material in materials) {
+                if (!filter(material)) continue
+                val metaItemSubId = currentId % 16
+                mapping.put(metaItemSubId, material)
+            }
+            generator(mapping, currentId)
+            mapping = Int2ObjectArrayMap(17)
+            currentId++
+        }
+    }
+
+    fun createEnergizedClayBlock(metaMaterialMap: Map<Int, Material>, index: Int) {
+        val block = BlockEnergizedClay.create(metaMaterialMap)
+        block.registryName = clayiumId("energized_clay_$index")
+        ENERGIZED_CLAY_BLOCKS.add(block)
+    }
+
     fun getCompressedClayStack(tier: Int): ItemStack {
         if (tier < 4) return ItemStack(COMPRESSED_CLAY, 1, tier)
-        if (tier < 13) return ItemStack(ENERGIZED_CLAY, 1, tier - 4)
         return ItemStack(Blocks.CLAY, 1)
     }
 

@@ -17,7 +17,7 @@ class ItemBlockEnergizedClay(block: BlockEnergizedClay) : ItemBlockMaterial(bloc
             override fun <T : Any> getCapability(capability: Capability<T?>, facing: EnumFacing?): T? {
                 if (capability == ClayiumCapabilities.ENERGIZED_CLAY) {
                     return ClayiumCapabilities.ENERGIZED_CLAY.cast(
-                        SimpleClayEnergyProvider(block.getCMaterial(stack).getProperty(PropertyKey.ENERGIZED_CLAY).energy)
+                        SimpleClayEnergyProvider(blockMaterial.getCMaterial(stack).getProperty(PropertyKey.ENERGIZED_CLAY).energy)
                     )
                 }
                 return null
