@@ -45,9 +45,7 @@ object ClayiumBlocks {
     val ENERGIZED_CLAY_BLOCKS = mutableListOf<BlockEnergizedClay>()
 
     init {
-        createMaterialBlock({ material ->
-            material.hasProperty(PropertyKey.CLAY) && material.getProperty(PropertyKey.CLAY).energy != null },
-            this::createEnergizedClayBlock)
+        createMaterialBlock({ material -> material.hasProperty(PropertyKey.ENERGY_CLAY) }, this::createEnergizedClayBlock)
     }
 
     private fun <T: Block> createBlock(key: String, block: T): T {

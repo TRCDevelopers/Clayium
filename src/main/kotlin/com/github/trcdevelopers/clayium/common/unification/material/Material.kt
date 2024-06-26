@@ -61,7 +61,11 @@ data class Material(
          * @param energy The energy of this clay. If null, the clay will not be energized (i.e. it can't be used as machine fuel).
          */
         fun clay(decompressedInto: Material? = null, energy: ClayEnergy? = null): Builder {
-            properties.setProperty(PropertyKey.CLAY, Clay(decompressedInto, energy))
+            if (energy == null) {
+                properties.setProperty(PropertyKey.CLAY, Clay(decompressedInto))
+            } else {
+                properties.setProperty(PropertyKey.ENERGY_CLAY, EnergyClay(decompressedInto, energy))
+            }
             return this
         }
 
