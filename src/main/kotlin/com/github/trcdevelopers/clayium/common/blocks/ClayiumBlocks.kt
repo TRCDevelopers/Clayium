@@ -65,7 +65,7 @@ object ClayiumBlocks {
         for (materials in ClayiumApi.materialRegistry.chunked(16)) {
             for (material in materials) {
                 if (!filter(material)) continue
-                val metaItemSubId = currentId % 16
+                val metaItemSubId = material.metaItemSubId % 16
                 mapping.put(metaItemSubId, material)
             }
             generator(mapping, currentId)
