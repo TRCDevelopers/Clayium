@@ -1,6 +1,6 @@
 package com.github.trcdevelopers.clayium.common.recipe.handler
 
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix
+import com.github.trcdevelopers.clayium.common.unification.EnumOrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.EnumMaterial
 
 object MaterialRecipeHandler {
@@ -8,7 +8,7 @@ object MaterialRecipeHandler {
 
     }
 
-    private fun handleIngot(orePrefix: OrePrefix, material: EnumMaterial) {
+    private fun handleIngot(enumOrePrefix: EnumOrePrefix, material: EnumMaterial) {
 
     }
 }

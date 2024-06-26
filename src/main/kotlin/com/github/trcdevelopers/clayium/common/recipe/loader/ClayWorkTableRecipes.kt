@@ -18,8 +18,8 @@ import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts.
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts.LARGE_CLAY_BALL
 import com.github.trcdevelopers.clayium.common.recipe.CWTRecipes
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix.LARGE_PLATE
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix.PLATE
+import com.github.trcdevelopers.clayium.common.unification.EnumOrePrefix.LARGE_PLATE
+import com.github.trcdevelopers.clayium.common.unification.EnumOrePrefix.PLATE
 import com.github.trcdevelopers.clayium.common.unification.material.EnumMaterial.CLAY
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack

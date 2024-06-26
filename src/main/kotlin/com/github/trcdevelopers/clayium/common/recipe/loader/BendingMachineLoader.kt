@@ -2,7 +2,7 @@ package com.github.trcdevelopers.clayium.common.recipe.loader
 
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix
+import com.github.trcdevelopers.clayium.common.unification.EnumOrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.EnumMaterial
 import com.github.trcdevelopers.clayium.common.unification.material.MaterialProperty.Ingot
 import com.github.trcdevelopers.clayium.common.unification.material.MaterialProperty.Matter
@@ -16,8 +16,8 @@ object BendingMachineLoader {
             if (material.hasProperty<Ingot>() && material.hasProperty<Plate>()) {
                 val plateProp = material.getProperty<Plate>() ?: continue
                 registry.register {
-                    input(OrePrefix.INGOT, material)
-                    outputs(OreDictUnifier.get(OrePrefix.PLATE, material))
+                    input(EnumOrePrefix.INGOT, material)
+                    outputs(OreDictUnifier.get(EnumOrePrefix.PLATE, material))
                     cePerTick(plateProp.cePerTick)
                     duration(plateProp.requiredTick)
                     tier(plateProp.tier)
@@ -27,8 +27,8 @@ object BendingMachineLoader {
             if (material.hasProperty<Matter>() && material.hasProperty<Plate>()) {
                 val plateProp = material.getProperty<Plate>() ?: continue
                 registry.register {
-                    input(OrePrefix.MATTER, material)
-                    outputs(OreDictUnifier.get(OrePrefix.PLATE, material))
+                    input(EnumOrePrefix.MATTER, material)
+                    outputs(OreDictUnifier.get(EnumOrePrefix.PLATE, material))
                     cePerTick(plateProp.cePerTick)
                     duration(plateProp.requiredTick)
                     tier(plateProp.tier)

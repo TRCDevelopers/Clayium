@@ -9,7 +9,7 @@ import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix
+import com.github.trcdevelopers.clayium.common.unification.EnumOrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.EnumMaterial
 import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
@@ -38,7 +38,7 @@ class SaltExtractorMetaTileEntity(
     }
 
     // wait for oreDict registration
-    override val generatingItem by lazy { OreDictUnifier.get(OrePrefix.DUST, EnumMaterial.SALT) }
+    override val generatingItem by lazy { OreDictUnifier.get(EnumOrePrefix.DUST, EnumMaterial.SALT) }
 
     private val clayEnergyHolder = ClayEnergyHolder(this)
     private val energyPerProgress = ClayEnergy.of(30)

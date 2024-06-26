@@ -9,7 +9,7 @@ import com.github.trcdevelopers.clayium.common.recipe.ingredient.COreRecipeInput
 import com.github.trcdevelopers.clayium.common.recipe.ingredient.CRecipeInput
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix
+import com.github.trcdevelopers.clayium.common.unification.EnumOrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.EnumMaterial
 import com.github.trcdevelopers.clayium.common.unification.stack.UnificationEntry
 import net.minecraft.block.Block
@@ -53,7 +53,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun input(metaItem: MetaItemClayium.MetaValueItem, amount: Int = 1) = input(metaItem.getStackForm(amount))
     fun input(block: Block, amount: Int = 1) = input(ItemStack(block, amount))
     fun input(oreDict: String, amount: Int = 1) = inputs(COreRecipeInput(oreDict, amount))
-    fun input(orePrefix: OrePrefix, material: EnumMaterial, amount: Int = 1) = inputs(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
+    fun input(enumOrePrefix: EnumOrePrefix, material: EnumMaterial, amount: Int = 1) = inputs(COreRecipeInput(UnificationEntry(enumOrePrefix, material).toString(), amount))
 
     fun outputs(vararg stacks: ItemStack): R {
         outputs.addAll(stacks)
@@ -65,7 +65,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun output(metaItem: MetaItemClayium.MetaValueItem, amount: Int = 1) = output(metaItem.getStackForm(amount))
     fun output(block: Block, amount: Int = 1) = output(ItemStack(block, amount))
     fun output(oreDict: String, amount: Int = 1) = outputs(OreDictUnifier.get(oreDict, amount))
-    fun output(orePrefix: OrePrefix, material: EnumMaterial, amount: Int = 1) = outputs(OreDictUnifier.get(orePrefix, material, amount))
+    fun output(enumOrePrefix: EnumOrePrefix, material: EnumMaterial, amount: Int = 1) = outputs(OreDictUnifier.get(enumOrePrefix, material, amount))
 
     fun duration(duration: Int) = duration(duration.toLong())
     fun duration(duration: Long): R {

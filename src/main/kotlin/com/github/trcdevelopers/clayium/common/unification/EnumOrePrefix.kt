@@ -5,7 +5,7 @@ import com.github.trcdevelopers.clayium.common.unification.material.EnumMaterial
 import com.github.trcdevelopers.clayium.common.unification.material.MaterialProperty
 import com.google.common.base.CaseFormat
 
-enum class OrePrefix(
+enum class EnumOrePrefix(
     val camel: String,
     val snake: String = CUtils.toLowerSnake(camel),
 ) {

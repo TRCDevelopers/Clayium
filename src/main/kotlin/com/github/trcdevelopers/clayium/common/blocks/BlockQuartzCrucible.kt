@@ -5,7 +5,7 @@ import com.github.trcdevelopers.clayium.api.util.ClayTiers
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.BlockQuartzCrucible.QuartzCrucibleTileEntity
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix
+import com.github.trcdevelopers.clayium.common.unification.EnumOrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.EnumMaterial
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
@@ -64,7 +64,7 @@ class BlockQuartzCrucible : Block(net.minecraft.block.material.Material.GLASS), 
         if (worldIn.isRemote || entityIn !is EntityItem) return
         val tileEntity = worldIn.getTileEntity(pos) as? QuartzCrucibleTileEntity ?: return
         val stack = entityIn.item
-        val impureSiliconIngot = OreDictUnifier.get(OrePrefix.INGOT, EnumMaterial.IMPURE_SILICON)
+        val impureSiliconIngot = OreDictUnifier.get(EnumOrePrefix.INGOT, EnumMaterial.IMPURE_SILICON)
         if (stack.isItemEqual(impureSiliconIngot)) {
             val currentLevel = state.getValue(LEVEL)
             if (currentLevel >= 9) return
@@ -85,7 +85,7 @@ class BlockQuartzCrucible : Block(net.minecraft.block.material.Material.GLASS), 
                     entityIn.setDead()
                 }
                 tileEntity.ingotQuantity = 0
-                spawnAsEntity(worldIn, pos, OreDictUnifier.get(OrePrefix.INGOT, EnumMaterial.SILICON, stackSize = currentLevel))
+                spawnAsEntity(worldIn, pos, OreDictUnifier.get(EnumOrePrefix.INGOT, EnumMaterial.SILICON, stackSize = currentLevel))
                 worldIn.setBlockState(pos, state.withProperty(LEVEL, 0))
             }
         }

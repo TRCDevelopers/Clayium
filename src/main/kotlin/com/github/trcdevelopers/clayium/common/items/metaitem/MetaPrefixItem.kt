@@ -3,7 +3,7 @@ package com.github.trcdevelopers.clayium.common.items.metaitem
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.items.metaitem.component.IItemColorHandler
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix
+import com.github.trcdevelopers.clayium.common.unification.EnumOrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.EnumMaterial
 import com.github.trcdevelopers.clayium.common.unification.material.MaterialProperty
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -13,16 +13,16 @@ import net.minecraftforge.client.model.ModelLoader
 
 open class MetaPrefixItem private constructor(
     val name: String,
-    val orePrefix: OrePrefix,
+    val enumOrePrefix: EnumOrePrefix,
 ) : MetaItemClayium(name) {
 
     open fun registerSubItems() {
         for (material in EnumMaterial.entries) {
-            if (!orePrefix.doGenerateItem(material)) continue
+            if (!enumOrePrefix.doGenerateItem(material)) continue
 
             addItem(material.uniqueId.toShort(), material.materialName) {
                 tier(material.tier)
-                oreDict("${orePrefix.camel}${CUtils.toUpperCamel(material.materialName)}")
+                oreDict("${enumOrePrefix.camel}${CUtils.toUpperCamel(material.materialName)}")
                 if (material.colors != null) {
                     addComponent(IItemColorHandler { _, i -> material.colors[i] })
                 }
@@ -34,16 +34,16 @@ open class MetaPrefixItem private constructor(
         for (item in metaValueItems.values) {
             val material = getMaterial(item.meta.toInt()) ?: continue
             if (material.colors == null) {
-                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:${material.materialName}_${orePrefix.snake}", "inventory"))
+                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:${material.materialName}_${enumOrePrefix.snake}", "inventory"))
             } else {
-                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:colored/${orePrefix.snake}", "inventory"))
+                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:colored/${enumOrePrefix.snake}", "inventory"))
             }
         }
     }
 
     override fun getItemStackDisplayName(stack: ItemStack): String {
         val material = getMaterial(stack) ?: return "invalid"
-        return I18n.format("oreprefix.${Clayium.MOD_ID}.${orePrefix.camel}", I18n.format("material.${Clayium.MOD_ID}.${material.materialName}"))
+        return I18n.format("oreprefix.${Clayium.MOD_ID}.${enumOrePrefix.camel}", I18n.format("material.${Clayium.MOD_ID}.${material.materialName}"))
     }
 
     private fun getMaterial(stack: ItemStack): EnumMaterial? {
@@ -57,10 +57,10 @@ open class MetaPrefixItem private constructor(
     companion object {
 
 
-        fun create(name: String, orePrefix: OrePrefix): MetaPrefixItem {
-            return when (orePrefix) {
-                OrePrefix.IMPURE_DUST -> MetaPrefixItemImpureDust
-                OrePrefix.MATTER -> object : MetaPrefixItem(name, OrePrefix.MATTER) {
+        fun create(name: String, enumOrePrefix: EnumOrePrefix): MetaPrefixItem {
+            return when (enumOrePrefix) {
+                EnumOrePrefix.IMPURE_DUST -> MetaPrefixItemImpureDust
+                EnumOrePrefix.MATTER -> object : MetaPrefixItem(name, EnumOrePrefix.MATTER) {
                     override fun registerModels() {
                         for (item in metaValueItems.values) {
                             ModelLoader.setCustomModelResourceLocation(
@@ -70,15 +70,15 @@ open class MetaPrefixItem private constructor(
                         }
                     }
                 }
-                else -> MetaPrefixItem(name, orePrefix)
+                else -> MetaPrefixItem(name, enumOrePrefix)
             }
         }
     }
 
-    private object MetaPrefixItemImpureDust : MetaPrefixItem("meta_impure_dust", OrePrefix.IMPURE_DUST) {
+    private object MetaPrefixItemImpureDust : MetaPrefixItem("meta_impure_dust", EnumOrePrefix.IMPURE_DUST) {
        override fun registerSubItems() {
             for (material in EnumMaterial.entries) {
-                if (OrePrefix.IMPURE_DUST.doGenerateItem(material)) {
+                if (EnumOrePrefix.IMPURE_DUST.doGenerateItem(material)) {
                     val impureDust  = material.getProperty<MaterialProperty.ImpureDust>()!!
                     addItem(material.uniqueId.toShort(), material.materialName)
                         .tier(material.tier)

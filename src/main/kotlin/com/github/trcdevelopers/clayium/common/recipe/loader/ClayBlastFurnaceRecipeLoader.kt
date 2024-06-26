@@ -2,7 +2,7 @@ package com.github.trcdevelopers.clayium.common.recipe.loader
 
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix
+import com.github.trcdevelopers.clayium.common.unification.EnumOrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.EnumMaterial
 import net.minecraft.init.Items
 
@@ -13,7 +13,7 @@ object ClayBlastFurnaceRecipeLoader {
         registry.register {
             input(Items.IRON_INGOT)
             input(Items.COAL, 2)
-            output(OrePrefix.INGOT, EnumMaterial.STEEL)
+            output(EnumOrePrefix.INGOT, EnumMaterial.STEEL)
             cePerTick(ClayEnergy.milli(100))
             duration(500)
             tier(6)
