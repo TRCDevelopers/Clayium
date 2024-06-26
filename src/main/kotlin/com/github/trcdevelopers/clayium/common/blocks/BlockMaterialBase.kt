@@ -2,6 +2,7 @@ package com.github.trcdevelopers.clayium.common.blocks
 
 import com.github.trcdevelopers.clayium.api.util.toItemStack
 import com.github.trcdevelopers.clayium.common.blocks.properties.CMaterialProperty
+import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import net.minecraft.block.Block
 import net.minecraft.block.state.BlockStateContainer
@@ -22,7 +23,7 @@ abstract class BlockMaterialBase(
         return defaultState.withProperty(getMaterialProperty(), material).toItemStack(count)
     }
 
-    fun getCMaterial(meta: Int) = mapping[meta] ?: throw IllegalArgumentException("Invalid metadata: $meta")
+    fun getCMaterial(meta: Int) = mapping[meta] ?: CMaterials.DUMMY
     fun getCMaterial(stack: ItemStack) = getCMaterial(stack.metadata)
     fun getCMaterial(state: IBlockState) = state.getValue(getMaterialProperty())
 

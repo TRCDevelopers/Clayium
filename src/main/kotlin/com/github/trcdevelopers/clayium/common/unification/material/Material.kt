@@ -1,6 +1,8 @@
 package com.github.trcdevelopers.clayium.common.unification.material
 
 import com.github.trcdevelopers.clayium.api.ClayiumApi
+import com.github.trcdevelopers.clayium.api.util.ClayTiers
+import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import net.minecraft.util.ResourceLocation
 
@@ -8,7 +10,7 @@ data class Material(
     val metaItemSubId: Int,
     val materialId: ResourceLocation,
     val properties: MaterialProperties,
-    val tier: Int = NO_TIER,
+    val tier: ITier? = null,
     val colors: IntArray? = null,
 ) : Comparable<Material> {
 
@@ -24,10 +26,11 @@ data class Material(
         private val metaItemId: ResourceLocation,
     ) {
         private var properties: MaterialProperties = MaterialProperties()
-        private var tier: Int = NO_TIER
+        private var tier: ITier? = null
         private var colors: IntArray? = null
 
-        fun tier(tier: Int) = apply { this.tier = tier }
+        fun tier(tier: Int) = apply { this.tier = ClayTiers.entries[tier] }
+        fun tier(tier: ITier) = apply { this.tier = tier }
         fun colors(vararg colors: Int) = apply { this.colors = colors }
 
         fun ingot() = apply { properties.setProperty(PropertyKey.INGOT, MaterialProperty.Ingot) }
@@ -69,8 +72,6 @@ data class Material(
     }
 
     companion object {
-        const val NO_TIER = -1
-
         inline fun create(metaItemSubId: Int, metaItemId: ResourceLocation, init: Builder.() -> Unit): Material {
             return Builder(metaItemSubId, metaItemId).apply(init).build()
         }
