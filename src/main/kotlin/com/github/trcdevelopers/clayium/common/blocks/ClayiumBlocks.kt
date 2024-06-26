@@ -86,7 +86,10 @@ object ClayiumBlocks {
     }
 
     @SideOnly(Side.CLIENT)
-    fun registerItemBlockModels() { blocks.values.forEach(this::registerItemModel) }
+    fun registerModels() {
+        blocks.values.forEach(this::registerItemModel)
+        for (block in ENERGIZED_CLAY_BLOCKS) block.registerModels()
+    }
 
     @SideOnly(Side.CLIENT)
     private fun registerItemModel(block: Block) {

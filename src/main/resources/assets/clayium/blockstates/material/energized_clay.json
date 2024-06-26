@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "material": {
+      "octuple_energy_clay": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier12"
+        },
+        "model": "cube_all"
+      }
+    }
+  }
+}

@@ -43,11 +43,19 @@ data class Material(
             return this
         }
 
+        /**
+         * Adds a plate item to this material.
+         * If the material has an ingot, dust, or block property, the plate recipe will be generated with the given parameters.
+         */
         fun plate(cePerTick: ClayEnergy, requiredTick: Int, tier: Int): Builder {
             properties.setProperty(PropertyKey.PLATE, MaterialProperty.Plate(cePerTick, requiredTick, tier))
             return this
         }
 
+        /**
+         * Adds an energized clay block with [clayEnergy] to this material.
+         * The block has an ENERGIZED_CLAY capability.
+         */
         fun energizedClay(clayEnergy: ClayEnergy): Builder {
             properties.setProperty(PropertyKey.ENERGIZED_CLAY, EnergizedClay(clayEnergy))
             return this

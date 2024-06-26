@@ -16,7 +16,6 @@ abstract class BlockMaterialBase(
     val mapping: Map<Int, Material>,
 ) : Block(blockMaterial) {
 
-
     abstract fun getMaterialProperty(): CMaterialProperty
 
     fun getItemStack(material: Material, count: Int = 1): ItemStack {
@@ -42,7 +41,7 @@ abstract class BlockMaterialBase(
 
     override fun damageDropped(state: IBlockState) = getMetaFromState(state)
 
-    override fun getSubBlocks(itemIn: CreativeTabs?, items: NonNullList<ItemStack>) {
+    override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
         for (state in blockState.validStates) {
             items.add(state.toItemStack())
         }

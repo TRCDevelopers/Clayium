@@ -11,8 +11,6 @@ import com.github.trcdevelopers.clayium.api.capability.impl.InfiniteItemStackHan
 import com.github.trcdevelopers.clayium.api.util.toItemStack
 import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
 import net.minecraft.block.state.IBlockState
-import net.minecraft.init.Items
-import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
@@ -21,10 +19,8 @@ import net.minecraftforge.items.CapabilityItemHandler
 class TileEntityCreativeEnergySource : TileEntity(), IGuiHolder<PosGuiData> {
 
     private val handler by lazy {
-        println(ClayiumBlocks.ENERGIZED_CLAY_BLOCKS)
         var highest: IBlockState? = null
         for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) {
-            println(block.blockState.validStates)
             for (state in block.blockState.validStates) {
                 if (highest == null) highest = state
                 val matCe = block.getCMaterial(state).getProperty(PropertyKey.ENERGIZED_CLAY).energy
