@@ -68,8 +68,10 @@ object ClayiumBlocks {
                 val metaItemSubId = material.metaItemSubId % 16
                 mapping.put(metaItemSubId, material)
             }
-            generator(mapping, currentId)
-            mapping = Int2ObjectArrayMap(17)
+            if (mapping.isNotEmpty()) {
+                generator(mapping, currentId)
+                mapping = Int2ObjectArrayMap(17)
+            }
             currentId++
         }
     }
