@@ -1,13 +1,13 @@
 package com.github.trcdevelopers.clayium.common.unification.stack
 
-import com.github.trcdevelopers.clayium.common.unification.EnumOrePrefix
-import com.github.trcdevelopers.clayium.common.unification.material.EnumMaterial
+import com.github.trcdevelopers.clayium.common.unification.material.Material
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 
 data class UnificationEntry(
-    val enumOrePrefix: EnumOrePrefix,
-    val material: EnumMaterial,
+    val orePrefix: OrePrefix,
+    val material: Material,
 ) {
     override fun toString(): String {
-        return "${enumOrePrefix.camel}${material.toUpperCamel()}"
+        return "${orePrefix.camel}${material.upperCamel}"
     }
 }

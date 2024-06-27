@@ -7,6 +7,9 @@ import com.github.trcdevelopers.clayium.common.items.metaitem.component.IItemCol
 import com.github.trcdevelopers.clayium.common.items.metaitem.component.IItemComponent
 import com.github.trcdevelopers.clayium.common.items.metaitem.component.ISubItemHandler
 import com.github.trcdevelopers.clayium.common.items.metaitem.component.TooltipBehavior
+import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
+import com.github.trcdevelopers.clayium.common.unification.material.Material
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.util.ITooltipFlag
@@ -119,6 +122,11 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
 
         fun oreDict(name: String): MetaValueItem {
             OreDictionary.registerOre(name, getStackForm(1))
+            return this
+        }
+
+        fun oreDict(orePrefix: OrePrefix, material: Material): MetaValueItem {
+            OreDictUnifier.registerOre(getStackForm(), orePrefix, material)
             return this
         }
 

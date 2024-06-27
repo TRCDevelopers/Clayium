@@ -20,8 +20,8 @@ import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
 import com.github.trcdevelopers.clayium.common.recipe.loader.CRecipeLoader
-import com.github.trcdevelopers.clayium.common.unification.EnumOrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import com.github.trcdevelopers.clayium.common.worldgen.ClayOreGenerator
 import net.minecraft.block.Block
 import net.minecraft.item.Item
@@ -76,7 +76,7 @@ open class CommonProxy {
         val registry = event.registry
 
         registry.register(MetaItemClayParts)
-        for (orePrefix in EnumOrePrefix.entries) {
+        for (orePrefix in OrePrefix.metaItemPrefixes) {
             val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
             registry.register(metaPrefixItem)
             metaPrefixItem.registerSubItems()

@@ -4,15 +4,21 @@ import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.util.ClayTiers
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
+import com.google.common.base.CaseFormat
 import net.minecraft.util.ResourceLocation
 
 data class Material(
     val metaItemSubId: Int,
+    /**
+     * modid:material_name
+     */
     val materialId: ResourceLocation,
     val properties: MaterialProperties,
     val tier: ITier? = null,
     val colors: IntArray? = null,
 ) : Comparable<Material> {
+
+    val upperCamel = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, materialId.path)
 
     override fun compareTo(other: Material): Int {
         return metaItemSubId.compareTo(other.metaItemSubId)
@@ -20,6 +26,7 @@ data class Material(
 
     fun hasProperty(key: PropertyKey<*>) = properties.hasProperty(key)
     fun <T : MaterialProperty> getProperty(key: PropertyKey<T>) = properties.getProperty(key)
+
 
     class Builder(
         private val metaItemSubId: Int,
