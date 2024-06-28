@@ -1,6 +1,8 @@
 package com.github.trcdevelopers.clayium.common.blocks
 
+import com.github.trcdevelopers.clayium.api.util.getAsItem
 import com.github.trcdevelopers.clayium.api.util.toItemStack
+import com.github.trcdevelopers.clayium.client.model.MaterialStateMapper
 import com.github.trcdevelopers.clayium.common.blocks.properties.CMaterialProperty
 import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
 import com.github.trcdevelopers.clayium.common.unification.material.Material
@@ -10,6 +12,9 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
+import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 @Suppress("OVERRIDE_DEPRECATION")
 abstract class BlockMaterialBase(
@@ -45,6 +50,16 @@ abstract class BlockMaterialBase(
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
         for (state in blockState.validStates) {
             items.add(state.toItemStack())
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    open fun registerModels() {
+        ModelLoader.setCustomStateMapper(this, MaterialStateMapper)
+        for (state in blockState.validStates) {
+            ModelLoader.setCustomModelResourceLocation(
+                this.getAsItem(), this.getMetaFromState(state), MaterialStateMapper.createModelLocation(state)
+            )
         }
     }
 }

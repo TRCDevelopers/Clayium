@@ -4,12 +4,14 @@ import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.util.clayiumId
 import com.github.trcdevelopers.clayium.common.Clayium
-import com.github.trcdevelopers.clayium.common.blocks.clay.BlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clayworktable.BlockClayWorkTable
+import com.github.trcdevelopers.clayium.common.blocks.material.BlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.ores.BlockClayOre
 import com.github.trcdevelopers.clayium.common.blocks.ores.BlockDenseClayOre
+import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import com.google.common.collect.ImmutableMap
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import net.minecraft.block.Block
@@ -31,8 +33,6 @@ object ClayiumBlocks {
 
     val CLAY_WORK_TABLE = createBlock("clay_work_table", BlockClayWorkTable())
 
-    val COMPRESSED_CLAY = createBlock("compressed_clay", BlockCompressedClay())
-
     val CLAY_ORE = createBlock("clay_ore", BlockClayOre())
     val DENSE_CLAY_ORE = createBlock("dense_clay_ore", BlockDenseClayOre())
     val LARGE_DENSE_CLAY_ORE = createBlock("large_dense_clay_ore", BlockDenseClayOre())
@@ -42,9 +42,16 @@ object ClayiumBlocks {
     val MACHINE_HULL = createBlock("machine_hull", BlockMachineHull())
     val RESONATOR = createBlock("resonator", BlockResonator())
 
+    /* ---------------------------------- */
+
+    val COMPRESSED_CLAY_BLOCKS = mutableListOf<BlockCompressedClay>()
     val ENERGIZED_CLAY_BLOCKS = mutableListOf<BlockEnergizedClay>()
 
+    private val compressedClay = mutableMapOf<Material, BlockCompressedClay>()
+    private val energizedClay = mutableMapOf<Material, BlockEnergizedClay>()
+
     init {
+        createMaterialBlock({ it.hasProperty(PropertyKey.CLAY) && it.getProperty(PropertyKey.CLAY).energy == null }, this::createCompressedClayBlock)
         createMaterialBlock({ it.getPropOrNull(PropertyKey.CLAY)?.energy != null }, this::createEnergizedClayBlock)
     }
 
@@ -58,6 +65,18 @@ object ClayiumBlocks {
     }
 
     fun registerBlocks(event: RegistryEvent.Register<Block>) { blocks.values.forEach(event.registry::register) }
+
+    fun registerOreDictionaries() {
+        for ((m, b) in energizedClay) {
+            val stack = b.getItemStack(m)
+            OreDictUnifier.registerOre(stack, OrePrefix.block, m)
+        }
+
+        for ((m, b) in compressedClay) {
+            val stack = b.getItemStack(m)
+            OreDictUnifier.registerOre(stack, OrePrefix.block, m)
+        }
+    }
 
     fun createMaterialBlock(filter: (material: Material) -> Boolean, generator: (metaMaterialMap: Map<Int, Material>, index: Int) -> Unit) {
         var currentId = 0
@@ -80,10 +99,18 @@ object ClayiumBlocks {
         val block = BlockEnergizedClay.create(metaMaterialMap)
         block.registryName = clayiumId("energized_clay_$index")
         ENERGIZED_CLAY_BLOCKS.add(block)
+        metaMaterialMap.values.forEach { energizedClay[it] = block }
     }
 
+    fun createCompressedClayBlock(metaMaterialMap: Map<Int, Material>, index: Int) {
+        val block = BlockCompressedClay.create(metaMaterialMap)
+        block.registryName = clayiumId("compressed_clay_$index")
+        COMPRESSED_CLAY_BLOCKS.add(block)
+        metaMaterialMap.values.forEach { compressedClay[it] = block }
+    }
+
+    //todo
     fun getCompressedClayStack(tier: Int): ItemStack {
-        if (tier < 4) return ItemStack(COMPRESSED_CLAY, 1, tier)
         return ItemStack(Blocks.CLAY, 1)
     }
 
@@ -91,6 +118,7 @@ object ClayiumBlocks {
     fun registerModels() {
         blocks.values.forEach(this::registerItemModel)
         for (block in ENERGIZED_CLAY_BLOCKS) block.registerModels()
+        for (block in COMPRESSED_CLAY_BLOCKS) block.registerModels()
     }
 
     @SideOnly(Side.CLIENT)

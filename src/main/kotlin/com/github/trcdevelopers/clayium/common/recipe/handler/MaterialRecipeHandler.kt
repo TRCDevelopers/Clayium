@@ -1,16 +1,21 @@
 package com.github.trcdevelopers.clayium.common.recipe.handler
 
 import com.github.trcdevelopers.clayium.api.ClayiumApi
+import com.github.trcdevelopers.clayium.api.util.clayiumId
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
+import net.minecraftforge.fml.common.registry.ForgeRegistries
+import net.minecraftforge.fml.common.registry.GameRegistry
+import net.minecraftforge.oredict.ShapedOreRecipe
 
 object MaterialRecipeHandler {
     fun registerRecipes() {
         for (material in ClayiumApi.materialRegistry) {
             if (material.hasOre(OrePrefix.ingot)) handleIngot(material)
+            if (material.hasOre(OrePrefix.block)) handleBlock(material)
         }
     }
 
@@ -57,5 +62,17 @@ object MaterialRecipeHandler {
         }
     }
 
-    private fun addClayBlockRecipe(material: Material, compressedInto: Material) {}
+    private fun addClayBlockRecipe(material: Material, compressedInto: Material) {
+        val clayProperty = material.getPropOrNull(PropertyKey.CLAY)
+        if (clayProperty != null) {
+            ForgeRegistries.RECIPES.register(
+                ShapedOreRecipe(clayiumId("${compressedInto.materialId.path}_block"),
+                    OreDictUnifier.get(OrePrefix.block, compressedInto),
+                    "CCC",
+                    "CCC",
+                    "CCC",
+                    'C', OreDictUnifier.get(OrePrefix.block, material)
+            ).setRegistryName(clayiumId("${compressedInto.materialId.path}_block_1")))
+        }
+    }
 }

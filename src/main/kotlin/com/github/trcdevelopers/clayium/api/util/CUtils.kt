@@ -33,7 +33,7 @@ fun IBlockState.toItemStack(count: Int = 1): ItemStack {
     return ItemStack(block, count, block.getMetaFromState(this))
 }
 
-fun Block.getItem(): Item {
+fun Block.getAsItem(): Item {
     return Item.getItemFromBlock(this)
 }
 

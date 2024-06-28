@@ -1,0 +1,31 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "material": {
+      "dense_clay": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier0"
+        },
+        "model": "cube_all"
+      },
+      "compressed_clay": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier1"
+        },
+        "model": "cube_all"
+      },
+      "industrial_clay": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier2"
+        },
+        "model": "cube_all"
+      },
+      "advanced_industrial_clay": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier3"
+        },
+        "model": "cube_all"
+      }
+    }
+  }
+}

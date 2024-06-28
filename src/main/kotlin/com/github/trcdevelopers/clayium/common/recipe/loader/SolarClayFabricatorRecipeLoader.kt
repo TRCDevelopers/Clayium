@@ -11,12 +11,5 @@ object SolarClayFabricatorRecipeLoader {
             input(Blocks.CLAY)
             tier(5)
         }
-
-        for (i in 0..3) {
-            CRecipes.SOLAR_CLAY_FABRICATOR.register {
-                input(ItemStack(ClayiumBlocks.COMPRESSED_CLAY, 1, i))
-                tier(5)
-            }
-        }
     }
 }

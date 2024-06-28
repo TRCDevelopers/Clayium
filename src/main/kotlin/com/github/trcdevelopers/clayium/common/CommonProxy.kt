@@ -11,9 +11,9 @@ import com.github.trcdevelopers.clayium.client.renderer.LaserReflectorItemStackR
 import com.github.trcdevelopers.clayium.common.blocks.BlockQuartzCrucible
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.blocks.ItemBlockEnergizedClay
+import com.github.trcdevelopers.clayium.common.blocks.ItemBlockMaterial
 import com.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
 import com.github.trcdevelopers.clayium.common.blocks.TileEntityCreativeEnergySource
-import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
 import com.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
@@ -55,6 +55,7 @@ open class CommonProxy {
     }
 
     open fun init(event: FMLInitializationEvent) {
+        ClayiumBlocks.registerOreDictionaries()
         OreDictionaryLoader.registerOreDicts()
     }
 
@@ -71,6 +72,7 @@ open class CommonProxy {
         registry.register(ClayiumApi.BLOCK_MACHINE)
 
         for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) registry.register(block)
+        for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) registry.register(block)
     }
 
     @SubscribeEvent
@@ -100,8 +102,6 @@ open class CommonProxy {
 
         registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ::ItemBlockTiered))
 
-        registry.register(createItemBlock(ClayiumBlocks.COMPRESSED_CLAY, ::ItemBlockCompressedClay))
-
         registry.register(createItemBlock(ClayiumBlocks.CLAY_ORE, ::ItemBlock))
         registry.register(createItemBlock(ClayiumBlocks.DENSE_CLAY_ORE, ::ItemBlock))
         registry.register(createItemBlock(ClayiumBlocks.LARGE_DENSE_CLAY_ORE, ::ItemBlock))
@@ -119,6 +119,10 @@ open class CommonProxy {
 
         for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) {
             registry.register(createItemBlock(block, ::ItemBlockEnergizedClay))
+        }
+
+        for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) {
+            registry.register(createItemBlock(block, ::ItemBlockMaterial))
         }
 
         registry.register(ClayiumApi.ITEM_BLOCK_MACHINE)

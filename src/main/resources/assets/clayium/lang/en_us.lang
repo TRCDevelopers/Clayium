@@ -16,10 +16,10 @@ tooltip.clayium.ce=%1$sCE
 
 oreprefix.clayium.ingot=%s Ingot
 oreprefix.clayium.dust=%s Dust
-oreprefix.clayium.impureDust=Impure %s Dust
+oreprefix.clayium.impure_dust=Impure %s Dust
 oreprefix.clayium.matter=%s
 oreprefix.clayium.plate=%s Plate
-oreprefix.clayium.largePlate=Large %s Plate
+oreprefix.clayium.large_plate=Large %s Plate
 
 material.clayium.clay=Clay
 material.clayium.dense_clay=Dense Clay
