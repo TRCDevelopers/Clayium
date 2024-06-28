@@ -64,14 +64,14 @@ data class Material(
 
         /**
          * Adds a clay block to this material.
-         * @param decompressedInto If specified, the compress/condense and inverse recipe will be generated.
+         * @param compressedInto If specified, the compress/condense and inverse recipe will be generated.
          * @param energy The energy of this clay. If null, the clay will not be energized (i.e. it can't be used as machine fuel).
          */
-        fun clay(decompressedInto: Material? = null, energy: ClayEnergy? = null): Builder {
+        fun clay(compressedInto: Material? = null, energy: ClayEnergy? = null): Builder {
             if (energy == null) {
-                properties.setProperty(PropertyKey.CLAY, Clay(decompressedInto))
+                properties.setProperty(PropertyKey.CLAY, Clay(compressedInto))
             } else {
-                properties.setProperty(PropertyKey.ENERGY_CLAY, EnergyClay(decompressedInto, energy))
+                properties.setProperty(PropertyKey.ENERGY_CLAY, EnergyClay(compressedInto, energy))
             }
             return this
         }
