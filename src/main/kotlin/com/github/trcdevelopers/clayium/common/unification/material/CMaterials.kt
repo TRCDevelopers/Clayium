@@ -246,7 +246,6 @@ object CMaterials {
             tier(4)
             colors(0xFFFFFF, 0x8C8C8C, 0xFFFFFF)
             dust()
-            plate(ClayEnergy.micro(10), 1, tier = 0)
         }
 
         organicClay = Material.create(1013, clayiumId("organic_clay")) {
