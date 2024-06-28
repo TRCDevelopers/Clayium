@@ -5,7 +5,7 @@ import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
 import com.google.common.base.CaseFormat
 import java.util.function.Predicate
 
-class OrePrefix private constructor(
+class OrePrefix(
     val camel: String,
     val itemGenerationLogic: Predicate<Material>? = null,
 ) {
@@ -25,13 +25,11 @@ class OrePrefix private constructor(
         private val _prefixes = mutableListOf<OrePrefix>()
         val allPrefixes: List<OrePrefix> = _prefixes
 
-
-        private val hasIngotProperty= Predicate<Material> { it.hasProperty(PropertyKey.INGOT) }
+        private val hasIngotProperty = Predicate<Material> { it.hasProperty(PropertyKey.INGOT) }
         private val hasDustProperty = Predicate<Material> { it.hasProperty(PropertyKey.DUST) }
         private val hasPlateProperty = Predicate<Material> { it.hasProperty(PropertyKey.PLATE) }
         private val hasMatterProperty = Predicate<Material> { it.hasProperty(PropertyKey.MATTER) }
         private val hasImpureDustProperty = Predicate<Material> { it.hasProperty(PropertyKey.IMPURE_DUST) }
-
 
         val ingot = OrePrefix("ingot", hasIngotProperty)
         val dust = OrePrefix("dust", hasDustProperty)
