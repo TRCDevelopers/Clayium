@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.unification.ore
 
+import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
 import com.google.common.base.CaseFormat
@@ -15,10 +16,20 @@ class OrePrefix(
 
     val snake = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, camel)
 
+    private val ignoredMaterials = mutableSetOf<Material>()
+
     //todo: move to somewhere else?
     fun canGenerateItem(material: Material): Boolean {
-        return itemGenerationLogic == null
-                || itemGenerationLogic.test(material)
+        return !this.isIgnored(material) && (itemGenerationLogic == null
+                || itemGenerationLogic.test(material))
+    }
+
+    fun ignore(material: Material) {
+        ignoredMaterials.add(material)
+    }
+
+    fun isIgnored(material: Material): Boolean {
+        return ignoredMaterials.contains(material)
     }
 
     companion object {
@@ -42,5 +53,9 @@ class OrePrefix(
         val block = OrePrefix("block")
 
         val metaItemPrefixes = listOf(ingot, dust, impureDust, matter, plate, largePlate)
+
+        fun init() {
+            block.ignore(CMaterials.clay)
+        }
     }
 }

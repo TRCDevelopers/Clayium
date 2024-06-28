@@ -48,6 +48,7 @@ open class CommonProxy {
 
         MetaTileEntities.init()
         CMaterials.init()
+        OrePrefix.init()
 
         GuiManager.registerFactory(MetaTileEntityGuiFactory)
 

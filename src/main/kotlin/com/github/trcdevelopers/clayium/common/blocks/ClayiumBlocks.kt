@@ -51,8 +51,14 @@ object ClayiumBlocks {
     private val energizedClay = mutableMapOf<Material, BlockEnergizedClay>()
 
     init {
-        createMaterialBlock({ it.hasProperty(PropertyKey.CLAY) && it.getProperty(PropertyKey.CLAY).energy == null }, this::createCompressedClayBlock)
-        createMaterialBlock({ it.getPropOrNull(PropertyKey.CLAY)?.energy != null }, this::createEnergizedClayBlock)
+        createMaterialBlock(
+            { !OrePrefix.block.isIgnored(it)
+                && it.hasProperty(PropertyKey.CLAY) && it.getProperty(PropertyKey.CLAY).energy == null },
+            this::createCompressedClayBlock)
+        createMaterialBlock(
+            { !OrePrefix.block.isIgnored(it)
+                && it.getPropOrNull(PropertyKey.CLAY)?.energy != null },
+            this::createEnergizedClayBlock)
     }
 
     private fun <T: Block> createBlock(key: String, block: T): T {

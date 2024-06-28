@@ -64,7 +64,9 @@ object MaterialRecipeHandler {
 
     private fun addClayBlockRecipe(material: Material, compressedInto: Material) {
         val clayProperty = material.getPropOrNull(PropertyKey.CLAY)
-        if (clayProperty != null) {
+        val resultClayProperty = compressedInto.getProperty(PropertyKey.CLAY)
+        // generate recipe for non-energy clay blocks
+        if (clayProperty != null && resultClayProperty.energy == null) {
             ForgeRegistries.RECIPES.register(
                 ShapedOreRecipe(clayiumId("${compressedInto.materialId.path}_block"),
                     OreDictUnifier.get(OrePrefix.block, compressedInto),
