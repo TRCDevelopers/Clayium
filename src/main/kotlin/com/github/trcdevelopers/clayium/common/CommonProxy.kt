@@ -18,6 +18,7 @@ import com.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWork
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
+import com.github.trcdevelopers.clayium.common.loaders.OreDictionaryLoader
 import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
 import com.github.trcdevelopers.clayium.common.recipe.loader.CRecipeLoader
 import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
@@ -54,6 +55,7 @@ open class CommonProxy {
     }
 
     open fun init(event: FMLInitializationEvent) {
+        OreDictionaryLoader.registerOreDicts()
     }
 
     open fun postInit(event: FMLPostInitializationEvent) {
