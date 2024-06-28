@@ -15,7 +15,7 @@ object MaterialRecipeHandler {
     }
 
     private fun Material.hasOre(orePrefix: OrePrefix): Boolean {
-        return !OreDictUnifier.get(OrePrefix.ingot, this).isEmpty
+        return !OreDictUnifier.get(orePrefix, this).isEmpty
     }
 
     private fun handleIngot(material: Material) {
@@ -28,6 +28,10 @@ object MaterialRecipeHandler {
 
     private fun handleBlock(material: Material) {
         if (material.hasProperty(PropertyKey.PLATE)) addPlateRecipe(OrePrefix.block, material)
+        if (material.hasProperty(PropertyKey.CLAY)) {
+            val prop = material.getProperty(PropertyKey.CLAY)
+            if (prop.compressedInto != null) addClayBlockRecipe(material, prop.compressedInto)
+        }
     }
 
     /**
@@ -52,4 +56,6 @@ object MaterialRecipeHandler {
             tier(plateProperty.tier)
         }
     }
+
+    private fun addClayBlockRecipe(material: Material, compressedInto: Material) {}
 }

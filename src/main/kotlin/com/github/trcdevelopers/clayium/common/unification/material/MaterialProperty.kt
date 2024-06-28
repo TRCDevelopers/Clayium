@@ -36,5 +36,4 @@ sealed interface MaterialProperty {
     }
 }
 
-class Clay(val compressedInto: Material?) : MaterialProperty
-class EnergyClay(val compressedInto: Material?, val energy: ClayEnergy) : MaterialProperty
+class Clay(val compressedInto: Material?, val energy: ClayEnergy?) : MaterialProperty

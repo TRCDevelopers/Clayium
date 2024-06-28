@@ -15,8 +15,10 @@ class ItemBlockEnergizedClay(block: BlockEnergizedClay) : ItemBlockMaterial(bloc
         return object : ItemCapabilityProvider {
             override fun <T : Any> getCapability(capability: Capability<T?>): T? {
                 if (capability == ClayiumCapabilities.ENERGIZED_CLAY) {
-                    val energy = blockMaterial.getCMaterial(stack).getProperty(PropertyKey.ENERGY_CLAY).energy
-                    return ClayiumCapabilities.ENERGIZED_CLAY.cast( SimpleClayEnergyProvider(energy) )
+                    val energy = blockMaterial.getCMaterial(stack).getPropOrNull(PropertyKey.CLAY)?.energy
+                    if (energy != null) {
+                        return ClayiumCapabilities.ENERGIZED_CLAY.cast( SimpleClayEnergyProvider(energy) )
+                    }
                 }
                 return null
             }

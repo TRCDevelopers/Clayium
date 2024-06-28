@@ -23,8 +23,9 @@ class TileEntityCreativeEnergySource : TileEntity(), IGuiHolder<PosGuiData> {
         for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) {
             for (state in block.blockState.validStates) {
                 if (highest == null) highest = state
-                val matCe = block.getCMaterial(state).getProperty(PropertyKey.ENERGY_CLAY).energy
-                val currentCe = (highest.block as BlockEnergizedClay).getCMaterial(highest).getProperty(PropertyKey.ENERGY_CLAY).energy
+                val matCe = block.getCMaterial(state).getProperty(PropertyKey.CLAY).energy
+                val currentCe = (highest.block as BlockEnergizedClay).getCMaterial(highest).getProperty(PropertyKey.CLAY).energy!!
+                if (matCe == null) continue
                 if (matCe > currentCe) {
                     highest = state
                 }

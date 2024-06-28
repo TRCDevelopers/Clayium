@@ -26,6 +26,7 @@ data class Material(
 
     fun hasProperty(key: PropertyKey<*>) = properties.hasProperty(key)
     fun <T : MaterialProperty> getProperty(key: PropertyKey<T>) = properties.getProperty(key)
+    fun <T : MaterialProperty> getPropOrNull(key: PropertyKey<T>) = properties.getPropOrNull(key)
 
 
     class Builder(
@@ -68,11 +69,7 @@ data class Material(
          * @param energy The energy of this clay. If null, the clay will not be energized (i.e. it can't be used as machine fuel).
          */
         fun clay(compressedInto: Material? = null, energy: ClayEnergy? = null): Builder {
-            if (energy == null) {
-                properties.setProperty(PropertyKey.CLAY, Clay(compressedInto))
-            } else {
-                properties.setProperty(PropertyKey.ENERGY_CLAY, EnergyClay(compressedInto, energy))
-            }
+            properties.setProperty(PropertyKey.CLAY, Clay(compressedInto, energy))
             return this
         }
 

@@ -17,6 +17,11 @@ class MaterialProperties {
         return key.cast(property)
     }
 
+    fun <T: MaterialProperty> getPropOrNull(key: PropertyKey<T>): T? {
+        val property = properties[key] ?: return null
+        return key.cast(property)
+    }
+
     fun <T : MaterialProperty> getPropertyOrNull(key: PropertyKey<T>): T? {
         val property = properties[key]
         return if (property == null) null else key.cast(property)
