@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.common
 
 import com.cleanroommc.modularui.factory.GuiManager
+import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.block.ItemBlockTiered
 import com.github.trcdevelopers.clayium.api.capability.SimpleCapabilityManager
@@ -23,6 +24,7 @@ import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
 import com.github.trcdevelopers.clayium.common.recipe.loader.CRecipeLoader
 import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
+import com.github.trcdevelopers.clayium.common.util.DebugUtils
 import com.github.trcdevelopers.clayium.common.worldgen.ClayOreGenerator
 import net.minecraft.block.Block
 import net.minecraft.item.Item
@@ -42,6 +44,10 @@ open class CommonProxy {
 
     open fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(Clayium.proxy)
+        if (CValues.isDeobf) {
+            MinecraftForge.EVENT_BUS.register(DebugUtils::class.java)
+        }
+
         this.registerTileEntities()
         GameRegistry.registerWorldGenerator(ClayOreGenerator(), 0)
         NetworkRegistry.INSTANCE.registerGuiHandler(Clayium.INSTANCE, GuiHandler)
