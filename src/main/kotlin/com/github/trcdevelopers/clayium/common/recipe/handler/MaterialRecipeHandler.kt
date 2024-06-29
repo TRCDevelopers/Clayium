@@ -10,6 +10,7 @@ import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import net.minecraftforge.fml.common.registry.ForgeRegistries
 import net.minecraftforge.oredict.ShapedOreRecipe
+import kotlin.math.pow
 
 object MaterialRecipeHandler {
     fun registerRecipes() {
@@ -29,16 +30,11 @@ object MaterialRecipeHandler {
             }
 
             if (material.hasOre(OrePrefix.impureDust)) {
-
+                handleImpureDust(material)
             }
 
             if (material.hasOre(OrePrefix.block)) {
-                if (material.hasProperty(PropertyKey.PLATE)) addPlateRecipe(OrePrefix.block, material)
-                if (material.hasProperty(PropertyKey.CLAY)) {
-                    val prop = material.getProperty(PropertyKey.CLAY)
-                    if (prop.compressedInto != null) addClayBlockRecipe(material, prop.compressedInto)
-                }
-                tryAddGrindingRecipe(OrePrefix.block, material)
+                handleBlock(material)
             }
 
             if (material.hasOre(OrePrefix.plate)) { tryAddGrindingRecipe(OrePrefix.plate, material) }
@@ -68,7 +64,30 @@ object MaterialRecipeHandler {
     }
 
     private fun handleImpureDust(material: Material) {
-        val impureDust = OrePrefix.impureDust
+        val tier = material.tier?.numeric ?: 0
+        val (cePerTick, duration) = when (tier) {
+            6 -> ClayEnergy.milli(100) to 100
+            7 -> ClayEnergy.of(10) to 300
+            8 -> ClayEnergy.of(100) to 1000
+            9 -> ClayEnergy.of(1000) to 3000
+            else -> ClayEnergy.micro(10) to 1
+        }
+        CRecipes.ELECTROLYSIS_REACTOR.register {
+            input(OrePrefix.impureDust, material)
+            output(OrePrefix.dust, material)
+            cePerTick(cePerTick)
+            duration(duration)
+            tier(tier)
+        }
+    }
+
+    private fun handleBlock(material: Material) {
+        if (material.hasProperty(PropertyKey.PLATE)) addPlateRecipe(OrePrefix.block, material)
+        if (material.hasProperty(PropertyKey.CLAY)) {
+            val prop = material.getProperty(PropertyKey.CLAY)
+            if (prop.compressedInto != null) addClayBlockRecipe(material, prop.compressedInto)
+        }
+        tryAddGrindingRecipe(OrePrefix.block, material)
     }
 
     /**
@@ -108,16 +127,55 @@ object MaterialRecipeHandler {
     private fun addClayBlockRecipe(material: Material, compressedInto: Material) {
         val clayProperty = material.getPropOrNull(PropertyKey.CLAY)
         val resultClayProperty = compressedInto.getProperty(PropertyKey.CLAY)
-        // generate recipe for non-energy clay blocks
-        if (clayProperty != null && resultClayProperty.energy == null) {
-            ForgeRegistries.RECIPES.register(
-                ShapedOreRecipe(clayiumId("${compressedInto.materialId.path}_block"),
-                    OreDictUnifier.get(OrePrefix.block, compressedInto),
-                    "CCC",
-                    "CCC",
-                    "CCC",
-                    'C', OreDictUnifier.get(OrePrefix.block, material)
-            ).setRegistryName(clayiumId("${compressedInto.materialId.path}_block_1")))
+        if (clayProperty != null) {
+            // generate recipes for non-energy clay blocks
+            if (resultClayProperty.energy == null) {
+                ForgeRegistries.RECIPES.register(
+                    ShapedOreRecipe(
+                        clayiumId("${compressedInto.materialId.path}_block"),
+                        OreDictUnifier.get(OrePrefix.block, compressedInto),
+                        "CCC",
+                        "CCC",
+                        "CCC",
+                        'C', OreDictUnifier.get(OrePrefix.block, material)
+                    ).setRegistryName(clayiumId("${compressedInto.materialId.path}_block_compose"))
+                )
+
+                ForgeRegistries.RECIPES.register(
+                    ShapedOreRecipe(
+                        clayiumId("${compressedInto.materialId.path}_block"),
+                        OreDictUnifier.get(OrePrefix.block, material, 9),
+                        "C",
+                        'C', OreDictUnifier.get(OrePrefix.block, material)
+                    ).setRegistryName(clayiumId("${compressedInto.materialId.path}_block_decompose"))
+                )
+
+                CRecipes.DECOMPOSER.register {
+                    input(OrePrefix.block, compressedInto)
+                    output(OrePrefix.block, material, 9)
+                    cePerTick(ClayEnergy.micro(10))
+                    duration(10)
+                    tier(0)
+                }
+
+                CRecipes.CONDENSER.register {
+                    input(OrePrefix.block, material, 9)
+                    output(OrePrefix.block, compressedInto)
+                    cePerTick(ClayEnergy.micro(10))
+                    duration(10)
+                    tier(0)
+                }
+            } else {
+                // generate recipes for energy clay blocks
+                CRecipes.CONDENSER.register {
+                    input(OrePrefix.block, material, 9)
+                    output(OrePrefix.block, compressedInto)
+                    val pow = compressedInto.tier?.numeric?.minus(4)?.coerceAtLeast(0) ?: 0
+                    cePerTick(ClayEnergy.milli((10.0).pow(pow).toLong()))
+                    duration(4)
+                    tier(4)
+                }
+            }
         }
     }
 }

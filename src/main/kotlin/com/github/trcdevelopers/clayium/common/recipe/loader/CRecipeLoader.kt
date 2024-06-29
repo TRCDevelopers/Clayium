@@ -8,6 +8,7 @@ object CRecipeLoader {
 
         BendingMachineLoader.register()
         CaCondenserRecipeLoader.registerRecipes()
+        ChemicalReactorRecipeLoader.registerRecipes()
         ClayBlastFurnaceRecipeLoader.register()
         ClayWorkTableRecipes.register()
         ClayReactorRecipeLoader.register()

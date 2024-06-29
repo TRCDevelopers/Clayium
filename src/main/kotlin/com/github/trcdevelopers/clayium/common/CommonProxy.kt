@@ -63,7 +63,7 @@ open class CommonProxy {
 
     open fun init(event: FMLInitializationEvent) {
         ClayiumBlocks.registerOreDictionaries()
-        OreDictionaryLoader.registerOreDicts()
+        OreDictionaryLoader.loadOreDictionaries()
     }
 
     open fun postInit(event: FMLPostInitializationEvent) {

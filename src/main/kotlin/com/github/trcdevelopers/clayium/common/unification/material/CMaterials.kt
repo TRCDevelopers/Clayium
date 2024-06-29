@@ -104,6 +104,7 @@ object CMaterials {
 
     val calciumChloride: Material
     val sodiumCarbonate: Material
+    val calcareousClay: Material
 
     val impureGlowStone: Material
     val impureRedstone: Material
@@ -398,7 +399,7 @@ object CMaterials {
         }
         lithium = Material.create(120, clayiumId("lithium")) {
             tier(6).colors(0xD2D296, 0x787878, 0xFFFFFF)
-            ingot()
+            ingot().dust()
             impureDust(0xDCDC96, 0x78783C, 0xDCDCDC)
         }
         magnesium = Material.create(121, clayiumId("magnesium")) {
@@ -445,7 +446,7 @@ object CMaterials {
         }
         potassium = Material.create(131, clayiumId("potassium")) {
             tier(7).colors(0xF0F0BE, 0x191919, 0xFFFFFF)
-            ingot()
+            ingot().dust()
             impureDust(0xAAAAE6, 0x78783C, 0xDCDCDC)
         }
         praseodymium = Material.create(132, clayiumId("praseodymium")) {
@@ -482,12 +483,12 @@ object CMaterials {
         }
         sodium = Material.create(140, clayiumId("sodium")) {
             tier(6).colors(0xAAAADE, 0x787878, 0xFFFFFF)
-            ingot()
+            ingot().dust()
             impureDust(0xAAAAE6, 0x78783C, 0xDCDCDC)
         }
         strontium = Material.create(141, clayiumId("strontium")) {
             tier(7).colors(0xD2AAF2, 0x191919, 0xFFFFFF)
-            ingot()
+            ingot().dust()
             impureDust(0xD2AAF2, 0x78783C, 0xDCDCDC)
         }
         sulfur = Material.create(142, clayiumId("sulfur")) {
@@ -575,6 +576,10 @@ object CMaterials {
             dust()
         }
         sodiumCarbonate = Material.create(801, clayiumId("sodium_carbonate")) {
+            dust()
+        }
+        calcareousClay = Material.create(802, clayiumId("calcareous_clay")) {
+            tier(4)
             dust()
         }
 
