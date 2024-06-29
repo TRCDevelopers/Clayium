@@ -1,9 +1,13 @@
 package com.github.trcdevelopers.clayium.common.unification.ore
 
+import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
 import com.google.common.base.CaseFormat
+import net.minecraft.client.resources.I18n
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.function.Predicate
 
 class OrePrefix(
@@ -32,6 +36,13 @@ class OrePrefix(
         return ignoredMaterials.contains(material)
     }
 
+    @SideOnly(Side.CLIENT)
+    fun getLocalizedName(material: Material): String {
+        val specialKey = "${material.translationKey}.${this.snake}"
+        if (I18n.hasKey(specialKey)) return I18n.format(specialKey)
+        return I18n.format("${CValues.MOD_ID}.ore_prefix.${snake}", material.localizedName)
+    }
+
     companion object {
         private val _prefixes = mutableListOf<OrePrefix>()
         val allPrefixes: List<OrePrefix> = _prefixes
@@ -45,10 +56,10 @@ class OrePrefix(
         val ingot = OrePrefix("ingot", hasIngotProperty)
         val dust = OrePrefix("dust", hasDustProperty)
         val plate = OrePrefix("plate", hasPlateProperty)
-        val largePlate = OrePrefix("large_plate", hasPlateProperty)
+        val largePlate = OrePrefix("largePlate", hasPlateProperty)
         val matter = OrePrefix("matter", hasMatterProperty)
 
-        val impureDust = OrePrefix("impure_dust", hasImpureDustProperty)
+        val impureDust = OrePrefix("impureDust", hasImpureDustProperty)
 
         val block = OrePrefix("block")
 

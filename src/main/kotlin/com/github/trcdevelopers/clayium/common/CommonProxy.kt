@@ -125,11 +125,10 @@ open class CommonProxy {
         })
 
         for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) {
-            registry.register(createItemBlock(block, ::ItemBlockEnergizedClay))
+            registry.register(createItemBlock(block) { ItemBlockEnergizedClay(it, OrePrefix.block) })
         }
-
         for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) {
-            registry.register(createItemBlock(block, ::ItemBlockMaterial))
+            registry.register(createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.block) })
         }
 
         registry.register(ClayiumApi.ITEM_BLOCK_MACHINE)

@@ -5,7 +5,10 @@ import com.github.trcdevelopers.clayium.api.util.ClayTiers
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.google.common.base.CaseFormat
+import net.minecraft.client.resources.I18n
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 data class Material(
     val metaItemSubId: Int,
@@ -19,6 +22,9 @@ data class Material(
 ) : Comparable<Material> {
 
     val upperCamel = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, materialId.path)
+    val translationKey = "${materialId.namespace}.material.${materialId.path}"
+
+    @SideOnly(Side.CLIENT) val localizedName = I18n.format(translationKey)
 
     override fun compareTo(other: Material): Int {
         return metaItemSubId.compareTo(other.metaItemSubId)

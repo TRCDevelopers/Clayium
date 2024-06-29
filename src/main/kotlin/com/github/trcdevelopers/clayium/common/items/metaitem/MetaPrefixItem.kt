@@ -8,7 +8,6 @@ import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.client.resources.I18n
 import net.minecraft.item.ItemStack
 import net.minecraftforge.client.model.ModelLoader
 
@@ -45,7 +44,7 @@ open class MetaPrefixItem private constructor(
 
     override fun getItemStackDisplayName(stack: ItemStack): String {
         val material = getMaterial(stack) ?: return "invalid"
-        return I18n.format("oreprefix.${CValues.MOD_ID}.${orePrefix.camel}", I18n.format("material.${material.materialId.namespace}.${material.materialId.path}"))
+        return orePrefix.getLocalizedName(material)
     }
 
     private fun getMaterial(stack: ItemStack): Material? {
