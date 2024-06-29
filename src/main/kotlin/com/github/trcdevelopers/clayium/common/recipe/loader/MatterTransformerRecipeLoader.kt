@@ -2,7 +2,6 @@ package com.github.trcdevelopers.clayium.common.recipe.loader
 
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
-import net.minecraft.block.BlockNewLeaf
 import net.minecraft.block.BlockOldLeaf
 import net.minecraft.block.BlockOldLog
 import net.minecraft.block.BlockPlanks

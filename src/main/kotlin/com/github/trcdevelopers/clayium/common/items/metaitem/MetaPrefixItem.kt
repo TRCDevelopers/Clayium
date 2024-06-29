@@ -1,6 +1,5 @@
 package com.github.trcdevelopers.clayium.common.items.metaitem
 
-import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.items.metaitem.component.IItemColorHandler

@@ -18,9 +18,7 @@ import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
-import com.github.trcdevelopers.clayium.common.unification.EnumOrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
-import com.github.trcdevelopers.clayium.common.unification.material.EnumMaterial
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.I18n

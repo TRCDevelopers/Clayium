@@ -48,6 +48,7 @@ object CMaterials {
     val bismuth: Material
     val caesium: Material
     val calcium: Material
+    val carbon: Material
     val cerium: Material
     val chromium: Material
     val cobalt: Material
@@ -67,6 +68,7 @@ object CMaterials {
     val neptunium: Material
     val osmium: Material
     val palladium: Material
+    val phosphorus: Material
     val platinum: Material
     val plutonium: Material
     val potassium: Material
@@ -80,6 +82,7 @@ object CMaterials {
     val silver: Material
     val sodium: Material
     val strontium: Material
+    val sulfur: Material
     val tantalum: Material
     val thorium: Material
     val tin: Material
@@ -99,8 +102,18 @@ object CMaterials {
     val zinc_aluminum: Material
     val zinc_zirconium: Material
 
-    val salt: Material
+    val calciumChloride: Material
+    val sodiumCarbonate: Material
+
+    val impureGlowStone: Material
+    val impureRedstone: Material
+    val charcoal: Material
+    val coal: Material
+    val lapis: Material
     val organicClay: Material
+    val quartz: Material
+    val salt: Material
+    val saltpeter: Material
 
     // don't use builder so it is not registered
     val DUMMY = Material(0, clayiumId("dummy"), MaterialProperties())
@@ -332,185 +345,197 @@ object CMaterials {
             ingot().dust()
             impureDust(0xF0F0F0, 0x78783C, 0xDCDCDC)
         }
-        cerium = Material.create(108, clayiumId("cerium")) {
+        carbon = Material.create(108, clayiumId("carbon")) {
+            tier(6).colors(0x0A0A0A, 0x191919, 0x1E1E1E)
+            ingot().dust()
+        }
+        cerium = Material.create(109, clayiumId("cerium")) {
             tier(8).colors(0x919191, 0x969600, 0xFFFFFF)
             ingot()
         }
-        chromium = Material.create(109, clayiumId("chrome")) {
+        chromium = Material.create(110, clayiumId("chrome")) {
             tier(9).colors(0xF0D2D2, 0x191919, 0xFFFFFF)
             ingot().dust()
         }
-        cobalt = Material.create(110, clayiumId("cobalt")) {
+        cobalt = Material.create(111, clayiumId("cobalt")) {
             tier(8).colors(0x1E1EE6, 0x191919, 0xFFFFFF)
             ingot()
         }
-        copper = Material.create(111, clayiumId("copper")) {
+        copper = Material.create(112, clayiumId("copper")) {
             tier(8).colors(0xA05A0A, 0x191919, 0xFFFFFF)
             ingot().dust()
             impureDust(0xA05A0A, 0x78783C, 0xDCDCDC)
         }
-        curium = Material.create(112, clayiumId("curium")) {
+        curium = Material.create(113, clayiumId("curium")) {
             tier(12).colors(0xFFFFFF, 0x9B9B9B, 0xF4F4F4)
             ingot()
         }
-        europium = Material.create(113, clayiumId("europium")) {
+        europium = Material.create(114, clayiumId("europium")) {
             tier(12).colors(0x919191, 0x373737, 0x919191)
             ingot()
         }
-        francium = Material.create(114, clayiumId("francium")) {
+        francium = Material.create(115, clayiumId("francium")) {
             tier(8).colors(0xF5F5F5, 0x00EB00, 0xFFFFFF)
             ingot()
         }
-        hafnium = Material.create(115, clayiumId("hafnium")) {
+        hafnium = Material.create(116, clayiumId("hafnium")) {
             tier(7).colors(0xF0D2AA, 0x191919, 0xFFFFFF)
             ingot().dust()
             impureDust(0xF0D2AA, 0x78783C, 0xDCDCDC)
         }
-        iridium = Material.create(116, clayiumId("iridium")) {
+        iridium = Material.create(117, clayiumId("iridium")) {
             tier(11).colors(0xF0F0F0, 0xD2D2D2, 0xEBEBEB)
             ingot()
         }
-        lanthanum = Material.create(117, clayiumId("lanthanum")) {
+        lanthanum = Material.create(118, clayiumId("lanthanum")) {
             tier(8).colors(0x919191, 0xEB0000, 0xFFFFFF)
             ingot()
         }
-        lead = Material.create(118, clayiumId("lead")) {
+        lead = Material.create(119, clayiumId("lead")) {
             tier(8).colors(0xBEF0D2, 0x191919, 0xFFFFFF)
             ingot().dust()
             impureDust(0xBEF0D2, 0x78783C, 0xDCDCDC)
         }
-        lithium = Material.create(119, clayiumId("lithium")) {
+        lithium = Material.create(120, clayiumId("lithium")) {
             tier(6).colors(0xD2D296, 0x787878, 0xFFFFFF)
             ingot()
             impureDust(0xDCDC96, 0x78783C, 0xDCDCDC)
         }
-        magnesium = Material.create(120, clayiumId("magnesium")) {
+        magnesium = Material.create(121, clayiumId("magnesium")) {
             tier(6).colors(0x96D296, 0x787878, 0xFFFFFF)
             ingot().dust()
             impureDust(0x96DC96, 0x78783C, 0xDCDCDC)
         }
-        manganese = Material.create(121, clayiumId("manganese")) {
+        manganese = Material.create(122, clayiumId("manganese")) {
             tier(7).colors(0xBEF0F0, 0x191919, 0xFFFFFF)
             ingot().dust()
             impureDust(0xBEF0F0, 0x78783C, 0xDCDCDC)
         }
-        molybdenum = Material.create(122, clayiumId("molybdenum")) {
+        molybdenum = Material.create(123, clayiumId("molybdenum")) {
             tier(10).colors(0x82A082, 0x191919, 0xFFFFFF)
             ingot()
         }
-        neodymium = Material.create(123, clayiumId("neodymium")) {
+        neodymium = Material.create(124, clayiumId("neodymium")) {
             tier(9).colors(0x919191, 0x009696, 0xFFFFFF)
             ingot()
         }
-        neptunium = Material.create(124, clayiumId("neptunium")) {
+        neptunium = Material.create(125, clayiumId("neptunium")) {
             tier(9).colors(0x3232FF, 0x32329B, 0x3232FF)
             ingot()
         }
-        osmium = Material.create(125, clayiumId("osmium")) {
+        osmium = Material.create(126, clayiumId("osmium")) {
             tier(11).colors(0x464696, 0x191919, 0xFFFFFF)
             ingot()
         }
-        palladium = Material.create(126, clayiumId("palladium")) {
+        palladium = Material.create(127, clayiumId("palladium")) {
             tier(9).colors(0x974646, 0x191919, 0xFFFFFF)
             ingot()
         }
-        platinum = Material.create(127, clayiumId("platinum")) {
+        phosphorus = Material.create(128, clayiumId("phosphorus")) {
+            tier(6).colors(0xB4B419, 0x9B9B00, 0xCDCD32)
+            dust()
+        }
+        platinum = Material.create(129, clayiumId("platinum")) {
             tier(10).colors(0xF5F5E6, 0x8C8C78, 0xFFFFFF)
             ingot()
         }
-        plutonium = Material.create(128, clayiumId("plutonium")) {
+        plutonium = Material.create(130, clayiumId("plutonium")) {
             tier(10).colors(0xFF3232, 0x9B3232, 0xFF3232)
             ingot()
         }
-        potassium = Material.create(129, clayiumId("potassium")) {
+        potassium = Material.create(131, clayiumId("potassium")) {
             tier(7).colors(0xF0F0BE, 0x191919, 0xFFFFFF)
             ingot()
             impureDust(0xAAAAE6, 0x78783C, 0xDCDCDC)
         }
-        praseodymium = Material.create(130, clayiumId("praseodymium")) {
+        praseodymium = Material.create(132, clayiumId("praseodymium")) {
             tier(8).colors(0x919191, 0x00EB00, 0xFFFFFF)
             ingot()
         }
-        promethium = Material.create(131, clayiumId("promethium")) {
+        promethium = Material.create(133, clayiumId("promethium")) {
             tier(10).colors(0x919191, 0x0000EB, 0xFFFFFF)
             ingot()
         }
-        protactinium = Material.create(132, clayiumId("protactinium")) {
+        protactinium = Material.create(134, clayiumId("protactinium")) {
             tier(9).colors(0x323232, 0x191919, 0x323264)
             ingot()
         }
-        radium = Material.create(133, clayiumId("radium")) {
+        radium = Material.create(135, clayiumId("radium")) {
             tier(8).colors(0xF5F5F5, 0x009696, 0xFFFFFF)
             ingot()
         }
-        rhenium = Material.create(134, clayiumId("rhenium")) {
+        rhenium = Material.create(136, clayiumId("rhenium")) {
             tier(12).colors(0x464696, 0x191919, 0x32325A)
             ingot()
         }
-        rubidium = Material.create(135, clayiumId("rubidium")) {
+        rubidium = Material.create(137, clayiumId("rubidium")) {
             tier(8).colors(0xF5F5F5, 0xEB0000, 0xFFFFFF)
             ingot()
         }
-        samarium = Material.create(136, clayiumId("samarium")) {
+        samarium = Material.create(138, clayiumId("samarium")) {
             tier(11).colors(0x919191, 0x960096, 0xFFFFFF)
             ingot()
         }
-        silver = Material.create(137, clayiumId("silver")) {
+        silver = Material.create(139, clayiumId("silver")) {
             tier(9).colors(0xE6E6F5, 0x78788C, 0xFFFFFF)
             ingot()
         }
-        sodium = Material.create(138, clayiumId("sodium")) {
+        sodium = Material.create(140, clayiumId("sodium")) {
             tier(6).colors(0xAAAADE, 0x787878, 0xFFFFFF)
             ingot()
             impureDust(0xAAAAE6, 0x78783C, 0xDCDCDC)
         }
-        strontium = Material.create(139, clayiumId("strontium")) {
+        strontium = Material.create(141, clayiumId("strontium")) {
             tier(7).colors(0xD2AAF2, 0x191919, 0xFFFFFF)
             ingot()
             impureDust(0xD2AAF2, 0x78783C, 0xDCDCDC)
         }
-        tantalum = Material.create(140, clayiumId("tantalum")) {
+        sulfur = Material.create(142, clayiumId("sulfur")) {
+            tier(6).colors(0xE6E600, 0xCDCD00, 0xFFFF00)
+            dust()
+        }
+        tantalum = Material.create(143, clayiumId("tantalum")) {
             tier(8).colors(0xF0D2AA, 0x191919, 0xF0D296)
             ingot()
         }
-        thorium = Material.create(141, clayiumId("thorium")) {
+        thorium = Material.create(144, clayiumId("thorium")) {
             tier(9).colors(0x323232, 0x191919, 0xC83232)
             ingot()
         }
-        tin = Material.create(142, clayiumId("tin")) {
+        tin = Material.create(145, clayiumId("tin")) {
             tier(7).colors(0xE6E6F0, 0x000000, 0xFFFFFF)
             ingot()
         }
-        titanium = Material.create(143, clayiumId("titanium")) {
+        titanium = Material.create(146, clayiumId("titanium")) {
             tier(8).colors(0xD2F0F0, 0x191919, 0xFFFFFF)
             ingot().dust()
             impureDust(0xD2F0F0, 0x78783C, 0xDCDCDC)
         }
-        tungsten = Material.create(144, clayiumId("tungsten")) {
+        tungsten = Material.create(147, clayiumId("tungsten")) {
             tier(9).colors(0x1E1E1E, 0x191919, 0xFFFFFF)
             ingot()
         }
-        uranium = Material.create(145, clayiumId("uranium")) {
+        uranium = Material.create(148, clayiumId("uranium")) {
             tier(9).colors(0x32FF32, 0x329B32, 0x32FF32)
             ingot()
         }
-        vanadium = Material.create(146, clayiumId("vanadium")) {
+        vanadium = Material.create(149, clayiumId("vanadium")) {
             tier(9).colors(0x3C7878, 0x191919, 0xFFFFFF)
             ingot()
         }
-        zinc = Material.create(147, clayiumId("zinc")) {
+        zinc = Material.create(150, clayiumId("zinc")) {
             tier(6).colors(0xE6AAAA, 0x787878, 0xFFFFFF)
             ingot().dust()
             impureDust(0xE6AAAA, 0x78783C, 0xDCDCDC)
         }
-        zirconium = Material.create(148, clayiumId("zirconium")) {
+        zirconium = Material.create(151, clayiumId("zirconium")) {
             tier(6).colors(0xBEAA7A, 0x787878, 0xFFFFFF)
             ingot().dust()
             impureDust(0xBEAA7A, 0x78783C, 0xDCDCDC)
         }
         //endregion
 
-        //region Others
+        //region Other Metals
         brass = Material.create(300, clayiumId("brass")) {
             tier(6).colors(0xBEAA14, 0x000000, 0xFFFFFF)
             ingot().dust()
@@ -546,9 +571,44 @@ object CMaterials {
         }
         //endregion
 
-        salt = Material.create(1012, clayiumId("salt")) {
+        calciumChloride = Material.create(800, clayiumId("calcium_chloride")) {
+            dust()
+        }
+        sodiumCarbonate = Material.create(801, clayiumId("sodium_carbonate")) {
+            dust()
+        }
+
+        //region Other Materials
+        impureGlowStone = Material.create(1000, clayiumId("impure_glowstone")) {
+            colors(0x979746, 0x191919, 0xFFFFFF)
+            dust()
+        }
+        impureRedstone = Material.create(1001, clayiumId("impure_redstone")) {
+            colors(0x974646, 0x191919, 0xFFFFFF)
+            dust()
+        }
+        charcoal = Material.create(1002, clayiumId("charcoal")) {
+            colors(0x141414, 0x191919, 0x503232)
+            dust()
+        }
+        coal = Material.create(1003, clayiumId("coal")) {
+            colors(0x141414, 0x191919, 0x323250)
+            dust()
+        }
+        lapis = Material.create(1004, clayiumId("lapis")) {
+            colors(0x3C64BE, 0x0A2B7A, 0x5A82E2)
+            dust()
+        }
+        quartz = Material.create(1005, clayiumId("quartz")) {
+            dust()
+        }
+        salt = Material.create(1006, clayiumId("salt")) {
             tier(4)
             colors(0xFFFFFF, 0x8C8C8C, 0xFFFFFF)
+            dust()
+        }
+        saltpeter = Material.create(1007, clayiumId("saltpeter")) {
+            colors(0xDEDCDC, 0xBEC8D2, 0xFFF0E6)
             dust()
         }
 
@@ -557,6 +617,7 @@ object CMaterials {
             colors(0x8890AD, 0x6A2C2B, 0x92A4B7)
             dust()
         }
+        //endregion
     }
 
     fun init() {}

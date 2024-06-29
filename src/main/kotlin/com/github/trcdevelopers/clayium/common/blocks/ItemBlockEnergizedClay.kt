@@ -7,7 +7,6 @@ import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 

@@ -1,9 +1,7 @@
 package com.github.trcdevelopers.clayium.common.recipe.loader
 
-import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraft.init.Blocks
-import net.minecraft.item.ItemStack
 
 object SolarClayFabricatorRecipeLoader {
     fun register() {

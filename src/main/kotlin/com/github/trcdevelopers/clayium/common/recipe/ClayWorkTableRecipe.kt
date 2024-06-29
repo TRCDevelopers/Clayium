@@ -2,8 +2,6 @@ package com.github.trcdevelopers.clayium.common.recipe
 
 import com.github.trcdevelopers.clayium.common.blocks.clayworktable.ClayWorkTableMethod
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
-import com.github.trcdevelopers.clayium.common.unification.EnumOrePrefix
-import com.github.trcdevelopers.clayium.common.unification.material.EnumMaterial
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import com.github.trcdevelopers.clayium.common.unification.stack.UnificationEntry

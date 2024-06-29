@@ -20,7 +20,6 @@ import com.github.trcdevelopers.clayium.common.recipe.CWTRecipes
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
 import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
-import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix.*
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 

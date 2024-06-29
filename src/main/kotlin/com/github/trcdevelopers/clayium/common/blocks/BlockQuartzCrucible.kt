@@ -5,9 +5,7 @@ import com.github.trcdevelopers.clayium.api.util.ClayTiers
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.BlockQuartzCrucible.QuartzCrucibleTileEntity
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
-import com.github.trcdevelopers.clayium.common.unification.EnumOrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
-import com.github.trcdevelopers.clayium.common.unification.material.EnumMaterial
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
