@@ -14,6 +14,7 @@ object CRecipes {
     val CUTTING_MACHINE = addRegistry("cutting_machine", SimpleRecipeBuilder(), 1, 1)
     val DECOMPOSER = addRegistry("decomposer", SimpleRecipeBuilder(), 1, 1)
     val ENERGETIC_CLAY_CONDENSER = addRegistry("energetic_clay_condenser", SimpleRecipeBuilder(), 1, 1)
+    val ELECTROLYSIS_REACTOR = addRegistry("electrolysis_reactor", SimpleRecipeBuilder(), 1, 1)
     val GRINDER = addRegistry("grinder", SimpleRecipeBuilder(), 1, 1)
     val LATHE = addRegistry("lathe", SimpleRecipeBuilder(), 1, 1)
     val MATTER_TRANSFORMER = addRegistry("matter_transformer", SimpleRecipeBuilder(), 1, 1)

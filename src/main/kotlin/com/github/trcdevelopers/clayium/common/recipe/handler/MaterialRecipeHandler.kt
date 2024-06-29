@@ -2,20 +2,47 @@ package com.github.trcdevelopers.clayium.common.recipe.handler
 
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.util.clayiumId
+import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import net.minecraftforge.fml.common.registry.ForgeRegistries
-import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.oredict.ShapedOreRecipe
 
 object MaterialRecipeHandler {
     fun registerRecipes() {
         for (material in ClayiumApi.materialRegistry) {
-            if (material.hasOre(OrePrefix.ingot)) handleIngot(material)
-            if (material.hasOre(OrePrefix.block)) handleBlock(material)
+            if (material.hasOre(OrePrefix.ingot)) {
+                if (material.hasProperty(PropertyKey.PLATE)) addPlateRecipe(OrePrefix.ingot, material)
+                tryAddGrindingRecipe(OrePrefix.ingot, material)
+            }
+
+            if (material.hasOre(OrePrefix.matter)) {
+                if (material.hasProperty(PropertyKey.PLATE)) addPlateRecipe(OrePrefix.matter, material)
+                tryAddGrindingRecipe(OrePrefix.matter, material)
+            }
+
+            if (material.hasOre(OrePrefix.dust)) {
+                handleDust(OrePrefix.dust, material)
+            }
+
+            if (material.hasOre(OrePrefix.impureDust)) {
+
+            }
+
+            if (material.hasOre(OrePrefix.block)) {
+                if (material.hasProperty(PropertyKey.PLATE)) addPlateRecipe(OrePrefix.block, material)
+                if (material.hasProperty(PropertyKey.CLAY)) {
+                    val prop = material.getProperty(PropertyKey.CLAY)
+                    if (prop.compressedInto != null) addClayBlockRecipe(material, prop.compressedInto)
+                }
+                tryAddGrindingRecipe(OrePrefix.block, material)
+            }
+
+            if (material.hasOre(OrePrefix.plate)) { tryAddGrindingRecipe(OrePrefix.plate, material) }
+            if (material.hasOre(OrePrefix.largePlate)) { tryAddGrindingRecipe(OrePrefix.largePlate, material, 4) }
         }
     }
 
@@ -23,20 +50,25 @@ object MaterialRecipeHandler {
         return !OreDictUnifier.get(orePrefix, this).isEmpty
     }
 
-    private fun handleIngot(material: Material) {
-        if (material.hasProperty(PropertyKey.PLATE)) addPlateRecipe(OrePrefix.ingot, material)
-    }
-
-    private fun handleDust(material: Material) {
-
-    }
-
-    private fun handleBlock(material: Material) {
-        if (material.hasProperty(PropertyKey.PLATE)) addPlateRecipe(OrePrefix.block, material)
-        if (material.hasProperty(PropertyKey.CLAY)) {
-            val prop = material.getProperty(PropertyKey.CLAY)
-            if (prop.compressedInto != null) addClayBlockRecipe(material, prop.compressedInto)
+    private fun handleDust(dustPrefix: OrePrefix, material: Material) {
+        val tier = material.tier?.numeric ?: 0
+        fun addDustCondenseRecipe(outputPrefix: OrePrefix) {
+            if (OreDictUnifier.get(outputPrefix, material).isEmpty) return
+            CRecipes.CONDENSER.register {
+                input(dustPrefix, material)
+                output(outputPrefix, material)
+                cePerTick(if (tier < 10) ClayEnergy.micro(10) else ClayEnergy.micro(250))
+                duration(if (tier < 10) 5 else 80)
+                tier(if (tier < 10) 0 else 10)
+            }
         }
+
+        addDustCondenseRecipe(OrePrefix.block)
+        addDustCondenseRecipe(OrePrefix.matter)
+    }
+
+    private fun handleImpureDust(material: Material) {
+        val impureDust = OrePrefix.impureDust
     }
 
     /**
@@ -59,6 +91,17 @@ object MaterialRecipeHandler {
             cePerTick(plateProperty.cePerTick * 2)
             duration(plateProperty.requiredTick * 2)
             tier(plateProperty.tier)
+        }
+    }
+
+    private fun tryAddGrindingRecipe(inputPrefix: OrePrefix, material: Material, outputAmount: Int = 1) {
+        if (OreDictUnifier.get(OrePrefix.dust, material).isEmpty) return
+        CRecipes.GRINDER.register {
+            input(inputPrefix, material)
+            output(OrePrefix.dust, material, outputAmount)
+            cePerTick(ClayEnergy.micro(250))
+            duration(4)
+            tier(0)
         }
     }
 

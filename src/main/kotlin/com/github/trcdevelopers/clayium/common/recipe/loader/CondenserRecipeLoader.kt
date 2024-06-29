@@ -12,13 +12,5 @@ import net.minecraft.item.ItemStack
 object CondenserRecipeLoader {
     fun registerRecipes() {
         val registry = CRecipes.CONDENSER
-
-        registry.register {
-            input(OrePrefix.dust, CMaterials.clay)
-            output(ItemStack(Blocks.CLAY))
-            cePerTick(ClayEnergy.micro(10))
-            duration(3)
-            tier(0)
-        }
     }
 }

@@ -3,6 +3,7 @@ package com.github.trcdevelopers.clayium.common.unification.material
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.util.ClayTiers
 import com.github.trcdevelopers.clayium.api.util.ITier
+import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.google.common.base.CaseFormat
 import net.minecraft.client.resources.I18n
@@ -34,7 +35,6 @@ data class Material(
     fun <T : MaterialProperty> getProperty(key: PropertyKey<T>) = properties.getProperty(key)
     fun <T : MaterialProperty> getPropOrNull(key: PropertyKey<T>) = properties.getPropOrNull(key)
 
-
     class Builder(
         private val metaItemSubId: Int,
         private val metaItemId: ResourceLocation,
@@ -45,7 +45,14 @@ data class Material(
 
         fun tier(tier: Int) = apply { this.tier = ClayTiers.entries[tier] }
         fun tier(tier: ITier) = apply { this.tier = tier }
-        fun colors(vararg colors: Int) = apply { this.colors = colors }
+        fun colors(vararg colors: Int): Builder {
+            if (colors.isEmpty()) {
+                Clayium.LOGGER.warn("Material.Builder#colors is called, but provided array is empty. Ignoring.")
+                return this
+            }
+            this.colors = colors
+            return this
+        }
 
         fun ingot() = apply { properties.setProperty(PropertyKey.INGOT, MaterialProperty.Ingot) }
         fun dust() = apply { properties.setProperty(PropertyKey.DUST, MaterialProperty.Dust) }

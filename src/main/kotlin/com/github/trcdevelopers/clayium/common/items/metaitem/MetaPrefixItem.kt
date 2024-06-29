@@ -80,7 +80,7 @@ open class MetaPrefixItem private constructor(
                 if (orePrefix.canGenerateItem(material)) {
                     val impureDust  = material.getProperty(PropertyKey.IMPURE_DUST)
                     addItem(material.metaItemSubId.toShort(), material.materialId.path)
-                        .tier(material.tier?.numeric ?: -1)
+                        .tier(6)
                         .addComponent(IItemColorHandler { _, i -> impureDust.getColor(i) })
                         .oreDict(orePrefix, material)
                 }
