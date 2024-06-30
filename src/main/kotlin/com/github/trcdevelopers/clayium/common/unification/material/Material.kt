@@ -86,6 +86,14 @@ data class Material(
             return this
         }
 
+        /**
+         * Adds a blast smelting recipe and removes vanilla smelting recipe.
+         */
+        fun blastSmelting(tier: Int): Builder {
+            properties.setProperty(PropertyKey.BLAST_SMELTING, BlastSmelting(tier))
+            return this
+        }
+
         fun build(): Material{
             val material = Material(metaItemSubId, metaItemId, properties, tier, colors)
             ClayiumApi.materialRegistry.register(metaItemSubId, metaItemId, material)

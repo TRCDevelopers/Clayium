@@ -40,3 +40,4 @@ sealed interface MaterialProperty {
 }
 
 class Clay(val compressedInto: Material?, val energy: ClayEnergy?) : MaterialProperty
+class BlastSmelting(val tier: Int) : MaterialProperty
