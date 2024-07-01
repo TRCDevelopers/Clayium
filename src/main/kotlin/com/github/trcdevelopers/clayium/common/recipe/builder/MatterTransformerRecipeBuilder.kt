@@ -44,17 +44,14 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
      */
     fun chain(oreDict: String): MatterTransformerRecipeBuilder {
         this.buildAndRegister()
-        return this.copy()
+        val newBuilder = this.recipeRegistry.builder()
+            .tier(this.tier).cePerTick(this.cePerTick).duration(this.duration)
             .input(this.outputs[0])
             .output(oreDict)
-        return this
+        if (defaultPrefix != null) newBuilder.defaultPrefix(defaultPrefix!!)
+        return newBuilder
     }
 
     fun chain(orePrefix: OrePrefix, material: Material) = chain(UnificationEntry(orePrefix, material).toString())
     fun chain(material: Material) = chain(defaultPrefix!!, material)
-
-    /**
-     * just an alias for `buildAndRegister()`, but it's more contextually correct I think.
-     */
-    fun done() = this.buildAndRegister()
 }

@@ -26,7 +26,9 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
 ) {
     constructor() : this(mutableListOf(), mutableListOf(), 0, ClayEnergy.ZERO, 0)
 
-    constructor(another: RecipeBuilder<R>) : this(another.inputs.toMutableList(), another.outputs.toMutableList(), another.duration, another.cePerTick, another.tier)
+    constructor(another: RecipeBuilder<R>) : this(another.inputs.toMutableList(), another.outputs.toMutableList(), another.duration, another.cePerTick, another.tier) {
+        recipeRegistry = another.recipeRegistry
+    }
 
     protected lateinit var recipeRegistry: RecipeRegistry<R>
 

@@ -49,6 +49,8 @@ object MatterTransformerRecipeLoader {
         saplingRecipes.forEach { it() }
         leaveRecipes.forEach { it() }
         logRecipes.forEach { it() }
+
+        registerMaterialTransformations()
     }
 
     private fun getLeaveStack(type: BlockPlanks.EnumType): ItemStack {
@@ -85,7 +87,7 @@ object MatterTransformerRecipeLoader {
             .chain(CMaterials.plutonium).tier(10).CEt(20.0)
             .chain(CMaterials.americium).tier(11).CEt(30.0)
             .chain(CMaterials.curium).tier(12).CEt(50.0)
-            .done()
+            .buildAndRegister()
 
         CRecipes.MATTER_TRANSFORMER.builder()
             .defaultPrefix(OrePrefix.ingot)
@@ -103,5 +105,6 @@ object MatterTransformerRecipeLoader {
             .chain(CMaterials.promethium).tier(10).CEt(10.0)
             .chain(CMaterials.samarium).tier(11).CEt(20.0)
             .chain(CMaterials.europium).tier(12).CEt(60.0)
+            .buildAndRegister()
     }
 }
