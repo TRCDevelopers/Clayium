@@ -78,6 +78,39 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
         return this as R
     }
 
+    /**
+     * | Tier | CEt |
+     * |:----:|:---:|
+     * | 0   | 10u   |
+     * | 1 | 10u |
+     * | 2 | 10u |
+     * | 3 | 100u |
+     * | 4 | 1m |
+     * | 5 | 10m |
+     * | 6 | 100m |
+     * | 7 | 1 |
+     * | 8 | 10 |
+     * | 9 | 100 |
+     * | 10 | 1k |
+     * | 11 | 10k |
+     * | 12 | 100k |
+     * | 13 | 1M |
+     */
+    @Suppress("FunctionName")
+    fun CEt(tier: Int): R {
+        return this.CEt(1.0, tier)
+    }
+
+    @Suppress("FunctionName")
+    fun CEt(factor: Double): R {
+        return this.CEt(factor, this.tier)
+    }
+
+    @Suppress("FunctionName")
+    fun CEt(factor: Double, tier: Int): R{
+        return this.cePerTick(ClayEnergy((factor * 100.0 * Math.pow(10.0, tier - 4.0)).toLong().coerceAtLeast(1)))
+    }
+
     fun tier(tier: Int): R {
         this.tier = tier
         return this as R

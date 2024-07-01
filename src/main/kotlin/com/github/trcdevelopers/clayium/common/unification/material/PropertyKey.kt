@@ -15,6 +15,7 @@ data class PropertyKey<T : MaterialProperty>(
         val IMPURE_DUST = PropertyKey<MaterialProperty.ImpureDust>("impureDust")
         val PLATE = PropertyKey<MaterialProperty.Plate>("plate")
         val CLAY = PropertyKey<Clay>("clay")
+        val CLAY_SMELTING = PropertyKey<ClaySmelting>("claySmelting")
         val BLAST_SMELTING = PropertyKey<BlastSmelting>("blastSmelting")
     }
 }

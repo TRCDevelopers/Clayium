@@ -40,4 +40,9 @@ sealed interface MaterialProperty {
 }
 
 class Clay(val compressedInto: Material?, val energy: ClayEnergy?) : MaterialProperty
-class BlastSmelting(val tier: Int) : MaterialProperty
+class ClaySmelting(val factor: Double, val tier: Int, val duration: Int) : MaterialProperty {
+    constructor(tier: Int, duration: Int) : this(1.0, tier, duration)
+}
+class BlastSmelting(val factor: Double, val tier: Int, val duration: Int) : MaterialProperty {
+    constructor(tier: Int, duration: Int) : this(1.0, tier, duration)
+}

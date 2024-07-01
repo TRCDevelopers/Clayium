@@ -101,6 +101,8 @@ object CMaterials {
     val steel: Material
     val zinc_aluminum: Material
     val zinc_zirconium: Material
+    val az91d: Material
+    val zk60a: Material
 
     val calciumChloride: Material
     val sodiumCarbonate: Material
@@ -230,6 +232,7 @@ object CMaterials {
             colors(0xBEC8CA, 0x191919, 0xFFFFFF)
             ingot().dust().impureDust(0xBEC8CA, 0x78783C, 0xDCDCDC)
             plate(ClayEnergy.milli(1), 20, tier = 4)
+            claySmelting(0.5, 5, 200)
         }
 
         claySteel = Material.create(24, clayiumId("clay_steel")) {
@@ -237,6 +240,7 @@ object CMaterials {
             colors(0x8890AD, 0x191919, 0xFFFFFF)
             ingot().dust()
             plate(ClayEnergy.milli(1), 60, tier = 4)
+            blastSmelting(6, 500)
         }
 
         clayium = Material.create(25, clayiumId("clayium")) {
@@ -244,6 +248,7 @@ object CMaterials {
             colors(0x5AF0D2, 0x3F4855, 0xFFCDC8)
             ingot().dust()
             plate(ClayEnergy.milli(1), 120, tier = 4)
+            blastSmelting(2.0, 7, 1000)
         }
 
         ultimateAlloy = Material.create(26, clayiumId("ultimate_alloy")) {
@@ -251,6 +256,7 @@ object CMaterials {
             colors(0x55CD55, 0x191919, 0xF5A0FF)
             ingot().dust()
             plate(ClayEnergy.milli(1), 180, tier = 4)
+            blastSmelting(4.0, 8, 2000)
         }
 
         antimatter = Material.create(27, clayiumId("antimatter")) {
@@ -327,11 +333,13 @@ object CMaterials {
             tier(7).colors(0x965078, 0x781450, 0xFFFFFF)
             ingot().dust()
             impureDust(0x965078, 0x78783C, 0xDCDCDC)
+            blastSmelting(2.0, 7, 1000)
         }
         beryllium = Material.create(104, clayiumId("beryllium")) {
             tier(9).colors(0xD2F0D2, 0x191919, 0xFFFFFF)
             ingot().dust()
             impureDust(0xD2F0D2, 0x78783C, 0xDCDCDC)
+            blastSmelting(6, 500)
         }
         bismuth = Material.create(105, clayiumId("bismuth")) {
             tier(9).colors(0x467846, 0x191919, 0xFFFFFF)
@@ -345,6 +353,7 @@ object CMaterials {
             tier(7).colors(0xF0F0F0, 0x191919, 0xFFFFFF)
             ingot().dust()
             impureDust(0xF0F0F0, 0x78783C, 0xDCDCDC)
+            blastSmelting(5, 500)
         }
         carbon = Material.create(108, clayiumId("carbon")) {
             tier(6).colors(0x0A0A0A, 0x191919, 0x1E1E1E)
@@ -357,6 +366,7 @@ object CMaterials {
         chromium = Material.create(110, clayiumId("chrome")) {
             tier(9).colors(0xF0D2D2, 0x191919, 0xFFFFFF)
             ingot().dust()
+            blastSmelting(4.0, 9, 2000)
         }
         cobalt = Material.create(111, clayiumId("cobalt")) {
             tier(8).colors(0x1E1EE6, 0x191919, 0xFFFFFF)
@@ -383,6 +393,7 @@ object CMaterials {
             tier(7).colors(0xF0D2AA, 0x191919, 0xFFFFFF)
             ingot().dust()
             impureDust(0xF0D2AA, 0x78783C, 0xDCDCDC)
+            blastSmelting(6, 500)
         }
         iridium = Material.create(117, clayiumId("iridium")) {
             tier(11).colors(0xF0F0F0, 0xD2D2D2, 0xEBEBEB)
@@ -406,11 +417,13 @@ object CMaterials {
             tier(6).colors(0x96D296, 0x787878, 0xFFFFFF)
             ingot().dust()
             impureDust(0x96DC96, 0x78783C, 0xDCDCDC)
+            claySmelting(0.2, 6, 400)
         }
         manganese = Material.create(122, clayiumId("manganese")) {
             tier(7).colors(0xBEF0F0, 0x191919, 0xFFFFFF)
             ingot().dust()
             impureDust(0xBEF0F0, 0x78783C, 0xDCDCDC)
+            blastSmelting(2.0, 7, 1000)
         }
         molybdenum = Material.create(123, clayiumId("molybdenum")) {
             tier(10).colors(0x82A082, 0x191919, 0xFFFFFF)
@@ -448,6 +461,7 @@ object CMaterials {
             tier(7).colors(0xF0F0BE, 0x191919, 0xFFFFFF)
             ingot().dust()
             impureDust(0xAAAAE6, 0x78783C, 0xDCDCDC)
+            blastSmelting(5, 500)
         }
         praseodymium = Material.create(132, clayiumId("praseodymium")) {
             tier(8).colors(0x919191, 0x00EB00, 0xFFFFFF)
@@ -485,11 +499,13 @@ object CMaterials {
             tier(6).colors(0xAAAADE, 0x787878, 0xFFFFFF)
             ingot().dust()
             impureDust(0xAAAAE6, 0x78783C, 0xDCDCDC)
+            claySmelting(0.5, 5, 200)
         }
         strontium = Material.create(141, clayiumId("strontium")) {
             tier(7).colors(0xD2AAF2, 0x191919, 0xFFFFFF)
             ingot().dust()
             impureDust(0xD2AAF2, 0x78783C, 0xDCDCDC)
+            blastSmelting(2.0, 7, 1000)
         }
         sulfur = Material.create(142, clayiumId("sulfur")) {
             tier(6).colors(0xE6E600, 0xCDCD00, 0xFFFF00)
@@ -511,6 +527,7 @@ object CMaterials {
             tier(8).colors(0xD2F0F0, 0x191919, 0xFFFFFF)
             ingot().dust()
             impureDust(0xD2F0F0, 0x78783C, 0xDCDCDC)
+            blastSmelting(4.0, 8, 2000)
         }
         tungsten = Material.create(147, clayiumId("tungsten")) {
             tier(9).colors(0x1E1E1E, 0x191919, 0xFFFFFF)
@@ -528,11 +545,13 @@ object CMaterials {
             tier(6).colors(0xE6AAAA, 0x787878, 0xFFFFFF)
             ingot().dust()
             impureDust(0xE6AAAA, 0x78783C, 0xDCDCDC)
+            claySmelting(0.5, 5, 200)
         }
         zirconium = Material.create(151, clayiumId("zirconium")) {
             tier(6).colors(0xBEAA7A, 0x787878, 0xFFFFFF)
             ingot().dust()
             impureDust(0xBEAA7A, 0x78783C, 0xDCDCDC)
+            claySmelting(0.2, 6, 400)
         }
         //endregion
 
@@ -557,18 +576,34 @@ object CMaterials {
             tier(8).colors(0xD2D2F0, 0x191919, 0xFFFFFF)
             ingot().dust()
             impureDust(0xD2D2F0, 0x78783C, 0xDCDCDC)
+            claySmelting(0.5, 5, 200)
         }
         steel = Material.create(305, clayiumId("steel")) {
             tier(3).colors(0x5A5A6E, 0x000000, 0xFFFFFF)
             ingot().dust()
+            blastSmelting(6, 500)
         }
         zinc_aluminum = Material.create(306, clayiumId("zinc_aluminum")) {
             tier(6).colors(0xF0BEDC, 0xA00000, 0xFFFFFF)
             ingot().dust()
+            claySmelting(0.2, 6, 400)
         }
         zinc_zirconium = Material.create(307, clayiumId("zinc_zirconium")) {
             tier(6).colors(0xE6AA8C, 0x780000, 0xFFFFFF)
             ingot().dust()
+            claySmelting(0.2, 6, 400)
+        }
+        az91d = Material.create(308, clayiumId("az91d")) {
+            tier(6).colors(0x828C87, 0x0A280A, 0xFFFFFF)
+            ingot().dust()
+            plate(ClayEnergy.milli(1), 20, tier = 4)
+            claySmelting(0.2, 6, 400)
+        }
+        zk60a = Material.create(309, clayiumId("zk60a")) {
+            tier(6).colors(0x4B5550, 0x0A280A, 0xFFFFFF)
+            ingot().dust()
+            plate(ClayEnergy.milli(1), 20, tier = 4)
+            claySmelting(0.2, 6, 400)
         }
         //endregion
 

@@ -2,6 +2,8 @@ package com.github.trcdevelopers.clayium.common.recipe.loader
 
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
+import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import net.minecraft.block.BlockOldLeaf
 import net.minecraft.block.BlockOldLog
 import net.minecraft.block.BlockPlanks
@@ -61,5 +63,45 @@ object MatterTransformerRecipeLoader {
         val block = if (type in BlockOldLog.VARIANT.allowedValues) Blocks.LOG else Blocks.LOG2
         val actualMeta = if (type in BlockOldLog.VARIANT.allowedValues) meta else meta - 4
         return ItemStack(block, 1, actualMeta)
+    }
+
+    private fun registerMaterialTransformations() {
+        CRecipes.MATTER_TRANSFORMER.builder()
+            .defaultPrefix(OrePrefix.ingot)
+            .input(CMaterials.lithium)
+            .output(CMaterials.sodium)
+            .tier(7).CEt(10.0).duration(200)
+
+            .chain(CMaterials.potassium).CEt(30.0)
+            .chain(CMaterials.rubidium).tier(8).CEt(10.0)
+            .chain(CMaterials.caesium).CEt(20.0)
+            .chain(CMaterials.francium).CEt(30.0)
+            .chain(CMaterials.radium).CEt(50.0)
+            .chain(CMaterials.actinium).tier(9).CEt(10.0)
+            .chain(CMaterials.thorium).CEt(20.0)
+            .chain(CMaterials.protactinium).CEt(30.0)
+            .chain(CMaterials.uranium).CEt(50.0)
+            .chain(CMaterials.neptunium).CEt(80.0)
+            .chain(CMaterials.plutonium).tier(10).CEt(20.0)
+            .chain(CMaterials.americium).tier(11).CEt(30.0)
+            .chain(CMaterials.curium).tier(12).CEt(50.0)
+            .done()
+
+        CRecipes.MATTER_TRANSFORMER.builder()
+            .defaultPrefix(OrePrefix.ingot)
+            .input(CMaterials.beryllium)
+            .output(CMaterials.magnesium)
+            .tier(7).CEt(10.0).duration(200)
+
+            .chain(CMaterials.calcium).CEt(20.0)
+            .chain(CMaterials.strontium).CEt(30.0)
+            .chain(CMaterials.barium).CEt(50.0)
+            .chain(CMaterials.lanthanum).tier(8).CEt(10.0)
+            .chain(CMaterials.cerium).CEt(30.0)
+            .chain(CMaterials.praseodymium).CEt(90.0)
+            .chain(CMaterials.neodymium).tier(9).CEt(20.0)
+            .chain(CMaterials.promethium).tier(10).CEt(10.0)
+            .chain(CMaterials.samarium).tier(11).CEt(20.0)
+            .chain(CMaterials.europium).tier(12).CEt(60.0)
     }
 }

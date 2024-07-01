@@ -87,12 +87,37 @@ data class Material(
         }
 
         /**
-         * Adds a blast smelting recipe and removes vanilla smelting recipe.
+         * Adds a clay smelting recipe and removes a vanilla smelting recipe.
          */
-        fun blastSmelting(tier: Int): Builder {
-            properties.setProperty(PropertyKey.BLAST_SMELTING, BlastSmelting(tier))
+        fun claySmelting(tier: Int, duration: Int): Builder {
+            properties.setProperty(PropertyKey.CLAY_SMELTING, ClaySmelting(tier, duration))
             return this
         }
+
+        /**
+         * Adds a clay smelting recipe and removes a vanilla smelting recipe.
+         */
+        fun claySmelting(factor: Double, tier: Int, duration: Int): Builder {
+            properties.setProperty(PropertyKey.CLAY_SMELTING, ClaySmelting(factor, tier, duration))
+            return this
+        }
+
+        /**
+         * Adds a blast smelting recipe and removes a vanilla smelting recipe.
+         */
+        fun blastSmelting(tier: Int, duration: Int): Builder {
+            properties.setProperty(PropertyKey.BLAST_SMELTING, BlastSmelting(tier, duration))
+            return this
+        }
+
+        /**
+         * Adds a blast smelting recipe and removes a vanilla smelting recipe.
+         */
+        fun blastSmelting(factor: Double, tier: Int, duration: Int): Builder {
+            properties.setProperty(PropertyKey.BLAST_SMELTING, BlastSmelting(factor, tier, duration))
+            return this
+        }
+
 
         fun build(): Material{
             val material = Material(metaItemSubId, metaItemId, properties, tier, colors)

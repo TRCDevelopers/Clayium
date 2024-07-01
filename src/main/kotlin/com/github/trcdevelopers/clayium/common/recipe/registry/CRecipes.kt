@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.common.recipe.registry
 
 import com.github.trcdevelopers.clayium.common.recipe.builder.ClayFabricatorRecipeBuilder
+import com.github.trcdevelopers.clayium.common.recipe.builder.MatterTransformerRecipeBuilder
 import com.github.trcdevelopers.clayium.common.recipe.builder.RecipeBuilder
 import com.github.trcdevelopers.clayium.common.recipe.builder.SimpleRecipeBuilder
 
@@ -17,7 +18,7 @@ object CRecipes {
     val ELECTROLYSIS_REACTOR = addRegistry("electrolysis_reactor", SimpleRecipeBuilder(), 1, 1)
     val GRINDER = addRegistry("grinder", SimpleRecipeBuilder(), 1, 1)
     val LATHE = addRegistry("lathe", SimpleRecipeBuilder(), 1, 1)
-    val MATTER_TRANSFORMER = addRegistry("matter_transformer", SimpleRecipeBuilder(), 1, 1)
+    val MATTER_TRANSFORMER = addRegistry("matter_transformer", MatterTransformerRecipeBuilder(), 1, 1)
     val MILLING_MACHINE = addRegistry("milling_machine", SimpleRecipeBuilder(), 1, 1)
     val PIPE_DRAWING_MACHINE = addRegistry("pipe_drawing_machine", SimpleRecipeBuilder(), 1, 1)
     val WIRE_DRAWING_MACHINE = addRegistry("wire_drawing_machine", SimpleRecipeBuilder(), 1, 1)

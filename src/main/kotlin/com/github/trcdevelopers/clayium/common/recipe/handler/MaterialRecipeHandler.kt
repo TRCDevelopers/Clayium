@@ -9,6 +9,7 @@ import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import net.minecraftforge.fml.common.registry.ForgeRegistries
+import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.oredict.ShapedOreRecipe
 import kotlin.math.pow
 
@@ -61,6 +62,34 @@ object MaterialRecipeHandler {
 
         addDustCondenseRecipe(OrePrefix.block)
         addDustCondenseRecipe(OrePrefix.matter)
+
+        if (material.hasProperty(PropertyKey.INGOT)) {
+            if (material.hasProperty(PropertyKey.BLAST_SMELTING)) {
+                val prop = material.getProperty(PropertyKey.BLAST_SMELTING)
+                CRecipes.CLAY_BLAST_FURNACE.register {
+                    input(dustPrefix, material)
+                    output(OrePrefix.ingot, material)
+                    CEt(prop.factor, prop.tier)
+                    duration(prop.duration)
+                    tier(prop.tier)
+                }
+            } else if (material.hasProperty(PropertyKey.CLAY_SMELTING)) {
+                val prop = material.getProperty(PropertyKey.CLAY_SMELTING)
+                CRecipes.SMELTER.register {
+                    input(dustPrefix, material)
+                    output(OrePrefix.ingot, material)
+                    CEt(prop.factor, prop.tier)
+                    duration(prop.duration)
+                    tier(prop.tier)
+                }
+            } else {
+                GameRegistry.addSmelting(
+                    OreDictUnifier.get(OrePrefix.dust, material),
+                    OreDictUnifier.get(OrePrefix.ingot, material),
+                    0.1f
+                )
+            }
+        }
     }
 
     private fun handleImpureDust(material: Material) {
