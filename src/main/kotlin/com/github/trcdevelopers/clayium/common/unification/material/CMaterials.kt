@@ -3,9 +3,135 @@ package com.github.trcdevelopers.clayium.common.unification.material
 import com.github.trcdevelopers.clayium.api.util.clayiumId
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 
-@Suppress("JoinDeclarationAndAssignment")
 object CMaterials {
 
+    //region Element Materials
+    val actinium: Material
+    val aluminum: Material
+    val americium: Material
+    val antimony: Material
+    val argon: Material
+    val arsenic: Material
+    val astatine: Material
+    val barium: Material
+    val berkelium: Material
+    val beryllium: Material
+    val bismuth: Material
+    val bohrium: Material
+    val boron: Material
+    val bromine: Material
+    val caesium: Material
+    val calcium: Material
+    val californium: Material
+    val carbon: Material
+    val cadmium: Material
+    val cerium: Material
+    val chlorine: Material
+    val chromium: Material
+    val cobalt: Material
+    val copernicium: Material
+    val copper: Material
+    val curium: Material
+    val darmstadtium: Material
+    val deuterium: Material
+    val dubnium: Material
+    val dysprosium: Material
+    val einsteinium: Material
+    val erbium: Material
+    val europium: Material
+    val fermium: Material
+    val flerovium: Material
+    val fluorine: Material
+    val francium: Material
+    val gadolinium: Material
+    val gallium: Material
+    val germanium: Material
+    val gold: Material
+    val hafnium: Material
+    val hassium: Material
+    val holmium: Material
+    val hydrogen: Material
+    val helium: Material
+    val helium3: Material
+    val indium: Material
+    val iodine: Material
+    val iridium: Material
+    val iron: Material
+    val krypton: Material
+    val lanthanum: Material
+    val lawrencium: Material
+    val lead: Material
+    val lithium: Material
+    val livermorium: Material
+    val lutetium: Material
+    val magnesium: Material
+    val mendelevium: Material
+    val manganese: Material
+    val meitnerium: Material
+    val mercury: Material
+    val molybdenum: Material
+    val moscovium: Material
+    val neodymium: Material
+    val neon: Material
+    val neptunium: Material
+    val nickel: Material
+    val nihonium: Material
+    val niobium: Material
+    val nitrogen: Material
+    val nobelium: Material
+    val oganesson: Material
+    val osmium: Material
+    val oxygen: Material
+    val palladium: Material
+    val phosphorus: Material
+    val polonium: Material
+    val platinum: Material
+    val plutonium239: Material
+    val plutonium241: Material
+    val potassium: Material
+    val praseodymium: Material
+    val promethium: Material
+    val protactinium: Material
+    val radon: Material
+    val radium: Material
+    val rhenium: Material
+    val rhodium: Material
+    val roentgenium: Material
+    val rubidium: Material
+    val ruthenium: Material
+    val rutherfordium: Material
+    val samarium: Material
+    val scandium: Material
+    val seaborgium: Material
+    val selenium: Material
+    val silicon: Material
+    val silver: Material
+    val sodium: Material
+    val strontium: Material
+    val sulfur: Material
+    val tantalum: Material
+    val technetium: Material
+    val tellurium: Material
+    val tennessine: Material
+    val terbium: Material
+    val thorium: Material
+    val thallium: Material
+    val thulium: Material
+    val tin: Material
+    val titanium: Material
+    val tritium: Material
+    val tungsten: Material
+    val uranium238: Material
+    val uranium235: Material
+    val vanadium: Material
+    val xenon: Material
+    val ytterbium: Material
+    val yttrium: Material
+    val zinc: Material
+    val zirconium: Material
+    //endregion
+
+    //region Clay Materials
     val clay: Material
     val denseClay: Material
     val compressedClay: Material
@@ -20,11 +146,10 @@ object CMaterials {
     val compressedEnergeticClay6: Material
     val compressedEnergeticClay7: Material
     val octupleEnergyClay: Material
+    //endregion
 
     val impureSilicon: Material
     val silicone: Material
-    val silicon: Material
-    val aluminum: Material
     val claySteel: Material
     val clayium: Material
     val ultimateAlloy: Material
@@ -40,58 +165,6 @@ object CMaterials {
     val pureAntimatter6: Material
     val pureAntimatter7: Material
 
-    val actinium: Material
-    val americium: Material
-    val antimony: Material
-    val barium: Material
-    val beryllium: Material
-    val bismuth: Material
-    val caesium: Material
-    val calcium: Material
-    val carbon: Material
-    val cerium: Material
-    val chromium: Material
-    val cobalt: Material
-    val copper: Material
-    val curium: Material
-    val europium: Material
-    val francium: Material
-    val hafnium: Material
-    val iridium: Material
-    val lanthanum: Material
-    val lead: Material
-    val lithium: Material
-    val magnesium: Material
-    val manganese: Material
-    val molybdenum: Material
-    val neodymium: Material
-    val neptunium: Material
-    val osmium: Material
-    val palladium: Material
-    val phosphorus: Material
-    val platinum: Material
-    val plutonium: Material
-    val potassium: Material
-    val praseodymium: Material
-    val promethium: Material
-    val protactinium: Material
-    val radium: Material
-    val rhenium: Material
-    val rubidium: Material
-    val samarium: Material
-    val silver: Material
-    val sodium: Material
-    val strontium: Material
-    val sulfur: Material
-    val tantalum: Material
-    val thorium: Material
-    val tin: Material
-    val titanium: Material
-    val tungsten: Material
-    val uranium: Material
-    val vanadium: Material
-    val zinc: Material
-    val zirconium: Material
 
     val brass: Material
     val bronze: Material
@@ -316,35 +389,42 @@ object CMaterials {
         //endregion
 
         //region Element Materials
-        actinium = Material.create(100, clayiumId("actinium")) {
+        actinium = Material.create(1, clayiumId("actinium")) {
             tier(7).colors(0x8E1777, 0x323200, 0xFFFFFF)
             ingot().dust()
             impureDust(0x8E1777, 0x78783C, 0xDCDCDC)
         }
-        americium = Material.create(101, clayiumId("americium")) {
+        americium = Material.create(2, clayiumId("americium")) {
             tier(11).colors(0xEBEBEB, 0x9B9B9B, 0xEBEBEB)
             ingot()
         }
-        antimony = Material.create(102, clayiumId("antimony")) {
+        antimony = Material.create(3, clayiumId("antimony")) {
             tier(6).colors(0x464646, 0x191919, 0xFFFFFF)
             ingot()
         }
-        barium = Material.create(103, clayiumId("barium")) {
+        argon = Material.create(4, clayiumId("argon")) {}
+        arsenic = Material.create(5, clayiumId("arsenic")) {}
+        astatine = Material.create(6, clayiumId("astatine")) {}
+        barium = Material.create(7, clayiumId("barium")) {
             tier(7).colors(0x965078, 0x781450, 0xFFFFFF)
             ingot().dust()
             impureDust(0x965078, 0x78783C, 0xDCDCDC)
             blastSmelting(2.0, 7, 1000)
         }
-        beryllium = Material.create(104, clayiumId("beryllium")) {
+        berkelium = Material.create(8, clayiumId("berkelium")) {}
+        beryllium = Material.create(9, clayiumId("beryllium")) {
             tier(9).colors(0xD2F0D2, 0x191919, 0xFFFFFF)
             ingot().dust()
             impureDust(0xD2F0D2, 0x78783C, 0xDCDCDC)
             blastSmelting(6, 500)
         }
-        bismuth = Material.create(105, clayiumId("bismuth")) {
+        bismuth = Material.create(10, clayiumId("bismuth")) {
             tier(9).colors(0x467846, 0x191919, 0xFFFFFF)
             ingot()
         }
+        bohrium = Material.create(10, clayiumId("bohrium")) {}
+        boron = Material.Builder(11, clayiumId("boron")).build()
+        bromine = Material.Builder(12, clayiumId("bromine")).build()
         caesium = Material.create(106, clayiumId("caesium")) {
             tier(8).colors(0xF5F5F5, 0x969600, 0xFFFFFF)
             ingot()
@@ -355,10 +435,12 @@ object CMaterials {
             impureDust(0xF0F0F0, 0x78783C, 0xDCDCDC)
             blastSmelting(5, 500)
         }
+        californium = Material.create(108, clayiumId("californium")) {}
         carbon = Material.create(108, clayiumId("carbon")) {
             tier(6).colors(0x0A0A0A, 0x191919, 0x1E1E1E)
             ingot().dust()
         }
+        cadmium = Material.create()
         cerium = Material.create(109, clayiumId("cerium")) {
             tier(8).colors(0x919191, 0x969600, 0xFFFFFF)
             ingot()
