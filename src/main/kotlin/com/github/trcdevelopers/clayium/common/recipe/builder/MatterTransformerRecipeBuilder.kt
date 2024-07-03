@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.recipe.builder
 
+import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import com.github.trcdevelopers.clayium.common.unification.stack.UnificationEntry
@@ -25,6 +26,7 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
     /**
      * Returns a new builder instance with the current output set as the input,
      * and the output set to the given ore dictionary.
+     * If the given oreDict does not exist, this does nothing.
      * Also sets the CEt, duration, and tier to the current values.
      * These values can be reset by calling the respective methods.
      *
@@ -34,7 +36,8 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
      *    .input("ingotIron")
      *    .output("ingotCopper")
      *    .chain("ingotGold")
-     *    .chain("gemDiamond")
+     *    .chain("someInvalidOreDict")
+     *    .chain("gemDiamond").tier(8).duration(200)
      *    .buildAndRegister()
      * ```
      * This will generate these recipes:
@@ -43,6 +46,7 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
      * - `ingotGold` -> `gemDiamond`
      */
     fun chain(oreDict: String): MatterTransformerRecipeBuilder {
+        if (OreDictUnifier.get(oreDict).isEmpty) return this
         this.buildAndRegister()
         val newBuilder = this.recipeRegistry.builder()
             .tier(this.tier).cePerTick(this.cePerTick).duration(this.duration)

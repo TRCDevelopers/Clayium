@@ -345,29 +345,19 @@ object CMaterials {
     val compressedEnergeticClay5: Material
     val compressedEnergeticClay6: Material
     val compressedEnergeticClay7: Material
-    val octupleEnergyClay: Material
+    val octupleEnergyClay: Material = Material.create(164, clayiumId("octuple_energy_clay")) {
+        tier(12)
+        colors(0xFFFF00, 0x8C8C8C, 0xFFFFFF)
+        dust()
+        clay(energy = ClayEnergy.of(100_000_000))
+        plate(ClayEnergy.of(10000), 20, tier = 9)
+    }
     //endregion
 
     /** 201 - 300 */
     //region Matters
-    //endregion
-
-    /** 301 - 500 */
-    //region Chemical Materials
-    val calciumChloride: Material
-    val sodiumCarbonate: Material
-    val calcareousClay: Material
-    //endregion
-
-    //region Other Metals
-    val impureSilicon: Material
-    val claySteel: Material
-    val clayium: Material
-    val ultimateAlloy: Material
     val antimatter: Material
     val pureAntimatter: Material
-    val octuplePureAntimatter: Material
-
     val pureAntimatter1: Material
     val pureAntimatter2: Material
     val pureAntimatter3: Material
@@ -375,42 +365,153 @@ object CMaterials {
     val pureAntimatter5: Material
     val pureAntimatter6: Material
     val pureAntimatter7: Material
+    val octuplePureAntimatter: Material
+    //endregion
 
+    /** 301 - 500 */
+    //region Chemical Materials
+    val organicClay = Material.create(301, clayiumId("organic_clay")) {
+        tier(5)
+        colors(0x8890AD, 0x6A2C2B, 0x92A4B7)
+        dust()
+    }
+    val calciumChloride = Material.create(302, clayiumId("calcium_chloride")) {
+        dust()
+    }
+    val sodiumCarbonate = Material.create(303, clayiumId("sodium_carbonate")) {
+        dust()
+    }
+    val calcareousClay = Material.create(304, clayiumId("calcareous_clay")) {
+        tier(4)
+        dust()
+    }
+    //endregion
 
-    val brass: Material
-    val bronze: Material
-    val electrum: Material
-    val invar: Material
-    val steel: Material
-    val zinc_aluminum: Material
-    val zinc_zirconium: Material
-    val az91d: Material
-    val zk60a: Material
+    /**
+     * Materials composed of anything other than First or higher Degree Materials.
+     * 501 - 1000
+     */
+    //region First Degree Materials
+    val brass = Material.create(501, clayiumId("brass")) {
+        tier(6).colors(0xBEAA14, 0x000000, 0xFFFFFF)
+        ingot().dust()
+    }
+    val bronze = Material.create(502, clayiumId("bronze")) {
+        tier(5).colors(0xFA9628, 0x000000, 0xFFFFFF)
+        ingot().dust()
+    }
+    val charcoal = Material.create(503, clayiumId("charcoal")) {
+        colors(0x141414, 0x191919, 0x503232)
+        dust()
+    }
+    val claySteel = Material.create(504, clayiumId("clay_steel")) {
+        tier(7)
+        colors(0x8890AD, 0x191919, 0xFFFFFF)
+        ingot().dust()
+        plate(ClayEnergy.milli(1), 60, tier = 4)
+        blastSmelting(6, 500)
+    }
+    val clayium = Material.create(505, clayiumId("clayium")) {
+        tier(8)
+        colors(0x5AF0D2, 0x3F4855, 0xFFCDC8)
+        ingot().dust()
+        plate(ClayEnergy.milli(1), 120, tier = 4)
+        blastSmelting(2.0, 7, 1000)
+    }
+    val coal = Material.create(506, clayiumId("coal")) {
+        colors(0x141414, 0x191919, 0x323250)
+        dust()
+    }
+    val graphite = Material.create(507, clayiumId("graphite")) {}
+    val electrum = Material.create(508, clayiumId("electrum")) {
+        tier(6).colors(0xE6E69B, 0x787846, 0xFFFFFF)
+        ingot().dust()
+    }
+    val impureGlowStone = Material.create(509, clayiumId("impure_glowstone")) {
+        colors(0x979746, 0x191919, 0xFFFFFF)
+        dust()
+    }
+    val impureRedstone = Material.create(510, clayiumId("impure_redstone")) {
+        colors(0x974646, 0x191919, 0xFFFFFF)
+        dust()
+    }
+    val impureSilicon = Material.create(511, clayiumId("impure_silicon")) {
+        tier(5)
+        colors(0x978F98, 0x533764, 0xA9A5A5)
+        ingot().dust()
+        plate(ClayEnergy.milli(1), 20, tier = 4)
+    }
+    val invar = Material.create(512, clayiumId("invar")) {
+        tier(6).colors(0xAAAA50, 0x8C8C46, 0xB4B450)
+        ingot().dust()
+    }
+    val lapis = Material.create(513, clayiumId("lapis")) {
+        colors(0x3C64BE, 0x0A2B7A, 0x5A82E2)
+        dust()
+    }
+    val quartz = Material.create(513, clayiumId("quartz")) {
+        dust()
+    }
+    val salt = Material.create(514, clayiumId("salt")) {
+        tier(4)
+        colors(0xFFFFFF, 0x8C8C8C, 0xFFFFFF)
+        dust()
+    }
+    val saltpeter = Material.create(515, clayiumId("saltpeter")) {
+        colors(0xDEDCDC, 0xBEC8D2, 0xFFF0E6)
+        dust()
+    }
+    val silicone = Material.create(516, clayiumId("silicone")) {
+        tier(5)
+        colors(0xD2D2D2, 0xB4B4B4, 0xF0F0F0)
+        ingot().dust()
+        plate(ClayEnergy.milli(1), 4, tier = 4)
+    }
+    val steel = Material.create(517, clayiumId("steel")) {
+        tier(3).colors(0x5A5A6E, 0x000000, 0xFFFFFF)
+        ingot().dust()
+        blastSmelting(6, 500)
+    }
+    val ultimateAlloy = Material.create(518, clayiumId("ultimate_alloy")) {
+        tier(9)
+        colors(0x55CD55, 0x191919, 0xF5A0FF)
+        ingot().dust()
+        plate(ClayEnergy.milli(1), 180, tier = 4)
+        blastSmelting(4.0, 8, 2000)
+    }
+    val zinc_aluminum = Material.create(519, clayiumId("zinc_aluminum")) {
+        tier(6).colors(0xF0BEDC, 0xA00000, 0xFFFFFF)
+        ingot().dust()
+        claySmelting(0.2, 6, 400)
+    }
+    val zinc_zirconium = Material.create(520, clayiumId("zinc_zirconium")) {
+        tier(6).colors(0xE6AA8C, 0x780000, 0xFFFFFF)
+        ingot().dust()
+        claySmelting(0.2, 6, 400)
+    }
+    //endregion
 
-
-    val impureGlowStone: Material
-    val impureRedstone: Material
-    val charcoal: Material
-    val coal: Material
-    val lapis: Material
-    val organicClay: Material
-    val quartz: Material
-    val salt: Material
-    val saltpeter: Material
+    /** 1001 - 1500 */
+    //region Higher Degree Materials
+    val az91d = Material.create(1001, clayiumId("az91d")) {
+        tier(6).colors(0x828C87, 0x0A280A, 0xFFFFFF)
+        ingot().dust()
+        plate(ClayEnergy.milli(1), 20, tier = 4)
+        claySmelting(0.2, 6, 400)
+    }
+    val zk60a = Material.create(1002, clayiumId("zk60a")) {
+        tier(6).colors(0x4B5550, 0x0A280A, 0xFFFFFF)
+        ingot().dust()
+        plate(ClayEnergy.milli(1), 20, tier = 4)
+        claySmelting(0.2, 6, 400)
+    }
+    //endregion
 
     // don't use builder so it is not registered
     val DUMMY = Material(0, clayiumId("dummy"), MaterialProperties())
 
     init {
-        //region Clay
-        octupleEnergyClay = Material.create(164, clayiumId("octuple_energy_clay")) {
-            tier(12)
-            colors(0xFFFF00, 0x8C8C8C, 0xFFFFFF)
-            dust()
-            clay(energy = ClayEnergy.of(100_000_000))
-            plate(ClayEnergy.of(10000), 20, tier = 9)
-        }
-
+        //region Clay Materials
         compressedEnergeticClay7 = Material.create(163, clayiumId("compressed_energetic_clay7")) {
             tier(11)
             clay(octupleEnergyClay, ClayEnergy.of(10_000_000))
@@ -485,199 +586,55 @@ object CMaterials {
         }
         //endregion
 
-        //region Core Materials
-        impureSilicon = Material.create(20, clayiumId("impure_silicon")) {
-            tier(5)
-            colors(0x978F98, 0x533764, 0xA9A5A5)
-            ingot().dust()
-            plate(ClayEnergy.milli(1), 20, tier = 4)
-        }
-        val silicone = Material.create(21, clayiumId("silicone")) {
-            tier(5)
-            colors(0xD2D2D2, 0xB4B4B4, 0xF0F0F0)
-            ingot().dust()
-            plate(ClayEnergy.milli(1), 4, tier = 4)
-        }
-
-
-        claySteel = Material.create(24, clayiumId("clay_steel")) {
-            tier(7)
-            colors(0x8890AD, 0x191919, 0xFFFFFF)
-            ingot().dust()
-            plate(ClayEnergy.milli(1), 60, tier = 4)
-            blastSmelting(6, 500)
-        }
-
-        clayium = Material.create(25, clayiumId("clayium")) {
-            tier(8)
-            colors(0x5AF0D2, 0x3F4855, 0xFFCDC8)
-            ingot().dust()
-            plate(ClayEnergy.milli(1), 120, tier = 4)
-            blastSmelting(2.0, 7, 1000)
-        }
-
-        ultimateAlloy = Material.create(26, clayiumId("ultimate_alloy")) {
-            tier(9)
-            colors(0x55CD55, 0x191919, 0xF5A0FF)
-            ingot().dust()
-            plate(ClayEnergy.milli(1), 180, tier = 4)
-            blastSmelting(4.0, 8, 2000)
-        }
-
-        antimatter = Material.create(27, clayiumId("antimatter")) {
+        //region Matters
+        antimatter = Material.create(201, clayiumId("antimatter")) {
             tier(10)
             colors(0x0000EB, 0x000000, 0xFFFFFF)
             matter().dust()
             plate(ClayEnergy.of(100), 20, tier = 9)
         }
-
-        pureAntimatter = Material.create(28, clayiumId("pure_antimatter")) {
+        pureAntimatter = Material.create(202, clayiumId("pure_antimatter")) {
             tier(11)
             colors(0xFF32FF, 0x000000, 0xFFFFFF)
             matter().dust()
             plate(ClayEnergy.of(100), 20, tier = 9)
         }
-
-        octuplePureAntimatter = Material.create(29, clayiumId("octuple_pure_antimatter")) {
-            tier(13).colors(0x960000, 0xC8C800, 0xFFFFFF)
-            matter("matter5").dust()
-            plate(ClayEnergy.of(100), 20, tier = 9)
-        }
-
-        pureAntimatter1 = Material.create(30, clayiumId("pure_antimatter1")) {
+        pureAntimatter1 = Material.create(203, clayiumId("pure_antimatter1")) {
             tier(11).colors(0xC42385, 0x191919, 0xFFFFFF)
             matter("matter2")
         }
-
-        pureAntimatter2 = Material.create(31, clayiumId("pure_antimatter2")) {
+        pureAntimatter2 = Material.create(204, clayiumId("pure_antimatter2")) {
             tier(11).colors(0x8E1777, 0x323200, 0xFFFFFF)
             matter("matter2")
         }
-
-        pureAntimatter3 = Material.create(32, clayiumId("pure_antimatter3")) {
+        pureAntimatter3 = Material.create(205, clayiumId("pure_antimatter3")) {
             tier(11).colors(0x5E0D45, 0x4B4B00, 0xFFFFFF)
             matter("matter3")
         }
 
-        pureAntimatter4 = Material.create(33, clayiumId("pure_antimatter4")) {
+        pureAntimatter4 = Material.create(206, clayiumId("pure_antimatter4")) {
             tier(12).colors(0x32061F, 0x646400, 0xFFFFFF)
             matter("matter3")
         }
 
-        pureAntimatter5 = Material.create(34, clayiumId("pure_antimatter5")) {
+        pureAntimatter5 = Material.create(207, clayiumId("pure_antimatter5")) {
             tier(12).colors(0x520829, 0x7D7D00, 0xFFFFFF)
             matter("matter4")
         }
 
-        pureAntimatter6 = Material.create(35, clayiumId("pure_antimatter6")) {
+        pureAntimatter6 = Material.create(208, clayiumId("pure_antimatter6")) {
             tier(12).colors(0x6E0727, 0x969600, 0xFFFFFF)
             matter("matter4")
         }
 
-        pureAntimatter7 = Material.create(36, clayiumId("pure_antimatter7")) {
+        pureAntimatter7 = Material.create(209, clayiumId("pure_antimatter7")) {
             tier(13).colors(0x840519, 0xAFAF00, 0xFFFFFF)
             matter("matter4")
         }
-        //endregion
-
-        //region Element Materials
-        //endregion
-
-        //region Other Metals
-        brass = Material.create(300, clayiumId("brass")) {
-            tier(6).colors(0xBEAA14, 0x000000, 0xFFFFFF)
-            ingot().dust()
-        }
-        bronze = Material.create(301, clayiumId("bronze")) {
-            tier(5).colors(0xFA9628, 0x000000, 0xFFFFFF)
-            ingot().dust()
-        }
-        electrum = Material.create(302, clayiumId("electrum")) {
-            tier(6).colors(0xE6E69B, 0x787846, 0xFFFFFF)
-            ingot().dust()
-        }
-        invar = Material.create(303, clayiumId("invar")) {
-            tier(6).colors(0xAAAA50, 0x8C8C46, 0xB4B450)
-            ingot().dust()
-        }
-        steel = Material.create(305, clayiumId("steel")) {
-            tier(3).colors(0x5A5A6E, 0x000000, 0xFFFFFF)
-            ingot().dust()
-            blastSmelting(6, 500)
-        }
-        zinc_aluminum = Material.create(306, clayiumId("zinc_aluminum")) {
-            tier(6).colors(0xF0BEDC, 0xA00000, 0xFFFFFF)
-            ingot().dust()
-            claySmelting(0.2, 6, 400)
-        }
-        zinc_zirconium = Material.create(307, clayiumId("zinc_zirconium")) {
-            tier(6).colors(0xE6AA8C, 0x780000, 0xFFFFFF)
-            ingot().dust()
-            claySmelting(0.2, 6, 400)
-        }
-        az91d = Material.create(308, clayiumId("az91d")) {
-            tier(6).colors(0x828C87, 0x0A280A, 0xFFFFFF)
-            ingot().dust()
-            plate(ClayEnergy.milli(1), 20, tier = 4)
-            claySmelting(0.2, 6, 400)
-        }
-        zk60a = Material.create(309, clayiumId("zk60a")) {
-            tier(6).colors(0x4B5550, 0x0A280A, 0xFFFFFF)
-            ingot().dust()
-            plate(ClayEnergy.milli(1), 20, tier = 4)
-            claySmelting(0.2, 6, 400)
-        }
-        //endregion
-
-        calciumChloride = Material.create(800, clayiumId("calcium_chloride")) {
-            dust()
-        }
-        sodiumCarbonate = Material.create(801, clayiumId("sodium_carbonate")) {
-            dust()
-        }
-        calcareousClay = Material.create(802, clayiumId("calcareous_clay")) {
-            tier(4)
-            dust()
-        }
-
-        //region Other Materials
-        impureGlowStone = Material.create(1000, clayiumId("impure_glowstone")) {
-            colors(0x979746, 0x191919, 0xFFFFFF)
-            dust()
-        }
-        impureRedstone = Material.create(1001, clayiumId("impure_redstone")) {
-            colors(0x974646, 0x191919, 0xFFFFFF)
-            dust()
-        }
-        charcoal = Material.create(1002, clayiumId("charcoal")) {
-            colors(0x141414, 0x191919, 0x503232)
-            dust()
-        }
-        coal = Material.create(1003, clayiumId("coal")) {
-            colors(0x141414, 0x191919, 0x323250)
-            dust()
-        }
-        lapis = Material.create(1004, clayiumId("lapis")) {
-            colors(0x3C64BE, 0x0A2B7A, 0x5A82E2)
-            dust()
-        }
-        quartz = Material.create(1005, clayiumId("quartz")) {
-            dust()
-        }
-        salt = Material.create(1006, clayiumId("salt")) {
-            tier(4)
-            colors(0xFFFFFF, 0x8C8C8C, 0xFFFFFF)
-            dust()
-        }
-        saltpeter = Material.create(1007, clayiumId("saltpeter")) {
-            colors(0xDEDCDC, 0xBEC8D2, 0xFFF0E6)
-            dust()
-        }
-
-        organicClay = Material.create(1013, clayiumId("organic_clay")) {
-            tier(5)
-            colors(0x8890AD, 0x6A2C2B, 0x92A4B7)
-            dust()
+        octuplePureAntimatter = Material.create(210, clayiumId("octuple_pure_antimatter")) {
+            tier(13).colors(0x960000, 0xC8C800, 0xFFFFFF)
+            matter("matter5").dust()
+            plate(ClayEnergy.of(100), 20, tier = 9)
         }
         //endregion
     }
