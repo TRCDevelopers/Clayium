@@ -175,132 +175,131 @@ object CMaterials {
         tier(9).colors(0x3232FF, 0x32329B, 0x3232FF)
         ingot()
     }
-    val nickel = Material.create(66, clayiumId("nickel")) {
+    val nickel = Material.create(67, clayiumId("nickel")) {
         tier(8).colors(0xD2D2F0, 0x191919, 0xFFFFFF)
         ingot().dust()
         impureDust(0xD2D2F0, 0x78783C, 0xDCDCDC)
         claySmelting(0.5, 5, 200)
     }
-    val nihonium = Material.create(67, clayiumId("nihonium")) {}
-    val niobium = Material.create(68, clayiumId("niobium")) {}
-    val nitrogen = Material.create(69, clayiumId("nitrogen")) {}
-    val nobelium = Material.create(70, clayiumId("nobelium")) {}
-    val oganesson = Material.create(71, clayiumId("oganesson")) {}
-    val osmium = Material.create(72, clayiumId("osmium")) {
+    val nihonium = Material.create(68, clayiumId("nihonium")) {}
+    val niobium = Material.create(69, clayiumId("niobium")) {}
+    val nitrogen = Material.create(70, clayiumId("nitrogen")) {}
+    val nobelium = Material.create(71, clayiumId("nobelium")) {}
+    val oganesson = Material.create(72, clayiumId("oganesson")) {}
+    val osmium = Material.create(73, clayiumId("osmium")) {
         tier(11).colors(0x464696, 0x191919, 0xFFFFFF)
         ingot()
     }
-    val oxygen = Material.create(73, clayiumId("oxygen")) {}
-    val palladium = Material.create(74, clayiumId("palladium")) {
+    val oxygen = Material.create(74, clayiumId("oxygen")) {}
+    val palladium = Material.create(75, clayiumId("palladium")) {
         tier(9).colors(0x974646, 0x191919, 0xFFFFFF)
         ingot()
     }
-    val phosphorus = Material.create(75, clayiumId("phosphorus")) {
+    val phosphorus = Material.create(76, clayiumId("phosphorus")) {
         tier(6).colors(0xB4B419, 0x9B9B00, 0xCDCD32)
         dust()
     }
-    val platinum = Material.create(76, clayiumId("platinum")) {
+    val platinum = Material.create(77, clayiumId("platinum")) {
         tier(10).colors(0xF5F5E6, 0x8C8C78, 0xFFFFFF)
         ingot()
     }
-    val plutonium = Material.create(77, clayiumId("plutonium")) {
+    val plutonium = Material.create(78, clayiumId("plutonium")) {
         tier(10).colors(0xFF3232, 0x9B3232, 0xFF3232)
         ingot()
     }
-    val polonium = Material.create(78, clayiumId("polonium")) {}
-    val potassium = Material.create(79, clayiumId("potassium")) {
+    val polonium = Material.create(79, clayiumId("polonium")) {}
+    val potassium = Material.create(80, clayiumId("potassium")) {
         tier(7).colors(0xF0F0BE, 0x191919, 0xFFFFFF)
         ingot().dust()
         impureDust(0xAAAAE6, 0x78783C, 0xDCDCDC)
         blastSmelting(5, 500)
     }
-    val praseodymium = Material.create(80, clayiumId("praseodymium")) {
+    val praseodymium = Material.create(81, clayiumId("praseodymium")) {
         tier(8).colors(0x919191, 0x00EB00, 0xFFFFFF)
         ingot()
     }
-    val promethium = Material.create(81, clayiumId("promethium")) {
+    val promethium = Material.create(82, clayiumId("promethium")) {
         tier(10).colors(0x919191, 0x0000EB, 0xFFFFFF)
         ingot()
     }
-    val protactinium = Material.create(82, clayiumId("protactinium")) {
+    val protactinium = Material.create(83, clayiumId("protactinium")) {
         tier(9).colors(0x323232, 0x191919, 0x323264)
         ingot()
     }
-    val radium = Material.create(83, clayiumId("radium")) {
+    val radium = Material.create(84, clayiumId("radium")) {
         tier(8).colors(0xF5F5F5, 0x009696, 0xFFFFFF)
         ingot()
     }
-    val radon = Material.create(84, clayiumId("radon")) {}
-    val rhenium = Material.create(85, clayiumId("rhenium")) {
+    val radon = Material.create(85, clayiumId("radon")) {}
+    val rhenium = Material.create(86, clayiumId("rhenium")) {
         tier(12).colors(0x464696, 0x191919, 0x32325A)
         ingot()
     }
-    val rhodium = Material.create(86, clayiumId("rhodium")) {}
-    val roentgenium = Material.create(87, clayiumId("roentgenium")) {}
-    val rubidium = Material.create(88, clayiumId("rubidium")) {
+    val rhodium = Material.create(87, clayiumId("rhodium")) {}
+    val roentgenium = Material.create(88, clayiumId("roentgenium")) {}
+    val rubidium = Material.create(89, clayiumId("rubidium")) {
         tier(8).colors(0xF5F5F5, 0xEB0000, 0xFFFFFF)
         ingot()
     }
-    val ruthenium = Material.create(89, clayiumId("ruthenium")) {}
-    val rutherfordium = Material.create(90, clayiumId("rutherfordium")) {}
-    val samarium = Material.create(91, clayiumId("samarium")) {
+    val ruthenium = Material.create(90, clayiumId("ruthenium")) {}
+    val rutherfordium = Material.create(91, clayiumId("rutherfordium")) {}
+    val samarium = Material.create(92, clayiumId("samarium")) {
         tier(11).colors(0x919191, 0x960096, 0xFFFFFF)
         ingot()
     }
-    val scandium = Material.create(92, clayiumId("scandium")) {}
-    val seaborgium = Material.create(93, clayiumId("seaborgium")) {}
-    val selenium = Material.create(94, clayiumId("selenium")) {}
-    val silicon = Material.create(95, clayiumId("silicon")) {
+    val scandium = Material.create(93, clayiumId("scandium")) {}
+    val seaborgium = Material.create(94, clayiumId("seaborgium")) {}
+    val selenium = Material.create(95, clayiumId("selenium")) {}
+    val silicon = Material.create(96, clayiumId("silicon")) {
         tier(5)
         colors(0x281C28, 0x191919, 0xFFFFFF)
         ingot().dust()
         plate(ClayEnergy.milli(1), 20, tier = 4)
     }
-    val silver = Material.create(96, clayiumId("silver")) {
+    val silver = Material.create(97, clayiumId("silver")) {
         tier(9).colors(0xE6E6F5, 0x78788C, 0xFFFFFF)
         ingot()
     }
-    val sodium = Material.create(97, clayiumId("sodium")) {
+    val sodium = Material.create(98, clayiumId("sodium")) {
         tier(6).colors(0xAAAADE, 0x787878, 0xFFFFFF)
         ingot().dust()
         impureDust(0xAAAAE6, 0x78783C, 0xDCDCDC)
         claySmelting(0.5, 5, 200)
     }
-    val strontium = Material.create(98, clayiumId("strontium")) {
+    val strontium = Material.create(99, clayiumId("strontium")) {
         tier(7).colors(0xD2AAF2, 0x191919, 0xFFFFFF)
         ingot().dust()
         impureDust(0xD2AAF2, 0x78783C, 0xDCDCDC)
         blastSmelting(2.0, 7, 1000)
     }
-    val sulfur = Material.create(99, clayiumId("sulfur")) {
+    val sulfur = Material.create(100, clayiumId("sulfur")) {
         tier(6).colors(0xE6E600, 0xCDCD00, 0xFFFF00)
         dust()
     }
-    val tantalum = Material.create(100, clayiumId("tantalum")) {
+    val tantalum = Material.create(101, clayiumId("tantalum")) {
         tier(8).colors(0xF0D2AA, 0x191919, 0xF0D296)
         ingot()
     }
-    val technetium = Material.create(101, clayiumId("technetium")) {}
-    val tellurium = Material.create(102, clayiumId("tellurium")) {}
-    val tennessine = Material.create(103, clayiumId("tennessine")) {}
-    val terbium = Material.create(104, clayiumId("terbium")) {}
-    val thallium = Material.create(105, clayiumId("thallium")) {}
-    val thorium = Material.create(106, clayiumId("thorium")) {
+    val technetium = Material.create(102, clayiumId("technetium")) {}
+    val tellurium = Material.create(103, clayiumId("tellurium")) {}
+    val tennessine = Material.create(104, clayiumId("tennessine")) {}
+    val terbium = Material.create(105, clayiumId("terbium")) {}
+    val thallium = Material.create(106, clayiumId("thallium")) {}
+    val thorium = Material.create(107, clayiumId("thorium")) {
         tier(9).colors(0x323232, 0x191919, 0xC83232)
         ingot()
     }
-    val thulium = Material.create(107, clayiumId("thulium")) {}
-    val tin = Material.create(108, clayiumId("tin")) {
+    val thulium = Material.create(108, clayiumId("thulium")) {}
+    val tin = Material.create(109, clayiumId("tin")) {
         tier(7).colors(0xE6E6F0, 0x000000, 0xFFFFFF)
         ingot()
     }
-    val titanium = Material.create(109, clayiumId("titanium")) {
+    val titanium = Material.create(110, clayiumId("titanium")) {
         tier(8).colors(0xD2F0F0, 0x191919, 0xFFFFFF)
         ingot().dust()
         impureDust(0xD2F0F0, 0x78783C, 0xDCDCDC)
         blastSmelting(4.0, 8, 2000)
     }
-    val tritium = Material.create(110, clayiumId("tritium")) {}
     val tungsten = Material.create(111, clayiumId("tungsten")) {
         tier(9).colors(0x1E1E1E, 0x191919, 0xFFFFFF)
         ingot()
@@ -449,42 +448,42 @@ object CMaterials {
         colors(0x3C64BE, 0x0A2B7A, 0x5A82E2)
         dust()
     }
-    val quartz = Material.create(513, clayiumId("quartz")) {
+    val quartz = Material.create(514, clayiumId("quartz")) {
         dust()
     }
-    val salt = Material.create(514, clayiumId("salt")) {
+    val salt = Material.create(515, clayiumId("salt")) {
         tier(4)
         colors(0xFFFFFF, 0x8C8C8C, 0xFFFFFF)
         dust()
     }
-    val saltpeter = Material.create(515, clayiumId("saltpeter")) {
+    val saltpeter = Material.create(516, clayiumId("saltpeter")) {
         colors(0xDEDCDC, 0xBEC8D2, 0xFFF0E6)
         dust()
     }
-    val silicone = Material.create(516, clayiumId("silicone")) {
+    val silicone = Material.create(517, clayiumId("silicone")) {
         tier(5)
         colors(0xD2D2D2, 0xB4B4B4, 0xF0F0F0)
         ingot().dust()
         plate(ClayEnergy.milli(1), 4, tier = 4)
     }
-    val steel = Material.create(517, clayiumId("steel")) {
+    val steel = Material.create(518, clayiumId("steel")) {
         tier(3).colors(0x5A5A6E, 0x000000, 0xFFFFFF)
         ingot().dust()
         blastSmelting(6, 500)
     }
-    val ultimateAlloy = Material.create(518, clayiumId("ultimate_alloy")) {
+    val ultimateAlloy = Material.create(519, clayiumId("ultimate_alloy")) {
         tier(9)
         colors(0x55CD55, 0x191919, 0xF5A0FF)
         ingot().dust()
         plate(ClayEnergy.milli(1), 180, tier = 4)
         blastSmelting(4.0, 8, 2000)
     }
-    val zinc_aluminum = Material.create(519, clayiumId("zinc_aluminum")) {
+    val zinc_aluminum = Material.create(520, clayiumId("zinc_aluminum")) {
         tier(6).colors(0xF0BEDC, 0xA00000, 0xFFFFFF)
         ingot().dust()
         claySmelting(0.2, 6, 400)
     }
-    val zinc_zirconium = Material.create(520, clayiumId("zinc_zirconium")) {
+    val zinc_zirconium = Material.create(521, clayiumId("zinc_zirconium")) {
         tier(6).colors(0xE6AA8C, 0x780000, 0xFFFFFF)
         ingot().dust()
         claySmelting(0.2, 6, 400)
