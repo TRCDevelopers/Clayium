@@ -9,9 +9,12 @@ import com.github.trcdevelopers.clayium.common.unification.material.Material
 import net.minecraft.block.Block
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.resources.I18n
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
+import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -50,6 +53,14 @@ abstract class BlockMaterialBase(
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
         for (state in blockState.validStates) {
             items.add(state.toItemStack())
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        val material = getCMaterial(stack.metadata)
+        if (material.tier != null) {
+            tooltip.add(I18n.format("tooltip.clayium.tier", material.tier.numeric))
         }
     }
 

@@ -2,7 +2,7 @@ package com.github.trcdevelopers.clayium.common.blocks
 
 import com.cleanroommc.modularui.utils.ItemCapabilityProvider
 import com.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
-import com.github.trcdevelopers.clayium.api.capability.impl.SimpleClayEnergyProvider
+import com.github.trcdevelopers.clayium.api.capability.IClayEnergyProvider
 import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import net.minecraft.item.ItemStack
@@ -17,7 +17,7 @@ class ItemBlockEnergizedClay(block: BlockEnergizedClay, orePrefix: OrePrefix, ) 
                 if (capability == ClayiumCapabilities.ENERGIZED_CLAY) {
                     val energy = blockMaterial.getCMaterial(stack).getPropOrNull(PropertyKey.CLAY)?.energy
                     if (energy != null) {
-                        return ClayiumCapabilities.ENERGIZED_CLAY.cast( SimpleClayEnergyProvider(energy) )
+                        return ClayiumCapabilities.ENERGIZED_CLAY.cast(IClayEnergyProvider { energy })
                     }
                 }
                 return null
