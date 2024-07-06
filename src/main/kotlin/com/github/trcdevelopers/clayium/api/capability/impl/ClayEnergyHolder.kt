@@ -5,13 +5,13 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.TextWidget
+import com.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
 import com.github.trcdevelopers.clayium.api.capability.IClayEnergyHolder
 import com.github.trcdevelopers.clayium.api.metatileentity.AutoIoHandler
 import com.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
-import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClayItem
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 
@@ -21,7 +21,7 @@ class ClayEnergyHolder(
 
     override val energizedClayItemHandler = object : ClayiumItemStackHandler(metaTileEntity, 1) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
-            return stack.item is IEnergizedClayItem
+            return stack.hasCapability(ClayiumCapabilities.ENERGIZED_CLAY, null)
         }
 
         override fun getStackLimit(slot: Int, stack: ItemStack): Int {
@@ -74,8 +74,8 @@ class ClayEnergyHolder(
     private fun tryConsumeEnergizedClay() {
         val stack = this.energizedClayItemHandler.getStackInSlot(0)
         if (stack.isEmpty) return
-        val item = stack.item as? IEnergizedClayItem ?: return
-        this.clayEnergy += item.getClayEnergy(stack)
+        val ceProvider = stack.getCapability(ClayiumCapabilities.ENERGIZED_CLAY, null) ?: return
+        this.clayEnergy += ceProvider.getClayEnergy()
         this.energizedClayItemHandler.extractItem(0, 1, false)
     }
 

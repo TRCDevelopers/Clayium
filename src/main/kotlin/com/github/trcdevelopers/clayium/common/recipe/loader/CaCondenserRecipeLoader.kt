@@ -11,7 +11,7 @@ object CaCondenserRecipeLoader {
         CRecipes.CA_CONDENSER.register {
             input(MetaItemClayParts.ANTIMATTER_SEED)
             output(OrePrefix.matter, CMaterials.antimatter)
-            cePerTick(ClayEnergy.of(250))
+            CEt(ClayEnergy.of(250))
             duration(2000)
             tier(0)
         }

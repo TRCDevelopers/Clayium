@@ -7,12 +7,12 @@ import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import net.minecraft.init.Blocks
 
 object ClayReactorRecipeLoader {
-    fun register() {
+    fun registerRecipes() {
         CRecipes.CLAY_REACTOR.register {
             input(Blocks.GRAVEL)
             input(OrePrefix.dust, CMaterials.organicClay)
             output(Blocks.DIRT)
-            cePerTick(ClayEnergy.of(1))
+            CEt(ClayEnergy.of(1))
             duration(100)
         }
     }

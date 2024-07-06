@@ -49,7 +49,7 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
         if (OreDictUnifier.get(oreDict).isEmpty) return this
         this.buildAndRegister()
         val newBuilder = this.recipeRegistry.builder()
-            .tier(this.tier).cePerTick(this.cePerTick).duration(this.duration)
+            .tier(this.tier).CEt(this.cePerTick).duration(this.duration)
             .input(this.outputs[0])
             .output(oreDict)
         if (defaultPrefix != null) newBuilder.defaultPrefix(defaultPrefix!!)

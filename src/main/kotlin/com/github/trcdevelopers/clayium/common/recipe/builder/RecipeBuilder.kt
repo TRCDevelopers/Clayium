@@ -55,7 +55,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun input(metaItem: MetaItemClayium.MetaValueItem, amount: Int = 1) = input(metaItem.getStackForm(amount))
     fun input(block: Block, amount: Int = 1) = input(ItemStack(block, amount))
     fun input(oreDict: String, amount: Int = 1) = inputs(COreRecipeInput(oreDict, amount))
-    fun input(orePrefix: OrePrefix, material: Material, amount: Int = 1) = inputs(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
+    open fun input(orePrefix: OrePrefix, material: Material, amount: Int = 1) = inputs(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
 
     fun outputs(vararg stacks: ItemStack): R {
         outputs.addAll(stacks)
@@ -75,7 +75,9 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
         return this as R
     }
 
-    fun cePerTick(cePerTick: ClayEnergy): R {
+    //todo: clearer func name
+    @Suppress("FunctionName")
+    fun CEt(cePerTick: ClayEnergy): R {
         this.cePerTick = cePerTick
         return this as R
     }
@@ -99,7 +101,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
      * | 13 | 1M |
      */
     @Suppress("FunctionName")
-    fun CEt(tier: Int): R {
+    fun CEt(tier: Int = this.tier): R {
         return this.CEt(1.0, tier)
     }
 
@@ -110,7 +112,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
 
     @Suppress("FunctionName")
     fun CEt(factor: Double, tier: Int): R{
-        return this.cePerTick(ClayEnergy((factor * 100.0 * Math.pow(10.0, tier - 4.0)).toLong().coerceAtLeast(1)))
+        return this.CEt(ClayEnergy((factor * 100.0 * Math.pow(10.0, tier - 4.0)).toLong().coerceAtLeast(1)))
     }
 
     fun tier(tier: Int): R {

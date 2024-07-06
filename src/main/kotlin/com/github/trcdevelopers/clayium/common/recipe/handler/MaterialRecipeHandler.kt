@@ -54,7 +54,7 @@ object MaterialRecipeHandler {
             CRecipes.CONDENSER.register {
                 input(dustPrefix, material)
                 output(outputPrefix, material)
-                cePerTick(if (tier < 10) ClayEnergy.micro(10) else ClayEnergy.micro(250))
+                CEt(if (tier < 10) ClayEnergy.micro(10) else ClayEnergy.micro(250))
                 duration(if (tier < 10) 5 else 80)
                 tier(if (tier < 10) 0 else 10)
             }
@@ -104,7 +104,7 @@ object MaterialRecipeHandler {
         CRecipes.ELECTROLYSIS_REACTOR.register {
             input(OrePrefix.impureDust, material)
             output(OrePrefix.dust, material)
-            cePerTick(cePerTick)
+            CEt(cePerTick)
             duration(duration)
             tier(tier)
         }
@@ -128,7 +128,7 @@ object MaterialRecipeHandler {
         CRecipes.BENDING.register {
             input(inputPrefix, material)
             output(OrePrefix.plate, material)
-            cePerTick(plateProperty.cePerTick)
+            CEt(plateProperty.cePerTick)
             duration(plateProperty.requiredTick)
             tier(plateProperty.tier)
         }
@@ -136,7 +136,7 @@ object MaterialRecipeHandler {
         CRecipes.BENDING.register {
             input(OrePrefix.plate, material, 4)
             output(OrePrefix.largePlate, material)
-            cePerTick(plateProperty.cePerTick * 2)
+            CEt(plateProperty.cePerTick * 2)
             duration(plateProperty.requiredTick * 2)
             tier(plateProperty.tier)
         }
@@ -147,7 +147,7 @@ object MaterialRecipeHandler {
         CRecipes.GRINDER.register {
             input(inputPrefix, material)
             output(OrePrefix.dust, material, outputAmount)
-            cePerTick(ClayEnergy.micro(250))
+            CEt(ClayEnergy.micro(250))
             duration(4)
             tier(0)
         }
@@ -182,7 +182,7 @@ object MaterialRecipeHandler {
                 CRecipes.DECOMPOSER.register {
                     input(OrePrefix.block, compressedInto)
                     output(OrePrefix.block, material, 9)
-                    cePerTick(ClayEnergy.micro(10))
+                    CEt(ClayEnergy.micro(10))
                     duration(10)
                     tier(0)
                 }
@@ -190,7 +190,7 @@ object MaterialRecipeHandler {
                 CRecipes.CONDENSER.register {
                     input(OrePrefix.block, material, 9)
                     output(OrePrefix.block, compressedInto)
-                    cePerTick(ClayEnergy.micro(10))
+                    CEt(ClayEnergy.micro(10))
                     duration(10)
                     tier(0)
                 }
@@ -200,7 +200,7 @@ object MaterialRecipeHandler {
                     input(OrePrefix.block, material, 9)
                     output(OrePrefix.block, compressedInto)
                     val pow = compressedInto.tier?.numeric?.minus(4)?.coerceAtLeast(0) ?: 0
-                    cePerTick(ClayEnergy.milli((10.0).pow(pow).toLong()))
+                    CEt(ClayEnergy.milli((10.0).pow(pow).toLong()))
                     duration(4)
                     tier(4)
                 }

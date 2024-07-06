@@ -6,14 +6,15 @@ object CRecipeLoader {
     fun load() {
         MaterialRecipeHandler.registerRecipes()
 
-        BendingMachineLoader.register()
+        BendingMachineLoader.registerRecipes()
         CaCondenserRecipeLoader.registerRecipes()
         ChemicalReactorRecipeLoader.registerRecipes()
-        ClayBlastFurnaceRecipeLoader.register()
-        ClayWorkTableRecipes.register()
-        ClayReactorRecipeLoader.register()
+        ClayBlastFurnaceRecipeLoader.registerRecipes()
+        ClayWorkTableRecipes.registerRecipes()
+        ClayReactorRecipeLoader.registerRecipes()
         CondenserRecipeLoader.registerRecipes()
-        SolarClayFabricatorRecipeLoader.register()
+        SolarClayFabricatorRecipeLoader.registerRecipes()
         MatterTransformerRecipeLoader.registerRecipes()
+        MillingMachineRecipeLoader.registerRecipes()
     }
 }

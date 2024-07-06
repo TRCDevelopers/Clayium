@@ -25,7 +25,7 @@ import net.minecraft.item.ItemStack
 
 
 object ClayWorkTableRecipes {
-    fun register() {
+    fun registerRecipes() {
         CWTRecipes.CLAY_WORK_TABLE.register {
             input(CLAY_CYLINDER)
             outputs(CLAY_NEEDLE.getStackForm(1))

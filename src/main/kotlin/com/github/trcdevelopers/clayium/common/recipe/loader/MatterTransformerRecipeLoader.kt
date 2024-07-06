@@ -25,7 +25,7 @@ object MatterTransformerRecipeLoader {
             saplingRecipes.add { CRecipes.MATTER_TRANSFORMER.register {
                 input(ItemStack(Blocks.SAPLING, 1, meta))
                 output(ItemStack(Blocks.SAPLING, 1, nextMeta))
-                cePerTick(ClayEnergy.of(1))
+                CEt(ClayEnergy.of(1))
                 duration(20)
                 tier(7)
             } }
@@ -33,7 +33,7 @@ object MatterTransformerRecipeLoader {
             leaveRecipes.add { CRecipes.MATTER_TRANSFORMER.register {
                 input(getLeaveStack(type))
                 output(getLeaveStack(nextType))
-                cePerTick(ClayEnergy.of(1))
+                CEt(ClayEnergy.of(1))
                 duration(20)
                 tier(7)
             } }
@@ -41,7 +41,7 @@ object MatterTransformerRecipeLoader {
             logRecipes.add { CRecipes.MATTER_TRANSFORMER.register {
                 input(getLogStack(type))
                 output(getLogStack(nextType))
-                cePerTick(ClayEnergy.of(1))
+                CEt(ClayEnergy.of(1))
                 duration(20)
                 tier(7)
             } }
