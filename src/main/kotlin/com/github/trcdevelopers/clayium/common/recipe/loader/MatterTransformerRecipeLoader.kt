@@ -169,6 +169,7 @@ object MatterTransformerRecipeLoader {
             .defaultPrefix(OrePrefix.dust)
             .input(CMaterials.industrialClay)
             .output(CMaterials.carbon)
+            .duration(200)
             .chain(CMaterials.graphite)
             .chain(CMaterials.charcoal)
             .chain(CMaterials.coal)

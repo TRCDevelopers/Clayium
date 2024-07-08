@@ -24,4 +24,6 @@ class COreRecipeInput(
             OreDictionary.itemMatches(it, stack, false) && stack.count >= amount
         }
     }
+
+    override fun toString() = OreDictionary.getOreName(oreId)
 }

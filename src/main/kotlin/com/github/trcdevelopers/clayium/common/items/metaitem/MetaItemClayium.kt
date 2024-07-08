@@ -121,7 +121,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         }
 
         fun oreDict(name: String): MetaValueItem {
-            OreDictionary.registerOre(name, getStackForm(1))
+            OreDictionary.registerOre(name, getStackForm())
             return this
         }
 
