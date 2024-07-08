@@ -75,4 +75,9 @@ object MetaItemClayParts : MetaItemClayium("clay_parts") {
     val TELEPORTATION_PARTS = addItem(57, "teleportation_parts").tier(11)
 
     val ANTIMATTER_SEED = addItem(58, "antimatter_seed").tier(9)
+
+    val EnergeticClayDust = addItem(59, "energetic_clay_dust").tier(3)
+    val ExcitedClayDust = addItem(60, "excited_clay_dust").tier(7)
+    val CEECircuit = addItem(61, "cee_circuit")
+    val CEE = addItem(62, "cee")
 }

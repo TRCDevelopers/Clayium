@@ -121,6 +121,9 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     }
 
     open fun buildAndRegister() {
+        if (this.cePerTick.energy == 0L) {
+            this.CEt(tier = this.tier, factor = 1.0)
+        }
         recipeRegistry.addRecipe(
             Recipe(inputs, outputs, duration, cePerTick, tier)
         )

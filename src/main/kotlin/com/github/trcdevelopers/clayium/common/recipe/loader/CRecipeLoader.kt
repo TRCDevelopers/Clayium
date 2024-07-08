@@ -10,11 +10,16 @@ object CRecipeLoader {
         CaCondenserRecipeLoader.registerRecipes()
         ChemicalReactorRecipeLoader.registerRecipes()
         ClayBlastFurnaceRecipeLoader.registerRecipes()
-        ClayWorkTableRecipes.registerRecipes()
         ClayReactorRecipeLoader.registerRecipes()
+        ClayWorkTableRecipes.registerRecipes()
         CondenserRecipeLoader.registerRecipes()
-        SolarClayFabricatorRecipeLoader.registerRecipes()
+        CuttingMachineRecipeLoader.registerRecipes()
+        InscriberRecipeLoader.registerRecipes()
+        LatheRecipeLoader.registerRecipes()
         MatterTransformerRecipeLoader.registerRecipes()
         MillingMachineRecipeLoader.registerRecipes()
+        PipeDrawingRecipeLoader.registerRecipes()
+        SolarClayFabricatorRecipeLoader.registerRecipes()
+        WireDrawingRecipeLoader.registerRecipes()
     }
 }
