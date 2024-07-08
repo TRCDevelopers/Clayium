@@ -18,6 +18,7 @@ import com.github.trcdevelopers.clayium.common.blocks.TileEntityCreativeEnergySo
 import com.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
+import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trcdevelopers.clayium.common.loaders.OreDictionaryLoader
 import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
@@ -70,6 +71,7 @@ open class CommonProxy {
         CRecipeLoader.load()
     }
 
+    @Suppress("unused")
     @SubscribeEvent
     fun registerBlocks(event: RegistryEvent.Register<Block>) {
         val registry: IForgeRegistry<Block> = event.registry
@@ -82,16 +84,20 @@ open class CommonProxy {
         for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) registry.register(block)
     }
 
+    @Suppress("unused")
     @SubscribeEvent
     fun registerItems(event: RegistryEvent.Register<Item>) {
         val registry = event.registry
 
+        //todo: move to somewhere else
         registry.register(MetaItemClayParts)
         for (orePrefix in OrePrefix.metaItemPrefixes) {
             val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
             registry.register(metaPrefixItem)
             metaPrefixItem.registerSubItems()
         }
+
+        for (metaItem in MetaItemClayium.META_ITEMS) { metaItem.afterRegistration() }
 
         registerItem(registry, ClayiumItems.CLAY_ROLLING_PIN)
         registerItem(registry, ClayiumItems.CLAY_SLICER)

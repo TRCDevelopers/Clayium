@@ -10,6 +10,8 @@ import com.github.trcdevelopers.clayium.common.items.metaitem.component.TooltipB
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
+import com.github.trcdevelopers.clayium.common.unification.stack.UnificationEntry
+import it.unimi.dsi.fastutil.shorts.Short2ObjectAVLTreeMap
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.util.ITooltipFlag
@@ -22,7 +24,6 @@ import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.IRarity
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.oredict.OreDictionary
 
 abstract class MetaItemClayium(name: String) : ItemClayium(name) {
 
@@ -34,6 +35,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
     }
 
     protected val metaValueItems = mutableMapOf<Short, MetaValueItem>()
+    protected val metaOreDicts = Short2ObjectAVLTreeMap<String>()
 
     protected fun addItem(meta: Short, name: String, itemModifier: MetaValueItem.() -> Unit = {}): MetaValueItem {
         val item = MetaValueItem(meta, name)
@@ -73,6 +75,13 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         for (meta in this.metaValueItems.keys.map(Short::toInt)) {
             items.add(ItemStack(this, 1, meta))
         }
+    }
+
+    open fun afterRegistration() {
+        metaOreDicts.forEach { (meta, oreDict) ->
+            OreDictUnifier.registerOre(ItemStack(this, 1, meta.toInt()), oreDict)
+        }
+        metaOreDicts.clear()
     }
 
     @SideOnly(Side.CLIENT)
@@ -121,15 +130,14 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         }
 
         fun oreDict(name: String): MetaValueItem {
-            OreDictionary.registerOre(name, getStackForm())
+            metaOreDicts.put(meta, name)
             return this
         }
 
         fun oreDict(orePrefix: OrePrefix, material: Material): MetaValueItem {
-            OreDictUnifier.registerOre(getStackForm(), orePrefix, material)
+            metaOreDicts.put(meta, UnificationEntry(orePrefix, material).toString())
             return this
         }
-
     }
 
     companion object {
