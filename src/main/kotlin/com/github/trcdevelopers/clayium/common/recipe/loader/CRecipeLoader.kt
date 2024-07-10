@@ -6,6 +6,7 @@ object CRecipeLoader {
     fun load() {
         MaterialRecipeHandler.registerRecipes()
 
+        AssemblerRecipeLoader.registerRecipes()
         BendingMachineLoader.registerRecipes()
         CaCondenserRecipeLoader.registerRecipes()
         ChemicalReactorRecipeLoader.registerRecipes()
