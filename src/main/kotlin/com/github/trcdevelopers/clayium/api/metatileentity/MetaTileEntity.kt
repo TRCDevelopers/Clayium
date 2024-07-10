@@ -10,12 +10,15 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.block.BlockMachine.Companion.IS_PIPE
+import com.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_CONNECTIONS
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_FRONT_FACING
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_INPUT_MODE
 import com.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_OUTPUT_MODE
+import com.github.trcdevelopers.clayium.api.capability.IConfigurationTool
+import com.github.trcdevelopers.clayium.api.capability.IConfigurationTool.ToolType.*
 import com.github.trcdevelopers.clayium.api.capability.IItemFilter
 import com.github.trcdevelopers.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
@@ -31,8 +34,6 @@ import com.github.trcdevelopers.clayium.common.blocks.IPipeConnectable
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode.*
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
-import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
-import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool.ToolType.*
 import com.github.trcdevelopers.clayium.common.items.filter.FilterType
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
@@ -319,6 +320,12 @@ abstract class MetaTileEntity(
      * only called on the server side.
      */
     open fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+        val stack = player.getHeldItem(hand)
+        val confTool = stack.getCapability(ClayiumCapabilities.CONFIG_TOOL, null)
+        if (confTool != null) {
+            this.onToolClick(confTool, player, hand, clickedSide, hitX, hitY, hitZ)
+            return
+        }
         val pos = this.pos ?: return
         if (this.canOpenGui()) {
             MetaTileEntityGuiFactory.open(player, pos)
@@ -327,7 +334,7 @@ abstract class MetaTileEntity(
 
     open fun canOpenGui() = true
 
-    open fun onToolClick(toolType: ItemClayConfigTool.ToolType, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+    open fun onToolClick(toolType: IConfigurationTool.ToolType, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         if (this.world?.isRemote == true) return
         val world = this.world ?: return
         val pos = this.pos ?: return
@@ -349,6 +356,12 @@ abstract class MetaTileEntity(
                 this.removeFilter(clickedSide)
             }
         }
+    }
+
+    fun onToolClick(tool: IConfigurationTool, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        val type = tool.getType(player.isSneaking) ?: return false
+        this.onToolClick(type, player, hand, clickedSide, hitX, hitY, hitZ)
+        return true
     }
 
     private fun rotate(side: EnumFacing) {

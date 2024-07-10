@@ -12,4 +12,7 @@ object ClayiumCapabilities {
 
     @CapabilityInject(IClayEnergyProvider::class)
     lateinit var ENERGIZED_CLAY: Capability<IClayEnergyProvider>
+
+    @CapabilityInject(IConfigurationTool::class)
+    lateinit var CONFIG_TOOL: Capability<IConfigurationTool>
 }

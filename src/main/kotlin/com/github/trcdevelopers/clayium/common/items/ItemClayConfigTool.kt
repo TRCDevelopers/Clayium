@@ -1,21 +1,27 @@
 package com.github.trcdevelopers.clayium.common.items
 
+import com.cleanroommc.modularui.utils.ItemCapabilityProvider
+import com.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
+import com.github.trcdevelopers.clayium.api.capability.IConfigurationTool
 import com.github.trcdevelopers.clayium.api.util.CUtils
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
+import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.common.capabilities.ICapabilityProvider
 
 class ItemClayConfigTool(
     maxStackSize: Int = 1,
     maxDamage: Int,
-    private val type: ToolType,
-    private val typeWhenSneak: ToolType? = null,
+    private val type: IConfigurationTool.ToolType,
+    private val typeWhenSneak: IConfigurationTool.ToolType? = null,
 ) : Item() {
     init {
         this.maxDamage = maxDamage
@@ -39,11 +45,17 @@ class ItemClayConfigTool(
         }
     }
 
-    enum class ToolType {
-        PIPING,
-        INSERTION,
-        EXTRACTION,
-        ROTATION,
-        FILTER_REMOVER,
+    override fun initCapabilities(stack: ItemStack, nbt: NBTTagCompound?): ICapabilityProvider? {
+        return object : ItemCapabilityProvider {
+            override fun <T : Any> getCapability(capability: Capability<T>): T? {
+                return ClayiumCapabilities.CONFIG_TOOL.cast(createConfigToolCapability())
+            }
+        }
+    }
+
+    private fun createConfigToolCapability(): IConfigurationTool {
+        return IConfigurationTool { isSneaking ->
+            if (isSneaking) typeWhenSneak else type
+        }
     }
 }

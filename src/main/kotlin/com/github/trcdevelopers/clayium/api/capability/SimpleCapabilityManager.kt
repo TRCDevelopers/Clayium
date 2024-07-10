@@ -26,5 +26,6 @@ object SimpleCapabilityManager {
         registerCapabilityWithNoDefault(ISynchronizedInterface::class.java)
         registerCapabilityWithNoDefault(IItemFilter::class.java)
         registerCapabilityWithNoDefault(IClayEnergyProvider::class.java)
+        registerCapabilityWithNoDefault(IConfigurationTool::class.java)
     }
 }
