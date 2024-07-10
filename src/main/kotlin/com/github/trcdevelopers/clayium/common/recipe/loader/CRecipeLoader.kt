@@ -16,6 +16,7 @@ object CRecipeLoader {
         CuttingMachineRecipeLoader.registerRecipes()
         InscriberRecipeLoader.registerRecipes()
         LatheRecipeLoader.registerRecipes()
+        MachineBlockRecipeLoader.registerRecipes()
         MatterTransformerRecipeLoader.registerRecipes()
         MillingMachineRecipeLoader.registerRecipes()
         PipeDrawingRecipeLoader.registerRecipes()
