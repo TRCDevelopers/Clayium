@@ -128,7 +128,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
                 12, 13, 14, 15 -> EnumRarity.EPIC
                 else -> EnumRarity.COMMON
             }
-            addComponent(TooltipBehavior { it.add("§rTier $tier") })
+            addComponent(TooltipBehavior { it.add(1, "§rTier $tier") })
             return this
         }
 
