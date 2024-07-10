@@ -2,11 +2,7 @@ package com.github.trcdevelopers.clayium.common.items.metaitem
 
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.items.ItemClayium
-import com.github.trcdevelopers.clayium.common.items.metaitem.component.IItemBehavior
-import com.github.trcdevelopers.clayium.common.items.metaitem.component.IItemColorHandler
-import com.github.trcdevelopers.clayium.common.items.metaitem.component.IItemComponent
-import com.github.trcdevelopers.clayium.common.items.metaitem.component.ISubItemHandler
-import com.github.trcdevelopers.clayium.common.items.metaitem.component.TooltipBehavior
+import com.github.trcdevelopers.clayium.common.items.metaitem.component.*
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
@@ -18,10 +14,12 @@ import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.EnumRarity
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.NonNullList
 import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.IRarity
+import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
@@ -44,9 +42,8 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         return item
     }
 
-    private fun getItem(meta: Short): MetaValueItem? {
-        return this.metaValueItems[meta]
-    }
+    private fun getItem(meta: Short) = this.metaValueItems[meta]
+    private fun getItem(stack: ItemStack) = getItem(stack.itemDamage.toShort())
 
     @SideOnly(Side.CLIENT)
     fun registerColorHandler() {
@@ -60,6 +57,10 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         for (item in this.metaValueItems.values) {
             ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:${item.name}", "inventory"))
         }
+    }
+
+    override fun initCapabilities(stack: ItemStack, nbt: NBTTagCompound?): ICapabilityProvider? {
+        return getItem(stack)?.capabilityProvider
     }
 
     override fun getTranslationKey(stack: ItemStack): String {
@@ -101,6 +102,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         val behaviors = mutableListOf<IItemBehavior>()
         var colorHandler: IItemColorHandler? = null
         var rarity: IRarity = EnumRarity.COMMON
+        var capabilityProvider: IItemCapabilityProvider? = null
 
         fun getStackForm(count: Int = 1): ItemStack = ItemStack(this@MetaItemClayium, count, meta.toInt())
 
@@ -109,6 +111,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
                 is ISubItemHandler -> {}
                 is IItemBehavior -> behaviors.add(component)
                 is IItemColorHandler -> colorHandler = component
+                is IItemCapabilityProvider -> capabilityProvider = component
             }
             return this
         }

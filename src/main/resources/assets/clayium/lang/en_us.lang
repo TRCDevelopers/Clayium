@@ -839,8 +839,8 @@ tile.clayium.blockSilicone.green.name=Green Silicone Block
 tile.clayium.blockSilicone.red.name=Red Silicone Block
 tile.clayium.blockSilicone.black.name=Black Silicone Block
 
-item.clayium.itemRawClayCraftingTools.RollingPin.name=Raw Clay Rolling Pin
-item.clayium.itemRawClayCraftingTools.RollingPin.tooltip.line1=Deletes filters applied to machines.
+item.clayium.filter_remover.tooltip1=Deletes filters applied to machines.
+item.clayium.raw_clay_rolling_ping.name=Raw Clay Rolling Pin
 item.clayium.itemRawClayCraftingTools.Slicer.name=Raw Clay Slicer
 item.clayium.itemRawClayCraftingTools.Slicer.tooltip.line1=Deletes filters applied to machines.
 item.clayium.itemRawClayCraftingTools.Spatula.name=Raw Clay Spatula

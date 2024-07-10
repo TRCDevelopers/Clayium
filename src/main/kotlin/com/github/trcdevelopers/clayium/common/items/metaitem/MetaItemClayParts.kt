@@ -1,7 +1,11 @@
 package com.github.trcdevelopers.clayium.common.items.metaitem
 
+import com.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
+import com.github.trcdevelopers.clayium.api.capability.IConfigurationTool
+import com.github.trcdevelopers.clayium.common.items.metaitem.component.IItemCapabilityProvider
 import com.github.trcdevelopers.clayium.common.items.metaitem.component.TooltipBehavior
 import com.github.trcdevelopers.clayium.common.util.UtilLocale
+import net.minecraftforge.common.capabilities.Capability
 
 @Suppress("unused")
 object MetaItemClayParts : MetaItemClayium("clay_parts") {
@@ -80,4 +84,21 @@ object MetaItemClayParts : MetaItemClayium("clay_parts") {
     val ExcitedClayDust = addItem(60, "excited_clay_dust").tier(7)
     val CEECircuit = addItem(61, "cee_circuit")
     val CEE = addItem(62, "cee")
+
+    val RawClayRollingPin = createRawClayConfigTool(63, "raw_clay_rolling_pin").tier(1)
+    val RawClaySlicer = createRawClayConfigTool(64, "raw_clay_slicer").tier(1)
+    val RawClaySpatula = createRawClayConfigTool(65, "raw_clay_spatula").tier(1)
+
+    private fun createRawClayConfigTool(meta: Short, name: String): MetaValueItem {
+        return addItem(meta, name)
+            .addComponent(TooltipBehavior { UtilLocale.formatTooltips(it, "item.clayium.filter_remover.tooltip") })
+            .addComponent(object : IItemCapabilityProvider {
+                override fun <T : Any> getCapability(capability: Capability<T>): T? {
+                    return if (capability == ClayiumCapabilities.CONFIG_TOOL)
+                        ClayiumCapabilities.CONFIG_TOOL.cast(IConfigurationTool { IConfigurationTool.ToolType.FILTER_REMOVER } )
+                    else
+                        null
+                }
+            })
+    }
 }
