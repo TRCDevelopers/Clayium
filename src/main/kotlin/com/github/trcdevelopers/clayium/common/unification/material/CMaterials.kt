@@ -3,6 +3,7 @@ package com.github.trcdevelopers.clayium.common.unification.material
 import com.github.trcdevelopers.clayium.api.util.clayiumId
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 
+@Suppress("unused")
 object CMaterials {
 
     /** 1 - 150 */
@@ -503,6 +504,10 @@ object CMaterials {
         ingot().dust()
         plate(ClayEnergy.milli(1), 20, tier = 4)
         claySmelting(0.2, 6, 400)
+    }
+    val impureUltimateAlloy = Material.create(1003, clayiumId("impure_ultimate")) {
+        tier(8).colors(0x55CD55, 0xF5FFFF, 0xF5A0FF)
+        ingot()
     }
     //endregion
 

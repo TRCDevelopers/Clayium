@@ -10,7 +10,7 @@ object CaCondenserRecipeLoader {
     fun registerRecipes() {
         CRecipes.CA_CONDENSER.register {
             input(MetaItemClayParts.ANTIMATTER_SEED)
-            output(OrePrefix.matter, CMaterials.antimatter)
+            output(OrePrefix.gem, CMaterials.antimatter)
             CEt(ClayEnergy.of(250))
             duration(2000)
             tier(0)

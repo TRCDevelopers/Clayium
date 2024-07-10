@@ -55,16 +55,15 @@ class OrePrefix(
 
         val ingot = OrePrefix("ingot", hasIngotProperty)
         val dust = OrePrefix("dust", hasDustProperty)
-        val gem = OrePrefix("gem")
+        val gem = OrePrefix("gem", hasMatterProperty)
         val plate = OrePrefix("plate", hasPlateProperty)
         val largePlate = OrePrefix("largePlate", hasPlateProperty)
-        val matter = OrePrefix("matter", hasMatterProperty)
 
         val impureDust = OrePrefix("impureDust", hasImpureDustProperty)
 
         val block = OrePrefix("block")
 
-        val metaItemPrefixes = listOf(ingot, dust, impureDust, matter, plate, largePlate)
+        val metaItemPrefixes = listOf(ingot, dust, impureDust, gem, plate, largePlate)
 
         fun init() {
             block.ignore(CMaterials.clay)

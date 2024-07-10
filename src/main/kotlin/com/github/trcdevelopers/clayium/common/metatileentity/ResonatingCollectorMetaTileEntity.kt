@@ -44,7 +44,7 @@ class ResonatingCollectorMetaTileEntity(
     override val progressPerItem = 10_000
     override val progressPerTick: Int
         get() = (resonanceManager.resonance - 1.0).toInt()
-    override val generatingItem by lazy { OreDictUnifier.get(OrePrefix.matter, CMaterials.antimatter) }
+    override val generatingItem by lazy { OreDictUnifier.get(OrePrefix.gem, CMaterials.antimatter) }
 
     override fun isTerrainValid() = true
 

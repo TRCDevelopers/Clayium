@@ -58,7 +58,7 @@ open class MetaPrefixItem private constructor(
         fun create(name: String, orePrefix: OrePrefix): MetaPrefixItem {
             return when (orePrefix) {
                 OrePrefix.impureDust -> MetaPrefixItemImpureDust
-                OrePrefix.matter -> object : MetaPrefixItem(name, OrePrefix.matter) {
+                OrePrefix.gem -> object : MetaPrefixItem(name, OrePrefix.gem) {
                     override fun registerModels() {
                         for (item in metaValueItems.values) {
                             ModelLoader.setCustomModelResourceLocation(

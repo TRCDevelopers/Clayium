@@ -1,16 +1,15 @@
 package com.github.trcdevelopers.clayium.common.recipe.handler
 
 import com.github.trcdevelopers.clayium.api.ClayiumApi
-import com.github.trcdevelopers.clayium.api.util.clayiumId
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
+import com.github.trcdevelopers.clayium.common.recipe.RecipeUtils
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
-import net.minecraftforge.fml.common.registry.ForgeRegistries
+import com.github.trcdevelopers.clayium.common.unification.stack.UnificationEntry
 import net.minecraftforge.fml.common.registry.GameRegistry
-import net.minecraftforge.oredict.ShapedOreRecipe
 import kotlin.math.pow
 
 object MaterialRecipeHandler {
@@ -21,9 +20,9 @@ object MaterialRecipeHandler {
                 tryAddGrindingRecipe(OrePrefix.ingot, material)
             }
 
-            if (material.hasOre(OrePrefix.matter)) {
-                if (material.hasProperty(PropertyKey.PLATE)) addPlateRecipe(OrePrefix.matter, material)
-                tryAddGrindingRecipe(OrePrefix.matter, material)
+            if (material.hasOre(OrePrefix.gem)) {
+                if (material.hasProperty(PropertyKey.PLATE)) addPlateRecipe(OrePrefix.gem, material)
+                tryAddGrindingRecipe(OrePrefix.gem, material)
             }
 
             if (material.hasOre(OrePrefix.dust)) {
@@ -61,7 +60,7 @@ object MaterialRecipeHandler {
         }
 
         addDustCondenseRecipe(OrePrefix.block)
-        addDustCondenseRecipe(OrePrefix.matter)
+        addDustCondenseRecipe(OrePrefix.gem)
 
         if (material.hasProperty(PropertyKey.INGOT)) {
             if (material.hasProperty(PropertyKey.BLAST_SMELTING)) {
@@ -159,25 +158,16 @@ object MaterialRecipeHandler {
         if (clayProperty != null) {
             // generate recipes for non-energy clay blocks
             if (resultClayProperty.energy == null) {
-                ForgeRegistries.RECIPES.register(
-                    ShapedOreRecipe(
-                        clayiumId("${compressedInto.materialId.path}_block"),
-                        OreDictUnifier.get(OrePrefix.block, compressedInto),
-                        "CCC",
-                        "CCC",
-                        "CCC",
-                        'C', OreDictUnifier.get(OrePrefix.block, material)
-                    ).setRegistryName(clayiumId("${compressedInto.materialId.path}_block_compose"))
-                )
+                RecipeUtils.addShapedRecipe("${compressedInto.materialId.path}_block_compose",
+                    OreDictUnifier.get(OrePrefix.block, compressedInto),
+                    "CCC",
+                    "CCC",
+                    "CCC",
+                    'C', UnificationEntry(OrePrefix.block, material))
 
-                ForgeRegistries.RECIPES.register(
-                    ShapedOreRecipe(
-                        clayiumId("${compressedInto.materialId.path}_block"),
-                        OreDictUnifier.get(OrePrefix.block, material, 9),
-                        "C",
-                        'C', OreDictUnifier.get(OrePrefix.block, material)
-                    ).setRegistryName(clayiumId("${compressedInto.materialId.path}_block_decompose"))
-                )
+                RecipeUtils.addShapedRecipe("${compressedInto.materialId.path}_block_decompose",
+                    OreDictUnifier.get(OrePrefix.block, material, 9),
+                    "C", 'C', UnificationEntry(OrePrefix.block, compressedInto))
 
                 CRecipes.DECOMPOSER.register {
                     input(OrePrefix.block, compressedInto)
