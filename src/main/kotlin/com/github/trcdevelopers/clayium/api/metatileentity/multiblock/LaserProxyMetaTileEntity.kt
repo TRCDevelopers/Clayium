@@ -5,13 +5,13 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trcdevelopers.clayium.api.capability.IClayLaserAcceptor
+import com.github.trcdevelopers.clayium.api.capability.IConfigurationTool
 import com.github.trcdevelopers.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trcdevelopers.clayium.api.laser.IClayLaser
 import com.github.trcdevelopers.clayium.api.metatileentity.AutoIoHandler
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ITier
-import com.github.trcdevelopers.clayium.common.items.ItemClayConfigTool
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
@@ -78,7 +78,7 @@ class LaserProxyMetaTileEntity(
         }
     }
 
-    override fun onToolClick(toolType: ItemClayConfigTool.ToolType, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+    override fun onToolClick(toolType: IConfigurationTool.ToolType, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         super.onToolClick(toolType, player, hand, clickedSide, hitX, hitY, hitZ)
         if (laser?.laserDirection != this.frontFacing.opposite) {
             this.laser = null
