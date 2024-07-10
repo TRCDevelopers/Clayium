@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "clayium:items/advanced_industrial_clay_plate"
+  }
+}

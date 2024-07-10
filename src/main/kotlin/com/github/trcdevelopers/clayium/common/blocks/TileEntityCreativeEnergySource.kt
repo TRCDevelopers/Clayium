@@ -8,14 +8,32 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.github.trcdevelopers.clayium.api.capability.impl.InfiniteItemStackHandler
-import net.minecraft.item.ItemStack
+import com.github.trcdevelopers.clayium.api.util.toItemStack
+import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
+import net.minecraft.block.state.IBlockState
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
 
 class TileEntityCreativeEnergySource : TileEntity(), IGuiHolder<PosGuiData> {
-    private val handler = InfiniteItemStackHandler(ItemStack(ClayiumBlocks.ENERGIZED_CLAY, 64, 8))
+
+    private val handler by lazy {
+        var highest: IBlockState? = null
+        for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) {
+            for (state in block.blockState.validStates) {
+                if (highest == null) highest = state
+                val matCe = block.getCMaterial(state).getProperty(PropertyKey.CLAY).energy
+                val currentCe = (highest.block as BlockEnergizedClay).getCMaterial(highest).getProperty(PropertyKey.CLAY).energy!!
+                if (matCe == null) continue
+                if (matCe > currentCe) {
+                    highest = state
+                }
+            }
+        }
+        InfiniteItemStackHandler(highest!!.toItemStack(64))
+    }
+
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("clayium:creative_energy_source")
             .child(ItemSlot()

@@ -1,54 +1,65 @@
 package com.github.trcdevelopers.clayium.common.recipe.builder
 
-import com.github.trcdevelopers.clayium.api.item.ITieredItem
-import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
+import com.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
-import com.github.trcdevelopers.clayium.common.clayenergy.IEnergizedClayItem
 import com.github.trcdevelopers.clayium.common.recipe.Recipe
+import com.github.trcdevelopers.clayium.common.unification.material.Material
+import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 
 /**
  * Builder for creating a recipe for the (solar) clay fabricator.
  *
- * Only input, tier are required to create a recipe. Output is clay block that has `input.tierNumeric + 1`, or can be set manually.
- * If input is not tiered, the output will be clay block with tier 0.
+ * Output is automatically set if input material has clay property, or can be set manually.
  * Duration is calculated by [requiredTicksCalculator], or can be set manually.
- * [cePerTick] is automatically calculated.
+ * [CEt] is automatically calculated.
  */
-class ClayFabricatorRecipeBuilder(
-    private val requiredTicksCalculator: (machineTier: Int, inputTier: Int) -> (Long),
-) : RecipeBuilder<ClayFabricatorRecipeBuilder>() {
+class ClayFabricatorRecipeBuilder : RecipeBuilder<ClayFabricatorRecipeBuilder> {
+
+    constructor(requiredTicksCalculator: (machineTier: Int, inputTier: Int) -> (Long)) : super() {
+        this.requiredTicksCalculator = requiredTicksCalculator
+    }
+
+    constructor(another: ClayFabricatorRecipeBuilder) : super(another) {
+        this.requiredTicksCalculator = another.requiredTicksCalculator
+    }
+
+    private val requiredTicksCalculator: (machineTier: Int, inputTier: Int) -> (Long)
+
+    private var inputTier = 0
 
     override fun buildAndRegister() {
-        val input = inputs.take(1)
-        val inputTier: Int = input[0].stacks
-            .filter { it.item is ITieredItem }
-            .map { (it.item as ITieredItem).getTier(it) }
-            .minOfOrNull { it.numeric } ?: -1
-        val outputStack = ClayiumBlocks.getCompressedClayStack(inputTier + 1)
         val duration = if (duration == 0L) requiredTicksCalculator(this.tier, inputTier) else duration
-        val ceProduced = (outputStack.item as? IEnergizedClayItem)?.getClayEnergy(outputStack) ?: ClayEnergy.ZERO
-        val cePerTick = if (duration == 0L) ClayEnergy.ZERO else ClayEnergy(ceProduced.energy / duration)
+
+        val outputEnergy = outputs[0].getCapability(ClayiumCapabilities.ENERGIZED_CLAY, null)?.getClayEnergy()?.energy ?: 0
+        val inputEnergy = inputs[0].stacks.firstNotNullOfOrNull { it.getCapability(ClayiumCapabilities.ENERGIZED_CLAY, null)?.getClayEnergy() }?.energy ?: 0
+        val ceProduced = if (outputEnergy > inputEnergy) outputEnergy - inputEnergy else 0
+        val cet = if (duration == 0L) ClayEnergy.ZERO else ClayEnergy(ceProduced / duration)
 
         val recipe = Recipe(
-            inputs = input,
-            outputs = listOf(outputStack),
+            inputs = this.inputs,
+            outputs = this.outputs,
             duration = duration,
-            cePerTick = cePerTick,
+            cePerTick = cet,
             tierNumeric = tier
         )
 
         recipeRegistry.addRecipe(recipe)
     }
 
-    override fun copy(): ClayFabricatorRecipeBuilder {
-        return ClayFabricatorRecipeBuilder(requiredTicksCalculator)
-            .setRegistry(this.recipeRegistry)
-            .inputs(*inputs.toTypedArray())
-            .outputs(*outputs.toTypedArray())
-            .duration(duration)
-            .cePerTick(cePerTick)
-            .tier(tier)
+    override fun input(orePrefix: OrePrefix, material: Material, amount: Int): ClayFabricatorRecipeBuilder {
+        super.input(orePrefix, material, amount)
+        val clay = material.getPropOrNull(PropertyKey.CLAY)
+        if (clay != null && clay.compressedInto != null) {
+            this.output(orePrefix, clay.compressedInto)
+        }
+        if (material.tier != null) {
+            this.inputTier = material.tier.numeric
+        }
+        return this
     }
+
+    override fun copy() = ClayFabricatorRecipeBuilder(this)
 
     companion object {
         fun solarClayFabricator(machineTier: Int, inputTier: Int): Long {

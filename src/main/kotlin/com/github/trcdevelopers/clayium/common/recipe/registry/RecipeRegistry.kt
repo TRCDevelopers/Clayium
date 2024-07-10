@@ -49,6 +49,14 @@ class RecipeRegistry<R: RecipeBuilder<R>>(
             Clayium.LOGGER.error("invalid recipe: Input is empty.")
             return Result.failure(IllegalArgumentException())
         }
+        if (recipe.inputs.any { input -> input.stacks.any { stack -> stack.isEmpty } }) {
+            Clayium.LOGGER.error("invalid recipe: Input has an empty ItemStack.")
+            return Result.failure(IllegalArgumentException())
+        }
+        if (recipe.outputs.any { it.isEmpty }) {
+            Clayium.LOGGER.error("invalid recipe: Output has an empty ItemStack.")
+            return Result.failure(IllegalArgumentException())
+        }
         if (recipe.tierNumeric < 0) {
             Clayium.LOGGER.info("invalid recipe: Tier is less than 0.")
             return Result.failure(IllegalArgumentException())

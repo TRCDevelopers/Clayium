@@ -1,6 +1,7 @@
 package com.github.trcdevelopers.clayium.common
 
 import com.cleanroommc.modularui.factory.GuiManager
+import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.block.ItemBlockTiered
 import com.github.trcdevelopers.clayium.api.capability.SimpleCapabilityManager
@@ -10,17 +11,21 @@ import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.client.renderer.LaserReflectorItemStackRenderer
 import com.github.trcdevelopers.clayium.common.blocks.BlockQuartzCrucible
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
+import com.github.trcdevelopers.clayium.common.blocks.ItemBlockEnergizedClay
+import com.github.trcdevelopers.clayium.common.blocks.ItemBlockMaterial
 import com.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
 import com.github.trcdevelopers.clayium.common.blocks.TileEntityCreativeEnergySource
-import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockCompressedClay
-import com.github.trcdevelopers.clayium.common.blocks.clay.ItemBlockEnergizedClay
 import com.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
+import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
+import com.github.trcdevelopers.clayium.common.loaders.OreDictionaryLoader
 import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
 import com.github.trcdevelopers.clayium.common.recipe.loader.CRecipeLoader
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix
+import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
+import com.github.trcdevelopers.clayium.common.util.DebugUtils
 import com.github.trcdevelopers.clayium.common.worldgen.ClayOreGenerator
 import net.minecraft.block.Block
 import net.minecraft.item.Item
@@ -40,11 +45,17 @@ open class CommonProxy {
 
     open fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(Clayium.proxy)
+        if (CValues.isDeobf) {
+            MinecraftForge.EVENT_BUS.register(DebugUtils::class.java)
+        }
+
         this.registerTileEntities()
         GameRegistry.registerWorldGenerator(ClayOreGenerator(), 0)
         NetworkRegistry.INSTANCE.registerGuiHandler(Clayium.INSTANCE, GuiHandler)
 
         MetaTileEntities.init()
+        CMaterials.init()
+        OrePrefix.init()
 
         GuiManager.registerFactory(MetaTileEntityGuiFactory)
 
@@ -52,12 +63,15 @@ open class CommonProxy {
     }
 
     open fun init(event: FMLInitializationEvent) {
+        ClayiumBlocks.registerOreDictionaries()
+        OreDictionaryLoader.loadOreDictionaries()
     }
 
     open fun postInit(event: FMLPostInitializationEvent) {
         CRecipeLoader.load()
     }
 
+    @Suppress("unused")
     @SubscribeEvent
     fun registerBlocks(event: RegistryEvent.Register<Block>) {
         val registry: IForgeRegistry<Block> = event.registry
@@ -65,18 +79,25 @@ open class CommonProxy {
         ClayiumBlocks.registerBlocks(event)
 
         registry.register(ClayiumApi.BLOCK_MACHINE)
+
+        for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) registry.register(block)
+        for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) registry.register(block)
     }
 
+    @Suppress("unused")
     @SubscribeEvent
     fun registerItems(event: RegistryEvent.Register<Item>) {
         val registry = event.registry
 
+        //todo: move to somewhere else
         registry.register(MetaItemClayParts)
-        for (orePrefix in OrePrefix.entries) {
+        for (orePrefix in OrePrefix.metaItemPrefixes) {
             val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
             registry.register(metaPrefixItem)
             metaPrefixItem.registerSubItems()
         }
+
+        for (metaItem in MetaItemClayium.META_ITEMS) { metaItem.afterRegistration() }
 
         registerItem(registry, ClayiumItems.CLAY_ROLLING_PIN)
         registerItem(registry, ClayiumItems.CLAY_SLICER)
@@ -94,9 +115,6 @@ open class CommonProxy {
 
         registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ::ItemBlockTiered))
 
-        registry.register(createItemBlock(ClayiumBlocks.COMPRESSED_CLAY, ::ItemBlockCompressedClay))
-        registry.register(createItemBlock(ClayiumBlocks.ENERGIZED_CLAY, ::ItemBlockEnergizedClay))
-
         registry.register(createItemBlock(ClayiumBlocks.CLAY_ORE, ::ItemBlock))
         registry.register(createItemBlock(ClayiumBlocks.DENSE_CLAY_ORE, ::ItemBlock))
         registry.register(createItemBlock(ClayiumBlocks.LARGE_DENSE_CLAY_ORE, ::ItemBlock))
@@ -111,6 +129,13 @@ open class CommonProxy {
             translationKey = ClayiumBlocks.LASER_REFLECTOR.translationKey
             tileEntityItemStackRenderer = LaserReflectorItemStackRenderer
         })
+
+        for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) {
+            registry.register(createItemBlock(block) { ItemBlockEnergizedClay(it, OrePrefix.block) })
+        }
+        for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) {
+            registry.register(createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.block) })
+        }
 
         registry.register(ClayiumApi.ITEM_BLOCK_MACHINE)
     }

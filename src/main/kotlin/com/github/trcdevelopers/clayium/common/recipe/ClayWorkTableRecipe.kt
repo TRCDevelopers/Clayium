@@ -2,8 +2,9 @@ package com.github.trcdevelopers.clayium.common.recipe
 
 import com.github.trcdevelopers.clayium.common.blocks.clayworktable.ClayWorkTableMethod
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.Material
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
+import com.github.trcdevelopers.clayium.common.unification.stack.UnificationEntry
 import com.google.common.base.Preconditions
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -57,7 +58,7 @@ class ClayWorkTableRecipe(
 
         fun input(item: Item, amount: Int = 1) { input(RecipeInput(item, amount)) }
         fun input(item: MetaItemClayium.MetaValueItem, amount: Int = 1) { input(RecipeInput(Ingredient.fromStacks(item.getStackForm(1)), amount)) }
-        fun input(prefix: OrePrefix, material: Material, amount: Int = 1) { input(RecipeInput(OreIngredient(prefix.concat(material)), amount)) }
+        fun input(orePrefix: OrePrefix, material: Material, amount: Int = 1) { input(RecipeInput(OreIngredient(UnificationEntry(orePrefix, material).toString()), amount)) }
 
         fun outputs(primaryOutput: ItemStack, secondaryOutput: ItemStack = ItemStack.EMPTY) {
             this.primaryOutput = primaryOutput

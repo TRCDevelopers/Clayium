@@ -1,0 +1,61 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "material": {
+      "energetic_clay": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier4"
+        },
+        "model": "cube_all"
+      },
+      "compressed_energetic_clay": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier5"
+        },
+        "model": "cube_all"
+      },
+      "compressed_energetic_clay2": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier6"
+        },
+        "model": "cube_all"
+      },
+      "compressed_energetic_clay3": {
+          "textures": {
+          "all":"clayium:blocks/compressed_clay_tier7"
+          },
+          "model": "cube_all"
+      },
+      "compressed_energetic_clay4": {
+          "textures": {
+          "all":"clayium:blocks/compressed_clay_tier8"
+          },
+          "model": "cube_all"
+      },
+      "compressed_energetic_clay5": {
+          "textures": {
+          "all":"clayium:blocks/compressed_clay_tier9"
+          },
+          "model": "cube_all"
+      },
+      "compressed_energetic_clay6": {
+          "textures": {
+          "all":"clayium:blocks/compressed_clay_tier10"
+          },
+          "model": "cube_all"
+      },
+      "compressed_energetic_clay7": {
+          "textures": {
+          "all":"clayium:blocks/compressed_clay_tier11"
+          },
+          "model": "cube_all"
+      },
+      "octuple_energy_clay": {
+        "textures": {
+          "all":"clayium:blocks/compressed_clay_tier12"
+        },
+        "model": "cube_all"
+      }
+    }
+  }
+}

@@ -1,22 +1,27 @@
 package com.github.trcdevelopers.clayium.common.recipe.loader
 
-import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
-import net.minecraft.init.Blocks
-import net.minecraft.item.ItemStack
+import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 
 object SolarClayFabricatorRecipeLoader {
-    fun register() {
-        CRecipes.SOLAR_CLAY_FABRICATOR.register {
-            input(Blocks.CLAY)
-            tier(5)
-        }
+    fun registerRecipes() {
+        val block = OrePrefix.block
 
-        for (i in 0..3) {
-            CRecipes.SOLAR_CLAY_FABRICATOR.register {
-                input(ItemStack(ClayiumBlocks.COMPRESSED_CLAY, 1, i))
-                tier(5)
-            }
-        }
+        val clays = mutableListOf(CMaterials.clay, CMaterials.denseClay, CMaterials.compressedClay,
+            CMaterials.industrialClay, CMaterials.advancedIndustrialClay)
+
+        for (clay in clays) CRecipes.SOLAR_1.register { input(block, clay).tier(5) }
+
+        clays.add(CMaterials.energeticClay)
+        clays.add(CMaterials.compressedEnergeticClay)
+
+        for (clay in clays) CRecipes.SOLAR_2.register { input(block, clay).tier(6) }
+
+        clays.add(CMaterials.compressedEnergeticClay2)
+        clays.add(CMaterials.compressedEnergeticClay3)
+        clays.add(CMaterials.compressedEnergeticClay4)
+
+        for (clay in clays) CRecipes.SOLAR_3.register { input(block, clay).tier(7) }
     }
 }

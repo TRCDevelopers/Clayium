@@ -18,8 +18,8 @@ import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix
-import com.github.trcdevelopers.clayium.common.unification.material.Material
+import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.I18n
 import net.minecraft.item.Item
@@ -44,7 +44,7 @@ class ResonatingCollectorMetaTileEntity(
     override val progressPerItem = 10_000
     override val progressPerTick: Int
         get() = (resonanceManager.resonance - 1.0).toInt()
-    override val generatingItem by lazy { OreDictUnifier.get(OrePrefix.MATTER, Material.ANTIMATTER) }
+    override val generatingItem by lazy { OreDictUnifier.get(OrePrefix.gem, CMaterials.antimatter) }
 
     override fun isTerrainValid() = true
 

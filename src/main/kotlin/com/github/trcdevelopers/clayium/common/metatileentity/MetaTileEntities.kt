@@ -77,7 +77,15 @@ object MetaTileEntities {
     }
 
     val SOLAR_CLAY_FABRICATOR = registerMetaTileEntities(74, (5..7)) {
-        SolarClayFabricatorMetaTileEntity(clayiumId("solar_clay_fabricator.${it.lowerName}"), it)
+        when (it) {
+            ClayTiers.ADVANCED ->
+                SolarClayFabricatorMetaTileEntity(clayiumId("solar_clay_fabricator.${it.lowerName}"), it, CRecipes.SOLAR_1)
+            ClayTiers.PRECISION ->
+                SolarClayFabricatorMetaTileEntity(clayiumId("solar_clay_fabricator.${it.lowerName}"), it, CRecipes.SOLAR_2)
+            ClayTiers.CLAY_STEEL ->
+                SolarClayFabricatorMetaTileEntity(clayiumId("solar_clay_fabricator.${it.lowerName}"), it, CRecipes.SOLAR_3)
+            else -> throw IllegalArgumentException()
+        }
     }
 
     val COBBLESTONE_GENERATOR = registerMetaTileEntities(77, (1..7)) {

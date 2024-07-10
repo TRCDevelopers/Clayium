@@ -9,8 +9,8 @@ import com.github.trcdevelopers.clayium.common.recipe.ingredient.COreRecipeInput
 import com.github.trcdevelopers.clayium.common.recipe.ingredient.CRecipeInput
 import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.Material
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import com.github.trcdevelopers.clayium.common.unification.stack.UnificationEntry
 import net.minecraft.block.Block
 import net.minecraft.item.Item
@@ -26,7 +26,9 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
 ) {
     constructor() : this(mutableListOf(), mutableListOf(), 0, ClayEnergy.ZERO, 0)
 
-    constructor(another: RecipeBuilder<R>) : this(another.inputs.toMutableList(), another.outputs.toMutableList(), another.duration, another.cePerTick, another.tier)
+    constructor(another: RecipeBuilder<R>) : this(another.inputs.toMutableList(), another.outputs.toMutableList(), another.duration, another.cePerTick, another.tier) {
+        recipeRegistry = another.recipeRegistry
+    }
 
     protected lateinit var recipeRegistry: RecipeRegistry<R>
 
@@ -53,7 +55,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun input(metaItem: MetaItemClayium.MetaValueItem, amount: Int = 1) = input(metaItem.getStackForm(amount))
     fun input(block: Block, amount: Int = 1) = input(ItemStack(block, amount))
     fun input(oreDict: String, amount: Int = 1) = inputs(COreRecipeInput(oreDict, amount))
-    fun input(orePrefix: OrePrefix, material: Material, amount: Int = 1) = inputs(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
+    open fun input(orePrefix: OrePrefix, material: Material, amount: Int = 1) = inputs(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
 
     fun outputs(vararg stacks: ItemStack): R {
         outputs.addAll(stacks)
@@ -73,9 +75,44 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
         return this as R
     }
 
-    fun cePerTick(cePerTick: ClayEnergy): R {
+    //todo: clearer func name
+    @Suppress("FunctionName")
+    fun CEt(cePerTick: ClayEnergy): R {
         this.cePerTick = cePerTick
         return this as R
+    }
+
+    /**
+     * | Tier | CEt |
+     * |:----:|:---:|
+     * | 0   | 10u   |
+     * | 1 | 10u |
+     * | 2 | 10u |
+     * | 3 | 100u |
+     * | 4 | 1m |
+     * | 5 | 10m |
+     * | 6 | 100m |
+     * | 7 | 1 |
+     * | 8 | 10 |
+     * | 9 | 100 |
+     * | 10 | 1k |
+     * | 11 | 10k |
+     * | 12 | 100k |
+     * | 13 | 1M |
+     */
+    @Suppress("FunctionName")
+    fun CEt(tier: Int = this.tier): R {
+        return this.CEt(1.0, tier)
+    }
+
+    @Suppress("FunctionName")
+    fun CEt(factor: Double): R {
+        return this.CEt(factor, this.tier)
+    }
+
+    @Suppress("FunctionName")
+    fun CEt(factor: Double, tier: Int): R{
+        return this.CEt(ClayEnergy((factor * 100.0 * Math.pow(10.0, tier - 4.0)).toLong().coerceAtLeast(1)))
     }
 
     fun tier(tier: Int): R {
@@ -84,6 +121,9 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     }
 
     open fun buildAndRegister() {
+        if (this.cePerTick.energy == 0L) {
+            this.CEt(tier = this.tier, factor = 1.0)
+        }
         recipeRegistry.addRecipe(
             Recipe(inputs, outputs, duration, cePerTick, tier)
         )

@@ -5,6 +5,9 @@ import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import com.google.common.base.CaseFormat
+import net.minecraft.block.Block
+import net.minecraft.block.state.IBlockState
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
@@ -24,6 +27,18 @@ fun ItemStack.copyWithSize(size: Int): ItemStack {
     val stack = copy()
     stack.count = size
     return stack
+}
+
+fun IBlockState.toItemStack(count: Int = 1): ItemStack {
+    return ItemStack(block, count, block.getMetaFromState(this))
+}
+
+fun Block.getAsItem(): Item {
+    return Item.getItemFromBlock(this)
+}
+
+fun clayiumId(path: String): ResourceLocation {
+    return ResourceLocation(CValues.MOD_ID, path)
 }
 
 object CUtils {

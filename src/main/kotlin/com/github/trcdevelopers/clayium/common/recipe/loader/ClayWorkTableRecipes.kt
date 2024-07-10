@@ -18,15 +18,14 @@ import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts.
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts.LARGE_CLAY_BALL
 import com.github.trcdevelopers.clayium.common.recipe.CWTRecipes
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix.LARGE_PLATE
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix.PLATE
-import com.github.trcdevelopers.clayium.common.unification.material.Material.CLAY
+import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 
 
 object ClayWorkTableRecipes {
-    fun register() {
+    fun registerRecipes() {
         CWTRecipes.CLAY_WORK_TABLE.register {
             input(CLAY_CYLINDER)
             outputs(CLAY_NEEDLE.getStackForm(1))
@@ -46,14 +45,14 @@ object ClayWorkTableRecipes {
             clicks(5)
         }
         CWTRecipes.CLAY_WORK_TABLE.register {
-            input(PLATE, CLAY, 3)
+            input(OrePrefix.plate, CMaterials.clay, 3)
             outputs(LARGE_CLAY_BALL.getStackForm(1))
             method(ROLLING_HAND)
             clicks(40)
         }
 
         CWTRecipes.CLAY_WORK_TABLE.register {
-            input(PLATE, CLAY)
+            input(OrePrefix.largePlate, CMaterials.clay)
             outputs(CLAY_BLADE.getStackForm(1))
             method(PUNCH)
             clicks(10)
@@ -72,7 +71,7 @@ object ClayWorkTableRecipes {
         }
 
         CWTRecipes.CLAY_WORK_TABLE.register {
-            input(PLATE, CLAY)
+            input(OrePrefix.plate, CMaterials.clay)
             outputs(CLAY_BLADE.getStackForm(1), ItemStack(Items.CLAY_BALL, 2))
             method(ROLLING_PIN)
             clicks(1)
@@ -84,8 +83,8 @@ object ClayWorkTableRecipes {
             clicks(4)
         }
         CWTRecipes.CLAY_WORK_TABLE.register {
-            input(PLATE, CLAY, 6)
-            outputs(OreDictUnifier.get(LARGE_PLATE, CLAY, 1))
+            input(OrePrefix.plate, CMaterials.clay, 6)
+            outputs(OreDictUnifier.get(OrePrefix.largePlate, CMaterials.clay))
             method(ROLLING_PIN)
             clicks(10)
         }
@@ -98,7 +97,7 @@ object ClayWorkTableRecipes {
 
         CWTRecipes.CLAY_WORK_TABLE.register {
             input(CLAY_DISC)
-            outputs(OreDictUnifier.get(PLATE, CLAY), ItemStack(Items.CLAY_BALL, 2))
+            outputs(OreDictUnifier.get(OrePrefix.plate, CMaterials.clay), ItemStack(Items.CLAY_BALL, 2))
             method(CUT_PLATE)
             clicks(4)
         }
@@ -117,7 +116,7 @@ object ClayWorkTableRecipes {
         }
 
         CWTRecipes.CLAY_WORK_TABLE.register {
-            input(PLATE, CLAY)
+            input(OrePrefix.plate, CMaterials.clay)
             outputs(CLAY_STICK.getStackForm(4))
             method(CUT)
             clicks(3)

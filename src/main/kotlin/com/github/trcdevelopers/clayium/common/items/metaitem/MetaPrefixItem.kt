@@ -1,13 +1,12 @@
 package com.github.trcdevelopers.clayium.common.items.metaitem
 
-import com.github.trcdevelopers.clayium.api.util.CUtils
+import com.github.trcdevelopers.clayium.api.ClayiumApi
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.items.metaitem.component.IItemColorHandler
-import com.github.trcdevelopers.clayium.common.unification.OrePrefix
 import com.github.trcdevelopers.clayium.common.unification.material.Material
-import com.github.trcdevelopers.clayium.common.unification.material.MaterialProperty
+import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.client.resources.I18n
 import net.minecraft.item.ItemStack
 import net.minecraftforge.client.model.ModelLoader
 
@@ -17,12 +16,13 @@ open class MetaPrefixItem private constructor(
 ) : MetaItemClayium(name) {
 
     open fun registerSubItems() {
-        for (material in Material.entries) {
-            if (!orePrefix.doGenerateItem(material)) continue
+        for (material in ClayiumApi.materialRegistry) {
+            if (!orePrefix.canGenerateItem(material)) continue
+            val materialName = material.materialId.path
 
-            addItem(material.uniqueId.toShort(), material.materialName) {
-                tier(material.tier)
-                oreDict("${orePrefix.camel}${CUtils.toUpperCamel(material.materialName)}")
+            addItem(material.metaItemSubId.toShort(), materialName) {
+                tier(material.tier?.numeric ?: -1)
+                oreDict(orePrefix, material)
                 if (material.colors != null) {
                     addComponent(IItemColorHandler { _, i -> material.colors[i] })
                 }
@@ -34,7 +34,7 @@ open class MetaPrefixItem private constructor(
         for (item in metaValueItems.values) {
             val material = getMaterial(item.meta.toInt()) ?: continue
             if (material.colors == null) {
-                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:${material.materialName}_${orePrefix.snake}", "inventory"))
+                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${material.materialId}_${orePrefix.snake}", "inventory"))
             } else {
                 ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:colored/${orePrefix.snake}", "inventory"))
             }
@@ -43,29 +43,27 @@ open class MetaPrefixItem private constructor(
 
     override fun getItemStackDisplayName(stack: ItemStack): String {
         val material = getMaterial(stack) ?: return "invalid"
-        return I18n.format("oreprefix.${Clayium.MOD_ID}.${orePrefix.camel}", I18n.format("material.${Clayium.MOD_ID}.${material.materialName}"))
+        return orePrefix.getLocalizedName(material)
     }
 
     private fun getMaterial(stack: ItemStack): Material? {
-        return Material.fromId(stack.itemDamage)
+        return getMaterial(stack.itemDamage)
     }
 
     private fun getMaterial(id: Int): Material? {
-        return Material.fromId(id)
+        return ClayiumApi.materialRegistry.getObjectById(id)
     }
 
     companion object {
-
-
         fun create(name: String, orePrefix: OrePrefix): MetaPrefixItem {
             return when (orePrefix) {
-                OrePrefix.IMPURE_DUST -> MetaPrefixItemImpureDust
-                OrePrefix.MATTER -> object : MetaPrefixItem(name, OrePrefix.MATTER) {
+                OrePrefix.impureDust -> MetaPrefixItemImpureDust
+                OrePrefix.gem -> object : MetaPrefixItem(name, OrePrefix.gem) {
                     override fun registerModels() {
                         for (item in metaValueItems.values) {
                             ModelLoader.setCustomModelResourceLocation(
                                 this, item.meta.toInt(),
-                                Material.fromId(item.meta.toInt())?.getProperty<MaterialProperty.Matter>()?.modelLocation ?: ModelLoader.MODEL_MISSING
+                                ClayiumApi.materialRegistry.getObjectById(item.meta.toInt())?.getProperty(PropertyKey.MATTER)?.modelLocation ?: ModelLoader.MODEL_MISSING
                             )
                         }
                     }
@@ -75,15 +73,15 @@ open class MetaPrefixItem private constructor(
         }
     }
 
-    private object MetaPrefixItemImpureDust : MetaPrefixItem("meta_impure_dust", OrePrefix.IMPURE_DUST) {
+    private object MetaPrefixItemImpureDust : MetaPrefixItem("meta_impure_dust", OrePrefix.impureDust) {
        override fun registerSubItems() {
-            for (material in Material.entries) {
-                if (OrePrefix.IMPURE_DUST.doGenerateItem(material)) {
-                    val impureDust  = material.getProperty<MaterialProperty.ImpureDust>()!!
-                    addItem(material.uniqueId.toShort(), material.materialName)
-                        .tier(material.tier)
+            for (material in ClayiumApi.materialRegistry) {
+                if (orePrefix.canGenerateItem(material)) {
+                    val impureDust  = material.getProperty(PropertyKey.IMPURE_DUST)
+                    addItem(material.metaItemSubId.toShort(), material.materialId.path)
+                        .tier(6)
                         .addComponent(IItemColorHandler { _, i -> impureDust.getColor(i) })
-                        .oreDict("impureDust${CUtils.toUpperCamel(material.materialName)}")
+                        .oreDict(orePrefix, material)
                 }
             }
         }

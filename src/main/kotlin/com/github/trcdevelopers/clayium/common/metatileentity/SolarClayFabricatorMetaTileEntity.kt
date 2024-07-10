@@ -21,7 +21,9 @@ import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
+import com.github.trcdevelopers.clayium.common.recipe.builder.ClayFabricatorRecipeBuilder
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
+import com.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
@@ -35,11 +37,11 @@ import net.minecraftforge.items.IItemHandlerModifiable
 class SolarClayFabricatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
+    val registry: RecipeRegistry<ClayFabricatorRecipeBuilder>
 ) : MetaTileEntity(metaTileEntityId, tier,
     validInputModes, validOutputModesLists[1], "machine.${CValues.MOD_ID}.solar_clay_fabricator.${tier.lowerName}") {
 
     override val faceTexture: ResourceLocation = clayiumId("blocks/solar")
-
 
     override val importItems: IItemHandlerModifiable = NotifiableItemStackHandler(this, 1, this, false)
     override val exportItems: IItemHandlerModifiable = NotifiableItemStackHandler(this, 1, this, true)
@@ -49,7 +51,7 @@ class SolarClayFabricatorMetaTileEntity(
     private val workable = SolarClayFabricatorRecipeLogic()
 
     override fun createMetaTileEntity(): MetaTileEntity {
-        return SolarClayFabricatorMetaTileEntity(metaTileEntityId, tier)
+        return SolarClayFabricatorMetaTileEntity(metaTileEntityId, tier, registry)
     }
 
     override fun isFacingValid(facing: EnumFacing): Boolean {
@@ -104,8 +106,7 @@ class SolarClayFabricatorMetaTileEntity(
         return panel.bindPlayerInventory()
     }
 
-    private inner class SolarClayFabricatorRecipeLogic : ClayFabricatorRecipeLogic(this@SolarClayFabricatorMetaTileEntity,
-        CRecipes.SOLAR_CLAY_FABRICATOR) {
+    private inner class SolarClayFabricatorRecipeLogic : ClayFabricatorRecipeLogic(this@SolarClayFabricatorMetaTileEntity, registry) {
         override fun drawEnergy(ce: ClayEnergy, simulate: Boolean): Boolean {
             if (simulate) return true
             val pos = pos ?: return false
