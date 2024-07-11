@@ -81,6 +81,7 @@ object MachineBlockRecipeLoader {
                     .input(MetaItemClayParts.PRECISION_CIRCUIT)
                     .output(hull.getItem(tier))
                     .tier(4).CEt(ClayEnergy.milli(100)).duration(120)
+                    .buildAndRegister()
                 ZK60A ->
                     RecipeUtils.addShapedRecipe("machine_hull_${tier.lowerName}", hull.getItem(tier),
                         "PPP", "PCP", "PPP",
