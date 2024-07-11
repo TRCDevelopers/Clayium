@@ -2,6 +2,7 @@ package com.github.trcdevelopers.clayium.common.unification.material
 
 import com.github.trcdevelopers.clayium.api.util.clayiumId
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
+import com.github.trcdevelopers.clayium.common.unification.material.MaterialFlags.GENERATE_CLAY_PARTS
 
 @Suppress("unused")
 object CMaterials {
@@ -580,6 +581,7 @@ object CMaterials {
             clay(compressedClay)
             dust()
             plate(ClayEnergy.micro(10), 4, tier = 0)
+            flags(GENERATE_CLAY_PARTS)
         }
 
         clay = Material.create(151, clayiumId("clay")) {
@@ -587,6 +589,7 @@ object CMaterials {
             clay(denseClay)
             dust()
             plate(ClayEnergy.micro(10), 1, tier = 0)
+            flags(GENERATE_CLAY_PARTS)
         }
         //endregion
 
