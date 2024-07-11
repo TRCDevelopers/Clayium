@@ -16,6 +16,9 @@ import com.google.common.collect.ImmutableMap
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import net.minecraft.block.Block
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.client.renderer.block.statemap.DefaultStateMapper
+import net.minecraft.client.renderer.block.statemap.IStateMapper
+import net.minecraft.client.renderer.block.statemap.StateMap
 import net.minecraft.init.Blocks
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -28,6 +31,8 @@ object ClayiumBlocks {
 
     private val blocks: MutableMap<String, Block> = mutableMapOf()
     val allBlocks: Map<String, Block> get() = ImmutableMap.copyOf(blocks)
+
+    val defaultStateMapper = DefaultStateMapper()
 
     val CREATIVE_ENERGY_SOURCE = createBlock("creative_energy_source", BlockSimpleTileEntityHolder(::TileEntityCreativeEnergySource))
 
@@ -85,9 +90,8 @@ object ClayiumBlocks {
     }
 
     fun createMaterialBlock(filter: (material: Material) -> Boolean, generator: (metaMaterialMap: Map<Int, Material>, index: Int) -> Unit) {
-        var currentId = 0
         var mapping = Int2ObjectArrayMap<Material>(17)
-        for (materials in ClayiumApi.materialRegistry.chunked(16)) {
+        for ((currentId, materials) in ClayiumApi.materialRegistry.chunked(16).withIndex()) {
             for (material in materials) {
                 if (!filter(material)) continue
                 val metaItemSubId = material.metaItemSubId % 16
@@ -97,7 +101,6 @@ object ClayiumBlocks {
                 generator(mapping, currentId)
                 mapping = Int2ObjectArrayMap(17)
             }
-            currentId++
         }
     }
 
@@ -130,18 +133,10 @@ object ClayiumBlocks {
     @SideOnly(Side.CLIENT)
     private fun registerItemModel(block: Block) {
         for (state in block.blockState.validStates) {
-            if (block.blockState.properties.isEmpty()) {
-                ModelLoader.setCustomModelResourceLocation(
-                    Item.getItemFromBlock(block), 0,
-                    ModelResourceLocation(block.registryName!!, "normal")
-                )
-            } else {
-                val meta = block.getMetaFromState(state)
-                ModelLoader.setCustomModelResourceLocation(
-                    Item.getItemFromBlock(block), meta,
-                    ModelResourceLocation(block.registryName!!, "meta=$meta")
-                )
-            }
+            ModelLoader.setCustomModelResourceLocation(
+                Item.getItemFromBlock(block), block.getMetaFromState(state),
+                ModelResourceLocation(block.registryName!!, defaultStateMapper.getPropertyString(state.properties))
+            )
         }
     }
 }
