@@ -1,8 +1,12 @@
 package com.github.trcdevelopers.clayium.common.recipe.loader
 
+import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
+import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
 import com.github.trcdevelopers.clayium.common.recipe.RecipeUtils
+import com.github.trcdevelopers.clayium.common.recipe.builder.RecipeBuilder
+import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import com.github.trcdevelopers.clayium.common.unification.stack.UnificationEntry
@@ -66,5 +70,22 @@ object MachineBlockRecipeLoader {
             }
         }
         //endregion
+
+
+        registerAssembler(MetaTileEntities.BENDING_MACHINE) {
+            input(OrePrefix.plate, CMaterials.denseClay, 3)
+        }
+    }
+
+    private fun registerAssembler(metaTileEntities: List<MetaTileEntity>, inputProvider: RecipeBuilder<*>.() -> RecipeBuilder<*>) {
+        for (mte in metaTileEntities) {
+            CRecipes.ASSEMBLER.builder()
+                .input(ItemStack(ClayiumBlocks.MACHINE_HULL, 1, mte.tier.numeric))
+                .output(mte.getStackForm())
+                .tier(4)
+                .CEt(1.0).duration(60)
+                .inputProvider()
+                .buildAndRegister()
+        }
     }
 }
