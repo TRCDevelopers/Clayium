@@ -392,6 +392,9 @@ abstract class MetaTileEntity(
     override fun getInput(side: EnumFacing) = _inputModes[side.index]
     override fun getOutput(side: EnumFacing) = _outputModes[side.index]
 
+    fun isInputModeValid(mode: MachineIoMode) = mode in validInputModes
+    fun isOutputModeValid(mode: MachineIoMode) = mode in validOutputModes
+
     /**
      * If [mode] is not in [validInputModes], it will not be set.
      */
@@ -402,7 +405,7 @@ abstract class MetaTileEntity(
         (this.getNeighbor(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
         writeCustomData(UPDATE_INPUT_MODE) {
             writeByte(side.index)
-            writeByte(_inputModes[side.index].id)
+            writeByte(mode.id)
         }
     }
 
@@ -416,7 +419,7 @@ abstract class MetaTileEntity(
         (this.getNeighbor(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
         writeCustomData(UPDATE_OUTPUT_MODE) {
             writeByte(side.index)
-            writeByte(_outputModes[side.index].id)
+            writeByte(mode.id)
         }
     }
 

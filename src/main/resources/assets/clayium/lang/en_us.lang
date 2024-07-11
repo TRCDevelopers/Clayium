@@ -857,10 +857,13 @@ item.clayium.itemClayPipingTools.IO.name=Clay IO Configurator
 item.clayium.itemClayPipingTools.IO.tooltip.line1=Input / Output(sneak)
 item.clayium.itemClayPipingTools.Piping.name=Clay Piping Configurator
 item.clayium.itemClayPipingTools.Piping.tooltip.line1=Piping / Rotation(sneak)
-item.clayium.itemClayPipingTools.Memory.name=Memory Card
-item.clayium.itemClayPipingTools.Memory.tooltip.line1=Stores machine IO settings.
-item.clayium.itemClayPipingTools.Memory.tooltip.line2=Right Click \: Load from memory
-item.clayium.itemClayPipingTools.Memory.tooltip.line3=Shift + Right Click \: Save to memory
+item.clayium.memory_card.name=Memory Card
+item.clayium.memory_card.copied=Copied machine IO settings.
+item.clayium.memory_card.pasted=Pasted machine IO settings.
+item.clayium.memory_card.failed=Failed to paste machine IO settings.
+item.clayium.memory_card.tooltip1=Stores machine IO settings.
+item.clayium.memory_card.tooltip2=Right Click \: Load from memory
+item.clayium.memory_card.tooltip3=Shift + Right Click \: Save to memory
 
 item.clayium.itemDirectionMemory.name=Direction Memory Card
 item.clayium.itemDirectionMemory.tooltip.line1=Used to configure in what direction
