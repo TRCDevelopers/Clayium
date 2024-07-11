@@ -1,7 +1,10 @@
 package com.github.trcdevelopers.clayium.common.recipe.loader
 
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
+import com.github.trcdevelopers.clayium.api.util.ClayTiers
+import com.github.trcdevelopers.clayium.api.util.ClayTiers.*
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
+import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
 import com.github.trcdevelopers.clayium.common.recipe.RecipeUtils
@@ -16,6 +19,7 @@ object MachineBlockRecipeLoader {
     fun registerRecipes() {
         //region Hulls
         val mainHullMaterials = listOf(
+            CMaterials.clay,
             CMaterials.clay,
             CMaterials.denseClay,
             CMaterials.industrialClay,
@@ -32,6 +36,7 @@ object MachineBlockRecipeLoader {
         )
 
         val circuits = listOf(
+            Unit, // not used, but needed for indexing
             MetaItemClayParts.CLAY_GEAR,
             MetaItemClayParts.CLAY_CIRCUIT,
             MetaItemClayParts.SIMPLE_CIRCUIT,
@@ -47,30 +52,43 @@ object MachineBlockRecipeLoader {
             MetaItemClayParts.CLAY_PSYCHE,
         )
 
-        for (i in 1..2) {
-            RecipeUtils.addShapedRecipe("machine_hull_$i", ItemStack(ClayiumBlocks.MACHINE_HULL, 1, i + 1),
-                "PPP", "PCP", "PPP",
-                'C', circuits[i],
-                'P', UnificationEntry(OrePrefix.largePlate, mainHullMaterials[i]))
-        }
-        for (i in 3..12) {
-            if (i == 4) {
-                RecipeUtils.addShapedRecipe("machine_hull_$i", ItemStack(ClayiumBlocks.MACHINE_HULL, 1, i + 1),
-                    "PEP", "SCS", "PSP",
-                    'E', MetaItemClayParts.CEE,
-                    'C', circuits[i],
-                    'S', UnificationEntry(OrePrefix.largePlate, CMaterials.silicone),
-                    'P', UnificationEntry(OrePrefix.largePlate, mainHullMaterials[i]))
-            } else {
-                RecipeUtils.addShapedRecipe("machine_hull_$i", ItemStack(ClayiumBlocks.MACHINE_HULL, 1, i + 1),
-                    "PEP", "PCP", "PPP",
-                    'E', MetaItemClayParts.CEE,
-                    'C', circuits[i],
-                    'P', UnificationEntry(OrePrefix.largePlate, mainHullMaterials[i]))
+        for (tier in ClayTiers.entries) {
+            val hull = ClayiumBlocks.MACHINE_HULL
+            val i = tier.numeric
+            when (tier) {
+                DEFAULT, CLAY -> {}
+                DENSE_CLAY ->
+                    RecipeUtils.addShapedRecipe("machine_hull_${tier.lowerName}", hull.getItem(tier),
+                        "PPP", "PCP", "PPP",
+                        'C', circuits[i],
+                        'P', UnificationEntry(OrePrefix.largePlate, mainHullMaterials[i]))
+                SIMPLE, BASIC, PRECISION, CLAY_STEEL, CLAYIUM,
+                ULTIMATE, ANTIMATTER, PURE_ANTIMATTER, OEC, OPA ->
+                    RecipeUtils.addShapedRecipe("machine_hull_${tier.lowerName}", hull.getItem(tier),
+                        "PEP", "PCP", "PPP",
+                        'E', MetaItemClayParts.CEE,
+                        'C', circuits[i],
+                        'P', UnificationEntry(OrePrefix.largePlate, mainHullMaterials[i]))
+                ADVANCED ->
+                    RecipeUtils.addShapedRecipe("machine_hull_${tier.lowerName}", hull.getItem(tier),
+                        "PEP", "SCS", "PSP",
+                        'E', MetaItemClayParts.CEE,
+                        'C', circuits[i],
+                        'S', UnificationEntry(OrePrefix.largePlate, CMaterials.silicone),
+                        'P', UnificationEntry(OrePrefix.largePlate, mainHullMaterials[i]))
+                AZ91D -> CRecipes.ASSEMBLER.builder()
+                    .input(OrePrefix.largePlate, CMaterials.az91d)
+                    .input(MetaItemClayParts.PRECISION_CIRCUIT)
+                    .output(hull.getItem(tier))
+                    .tier(4).CEt(ClayEnergy.milli(100)).duration(120)
+                ZK60A ->
+                    RecipeUtils.addShapedRecipe("machine_hull_${tier.lowerName}", hull.getItem(tier),
+                        "PPP", "PCP", "PPP",
+                        'C', MetaItemClayParts.PRECISION_CIRCUIT,
+                        'P', UnificationEntry(OrePrefix.largePlate, CMaterials.zk60a))
             }
         }
         //endregion
-
 
         registerAssembler(MetaTileEntities.BENDING_MACHINE) {
             input(OrePrefix.plate, CMaterials.denseClay, 3)

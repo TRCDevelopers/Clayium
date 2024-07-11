@@ -2,6 +2,7 @@ package com.github.trcdevelopers.clayium.api.util
 
 import com.github.trcdevelopers.clayium.api.util.CUtils.clayiumId
 import net.minecraft.item.EnumRarity
+import net.minecraft.util.IStringSerializable
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.IRarity
 
@@ -10,7 +11,7 @@ enum class ClayTiers(
     override val prefixTranslationKey: String,
     override val rarity: IRarity,
     val hullLocation: ResourceLocation = clayiumId("blocks/machinehull_tier$numeric"),
-) : ITier {
+) : ITier, IStringSerializable {
     DEFAULT(0, "tier.clayium.default", EnumRarity.COMMON),
     CLAY(1, "tier.clayium.clay", EnumRarity.COMMON),
     DENSE_CLAY(2, "tier.clayium.dense_clay", EnumRarity.COMMON),
@@ -26,7 +27,9 @@ enum class ClayTiers(
     OEC(12, "tier.clayium.oec", EnumRarity.EPIC),
     OPA(13, "tier.clayium.opa", EnumRarity.EPIC),
     AZ91D(6, "tier.clayium.az91d", EnumRarity.UNCOMMON, clayiumId("blocks/az91d_hull")),
+    ZK60A(6, "tier.clayium.zk60a", EnumRarity.UNCOMMON, clayiumId("blocks/zk60a_hull")),
     ;
 
-    override val lowerName = name.lowercase()
+    override val lowerName: String = name.lowercase()
+    override fun getName(): String = lowerName
 }
