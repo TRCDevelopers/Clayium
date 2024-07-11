@@ -108,6 +108,7 @@ open class CommonProxy {
 
         registerItem(registry, ClayiumItems.CLAY_PICKAXE)
         registerItem(registry, ClayiumItems.CLAY_SHOVEL)
+        registerItem(registry, ClayiumItems.MEMORY_CARD)
         registerItem(registry, ClayiumItems.SYNCHRONIZER)
         registerItem(registry, ClayiumItems.simpleItemFilter)
 
