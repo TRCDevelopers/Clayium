@@ -10,6 +10,7 @@ object CRecipeLoader {
         AssemblerRecipeLoader.registerRecipes()
         BendingMachineLoader.registerRecipes()
         CaCondenserRecipeLoader.registerRecipes()
+        CaInjectorRecipeLoader.registerRecipes()
         ChemicalReactorRecipeLoader.registerRecipes()
         ClayBlastFurnaceRecipeLoader.registerRecipes()
         ClayReactorRecipeLoader.registerRecipes()

@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.recipe.builder
 
+import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
@@ -53,6 +54,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun input(stack: ItemStack) = inputs(CItemRecipeInput(listOf(stack), stack.count))
     fun input(item: Item, amount: Int = 1) = input(ItemStack(item, amount))
     fun input(metaItem: MetaItemClayium.MetaValueItem, amount: Int = 1) = input(metaItem.getStackForm(amount))
+    fun input(metaTileEntity: MetaTileEntity, amount: Int = 1) = input(metaTileEntity.getStackForm(amount))
     fun input(block: Block, amount: Int = 1) = input(ItemStack(block, amount))
     fun input(oreDict: String, amount: Int = 1) = inputs(COreRecipeInput(oreDict, amount))
     open fun input(orePrefix: OrePrefix, material: Material, amount: Int = 1) = inputs(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
@@ -65,6 +67,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun output(stack: ItemStack) = outputs(stack)
     fun output(item: Item, amount: Int = 1) = output(ItemStack(item, amount))
     fun output(metaItem: MetaItemClayium.MetaValueItem, amount: Int = 1) = output(metaItem.getStackForm(amount))
+    fun output(metaTileEntity: MetaTileEntity, amount: Int = 1) = output(metaTileEntity.getStackForm(amount))
     fun output(block: Block, amount: Int = 1) = output(ItemStack(block, amount))
     fun output(oreDict: String, amount: Int = 1) = outputs(OreDictUnifier.get(oreDict, amount))
     fun output(orePrefix: OrePrefix, material: Material, amount: Int = 1) = outputs(OreDictUnifier.get(orePrefix, material, amount))

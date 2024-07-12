@@ -24,6 +24,7 @@ object MillingMachineRecipeLoader {
 
         registry.builder()
             .input(OrePrefix.plate, CMaterials.advancedIndustrialClay)
+            .output(MetaItemClayParts.CEE_BOARD)
             .tier(3).CEt(ClayEnergy.micro(20)).duration(32)
             .buildAndRegister()
     }

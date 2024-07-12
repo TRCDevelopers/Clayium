@@ -1,5 +1,6 @@
 package com.github.trcdevelopers.clayium.common.recipe
 
+import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.clayiumId
 import com.github.trcdevelopers.clayium.common.Clayium
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
@@ -28,12 +29,12 @@ object RecipeUtils {
     }
 
     fun addShapedRecipe(registryName: String, result: ItemStack, isMirrored: Boolean, vararg recipe: Any) {
-        val registryName = clayiumId(registryName)
-        if (validateRecipe(registryName, result, recipe)) {
+        val actualRegName = clayiumId(registryName)
+        if (validateRecipe(actualRegName, result, recipe)) {
             ForgeRegistries.RECIPES.register(
                 ShapedOreRecipe(null, result, *finalizeRecipe(recipe))
                     .setMirrored(isMirrored)
-                    .setRegistryName(registryName))
+                    .setRegistryName(actualRegName))
         }
     }
 
@@ -44,7 +45,7 @@ object RecipeUtils {
 
     private fun finalizeRecipe(recipe: Array<out Any>): Array<out Any> {
         val arr = Array<Any>(recipe.size) {}
-        for (i in 0..<recipe.size)  {
+        for (i in recipe.indices)  {
             arr[i] = finalizeIngredient(recipe[i])
         }
         return arr
@@ -54,6 +55,7 @@ object RecipeUtils {
         return when (ingredient) {
             is MetaItemClayium.MetaValueItem -> ingredient.getStackForm()
             is UnificationEntry -> ingredient.toString()
+            is MetaTileEntity -> ingredient.getStackForm()
             else -> ingredient
         }
     }
