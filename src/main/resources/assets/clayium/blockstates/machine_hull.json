@@ -2,6 +2,12 @@
   "forge_marker": 1,
   "variants": {
     "variant": {
+      "default": {
+        "textures": {
+          "all":"clayium:blocks/raw_clay_machine_hull"
+        },
+        "model": "cube_all"
+      },
       "clay": {
         "textures": {
           "all":"clayium:blocks/machinehull_tier1"

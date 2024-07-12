@@ -4,6 +4,7 @@ import com.github.trcdevelopers.clayium.common.recipe.handler.MaterialRecipeHand
 
 object CRecipeLoader {
     fun load() {
+        CraftingRecipeLoader.registerRecipes()
         MaterialRecipeHandler.registerRecipes()
 
         AssemblerRecipeLoader.registerRecipes()

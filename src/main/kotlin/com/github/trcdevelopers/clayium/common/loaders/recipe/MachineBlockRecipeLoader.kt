@@ -56,7 +56,11 @@ object MachineBlockRecipeLoader {
             val hull = ClayiumBlocks.MACHINE_HULL
             val i = tier.numeric
             when (tier) {
-                DEFAULT, CLAY -> {}
+                DEFAULT -> RecipeUtils.addShapedRecipe("raw_clay_machine_hull", hull.getItem(tier),
+                    "PPP", "PGP", "PPP",
+                    'P', UnificationEntry(OrePrefix.largePlate, CMaterials.clay),
+                    'G', UnificationEntry(OrePrefix.gear, CMaterials.clay))
+                CLAY -> RecipeUtils.addSmeltingRecipe(hull.getItem(DEFAULT), hull.getItem(CLAY))
                 DENSE_CLAY ->
                     RecipeUtils.addShapedRecipe("machine_hull_${tier.lowerName}", hull.getItem(tier),
                         "PPP", "PCP", "PPP",
