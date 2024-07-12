@@ -35,9 +35,9 @@ object MachineBlockRecipeLoader {
             CMaterials.octuplePureAntimatter,
         )
 
-        val circuits = listOf(
+        val circuits: List<Any> = listOf(
             Unit, // not used, but needed for indexing
-            MetaItemClayParts.CLAY_GEAR,
+            UnificationEntry(OrePrefix.gear, CMaterials.clay),
             MetaItemClayParts.CLAY_CIRCUIT,
             MetaItemClayParts.SIMPLE_CIRCUIT,
             MetaItemClayParts.BASIC_CIRCUIT,

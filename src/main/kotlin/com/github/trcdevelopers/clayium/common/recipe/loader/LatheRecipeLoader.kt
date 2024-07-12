@@ -4,7 +4,18 @@ import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
+import com.github.trcdevelopers.clayium.common.unification.material.CMaterials.clay
+import com.github.trcdevelopers.clayium.common.unification.material.CMaterials.denseClay
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix.Companion.block
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix.Companion.cylinder
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix.Companion.disc
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix.Companion.needle
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix.Companion.ring
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix.Companion.shortStick
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix.Companion.smallDisc
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix.Companion.smallRing
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix.Companion.stick
 import net.minecraft.init.Items
 
 object LatheRecipeLoader {
@@ -13,67 +24,67 @@ object LatheRecipeLoader {
 
         registry.builder()
             .input(Items.CLAY_BALL)
-            .output(MetaItemClayParts.CLAY_SHORT_STICK)
+            .output(shortStick, clay)
             .tier(0).CEt(ClayEnergy.micro(10)).duration(1)
             .buildAndRegister()
 
         registry.builder()
             .input(MetaItemClayParts.LARGE_CLAY_BALL)
-            .output(MetaItemClayParts.CLAY_CYLINDER)
+            .output(cylinder, clay)
             .tier(0).CEt(ClayEnergy.micro(10)).duration(4)
             .buildAndRegister()
 
         registry.builder()
-            .input(MetaItemClayParts.CLAY_CYLINDER)
-            .output(MetaItemClayParts.CLAY_NEEDLE)
+            .input(cylinder, clay)
+            .output(needle, clay)
             .tier(0).CEt(ClayEnergy.micro(10)).duration(3)
             .buildAndRegister()
 
         registry.builder()
-            .input(MetaItemClayParts.CLAY_NEEDLE)
-            .output(MetaItemClayParts.CLAY_STICK, 6)
+            .input(needle, clay)
+            .output(stick, clay, 6)
             .tier(0).CEt(ClayEnergy.micro(10)).duration(3)
             .buildAndRegister()
 
         registry.builder()
-            .input(MetaItemClayParts.CLAY_DISC)
-            .output(MetaItemClayParts.CLAY_RING)
+            .input(disc, clay)
+            .output(ring, clay)
             .tier(0).CEt(ClayEnergy.micro(10)).duration(2)
             .buildAndRegister()
 
         registry.builder()
-            .input(MetaItemClayParts.CLAY_SMALL_DISC)
-            .output(MetaItemClayParts.CLAY_SMALL_RING)
+            .input(smallDisc, clay)
+            .output(smallRing, clay)
             .tier(0).CEt(ClayEnergy.micro(10)).duration(1)
             .buildAndRegister()
 
         registry.builder()
-            .input(OrePrefix.block, CMaterials.denseClay, 2)
-            .output(MetaItemClayParts.DENSE_CLAY_CYLINDER)
+            .input(block, denseClay, 2)
+            .output(cylinder, denseClay)
             .tier(0).CEt(ClayEnergy.micro(10)).duration(4)
             .buildAndRegister()
 
         registry.builder()
-            .input(MetaItemClayParts.DENSE_CLAY_CYLINDER)
-            .output(MetaItemClayParts.DENSE_CLAY_NEEDLE)
+            .input(cylinder, denseClay)
+            .output(needle, denseClay)
             .tier(0).CEt(ClayEnergy.micro(10)).duration(6)
             .buildAndRegister()
 
         registry.builder()
-            .input(MetaItemClayParts.DENSE_CLAY_NEEDLE)
-            .output(MetaItemClayParts.DENSE_CLAY_STICK, 6)
+            .input(needle, denseClay)
+            .output(stick, denseClay, 6)
             .tier(0).CEt(ClayEnergy.micro(10)).duration(6)
             .buildAndRegister()
 
         registry.builder()
-            .input(MetaItemClayParts.DENSE_CLAY_DISC)
-            .output(MetaItemClayParts.DENSE_CLAY_RING)
+            .input(disc, denseClay)
+            .output(ring, denseClay)
             .tier(0).CEt(ClayEnergy.micro(10)).duration(4)
             .buildAndRegister()
 
         registry.builder()
-            .input(MetaItemClayParts.DENSE_CLAY_SMALL_DISC)
-            .output(MetaItemClayParts.DENSE_CLAY_SMALL_RING)
+            .input(smallDisc, denseClay)
+            .output(smallRing, denseClay)
             .tier(0).CEt(ClayEnergy.micro(10)).duration(2)
             .buildAndRegister()
 

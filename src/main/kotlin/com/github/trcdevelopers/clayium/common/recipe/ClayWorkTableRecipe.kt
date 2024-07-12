@@ -2,6 +2,7 @@ package com.github.trcdevelopers.clayium.common.recipe
 
 import com.github.trcdevelopers.clayium.common.blocks.clayworktable.ClayWorkTableMethod
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
+import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import com.github.trcdevelopers.clayium.common.unification.stack.UnificationEntry
@@ -44,8 +45,7 @@ class ClayWorkTableRecipe(
 
     class Builder {
         private lateinit var input: RecipeInput
-        private lateinit var primaryOutput: ItemStack
-        private var secondaryOutput: ItemStack = ItemStack.EMPTY
+        private val outputs: MutableList<ItemStack> = mutableListOf()
         private lateinit var method: ClayWorkTableMethod
         private var clicks: Int = 1
 
@@ -60,12 +60,14 @@ class ClayWorkTableRecipe(
         fun input(item: MetaItemClayium.MetaValueItem, amount: Int = 1) { input(RecipeInput(Ingredient.fromStacks(item.getStackForm(1)), amount)) }
         fun input(orePrefix: OrePrefix, material: Material, amount: Int = 1) { input(RecipeInput(OreIngredient(UnificationEntry(orePrefix, material).toString()), amount)) }
 
-        fun outputs(primaryOutput: ItemStack, secondaryOutput: ItemStack = ItemStack.EMPTY) {
-            this.primaryOutput = primaryOutput
-            this.secondaryOutput = secondaryOutput
-        }
+        fun output(itemStack: ItemStack) { outputs.add(itemStack) }
+        fun output(item: Item, amount: Int = 1) { output(ItemStack(item, amount)) }
+        fun output(item: MetaItemClayium.MetaValueItem, amount: Int = 1) { output(item.getStackForm(amount)) }
+        fun output(orePrefix: OrePrefix, material: Material, amount: Int = 1) { output(OreDictUnifier.get(orePrefix, material, 1)) }
 
         fun build(): ClayWorkTableRecipe {
+            val primaryOutput = outputs[0]
+            val secondaryOutput = if (outputs.size > 1) outputs[1] else ItemStack.EMPTY
             return ClayWorkTableRecipe(input, primaryOutput, secondaryOutput, method, clicks)
         }
     }

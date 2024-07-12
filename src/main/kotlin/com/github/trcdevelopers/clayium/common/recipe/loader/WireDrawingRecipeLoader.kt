@@ -3,6 +3,8 @@ package com.github.trcdevelopers.clayium.common.recipe.loader
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
+import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
+import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import net.minecraft.init.Items
 
 object WireDrawingRecipeLoader {
@@ -11,44 +13,28 @@ object WireDrawingRecipeLoader {
 
         registry.builder()
             .input(Items.CLAY_BALL)
-            .output(MetaItemClayParts.CLAY_STICK)
+            .output(OrePrefix.stick, CMaterials.clay)
             .tier(0).CEt(ClayEnergy.micro(10)).duration(1)
             .buildAndRegister()
 
-        registry.builder()
-            .input(MetaItemClayParts.CLAY_PIPE)
-            .output(MetaItemClayParts.CLAY_STICK, 4)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(2)
-            .buildAndRegister()
+        for ((i, material) in listOf(CMaterials.clay, CMaterials.denseClay).withIndex()) {
+            registry.builder()
+                .input(OrePrefix.pipe, material)
+                .output(OrePrefix.stick, material, 4)
+                .tier(0).CEt(ClayEnergy.micro(10)).duration(1 * i)
+                .buildAndRegister()
 
-        registry.builder()
-            .input(MetaItemClayParts.CLAY_CYLINDER)
-            .output(MetaItemClayParts.CLAY_STICK, 8)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(3)
-            .buildAndRegister()
+            registry.builder()
+                .input(OrePrefix.smallDisc, material)
+                .output(OrePrefix.stick, material)
+                .tier(0).CEt(ClayEnergy.micro(10)).duration(1 * i)
+                .buildAndRegister()
 
-        registry.builder()
-            .input(MetaItemClayParts.CLAY_SMALL_DISC)
-            .output(MetaItemClayParts.CLAY_STICK)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(1)
-            .buildAndRegister()
-
-        registry.builder()
-            .input(MetaItemClayParts.DENSE_CLAY_SMALL_DISC)
-            .output(MetaItemClayParts.DENSE_CLAY_STICK)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(2)
-            .buildAndRegister()
-
-        registry.builder()
-            .input(MetaItemClayParts.DENSE_CLAY_PIPE)
-            .output(MetaItemClayParts.DENSE_CLAY_STICK, 4)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(4)
-            .buildAndRegister()
-
-        registry.builder()
-            .input(MetaItemClayParts.DENSE_CLAY_CYLINDER)
-            .output(MetaItemClayParts.DENSE_CLAY_STICK, 8)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(6)
-            .buildAndRegister()
+            registry.builder()
+                .input(OrePrefix.cylinder, material)
+                .output(OrePrefix.stick, material, 8)
+                .tier(0).CEt(ClayEnergy.micro(10)).duration(3* i)
+                .buildAndRegister()
+        }
     }
 }
