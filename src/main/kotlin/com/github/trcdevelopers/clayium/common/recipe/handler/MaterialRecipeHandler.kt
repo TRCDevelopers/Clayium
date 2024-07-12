@@ -165,9 +165,8 @@ object MaterialRecipeHandler {
                     "CCC",
                     'C', UnificationEntry(OrePrefix.block, material))
 
-                RecipeUtils.addShapedRecipe("${compressedInto.materialId.path}_block_decompose",
-                    OreDictUnifier.get(OrePrefix.block, material, 9),
-                    "C", 'C', UnificationEntry(OrePrefix.block, compressedInto))
+                RecipeUtils.addShapelessRecipe("${compressedInto.materialId.path}_block_decompose",
+                    OreDictUnifier.get(OrePrefix.block, material, 9), UnificationEntry(OrePrefix.block, compressedInto))
 
                 CRecipes.DECOMPOSER.register {
                     input(OrePrefix.block, compressedInto)
