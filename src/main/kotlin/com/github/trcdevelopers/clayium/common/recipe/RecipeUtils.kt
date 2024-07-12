@@ -9,14 +9,14 @@ import net.minecraftforge.oredict.ShapedOreRecipe
 
 object RecipeUtils {
 
-    fun addShapedRecipe(name: String, result: ItemStack, vararg recipe: Any) {
-        addShapedRecipe(name, result, false, *recipe)
+    fun addShapedRecipe(registryName: String, result: ItemStack, vararg recipe: Any) {
+        addShapedRecipe(registryName, result, false, *recipe)
     }
 
-    fun addShapedRecipe(name: String, result: ItemStack, isMirrored: Boolean, vararg recipe: Any) {
+    fun addShapedRecipe(registryName: String, result: ItemStack, isMirrored: Boolean, vararg recipe: Any) {
         ForgeRegistries.RECIPES.register(ShapedOreRecipe(null, result, *finalizeRecipe(recipe))
             .setMirrored(isMirrored)
-            .setRegistryName(clayiumId(name)))
+            .setRegistryName(clayiumId(registryName)))
     }
 
     private fun finalizeRecipe(recipe: Array<out Any>): Array<out Any> {

@@ -22,7 +22,7 @@ import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trcdevelopers.clayium.common.loaders.OreDictionaryLoader
 import com.github.trcdevelopers.clayium.common.metatileentity.MetaTileEntities
-import com.github.trcdevelopers.clayium.common.recipe.loader.CRecipeLoader
+import com.github.trcdevelopers.clayium.common.loaders.recipe.CRecipeLoader
 import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import com.github.trcdevelopers.clayium.common.util.DebugUtils

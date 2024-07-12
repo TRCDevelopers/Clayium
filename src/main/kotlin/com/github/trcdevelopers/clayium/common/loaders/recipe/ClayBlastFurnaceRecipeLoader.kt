@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.common.recipe.loader
+package com.github.trcdevelopers.clayium.common.loaders.recipe
 
 import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy

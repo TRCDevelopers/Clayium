@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.common.recipe.loader
+package com.github.trcdevelopers.clayium.common.loaders.recipe
 
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.util.ClayTiers
@@ -61,21 +61,24 @@ object MachineBlockRecipeLoader {
                     RecipeUtils.addShapedRecipe("machine_hull_${tier.lowerName}", hull.getItem(tier),
                         "PPP", "PCP", "PPP",
                         'C', circuits[i],
-                        'P', UnificationEntry(OrePrefix.largePlate, mainHullMaterials[i]))
+                        'P', UnificationEntry(OrePrefix.largePlate, mainHullMaterials[i])
+                    )
                 SIMPLE, BASIC, PRECISION, CLAY_STEEL, CLAYIUM,
                 ULTIMATE, ANTIMATTER, PURE_ANTIMATTER, OEC, OPA ->
                     RecipeUtils.addShapedRecipe("machine_hull_${tier.lowerName}", hull.getItem(tier),
                         "PEP", "PCP", "PPP",
                         'E', MetaItemClayParts.CEE,
                         'C', circuits[i],
-                        'P', UnificationEntry(OrePrefix.largePlate, mainHullMaterials[i]))
+                        'P', UnificationEntry(OrePrefix.largePlate, mainHullMaterials[i])
+                    )
                 ADVANCED ->
                     RecipeUtils.addShapedRecipe("machine_hull_${tier.lowerName}", hull.getItem(tier),
                         "PEP", "SCS", "PSP",
                         'E', MetaItemClayParts.CEE,
                         'C', circuits[i],
                         'S', UnificationEntry(OrePrefix.largePlate, CMaterials.silicone),
-                        'P', UnificationEntry(OrePrefix.largePlate, mainHullMaterials[i]))
+                        'P', UnificationEntry(OrePrefix.largePlate, mainHullMaterials[i])
+                    )
                 AZ91D -> CRecipes.ASSEMBLER.builder()
                     .input(OrePrefix.largePlate, CMaterials.az91d)
                     .input(MetaItemClayParts.PRECISION_CIRCUIT)
@@ -86,7 +89,8 @@ object MachineBlockRecipeLoader {
                     RecipeUtils.addShapedRecipe("machine_hull_${tier.lowerName}", hull.getItem(tier),
                         "PPP", "PCP", "PPP",
                         'C', MetaItemClayParts.PRECISION_CIRCUIT,
-                        'P', UnificationEntry(OrePrefix.largePlate, CMaterials.zk60a))
+                        'P', UnificationEntry(OrePrefix.largePlate, CMaterials.zk60a)
+                    )
             }
         }
         //endregion
