@@ -39,7 +39,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
         return this as R
     }
 
-    fun inputs(vararg inputsIn: CRecipeInput): R {
+    private fun inputs(vararg inputsIn: CRecipeInput): R {
         inputsIn.forEach { input ->
             if (input.amount <= 0) {
                 Clayium.LOGGER.error("input amount must be greater than 0")
@@ -57,7 +57,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun input(oreDict: String, amount: Int = 1) = inputs(COreRecipeInput(oreDict, amount))
     open fun input(orePrefix: OrePrefix, material: Material, amount: Int = 1) = inputs(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
 
-    fun outputs(vararg stacks: ItemStack): R {
+    private fun outputs(vararg stacks: ItemStack): R {
         outputs.addAll(stacks)
         return this as R
     }

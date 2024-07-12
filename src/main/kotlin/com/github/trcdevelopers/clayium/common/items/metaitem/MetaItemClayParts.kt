@@ -10,6 +10,7 @@ import net.minecraftforge.common.capabilities.Capability
 @Suppress("unused")
 object MetaItemClayParts : MetaItemClayium("clay_parts") {
 
+    //todo UpperCamel or lowerCamel
     //region Circuits
     val CLAY_CIRCUIT = addItem(0, "clay_circuit").tier(2)
     val SIMPLE_CIRCUIT = addItem(1, "simple_circuit").tier(3)
@@ -29,31 +30,33 @@ object MetaItemClayParts : MetaItemClayium("clay_parts") {
     val CEE_BOARD = addItem(13, "cee_board").tier(3)
     //endregion
 
-    val LARGE_CLAY_BALL = addItem(48, "large_clay_ball").tier(2)
+    val LARGE_CLAY_BALL = addItem(14, "large_clay_ball").tier(2)
 
-    val COMPRESSED_CLAY_SHARD = addItem(49, "compressed_clay_shard").tier(1)
-    val INDUSTRIAL_CLAY_SHARD = addItem(50, "industrial_clay_shard").tier(2)
-    val ADV_INDUSTRIAL_CLAY_SHARD = addItem(51, "adv_industrial_clay_shard").tier(3)
+    val COMPRESSED_CLAY_SHARD = addItem(15, "compressed_clay_shard").tier(1)
+    val INDUSTRIAL_CLAY_SHARD = addItem(16, "industrial_clay_shard").tier(2)
+    val ADV_INDUSTRIAL_CLAY_SHARD = addItem(17, "adv_industrial_clay_shard").tier(3)
 
-    val CLAY_GADGET_PARTS = addItem(52, "clay_gadget_parts").tier(6)
+    val CLAY_GADGET_PARTS = addItem(18, "clay_gadget_parts").tier(6)
 
-    val MANIPULATOR_MK1 = addItem(53, "manipulator_mk1").tier(6)
-    val MANIPULATOR_MK2 = addItem(54, "manipulator_mk2").tier(8)
-    val MANIPULATOR_MK3 = addItem(55, "manipulator_mk3").tier(12)
+    val MANIPULATOR_MK1 = addItem(19, "manipulator_mk1").tier(6)
+    val MANIPULATOR_MK2 = addItem(20, "manipulator_mk2").tier(8)
+    val MANIPULATOR_MK3 = addItem(21, "manipulator_mk3").tier(12)
 
-    val LASER_PARTS = addItem(56, "laser_parts").tier(7)
-    val TELEPORTATION_PARTS = addItem(57, "teleportation_parts").tier(11)
+    val LaserParts = addItem(22, "laser_parts").tier(7)
+    val SynchronousParts = addItem(23, "synchronous_parts").tier(9)
+        .tooltip("item.clayium.synchronous_parts.tooltip")
+    val TeleportationParts = addItem(24, "teleportation_parts").tier(11)
 
-    val ANTIMATTER_SEED = addItem(58, "antimatter_seed").tier(9)
+    val ANTIMATTER_SEED = addItem(25, "antimatter_seed").tier(9)
 
-    val EnergeticClayDust = addItem(59, "energetic_clay_dust").tier(3)
-    val ExcitedClayDust = addItem(60, "excited_clay_dust").tier(7)
-    val CEECircuit = addItem(61, "cee_circuit")
-    val CEE = addItem(62, "cee")
+    val EnergeticClayDust = addItem(26, "energetic_clay_dust").tier(3)
+    val ExcitedClayDust = addItem(27, "excited_clay_dust").tier(7)
+    val CEECircuit = addItem(28, "cee_circuit")
+    val CEE = addItem(29, "cee")
 
-    val RawClayRollingPin = createRawClayConfigTool(63, "raw_clay_rolling_pin").tier(1)
-    val RawClaySlicer = createRawClayConfigTool(64, "raw_clay_slicer").tier(1)
-    val RawClaySpatula = createRawClayConfigTool(65, "raw_clay_spatula").tier(1)
+    val RawClayRollingPin = createRawClayConfigTool(30, "raw_clay_rolling_pin").tier(1)
+    val RawClaySlicer = createRawClayConfigTool(31, "raw_clay_slicer").tier(1)
+    val RawClaySpatula = createRawClayConfigTool(32, "raw_clay_spatula").tier(1)
 
     private fun createRawClayConfigTool(meta: Short, name: String): MetaValueItem {
         return addItem(meta, name)

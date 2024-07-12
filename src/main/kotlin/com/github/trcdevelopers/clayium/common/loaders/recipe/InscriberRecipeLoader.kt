@@ -44,12 +44,5 @@ object InscriberRecipeLoader {
             .output(MetaItemClayParts.PRECISION_CIRCUIT)
             .tier(0).CEt(ClayEnergy.milli(10)).duration(120)
             .buildAndRegister()
-
-        registry.builder()
-            .input(MetaItemClayParts.PRECISION_CIRCUIT)
-            .input(MetaItemClayParts.EnergeticClayDust, 32)
-            .output(MetaItemClayParts.INTEGRATED_CIRCUIT)
-            .tier(0).CEt(ClayEnergy.milli(100)).duration(1200)
-            .buildAndRegister()
     }
 }
