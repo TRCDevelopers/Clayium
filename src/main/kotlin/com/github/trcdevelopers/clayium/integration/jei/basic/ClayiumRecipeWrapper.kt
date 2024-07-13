@@ -16,7 +16,7 @@ open class ClayiumRecipeWrapper(
     }
 
     override fun drawInfo(minecraft: Minecraft, recipeWidth: Int, recipeHeight: Int, mouseX: Int, mouseY: Int) {
-        val energyConsumed = NumberFormat.formatWithMaxDigits(recipe.cePerTick.energy.toDouble() * recipe.duration, 3)
+        val energyConsumed = NumberFormat.formatWithMaxDigits((recipe.cePerTick.energy.toDouble() * recipe.duration) / 100_000, 3)
         val craftTime = NumberFormat.formatWithMaxDigits(recipe.duration.toDouble(), 3)
         minecraft.fontRenderer.drawString("Tier: ${recipe.tierNumeric}", 6, 43, 0x404040)
         minecraft.fontRenderer.drawString(

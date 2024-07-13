@@ -21,6 +21,22 @@ clayium.ore_prefix.matter=%s
 clayium.ore_prefix.plate=%s Plate
 clayium.ore_prefix.large_plate=Large %s Plate
 clayium.ore_prefix.block=%s Block
+clayium.ore_prefix.bearing=%s Bearing
+clayium.ore_prefix.blade=%s Blade
+clayium.ore_prefix.cutting_head=%s Cutting Head
+clayium.ore_prefix.cylinder=%s Cylinder
+clayium.ore_prefix.disc=%s Disc
+clayium.ore_prefix.gear=%s Gear
+clayium.ore_prefix.grinding_head=%s Grinding Head
+clayium.ore_prefix.needle=%s Needle
+clayium.ore_prefix.pipe=%s Pipe
+clayium.ore_prefix.ring=%s Ring
+clayium.ore_prefix.short_stick=%s Short Stick
+clayium.ore_prefix.small_disc=%s Small Disc
+clayium.ore_prefix.small_ring=%s Small Ring
+clayium.ore_prefix.spindle=%s Spindle
+clayium.ore_prefix.stick=%s Stick
+clayium.ore_prefix.wheel=%s Wheel
 
 clayium.material.clay=Clay
 clayium.material.dense_clay=Dense Clay
@@ -35,7 +51,7 @@ clayium.material.compressed_energetic_clay4=Quadruple Compressed Energetic Clay
 clayium.material.compressed_energetic_clay5=Quintuple Compressed Energetic Clay
 clayium.material.compressed_energetic_clay6=Sextuple Compressed Energetic Clay
 clayium.material.compressed_energetic_clay7=Septuple Compressed Energetic Clay
-clayium.material.octuple_energy_clay=OCEC
+clayium.material.octuple_energy_clay=OEC
 
 clayium.material.impure_silicon=Impure Silicon
 clayium.material.silicone=Silicone
@@ -129,6 +145,7 @@ clayium.material.salt=Salt
 clayium.material.saltpeter=Saltpeter
 clayium.material.sodium_carbonate=Sodium Carbonate
 clayium.material.sulfur=Sulfur
+clayium.material.impure_ultimate=Impure Ultimate Alloy
 
 # Special Keys for material items/blocks
 clayium.material.dense_clay.block=Dense Clay
@@ -145,6 +162,16 @@ clayium.material.compressed_energetic_clay6.block=Sextuple Compressed Energetic 
 clayium.material.compressed_energetic_clay7.block=Septuple Compressed Energetic Clay
 clayium.material.octuple_energy_clay.block=Octuple Compressed Energetic Clay
 clayium.material.octuple_pure_antimatter.matter=Octuple Compressed Pure Antimatter
+clayium.material.antimatter.gem=Antimatter
+clayium.material.pure_antimatter.gem=Pure Antimatter
+clayium.material.pure_antimatter1.gem=Compressed Pure Antimatter
+clayium.material.pure_antimatter2.gem=Double Compressed Pure Antimatter
+clayium.material.pure_antimatter3.gem=Triple Compressed Pure Antimatter
+clayium.material.pure_antimatter4.gem=Quadruple Compressed Pure Antimatter
+clayium.material.pure_antimatter5.gem=Quintuple Compressed Pure Antimatter
+clayium.material.pure_antimatter6.gem=Sextuple Compressed Pure Antimatter
+clayium.material.pure_antimatter7.gem=Septuple Compressed Pure Antimatter
+clayium.material.octuple_pure_antimatter.gem=Octuple Compressed Pure Antimatter
 
 machine.clayium.tier1=Clay
 machine.clayium.tier2=Dense Clay
@@ -173,7 +200,10 @@ tier.clayium.antimatter=Antimatter
 tier.clayium.pure_antimatter=Pure Antimatter
 tier.clayium.oec=OEC
 tier.clayium.opa=OPA
+tier.clayium.az91d=AZ91D
+tier.clayium.zk60a=ZK60A
 
+tile.clayium.machine_hull.default=Raw Clay Machine Hull
 tile.clayium.machine_hull=%s Machine Hull
 
 recipe.clayium.second=%1$s sec
@@ -255,8 +285,8 @@ tile.clayium.blockRawClayMachineHull.0.name=Raw Clay Machine Hull
 tile.clayium.blockAZ91DHull.name=AZ91D Alloy Hull
 tile.clayium.blockZK60AHull.name=ZK60A Alloy Hull
 
-tile.clayium.clay_work_table.name=Clay Work Table
-tile.clayium.clay_work_table.tooltip=The first step to Clay Industry.
+tile.clayium.clay_work_table=Clay Work Table
+tile.clayium.clay_work_table.tooltip1=The first step to Clay Industry.
 tile.clayium.blockClayCraftingTable.name=Clay Crafting Board
 tile.clayium.blockClayCraftingTable.tooltip.line1=A convenient version of vanilla Crafting Table.
 tile.clayium.blockClayCraftingTable.tooltip.line2=__DETAIL__
@@ -339,12 +369,12 @@ tile.clayium.blockAutoClayCondenser.tooltip.line1=Condenses clay automatically.
 tile.clayium.blockAutoClayCondenserMK2.name=Automatic Clay Condenser Mk II
 tile.clayium.blockAutoClayCondenserMK2.tooltip.line1=Condenses clay automatically.
 tile.clayium.blockAutoClayCondenserMK2.tooltip.line2=Much faster than Mk I.
-tile.clayium.blockQuartzCrucible.name=Quartz Crucible
-tile.clayium.blockQuartzCrucible.tooltip.line1=Purifies impure silicon.
-tile.clayium.blockQuartzCrucible.tooltip.line2=__DETAIL__
-tile.clayium.blockQuartzCrucible.tooltip.line3=1. Drop Impure Silicon Ingots.
-tile.clayium.blockQuartzCrucible.tooltip.line4=2. Wait a few minutes.
-tile.clayium.blockQuartzCrucible.tooltip.line5=3. Drop a string.
+tile.clayium.quartz_crucible=Quartz Crucible
+tile.clayium.quartz_crucible.tooltip1=Purifies impure silicon.
+tile.clayium.quartz_crucible.tooltip2=__DETAIL__
+tile.clayium.quartz_crucible.tooltip3=1. Drop Impure Silicon Ingots.
+tile.clayium.quartz_crucible.tooltip4=2. Wait a few minutes.
+tile.clayium.quartz_crucible.tooltip5=3. Drop a string.
 
 machine.clayium.solar_clay_fabricator.advanced=Solar Clay Fabricator Mk I
 machine.clayium.solar_clay_fabricator.advanced.tooltip1=Increases the number of compression of clay
@@ -445,13 +475,9 @@ machine.clayium.resonating_collector=CA Resonating Collector
 machine.clayium.resonating_collector.tooltip1=Collects antimatter with resonance.
 machine.clayium.resonating_collector.tooltip2=Requires Resonators.
 
-tile.clayium.blockResonator.antimatter.name=Antimatter Resonator
-tile.clayium.blockResonator.pureantimatter.name=Pure Antimatter Resonator
-tile.clayium.blockResonator.oec.name=OEC Resonator
-tile.clayium.blockResonator.opa.name=OPA Resonator
-tooltip.clayium.Resonator.line1=Increases the efficiency of CA machines
-tooltip.clayium.Resonator.line2=in the area of 5x5x5.
-tooltip.clayium.Resonator.resonance=Resonance \: x%1$4.3g
+tile.clayium.resonator=%s Resonator
+tooltip.clayium.resonator.tooltip1=Increases the efficiency of CA machines
+tooltip.clayium.resonator.tooltip2=in the area of 5x5x5.
 
 tile.clayium.blockOverclocker.antimatter.name=Antimatter Overclocker
 tile.clayium.blockOverclocker.pureantimatter.name=Pure Antimatter Overclocker
@@ -568,7 +594,7 @@ tile.clayium.blockClayTreeLog.name=Clay Tree Log
 tile.clayium.blockClayTreeLeaf.name=Clay Tree Leaf
 
 tile.clayium.blockClayChunkLoader.name=3x3 Chunk Loader
-tile.clayium.blockStorageContainer.name=Storage Container
+machine.clayium.storage_container=Storage Container
 tile.clayium.blockVacuumContainer.name=Void Container
 tile.clayium.blockVacuumContainer.tooltip.line1=Deletes any item entering it.
 tile.clayium.blockAutoTrader.name=Auto Trader
@@ -645,7 +671,7 @@ tooltip.clayium.FluidTranslator.line2=stacks of Clay Fluid Capsule.
 tile.clayium.blockAdvancedFluidTransferMachine.name=Fluid Transfer Machine
 tile.clayium.blockAdvancedFluidTransferMachine.tooltip.line1=Fills or empties liquid containers.
 
-tile.clayium.blockCreativeCESource.name=Creative CE Source
+tile.clayium.creative_energy_source.name=Creative CE Source
 
 tile.clayium.blockBasicRFGenerator.name=CE-RF Converter
 tile.clayium.blockAdvancedRFGenerator.name=Advanced CE-RF Converter
@@ -839,24 +865,24 @@ tile.clayium.blockSilicone.green.name=Green Silicone Block
 tile.clayium.blockSilicone.red.name=Red Silicone Block
 tile.clayium.blockSilicone.black.name=Black Silicone Block
 
+item.clayium.large_clay_ball.name=Large Clay Ball
+
 item.clayium.filter_remover.tooltip1=Deletes filters applied to machines.
-item.clayium.raw_clay_rolling_ping.name=Raw Clay Rolling Pin
-item.clayium.itemRawClayCraftingTools.Slicer.name=Raw Clay Slicer
-item.clayium.itemRawClayCraftingTools.Slicer.tooltip.line1=Deletes filters applied to machines.
-item.clayium.itemRawClayCraftingTools.Spatula.name=Raw Clay Spatula
-item.clayium.itemRawClayCraftingTools.Spatula.tooltip.line1=Deletes filters applied to machines.
-item.clayium.itemClayRollingPin.name=Clay Rolling Pin
-item.clayium.itemClayRollingPin.tooltip.line1=Machine Input Configurator
-item.clayium.itemClaySlicer.name=Clay Slicer
-item.clayium.itemClaySlicer.tooltip.line1=Machine Output Configurator
-item.clayium.itemClaySpatula.name=Clay Spatula
-item.clayium.itemClaySpatula.tooltip.line1=Changes a machine's appearance to Pipe.
-item.clayium.itemClayWrench.name=Clay Wrench
-item.clayium.itemClayWrench.tooltip.line1=Rotates machines.
-item.clayium.itemClayPipingTools.IO.name=Clay IO Configurator
-item.clayium.itemClayPipingTools.IO.tooltip.line1=Input / Output(sneak)
-item.clayium.itemClayPipingTools.Piping.name=Clay Piping Configurator
-item.clayium.itemClayPipingTools.Piping.tooltip.line1=Piping / Rotation(sneak)
+item.clayium.raw_clay_rolling_pin.name=Raw Clay Rolling Pin
+item.clayium.raw_clay_slicer.name=Raw Clay Slicer
+item.clayium.raw_clay_spatula.name=Raw Clay Spatula
+item.clayium.clay_rolling_pin.name=Clay Rolling Pin
+item.clayium.clay_rolling_pin.tooltip1=Machine Input Configurator
+item.clayium.clay_slicer.name=Clay Slicer
+item.clayium.clay_slicer.tooltip1=Machine Output Configurator
+item.clayium.clay_spatula.name=Clay Spatula
+item.clayium.clay_spatula.tooltip1=Changes a machine's appearance to Pipe.
+item.clayium.clay_wrench.name=Clay Wrench
+item.clayium.clay_wrench.tooltip1=Rotates machines.
+item.clayium.clay_io_configurator.name=Clay IO Configurator
+item.clayium.clay_io_configurator.tooltip1=Input / Output(sneak)
+item.clayium.clay_piping_tool.name=Clay Piping Configurator
+item.clayium.clay_piping_tool.tooltip1=Piping / Rotation(sneak)
 item.clayium.memory_card.name=Memory Card
 item.clayium.memory_card.copied=Copied machine IO settings.
 item.clayium.memory_card.pasted=Pasted machine IO settings.
@@ -979,15 +1005,16 @@ item.clayium.advanced_circuit.name=Advanced Circuit
 item.clayium.precision_circuit.name=Precision Circuit
 item.clayium.integrated_circuit.name=Integrated Circuit
 item.clayium.clay_core.name=Clay Core
-item.clayium.clay_core.tooltip.line1=Expands the capacity of a Storage Container\n into the same as DSU.
+item.clayium.clay_core.tooltip1=Expands the capacity of a Storage Container
+item.clayium.clay_core.tooltip2=into the same as DSU.
 item.clayium.clay_brain.name=Clay Brain
 item.clayium.clay_spirit.name=Clay Spirit
 item.clayium.clay_soul.name=Clay Soul
 item.clayium.clay_anima.name=Clay Anima
 item.clayium.clay_psyche.name=Clay Psyche
 item.clayium.synchronous_parts.name=Synchronous Parts
-item.clayium.SynchronousParts.tooltip.line1=Insert this into Interfaces
-item.clayium.SynchronousParts.tooltip.line2=to enable synchronous.
+item.clayium.synchronous_parts.tooltip1=Insert this into Interfaces
+item.clayium.synchronous_parts.tooltip2=to enable synchronous.
 item.clayium.teleportation_parts.name=Teleportation Parts
 item.clayium.manipulator_mk1.name=Manipulator Mk I
 item.clayium.manipulator_mk2.name=Manipulator Mk II
@@ -995,266 +1022,11 @@ item.clayium.manipulator_mk3.name=Manipulator Mk III
 
 item.clayium.cee_board.name=CEE Board
 item.clayium.cee_circuit.name=CEE Circuit
-item.clayium.clay_energy_exciter.name=Clay Energy Excitor
+item.clayium.cee.name=Clay Energy Exciter
 item.clayium.laser_parts.name=Laser Parts
 item.clayium.antimatter_seed.name=Antimatter Seed
 
-item.clayium.clay_plate.name=Clay Plate
-item.clayium.clay_stick.name=Clay Stick
-item.clayium.clay_short_stick.name=Short Clay Stick
-item.clayium.clay_ring.name=Clay Ring
-item.clayium.clay_small_ring.name=Small Clay Ring
-item.clayium.clay_gear.name=Clay Gear
-item.clayium.clay_blade.name=Clay Blade
-item.clayium.clay_needle.name=Clay Needle
-item.clayium.clay_disc.name=Clay Disc
-item.clayium.clay_small_disc.name=Small Clay Disc
-item.clayium.clay_cylinder.name=Clay Cylinder
-item.clayium.clay_pipe.name=Clay Pipe
-item.clayium.large_clay_ball.name=Large Clay Ball
-item.clayium.large_clay_plate.name=Large Clay Plate
-item.clayium.clay_grinding_head.name=Clay Grinding Head
-item.clayium.clay_bearing.name=Clay Bearing
-item.clayium.clay_spindle.name=Clay Spindle
-item.clayium.clay_cutting_head.name=Clay Cutting Head
-item.clayium.clay_wheel.name=Clay Wheel
-
-item.clayium.dense_clay_plate.name=Dense Clay Plate
-item.clayium.dense_clay_stick.name=Dense Clay Stick
-item.clayium.dense_clay_short_stick.name=Short Dense Clay Stick
-item.clayium.dense_clay_ring.name=Dense Clay Ring
-item.clayium.dense_clay_small_ring.name=Small Dense Clay Ring
-item.clayium.dense_clay_gear.name=Dense Clay Gear
-item.clayium.dense_clay_blade.name=Dense Clay Blade
-item.clayium.dense_clay_needle.name=Dense Clay Needle
-item.clayium.dense_clay_disc.name=Dense Clay Disc
-item.clayium.dense_clay_small_disc.name=Small Dense Clay Disc
-item.clayium.dense_clay_cylinder.name=Dense Clay Cylinder
-item.clayium.dense_clay_pipe.name=Dense Clay Pipe
-item.clayium.large_dense_clay_plate.name=Large Dense Clay Plate
-item.clayium.dense_clay_grinding_head.name=Dense Clay Grinding Head
-item.clayium.dense_clay_bearing.name=Dense Clay Bearing
-item.clayium.dense_clay_spindle.name=Dense Clay Spindle
-item.clayium.itemDenseClayParts.Spindle.tooltip.line1=Time consumer
-item.clayium.dense_clay_cutting_head.name=Dense Clay Cutting Head
-item.clayium.dense_clay_wheel.name=Dense Clay Wheel
-
-item.clayium.industrial_clay_plate.name=Industrial Clay Plate
-item.clayium.large_industrial_clay_plate.name=Large Industrial Clay Plate
-
-item.clayium.adv_industrial_clay_plate.name=Advanced Industrial Clay Plate
-item.clayium.large_adv_industrial_clay_plate.name=Large Advanced Industrial Clay Plate
-
-item.clayium.clay_dust.name=Clay Dust
-item.clayium.dense_clay_dust.name=Dense Clay Dust
-item.clayium.industrial_clay_dust.name=Industrial Clay Dust
-item.clayium.adv_industrial_clay_dust.name=Advanced Industrial Clay Dust
 item.clayium.energized_clay_dust.name=Energized Clay Dust
 item.clayium.excited_clay_dust.name=Excited Clay Dust
-
-item.clayium.salt_dust.name=Salt
-item.clayium.itemDusts.Salt.tooltip.line1=Produced by Salt Extractor.
-item.clayium.calcareous_clay_dust.name=Calcareous Clay Dust
-item.clayium.calcium_chloride_dust.name=Calcium Chloride Dust
-item.clayium.sodium_carbonate_dust.name=Sodium Carbonate Dust
-item.clayium.quartz_dust.name=Quartz Dust
-
-item.clayium.impure_silicon_plate.name=Impure Silicon Plate
-item.clayium.large_impure_silicon_plate.name=Large Impure Silicon Plate
-item.clayium.impure_silicon_dust.name=Impure Silicon Dust
-item.clayium.impure_silicon_ingot.name=Impure Silicon Ingot
-
-item.clayium.silicone_plate.name=Silicone Plate
-item.clayium.large_silicone_plate.name=Large Silicone Plate
-item.clayium.silicone_dust.name=Silicone Dust
-item.clayium.silicone_ingot.name=Silicone Ingot
-
-item.clayium.silicon_plate.name=Silicon Plate
-item.clayium.large_silicon_plate.name=Large Silicon Plate
-item.clayium.silicon_dust.name=Silicon Dust
-item.clayium.silicon_ingot.name=Silicon Ingot
-item.clayium.silicon_ingot.tooltip.line1=To get first silicon ingot,
-item.clayium.silicon_ingot.tooltip.line2=use Quartz Crucible.
-
-item.clayium.aluminum_plate.name=Aluminium Plate
-item.clayium.large_aluminum_plate.name=Large Aluminium Plate
-item.clayium.aluminum_dust.name=Aluminium Dust
-item.clayium.aluminum_ingot.name=Aluminium Ingot
-
-item.clayium.clay_steel_plate.name=Clay Steel Plate
-item.clayium.large_clay_steel_plate.name=Large Clay Steel Plate
-item.clayium.clay_steel_dust.name=Clay Steel Dust
-item.clayium.clay_steel_ingot.name=Clay Steel Ingot
-
-item.clayium.clayium_plate.name=Clayium Plate
-item.clayium.large_clayium_plate.name=Large Clayium Plate
-item.clayium.clayium_dust.name=Clayium Dust
-item.clayium.clayium_ingot.name=Clayium Ingot
-
-item.clayium.ultimate_alloy_plate.name=Ultimate Alloy Plate
-item.clayium.large_ultimate_alloy_plate.name=Large Ultimate Alloy Plate
-item.clayium.ultimate_alloy_dust.name=Ultimate Alloy Dust
-item.clayium.ultimate_alloy_ingot.name=Ultimate Alloy Ingot
-
-item.clayium.antimatter_plate.name=Antimatter Plate
-item.clayium.large_antimatter_plate.name=Large Antimatter Plate
-item.clayium.antimatter_dust.name=Antimatter Dust
-item.clayium.antimatter.name=Antimatter
-
-item.clayium.pure_antimatter_plate.name=Pure Antimatter Plate
-item.clayium.large_pure_antimatter_plate.name=Large Pure Antimatter Plate
-item.clayium.pure_antimatter_dust.name=Pure Antimatter Dust
-item.clayium.pure_antimatter_tier0.name=Pure Antimatter
-
-item.clayium.oec_plate.name=Octuple Energetic Clay Plate
-item.clayium.large_oec_plate.name=Large Octuple Energetic Clay Plate
-item.clayium.oec_dust.name=Octuple Energetic Clay Dust
-
-item.clayium.opa_plate.name=Octuple Pure Antimatter Plate
-item.clayium.large_opa_plate.name=Large Octuple Pure Antimatter Plate
-item.clayium.opa_dust.name=Octuple Pure Antimatter Dust
-item.clayium.pure_antimatter_tier8.name=Octuple Compressed Pure Antimatter
-
-
-item.clayium.iron_ingot.name=Iron Ingot
-item.clayium.iron_dust.name=Iron Dust
-item.clayium.gold_ingot.name=Gold Ingot
-item.clayium.gold_dust.name=Gold Dust
-
-item.clayium.impure_redstone_dust.name=Impure Redstone
-item.clayium.impure_glowstone_dust.name=Impure Glowstone Dust
-
-item.clayium.impure_ultimate_alloy_ingot.name=Ultimate Compound Ingot
-
-item.clayium.magnesium_dust.name=Magnesium Dust
-item.clayium.magnesium_ingot.name=Magnesium Ingot
-item.clayium.sodium_dust.name=Sodium Dust
-item.clayium.sodium_ingot.name=Sodium Ingot
-item.clayium.lithium_dust.name=Lithium Dust
-item.clayium.lithium_ingot.name=Lithium Ingot
-item.clayium.zirconium_dust.name=Zirconium Dust
-item.clayium.zirconium_ingot.name=Zirconium Ingot
-item.clayium.zinc_dust.name=Zinc Dust
-item.clayium.zinc_ingot.name=Zinc Ingot
-item.clayium.manganese_dust.name=Manganese Dust
-item.clayium.manganese_ingot.name=Manganese Ingot
-item.clayium.calcium_dust.name=Calcium Dust
-item.clayium.calcium_ingot.name=Calcium Ingot
-item.clayium.potassium_dust.name=Potassium Dust
-item.clayium.potassium_ingot.name=Potassium Ingot
-item.clayium.nickel_dust.name=Nickel Dust
-item.clayium.nickel_ingot.name=Nickel Ingot
-item.clayium.beryllium_dust.name=Beryllium Dust
-item.clayium.beryllium_ingot.name=Beryllium Ingot
-item.clayium.lead_dust.name=Lead Dust
-item.clayium.lead_ingot.name=Lead Ingot
-item.clayium.hafnium_dust.name=Hafnium Dust
-item.clayium.hafnium_ingot.name=Hafnium Ingot
-item.clayium.chrome_dust.name=Chrome Dust
-item.clayium.chrome_ingot.name=Chrome Ingot
-item.clayium.titanium_dust.name=Titanium Dust
-item.clayium.titanium_ingot.name=Titanium Ingot
-item.clayium.strontium_dust.name=Strontium Dust
-item.clayium.strontium_ingot.name=Strontium Ingot
-item.clayium.barium_dust.name=Barium Dust
-item.clayium.barium_ingot.name=Barium Ingot
-item.clayium.copper_dust.name=Copper Dust
-item.clayium.copper_ingot.name=Copper Ingot
-
-item.clayium.impure_aluminum_dust.name=Impure Aluminium Dust
-item.clayium.impure_magnesium_dust.name=Impure Magnesium Dust
-item.clayium.impure_sodium_dust.name=Impure Sodium Dust
-item.clayium.impure_lithium_dust.name=Impure Lithium Dust
-item.clayium.impure_zirconium_dust.name=Impure Zirconium Dust
-item.clayium.impure_zinc_dust.name=Impure Zinc Dust
-item.clayium.impure_manganese_dust.name=Impure Manganese Dust
-item.clayium.impure_calcium_dust.name=Impure Calcium Dust
-item.clayium.impure_potassium_dust.name=Impure Potassium Dust
-item.clayium.impure_nickel_dust.name=Impure Nickel Dust
-item.clayium.impure_iron_dust.name=Impure Iron Dust
-item.clayium.impure_beryllium_dust.name=Impure Beryllium Dust
-item.clayium.impure_lead_dust.name=Impure Lead Dust
-item.clayium.impure_hafnium_dust.name=Impure Hafnium Dust
-item.clayium.impure_chrome_dust.name=Impure Chrome Dust
-item.clayium.impure_titanium_dust.name=Impure Titanium Dust
-item.clayium.impure_strontium_dust.name=Impure Strontium Dust
-item.clayium.impure_barium_dust.name=Impure Barium Dust
-item.clayium.impure_copper_dust.name=Impure Copper Dust
-
-item.clayium.impure_osmium_ingot.name=Impure Osmium Ingot
-
-item.clayium.zinc_aluminum_ingot.name=Zinc-Aluminium Compound Ingot
-item.clayium.zinc_aluminum_dust.name=Zinc-Aluminium Compound Dust
-item.clayium.zinc_zirconium_ingot.name=Zinc-Zirconium Compound Ingot
-item.clayium.zinc_zirconium_dust.name=Zinc-Zirconium Compound Dust
-item.clayium.az91d_plate.name=AZ91D Alloy Plate
-item.clayium.large_az91d_plate.name=Large AZ91D Alloy Plate
-item.clayium.az91d_dust.name=AZ91D Alloy Dust
-item.clayium.az91d_ingot.name=AZ91D Alloy Ingot
-item.clayium.zk60a_plate.name=ZK60A Alloy Plate
-item.clayium.large_zk60a_plate.name=Large ZK60A Alloy Plate
-item.clayium.zk60a_dust.name=ZK60A Alloy Dust
-item.clayium.zk60a_ingot.name=ZK60A Alloy Ingot
-
-item.clayium.rubidium_ingot.name=Rubidium Ingot
-item.clayium.caesium_ingot.name=Caesium Ingot
-item.clayium.francium_ingot.name=Francium Ingot
-item.clayium.radium_ingot.name=Radium Ingot
-item.clayium.actinium_ingot.name=Actinium Ingot
-item.clayium.thorium_ingot.name=Thorium Ingot
-item.clayium.protactinium_ingot.name=Protactinium Ingot
-item.clayium.uranium_ingot.name=Uranium Ingot
-item.clayium.neptunium_ingot.name=Neptunium Ingot
-item.clayium.plutonium_ingot.name=Plutonium Ingot
-item.clayium.americium_ingot.name=Americium Ingot
-item.clayium.curium_ingot.name=Curium Ingot
-
-item.clayium.lanthanum_ingot.name=Lanthanum Ingot
-item.clayium.cerium_ingot.name=Cerium Ingot
-item.clayium.praseodymium_ingot.name=Praseodymium Ingot
-item.clayium.neodymium_ingot.name=Neodymium Ingot
-item.clayium.promethium_ingot.name=Promethium Ingot
-item.clayium.samarium_ingot.name=Samarium Ingot
-item.clayium.europium_ingot.name=Europium Ingot
-
-item.clayium.vanadium_ingot.name=Vanadium Ingot
-
-item.clayium.cobalt_ingot.name=Cobalt Ingot
-item.clayium.palladium_ingot.name=Palladium Ingot
-
-item.clayium.silver_ingot.name=Silver Ingot
-item.clayium.platinum_ingot.name=Platinum Ingot
-item.clayium.iridium_ingot.name=Iridium Ingot
-item.clayium.osmium_ingot.name=Osmium Ingot
-item.clayium.rhenium_ingot.name=Rhenium Ingot
-
-item.clayium.tantalum_ingot.name=Tantalum Ingot
-item.clayium.tungsten_ingot.name=Tungsten Ingot
-item.clayium.molybdenum_ingot.name=Molybdenum Ingot
-
-item.clayium.tin_ingot.name=Tin Ingot
-item.clayium.antimony_ingot.name=Antimony Ingot
-item.clayium.bismuth_ingot.name=Bismuth Ingot
-
-item.clayium.bronze_ingot.name=Bronze Ingot
-item.clayium.bronze_dust.name=Bronze Dust
-item.clayium.brass_ingot.name=Brass Ingot
-item.clayium.brass_dust.name=Brass Dust
-item.clayium.electrum_ingot.name=Electrum Ingot
-item.clayium.electrum_dust.name=Electrum Dust
-item.clayium.invar_ingot.name=Invar Ingot
-item.clayium.invar_dust.name=Invar Dust
-
-item.clayium.steel_ingot.name=Steel Ingot
-item.clayium.steel_dust.name=Steel Dust
-
-item.clayium.carbon_dust.name=Carbon Dust
-item.clayium.phosphorus_dust.name=Phosphorus Dust
-item.clayium.sulfur_dust.name=Sulfur
-item.clayium.saltpeter_dust.name=Saltpeter
-
-item.clayium.coal_dust.name=Coal Dust
-item.clayium.charcoal_dust.name=Charcoal Dust
-item.clayium.lapis_dust.name=Lapis Lazuli Dust
 
 item.clayium.organic_clay_dust.name=Organic Clay

@@ -48,7 +48,9 @@ class ItemClayConfigTool(
     override fun initCapabilities(stack: ItemStack, nbt: NBTTagCompound?): ICapabilityProvider? {
         return object : ItemCapabilityProvider {
             override fun <T : Any> getCapability(capability: Capability<T>): T? {
-                return ClayiumCapabilities.CONFIG_TOOL.cast(createConfigToolCapability())
+                if (capability === ClayiumCapabilities.CONFIG_TOOL)
+                    return ClayiumCapabilities.CONFIG_TOOL.cast(createConfigToolCapability())
+                return null
             }
         }
     }

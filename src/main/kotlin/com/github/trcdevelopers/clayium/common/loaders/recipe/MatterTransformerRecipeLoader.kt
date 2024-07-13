@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.common.recipe.loader
+package com.github.trcdevelopers.clayium.common.loaders.recipe
 
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
@@ -9,6 +9,7 @@ import net.minecraft.block.BlockOldLog
 import net.minecraft.block.BlockPlanks
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
+import kotlin.collections.forEach
 
 object MatterTransformerRecipeLoader {
     fun registerRecipes() {

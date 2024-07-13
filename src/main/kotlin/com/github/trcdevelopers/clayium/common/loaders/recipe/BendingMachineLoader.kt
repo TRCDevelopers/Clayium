@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.common.recipe.loader
+package com.github.trcdevelopers.clayium.common.loaders.recipe
 
 object BendingMachineLoader {
     fun registerRecipes() {

@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-data class Material(
+class Material(
     val metaItemSubId: Int,
     /**
      * modid:material_name
@@ -20,6 +20,7 @@ data class Material(
     val properties: MaterialProperties,
     val tier: ITier? = null,
     val colors: IntArray? = null,
+    private val flags: Set<MaterialFlag> = emptySet(),
 ) : Comparable<Material> {
 
     val upperCamel = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, materialId.path)
@@ -31,9 +32,14 @@ data class Material(
         return metaItemSubId.compareTo(other.metaItemSubId)
     }
 
+    fun hasFlag(flag: MaterialFlag) = flags.contains(flag)
     fun hasProperty(key: PropertyKey<*>) = properties.hasProperty(key)
     fun <T : MaterialProperty> getProperty(key: PropertyKey<T>) = properties.getProperty(key)
     fun <T : MaterialProperty> getPropOrNull(key: PropertyKey<T>) = properties.getPropOrNull(key)
+
+    override fun toString(): String {
+        return "Material(metaItemSubId=$metaItemSubId, materialId=$materialId, properties=$properties, tier=$tier, colors=${colors?.contentToString()}, flags=$flags)"
+    }
 
     class Builder(
         private val metaItemSubId: Int,
@@ -42,6 +48,7 @@ data class Material(
         private var properties: MaterialProperties = MaterialProperties()
         private var tier: ITier? = null
         private var colors: IntArray? = null
+        private var flags: MutableSet<MaterialFlag> = mutableSetOf()
 
         fun tier(tier: Int) = apply { this.tier = ClayTiers.entries[tier] }
         fun tier(tier: ITier) = apply { this.tier = tier }
@@ -118,9 +125,14 @@ data class Material(
             return this
         }
 
+        fun flags(vararg flags: MaterialFlag): Builder {
+            this.flags.addAll(flags)
+            return this
+        }
 
         fun build(): Material{
-            val material = Material(metaItemSubId, metaItemId, properties, tier, colors)
+            val flags = if (this.flags.isEmpty()) emptySet() else this.flags
+            val material = Material(metaItemSubId, metaItemId, properties, tier, colors, flags)
             ClayiumApi.materialRegistry.register(metaItemSubId, metaItemId, material)
             return material
         }

@@ -7,6 +7,7 @@ import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
 import com.github.trcdevelopers.clayium.common.unification.material.Material
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
 import com.github.trcdevelopers.clayium.common.unification.stack.UnificationEntry
+import com.github.trcdevelopers.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.shorts.Short2ObjectAVLTreeMap
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -140,6 +141,10 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         fun oreDict(orePrefix: OrePrefix, material: Material): MetaValueItem {
             metaOreDicts.put(meta, UnificationEntry(orePrefix, material).toString())
             return this
+        }
+
+        fun tooltip(translationKey: String) = apply {
+            addComponent(TooltipBehavior { UtilLocale.formatTooltips(it, translationKey) })
         }
     }
 

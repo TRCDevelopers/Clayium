@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.common.recipe.loader
+package com.github.trcdevelopers.clayium.common.loaders.recipe
 
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
@@ -24,6 +24,7 @@ object MillingMachineRecipeLoader {
 
         registry.builder()
             .input(OrePrefix.plate, CMaterials.advancedIndustrialClay)
+            .output(MetaItemClayParts.CEE_BOARD)
             .tier(3).CEt(ClayEnergy.micro(20)).duration(32)
             .buildAndRegister()
     }

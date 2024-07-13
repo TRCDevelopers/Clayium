@@ -3,6 +3,7 @@ package com.github.trcdevelopers.clayium.common.unification.ore
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
 import com.github.trcdevelopers.clayium.common.unification.material.Material
+import com.github.trcdevelopers.clayium.common.unification.material.MaterialFlags
 import com.github.trcdevelopers.clayium.common.unification.material.PropertyKey
 import com.google.common.base.CaseFormat
 import net.minecraft.client.resources.I18n
@@ -43,6 +44,10 @@ class OrePrefix(
         return I18n.format("${CValues.MOD_ID}.ore_prefix.${snake}", material.localizedName)
     }
 
+    override fun toString(): String {
+        return "OrePrefix(camel=$camel, snake=$snake)"
+    }
+
     companion object {
         private val _prefixes = mutableListOf<OrePrefix>()
         val allPrefixes: List<OrePrefix> = _prefixes
@@ -52,6 +57,7 @@ class OrePrefix(
         private val hasPlateProperty = Predicate<Material> { it.hasProperty(PropertyKey.PLATE) }
         private val hasMatterProperty = Predicate<Material> { it.hasProperty(PropertyKey.MATTER) }
         private val hasImpureDustProperty = Predicate<Material> { it.hasProperty(PropertyKey.IMPURE_DUST) }
+        private val hasClayPartsFlag = Predicate<Material> { it.hasFlag(MaterialFlags.GENERATE_CLAY_PARTS) }
 
         val ingot = OrePrefix("ingot", hasIngotProperty)
         val dust = OrePrefix("dust", hasDustProperty)
@@ -63,7 +69,26 @@ class OrePrefix(
 
         val block = OrePrefix("block")
 
-        val metaItemPrefixes = listOf(ingot, dust, impureDust, gem, plate, largePlate)
+        val bearing = OrePrefix("bearing", hasClayPartsFlag)
+        val blade = OrePrefix("blade", hasClayPartsFlag)
+        val cuttingHead = OrePrefix("cuttingHead", hasClayPartsFlag)
+        val cylinder = OrePrefix("cylinder", hasClayPartsFlag)
+        val disc = OrePrefix("disc", hasClayPartsFlag)
+        val gear = OrePrefix("gear", hasClayPartsFlag)
+        val grindingHead = OrePrefix("grindingHead", hasClayPartsFlag)
+        val needle = OrePrefix("needle", hasClayPartsFlag)
+        val pipe = OrePrefix("pipe", hasClayPartsFlag)
+        val ring = OrePrefix("ring", hasClayPartsFlag)
+        val shortStick = OrePrefix("shortStick", hasClayPartsFlag)
+        val smallDisc = OrePrefix("smallDisc", hasClayPartsFlag)
+        val smallRing = OrePrefix("smallRing", hasClayPartsFlag)
+        val spindle = OrePrefix("spindle", hasClayPartsFlag)
+        val stick = OrePrefix("stick", hasClayPartsFlag)
+        val wheel = OrePrefix("wheel", hasClayPartsFlag)
+
+        val metaItemPrefixes = listOf(ingot, dust, impureDust, gem, plate, largePlate,
+            bearing, blade, cuttingHead, cylinder, disc, gear, grindingHead, needle,
+            pipe, ring, shortStick, smallDisc, smallRing, spindle, stick, wheel)
 
         fun init() {
             block.ignore(CMaterials.clay)

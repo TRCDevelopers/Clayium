@@ -1,82 +1,100 @@
 {
   "forge_marker": 1,
   "variants": {
-    "meta": {
-      "1": {
+    "variant": {
+      "default": {
+        "textures": {
+          "all":"clayium:blocks/raw_clay_machine_hull"
+        },
+        "model": "cube_all"
+      },
+      "clay": {
         "textures": {
           "all":"clayium:blocks/machinehull_tier1"
         },
         "model": "cube_all"
       },
-      "2": {
+      "dense_clay": {
         "textures": {
           "all":"clayium:blocks/machinehull_tier2"
         },
         "model": "cube_all"
       },
-      "3": {
+      "simple": {
         "textures": {
           "all":"clayium:blocks/machinehull_tier3"
         },
         "model": "cube_all"
       },
-      "4": {
+      "basic": {
         "textures": {
           "all":"clayium:blocks/machinehull_tier4"
         },
         "model": "cube_all"
       },
-      "5": {
+      "advanced": {
         "textures": {
           "all":"clayium:blocks/machinehull_tier5"
         },
         "model": "cube_all"
       },
-      "6": {
+      "precision": {
         "textures": {
           "all":"clayium:blocks/machinehull_tier6"
         },
         "model": "cube_all"
       },
-      "7": {
+      "clay_steel": {
         "textures": {
           "all":"clayium:blocks/machinehull_tier7"
         },
         "model": "cube_all"
       },
-      "8": {
+      "clayium": {
         "textures": {
           "all":"clayium:blocks/machinehull_tier8"
         },
         "model": "cube_all"
       },
-      "9": {
+      "ultimate": {
         "textures": {
           "all":"clayium:blocks/machinehull_tier9"
         },
         "model": "cube_all"
       },
-      "10": {
+      "antimatter": {
         "textures": {
           "all":"clayium:blocks/machinehull_tier10"
         },
         "model": "cube_all"
       },
-      "11": {
+      "pure_antimatter": {
         "textures": {
           "all":"clayium:blocks/machinehull_tier11"
         },
         "model": "cube_all"
       },
-      "12": {
+      "oec": {
         "textures": {
           "all":"clayium:blocks/machinehull_tier12"
         },
         "model": "cube_all"
       },
-      "13": {
+      "opa": {
         "textures": {
           "all":"clayium:blocks/machinehull_tier13"
+        },
+        "model": "cube_all"
+      },
+      "az91d": {
+        "textures": {
+          "all":"clayium:blocks/az91d_hull"
+        },
+        "model": "cube_all"
+      },
+      "zk60a": {
+        "textures": {
+          "all":"clayium:blocks/zk60a_hull"
         },
         "model": "cube_all"
       }

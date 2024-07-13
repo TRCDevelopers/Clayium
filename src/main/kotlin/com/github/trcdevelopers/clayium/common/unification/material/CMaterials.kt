@@ -2,6 +2,7 @@ package com.github.trcdevelopers.clayium.common.unification.material
 
 import com.github.trcdevelopers.clayium.api.util.clayiumId
 import com.github.trcdevelopers.clayium.common.clayenergy.ClayEnergy
+import com.github.trcdevelopers.clayium.common.unification.material.MaterialFlags.GENERATE_CLAY_PARTS
 
 @Suppress("unused")
 object CMaterials {
@@ -356,16 +357,51 @@ object CMaterials {
 
     /** 201 - 300 */
     //region Matters
-    val antimatter: Material
-    val pureAntimatter: Material
-    val pureAntimatter1: Material
-    val pureAntimatter2: Material
-    val pureAntimatter3: Material
-    val pureAntimatter4: Material
-    val pureAntimatter5: Material
-    val pureAntimatter6: Material
-    val pureAntimatter7: Material
-    val octuplePureAntimatter: Material
+    val antimatter = Material.create(201, clayiumId("antimatter")) {
+        tier(10)
+        colors(0x0000EB, 0x000000, 0xFFFFFF)
+        matter().dust()
+        plate(ClayEnergy.of(100), 20, tier = 9)
+    }
+    val pureAntimatter = Material.create(202, clayiumId("pure_antimatter")) {
+        tier(11)
+        colors(0xFF32FF, 0x000000, 0xFFFFFF)
+        matter().dust()
+        plate(ClayEnergy.of(100), 20, tier = 9)
+    }
+    val pureAntimatter1 = Material.create(203, clayiumId("pure_antimatter1")) {
+        tier(11).colors(0xC42385, 0x191919, 0xFFFFFF)
+        matter("matter2")
+    }
+    val pureAntimatter2 = Material.create(204, clayiumId("pure_antimatter2")) {
+        tier(11).colors(0x8E1777, 0x323200, 0xFFFFFF)
+        matter("matter2")
+    }
+    val pureAntimatter3 = Material.create(205, clayiumId("pure_antimatter3")) {
+        tier(11).colors(0x5E0D45, 0x4B4B00, 0xFFFFFF)
+        matter("matter3")
+    }
+    val pureAntimatter4 = Material.create(206, clayiumId("pure_antimatter4")) {
+        tier(12).colors(0x32061F, 0x646400, 0xFFFFFF)
+        matter("matter3")
+    }
+    val pureAntimatter5 = Material.create(207, clayiumId("pure_antimatter5")) {
+        tier(12).colors(0x520829, 0x7D7D00, 0xFFFFFF)
+        matter("matter4")
+    }
+    val pureAntimatter6 = Material.create(208, clayiumId("pure_antimatter6")) {
+        tier(12).colors(0x6E0727, 0x969600, 0xFFFFFF)
+        matter("matter4")
+    }
+    val pureAntimatter7 = Material.create(209, clayiumId("pure_antimatter7")) {
+        tier(13).colors(0x840519, 0xAFAF00, 0xFFFFFF)
+        matter("matter4")
+    }
+    val octuplePureAntimatter = Material.create(210, clayiumId("octuple_pure_antimatter")) {
+        tier(13).colors(0x960000, 0xC8C800, 0xFFFFFF)
+        matter("matter5").dust()
+        plate(ClayEnergy.of(100), 20, tier = 9)
+    }
     //endregion
 
     /** 301 - 500 */
@@ -514,6 +550,9 @@ object CMaterials {
     // don't use builder so it is not registered
     val DUMMY = Material(0, clayiumId("dummy"), MaterialProperties())
 
+    val PURE_ANTIMATTERS = listOf(pureAntimatter, pureAntimatter1, pureAntimatter2, pureAntimatter3,
+        pureAntimatter4, pureAntimatter5, pureAntimatter6, pureAntimatter7, octuplePureAntimatter)
+
     init {
         //region Clay Materials
         compressedEnergeticClay7 = Material.create(163, clayiumId("compressed_energetic_clay7")) {
@@ -580,6 +619,7 @@ object CMaterials {
             clay(compressedClay)
             dust()
             plate(ClayEnergy.micro(10), 4, tier = 0)
+            flags(GENERATE_CLAY_PARTS)
         }
 
         clay = Material.create(151, clayiumId("clay")) {
@@ -587,58 +627,7 @@ object CMaterials {
             clay(denseClay)
             dust()
             plate(ClayEnergy.micro(10), 1, tier = 0)
-        }
-        //endregion
-
-        //region Matters
-        antimatter = Material.create(201, clayiumId("antimatter")) {
-            tier(10)
-            colors(0x0000EB, 0x000000, 0xFFFFFF)
-            matter().dust()
-            plate(ClayEnergy.of(100), 20, tier = 9)
-        }
-        pureAntimatter = Material.create(202, clayiumId("pure_antimatter")) {
-            tier(11)
-            colors(0xFF32FF, 0x000000, 0xFFFFFF)
-            matter().dust()
-            plate(ClayEnergy.of(100), 20, tier = 9)
-        }
-        pureAntimatter1 = Material.create(203, clayiumId("pure_antimatter1")) {
-            tier(11).colors(0xC42385, 0x191919, 0xFFFFFF)
-            matter("matter2")
-        }
-        pureAntimatter2 = Material.create(204, clayiumId("pure_antimatter2")) {
-            tier(11).colors(0x8E1777, 0x323200, 0xFFFFFF)
-            matter("matter2")
-        }
-        pureAntimatter3 = Material.create(205, clayiumId("pure_antimatter3")) {
-            tier(11).colors(0x5E0D45, 0x4B4B00, 0xFFFFFF)
-            matter("matter3")
-        }
-
-        pureAntimatter4 = Material.create(206, clayiumId("pure_antimatter4")) {
-            tier(12).colors(0x32061F, 0x646400, 0xFFFFFF)
-            matter("matter3")
-        }
-
-        pureAntimatter5 = Material.create(207, clayiumId("pure_antimatter5")) {
-            tier(12).colors(0x520829, 0x7D7D00, 0xFFFFFF)
-            matter("matter4")
-        }
-
-        pureAntimatter6 = Material.create(208, clayiumId("pure_antimatter6")) {
-            tier(12).colors(0x6E0727, 0x969600, 0xFFFFFF)
-            matter("matter4")
-        }
-
-        pureAntimatter7 = Material.create(209, clayiumId("pure_antimatter7")) {
-            tier(13).colors(0x840519, 0xAFAF00, 0xFFFFFF)
-            matter("matter4")
-        }
-        octuplePureAntimatter = Material.create(210, clayiumId("octuple_pure_antimatter")) {
-            tier(13).colors(0x960000, 0xC8C800, 0xFFFFFF)
-            matter("matter5").dust()
-            plate(ClayEnergy.of(100), 20, tier = 9)
+            flags(GENERATE_CLAY_PARTS)
         }
         //endregion
     }
