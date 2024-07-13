@@ -6,10 +6,11 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trcdevelopers.clayium.api.util.ITier
@@ -25,6 +26,7 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
 import kotlin.Int
+import kotlin.math.max
 
 class ClayMultiTrackBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -51,10 +53,11 @@ class ClayMultiTrackBufferMetaTileEntity(
         else -> 1
     }
 
-    val tracks: Array<ClayiumItemStackHandler> = (0..trackRow).map {
+    val tracks: Array<ClayiumItemStackHandler> = (0..<trackRow).map {
         ClayiumItemStackHandler(this, trackInvSize)
     }.toTypedArray()
 
+    private val filtersHandler = ClayiumItemStackHandler(this, trackRow)
     override val itemInventory = CombinedInvWrapper(*tracks)
     override val importItems: IItemHandlerModifiable = itemInventory
     override val exportItems: IItemHandlerModifiable = itemInventory
@@ -79,35 +82,37 @@ class ClayMultiTrackBufferMetaTileEntity(
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel? {
         (0..<trackRow).forEach { syncManager.registerSlotGroup("mt_buffer_inv_${it}", 1) }
-        val columnStr = "I".repeat(trackInvSize)
-        val matrixStr = (0..<trackRow).map { columnStr }
+        val slotsRowString = "I".repeat(trackInvSize)
         return ModularPanel("multi_track_buffer")
             .flex {
-                it.size(176, 18 + trackRow * 18 + 94 + 2)
+                it.size(max(176, trackInvSize * 18 + 4 + 18 + /* margin*/ 12), 18 + trackRow * 18 + 94 + 2)
                 it.align(Alignment.Center)
             }
-            .child(
-                TextWidget(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)))
-                    .margin(6)
-                    .align(Alignment.TopLeft))
-            .child(Column()
-                .marginTop(18)
-                .child(SlotGroupWidget.builder()
-                    .matrix(*matrixStr.toTypedArray())
-                    .key('I') { index ->
-                        ItemSlot().slot(
-                            SyncHandlers.itemSlot(itemInventory, index)
-                                .slotGroup("mt_buffer_inv_${Math.floor(index.toDouble()/trackInvSize.toDouble())}")
-                        )
-                    }.build()
+            .child(Column().margin(7)
+                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
+                    .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
+                        .align(Alignment.TopLeft))
+                    .child(IKey.lang("container.inventory").asWidget()
+                        .align(Alignment.BottomLeft))
+                    .child(Column().width(trackInvSize * 18 + 4 + 18).height(trackRow * 18)
+                        .align(Alignment.Center)
+                        .also {
+                            for ((i, handler) in tracks.withIndex()) {
+                                it.child(Row().width(trackInvSize * 18 + 4 + 18).height(18)
+                                    .child(SlotGroupWidget.builder()
+                                        .matrix(slotsRowString)
+                                        .key('I') { slotIndex ->
+                                            ItemSlot().slot(SyncHandlers.itemSlot(handler, slotIndex)
+                                                .slotGroup("mt_buffer_inv_${i}"))
+                                        }
+                                        .build())
+                                    .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filtersHandler, i))
+                                        .align(Alignment.CenterRight)))
+                            }
+                        }
+                    )
                 )
-                .child(
-                    TextWidget(IKey.lang("container.inventory"))
-                        .paddingTop(1)
-                        .paddingBottom(1)
-                        .left(6)
-                )
+                .child(SlotGroupWidget.playerInventory(0))
             )
-            .bindPlayerInventory()
     }
 }
