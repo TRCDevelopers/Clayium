@@ -13,6 +13,7 @@ import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trcdevelopers.clayium.api.CValues
 import com.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
+import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.api.util.clayiumId
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
@@ -73,8 +74,26 @@ class ClayMultiTrackBufferMetaTileEntity(
     }
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            val inputSlots = when (facing?.let { getInput(facing) }) {
+                MachineIoMode.M_1 -> createFilteredItemHandler(tracks[0], facing)
+                MachineIoMode.M_2 -> createFilteredItemHandler(tracks[1], facing)
+                MachineIoMode.M_3 -> createFilteredItemHandler(tracks[2], facing)
+                MachineIoMode.M_4 -> createFilteredItemHandler(tracks[3], facing)
+                MachineIoMode.M_5 -> createFilteredItemHandler(tracks[4], facing)
+                MachineIoMode.M_6 -> createFilteredItemHandler(tracks[5], facing)
+                else -> createFilteredItemHandler(itemInventory, facing)
+            }
+            val outputSlots = when (facing?.let { getOutput(facing) }) {
+                MachineIoMode.M_1 -> createFilteredItemHandler(tracks[0], facing)
+                MachineIoMode.M_2 -> createFilteredItemHandler(tracks[1], facing)
+                MachineIoMode.M_3 -> createFilteredItemHandler(tracks[2], facing)
+                MachineIoMode.M_4 -> createFilteredItemHandler(tracks[3], facing)
+                MachineIoMode.M_5 -> createFilteredItemHandler(tracks[4], facing)
+                MachineIoMode.M_6 -> createFilteredItemHandler(tracks[5], facing)
+                else -> createFilteredItemHandler(itemInventory, facing)
+            }
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(
-                createFilteredItemHandler(itemInventory, facing)
+                ItemHandlerProxy(inputSlots, outputSlots)
             )
         }
         return super.getCapability(capability, facing)
