@@ -65,6 +65,7 @@ object ClayLaserRenderer {
             val b = 255 * rawLaserBlue / max
             val a = ((26.0f + scale * 26.0f) * 8 / laserQuality).toInt()
 
+            @Suppress("unused")
             for (notUsed in 0..laserQuality) {
                 bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR)
                 bufferBuilder.pos(0.0, 1.0, 0.5).tex(0.0, 0.0).color(r, g, b, a).endVertex()

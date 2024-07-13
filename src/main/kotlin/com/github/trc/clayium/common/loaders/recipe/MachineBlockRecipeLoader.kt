@@ -172,7 +172,7 @@ object MachineBlockRecipeLoader {
         }
         /* CA Resonating Collector */
         CRecipes.CA_INJECTOR.builder()
-            .input(ClayiumBlocks.MACHINE_HULL.getItem(ClayTiers.ANTIMATTER))
+            .input(ClayiumBlocks.MACHINE_HULL.getItem(ANTIMATTER))
             .input(OrePrefix.gem, CMaterials.antimatter, 8)
             .output(MetaTileEntities.CA_RESONATING_COLLECTOR)
             .tier(10).CEt(2.0).duration(4000)

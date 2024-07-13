@@ -91,30 +91,30 @@ object InterfaceRenderer {
                 // render full block box
                 val aabb = targetWorld.getBlockState(targetPos).getBoundingBox(targetWorld, targetPos).grow(0.001)
                 bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_NORMAL)
-                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.minZ).normal(0.0F, 0.0F, -1.0F).endVertex();
-                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.minZ).normal(0.0F, 0.0F, -1.0F).endVertex();
-                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.minZ).normal(0.0F, 0.0F, -1.0F).endVertex();
-                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.minZ).normal(0.0F, 0.0F, -1.0F).endVertex();
-                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.maxZ).normal(0.0F, 0.0F, 1.0F).endVertex();
-                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.maxZ).normal(0.0F, 0.0F, 1.0F).endVertex();
-                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.maxZ).normal(0.0F, 0.0F, 1.0F).endVertex();
-                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.maxZ).normal(0.0F, 0.0F, 1.0F).endVertex();
-                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.minZ).normal(0.0F, -1.0F, 0.0F).endVertex();
-                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.minZ).normal(0.0F, -1.0F, 0.0F).endVertex();
-                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.maxZ).normal(0.0F, -1.0F, 0.0F).endVertex();
-                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.maxZ).normal(0.0F, -1.0F, 0.0F).endVertex();
-                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.maxZ).normal(0.0F, 1.0F, 0.0F).endVertex();
-                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.maxZ).normal(0.0F, 1.0F, 0.0F).endVertex();
-                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.minZ).normal(0.0F, 1.0F, 0.0F).endVertex();
-                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.minZ).normal(0.0F, 1.0F, 0.0F).endVertex();
-                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.maxZ).normal(-1.0F, 0.0F, 0.0F).endVertex();
-                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.maxZ).normal(-1.0F, 0.0F, 0.0F).endVertex();
-                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.minZ).normal(-1.0F, 0.0F, 0.0F).endVertex();
-                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.minZ).normal(-1.0F, 0.0F, 0.0F).endVertex();
-                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.minZ).normal(1.0F, 0.0F, 0.0F).endVertex();
-                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.minZ).normal(1.0F, 0.0F, 0.0F).endVertex();
-                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.maxZ).normal(1.0F, 0.0F, 0.0F).endVertex();
-                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.maxZ).normal(1.0F, 0.0F, 0.0F).endVertex();
+                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.minZ).normal(0.0F, 0.0F, -1.0F).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.minZ).normal(0.0F, 0.0F, -1.0F).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.minZ).normal(0.0F, 0.0F, -1.0F).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.minZ).normal(0.0F, 0.0F, -1.0F).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.maxZ).normal(0.0F, 0.0F, 1.0F).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.maxZ).normal(0.0F, 0.0F, 1.0F).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.maxZ).normal(0.0F, 0.0F, 1.0F).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.maxZ).normal(0.0F, 0.0F, 1.0F).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.minZ).normal(0.0F, -1.0F, 0.0F).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.minZ).normal(0.0F, -1.0F, 0.0F).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.maxZ).normal(0.0F, -1.0F, 0.0F).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.maxZ).normal(0.0F, -1.0F, 0.0F).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.maxZ).normal(0.0F, 1.0F, 0.0F).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.maxZ).normal(0.0F, 1.0F, 0.0F).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.minZ).normal(0.0F, 1.0F, 0.0F).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.minZ).normal(0.0F, 1.0F, 0.0F).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.maxZ).normal(-1.0F, 0.0F, 0.0F).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.maxZ).normal(-1.0F, 0.0F, 0.0F).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.minZ).normal(-1.0F, 0.0F, 0.0F).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.minZ).normal(-1.0F, 0.0F, 0.0F).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.minZ).normal(1.0F, 0.0F, 0.0F).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.minZ).normal(1.0F, 0.0F, 0.0F).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.maxZ).normal(1.0F, 0.0F, 0.0F).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.maxZ).normal(1.0F, 0.0F, 0.0F).endVertex()
                 tessellator.draw()
                 GlStateManager.enableDepth()
                 GlStateManager.enableCull()
@@ -137,15 +137,15 @@ object InterfaceRenderer {
             GlStateManager.scale(0.25f, 0.25f, 0.25f)
             GlStateManager.color(1f, 1f, 1f, 0.7f)
             val itemBakedModel = mc.renderItem.getItemModelWithOverrides(stack, null, null)
-            mc.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-            mc.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
-            GlStateManager.pushMatrix();
+            mc.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
+            mc.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false)
+            GlStateManager.pushMatrix()
 
             GlStateManager.rotate(tickTime * 4f, 0f, 1f, 0f)
             mc.renderItem.renderItem(stack, itemBakedModel)
-            GlStateManager.popMatrix();
-            mc.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-            mc.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
+            GlStateManager.popMatrix()
+            mc.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
+            mc.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap()
         }
         GlStateManager.popMatrix()
     }
@@ -154,7 +154,7 @@ object InterfaceRenderer {
         val mc = Minecraft.getMinecraft()
         GlStateManager.pushMatrix()
         run {
-            GlStateManager.glNormal3f(0.0f, 1.0f, 0.0f);
+            GlStateManager.glNormal3f(0.0f, 1.0f, 0.0f)
             GlStateManager.scale(-0.025f, -0.025f, 0.025f)
             GlStateManager.depthMask(false)
 

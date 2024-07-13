@@ -18,9 +18,9 @@ class BlockSimpleTileEntityHolder(
 ) : Block(Material.IRON) {
     init {
         setSoundType(SoundType.METAL)
-        setHardness(2.0f);
-        setResistance(5.0f);
-        setHarvestLevel("pickaxe", 0);
+        setHardness(2.0f)
+        setResistance(5.0f)
+        setHarvestLevel("pickaxe", 0)
     }
 
     override fun hasTileEntity(state: IBlockState) = true

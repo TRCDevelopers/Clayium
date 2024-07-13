@@ -4,7 +4,6 @@ import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
-import com.google.common.base.CaseFormat
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.item.Item
@@ -42,14 +41,6 @@ fun clayiumId(path: String): ResourceLocation {
 }
 
 object CUtils {
-    fun toUpperCamel(snakeCase: String): String {
-        return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, snakeCase)
-    }
-
-    fun toLowerSnake(camel: String): String {
-        return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, camel)
-    }
-
     fun writeItems(handler: IItemHandler, tagName: String, tag: NBTTagCompound) {
         val tagList = NBTTagList()
         for (i in 0..<handler.slots) {

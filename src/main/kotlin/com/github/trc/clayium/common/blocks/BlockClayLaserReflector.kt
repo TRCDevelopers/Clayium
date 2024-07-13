@@ -57,7 +57,6 @@ class BlockClayLaserReflector : Block(Material.GLASS) {
     }
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
-        val f = 0.125f
         val direction = state.getValue(FACING)
         return when (direction) {
             EnumFacing.DOWN, EnumFacing.UP -> Y_AABB
