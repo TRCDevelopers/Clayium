@@ -88,7 +88,7 @@ object CraftingRecipeLoader {
         RecipeUtils.addShapedRecipe("simple_circuit",
             MetaItemClayParts.SIMPLE_CIRCUIT.getStackForm(),
             "DDD", "DBD", "DDD",
-            'D', MetaItemClayParts.EnergeticClayDust,
+            'D', MetaItemClayParts.EnergizedClayDust,
             'B', MetaItemClayParts.CLAY_CIRCUIT_BOARD)
 
         for (m in listOf(clay, denseClay)) {

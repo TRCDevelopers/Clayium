@@ -11,108 +11,154 @@ gui.clayium.overclockFactor=オーバークロック x%1$s
 tooltip.clayium.tier=§rTier %1$s
 tooltip.clayium.ce=%1$sCE
 
-oreprefix.clayium.ingot=%sインゴット
-oreprefix.clayium.dust=%sの粉
-oreprefix.clayium.impureDust=不純な%sの粉
-oreprefix.clayium.matter=%s
-oreprefix.clayium.plate=%sプレート
-oreprefix.clayium.largePlate=%s大プレート
+clayium.ore_prefix.ingot=%sインゴット
+clayium.ore_prefix.dust=%sの粉
+clayium.ore_prefix.impure_dust=不純な%sの粉
+clayium.ore_prefix.matter=%s
+clayium.ore_prefix.plate=%sプレート
+clayium.ore_prefix.large_plate=%s大プレート
+clayium.ore_prefix.block=%sブロック
+clayium.ore_prefix.bearing=%s軸受
+clayium.ore_prefix.blade=%sブレード
+clayium.ore_prefix.cutting_head=%s切断機ヘッド
+clayium.ore_prefix.cylinder=%s円柱
+clayium.ore_prefix.disc=%s円盤
+clayium.ore_prefix.gear=%s歯車
+clayium.ore_prefix.grinding_head=%s粉砕機ヘッド
+clayium.ore_prefix.needle=%sニードル
+clayium.ore_prefix.pipe=%sパイプ
+clayium.ore_prefix.ring=%sリング
+clayium.ore_prefix.short_stick=%s小棒
+clayium.ore_prefix.small_disc=%s小円盤
+clayium.ore_prefix.small_ring=%s小リング
+clayium.ore_prefix.spindle=%s主軸
+clayium.ore_prefix.stick=%s棒
+clayium.ore_prefix.wheel=%s水車パーツ
 
-material.clayium.clay=粘土
-material.clayium.dense_clay=高密度粘土
-material.clayium.impure_silicon=不純なシリコン
-material.clayium.silicone=シリコーン
-material.clayium.silicon=シリコン
-material.clayium.aluminum=アルミニウム
-material.clayium.clay_steel=粘土鋼
-material.clayium.clayium=クレイウム
-material.clayium.ultimate_alloy=究極合金
-material.clayium.antimatter=反物質
-material.clayium.pure_antimatter=純反物質
-material.clayium.pure_antimatter_tier1=圧縮純反物質
-material.clayium.pure_antimatter_tier2=2重圧縮純反物質
-material.clayium.pure_antimatter_tier3=3重圧縮純反物質
-material.clayium.pure_antimatter_tier4=4重圧縮純反物質
-material.clayium.pure_antimatter_tier5=5重圧縮純反物質
-material.clayium.pure_antimatter_tier6=6重圧縮純反物質
-material.clayium.pure_antimatter_tier7=7重圧縮純反物質
-material.clayium.oec=OEC
-material.clayium.opa=OPA
-material.clayium.az91d=AZ91D
-material.clayium.zk60a=ZK60A
+clayium.material.clay=粘土
+clayium.material.dense_clay=高密度粘土
+clayium.material.industrial_clay=工業用粘土
+clayium.material.advanced_industrial_clay=発展工業用粘土
+clayium.material.impure_silicon=不純なシリコン
+clayium.material.silicone=シリコーン
+clayium.material.silicon=シリコン
+clayium.material.aluminum=アルミニウム
+clayium.material.clay_steel=粘土鋼
+clayium.material.clayium=クレイウム
+clayium.material.ultimate_alloy=究極合金
+clayium.material.antimatter=反物質
+clayium.material.pure_antimatter=純反物質
+clayium.material.pure_antimatter1=圧縮純反物質
+clayium.material.pure_antimatter2=2重圧縮純反物質
+clayium.material.pure_antimatter3=3重圧縮純反物質
+clayium.material.pure_antimatter4=4重圧縮純反物質
+clayium.material.pure_antimatter5=5重圧縮純反物質
+clayium.material.pure_antimatter6=6重圧縮純反物質
+clayium.material.pure_antimatter7=7重圧縮純反物質
+clayium.material.octuple_energy_clay=OEC
+clayium.material.octuple_pure_antimatter=OPA
+clayium.material.az91d=AZ91D
+clayium.material.zk60a=ZK60A
 
-material.clayium.actinium=アクチニウム
-material.clayium.americium=アメリシウム
-material.clayium.antimony=アンチモン
-material.clayium.barium=バリウム
-material.clayium.beryllium=ベリリウム
-material.clayium.bismuth=ビスマス
-material.clayium.brass=真鍮
-material.clayium.bronze=青銅
-material.clayium.caesium=セシウム
-material.clayium.calcium=カルシウム
-material.clayium.cerium=セリウム
-material.clayium.chrome=クロム
-material.clayium.cobalt=コバルト
-material.clayium.copper=銅
-material.clayium.curium=キュリウム
-material.clayium.electrum=エレクトラム
-material.clayium.europium=ユーロピウム
-material.clayium.francium=フランシウム
-material.clayium.hafnium=ハフニウム
-material.clayium.invar=インバー
-material.clayium.iridium=イリジウム
-material.clayium.lanthanum=ランタン
-material.clayium.lead=鉛
-material.clayium.lithium=リチウム
-material.clayium.magnesium=マグネシウム
-material.clayium.manganese=マンガン
-material.clayium.molybdenum=モリブデン
-material.clayium.neodymium=ネオジム
-material.clayium.neptunium=ネプツニウム
-material.clayium.nickel=ニッケル
-material.clayium.osmium=オスミウム
-material.clayium.palladium=パラジウム
-material.clayium.platinum=プラチナ
-material.clayium.plutonium=プルトニウム
-material.clayium.potassium=カリウム
-material.clayium.praseodymium=プラセオジム
-material.clayium.promethium=プロメチウム
-material.clayium.protactinium=プロトアクチニウム
-material.clayium.radium=ラジウム
-material.clayium.rhenium=レニウム
-material.clayium.rubidium=ルビジウム
-material.clayium.samarium=サマリウム
-material.clayium.silver=銀
-material.clayium.sodium=ナトリウム
-material.clayium.steel=鋼
-material.clayium.strontium=ストロンチウム
-material.clayium.tantalum=タンタル
-material.clayium.thorium=トリウム
-material.clayium.tin=錫
-material.clayium.titanium=チタン
-material.clayium.tungsten=タングステン
-material.clayium.uranium=ウラン
-material.clayium.vanadium=バナジウム
-material.clayium.zinc=亜鉛
-material.clayium.zirconium=ジルコニウム
+clayium.material.actinium=アクチニウム
+clayium.material.americium=アメリシウム
+clayium.material.antimony=アンチモン
+clayium.material.barium=バリウム
+clayium.material.beryllium=ベリリウム
+clayium.material.bismuth=ビスマス
+clayium.material.brass=真鍮
+clayium.material.bronze=青銅
+clayium.material.caesium=セシウム
+clayium.material.calcium=カルシウム
+clayium.material.cerium=セリウム
+clayium.material.chrome=クロム
+clayium.material.cobalt=コバルト
+clayium.material.copper=銅
+clayium.material.curium=キュリウム
+clayium.material.electrum=エレクトラム
+clayium.material.europium=ユーロピウム
+clayium.material.francium=フランシウム
+clayium.material.hafnium=ハフニウム
+clayium.material.invar=インバー
+clayium.material.iridium=イリジウム
+clayium.material.lanthanum=ランタン
+clayium.material.lead=鉛
+clayium.material.lithium=リチウム
+clayium.material.magnesium=マグネシウム
+clayium.material.manganese=マンガン
+clayium.material.molybdenum=モリブデン
+clayium.material.neodymium=ネオジム
+clayium.material.neptunium=ネプツニウム
+clayium.material.nickel=ニッケル
+clayium.material.osmium=オスミウム
+clayium.material.palladium=パラジウム
+clayium.material.platinum=プラチナ
+clayium.material.plutonium=プルトニウム
+clayium.material.potassium=カリウム
+clayium.material.praseodymium=プラセオジム
+clayium.material.promethium=プロメチウム
+clayium.material.protactinium=プロトアクチニウム
+clayium.material.radium=ラジウム
+clayium.material.rhenium=レニウム
+clayium.material.rubidium=ルビジウム
+clayium.material.samarium=サマリウム
+clayium.material.silver=銀
+clayium.material.sodium=ナトリウム
+clayium.material.steel=鋼
+clayium.material.strontium=ストロンチウム
+clayium.material.tantalum=タンタル
+clayium.material.thorium=トリウム
+clayium.material.tin=錫
+clayium.material.titanium=チタン
+clayium.material.tungsten=タングステン
+clayium.material.uranium=ウラン
+clayium.material.vanadium=バナジウム
+clayium.material.zinc=亜鉛
+clayium.material.zirconium=ジルコニウム
 
-material.clayium.zinc_aluminum=亜鉛アルミ合金
-material.clayium.zinc_zirconium=亜鉛ジルコニウム合金
-material.clayium.impure_glowstone=不純なグロウストーン
-material.clayium.impure_redstone=不純なレッドストーン
-material.clayium.calcium_chloride=塩化カルシウム
-material.clayium.carbon=炭素
-material.clayium.charcoal=木炭
-material.clayium.coal=石炭
-material.clayium.lapis=ラピスラズリ
-material.clayium.organic_clay=有機粘土
-material.clayium.phosphorus=リン
-material.clayium.quartz=クォーツ
-material.clayium.salt=塩
-material.clayium.saltpeter=硝石
-material.clayium.sodium_carbonate=炭酸ナトリウム
-material.clayium.sulfur=硫黄
+clayium.material.zinc_aluminum=亜鉛アルミ合金
+clayium.material.zinc_zirconium=亜鉛ジルコニウム合金
+clayium.material.impure_glowstone=不純なグロウストーン
+clayium.material.impure_redstone=不純なレッドストーン
+clayium.material.calcium_chloride=塩化カルシウム
+clayium.material.carbon=炭素
+clayium.material.charcoal=木炭
+clayium.material.coal=石炭
+clayium.material.lapis=ラピスラズリ
+clayium.material.organic_clay=有機粘土
+clayium.material.phosphorus=リン
+clayium.material.quartz=クォーツ
+clayium.material.salt=塩
+clayium.material.saltpeter=硝石
+clayium.material.sodium_carbonate=炭酸ナトリウム
+clayium.material.sulfur=硫黄
+clayium.material.impure_ultimate=不純な究極合金
+
+#Materialの特殊キー
+clayium.material.dense_clay.block=高密度粘土
+clayium.material.compressed_clay.block=圧縮粘土
+clayium.material.industrial_clay.block=工業用粘土
+clayium.material.advanced_industrial_clay.block=発展工業用粘土
+clayium.material.energetic_clay.block=エネルギー粘土
+clayium.material.compressed_energetic_clay.block=圧縮エネルギー粘土
+clayium.material.compressed_energetic_clay2.block=2重圧縮エネルギー粘土
+clayium.material.compressed_energetic_clay3.block=3重圧縮エネルギー粘土
+clayium.material.compressed_energetic_clay4.block=4重圧縮エネルギー粘土
+clayium.material.compressed_energetic_clay5.block=5重圧縮エネルギー粘土
+clayium.material.compressed_energetic_clay6.block=6重圧縮エネルギー粘土
+clayium.material.compressed_energetic_clay7.block=7重圧縮エネルギー粘土
+clayium.material.octuple_energy_clay.block=8重圧縮エネルギー粘土
+clayium.material.octuple_pure_antimatter.matter=8重圧縮純反物質
+clayium.material.antimatter.gem=反物質
+clayium.material.pure_antimatter.gem=純反物質
+clayium.material.pure_antimatter1.gem=圧縮純反物質
+clayium.material.pure_antimatter2.gem=2重圧縮純反物質
+clayium.material.pure_antimatter3.gem=3重圧縮純反物質
+clayium.material.pure_antimatter4.gem=4重圧縮純反物質
+clayium.material.pure_antimatter5.gem=5重圧縮純反物質
+clayium.material.pure_antimatter6.gem=6重圧縮純反物質
+clayium.material.pure_antimatter7.gem=7重圧縮純反物質
+clayium.material.octuple_pure_antimatter.gem=8重圧縮純反物質
 
 machine.clayium.tier1=粘土
 machine.clayium.tier2=高密度粘土
@@ -143,8 +189,11 @@ tier.clayium.pure_antimatter=純反物質
 tier.clayium.oec=OEC
 tier.clayium.opa=OPA
 
+tile.clayium.machine_hull.default=生の粘土マシン筐体
 tile.clayium.machine_hull=%sマシン筐体
 tile.clayium.machine_hull_tier4=基本マシン筐体
+tile.clayium.blockAZ91DHull.name=AZ91D 合金マシン筐体
+tile.clayium.blockZK60AHull.name=ZK60A 合金マシン筐体
 
 recipe.clayium.second=%1$s秒
 
@@ -204,29 +253,8 @@ tile.clayium.clay_ore.name=粘土鉱石
 tile.clayium.dense_clay_ore.name=高密度粘土鉱石
 tile.clayium.large_dense_clay_ore.name=高密度粘土鉱石大
 
-tile.clayium.compressed_clay_tier0.name=高密度粘土
-tile.clayium.compressed_clay_tier1.name=圧縮粘土
-tile.clayium.compressed_clay_tier2.name=工業用粘土
-tile.clayium.compressed_clay_tier3.name=発展工業用粘土
-tile.clayium.compressed_clay_tier4.name=エネルギー粘土
-tile.clayium.compressed_clay_tier5.name=圧縮エネルギー粘土
-tile.clayium.compressed_clay_tier6.name=2重圧縮エネルギー粘土
-tile.clayium.compressed_clay_tier7.name=3重圧縮エネルギー粘土
-tile.clayium.compressed_clay_tier8.name=4重圧縮エネルギー粘土
-tile.clayium.compressed_clay_tier9.name=5重圧縮エネルギー粘土
-tile.clayium.compressed_clay_tier10.name=6重圧縮エネルギー粘土
-tile.clayium.compressed_clay_tier11.name=7重圧縮エネルギー粘土
-tile.clayium.compressed_clay_tier12.name=8重圧縮エネルギー粘土
-
-tile.clayium.blockRawClayMachineHull.0.name=生の粘土マシン筐体
-
-#tile.blockOthersHull.0.name=AZ91D Alloy Hull
-#tile.blockOthersHull.1.name=ZK60A Alloy Hull
-tile.clayium.blockAZ91DHull.name=AZ91D 合金マシン筐体
-tile.clayium.blockZK60AHull.name=ZK60A 合金マシン筐体
-
-tile.clayium.clay_work_table.name=粘土作業台
-tile.clayium.clay_work_table.tooltip=工業化への第一歩
+tile.clayium.clay_work_table=粘土作業台
+tile.clayium.clay_work_table.tooltip1=工業化への第一歩
 tile.clayium.blockClayCraftingTable.name=粘土作業板
 tile.clayium.blockClayCraftingTable.tooltip.line1=ちょっと便利な作業台
 tile.clayium.blockClayCraftingTable.tooltip.line2=__DETAIL__
@@ -309,12 +337,12 @@ tile.clayium.blockAutoClayCondenser.tooltip.line1=全自動粘土工場の効率
 tile.clayium.blockAutoClayCondenserMK2.name=全自動粘土圧縮機 Mk II
 tile.clayium.blockAutoClayCondenserMK2.tooltip.line1=全自動粘土工場の効率化に
 tile.clayium.blockAutoClayCondenserMK2.tooltip.line2=圧縮速度がさらに上昇
-tile.clayium.blockQuartzCrucible.name=クォーツるつぼ
-tile.clayium.blockQuartzCrucible.tooltip.line1=不純なシリコンを純化
-tile.clayium.blockQuartzCrucible.tooltip.line2=__DETAIL__
-tile.clayium.blockQuartzCrucible.tooltip.line3=1. 不純なシリコンインゴットをドロップ
-tile.clayium.blockQuartzCrucible.tooltip.line4=2. 少々待つ
-tile.clayium.blockQuartzCrucible.tooltip.line5=3. 糸をドロップ
+tile.clayium.quartz_crucible=クォーツるつぼ
+tile.clayium.quartz_crucible.tooltip1=不純なシリコンを純化
+tile.clayium.quartz_crucible.tooltip2=__DETAIL__
+tile.clayium.quartz_crucible.tooltip3=1. 不純なシリコンインゴットをドロップ
+tile.clayium.quartz_crucible.tooltip4=2. 少々待つ
+tile.clayium.quartz_crucible.tooltip5=3. 糸をドロップ
 
 machine.clayium.solar_clay_fabricator.advanced=ソーラー粘土製造機 Mk I
 machine.clayium.solar_clay_fabricator.advanced.tooltip1=太陽光エネルギーにより
@@ -415,13 +443,9 @@ machine.clayium.resonating_collector=共鳴型反物質収集機
 machine.clayium.resonating_collector.tooltip1=共鳴により反物質を収集する
 machine.clayium.resonating_collector.tooltip2=稼動には共鳴装置が必要
 
-tile.clayium.blockResonator.antimatter.name=反物質共鳴装置
-tile.clayium.blockResonator.pureantimatter.name=純反物質共鳴装置
-tile.clayium.blockResonator.oec.name=OEC 共鳴装置
-tile.clayium.blockResonator.opa.name=OPA 共鳴装置
-tooltip.clayium.Resonator.line1=5x5x5の範囲内にある各種 CA 装置の
-tooltip.clayium.Resonator.line2=共鳴率を上昇させる
-tooltip.clayium.Resonator.resonance=共鳴率 : x%1$4.3g
+tile.clayium.resonator=%s共鳴装置
+tooltip.clayium.resonator.tooltip1=5x5x5の範囲内にある各種 CA 装置の
+tooltip.clayium.resonator.tooltip2=共鳴率を上昇させる
 
 tile.clayium.blockOverclocker.antimatter.name=反物質オーバークロッカー
 tile.clayium.blockOverclocker.pureantimatter.name=純反物質オーバークロッカー
@@ -538,7 +562,7 @@ tile.clayium.blockClayTreeLog.name=粘土樹の原木
 tile.clayium.blockClayTreeLeaf.name=粘土樹の葉
 
 tile.clayium.blockClayChunkLoader.name=3x3 チャンクローダー
-tile.clayium.blockStorageContainer.name=ストレージコンテナ
+machine.clayium.storage_container=ストレージコンテナ
 tile.clayium.blockVacuumContainer.name=虚空コンテナ
 tile.clayium.blockVacuumContainer.tooltip.line1=搬入されたアイテムを消去する
 tile.clayium.blockAutoTrader.name=自動取引装置
@@ -615,7 +639,7 @@ tooltip.clayium.FluidTranslator.line2=相互に変換する
 tile.clayium.blockAdvancedFluidTransferMachine.name=液体転移装置
 tile.clayium.blockAdvancedFluidTransferMachine.tooltip.line1=液体容器から液体を出し入れする
 
-tile.clayium.blockCreativeCESource.name=クリエイティブ用粘土エネルギー源
+tile.clayium.creative_energy_source.name=クリエイティブ用粘土エネルギー源
 
 tile.clayium.blockBasicRFGenerator.name=CE-RF コンバーター
 tile.clayium.blockAdvancedRFGenerator.name=発展 CE-RF コンバーター
@@ -640,197 +664,31 @@ tooltip.clayium.RFGenerator.line5=コンフィグでこれを作成するレシ�
 tooltip.clayium.RFGenerator.convertRate=%1$sCE/t -> %2$sRF/t
 tooltip.clayium.RFGenerator.output=出力: %1$sRF/t
 
-tile.clayium.blockMetalChest.Silicon.name=シリコンチェスト
-tile.clayium.blockMetalChest.Aluminium.name=アルミニウムチェスト
-tile.clayium.blockMetalChest.ClaySteel.name=粘土鋼チェスト
-tile.clayium.blockMetalChest.Clayium.name=クレイウムチェスト
-tile.clayium.blockMetalChest.UltimateAlloy.name=究極合金チェスト
-
-tile.clayium.blockMetalChest.Magnesium.name=マグネシウムチェスト
-tile.clayium.blockMetalChest.Sodium.name=ナトリウムチェスト
-tile.clayium.blockMetalChest.Lithium.name=リチウムチェスト
-tile.clayium.blockMetalChest.Zirconium.name=ジルコニウムチェスト
-tile.clayium.blockMetalChest.Zinc.name=亜鉛チェスト
-
-tile.clayium.blockMetalChest.Manganese.name=マンガンチェスト
-tile.clayium.blockMetalChest.Calcium.name=カルシウムチェスト
-tile.clayium.blockMetalChest.Potassium.name=カリウムチェスト
-tile.clayium.blockMetalChest.Nickel.name=ニッケルチェスト
-tile.clayium.blockMetalChest.Beryllium.name=ベリリウムチェスト
-tile.clayium.blockMetalChest.Lead.name=鉛チェスト
-tile.clayium.blockMetalChest.Hafnium.name=ハフニウムチェスト
-tile.clayium.blockMetalChest.Chrome.name=クロムチェスト
-tile.clayium.blockMetalChest.Titanium.name=チタンチェスト
-tile.clayium.blockMetalChest.Strontium.name=ストロンチウムチェスト
-tile.clayium.blockMetalChest.Barium.name=バリウムチェスト
-
-tile.clayium.blockMetalChest.AZ91D.name=AZ91D 合金チェスト
-tile.clayium.blockMetalChest.ZK60A.name=ZK60A 合金チェスト
-
-tile.clayium.blockMetalChest.Rubidium.name=ルビジウムチェスト
-tile.clayium.blockMetalChest.Caesium.name=セシウムチェスト
-tile.clayium.blockMetalChest.Francium.name=フランシウムチェスト
-tile.clayium.blockMetalChest.Radium.name=ラジウムチェスト
-tile.clayium.blockMetalChest.Actinium.name=アクチニウムチェスト
-tile.clayium.blockMetalChest.Thorium.name=トリウムチェスト
-tile.clayium.blockMetalChest.Protactinium.name=プロトアクチニウムチェスト
-tile.clayium.blockMetalChest.Uranium.name=ウランチェスト
-tile.clayium.blockMetalChest.Neptunium.name=ネプツニウムチェスト
-tile.clayium.blockMetalChest.Plutonium.name=プルトニウムチェスト
-tile.clayium.blockMetalChest.Americium.name=アメリシウムチェスト
-tile.clayium.blockMetalChest.Curium.name=キュリウムチェスト
-
-tile.clayium.blockMetalChest.Lanthanum.name=ランタンチェスト
-tile.clayium.blockMetalChest.Cerium.name=セリウムチェスト
-tile.clayium.blockMetalChest.Praseodymium.name=プラセオジムチェスト
-tile.clayium.blockMetalChest.Neodymium.name=ネオジムチェスト
-tile.clayium.blockMetalChest.Promethium.name=プロメチウムチェスト
-tile.clayium.blockMetalChest.Samarium.name=サマリウムチェスト
-tile.clayium.blockMetalChest.Europium.name=ユーロピウムチェスト
-
-tile.clayium.blockMetalChest.Vanadium.name=バナジウムチェスト
-
-tile.clayium.blockMetalChest.Cobalt.name=コバルトチェスト
-tile.clayium.blockMetalChest.Palladium.name=パラジウムチェスト
-
-tile.clayium.blockMetalChest.Platinum.name=白金チェスト
-tile.clayium.blockMetalChest.Iridium.name=イリジウムチェスト
-tile.clayium.blockMetalChest.Osmium.name=オスミウムチェスト
-tile.clayium.blockMetalChest.Rhenium.name=レニウムチェスト
-
-tile.clayium.blockMetalChest.Tantalum.name=タンタルチェスト
-tile.clayium.blockMetalChest.Tungsten.name=タングステンチェスト
-tile.clayium.blockMetalChest.Molybdenum.name=モリブデンチェスト
-
-tile.clayium.blockMetalChest.Antimony.name=アンチモンチェスト
-tile.clayium.blockMetalChest.Bismuth.name=ビスマスチェスト
-
-tile.clayium.blockMetalChest.Brass.name=ブラスチェスト
-tile.clayium.blockMetalChest.Electrum.name=エレクトラムチェスト
-tile.clayium.blockMetalChest.Invar.name=インバーチェスト
-
 tooltip.clayium.MetalChest.capacity1=容量: %1$d x %2$d = %3$d スロット
 tooltip.clayium.MetalChest.capacity2=容量: %1$d x %2$d x %3$d = %4$d スロット
 
-tile.clayium.blockMetal.Magnesium.name=マグネシウムブロック
-tile.clayium.blockMetal.Sodium.name=ナトリウムブロック
-tile.clayium.blockMetal.Lithium.name=リチウムブロック
-tile.clayium.blockMetal.Zirconium.name=ジルコニウムブロック
-tile.clayium.blockMetal.Zinc.name=亜鉛ブロック
+item.clayium.large_clay_ball.name=大粘土玉
 
-tile.clayium.blockMetal.Manganese.name=マンガンブロック
-tile.clayium.blockMetal.Calcium.name=カルシウムブロック
-tile.clayium.blockMetal.Potassium.name=カリウムブロック
-tile.clayium.blockMetal.Nickel.name=ニッケルブロック
-tile.clayium.blockMetal.Beryllium.name=ベリリウムブロック
-tile.clayium.blockMetal.Lead.name=鉛ブロック
-tile.clayium.blockMetal.Hafnium.name=ハフニウムブロック
-tile.clayium.blockMetal.Chrome.name=クロムブロック
-tile.clayium.blockMetal.Titanium.name=チタンブロック
-tile.clayium.blockMetal.Strontium.name=ストロンチウムブロック
-tile.clayium.blockMetal.Barium.name=バリウムブロック
-
-tile.clayium.blockMetal.AZ91D.name=AZ91D 合金ブロック
-tile.clayium.blockMetal.ZK60A.name=ZK60A 合金ブロック
-
-tile.clayium.blockMetal.Rubidium.name=ルビジウムブロック
-tile.clayium.blockMetal.Caesium.name=セシウムブロック
-tile.clayium.blockMetal.Francium.name=フランシウムブロック
-tile.clayium.blockMetal.Radium.name=ラジウムブロック
-tile.clayium.blockMetal.Actinium.name=アクチニウムブロック
-tile.clayium.blockMetal.Thorium.name=トリウムブロック
-tile.clayium.blockMetal.Protactinium.name=プロトアクチニウムブロック
-tile.clayium.blockMetal.Uranium.name=ウラニウムブロック
-tile.clayium.blockMetal.Neptunium.name=ネプツニウムブロック
-tile.clayium.blockMetal.Plutonium.name=プルトニウムブロック
-tile.clayium.blockMetal.Americium.name=アメリシウムブロック
-tile.clayium.blockMetal.Curium.name=キュリウムブロック
-
-tile.clayium.blockMetal.Lanthanum.name=ランタンブロック
-tile.clayium.blockMetal.Cerium.name=セリウムブロック
-tile.clayium.blockMetal.Praseodymium.name=プラセオジムブロック
-tile.clayium.blockMetal.Neodymium.name=ネオジムブロック
-tile.clayium.blockMetal.Promethium.name=プロメチウムブロック
-tile.clayium.blockMetal.Samarium.name=サマリウムブロック
-tile.clayium.blockMetal.Europium.name=ユーロピウムブロック
-
-tile.clayium.blockMetal.Vanadium.name=バナジウムブロック
-
-tile.clayium.blockMetal.Cobalt.name=コバルトブロック
-tile.clayium.blockMetal.Palladium.name=パラジウムブロック
-
-tile.clayium.blockMetal.Copper.name=銅ブロック
-tile.clayium.blockMetal.Silver.name=銀ブロック
-tile.clayium.blockMetal.Platinum.name=白金ブロック
-tile.clayium.blockMetal.Iridium.name=イリジウムブロック
-tile.clayium.blockMetal.Osmium.name=オスミウムブロック
-tile.clayium.blockMetal.Rhenium.name=レニウムブロック
-
-tile.clayium.blockMetal.Tantalum.name=タンタルブロック
-tile.clayium.blockMetal.Tungsten.name=タングステンブロック
-tile.clayium.blockMetal.Molybdenum.name=モリブデンブロック
-
-tile.clayium.blockMetal.Tin.name=錫ブロック
-tile.clayium.blockMetal.Antimony.name=アンチモンブロック
-tile.clayium.blockMetal.Bismuth.name=ビスマスブロック
-
-tile.clayium.blockMetal.Steel.name=スチールブロック
-tile.clayium.blockMetal.Bronze.name=ブロンズブロック
-tile.clayium.blockMetal.Brass.name=ブラスブロック
-tile.clayium.blockMetal.Electrum.name=エレクトラムブロック
-tile.clayium.blockMetal.Invar.name=インバーブロック
-
-tile.clayium.blockImpureSilicon.name=不純なシリコンブロック
-tile.clayium.blockSilicone.name=シリコーンブロック
-tile.clayium.blockSilicon.name=シリコンブロック
-tile.clayium.blockAluminium.name=アルミニウムブロック
-tile.clayium.blockClaySteel.name=粘土鋼ブロック
-tile.clayium.blockClayium.name=クレイウムブロック
-tile.clayium.blockUltimateAlloy.name=究極合金ブロック
-tile.clayium.blockAntimatter.name=反物質ブロック
-tile.clayium.blockPureAntimatter.name=純反物質ブロック
-tile.clayium.blockOctupleEnergeticClay.name=OEC ブロック
-tile.clayium.blockOctuplePureAntimatter.name=OPA ブロック
-
-tile.clayium.blockSilicone.white.name=白色のシリコーンブロック
-tile.clayium.blockSilicone.orange.name=橙色のシリコーンブロック
-tile.clayium.blockSilicone.magenta.name=赤紫色のシリコーンブロック
-tile.clayium.blockSilicone.light_blue.name=空色のシリコーンブロック
-tile.clayium.blockSilicone.yellow.name=黄色のシリコーンブロック
-tile.clayium.blockSilicone.lime.name=黄緑色のシリコーンブロック
-tile.clayium.blockSilicone.pink.name=桃色のシリコーンブロック
-tile.clayium.blockSilicone.gray.name=灰色のシリコーンブロック
-tile.clayium.blockSilicone.silver.name=薄灰色のシリコーンブロック
-tile.clayium.blockSilicone.cyan.name=水色のシリコーンブロック
-tile.clayium.blockSilicone.purple.name=紫色のシリコーンブロック
-tile.clayium.blockSilicone.blue.name=青色のシリコーンブロック
-tile.clayium.blockSilicone.brown.name=茶色のシリコーンブロック
-tile.clayium.blockSilicone.green.name=緑色のシリコーンブロック
-tile.clayium.blockSilicone.red.name=赤色のシリコーンブロック
-tile.clayium.blockSilicone.black.name=黒色のシリコーンブロック
-
-item.clayium.itemRawClayCraftingTools.RollingPin.name=生の粘土めん棒
-item.clayium.itemRawClayCraftingTools.RollingPin.tooltip.line1=機械側面のフィルターを消去できる
-item.clayium.itemRawClayCraftingTools.Slicer.name=生の粘土スライサー
-item.clayium.itemRawClayCraftingTools.Slicer.tooltip.line1=機械側面のフィルターを消去できる
-item.clayium.itemRawClayCraftingTools.Spatula.name=生の粘土へら
-item.clayium.itemRawClayCraftingTools.Spatula.tooltip.line1=機械側面のフィルターを消去できる
-item.clayium.itemClayRollingPin.name=粘土めん棒
-item.clayium.itemClayRollingPin.tooltip.line1=搬入口設定ツール
-item.clayium.itemClaySlicer.name=粘土スライサー
-item.clayium.itemClaySlicer.tooltip.line1=搬出口設定ツール
-item.clayium.itemClaySpatula.name=粘土へら
-item.clayium.itemClaySpatula.tooltip.line1=装置の見た目をパイプ化する
-item.clayium.itemClayWrench.name=粘土レンチ
-item.clayium.itemClayWrench.tooltip.line1=装置を回転させる
-item.clayium.itemClayPipingTools.IO.name=粘土配管ツール (搬入出口)
-item.clayium.itemClayPipingTools.IO.tooltip.line1=搬入 / 搬出(スニーク)
-item.clayium.itemClayPipingTools.Piping.name=粘土配管ツール (パイプ化/回転)
-item.clayium.itemClayPipingTools.Piping.tooltip.line1=パイプ化 / 回転(スニーク)
-item.clayium.itemClayPipingTools.Memory.name=配管メモリー
-item.clayium.itemClayPipingTools.Memory.tooltip.line1=搬入出口などの設定を保存する
-item.clayium.itemClayPipingTools.Memory.tooltip.line2=右クリック: メモリーから読み込み
-item.clayium.itemClayPipingTools.Memory.tooltip.line3=Shift + 右クリック: メモリーに保存
+item.clayium.filter_remover.tooltip1=機械側面のフィルターを消去できる
+item.clayium.raw_clay_rolling_pin.name=生の粘土めん棒
+item.clayium.raw_clay_slicer.name=生の粘土スライサー
+item.clayium.raw_clay_spatula.name=生の粘土へら
+item.clayium.clay_rolling_pin.name=粘土めん棒
+item.clayium.clay_rolling_pin.tooltip1=搬入口設定ツール
+item.clayium.clay_slicer.name=粘土スライサー
+item.clayium.clay_slicer.tooltip1=搬出口設定ツール
+item.clayium.clay_spatula.name=粘土へら
+item.clayium.clay_spatula.tooltip1=装置の見た目をパイプ化する
+item.clayium.clay_wrench.name=粘土レンチ
+item.clayium.clay_wrench.tooltip1=装置を回転させる
+item.clayium.clay_io_configurator.name=粘土配管ツール (搬入出口)
+item.clayium.clay_io_configurator.tooltip1=搬入 / 搬出(スニーク)
+item.clayium.clay_piping_tool.name=粘土配管ツール (パイプ化/回転)
+item.clayium.clay_piping_tool.tooltip1=パイプ化 / 回転(スニーク)
+item.clayium.memory_card.name=配管メモリー
+item.clayium.memory_card.tooltip1=搬入出口などの設定を保存する
+item.clayium.memory_card.tooltip2=右クリック: メモリーから読み込み
+item.clayium.memory_card.tooltip3=Shift + 右クリック: メモリーに保存
 
 item.clayium.itemDirectionMemory.name=方向メモリー
 item.clayium.itemDirectionMemory.tooltip.line1=クリック方向・位置を保存し、
@@ -946,15 +804,15 @@ item.clayium.advanced_circuit.name=発展回路
 item.clayium.precision_circuit.name=精密回路
 item.clayium.integrated_circuit.name=集積回路
 item.clayium.clay_core.name=粘土コア
-item.clayium.clay_core.tooltip.line1=ストレージコンテナに右クリックすると、その容量を 21 億個にまで拡張する
+item.clayium.clay_core.tooltip1=ストレージコンテナに右クリックすると、その容量を 21 億個にまで拡張する
 item.clayium.clay_brain.name=粘土脳
 item.clayium.clay_spirit.name=粘土スピリット
 item.clayium.clay_soul.name=粘土ソウル
 item.clayium.clay_anima.name=粘土アニマ
 item.clayium.clay_psyche.name=粘土プシュケー
 item.clayium.synchronous_parts.name=シンクロパーツ
-item.clayium.SynchronousParts.tooltip.line1=同期させるためには、インターフェースに
-item.clayium.SynchronousParts.tooltip.line2=これを予め挿入しておくこと
+item.clayium.synchronous_parts.tooltip1=同期させるためには、インターフェースに
+item.clayium.synchronous_parts.tooltip2=これを予め挿入しておくこと
 item.clayium.teleportation_parts.name=空間転移パーツ
 item.clayium.manipulator_mk1.name=マジック・ハンド Mk I
 item.clayium.manipulator_mk2.name=マジック・ハンド Mk II
@@ -962,266 +820,11 @@ item.clayium.manipulator_mk3.name=マジック・ハンド Mk III
 
 item.clayium.cee_board.name=CEE 回路板
 item.clayium.cee_circuit.name=CEE 回路
-item.clayium.clay_energy_exciter.name=粘土エネルギー励起装置
+item.clayium.cee.name=粘土エネルギー励起装置
 item.clayium.laser_parts.name=レーザーパーツ
 item.clayium.antimatter_seed.name=反物質の種
 
-item.clayium.clay_plate.name=粘土プレート
-item.clayium.clay_stick.name=粘土棒
-item.clayium.clay_short_stick.name=粘土小棒
-item.clayium.clay_ring.name=粘土リング
-item.clayium.clay_small_ring.name=粘土小リング
-item.clayium.clay_gear.name=粘土歯車
-item.clayium.clay_blade.name=粘土ブレード
-item.clayium.clay_needle.name=粘土ニードル
-item.clayium.clay_disc.name=粘土円盤
-item.clayium.clay_small_disc.name=粘土小円盤
-item.clayium.clay_cylinder.name=粘土円柱
-item.clayium.clay_pipe.name=粘土パイプ
-item.clayium.large_clay_ball.name=大粘土玉
-item.clayium.large_clay_plate.name=粘土大プレート
-item.clayium.clay_grinding_head.name=粘土粉砕機ヘッド
-item.clayium.clay_bearing.name=粘土軸受
-item.clayium.clay_spindle.name=粘土主軸
-item.clayium.clay_cutting_head.name=粘土切断機ヘッド
-item.clayium.clay_wheel.name=粘土水車パーツ
-
-item.clayium.dense_clay_plate.name=高密度粘土プレート
-item.clayium.dense_clay_stick.name=高密度粘土棒
-item.clayium.dense_clay_short_stick.name=高密度粘土小棒
-item.clayium.dense_clay_ring.name=高密度粘土リング
-item.clayium.dense_clay_small_ring.name=高密度粘土小リング
-item.clayium.dense_clay_gear.name=高密度粘土歯車
-item.clayium.dense_clay_blade.name=高密度粘土ブレード
-item.clayium.dense_clay_needle.name=高密度粘土ニードル
-item.clayium.dense_clay_disc.name=高密度粘土円盤
-item.clayium.dense_clay_small_disc.name=高密度粘土小円盤
-item.clayium.dense_clay_cylinder.name=高密度粘土円柱
-item.clayium.dense_clay_pipe.name=高密度粘土パイプ
-item.clayium.large_dense_clay_plate.name=高密度粘土大プレート
-item.clayium.dense_clay_grinding_head.name=高密度粘土粉砕機ヘッド
-item.clayium.dense_clay_bearing.name=高密度粘土軸受
-item.clayium.dense_clay_spindle.name=高密度粘土主軸
-item.clayium.itemDenseClayParts.Spindle.tooltip.line1=タイムコンシューマー
-item.clayium.dense_clay_cutting_head.name=高密度粘土切断機ヘッド
-item.clayium.dense_clay_wheel.name=高密度粘土水車パーツ
-
-item.clayium.industrial_clay_plate.name=工業用粘土プレート
-item.clayium.large_industrial_clay_plate.name=工業用粘土大プレート
-
-item.clayium.adv_industrial_clay_plate.name=発展工業用粘土プレート
-item.clayium.large_adv_industrial_clay_plate.name=発展工業用粘土大プレート
-
-item.clayium.clay_dust.name=粘土粉
-item.clayium.dense_clay_dust.name=高密度粘土粉
-item.clayium.industrial_clay_dust.name=工業用粘土粉
-item.clayium.adv_industrial_clay_dust.name=発展工業用粘土粉
 item.clayium.energized_clay_dust.name=活性化粘土粉
 item.clayium.excited_clay_dust.name=励起粘土粉
-
-item.clayium.salt_dust.name=塩
-item.clayium.itemDusts.Salt.tooltip.line1=塩析出装置により生産可能
-item.clayium.calcareous_clay_dust.name=石灰質粘土粉
-item.clayium.calcium_chloride_dust.name=塩化カルシウム
-item.clayium.sodium_carbonate_dust.name=炭酸ナトリウム
-item.clayium.quartz_dust.name=クォーツの粉
-
-item.clayium.impure_silicon_plate.name=不純なシリコンプレート
-item.clayium.large_impure_silicon_plate.name=不純なシリコン大プレート
-item.clayium.impure_silicon_dust.name=不純なシリコンの粉
-item.clayium.impure_silicon_ingot.name=不純なシリコンインゴット
-
-item.clayium.silicone_plate.name=シリコーンプレート
-item.clayium.large_silicone_plate.name=シリコーン大プレート
-item.clayium.silicone_dust.name=シリコーンの粉
-item.clayium.silicone_ingot.name=シリコーンインゴット
-
-item.clayium.silicon_plate.name=シリコンプレート
-item.clayium.large_silicon_plate.name=シリコン大プレート
-item.clayium.silicon_dust.name=シリコンの粉
-item.clayium.silicon_ingot.name=シリコンインゴット
-item.clayium.silicon_ingot.tooltip.line1=最初のシリコンインゴットは
-item.clayium.silicon_ingot.tooltip.line2=クオーツるつぼで生産しよう
-
-item.clayium.aluminum_plate.name=アルミニウムプレート
-item.clayium.large_aluminum_plate.name=アルミニウム大プレート
-item.clayium.aluminum_dust.name=アルミニウムの粉
-item.clayium.aluminum_ingot.name=アルミニウムインゴット
-
-item.clayium.clay_steel_plate.name=粘土鋼プレート
-item.clayium.large_clay_steel_plate.name=粘土鋼大プレート
-item.clayium.clay_steel_dust.name=粘土鋼の粉
-item.clayium.clay_steel_ingot.name=粘土鋼インゴット
-
-item.clayium.clayium_plate.name=クレイウムプレート
-item.clayium.large_clayium_plate.name=クレイウム大プレート
-item.clayium.clayium_dust.name=クレイウムの粉
-item.clayium.clayium_ingot.name=クレイウムインゴット
-
-item.clayium.ultimate_alloy_plate.name=究極合金プレート
-item.clayium.large_ultimate_alloy_plate.name=究極合金大プレート
-item.clayium.ultimate_alloy_dust.name=究極合金の粉
-item.clayium.ultimate_alloy_ingot.name=究極合金インゴット
-
-item.clayium.antimatter_plate.name=反物質プレート
-item.clayium.large_antimatter_plate.name=反物質大プレート
-item.clayium.antimatter_dust.name=反物質の粉
-item.clayium.antimatter.name=反物質
-
-item.clayium.pure_antimatter_plate.name=純反物質プレート
-item.clayium.large_pure_antimatter_plate.name=純反物質大プレート
-item.clayium.pure_antimatter_dust.name=純反物質の粉
-item.clayium.pure_antimatter_tier0.name=純反物質
-
-item.clayium.oec_plate.name=OEC プレート
-item.clayium.large_oec_plate.name=OEC 大プレート
-item.clayium.oec_dust.name=OEC の粉
-
-item.clayium.opa_plate.name=OPA プレート
-item.clayium.large_opa_plate.name=OPA 大プレート
-item.clayium.opa_dust.name=OPA の粉
-item.clayium.pure_antimatter_tier8.name=8重圧縮純反物質
-
-
-item.clayium.iron_ingot.name=鉄インゴット
-item.clayium.iron_dust.name=鉄の粉
-item.clayium.gold_ingot.name=金インゴット
-item.clayium.gold_dust.name=金の粉
-
-item.clayium.impure_redstone_dust.name=不純なレッドストーン
-item.clayium.impure_glowstone_dust.name=不純なグロウストーンダスト
-
-item.clayium.impure_ultimate_alloy_ingot.name=究極合金の素
-
-item.clayium.magnesium_dust.name=マグネシウムの粉
-item.clayium.magnesium_ingot.name=マグネシウムインゴット
-item.clayium.sodium_dust.name=ナトリウムの粉
-item.clayium.sodium_ingot.name=ナトリウムインゴット
-item.clayium.lithium_dust.name=リチウムの粉
-item.clayium.lithium_ingot.name=リチウムインゴット
-item.clayium.zirconium_dust.name=ジルコニウムの粉
-item.clayium.zirconium_ingot.name=ジルコニウムインゴット
-item.clayium.zinc_dust.name=亜鉛の粉
-item.clayium.zinc_ingot.name=亜鉛インゴット
-item.clayium.manganese_dust.name=マンガンの粉
-item.clayium.manganese_ingot.name=マンガンインゴット
-item.clayium.calcium_dust.name=カルシウムの粉
-item.clayium.calcium_ingot.name=カルシウムインゴット
-item.clayium.potassium_dust.name=カリウムの粉
-item.clayium.potassium_ingot.name=カリウムインゴット
-item.clayium.nickel_dust.name=ニッケルの粉
-item.clayium.nickel_ingot.name=ニッケルインゴット
-item.clayium.beryllium_dust.name=ベリリウムの粉
-item.clayium.beryllium_ingot.name=ベリリウムインゴット
-item.clayium.lead_dust.name=鉛の粉
-item.clayium.lead_ingot.name=鉛インゴット
-item.clayium.hafnium_dust.name=ハフニウムの粉
-item.clayium.hafnium_ingot.name=ハフニウムインゴット
-item.clayium.chrome_dust.name=クロムの粉
-item.clayium.chrome_ingot.name=クロムインゴット
-item.clayium.titanium_dust.name=チタンの粉
-item.clayium.titanium_ingot.name=チタンインゴット
-item.clayium.strontium_dust.name=ストロンチウムの粉
-item.clayium.strontium_ingot.name=ストロンチウムインゴット
-item.clayium.barium_dust.name=バリウムの粉
-item.clayium.barium_ingot.name=バリウムインゴット
-item.clayium.copper_dust.name=銅の粉
-item.clayium.copper_ingot.name=銅インゴット
-
-item.clayium.impure_aluminum_dust.name=不純なアルミニウムの粉
-item.clayium.impure_magnesium_dust.name=不純なマグネシウムの粉
-item.clayium.impure_sodium_dust.name=不純なナトリウムの粉
-item.clayium.impure_lithium_dust.name=不純なリチウムの粉
-item.clayium.impure_zirconium_dust.name=不純なジルコニウムの粉
-item.clayium.impure_zinc_dust.name=不純な亜鉛の粉
-item.clayium.impure_manganese_dust.name=不純なマンガンの粉
-item.clayium.impure_calcium_dust.name=不純なカルシウムの粉
-item.clayium.impure_potassium_dust.name=不純なカリウムの粉
-item.clayium.impure_nickel_dust.name=不純なニッケルの粉
-item.clayium.impure_iron_dust.name=不純な鉄の粉
-item.clayium.impure_beryllium_dust.name=不純なベリリウムの粉
-item.clayium.impure_lead_dust.name=不純な鉛の粉
-item.clayium.impure_hafnium_dust.name=不純なハフニウムの粉
-item.clayium.impure_chrome_dust.name=不純なクロムの粉
-item.clayium.impure_titanium_dust.name=不純なチタンの粉
-item.clayium.impure_strontium_dust.name=不純なストロンチウムの粉
-item.clayium.impure_barium_dust.name=不純なバリウムの粉
-item.clayium.impure_copper_dust.name=不純な銅の粉
-
-item.clayium.impure_osmium_ingot.name=不純なオスミウムインゴット
-
-item.clayium.zinc_aluminum_ingot.name=亜鉛アルミ合金インゴット
-item.clayium.zinc_aluminum_dust.name=亜鉛アルミ合金の粉
-item.clayium.zinc_zirconium_ingot.name=亜鉛ジルコニウム合金インゴット
-item.clayium.zinc_zirconium_dust.name=亜鉛ジルコニウム合金の粉
-item.clayium.az91d_plate.name=AZ91D 合金プレート
-item.clayium.large_az91d_plate.name=AZ91D 合金大プレート
-item.clayium.az91d_dust.name=AZ91D 合金の粉
-item.clayium.az91d_ingot.name=AZ91D 合金インゴット
-item.clayium.zk60a_plate.name=ZK60A 合金プレート
-item.clayium.large_zk60a_plate.name=ZK60A 合金大プレート
-item.clayium.zk60a_dust.name=ZK60A 合金の粉
-item.clayium.zk60a_ingot.name=ZK60A 合金インゴット
-
-item.clayium.rubidium_ingot.name=ルビジウムインゴット
-item.clayium.caesium_ingot.name=セシウムインゴット
-item.clayium.francium_ingot.name=フランシウムインゴット
-item.clayium.radium_ingot.name=ラジウムインゴット
-item.clayium.actinium_ingot.name=アクチニウムインゴット
-item.clayium.thorium_ingot.name=トリウムインゴット
-item.clayium.protactinium_ingot.name=プロトアクチニウムインゴット
-item.clayium.uranium_ingot.name=ウランインゴット
-item.clayium.neptunium_ingot.name=ネプツニウムインゴット
-item.clayium.plutonium_ingot.name=プルトニウムインゴット
-item.clayium.americium_ingot.name=アメリシウムインゴット
-item.clayium.curium_ingot.name=キュリウムインゴット
-
-item.clayium.lanthanum_ingot.name=ランタンインゴット
-item.clayium.cerium_ingot.name=セリウムインゴット
-item.clayium.praseodymium_ingot.name=プラセオジムインゴット
-item.clayium.neodymium_ingot.name=ネオジムインゴット
-item.clayium.promethium_ingot.name=プロメチウムインゴット
-item.clayium.samarium_ingot.name=サマリウムインゴット
-item.clayium.europium_ingot.name=ユウロピウムインゴット
-
-item.clayium.vanadium_ingot.name=バナジウムインゴット
-
-item.clayium.cobalt_ingot.name=コバルトインゴット
-item.clayium.palladium_ingot.name=パラジウムインゴット
-
-item.clayium.silver_ingot.name=銀インゴット
-item.clayium.platinum_ingot.name=白金インゴット
-item.clayium.iridium_ingot.name=イリジウムインゴット
-item.clayium.osmium_ingot.name=オスミウムインゴット
-item.clayium.rhenium_ingot.name=レニウムインゴット
-
-item.clayium.tantalum_ingot.name=タンタルインゴット
-item.clayium.tungsten_ingot.name=タングステンインゴット
-item.clayium.molybdenum_ingot.name=モリブデンインゴット
-
-item.clayium.tin_ingot.name=錫インゴット
-item.clayium.antimony_ingot.name=アンチモンインゴット
-item.clayium.bismuth_ingot.name=ビスマスインゴット
-
-item.clayium.bronze_ingot.name=ブロンズインゴット
-item.clayium.bronze_dust.name=ブロンズの粉
-item.clayium.brass_ingot.name=ブラスインゴット
-item.clayium.brass_dust.name=ブラスの粉
-item.clayium.electrum_ingot.name=エレクトラムインゴット
-item.clayium.electrum_dust.name=エレクトラムの粉
-item.clayium.invar_ingot.name=インバーインゴット
-item.clayium.invar_dust.name=インバーの粉
-
-item.clayium.steel_ingot.name=スチールインゴット
-item.clayium.steel_dust.name=スチールの粉
-
-item.clayium.carbon_dust.name=炭素の粉
-item.clayium.phosphorus_dust.name=リンの粉
-item.clayium.sulfur_dust.name=硫黄
-item.clayium.saltpeter_dust.name=硝石
-
-item.clayium.coal_dust.name=石炭の粉
-item.clayium.charcoal_dust.name=木炭の粉
-item.clayium.lapis_dust.name=ラピスラズリの粉
 
 item.clayium.organic_clay_dust.name=有機粘土

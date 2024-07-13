@@ -12,13 +12,13 @@ object DecomposerRecipeLoader {
 
         registry.builder()
             .input(OrePrefix.dust, CMaterials.industrialClay)
-            .output(MetaItemClayParts.EnergeticClayDust, 3)
+            .output(MetaItemClayParts.EnergizedClayDust, 3)
             .tier(0).duration(60)
             .buildAndRegister()
 
         registry.builder()
             .input(OrePrefix.dust, CMaterials.advancedIndustrialClay)
-            .output(MetaItemClayParts.EnergeticClayDust, 28)
+            .output(MetaItemClayParts.EnergizedClayDust, 28)
             .tier(4).CEt(ClayEnergy.milli(10)).duration(60)
             .buildAndRegister()
     }

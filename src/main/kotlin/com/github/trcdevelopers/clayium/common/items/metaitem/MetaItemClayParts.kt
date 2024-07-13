@@ -19,7 +19,7 @@ object MetaItemClayParts : MetaItemClayium("clay_parts") {
     val PRECISION_CIRCUIT = addItem(4, "precision_circuit").tier(6).oreDict("circuitAdvanced")
     val INTEGRATED_CIRCUIT = addItem(5, "integrated_circuit").tier(7).oreDict("circuitElite")
     val CLAY_CORE = addItem(6, "clay_core").tier(8).oreDict("circuitUltimate")
-        .addComponent(TooltipBehavior { it.addAll(UtilLocale.localizeTooltip("item.clayium.clay_core.tooltip")) })
+        .tooltip("item.clayium.clay_core.tooltip")
     val CLAY_BRAIN = addItem(7, "clay_brain").tier(9)
     val CLAY_SPIRIT = addItem(8, "clay_spirit").tier(10)
     val CLAY_SOUL = addItem(9, "clay_soul").tier(11)
@@ -49,7 +49,7 @@ object MetaItemClayParts : MetaItemClayium("clay_parts") {
 
     val ANTIMATTER_SEED = addItem(25, "antimatter_seed").tier(9)
 
-    val EnergeticClayDust = addItem(26, "energetic_clay_dust").tier(3)
+    val EnergizedClayDust = addItem(26, "energized_clay_dust").tier(3)
     val ExcitedClayDust = addItem(27, "excited_clay_dust").tier(7)
     val CEECircuit = addItem(28, "cee_circuit")
     val CEE = addItem(29, "cee")

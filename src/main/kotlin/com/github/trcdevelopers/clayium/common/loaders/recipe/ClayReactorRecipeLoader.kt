@@ -48,7 +48,7 @@ object ClayReactorRecipeLoader {
             .buildAndRegister()
 
         registry.builder()
-            .input(MetaItemClayParts.EnergeticClayDust, 8)
+            .input(MetaItemClayParts.EnergizedClayDust, 8)
             .input(OrePrefix.dust, CMaterials.lithium)
             .output(MetaItemClayParts.ExcitedClayDust, 4)
             .tier(7).CEt(1.0).duration(2_000_000)
