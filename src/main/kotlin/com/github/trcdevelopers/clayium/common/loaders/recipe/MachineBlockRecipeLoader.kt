@@ -145,7 +145,7 @@ object MachineBlockRecipeLoader {
         registerMachineRecipeHull(MetaTileEntities.SOLAR_CLAY_FABRICATOR) {
             input(OrePrefix.plate, CMaterials.silicon, 16)
         }
-        registerBufferRecipe()
+        clayBuffers()
         /* Machine Proxy */
         for (metaTileEntity in MetaTileEntities.CLAY_INTERFACE) {
             CRecipes.ASSEMBLER.builder()
@@ -164,6 +164,19 @@ object MachineBlockRecipeLoader {
                 .tier(4).CEt(ClayEnergy(10.0.pow(metaTileEntity.tier.numeric - 3).toLong())).duration(40)
                 .buildAndRegister()
         }
+        registerMachineRecipeBuffer(MetaTileEntities.LASER_PROXY) {
+            input(MetaItemClayParts.LaserParts)
+        }
+        registerMachineRecipeHull(MetaTileEntities.CLAY_LASER) {
+            input(MetaItemClayParts.LaserParts, 4).duration(480)
+        }
+        /* CA Resonating Collector */
+        CRecipes.CA_INJECTOR.builder()
+            .input(ClayiumBlocks.MACHINE_HULL.getItem(ClayTiers.ANTIMATTER))
+            .input(OrePrefix.gem, CMaterials.antimatter, 8)
+            .output(MetaTileEntities.CA_RESONATING_COLLECTOR)
+            .tier(10).CEt(2.0).duration(4000)
+            .buildAndRegister()
         /* CA Injector */
         assembler.builder()
             .input(ClayiumBlocks.MACHINE_HULL.getItem(ULTIMATE))
@@ -182,6 +195,7 @@ object MachineBlockRecipeLoader {
         }
         caCondenser()
 
+        /* Cobblestone Generator */
         for ((i, m) in listOf(CMaterials.clay, CMaterials.denseClay, CMaterials.industrialClay).withIndex()) {
             assembler.builder()
                 .input(OrePrefix.largePlate, m)
@@ -193,13 +207,11 @@ object MachineBlockRecipeLoader {
         registerMachineRecipeBuffer(MetaTileEntities.COBBLESTONE_GENERATOR) {
             input(MetaItemClayParts.SIMPLE_CIRCUIT)
         }
-        registerMachineRecipeBuffer(MetaTileEntities.LASER_PROXY) {
-            input(MetaItemClayParts.LaserParts)
-        }
         registerMachineRecipeBuffer(MetaTileEntities.SALT_EXTRACTOR) {
             input(MetaItemClayParts.SIMPLE_CIRCUIT)
         }
 
+        /* Storage Container */
         assembler.builder()
             .input(ClayiumBlocks.MACHINE_HULL.getItem(AZ91D, 4))
             .input(MetaTileEntities.CLAY_INTERFACE[0])
@@ -208,6 +220,21 @@ object MachineBlockRecipeLoader {
             .buildAndRegister()
         RecipeUtils.addShapelessRecipe("upgrade_storage_container", MetaTileEntities.STORAGE_CONTAINER_UPGRADED.getStackForm(),
             MetaTileEntities.STORAGE_CONTAINER, MetaItemClayParts.CLAY_CORE)
+
+        /* Clay Blast Furnace */
+        assembler.builder()
+            .input(MetaTileEntities.SMELTER[2])
+            .input(MetaTileEntities.CLAY_INTERFACE[1])
+            .output(MetaTileEntities.CLAY_BLAST_FURNACE)
+            .tier(4).CEt(ClayEnergy.milli(100)).duration(120)
+            .buildAndRegister()
+        /* Clay Reactor */
+        assembler.builder()
+            .input(ClayiumBlocks.MACHINE_HULL.getItem(CLAY_STEEL))
+            .input(MetaTileEntities.LASER_PROXY[0])
+            .output(MetaTileEntities.CLAY_REACTOR)
+            .tier(6).CEt(ClayEnergy.of(1)).duration(1200)
+            .buildAndRegister()
     }
 
     private fun registerMachineRecipeHull(metaTileEntities: List<MetaTileEntity>, inputProvider: RecipeBuilder<*>.() -> RecipeBuilder<*>) {
@@ -238,7 +265,7 @@ object MachineBlockRecipeLoader {
         }
     }
 
-    private fun registerBufferRecipe() {
+    private fun clayBuffers() {
         val materials = listOf(CMaterials.advancedIndustrialClay, CMaterials.impureSilicon, CMaterials.aluminum,
             CMaterials.claySteel, CMaterials.clayium, CMaterials.ultimateAlloy, CMaterials.antimatter, CMaterials.pureAntimatter,
             CMaterials.octupleEnergyClay, CMaterials.octuplePureAntimatter)
@@ -250,7 +277,7 @@ object MachineBlockRecipeLoader {
             CRecipes.ASSEMBLER.builder()
                 .input(OrePrefix.plate, materials[i])
                 .input(circuits[i])
-                .output(MetaTileEntities.CLAY_BUFFER[i])
+                .output(MetaTileEntities.CLAY_BUFFER[i], 16)
                 .tier(4).CEt(ClayEnergy(10.0.pow((i + 1.0)).toLong())).duration(40)
                 .buildAndRegister()
         }

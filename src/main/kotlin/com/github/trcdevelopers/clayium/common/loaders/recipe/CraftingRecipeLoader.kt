@@ -1,9 +1,11 @@
 package com.github.trcdevelopers.clayium.common.loaders.recipe
 
+import com.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import com.github.trcdevelopers.clayium.common.items.ClayiumItems
 import com.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trcdevelopers.clayium.common.recipe.RecipeUtils
 import com.github.trcdevelopers.clayium.common.unification.OreDictUnifier
+import com.github.trcdevelopers.clayium.common.unification.material.CMaterials
 import com.github.trcdevelopers.clayium.common.unification.material.CMaterials.clay
 import com.github.trcdevelopers.clayium.common.unification.material.CMaterials.denseClay
 import com.github.trcdevelopers.clayium.common.unification.ore.OrePrefix
@@ -15,6 +17,16 @@ object CraftingRecipeLoader {
     fun registerRecipes() {
         clayToolRecipes()
         registerClayPartsRecipes()
+
+        RecipeUtils.addShapedRecipe("clay_work_table",
+            ItemStack(ClayiumBlocks.CLAY_WORK_TABLE),
+            "CC", "CC", 'C', UnificationEntry(OrePrefix.block, denseClay))
+
+        for (i in 1..<CMaterials.PURE_ANTIMATTERS.size) {
+            RecipeUtils.addShapelessRecipe("pure_antimatter_decompose_$i",
+                OreDictUnifier.get(OrePrefix.gem, CMaterials.PURE_ANTIMATTERS[i - 1], 9),
+                OreDictUnifier.get(OrePrefix.gem, CMaterials.PURE_ANTIMATTERS[i]))
+        }
     }
 
     private fun clayToolRecipes() {
@@ -66,6 +78,18 @@ object CraftingRecipeLoader {
             OreDictUnifier.get(OrePrefix.largePlate, clay),
             "CCC", "CCC", "CCC",
             'C', UnificationEntry(OrePrefix.plate, clay))
+        RecipeUtils.addShapedRecipe("clay_circuit",
+            MetaItemClayParts.CLAY_CIRCUIT.getStackForm(),
+            "SGS", "RBR", "SGS",
+            'S', UnificationEntry(OrePrefix.stick, clay),
+            'G', UnificationEntry(OrePrefix.gear, clay),
+            'R', UnificationEntry(OrePrefix.ring, clay),
+            'B', MetaItemClayParts.CLAY_CIRCUIT_BOARD)
+        RecipeUtils.addShapedRecipe("simple_circuit",
+            MetaItemClayParts.SIMPLE_CIRCUIT.getStackForm(),
+            "DDD", "DBD", "DDD",
+            'D', MetaItemClayParts.EnergeticClayDust,
+            'B', MetaItemClayParts.CLAY_CIRCUIT_BOARD)
 
         for (m in listOf(clay, denseClay)) {
             RecipeUtils.addShapedRecipe("${m.materialId.path}_gear",

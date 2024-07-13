@@ -12,14 +12,6 @@ object CaInjectorRecipeLoader {
     fun registerRecipes() {
         val registry = CRecipes.CA_INJECTOR
 
-        /* CA Resonating Collector */
-        registry.builder()
-            .input(ClayiumBlocks.MACHINE_HULL.getItem(ClayTiers.ANTIMATTER))
-            .input(OrePrefix.gem, CMaterials.antimatter, 8)
-            .output(MetaTileEntities.CA_RESONATING_COLLECTOR)
-            .tier(10).CEt(2.0).duration(4000)
-            .buildAndRegister()
-
         /* Resonators */
         registry.builder()
             .input(ClayiumBlocks.MACHINE_HULL.getItem(ClayTiers.ULTIMATE))

@@ -17,6 +17,8 @@ object CRecipeLoader {
         ClayWorkTableRecipes.registerRecipes()
         CondenserRecipeLoader.registerRecipes()
         CuttingMachineRecipeLoader.registerRecipes()
+        DecomposerRecipeLoader.registerRecipes()
+        GrinderRecipeLoader.registerRecipes()
         InscriberRecipeLoader.registerRecipes()
         LatheRecipeLoader.registerRecipes()
         MachineBlockRecipeLoader.registerRecipes()

@@ -81,40 +81,43 @@ object ClayReactorRecipeLoader {
             .output(MetaItemClayParts.CLAY_CORE)
             .tier(7).CEt(10.0).duration(8_000_000)
             .buildAndRegister()
-
         registry.builder()
             .input(MetaItemClayParts.CLAY_CORE, 6)
             .input(MetaItemClayParts.ExcitedClayDust, 12)
             .output(MetaItemClayParts.CLAY_BRAIN)
             .tier(8).CEt(10.0).duration(4_000_000_000)
             .buildAndRegister()
-
         registry.builder()
             .input(MetaItemClayParts.CLAY_BRAIN, 6)
             .input(MetaItemClayParts.ExcitedClayDust, 32)
             .output(MetaItemClayParts.CLAY_SPIRIT)
             .tier(9).CEt(10.0).duration(10_000_000_000_000)
             .buildAndRegister()
-
         registry.builder()
             .input(MetaItemClayParts.CLAY_SPIRIT, 6)
             .input(OrePrefix.gem, CMaterials.antimatter, 4)
             .output(MetaItemClayParts.CLAY_SOUL)
             .tier(10).CEt(10.0).duration(10_000_000_000_000)
             .buildAndRegister()
-
         registry.builder()
             .input(MetaItemClayParts.CLAY_SOUL, 6)
             .input(OrePrefix.gem, CMaterials.antimatter, 16)
             .output(MetaItemClayParts.CLAY_ANIMA)
             .tier(11).CEt(30.0).duration(100_000_000_000_000)
             .buildAndRegister()
-
         registry.builder()
             .input(MetaItemClayParts.CLAY_ANIMA, 6)
             .input(OrePrefix.gem, CMaterials.antimatter, 64)
             .output(MetaItemClayParts.CLAY_PSYCHE)
             .tier(12).CEt(90.0).duration(1_000_000_000_000_000)
+            .buildAndRegister()
+
+        /* Clay Parts */
+        registry.builder()
+            .input(MetaItemClayParts.INTEGRATED_CIRCUIT)
+            .input(OrePrefix.gem, CMaterials.pureAntimatter, 8)
+            .output(MetaItemClayParts.TeleportationParts)
+            .tier(11).duration(10_00_000_000_000)
             .buildAndRegister()
 
         /* Clay Fabricator Recipes */
@@ -133,12 +136,17 @@ object ClayReactorRecipeLoader {
             .tier(7).CEt(0.1).duration(2000)
             .buildAndRegister()
 
-        CRecipes.CLAY_REACTOR.register {
-            input(Blocks.GRAVEL)
-            input(OrePrefix.dust, CMaterials.organicClay)
-            output(Blocks.DIRT)
-            CEt(ClayEnergy.of(1))
-            duration(100)
-        }
+        registry.builder()
+            .input(Blocks.GRAVEL)
+            .input(OrePrefix.dust, CMaterials.organicClay)
+            .output(Blocks.DIRT)
+            .tier(7).CEt(ClayEnergy.of(1)).duration(100)
+            .buildAndRegister()
+
+        registry.builder()
+            .input(OrePrefix.gem, CMaterials.antimatter)
+            .output(OrePrefix.gem, CMaterials.pureAntimatter)
+            .tier(10).CEt(ClayEnergy.of(100)).duration(300)
+            .buildAndRegister()
     }
 }
