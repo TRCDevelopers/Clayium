@@ -5,6 +5,7 @@ import com.github.trcdevelopers.clayium.api.capability.impl.RecipeLogicClayFurna
 import com.github.trcdevelopers.clayium.api.metatileentity.ClayBufferMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.ClayInterfaceMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.ClayLaserMetaTileEntity
+import com.github.trcdevelopers.clayium.api.metatileentity.ClayMultiTrackBufferMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.SimpleMachineMetaTileEntity
 import com.github.trcdevelopers.clayium.api.metatileentity.multiblock.ClayBlastFurnaceMetaTileEntity
@@ -24,7 +25,6 @@ object MetaTileEntities {
     val CLAY_BUFFER = registerMetaTileEntities(1, (4..13)) {
         ClayBufferMetaTileEntity(clayiumId("clay_buffer.${it.lowerName}"), it)
     }
-
     val BENDING_MACHINE = registerMetaTileEntities(11, intArrayOf(1, 2, 3, 4, 5, 6, 7, 9)) { //+8
         SimpleMachineMetaTileEntity(clayiumId("bending_machine.${it.lowerName}"), it, CRecipes.BENDING)
     }
@@ -128,6 +128,9 @@ object MetaTileEntities {
 
     val CA_CONDENSER = registerMetaTileEntities(160, (9..11)) {
         CaCondenserMetaTileEntity(clayiumId("ca_condenser.${it.lowerName}"), it)
+    }
+    val MULTI_TRACK_BUFFER = registerMetaTileEntities(163, (4..13)){
+        ClayMultiTrackBufferMetaTileEntity(clayiumId("multi_track_buffer.${it.lowerName}"), it)
     }
 
     /**

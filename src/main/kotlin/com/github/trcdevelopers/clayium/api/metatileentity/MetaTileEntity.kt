@@ -605,6 +605,14 @@ abstract class MetaTileEntity(
         val energyAndNone = listOf(NONE, CE)
         val bufferValidInputModes = listOf(NONE, ALL)
 
+        val mBufferValidIoModes = listOf(
+            listOf(NONE, M_ALL, M_1, M_2),
+            listOf(NONE, M_ALL, M_1, M_2, M_3),
+            listOf(NONE, M_ALL, M_1, M_2, M_3, M_4),
+            listOf(NONE, M_ALL, M_1, M_2, M_3, M_4, M_5),
+            listOf(NONE, M_ALL, M_1, M_2, M_3, M_4, M_5, M_6)
+        )
+
         val validInputModesLists = listOf(
             listOf(NONE, CE),
             listOf(ALL, CE, NONE),
