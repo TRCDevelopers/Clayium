@@ -38,7 +38,7 @@ class BlockClayWorkTable : BlockContainer(Material.ROCK), ITieredBlock {
         if (worldIn.isRemote) {
             return true
         }
-        playerIn.openGui(Clayium.INSTANCE, GuiHandler.CLAY_WORK_TABLE, worldIn, pos.x, pos.y, pos.z)
+        playerIn.openGui(Clayium, GuiHandler.CLAY_WORK_TABLE, worldIn, pos.x, pos.y, pos.z)
         return true
     }
 
