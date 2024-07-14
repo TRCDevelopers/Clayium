@@ -6,6 +6,7 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_RESONANCE
 import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import net.minecraft.network.PacketBuffer
+import kotlin.math.min
 
 class ResonanceManager(
     metaTileEntity: MetaTileEntity,
@@ -14,11 +15,12 @@ class ResonanceManager(
 
     var resonance = 1.0
         private set(value) {
-            val syncFlag = (metaTileEntity.world?.isRemote == false) && (field != value)
-            field = value
+            val v = min(value, Long.MAX_VALUE.toDouble())
+            val syncFlag = (metaTileEntity.world?.isRemote == false) && (field != v)
+            field = v
             if (syncFlag) {
                 writeCustomData(UPDATE_RESONANCE) {
-                    writeDouble(value)
+                    writeDouble(v)
                 }
             }
         }
