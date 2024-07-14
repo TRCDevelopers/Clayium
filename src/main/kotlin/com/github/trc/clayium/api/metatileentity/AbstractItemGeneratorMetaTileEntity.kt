@@ -80,7 +80,12 @@ abstract class AbstractItemGeneratorMetaTileEntity(
         if (hasNotifiedOutputs) outputFull = false
         if (!isTerrainValid || outputFull) return // don't progress if terrain is invalid or output is full.
 
-        if (canProgress()) progress += progressPerTick
+        if (canProgress()) {
+            if(progressPerTick.toDouble()+progress.toDouble()>Int.MAX_VALUE.toDouble())
+                progress=Int.MAX_VALUE
+            else
+                progress += progressPerTick
+        }
         if (progress >= progressPerItem) {
             var generatingItemAmount = progress / progressPerItem
             val items = mutableListOf<ItemStack>()
