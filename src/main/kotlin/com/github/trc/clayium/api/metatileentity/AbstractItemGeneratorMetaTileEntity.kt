@@ -38,7 +38,7 @@ abstract class AbstractItemGeneratorMetaTileEntity(
 
     open val inventoryRowSize = when (tier.numeric) {
         in 4..7 -> tier.numeric - 3
-        8, -> 4
+        8 -> 4
         in 9..13 -> 6
         else -> 1
     }
@@ -81,8 +81,8 @@ abstract class AbstractItemGeneratorMetaTileEntity(
         if (!isTerrainValid || outputFull) return // don't progress if terrain is invalid or output is full.
 
         if (canProgress()) {
-            if(progressPerTick.toDouble()+progress.toDouble()>Int.MAX_VALUE.toDouble())
-                progress=Int.MAX_VALUE
+            if (progressPerTick.toDouble() + progress.toDouble() > Int.MAX_VALUE.toDouble())
+                progress = Int.MAX_VALUE
             else
                 progress += progressPerTick
         }
@@ -122,25 +122,32 @@ abstract class AbstractItemGeneratorMetaTileEntity(
         val matrixStr = (0..<inventoryRowSize).map { columnStr }
 
         return ModularPanel("simple_item_generator")
-            .size(176,  18 + inventoryRowSize * 18 + 94 + 2)
+            .size(176, 18 + inventoryRowSize * 18 + 94 + 2)
             .align(Alignment.Center)
-            .child(Column()
-                .widthRel(1f).height(18 + inventoryRowSize * 18 + 10)
-                .child(
-                    TextWidget(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)))
-                        .margin(6)
-                        .align(Alignment.TopLeft))
-                .child(SlotGroupWidget.builder()
-                    .matrix(*matrixStr.toTypedArray())
-                    .key('I') { index ->
-                        ItemSlot().slot(
-                            SyncHandlers.itemSlot(itemInventory, index)
-                                .slotGroup("machine_inventory")
-                        )
-                    }.build()
-                    .marginTop(18))
-                .child(playerInventoryTitle()
-                    .align(Alignment.BottomLeft).left(8)))
+            .child(
+                Column()
+                    .widthRel(1f).height(18 + inventoryRowSize * 18 + 10)
+                    .child(
+                        TextWidget(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)))
+                            .margin(6)
+                            .align(Alignment.TopLeft)
+                    )
+                    .child(
+                        SlotGroupWidget.builder()
+                            .matrix(*matrixStr.toTypedArray())
+                            .key('I') { index ->
+                                ItemSlot().slot(
+                                    SyncHandlers.itemSlot(itemInventory, index)
+                                        .slotGroup("machine_inventory")
+                                )
+                            }.build()
+                            .marginTop(18)
+                    )
+                    .child(
+                        playerInventoryTitle()
+                            .align(Alignment.BottomLeft).left(8)
+                    )
+            )
             .bindPlayerInventory()
     }
 }
