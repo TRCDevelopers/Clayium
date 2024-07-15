@@ -17,6 +17,7 @@ import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trcdevelopers.clayium.api.util.ITier
 import com.github.trcdevelopers.clayium.api.util.clayiumId
 import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
+import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
@@ -121,11 +122,12 @@ class ClayMultiTrackBufferMetaTileEntity(
                                     .child(SlotGroupWidget.builder()
                                         .matrix(slotsRowString)
                                         .key('I') { slotIndex ->
-                                            ItemSlot().slot(SyncHandlers.itemSlot(handler, slotIndex)
-                                                .slotGroup("mt_buffer_inv_${i}"))
+                                            ItemSlot().slot(SyncHandlers.itemSlot(handler, slotIndex).slotGroup("mt_buffer_inv_${i}"))
+                                                .background(ClayGuiTextures.M_TRACK_SLOTS[i])
                                         }
                                         .build())
                                     .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filtersHandler, i))
+                                        .background(ClayGuiTextures.M_TRACK_FILTER_SLOTS[i])
                                         .align(Alignment.CenterRight)))
                             }
                         }
