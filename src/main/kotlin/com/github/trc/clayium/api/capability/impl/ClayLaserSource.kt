@@ -23,12 +23,6 @@ class ClayLaserSource(
     private val laserBlue: Int = 0,
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.LASER_CONTROLLER), IClayLaserSource {
 
-    /**
-     * create a new [ClayLaserSource] with the same strength for all colors
-     * @param laserStrength the strength of the laser
-     */
-    constructor(metaTileEntity: MetaTileEntity, laserStrength: Int) : this(metaTileEntity, laserStrength, laserStrength, laserStrength)
-
     override var laser: ClayLaser = ClayLaser(EnumFacing.NORTH, laserRed, laserGreen, laserBlue, 1)
     override var laserLength: Int = MAX_LASER_LENGTH
         set(value) {
@@ -39,20 +33,23 @@ class ClayLaserSource(
     private var laserTarget: TileEntity? = null
     override var isActive: Boolean = false
         public set(value) {
+            val isValueChanged = field != value
+            val syncFlag = !metaTileEntity.isRemote && isValueChanged
+            field = value
+            if (!isValueChanged) return
+
             if (value) {
                 laserTarget
                     ?.takeUnless { it.isInvalid }
                     ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
                     ?.laserChanged(laser.laserDirection.opposite, laser)
-                field = true
             } else {
                 laserTarget
                     ?.takeUnless { it.isInvalid }
                     ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
                     ?.laserChanged(laser.laserDirection.opposite, null)
-                field = false
             }
-            if (metaTileEntity.world?.isRemote == false) {
+            if (syncFlag) {
                 writeCustomData(UPDATE_LASER_ACTIVATION) {
                     writeBoolean(value)
                 }

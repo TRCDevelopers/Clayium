@@ -6,9 +6,11 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
+import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ClayLaserSource
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.util.UtilLocale
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -49,7 +51,16 @@ class ClayLaserMetaTileEntity(
         override fun update() {}
     }
 
+    private val clayEnergyHolder = ClayEnergyHolder(this)
+    val energyCost = ClayEnergy.milli(
+        when (tier.numeric) {
+            in 7..10 -> 400 * Math.pow(10.toDouble(), (tier.numeric - 7).toDouble())
+            else -> 400
+        }.toLong()
+    )
+
     val laserManager = ClayLaserSource(this, laserRed, laserGreen, laserBlue)
+    private var canActivateByRedstone = false
 
     override val renderBoundingBox by lazy {
         val laser = laserManager.laser
@@ -78,7 +89,6 @@ class ClayLaserMetaTileEntity(
     override fun onPlacement() {
         super.onPlacement()
         laserManager.updateDirection(this.frontFacing)
-        this.updateLaserActivation()
     }
 
     override fun onRemoval() {
@@ -87,11 +97,12 @@ class ClayLaserMetaTileEntity(
 
     override fun onNeighborChanged(facing: EnumFacing) {
         super.onNeighborChanged(facing)
-        this.updateLaserActivation()
+        refreshRedstone()
     }
 
     override fun neighborChanged() {
-        this.updateLaserActivation()
+        super.neighborChanged()
+        refreshRedstone()
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
@@ -100,20 +111,34 @@ class ClayLaserMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation("${metaTileEntityId.namespace}:clay_laser", "tier=${tier.numeric}"))
+        ModelLoader.setCustomModelResourceLocation(
+            item,
+            meta,
+            ModelResourceLocation("${metaTileEntityId.namespace}:clay_laser", "tier=${tier.numeric}")
+        )
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("clay_laser_tier$tier", 176, 32 + 94)
-            .child(IKey.lang("machine.clayium.clay_laser.${tier.lowerName}", IKey.lang(tier.prefixTranslationKey)).asWidget()
-                .top(6)
-                .left(6))
+            .child(
+                IKey.lang("machine.clayium.clay_laser.${tier.lowerName}", IKey.lang(tier.prefixTranslationKey))
+                    .asWidget()
+                    .top(6)
+                    .left(6)
+            )
+            .child(
+                clayEnergyHolder.createCeTextWidget(syncManager)
+                    .top(16)
+                    .left(3)
+            )
             .bindPlayerInventory()
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         if (capability === ClayiumTileCapabilities.CAPABILITY_CLAY_LASER) {
             return ClayiumTileCapabilities.CAPABILITY_CLAY_LASER.cast(laserManager)
+        } else if (capability === ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER) {
+            return ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER.cast(clayEnergyHolder)
         }
         return super.getCapability(capability, facing)
     }
@@ -129,8 +154,19 @@ class ClayLaserMetaTileEntity(
         UtilLocale.formatTooltips(tooltip, "machine.clayium.clay_laser.tooltip")
     }
 
-    private fun updateLaserActivation() {
+    private fun refreshRedstone() {
+        val pos = this.pos ?: return
+        val world = this.world ?: return
         // default->isNotPowered, inverted->isPowered
-        laserManager.isActive = (world?.isBlockPowered(this.pos ?: return) == ConfigCore.misc.invertClayLaserRsCondition)
+        canActivateByRedstone = world.isBlockPowered(pos) == ConfigCore.misc.invertClayLaserRsCondition
+    }
+
+    override fun update() {
+        super.update()
+        if (canActivateByRedstone) {
+            laserManager.isActive = clayEnergyHolder.drawEnergy(energyCost)
+        } else {
+            laserManager.isActive = false
+        }
     }
 }
