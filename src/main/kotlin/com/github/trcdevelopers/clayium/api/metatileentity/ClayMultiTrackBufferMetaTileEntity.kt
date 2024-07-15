@@ -25,6 +25,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
+import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
 import kotlin.Int
@@ -73,31 +74,30 @@ class ClayMultiTrackBufferMetaTileEntity(
     override fun registerItemModel(item: Item, meta: Int) {
         ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("clay_buffer"), "tier=${tier.numeric}"))
     }
+
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            val inputSlots = when (facing?.let { getInput(facing) }) {
-                MachineIoMode.M_1 -> createFilteredItemHandler(tracks[0], facing)
-                MachineIoMode.M_2 -> createFilteredItemHandler(tracks[1], facing)
-                MachineIoMode.M_3 -> createFilteredItemHandler(tracks[2], facing)
-                MachineIoMode.M_4 -> createFilteredItemHandler(tracks[3], facing)
-                MachineIoMode.M_5 -> createFilteredItemHandler(tracks[4], facing)
-                MachineIoMode.M_6 -> createFilteredItemHandler(tracks[5], facing)
-                else -> createFilteredItemHandler(itemInventory, facing)
-            }
-            val outputSlots = when (facing?.let { getOutput(facing) }) {
-                MachineIoMode.M_1 -> createFilteredItemHandler(tracks[0], facing)
-                MachineIoMode.M_2 -> createFilteredItemHandler(tracks[1], facing)
-                MachineIoMode.M_3 -> createFilteredItemHandler(tracks[2], facing)
-                MachineIoMode.M_4 -> createFilteredItemHandler(tracks[3], facing)
-                MachineIoMode.M_5 -> createFilteredItemHandler(tracks[4], facing)
-                MachineIoMode.M_6 -> createFilteredItemHandler(tracks[5], facing)
-                else -> createFilteredItemHandler(itemInventory, facing)
-            }
+            if (facing == null) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemInventory)
+
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(
-                ItemHandlerProxy(inputSlots, outputSlots)
+                ItemHandlerProxy(
+                    getItemHandler(getInput(facing), facing), getItemHandler(getOutput(facing), facing)
+                )
             )
         }
         return super.getCapability(capability, facing)
+    }
+
+    private fun getItemHandler(mode: MachineIoMode, facing: EnumFacing): IItemHandler? {
+        return when (mode) {
+            MachineIoMode.M_1 -> createFilteredItemHandler(tracks[0], facing)
+            MachineIoMode.M_2 -> createFilteredItemHandler(tracks[1], facing)
+            MachineIoMode.M_3 -> createFilteredItemHandler(tracks[2], facing)
+            MachineIoMode.M_4 -> createFilteredItemHandler(tracks[3], facing)
+            MachineIoMode.M_5 -> createFilteredItemHandler(tracks[4], facing)
+            MachineIoMode.M_6 -> createFilteredItemHandler(tracks[5], facing)
+            else -> createFilteredItemHandler(itemInventory, facing)
+        }
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel? {
