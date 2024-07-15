@@ -72,7 +72,7 @@ class ClayMultiTrackBufferMetaTileEntity(
     }
 
     override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("clay_buffer"), "tier=${tier.numeric}"))
+        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("clay_multi_track_buffer"), "tier=${tier.numeric}"))
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
