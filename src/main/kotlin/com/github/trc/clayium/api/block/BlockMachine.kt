@@ -200,7 +200,7 @@ class BlockMachine : Block(Material.IRON) {
     }
 
     @SideOnly(Side.CLIENT)
-    override fun getRenderLayer() = BlockRenderLayer.TRANSLUCENT
+    override fun getRenderLayer() = BlockRenderLayer.CUTOUT_MIPPED
 
     @SideOnly(Side.CLIENT)
     override fun addHitEffects(state: IBlockState, world: World, target: RayTraceResult, manager: ParticleManager): Boolean {

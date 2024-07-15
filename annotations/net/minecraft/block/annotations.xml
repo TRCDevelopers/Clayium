@@ -1,0 +1,5 @@
+<root>
+    <item name='net.minecraft.block.Block void neighborChanged(net.minecraft.block.state.IBlockState, net.minecraft.world.World, net.minecraft.util.math.BlockPos, net.minecraft.block.Block, net.minecraft.util.math.BlockPos) 3'>
+        <annotation name='org.jetbrains.annotations.Nullable'/>
+    </item>
+</root>
