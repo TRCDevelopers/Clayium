@@ -5,9 +5,6 @@ import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.common.Clayium
 
 object ClayGuiTextures {
-
-    private const val SLOT_LOCATION = "${CValues.MOD_ID}:gui/slot"
-
     private fun slotTexture() = UITexture.builder()
         .location(CValues.MOD_ID, "gui/slot")
         .imageSize(256, 256)
@@ -39,6 +36,25 @@ object ClayGuiTextures {
     val EXPORT_2_SLOT = slotTexture()
         .uv(64, 32, 18, 18)
         .build()
+
+    /* Multi-trac buffer Slots */
+    val SLOT_M1 = slotTexture().uv(32, 96, 18, 18).build()
+    val SLOT_M2 = slotTexture().uv(64, 96, 18, 18).build()
+    val SLOT_M3 = slotTexture().uv(96, 96, 18, 18).build()
+    val SLOT_M4 = slotTexture().uv(128, 96, 18, 18).build()
+    val SLOT_M5 = slotTexture().uv(160, 96, 18, 18).build()
+    val SLOT_M6 = slotTexture().uv(192, 96, 18, 18).build()
+
+    val M_TRACK_SLOTS = arrayOf(SLOT_M1, SLOT_M2, SLOT_M3, SLOT_M4, SLOT_M5, SLOT_M6)
+
+    val FILTER_SLOT_M1 = slotTexture().uv(32, 128, 18, 18).build()
+    val FILTER_SLOT_M2 = slotTexture().uv(64, 128, 18, 18).build()
+    val FILTER_SLOT_M3 = slotTexture().uv(96, 128, 18, 18).build()
+    val FILTER_SLOT_M4 = slotTexture().uv(128, 128, 18, 18).build()
+    val FILTER_SLOT_M5 = slotTexture().uv(160, 128, 18, 18).build()
+    val FILTER_SLOT_M6 = slotTexture().uv(192, 128, 18, 18).build()
+
+    val M_TRACK_FILTER_SLOTS = arrayOf(FILTER_SLOT_M1, FILTER_SLOT_M2, FILTER_SLOT_M3, FILTER_SLOT_M4, FILTER_SLOT_M5, FILTER_SLOT_M6)
 
     val PROGRESS_BAR = UITexture.builder()
         .location(Clayium.MOD_ID, "gui/progress_bar")

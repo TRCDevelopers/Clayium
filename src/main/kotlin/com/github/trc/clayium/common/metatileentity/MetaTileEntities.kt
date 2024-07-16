@@ -15,6 +15,7 @@ import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.common.metatileentity.multiblock.RedstoneProxyMetaTileEntity
 import com.github.trc.clayium.common.recipe.registry.CRecipes
+import com.github.trc.clayium.api.metatileentity.ClayMultiTrackBufferMetaTileEntity
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
@@ -128,6 +129,9 @@ object MetaTileEntities {
 
     val CA_CONDENSER = registerMetaTileEntities(160, (9..11)) {
         CaCondenserMetaTileEntity(clayiumId("ca_condenser.${it.lowerName}"), it)
+    }
+    val MULTI_TRACK_BUFFER = registerMetaTileEntities(163, (4..13)){
+        ClayMultiTrackBufferMetaTileEntity(clayiumId("multi_track_buffer.${it.lowerName}"), it)
     }
 
     /**
