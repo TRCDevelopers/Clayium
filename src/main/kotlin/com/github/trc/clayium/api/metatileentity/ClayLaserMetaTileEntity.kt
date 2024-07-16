@@ -47,9 +47,6 @@ class ClayLaserMetaTileEntity(
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val exportItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val itemInventory: IItemHandler = EmptyItemStackHandler
-    override val autoIoHandler: AutoIoHandler = object : AutoIoHandler(this@ClayLaserMetaTileEntity) {
-        override fun update() {}
-    }
 
     private val clayEnergyHolder = ClayEnergyHolder(this)
     val energyCost = ClayEnergy.milli(

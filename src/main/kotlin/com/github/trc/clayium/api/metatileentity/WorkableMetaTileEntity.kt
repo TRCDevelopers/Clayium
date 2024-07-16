@@ -51,7 +51,7 @@ abstract class WorkableMetaTileEntity(
     override val importItems = NotifiableItemStackHandler(this, inputSize, this, false)
     override val exportItems = NotifiableItemStackHandler(this, outputSize, this, true)
     override val itemInventory = ItemHandlerProxy(importItems, exportItems)
-    override val autoIoHandler = AutoIoHandler.Combined(this)
+    val autoIoHandler = AutoIoHandler.Combined(this)
 
     val clayEnergyHolder = ClayEnergyHolder(this)
     abstract val workable: AbstractRecipeLogic

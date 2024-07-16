@@ -96,7 +96,7 @@ abstract class MetaTileEntity(
     abstract val importItems: IItemHandlerModifiable
     abstract val exportItems: IItemHandlerModifiable
     abstract val itemInventory: IItemHandler
-    abstract val autoIoHandler: AutoIoHandler
+
     var hasNotifiedInputs = false
     var hasNotifiedOutputs = false
 

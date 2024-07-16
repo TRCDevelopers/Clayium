@@ -4,7 +4,6 @@ import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
-import com.github.trc.clayium.api.metatileentity.AutoIoHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.CUtils.clayiumId
@@ -39,7 +38,6 @@ class ClayBlastFurnaceMetaTileEntity(
     override val importItems = NotifiableItemStackHandler(this, 2, this, isExport = false)
     override val exportItems = NotifiableItemStackHandler(this, 2, this, isExport = true)
     override val itemInventory = ItemHandlerProxy(importItems, exportItems)
-    override val autoIoHandler = AutoIoHandler.Combined(this)
 
     override val workable: MultiblockRecipeLogic = MultiblockRecipeLogic(this, recipeRegistry)
 

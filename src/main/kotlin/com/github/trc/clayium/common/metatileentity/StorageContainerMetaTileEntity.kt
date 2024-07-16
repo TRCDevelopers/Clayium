@@ -84,7 +84,7 @@ class StorageContainerMetaTileEntity(
                     && exportItems.getStackInSlot(0).canActuallyStack(stack)
         }
     }
-    override val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
+    val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
 
     private val filterSlot = ItemStackHandler(1)
     private var currentInsertedStack: ItemStack = ItemStack.EMPTY

@@ -45,7 +45,7 @@ class SolarClayFabricatorMetaTileEntity(
     override val importItems: IItemHandlerModifiable = NotifiableItemStackHandler(this, 1, this, false)
     override val exportItems: IItemHandlerModifiable = NotifiableItemStackHandler(this, 1, this, true)
     override val itemInventory: IItemHandler = ItemHandlerProxy(importItems, exportItems)
-    override val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
+    val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
 
     private val workable = SolarClayFabricatorRecipeLogic()
 

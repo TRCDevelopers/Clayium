@@ -51,7 +51,7 @@ abstract class AbstractItemGeneratorMetaTileEntity(
     override val importItems = EmptyItemStackHandler
     override val exportItems = NotifiableItemStackHandler(this, inventoryRowSize * inventoryColumnSize, this, isExport = true)
     override val itemInventory = exportItems
-    override val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this, isBuffer = true)
+    val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this, isBuffer = true)
 
     private var isTerrainValid = false
     private var outputFull = false

@@ -34,7 +34,7 @@ class ClayInterfaceMetaTileEntity(
     override var importItems: IItemHandlerModifiable = EmptyItemStackHandler
     override var exportItems: IItemHandlerModifiable = EmptyItemStackHandler
     override var itemInventory: IItemHandler = EmptyItemStackHandler
-    override var autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
+    var autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
     private var ecImporter: AutoIoHandler.EcImporter? = null
 
     override var validInputModes: List<MachineIoMode> = onlyNoneList

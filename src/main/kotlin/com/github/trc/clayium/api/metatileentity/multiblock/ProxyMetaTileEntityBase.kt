@@ -4,7 +4,6 @@ import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.INTERFACE_SYNC_MIMIC_TARGET
 import com.github.trc.clayium.api.capability.ISynchronizedInterface
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
-import com.github.trc.clayium.api.metatileentity.AutoIoHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
@@ -67,7 +66,6 @@ abstract class ProxyMetaTileEntityBase(
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val exportItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val itemInventory: IItemHandler = EmptyItemStackHandler
-    override val autoIoHandler: AutoIoHandler = AutoIoHandler.Empty(this)
 
     override fun writeToNBT(data: NBTTagCompound) {
         super.writeToNBT(data)

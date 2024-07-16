@@ -80,7 +80,7 @@ class ClayMultiTrackBufferMetaTileEntity(
     override val itemInventory = CombinedInvWrapper(*tracks)
     override val importItems: IItemHandlerModifiable = itemInventory
     override val exportItems: IItemHandlerModifiable = itemInventory
-    override val autoIoHandler: AutoIoHandler = MultiTrackIoHandler()
+    val autoIoHandler: AutoIoHandler = MultiTrackIoHandler()
 
     override fun createMetaTileEntity(): MetaTileEntity {
         validInputModes
