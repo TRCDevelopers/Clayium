@@ -161,6 +161,16 @@ class ClayMultiTrackBufferMetaTileEntity(
             )
     }
 
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        CUtils.writeItems(filtersHandler, "filterSlots", data)
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        CUtils.readItems(filtersHandler, "filterSlots", data)
+    }
+
     private inner class MultiTrackIoHandler : AutoIoHandler.Combined(this@ClayMultiTrackBufferMetaTileEntity, isBuffer = true) {
         override fun importFromNeighbors() {
             var remaining = amountPerAction
