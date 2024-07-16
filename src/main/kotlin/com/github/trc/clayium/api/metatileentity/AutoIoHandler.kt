@@ -110,7 +110,7 @@ abstract class AutoIoHandler(
         }
     }
 
-    class Combined(metaTileEntity: MetaTileEntity, isBuffer: Boolean = false) : AutoIoHandler(metaTileEntity, isBuffer) {
+    open class Combined(metaTileEntity: MetaTileEntity, isBuffer: Boolean = false) : AutoIoHandler(metaTileEntity, isBuffer) {
         override fun update() {
             if (metaTileEntity.world?.isRemote == true) return
             if (ticked++ < intervalTick) return
