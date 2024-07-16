@@ -25,7 +25,7 @@ abstract class AutoIoHandler(
     protected open fun getImportItems(side: EnumFacing): IItemHandler? = metaTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)
     protected open fun getExportItems(side: EnumFacing): IItemHandler? = metaTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)
 
-    protected fun importFromNeighbors() {
+    protected open fun importFromNeighbors() {
         var remainingImport = amountPerAction
         for (side in EnumFacing.entries) {
             if (remainingImport > 0 && isImporting(side)) {
@@ -38,7 +38,7 @@ abstract class AutoIoHandler(
         }
     }
 
-    protected fun exportToNeighbors() {
+    protected open fun exportToNeighbors() {
         var remainingExport = amountPerAction
         for (side in EnumFacing.entries) {
             if (remainingExport > 0 && isExporting(side)) {
@@ -110,7 +110,7 @@ abstract class AutoIoHandler(
         }
     }
 
-    class Combined(metaTileEntity: MetaTileEntity, isBuffer: Boolean = false) : AutoIoHandler(metaTileEntity, isBuffer) {
+    open class Combined(metaTileEntity: MetaTileEntity, isBuffer: Boolean = false) : AutoIoHandler(metaTileEntity, isBuffer) {
         override fun update() {
             if (metaTileEntity.world?.isRemote == true) return
             if (ticked++ < intervalTick) return

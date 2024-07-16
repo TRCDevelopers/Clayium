@@ -30,6 +30,7 @@ import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
 import kotlin.Int
 import kotlin.math.max
+import kotlin.math.min
 
 class ClayMultiTrackBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -64,7 +65,7 @@ class ClayMultiTrackBufferMetaTileEntity(
     override val itemInventory = CombinedInvWrapper(*tracks)
     override val importItems: IItemHandlerModifiable = itemInventory
     override val exportItems: IItemHandlerModifiable = itemInventory
-    override val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this, true)
+    override val autoIoHandler: AutoIoHandler = MultiTrackIoHandler()
 
     override fun createMetaTileEntity(): MetaTileEntity {
         validInputModes
@@ -98,6 +99,10 @@ class ClayMultiTrackBufferMetaTileEntity(
             MachineIoMode.M_6 -> createFilteredItemHandler(tracks[5], facing)
             else -> createFilteredItemHandler(itemInventory, facing)
         }
+    }
+
+    override fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
+        return neighbor.getInput(side.opposite) != MachineIoMode.NONE || neighbor.getOutput(side.opposite) != MachineIoMode.NONE
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel? {
@@ -135,5 +140,62 @@ class ClayMultiTrackBufferMetaTileEntity(
                 )
                 .child(SlotGroupWidget.playerInventory(0))
             )
+    }
+
+    private inner class MultiTrackIoHandler : AutoIoHandler.Combined(this@ClayMultiTrackBufferMetaTileEntity, isBuffer = true) {
+        override fun importFromNeighbors() {
+            var remaining = amountPerAction
+            for (side in EnumFacing.entries) {
+                if (!(remaining > 0 && isImporting(side))) continue
+
+                val neighbor = getNeighbor(side) ?: continue
+                if (neighbor is MetaTileEntityHolder && neighbor.metaTileEntity is ClayMultiTrackBufferMetaTileEntity) {
+                    val neighborBuffer = neighbor.metaTileEntity as ClayMultiTrackBufferMetaTileEntity
+                    remaining = transferMultiTrack(neighborBuffer, this@ClayMultiTrackBufferMetaTileEntity, remaining)
+                } else {
+                    remaining = transferItemStack(
+                        from = neighbor.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                        to = getImportItems(side) ?: continue,
+                        amount = remaining,
+                    )
+                }
+            }
+        }
+
+        override fun exportToNeighbors() {
+            var remaining = amountPerAction
+            for (side in EnumFacing.entries) {
+                if (!(remaining > 0 && isExporting(side))) continue
+
+                val neighbor = getNeighbor(side) ?: continue
+                if (neighbor is MetaTileEntityHolder && neighbor.metaTileEntity is ClayMultiTrackBufferMetaTileEntity) {
+                    val neighborBuffer = neighbor.metaTileEntity as ClayMultiTrackBufferMetaTileEntity
+                    remaining = transferMultiTrack(this@ClayMultiTrackBufferMetaTileEntity, neighborBuffer, remaining)
+                } else {
+                    remaining = transferItemStack(
+                        from = getExportItems(side) ?: continue,
+                        to = neighbor.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                        amount = remaining,
+                    )
+                }
+            }
+        }
+
+        /**
+         * returns remaining amount
+         */
+        private fun transferMultiTrack(
+            from: ClayMultiTrackBufferMetaTileEntity,
+            to: ClayMultiTrackBufferMetaTileEntity,
+            maxAmount: Int
+        ): Int {
+            var remain = maxAmount
+            for (i in 0..<min(from.trackRow, to.trackRow)) {
+                val fromHandler = from.tracks[i]
+                val toHandler = to.tracks[i]
+                remain = transferItemStack(from = fromHandler, to = toHandler, amount = remain)
+            }
+            return remain
+        }
     }
 }
