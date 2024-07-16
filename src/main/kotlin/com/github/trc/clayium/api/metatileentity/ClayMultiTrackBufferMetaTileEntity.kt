@@ -1,5 +1,6 @@
 package com.github.trc.clayium.api.metatileentity
 
+
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
@@ -12,14 +13,19 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
+import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
+import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.machine.MachineIoMode
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
@@ -62,6 +68,15 @@ class ClayMultiTrackBufferMetaTileEntity(
     }.toTypedArray()
 
     private val filtersHandler = ClayiumItemStackHandler(this, trackRow)
+    private val slotFilters = (0..<filtersHandler.slots).map { slot ->
+        { stack: ItemStack ->
+            val filterStack = filtersHandler.getStackInSlot(slot)
+            val filter = filterStack.getCapability(ClayiumCapabilities.ITEM_FILTER, null)
+            if (filterStack.isEmpty) true
+            else if (filter != null) filter.test(stack)
+            else filterStack.isItemEqual(stack)
+        }
+    }
     override val itemInventory = CombinedInvWrapper(*tracks)
     override val importItems: IItemHandlerModifiable = itemInventory
     override val exportItems: IItemHandlerModifiable = itemInventory
@@ -91,15 +106,17 @@ class ClayMultiTrackBufferMetaTileEntity(
 
     private fun getItemHandler(mode: MachineIoMode, facing: EnumFacing): IItemHandler? {
         return when (mode) {
-            MachineIoMode.M_1 -> createFilteredItemHandler(tracks[0], facing)
-            MachineIoMode.M_2 -> createFilteredItemHandler(tracks[1], facing)
-            MachineIoMode.M_3 -> createFilteredItemHandler(tracks[2], facing)
-            MachineIoMode.M_4 -> createFilteredItemHandler(tracks[3], facing)
-            MachineIoMode.M_5 -> createFilteredItemHandler(tracks[4], facing)
-            MachineIoMode.M_6 -> createFilteredItemHandler(tracks[5], facing)
+            MachineIoMode.M_1 -> createFilteredItemHandler(getTrackWithFilter(0), facing)
+            MachineIoMode.M_2 -> createFilteredItemHandler(getTrackWithFilter(1), facing)
+            MachineIoMode.M_3 -> createFilteredItemHandler(getTrackWithFilter(2), facing)
+            MachineIoMode.M_4 -> createFilteredItemHandler(getTrackWithFilter(3), facing)
+            MachineIoMode.M_5 -> createFilteredItemHandler(getTrackWithFilter(4), facing)
+            MachineIoMode.M_6 -> createFilteredItemHandler(getTrackWithFilter(5), facing)
             else -> createFilteredItemHandler(itemInventory, facing)
         }
     }
+
+    private fun getTrackWithFilter(track: Int): IItemHandler = FilteredItemHandler(tracks[track], slotFilters[track])
 
     override fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
         return neighbor.getInput(side.opposite) != MachineIoMode.NONE || neighbor.getOutput(side.opposite) != MachineIoMode.NONE
@@ -127,7 +144,9 @@ class ClayMultiTrackBufferMetaTileEntity(
                                     .child(SlotGroupWidget.builder()
                                         .matrix(slotsRowString)
                                         .key('I') { slotIndex ->
-                                            ItemSlot().slot(SyncHandlers.itemSlot(handler, slotIndex).slotGroup("mt_buffer_inv_${i}"))
+                                            ItemSlot().slot(SyncHandlers.itemSlot(handler, slotIndex)
+                                                .slotGroup("mt_buffer_inv_${i}")
+                                                .filter(slotFilters[i]))
                                                 .background(ClayGuiTextures.M_TRACK_SLOTS[i])
                                         }
                                         .build())
