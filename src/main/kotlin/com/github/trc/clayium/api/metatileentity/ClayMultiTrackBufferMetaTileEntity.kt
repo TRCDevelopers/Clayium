@@ -11,13 +11,16 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.github.trcdevelopers.clayium.api.CValues
-import com.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
-import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
-import com.github.trcdevelopers.clayium.api.util.ITier
-import com.github.trcdevelopers.clayium.api.util.clayiumId
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
-import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
+import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
+import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
+import com.github.trc.clayium.api.metatileentity.AutoIoHandler
+import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.common.blocks.machine.MachineIoMode
+import com.github.trc.clayium.common.gui.ClayGuiTextures
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
@@ -30,6 +33,7 @@ import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
 import kotlin.Int
 import kotlin.math.max
+import kotlin.math.min
 
 class ClayMultiTrackBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -64,7 +68,7 @@ class ClayMultiTrackBufferMetaTileEntity(
     override val itemInventory = CombinedInvWrapper(*tracks)
     override val importItems: IItemHandlerModifiable = itemInventory
     override val exportItems: IItemHandlerModifiable = itemInventory
-    override val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this, true)
+    override val autoIoHandler: AutoIoHandler = MultiTrackIoHandler()
 
     override fun createMetaTileEntity(): MetaTileEntity {
         validInputModes
@@ -135,5 +139,62 @@ class ClayMultiTrackBufferMetaTileEntity(
                 )
                 .child(SlotGroupWidget.playerInventory(0))
             )
+    }
+
+    private inner class MultiTrackIoHandler : AutoIoHandler(this@ClayMultiTrackBufferMetaTileEntity) {
+        override fun importFromNeighbors() {
+            var remaining = amountPerAction
+            for (side in EnumFacing.entries) {
+                if (!(remaining > 0 && isImporting(side))) continue
+
+                val neighbor = getNeighbor(side) ?: continue
+                if (neighbor is MetaTileEntityHolder && neighbor.metaTileEntity is ClayMultiTrackBufferMetaTileEntity) {
+                    val neighborBuffer = neighbor.metaTileEntity as ClayMultiTrackBufferMetaTileEntity
+                    remaining = transferMultiTrack(neighborBuffer, this@ClayMultiTrackBufferMetaTileEntity, remaining)
+                } else {
+                    remaining = transferItemStack(
+                        from = neighbor.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                        to = getImportItems(side) ?: continue,
+                        amount = remaining,
+                    )
+                }
+            }
+        }
+
+        override fun exportToNeighbors() {
+            var remaining = amountPerAction
+            for (side in EnumFacing.entries) {
+                if (!(remaining > 0 && isExporting(side))) continue
+
+                val neighbor = getNeighbor(side) ?: continue
+                if (neighbor is MetaTileEntityHolder && neighbor.metaTileEntity is ClayMultiTrackBufferMetaTileEntity) {
+                    val neighborBuffer = neighbor.metaTileEntity as ClayMultiTrackBufferMetaTileEntity
+                    remaining = transferMultiTrack(this@ClayMultiTrackBufferMetaTileEntity, neighborBuffer, remaining)
+                } else {
+                    remaining = transferItemStack(
+                        from = getExportItems(side) ?: continue,
+                        to = neighbor.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                        amount = remaining,
+                    )
+                }
+            }
+        }
+
+        /**
+         * returns remaining amount
+         */
+        private fun transferMultiTrack(
+            from: ClayMultiTrackBufferMetaTileEntity,
+            to: ClayMultiTrackBufferMetaTileEntity,
+            maxAmount: Int
+        ): Int {
+            var remain = maxAmount
+            for (i in 0..<min(from.trackRow, to.trackRow)) {
+                val fromHandler = from.tracks[i]
+                val toHandler = to.tracks[i]
+                remain = transferItemStack(from = fromHandler, to = toHandler, amount = remain)
+            }
+            return remain
+        }
     }
 }
