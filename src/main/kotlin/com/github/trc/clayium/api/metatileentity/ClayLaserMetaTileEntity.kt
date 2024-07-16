@@ -163,7 +163,7 @@ class ClayLaserMetaTileEntity(
 
     override fun update() {
         super.update()
-        if(isRemote) return
+        if (isRemote) return
         if (canActivateByRedstone) {
             laserManager.isActive = clayEnergyHolder.drawEnergy(energyCost)
         } else {
