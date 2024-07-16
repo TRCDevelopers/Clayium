@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.api.metatileentity
+package com.github.trc.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
@@ -11,13 +11,13 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.github.trcdevelopers.clayium.api.CValues
-import com.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
-import com.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
-import com.github.trcdevelopers.clayium.api.util.ITier
-import com.github.trcdevelopers.clayium.api.util.clayiumId
-import com.github.trcdevelopers.clayium.common.blocks.machine.MachineIoMode
-import com.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
+import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
+import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.common.blocks.machine.MachineIoMode
+import com.github.trc.clayium.common.gui.ClayGuiTextures
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
