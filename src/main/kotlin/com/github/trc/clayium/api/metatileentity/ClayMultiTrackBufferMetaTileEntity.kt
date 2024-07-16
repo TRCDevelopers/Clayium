@@ -1,4 +1,4 @@
-package com.github.trcdevelopers.clayium.api.metatileentity
+package com.github.trc.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
@@ -14,9 +14,6 @@ import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
-import com.github.trc.clayium.api.metatileentity.AutoIoHandler
-import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.machine.MachineIoMode

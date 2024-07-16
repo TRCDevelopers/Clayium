@@ -15,6 +15,7 @@ import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.common.metatileentity.multiblock.RedstoneProxyMetaTileEntity
 import com.github.trc.clayium.common.recipe.registry.CRecipes
+import com.github.trc.clayium.api.metatileentity.ClayMultiTrackBufferMetaTileEntity
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
