@@ -5,15 +5,19 @@ import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widget.ScrollWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Grid
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.pan.IPanCable
+import com.github.trc.clayium.api.pan.IPanEntry
+import com.github.trc.clayium.api.pan.IPanNotifiable
+import com.github.trc.clayium.api.pan.IPureAntimatterNetwork
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.model.ModelTextures
@@ -28,6 +32,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.ItemStackHandler
@@ -36,13 +41,35 @@ import java.util.function.Function
 class PanCoreMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "${CValues.MOD_ID}.pan_core") {
+) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "${CValues.MOD_ID}.pan_core"), IPanCable {
     override val importItems = EmptyItemStackHandler
     override val exportItems = EmptyItemStackHandler
     override val itemInventory = EmptyItemStackHandler
 
+    private val pan = PanNetwork()
+
+    override fun update() {
+        super.update()
+        onServer {
+            if (pan.networkNotified && offsetTimer % REFRESH_RATE_TICKS == 0L) {
+                searchNodes()
+            }
+        }
+    }
+
+    private fun searchNodes() {
+
+    }
+
     override fun createMetaTileEntity(): MetaTileEntity {
         return PanCoreMetaTileEntity(metaTileEntityId, tier)
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === ClayiumTileCapabilities.PAN_CABLE) {
+            return capability.cast(IPanCable.INSTANCE)
+        }
+        return super.getCapability(capability, facing)
     }
 
     @SideOnly(Side.CLIENT)
@@ -77,7 +104,20 @@ class PanCoreMetaTileEntity(
                 .child(SlotGroupWidget.playerInventory(0)))
     }
 
+    private class PanNetwork : IPureAntimatterNetwork, IPanNotifiable {
+
+        var networkNotified = false
+
+        override val panEntries: Set<IPanEntry>
+            get() = TODO("Not yet implemented")
+
+        override fun notifyNetwork() {
+            networkNotified = true
+        }
+    }
+
     companion object {
+        const val REFRESH_RATE_TICKS = 200
         private lateinit var panCoreQuads: MutableList<BakedQuad>
 
         private val panItems = (0..<90).map {

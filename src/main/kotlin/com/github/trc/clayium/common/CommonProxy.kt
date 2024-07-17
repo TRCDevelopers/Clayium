@@ -125,6 +125,8 @@ open class CommonProxy {
 
         registry.register(createItemBlock(ClayiumBlocks.QUARTZ_CRUCIBLE, ::ItemBlockTiered))
 
+        registry.register(createItemBlock(ClayiumBlocks.PAN_CABLE, ::ItemBlockTiered))
+
         registry.register(ItemBlock(ClayiumBlocks.LASER_REFLECTOR).apply {
             registryName = ClayiumBlocks.LASER_REFLECTOR.registryName
             translationKey = ClayiumBlocks.LASER_REFLECTOR.translationKey

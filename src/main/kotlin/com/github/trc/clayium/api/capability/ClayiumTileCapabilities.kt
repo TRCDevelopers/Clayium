@@ -1,5 +1,6 @@
 package com.github.trc.clayium.api.capability
 
+import com.github.trc.clayium.api.pan.IPanCable
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.CapabilityInject
 
@@ -15,4 +16,7 @@ object ClayiumTileCapabilities {
 
     @CapabilityInject(IControllable::class)
     lateinit var CONTROLLABLE: Capability<IControllable>
+
+    @CapabilityInject(IPanCable::class)
+    lateinit var PAN_CABLE: Capability<IPanCable>
 }

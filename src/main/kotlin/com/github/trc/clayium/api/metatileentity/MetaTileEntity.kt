@@ -597,6 +597,10 @@ abstract class MetaTileEntity(
                     .slot(slot)
                     .background(IDrawable.EMPTY))
 
+    protected inline fun onServer(block: () -> Unit) {
+        if (!isRemote) block()
+    }
+
     private data class FilterAndType(val filter: IItemFilter, val type: FilterType)
 
     companion object {

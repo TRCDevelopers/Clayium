@@ -1,5 +1,6 @@
 package com.github.trc.clayium.api.capability
 
+import com.github.trc.clayium.api.pan.IPanCable
 import net.minecraft.nbt.NBTBase
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
@@ -27,5 +28,6 @@ object SimpleCapabilityManager {
         registerCapabilityWithNoDefault(IItemFilter::class.java)
         registerCapabilityWithNoDefault(IClayEnergyProvider::class.java)
         registerCapabilityWithNoDefault(IConfigurationTool::class.java)
+        registerCapabilityWithNoDefault(IPanCable::class.java)
     }
 }
