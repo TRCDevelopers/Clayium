@@ -130,9 +130,11 @@ object MetaTileEntities {
     val CA_CONDENSER = registerMetaTileEntities(160, (9..11)) {
         CaCondenserMetaTileEntity(clayiumId("ca_condenser.${it.lowerName}"), it)
     }
-    val MULTI_TRACK_BUFFER = registerMetaTileEntities(163, (4..13)){
+    val MULTI_TRACK_BUFFER = registerMetaTileEntities(163, (4..13)) {
         ClayMultiTrackBufferMetaTileEntity(clayiumId("multi_track_buffer.${it.lowerName}"), it)
     }
+
+    val PAN_CORE = registerMetaTileEntity(174, PanCoreMetaTileEntity(clayiumId("pan_core"), ClayTiers.PURE_ANTIMATTER))
 
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)

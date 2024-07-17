@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "tier": {
+      "pure_antimatter": {
+        "textures": {
+          "all": "clayium:blocks/pan_core"
+        },
+        "model": "cube_all"
+      }
+    }
+  }
+}
