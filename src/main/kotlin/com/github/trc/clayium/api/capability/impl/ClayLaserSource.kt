@@ -141,9 +141,10 @@ class ClayLaserSource(
             previousTarget?.takeUnless { it.isInvalid }
                 ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
                 ?.laserChanged(targetSide, null)
-            if (isActive)
+            if (isActive) {
                 laserTarget?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
                     ?.laserChanged(targetSide, this.laser)
+            }
             writeLaserData()
         }
     }
