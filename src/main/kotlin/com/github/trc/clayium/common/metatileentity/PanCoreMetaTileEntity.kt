@@ -56,9 +56,8 @@ class PanCoreMetaTileEntity(
     override fun update() {
         super.update()
         onServer {
-            if (networkNotified && offsetTimer % REFRESH_RATE_TICKS == 0L) {
+            if (offsetTimer % REFRESH_RATE_TICKS == 0L) {
                 refreshNetwork()
-                networkNotified = false
             }
         }
     }
