@@ -564,10 +564,9 @@ abstract class MetaTileEntity(
      * Adds base textures such as Machine hulls.
      */
     @SideOnly(Side.CLIENT)
-    open fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): MutableList<BakedQuad> {
-        if (state == null || side == null || state !is IExtendedBlockState) return mutableListOf()
-        val quads = mutableListOf(ModelTextures.getHullQuads(this.tier)?.get(side) ?: return mutableListOf())
-        return quads
+    open fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+        if (state == null || side == null || state !is IExtendedBlockState) return
+        quads.add(ModelTextures.getHullQuads(this.tier)?.get(side) ?: return)
     }
 
     /**

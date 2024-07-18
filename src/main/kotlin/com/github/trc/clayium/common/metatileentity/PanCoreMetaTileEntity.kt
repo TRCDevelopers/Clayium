@@ -123,7 +123,10 @@ class PanCoreMetaTileEntity(
     }
 
     @SideOnly(Side.CLIENT)
-    override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long) = panCoreQuads
+    override fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+        if (state == null || side == null) return
+        quads.add(panCoreQuads[side.index])
+    }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         val displayItems = Grid.mapToMatrix(8, panItems) { index, itemStack ->

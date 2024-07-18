@@ -150,7 +150,8 @@ class PanAdapterMetaTileEntity(
     }
 
     override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
-        quads.addAll(adapterQuads)
+        if (state == null || side == null) return
+        quads.add(adapterQuads[side.index])
     }
 
     companion object {
