@@ -34,7 +34,6 @@ class BlockPanCable : Block(Material.GLASS), IPanCable, ITieredBlock {
         for (side in EnumFacing.entries) {
             val property = properties[side.index]
             if (worldIn.isPanCable(pos.offset(side))) {
-                Clayium.LOGGER.info("Found cable at $pos, side $side")
                 res = res.withProperty(property, true)
             } else {
                 res = res.withProperty(property, false)
