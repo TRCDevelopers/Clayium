@@ -16,5 +16,5 @@ object ClayiumApi {
     val MTE_REGISTRY = CRegistry<ResourceLocation, MetaTileEntity>(Short.MAX_VALUE.toInt())
     val materialRegistry = CRegistry<ResourceLocation, Material>(Short.MAX_VALUE.toInt())
 
-    val PAN_ENTRY_FACTORIES = mutableMapOf<Class<*>, IPanEntryFactory>()
+    val PAN_ENTRY_FACTORIES = mutableListOf<IPanEntryFactory>()
 }

@@ -28,6 +28,16 @@ fun ItemStack.copyWithSize(size: Int): ItemStack {
     return stack
 }
 
+fun IItemHandler.toList(): List<ItemStack> {
+    return object : AbstractList<ItemStack>() {
+        override val size = slots
+
+        override fun get(index: Int): ItemStack {
+            return getStackInSlot(index)
+        }
+    }
+}
+
 fun IBlockState.toItemStack(count: Int = 1): ItemStack {
     return ItemStack(block, count, block.getMetaFromState(this))
 }
