@@ -30,5 +30,11 @@ public class ConfigCore {
                 "true : laser irradiates when powered"
         })
         public boolean invertClayLaserRsCondition = false;
+
+        @Config.Comment({
+                "Max search distance for PAN"
+        })
+        @Config.RangeInt(min = 1, max = 1000)
+        public int panMaxSearchDistance = 500;
     }
 }
