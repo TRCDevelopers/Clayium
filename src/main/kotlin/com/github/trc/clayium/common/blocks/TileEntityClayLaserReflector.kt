@@ -94,7 +94,7 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
 
     private fun canGoThroughBlock(pos: BlockPos): Boolean {
         val material = this.world.getBlockState(pos).material
-        return (material == Material.AIR) || (material == Material.GRASS)
+        return (material == Material.AIR) || (material == Material.GLASS)
     }
 
     private fun updateTargetInstance() {

@@ -151,7 +151,7 @@ class ClayLaserSource(
 
     private fun canGoThroughBlock(world: IBlockAccess, pos: BlockPos): Boolean {
         val material = world.getBlockState(pos).material
-        return (material == Material.AIR) || (material == Material.GRASS)
+        return (material == Material.AIR) || (material == Material.GLASS)
     }
 
     private fun writeLaserData() {
