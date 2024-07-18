@@ -16,6 +16,7 @@ import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.pan.IPanAdapter
+import com.github.trc.clayium.api.pan.IPanCable
 import com.github.trc.clayium.api.pan.IPanEntry
 import com.github.trc.clayium.api.pan.IPanNotifiable
 import com.github.trc.clayium.api.pan.isPanCable
@@ -65,10 +66,11 @@ class PanAdapterMetaTileEntity(
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        if (capability === ClayiumTileCapabilities.PAN_ADAPTER) {
-            return capability.cast(this)
+        return when {
+            capability === ClayiumTileCapabilities.PAN_CABLE -> capability.cast(IPanCable.INSTANCE)
+            capability === ClayiumTileCapabilities.PAN_ADAPTER -> capability.cast(this)
+            else -> super.getCapability(capability, facing)
         }
-        return super.getCapability(capability, facing)
     }
 
     override fun getEntries(): Set<IPanEntry> {
