@@ -5,6 +5,7 @@ import com.github.trc.clayium.api.capability.impl.RecipeLogicClayFurnace
 import com.github.trc.clayium.api.metatileentity.ClayBufferMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.ClayInterfaceMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.ClayLaserMetaTileEntity
+import com.github.trc.clayium.api.metatileentity.ClayMultiTrackBufferMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.SimpleMachineMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.ClayBlastFurnaceMetaTileEntity
@@ -15,7 +16,6 @@ import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.common.metatileentity.multiblock.RedstoneProxyMetaTileEntity
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import com.github.trc.clayium.api.metatileentity.ClayMultiTrackBufferMetaTileEntity
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
@@ -133,7 +133,7 @@ object MetaTileEntities {
     val MULTI_TRACK_BUFFER = registerMetaTileEntities(163, (4..13)){
         ClayMultiTrackBufferMetaTileEntity(clayiumId("multi_track_buffer.${it.lowerName}"), it)
     }
-
+    val BLOCK_BREAKER = registerMetaTileEntity(173, BlockBreakerMetaTileEntity(clayiumId("block_breaker"), ClayTiers.PRECISION))
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)
      * @param provider tier -> MetaTileEntity
