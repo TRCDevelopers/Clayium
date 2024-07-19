@@ -1,5 +1,6 @@
 package com.github.trc.clayium.api.capability
 
+import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
 import net.minecraft.nbt.NBTBase
@@ -24,6 +25,7 @@ object SimpleCapabilityManager {
         registerCapabilityWithNoDefault(IClayEnergyHolder::class.java)
         registerCapabilityWithNoDefault(IClayLaserSource::class.java)
         registerCapabilityWithNoDefault(IClayLaserAcceptor::class.java)
+        registerCapabilityWithNoDefault(AbstractRecipeLogic::class.java)
 
         registerCapabilityWithNoDefault(ISynchronizedInterface::class.java)
         registerCapabilityWithNoDefault(IItemFilter::class.java)

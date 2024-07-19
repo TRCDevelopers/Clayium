@@ -19,6 +19,7 @@ import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
+import com.github.trc.clayium.api.capability.impl.ListeningItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
@@ -30,6 +31,7 @@ import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
+import com.google.common.collect.ImmutableSet
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -42,6 +44,8 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemStackHandler
 import java.util.function.Function
 
@@ -64,8 +68,15 @@ class PanAdapterMetaTileEntity(
         else -> 1
     }
 
-    val recipeInventories = List(pageNum) { ItemStackHandler(9) }
+    private val recipeInventories = List(pageNum) { ListeningItemStackHandler(9, ::onSlotChanged) }
+    private val resultInventories = List(pageNum) { ItemStackHandler(9) }
+    private val currentEntries = mutableSetOf<IPanEntry>()
+
     private var network: IPanNotifiable? = null
+
+    private fun onSlotChanged(slot: Int) {
+        refreshEntries()
+    }
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return PanAdapterMetaTileEntity(metaTileEntityId, tier)
@@ -80,26 +91,47 @@ class PanAdapterMetaTileEntity(
     }
 
     override fun getEntries(): Set<IPanEntry> {
-        val world = world ?: return emptySet()
-        val pos = pos ?: return emptySet()
-        val entries = mutableSetOf<IPanEntry>()
-        for (side in EnumFacing.entries) {
-            val factory = ClayiumApi.PAN_ENTRY_FACTORIES.firstOrNull {
-                it.matches(world, pos.offset(side))
-            } ?: continue
-            recipeInventories.forEach {
-                val entry = factory.getEntry(it.toList())
-                if (entry != null) entries.add(entry)
+        return ImmutableSet.copyOf(currentEntries)
+    }
+
+    private fun refreshEntries() {
+        val world = world ?: return
+        val pos = pos ?: return
+        currentEntries.clear()
+        for ((pattern, result) in recipeInventories.zip(resultInventories)) {
+            val stacks = pattern.toList()
+            var entry: IPanEntry? = null
+            for (side in EnumFacing.entries) {
+                entry = ClayiumApi.PAN_ENTRY_FACTORIES.firstNotNullOfOrNull { factory ->
+                    factory.getEntry(world, pos.offset(side), stacks)
+                }
+                if (entry != null) break
+            }
+            if (entry == null) {
+                resetResult(result)
+            } else {
+                currentEntries.add(entry)
+                setResult(result, entry)
             }
         }
-        return entries
+    }
+
+    private fun setResult(resultHandler: IItemHandlerModifiable, entry: IPanEntry) {
+        val stacks = entry.results
+        for (i in 0..<resultHandler.slots) {
+            resultHandler.setStackInSlot(i, stacks.getOrNull(i) ?: break)
+        }
+    }
+
+    private fun resetResult(resultHandler: IItemHandlerModifiable) {
+        for (i in 0..<resultHandler.slots) {
+            resultHandler.setStackInSlot(i, ItemStack.EMPTY)
+        }
     }
 
     override fun onNeighborChanged(facing: EnumFacing) {
         super.onNeighborChanged(facing)
-        if (world!!.isPanCable(pos!!.offset(facing))) {
-            network?.notifyNetwork()
-        }
+        refreshEntries()
     }
 
     override fun onRemoval() {
@@ -117,15 +149,15 @@ class PanAdapterMetaTileEntity(
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         val tabController = PagedWidget.Controller()
-        val pages = recipeInventories.map { handler ->
+        val pages = recipeInventories.zip(resultInventories).map { (pattern, result) ->
             val slots = SlotGroupWidget.builder()
                 .matrix("III", "III", "III")
-                .key('I') { ItemSlot().slot(SyncHandlers.phantomItemSlot(handler, it))
+                .key('I') { ItemSlot().slot(SyncHandlers.phantomItemSlot(pattern, it))
                     .background(ClayGuiTextures.FILTER_SLOT) }
                 .build()
             val resultSlots = SlotGroupWidget.builder()
                 .matrix("III", "III", "III")
-                .key('I') { ItemSlot().slot(SyncHandlers.phantomItemSlot(handler, it)) }
+                .key('I') { ItemSlot().slot(SyncHandlers.phantomItemSlot(result, it)) }
                 .build()
             Row().sizeRel(1f)
                 .child(slots.align(Alignment.CenterLeft))

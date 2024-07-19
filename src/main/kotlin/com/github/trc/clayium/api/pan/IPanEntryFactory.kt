@@ -5,6 +5,5 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 
 interface IPanEntryFactory {
-    fun matches(world: IBlockAccess, pos: BlockPos): Boolean
-    fun getEntry(stacks: List<ItemStack>): IPanEntry?
+    fun getEntry(world: IBlockAccess, pos: BlockPos, stacks: List<ItemStack>): IPanEntry?
 }

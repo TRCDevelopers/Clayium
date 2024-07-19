@@ -62,8 +62,11 @@ abstract class WorkableMetaTileEntity(
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        if (capability == ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER) return ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER.cast(clayEnergyHolder)
-        return super.getCapability(capability, facing)
+        return when {
+            capability === ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER -> capability.cast(clayEnergyHolder)
+            capability === ClayiumTileCapabilities.RECIPE_LOGIC -> capability.cast(workable)
+            else -> super.getCapability(capability, facing)
+        }
     }
 
     override fun onPlacement() {

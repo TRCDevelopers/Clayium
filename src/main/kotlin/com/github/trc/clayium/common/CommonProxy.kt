@@ -23,6 +23,7 @@ import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trc.clayium.common.loaders.OreDictionaryLoader
 import com.github.trc.clayium.common.metatileentity.MetaTileEntities
 import com.github.trc.clayium.common.loaders.recipe.CRecipeLoader
+import com.github.trc.clayium.common.pan.CPanEntryFactory
 import com.github.trc.clayium.common.unification.material.CMaterials
 import com.github.trc.clayium.common.unification.ore.OrePrefix
 import com.github.trc.clayium.common.util.DebugUtils
@@ -60,6 +61,8 @@ open class CommonProxy {
         GuiManager.registerFactory(MetaTileEntityGuiFactory)
 
         SimpleCapabilityManager.registerCapabilities()
+
+        ClayiumApi.PAN_ENTRY_FACTORIES.add(CPanEntryFactory)
     }
 
     open fun init(event: FMLInitializationEvent) {
