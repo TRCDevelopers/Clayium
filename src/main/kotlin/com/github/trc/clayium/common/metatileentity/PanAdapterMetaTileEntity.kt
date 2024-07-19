@@ -15,6 +15,7 @@ import com.cleanroommc.modularui.widgets.PagedWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
@@ -70,6 +71,7 @@ class PanAdapterMetaTileEntity(
 
     private val recipeInventories = List(pageNum) { ListeningItemStackHandler(9, ::onSlotChanged) }
     private val resultInventories = List(pageNum) { ItemStackHandler(9) }
+    private val laserInventory = ListeningItemStackHandler(9, ::onSlotChanged)
     private val currentEntries = mutableSetOf<IPanEntry>()
 
     private var network: IPanNotifiable? = null
@@ -157,19 +159,19 @@ class PanAdapterMetaTileEntity(
                 .build()
             val resultSlots = SlotGroupWidget.builder()
                 .matrix("III", "III", "III")
-                .key('I') { ItemSlot().slot(SyncHandlers.phantomItemSlot(result, it)) }
+                .key('I') { ItemSlot().slot(SyncHandlers.itemSlot(result, it).accessibility(false, false)) }
                 .build()
             Row().sizeRel(1f)
-                .child(slots.align(Alignment.CenterLeft))
-                .child(resultSlots.align(Alignment.CenterRight))
+                .child(slots.align(Alignment.TopLeft))
+                .child(resultSlots.align(Alignment.TopRight))
         }
-        return ModularPanel.defaultPanel("pan_adapter")
-            .childIf(this.pageNum < 8, Row().coverChildren().left(4).topRel(0f, 4, 1f)
+        return ModularPanel.defaultPanel("pan_adapter", 176, 196)
+            .childIf(this.pageNum < 8, Row().coverChildren().topRel(0f, 4, 1f)
                 .apply {
                     for (i in 0..<pageNum) {
                         child(ParentWidget().coverChildren()
                             .child(PageButton(i, tabController)
-                                .tab(GuiTextures.TAB_TOP, 0))
+                                .tab(GuiTextures.TAB_TOP, if (i == 0) -1 else 0))
                             .child(ItemDrawable(ItemStack(Items.APPLE)).asWidget()
                                 .size(16, 16)
                                 .align(Alignment.Center))
@@ -177,12 +179,12 @@ class PanAdapterMetaTileEntity(
                     }
                 }
             )
-            .childIf(this.pageNum == 8, Column().coverChildren().top(4).leftRel(0f, 4, 1f)
+            .childIf(this.pageNum == 8, Column().coverChildren().leftRel(0f, 4, 1f)
                 .apply {
                     for (i in 0..<4) {
                         child(ParentWidget().coverChildren()
                             .child(PageButton(i, tabController)
-                                .tab(GuiTextures.TAB_LEFT, 0))
+                                .tab(GuiTextures.TAB_LEFT, if (i == 0) -1 else 0))
                             .child(ItemDrawable(ItemStack(Items.APPLE)).asWidget()
                                 .size(16, 16)
                                 .align(Alignment.Center))
@@ -190,12 +192,12 @@ class PanAdapterMetaTileEntity(
                     }
                 }
             )
-            .childIf(this.pageNum == 8, Column().coverChildren().top(4).rightRel(0f, 4, 1f)
+            .childIf(this.pageNum == 8, Column().coverChildren().rightRel(0f, 4, 1f)
                 .apply {
                     for (i in 4..<8) {
                         child(ParentWidget().coverChildren()
                             .child(PageButton(i, tabController)
-                                .tab(GuiTextures.TAB_RIGHT, 0))
+                                .tab(GuiTextures.TAB_RIGHT, if (i == 4) -1 else 0))
                             .child(ItemDrawable(ItemStack(Items.APPLE)).asWidget()
                                 .size(16, 16)
                                 .align(Alignment.Center))
@@ -211,7 +213,12 @@ class PanAdapterMetaTileEntity(
                         .align(Alignment.BottomLeft))
                     .child(PagedWidget().margin(0, 9).sizeRel(1f)
                         .controller(tabController)
-                        .apply { for (page in pages) addPage(page) }
+                        .apply { for (page in pages) addPage(page
+                            .child(SlotGroupWidget.builder()
+                                .row("I".repeat(9))
+                                .key('I') { index -> ItemSlot().slot(ModularSlot(laserInventory, index)) }
+                                .build()
+                                .align(Alignment.BottomCenter).marginBottom(8))) }
                     )
                 )
                 .child(SlotGroupWidget.playerInventory(0))
