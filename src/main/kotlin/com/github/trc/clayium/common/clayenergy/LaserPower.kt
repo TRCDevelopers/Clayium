@@ -13,9 +13,7 @@ value class LaserPower(val lp: Double) {
         if (lp == 0.0) return "0"
         val digits = floor(log(abs(lp),10.0)).toInt()
         val unitIndex = digits / 3
-        val displayValue = String.format("%.3f", lp / 10.0.pow(unitIndex * 3))
-            .replace(matchesExcessZero, "")
-            .replace(matchesExcessDecimalPoint, "")
+        val displayValue = String.format("%.0f", lp / 10.0.pow(unitIndex * 3))
         return "$displayValue${units[unitIndex]}"
     }
 
@@ -33,8 +31,6 @@ value class LaserPower(val lp: Double) {
         val ZERO = LaserPower(0.0)
 
         val units = listOf("", "k", "M", "G", "T", "P", "E", "Z", "Y")
-        private val matchesExcessZero = Regex("0+\$")
-        private val matchesExcessDecimalPoint = Regex("\\.$")
 
         fun of(power: Double): LaserPower {
             return LaserPower(power)
