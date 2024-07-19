@@ -1,14 +1,19 @@
 package com.github.trc.clayium.common.metatileentity
 
+import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
+import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.PageButton
 import com.cleanroommc.modularui.widgets.PagedWidget
+import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
@@ -24,6 +29,7 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.client.model.ModelTextures
+import com.github.trc.clayium.common.gui.ClayGuiTextures
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -109,30 +115,74 @@ class PanAdapterMetaTileEntity(
         network = null
     }
 
-    override fun buildUI(data: PosGuiData?, syncManager: GuiSyncManager?): ModularPanel? {
+    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         val tabController = PagedWidget.Controller()
+        val pages = recipeInventories.map { handler ->
+            val slots = SlotGroupWidget.builder()
+                .matrix("III", "III", "III")
+                .key('I') { ItemSlot().slot(SyncHandlers.phantomItemSlot(handler, it))
+                    .background(ClayGuiTextures.FILTER_SLOT) }
+                .build()
+            val resultSlots = SlotGroupWidget.builder()
+                .matrix("III", "III", "III")
+                .key('I') { ItemSlot().slot(SyncHandlers.phantomItemSlot(handler, it)) }
+                .build()
+            Row().sizeRel(1f)
+                .child(slots.align(Alignment.CenterLeft))
+                .child(resultSlots.align(Alignment.CenterRight))
+        }
         return ModularPanel.defaultPanel("pan_adapter")
-            .child(Row().coverChildren().topRel(0f, 4, 1f)
-                .child(ParentWidget().coverChildren()
-                    .child(PageButton(0, tabController)
-                        .tab(GuiTextures.TAB_TOP, -1))
-                    .child(ItemDrawable(ItemStack(Items.APPLE)).asWidget()
-                        .size(16, 16)
-                        .align(Alignment.Center))
-                )
-                .child(ParentWidget().coverChildren()
-                    .child(PageButton(1, tabController)
-                        .tab(GuiTextures.TAB_TOP, 0))
-                    .child(ItemDrawable(ItemStack(Items.DIAMOND)).asWidget()
-                        .size(16, 16)
-                        .align(Alignment.Center))
-                )
+            .childIf(this.pageNum < 8, Row().coverChildren().left(4).topRel(0f, 4, 1f)
+                .apply {
+                    for (i in 0..<pageNum) {
+                        child(ParentWidget().coverChildren()
+                            .child(PageButton(i, tabController)
+                                .tab(GuiTextures.TAB_TOP, 0))
+                            .child(ItemDrawable(ItemStack(Items.APPLE)).asWidget()
+                                .size(16, 16)
+                                .align(Alignment.Center))
+                        )
+                    }
+                }
             )
-            .child(PagedWidget()
-                .controller(tabController)
-                .sizeRel(1f)
-                .addPage(ParentWidget().sizeRel(1f))
-                .addPage(ParentWidget().sizeRel(1f))
+            .childIf(this.pageNum == 8, Column().coverChildren().top(4).leftRel(0f, 4, 1f)
+                .apply {
+                    for (i in 0..<4) {
+                        child(ParentWidget().coverChildren()
+                            .child(PageButton(i, tabController)
+                                .tab(GuiTextures.TAB_LEFT, 0))
+                            .child(ItemDrawable(ItemStack(Items.APPLE)).asWidget()
+                                .size(16, 16)
+                                .align(Alignment.Center))
+                        )
+                    }
+                }
+            )
+            .childIf(this.pageNum == 8, Column().coverChildren().top(4).rightRel(0f, 4, 1f)
+                .apply {
+                    for (i in 4..<8) {
+                        child(ParentWidget().coverChildren()
+                            .child(PageButton(i, tabController)
+                                .tab(GuiTextures.TAB_RIGHT, 0))
+                            .child(ItemDrawable(ItemStack(Items.APPLE)).asWidget()
+                                .size(16, 16)
+                                .align(Alignment.Center))
+                        )
+                    }
+                }
+            )
+            .child(Column().margin(7).sizeRel(1f)
+                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
+                    .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
+                        .align(Alignment.TopLeft))
+                    .child(IKey.lang("container.inventory").asWidget()
+                        .align(Alignment.BottomLeft))
+                    .child(PagedWidget().margin(0, 9).sizeRel(1f)
+                        .controller(tabController)
+                        .apply { for (page in pages) addPage(page) }
+                    )
+                )
+                .child(SlotGroupWidget.playerInventory(0))
             )
     }
 

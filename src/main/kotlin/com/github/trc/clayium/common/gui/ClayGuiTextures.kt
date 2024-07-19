@@ -9,17 +9,17 @@ object ClayGuiTextures {
         .location(CValues.MOD_ID, "gui/slot")
         .imageSize(256, 256)
 
-    val LARGE_SLOT = UITexture.builder()
-        .location(Clayium.MOD_ID, "gui/slot")
-        .imageSize(256, 256)
+    val LARGE_SLOT = slotTexture()
         .uv(0, 32, 26, 26)
         .canApplyTheme()
         .build()
 
-    val CLAY_SLOT = UITexture.builder()
-        .location(Clayium.MOD_ID, "gui/slot")
-        .imageSize(256, 256)
+    val CLAY_SLOT = slotTexture()
         .uv(96, 0, 18, 18)
+        .build()
+
+    val FILTER_SLOT = slotTexture()
+        .uv(96, 32, 18, 18)
         .build()
 
     // memo: gui/slot slot interval is 14 pixels
