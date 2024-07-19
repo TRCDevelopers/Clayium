@@ -1,9 +1,10 @@
-package com.github.trc.clayium.common.pan
+package com.github.trc.clayium.common.pan.factories
 
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.pan.IPanEntry
 import com.github.trc.clayium.api.pan.IPanEntryFactory
 import com.github.trc.clayium.api.util.getMetaTileEntity
+import com.github.trc.clayium.common.pan.PanEntry
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
