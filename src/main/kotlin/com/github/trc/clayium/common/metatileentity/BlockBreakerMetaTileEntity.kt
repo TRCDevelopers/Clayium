@@ -17,6 +17,7 @@ import com.github.trc.clayium.api.capability.impl.LaserPowerHolder
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.common.util.TransferUtils
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
@@ -65,7 +66,7 @@ class BlockBreakerMetaTileEntity(
         val matrixStr = (0..<inventoryRow).map { columnStr }
         return ModularPanel("breaker")
             .flex {
-                it.size(176,  18 + inventoryRow * 18 + 120 + 2)
+                it.size(176,  18 + inventoryRow * 18 + 106 + 2)
                 it.align(Alignment.Center)
             }
             .child(
@@ -85,8 +86,10 @@ class BlockBreakerMetaTileEntity(
                     .build())
                 .child(
                     laserPower.createLpTextWidget(syncManager)
-                        .paddingTop(1)
+                        .paddingTop(4)
                         .paddingBottom(1)
+                        .size(80,8)
+                        .paddingLeft(9)
                         .anchor(Alignment.Center)
                 )
                 .child(
@@ -98,11 +101,16 @@ class BlockBreakerMetaTileEntity(
 
     }
 
-
     override fun update() {
         if (!isRemote) {
-            if(world!=null && this.getNeighbor(frontFacing)!=null)
-                world!!.destroyBlock(this.getNeighbor(frontFacing)!!.pos,true)
+            if (world != null && this.pos != null) {
+                val frontPos = this.pos!!.add(frontFacing.directionVec)
+                val blockState = world!!.getBlockState(frontPos)
+                val drops = blockState.block.getDrops(world!!,frontPos,blockState,0)
+                if(drops!=null && TransferUtils.insertToHandler(itemInventory, drops, true))
+                    TransferUtils.insertToHandler(itemInventory,drops,false)
+                world!!.destroyBlock(frontPos, false)
+            }
         }
         super.update()
     }
