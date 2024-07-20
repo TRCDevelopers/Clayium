@@ -24,6 +24,7 @@ import com.github.trc.clayium.common.loaders.OreDictionaryLoader
 import com.github.trc.clayium.common.metatileentity.MetaTileEntities
 import com.github.trc.clayium.common.loaders.recipe.CRecipeLoader
 import com.github.trc.clayium.common.pan.factories.CPanEntryFactory
+import com.github.trc.clayium.common.pan.factories.CraftingTablePanEntryFactory
 import com.github.trc.clayium.common.unification.material.CMaterials
 import com.github.trc.clayium.common.unification.ore.OrePrefix
 import com.github.trc.clayium.common.util.DebugUtils
@@ -63,6 +64,7 @@ open class CommonProxy {
         SimpleCapabilityManager.registerCapabilities()
 
         ClayiumApi.PAN_ENTRY_FACTORIES.add(CPanEntryFactory)
+        ClayiumApi.PAN_ENTRY_FACTORIES.add(CraftingTablePanEntryFactory)
     }
 
     open fun init(event: FMLInitializationEvent) {

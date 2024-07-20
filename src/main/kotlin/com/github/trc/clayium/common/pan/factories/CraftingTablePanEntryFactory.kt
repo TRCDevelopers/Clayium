@@ -2,6 +2,10 @@ package com.github.trc.clayium.common.pan.factories
 
 import com.github.trc.clayium.api.pan.IPanEntry
 import com.github.trc.clayium.api.pan.IPanEntryFactory
+import com.github.trc.clayium.api.util.copyWithSize
+import com.github.trc.clayium.common.clayenergy.ClayEnergy
+import com.github.trc.clayium.common.pan.PanEntry
+import com.github.trc.clayium.common.recipe.ingredient.CItemRecipeInput
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
 import net.minecraft.inventory.Container
@@ -22,7 +26,8 @@ object CraftingTablePanEntryFactory : IPanEntryFactory {
         for (slot in 0..<9) matrix.setInventorySlotContents(slot, stacks[slot])
 
         val output = CraftingManager.findMatchingResult(matrix, world)
-        return null
+        if (output.isEmpty) return null
+        val inputs = stacks.filterNot(ItemStack::isEmpty).map { it.copyWithSize(1) }.map { CItemRecipeInput(listOf(it), 1) }
+        return PanEntry(inputs, listOf(output), ClayEnergy.micro(10))
     }
-
 }
