@@ -27,6 +27,8 @@ object ClayiumDataCodecs {
 
     val INTERFACE_SYNC_MIMIC_TARGET = assignId()
 
+    val UPDATE_PAN_DUPLICATION_ENTRIES = assignId()
+
     const val AUTO_IO_HANDLER = "autoIoHandler"
     const val RECIPE_LOGIC = "recipeLogic"
     const val ENERGY_HOLDER = "energyHolder"

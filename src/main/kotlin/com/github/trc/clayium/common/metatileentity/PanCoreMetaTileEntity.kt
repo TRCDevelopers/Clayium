@@ -1,16 +1,15 @@
 package com.github.trc.clayium.common.metatileentity
 
-import com.cleanroommc.modularui.api.drawable.IDrawable
+import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Grid
-import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_PAN_DUPLICATION_ENTRIES
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
@@ -22,15 +21,21 @@ import com.github.trc.clayium.api.pan.isPanCable
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.model.ModelTextures
+import com.github.trc.clayium.common.clayenergy.ClayEnergy
+import com.github.trc.clayium.common.clayenergy.readClayEnergy
+import com.github.trc.clayium.common.clayenergy.writeClayEnergy
 import com.github.trc.clayium.common.config.ConfigCore
+import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
+import net.minecraft.init.Blocks
 import net.minecraft.init.Items
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
@@ -52,6 +57,8 @@ class PanCoreMetaTileEntity(
     private val panEntries = mutableSetOf<IPanEntry>()
     private var networkNotified = false
     private val adapters = mutableListOf<IPanAdapter>()
+
+    private val duplicationEntries = mutableSetOf<PanDuplicationEntry>()
 
     override fun update() {
         super.update()
@@ -75,6 +82,7 @@ class PanCoreMetaTileEntity(
             adapter.setCore(this)
             this.panEntries.addAll(adapter.getEntries())
         }
+        refreshDuplicationEntries()
     }
 
     private fun searchNodes(nodes: MutableSet<BlockPos>, pos: BlockPos, depth: Int) {
@@ -89,6 +97,20 @@ class PanCoreMetaTileEntity(
         }
     }
 
+    private fun refreshDuplicationEntries() {
+        duplicationEntries.clear()
+        duplicationEntries.addAll(defaultDuplicationEntries)
+
+        writeCustomData(UPDATE_PAN_DUPLICATION_ENTRIES) {
+            writeVarInt(duplicationEntries.size)
+            for (entry in duplicationEntries) {
+                writeItemStack(entry.stack)
+                writeClayEnergy(entry.energy)
+                writeBoolean(entry.isAllowedToDuplicate)
+            }
+        }
+    }
+
     override fun createMetaTileEntity(): MetaTileEntity {
         return PanCoreMetaTileEntity(metaTileEntityId, tier)
     }
@@ -98,6 +120,20 @@ class PanCoreMetaTileEntity(
         for (adapter in adapters) {
             adapter.coreRemoved()
         }
+    }
+
+    override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
+        if (discriminator == UPDATE_PAN_DUPLICATION_ENTRIES) {
+            duplicationEntries.clear()
+            val entriesSize = buf.readVarInt()
+            for (i in 0..<entriesSize) {
+                val stack = buf.readItemStack()
+                val energy = buf.readClayEnergy()
+                val isAllowedToDuplicate = buf.readBoolean()
+                duplicationEntries.add(PanDuplicationEntry(stack, energy, isAllowedToDuplicate))
+            }
+        }
+        super.receiveCustomData(discriminator, buf)
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
@@ -129,10 +165,15 @@ class PanCoreMetaTileEntity(
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        val displayItems = Grid.mapToMatrix(8, panItems) { index, itemStack ->
-            handler.setStackInSlot(index, itemStack)
-            ItemSlot().slot(ModularSlot(handler, index).accessibility(false, false))
-                .background(IDrawable.EMPTY)
+        if (!isRemote) {
+            refreshNetwork()
+        }
+        val duplicationList = duplicationEntries.toList()
+        val displayItems = Grid.mapToMatrix(8, duplicationList) { index, entry ->
+            ItemDrawable(entry.stack).asWidget().size(16).tooltip {
+                it.addLine(entry.stack.displayName)
+                it.addLine(entry.energy.format())
+            }
         }
         return ModularPanel.defaultPanel("pan_core")
             .child(Column().margin(7)
@@ -146,9 +187,22 @@ class PanCoreMetaTileEntity(
                 .child(SlotGroupWidget.playerInventory(0)))
     }
 
+    class PanDuplicationEntry(
+        val stack: ItemStack,
+        val energy: ClayEnergy,
+        val isAllowedToDuplicate: Boolean = true,
+    ) {
+        constructor(item: Item, energy: ClayEnergy, isAllowedToDuplicate: Boolean = true) : this(ItemStack(item), energy, isAllowedToDuplicate)
+        constructor(block: Block, energy: ClayEnergy, isAllowedToDuplicate: Boolean = true) : this(ItemStack(block), energy, isAllowedToDuplicate)
+    }
 
     companion object {
         const val REFRESH_RATE_TICKS = 200
+        private val defaultDuplicationEntries = setOf(
+            PanDuplicationEntry(Blocks.COBBLESTONE, ClayEnergy.micro(10)),
+            PanDuplicationEntry(Blocks.LOG, ClayEnergy.micro(10)),
+        )
+
         private lateinit var panCoreQuads: MutableList<BakedQuad>
 
         private val panItems = (0..<90).map {

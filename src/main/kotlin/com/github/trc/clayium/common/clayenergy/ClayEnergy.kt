@@ -1,7 +1,16 @@
 package com.github.trc.clayium.common.clayenergy
 
+import net.minecraft.network.PacketBuffer
 import kotlin.math.abs
 import kotlin.math.pow
+
+fun PacketBuffer.writeClayEnergy(energy: ClayEnergy) {
+    writeLong(energy.energy)
+}
+
+fun PacketBuffer.readClayEnergy(): ClayEnergy {
+    return ClayEnergy(readLong())
+}
 
 @JvmInline
 value class ClayEnergy(val energy: Long) {
