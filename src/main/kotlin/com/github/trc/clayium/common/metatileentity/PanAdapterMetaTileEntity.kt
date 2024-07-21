@@ -1,8 +1,11 @@
 package com.github.trc.clayium.common.metatileentity
 
+import com.cleanroommc.modularui.api.GuiAxis
 import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.drawable.DynamicDrawable
 import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.drawable.ItemDrawable
+import com.cleanroommc.modularui.drawable.TabTexture
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
@@ -13,7 +16,9 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.PageButton
 import com.cleanroommc.modularui.widgets.PagedWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Grid
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.CValues
@@ -151,6 +156,17 @@ class PanAdapterMetaTileEntity(
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         val tabController = PagedWidget.Controller()
+        val buttons = Grid.mapToMatrix(2, resultInventories) { index, handler ->
+            ParentWidget().size(16)
+                .child(PageButton(index, tabController)
+                    .background(false, GuiTextures.MC_BUTTON)
+                    .background(true, ClayGuiTextures.BUTTON_PRESSED)
+                    .disableHoverBackground()
+                    .size(16, 16))
+                .child(DynamicDrawable { ItemDrawable(handler.getStackInSlot(0)) }.asWidget().size(16)
+                    .tooltip { it.addLine(IKey.dynamic { if (handler.getStackInSlot(0).isEmpty) "<no recipe>" else handler.getStackInSlot(0).displayName }) }
+                )
+        }
         val pages = recipeInventories.zip(resultInventories).map { (pattern, result) ->
             val slots = SlotGroupWidget.builder()
                 .matrix("III", "III", "III")
@@ -161,68 +177,35 @@ class PanAdapterMetaTileEntity(
                 .matrix("III", "III", "III")
                 .key('I') { ItemSlot().slot(SyncHandlers.itemSlot(result, it).accessibility(false, false)) }
                 .build()
-            Row().sizeRel(1f)
-                .child(slots.align(Alignment.TopLeft))
+            Row().widthRel(1f).height(64)
+                .child(Grid().width(32).heightRel(1f).align(Alignment.TopLeft)
+                    .minElementMargin(0, 0)
+                    .matrix(buttons)
+                )
+                .child(slots.left(32 + 8))
                 .child(resultSlots.align(Alignment.TopRight))
         }
-        return ModularPanel.defaultPanel("pan_adapter", 176, 196)
-            .childIf(this.pageNum < 8, Row().coverChildren().topRel(0f, 4, 1f)
-                .apply {
-                    for (i in 0..<pageNum) {
-                        child(ParentWidget().coverChildren()
-                            .child(PageButton(i, tabController)
-                                .tab(GuiTextures.TAB_TOP, if (i == 0) -1 else 0))
-                            .child(ItemDrawable(ItemStack(Items.APPLE)).asWidget()
-                                .size(16, 16)
-                                .align(Alignment.Center))
-                        )
-                    }
-                }
-            )
-            .childIf(this.pageNum == 8, Column().coverChildren().leftRel(0f, 4, 1f)
-                .apply {
-                    for (i in 0..<4) {
-                        child(ParentWidget().coverChildren()
-                            .child(PageButton(i, tabController)
-                                .tab(GuiTextures.TAB_LEFT, if (i == 0) -1 else 0))
-                            .child(ItemDrawable(ItemStack(Items.APPLE)).asWidget()
-                                .size(16, 16)
-                                .align(Alignment.Center))
-                        )
-                    }
-                }
-            )
-            .childIf(this.pageNum == 8, Column().coverChildren().rightRel(0f, 4, 1f)
-                .apply {
-                    for (i in 4..<8) {
-                        child(ParentWidget().coverChildren()
-                            .child(PageButton(i, tabController)
-                                .tab(GuiTextures.TAB_RIGHT, if (i == 4) -1 else 0))
-                            .child(ItemDrawable(ItemStack(Items.APPLE)).asWidget()
-                                .size(16, 16)
-                                .align(Alignment.Center))
-                        )
-                    }
-                }
-            )
+        val panel = ModularPanel.defaultPanel("pan_adapter", 176, 196)
             .child(Column().margin(7).sizeRel(1f)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
                         .align(Alignment.TopLeft))
                     .child(IKey.lang("container.inventory").asWidget()
                         .align(Alignment.BottomLeft))
-                    .child(PagedWidget().margin(0, 9).sizeRel(1f)
+                    .child(PagedWidget().margin(0, 9).widthRel(1f).height(16*4)
                         .controller(tabController)
-                        .apply { for (page in pages) addPage(page
-                            .child(SlotGroupWidget.builder()
-                                .row("I".repeat(9))
-                                .key('I') { index -> ItemSlot().slot(ModularSlot(laserInventory, index)) }
-                                .build()
-                                .align(Alignment.BottomCenter).marginBottom(8))) }
+                        .apply { for (page in pages) addPage(page) }
+                    )
+                    .child(SlotGroupWidget.builder()
+                        .row("I".repeat(9))
+                        .key('I') { index -> ItemSlot().slot(ModularSlot(laserInventory, index)) }
+                        .build()
+                        .bottom(10)
                     )
                 )
                 .child(SlotGroupWidget.playerInventory(0))
             )
+        return panel
     }
 
     @SideOnly(Side.CLIENT)
