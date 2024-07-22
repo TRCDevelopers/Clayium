@@ -1,8 +1,10 @@
 package com.github.trc.clayium.common.metatileentity
 
 import com.cleanroommc.modularui.drawable.ItemDrawable
+import com.cleanroommc.modularui.drawable.Rectangle
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
@@ -225,10 +227,11 @@ class PanCoreMetaTileEntity(
         }
         val duplicationList = duplicationEntries.values.toList()
         val displayItems = Grid.mapToMatrix(8, duplicationList) { index, entry ->
-            ItemDrawable(entry.stack).asWidget().size(16).tooltip {
-                it.addLine(entry.stack.displayName)
-                it.addLine(entry.energy.format())
-            }
+            ItemDrawable(entry.stack).asWidget().size(16)
+                .tooltip {
+                    it.addLine(entry.stack.displayName)
+                    it.addLine(entry.energy.format())
+                }
         }
         return ModularPanel.defaultPanel("pan_core")
             .child(Column().margin(7)
@@ -237,6 +240,7 @@ class PanCoreMetaTileEntity(
                         .minElementMargin(0, 0)
                         .matrix(displayItems)
                         .scrollable()
+                        .background(Rectangle().setColor(Color.rgb(0, 0x1E, 0)))
                     )
                 )
                 .child(SlotGroupWidget.playerInventory(0)))
