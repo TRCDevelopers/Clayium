@@ -3,7 +3,7 @@ package com.github.trc.clayium.api
 import com.github.trc.clayium.api.block.BlockMachine
 import com.github.trc.clayium.api.block.ItemBlockMachine
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.pan.IPanEntryFactory
+import com.github.trc.clayium.api.pan.IPanRecipeFactory
 import com.github.trc.clayium.api.util.CUtils.clayiumId
 import com.github.trc.clayium.api.util.registry.CRegistry
 import com.github.trc.clayium.common.unification.material.Material
@@ -16,5 +16,5 @@ object ClayiumApi {
     val MTE_REGISTRY = CRegistry<ResourceLocation, MetaTileEntity>(Short.MAX_VALUE.toInt())
     val materialRegistry = CRegistry<ResourceLocation, Material>(Short.MAX_VALUE.toInt())
 
-    val PAN_ENTRY_FACTORIES = mutableListOf<IPanEntryFactory>()
+    val PAN_RECIPE_FACTORIES = mutableListOf<IPanRecipeFactory>()
 }

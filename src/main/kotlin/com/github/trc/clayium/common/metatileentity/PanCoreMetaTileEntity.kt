@@ -15,7 +15,7 @@ import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
-import com.github.trc.clayium.api.pan.IPanEntry
+import com.github.trc.clayium.api.pan.IPanRecipe
 import com.github.trc.clayium.api.pan.IPanNotifiable
 import com.github.trc.clayium.api.pan.isPanCable
 import com.github.trc.clayium.api.util.ITier
@@ -57,7 +57,7 @@ class PanCoreMetaTileEntity(
     override val exportItems = EmptyItemStackHandler
     override val itemInventory = EmptyItemStackHandler
 
-    private val panEntries = mutableSetOf<IPanEntry>()
+    private val panRecipes = mutableSetOf<IPanRecipe>()
     private var networkNotified = false
     private val adapters = mutableListOf<IPanAdapter>()
 
@@ -73,7 +73,7 @@ class PanCoreMetaTileEntity(
     }
 
     private fun refreshNetwork() {
-        this.panEntries.clear()
+        this.panRecipes.clear()
         val pos = this.pos ?: return
         val nodes = mutableSetOf<BlockPos>()
         searchNodes(nodes, pos, 0)
@@ -83,7 +83,7 @@ class PanCoreMetaTileEntity(
                 ?: continue
             adapters.add(adapter)
             adapter.setCore(this)
-            this.panEntries.addAll(adapter.getEntries())
+            this.panRecipes.addAll(adapter.getEntries())
         }
         refreshDuplicationEntries()
     }

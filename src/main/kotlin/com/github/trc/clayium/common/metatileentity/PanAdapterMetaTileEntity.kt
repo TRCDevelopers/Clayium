@@ -1,11 +1,9 @@
 package com.github.trc.clayium.common.metatileentity
 
-import com.cleanroommc.modularui.api.GuiAxis
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.DynamicDrawable
 import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.drawable.ItemDrawable
-import com.cleanroommc.modularui.drawable.TabTexture
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
@@ -16,7 +14,6 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.PageButton
 import com.cleanroommc.modularui.widgets.PagedWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Grid
 import com.cleanroommc.modularui.widgets.layout.Row
@@ -29,9 +26,8 @@ import com.github.trc.clayium.api.capability.impl.ListeningItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
-import com.github.trc.clayium.api.pan.IPanEntry
+import com.github.trc.clayium.api.pan.IPanRecipe
 import com.github.trc.clayium.api.pan.IPanNotifiable
-import com.github.trc.clayium.api.pan.isPanCable
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.toList
@@ -42,7 +38,6 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
-import net.minecraft.init.Items
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
@@ -50,7 +45,6 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemStackHandler
 import java.util.function.Function
@@ -77,7 +71,7 @@ class PanAdapterMetaTileEntity(
     private val recipeInventories = List(pageNum) { ListeningItemStackHandler(9, ::onSlotChanged) }
     private val resultInventories = List(pageNum) { ItemStackHandler(9) }
     private val laserInventory = ListeningItemStackHandler(9, ::onSlotChanged)
-    private val currentEntries = mutableSetOf<IPanEntry>()
+    private val currentEntries = mutableSetOf<IPanRecipe>()
 
     private var network: IPanNotifiable? = null
 
@@ -97,7 +91,7 @@ class PanAdapterMetaTileEntity(
         }
     }
 
-    override fun getEntries(): Set<IPanEntry> {
+    override fun getEntries(): Set<IPanRecipe> {
         return ImmutableSet.copyOf(currentEntries)
     }
 
@@ -107,9 +101,9 @@ class PanAdapterMetaTileEntity(
         currentEntries.clear()
         for ((pattern, result) in recipeInventories.zip(resultInventories)) {
             val stacks = pattern.toList()
-            var entry: IPanEntry? = null
+            var entry: IPanRecipe? = null
             for (side in EnumFacing.entries) {
-                entry = ClayiumApi.PAN_ENTRY_FACTORIES.firstNotNullOfOrNull { factory ->
+                entry = ClayiumApi.PAN_RECIPE_FACTORIES.firstNotNullOfOrNull { factory ->
                     factory.getEntry(world, pos.offset(side), stacks)
                 }
                 if (entry != null) break
@@ -123,7 +117,7 @@ class PanAdapterMetaTileEntity(
         }
     }
 
-    private fun setResult(resultHandler: IItemHandlerModifiable, entry: IPanEntry) {
+    private fun setResult(resultHandler: IItemHandlerModifiable, entry: IPanRecipe) {
         val stacks = entry.results
         for (i in 0..<resultHandler.slots) {
             resultHandler.setStackInSlot(i, stacks.getOrNull(i) ?: break)
