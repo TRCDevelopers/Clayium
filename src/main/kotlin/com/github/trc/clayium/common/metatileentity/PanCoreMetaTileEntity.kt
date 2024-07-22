@@ -21,10 +21,12 @@ import com.github.trc.clayium.api.pan.isPanCable
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.model.ModelTextures
+import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.clayenergy.readClayEnergy
 import com.github.trc.clayium.common.clayenergy.writeClayEnergy
 import com.github.trc.clayium.common.config.ConfigCore
+import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
 import com.github.trc.clayium.common.unification.stack.ItemAndMeta
 import com.github.trc.clayium.common.unification.stack.readItemAndMeta
 import com.github.trc.clayium.common.unification.stack.writeItemAndMeta
@@ -103,6 +105,61 @@ class PanCoreMetaTileEntity(
     private fun refreshDuplicationEntries() {
         duplicationEntries.clear()
         duplicationEntries.putAll(defaultDuplicationEntries)
+
+        // Result -> Recipes that requires that as an ingredient
+        val internalRecipes = panRecipes.map { PanRecipeInternal(it) }
+        val result2Dependants = mutableMapOf<ItemAndMeta, MutableList<PanRecipeInternal>>()
+        defaultDuplicationEntries.keys.forEach { result2Dependants[it] = mutableListOf() }
+
+        // add results that gathered from pan adapters as a key to the trees
+        // keys (ItemAndMetas) that added here are duplicatable if tree roots are default duplication entries.
+        for (recipe in panRecipes) {
+            for (result in recipe.results) {
+                val key = ItemAndMeta(result)
+                result2Dependants.getOrPut(key, ::mutableListOf)
+            }
+        }
+        // construct recipe/ingredient map
+        for (recipeInternal in internalRecipes) {
+            val recipe = recipeInternal.panRecipe
+            for ((ingInternal, ingredient) in recipeInternal.internalIngs.zip(recipe.ingredients)) {
+                val keys = ingredient.stacks.map { ItemAndMeta(it) }
+                val ingredientCanBeCrafted = keys.any {
+                    val list = result2Dependants[it]?.apply { if (recipeInternal !in this) this.add(recipeInternal) }
+                    list != null
+                }
+                if (!ingredientCanBeCrafted) {
+                    panRecipes.remove(recipe)
+                    break
+                }
+            }
+        }
+
+        val queue = ArrayDeque<ItemAndMeta>()
+        val walked = mutableSetOf<ItemAndMeta>()
+        queue.addAll(defaultDuplicationEntries.keys)
+        while (queue.isNotEmpty()) {
+            val parent = queue.removeFirst()
+            if (parent in walked) {
+                Clayium.LOGGER.warn("Tried to walk a node that has already been walked: $parent")
+                continue
+            }
+            walked.add(parent)
+            val childRecipes = result2Dependants[parent] ?: continue
+            for (recipe in childRecipes) {
+                for (ing in recipe.internalIngs) {
+                    ing.verified = ing.verified || ing.ingredient.testIgnoringAmount(parent)
+                }
+                if (recipe.internalIngs.all { it.verified }) {
+                    for (result in recipe.panRecipe.results.map(::ItemAndMeta)) {
+                        queue.add(result)
+                        //todo calculate cost
+                        val cost = ClayEnergy(1)
+                        duplicationEntries[result] = PanDuplicationEntry(result.asStack(), cost)
+                    }
+                }
+            }
+        }
 
         writeCustomData(UPDATE_PAN_DUPLICATION_ENTRIES) {
             writeVarInt(duplicationEntries.size)
@@ -199,6 +256,11 @@ class PanCoreMetaTileEntity(
     ) {
         constructor(item: Item, energy: ClayEnergy, isAllowedToDuplicate: Boolean = true) : this(ItemStack(item), energy, isAllowedToDuplicate)
         constructor(block: Block, energy: ClayEnergy, isAllowedToDuplicate: Boolean = true) : this(ItemStack(block), energy, isAllowedToDuplicate)
+    }
+
+    private class PanIngredient(val ingredient: CRecipeInput, var verified: Boolean = false)
+    private class PanRecipeInternal(val panRecipe: IPanRecipe) {
+        val internalIngs = panRecipe.ingredients.map(::PanIngredient)
     }
 
     companion object {

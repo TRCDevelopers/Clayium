@@ -1,5 +1,6 @@
 package com.github.trc.clayium.common.recipe.ingredient
 
+import com.github.trc.clayium.common.unification.stack.ItemAndMeta
 import net.minecraft.item.ItemStack
 import net.minecraftforge.oredict.OreDictionary
 
@@ -22,6 +23,12 @@ class COreRecipeInput(
         if (stack.isEmpty) return false
         return stacks.any {
             OreDictionary.itemMatches(it, stack, false) && stack.count >= amount
+        }
+    }
+
+    override fun testIgnoringAmount(item: ItemAndMeta): Boolean {
+        return stacks.any {
+            it.item == item.item && it.metadata == item.meta
         }
     }
 
