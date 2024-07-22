@@ -15,8 +15,8 @@ import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
-import com.github.trc.clayium.api.pan.IPanRecipe
 import com.github.trc.clayium.api.pan.IPanNotifiable
+import com.github.trc.clayium.api.pan.IPanRecipe
 import com.github.trc.clayium.api.pan.isPanCable
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
@@ -37,7 +37,6 @@ import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.init.Blocks
-import net.minecraft.init.Items
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketBuffer
@@ -48,7 +47,6 @@ import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.items.ItemStackHandler
 import java.util.function.Function
 
 class PanCoreMetaTileEntity(
@@ -122,15 +120,10 @@ class PanCoreMetaTileEntity(
         // construct recipe/ingredient map
         for (recipeInternal in internalRecipes) {
             val recipe = recipeInternal.panRecipe
-            for ((ingInternal, ingredient) in recipeInternal.internalIngs.zip(recipe.ingredients)) {
+            for (ingredient in recipe.ingredients) {
                 val keys = ingredient.stacks.map { ItemAndMeta(it) }
-                val ingredientCanBeCrafted = keys.any {
-                    val list = result2Dependants[it]?.apply { if (recipeInternal !in this) this.add(recipeInternal) }
-                    list != null
-                }
-                if (!ingredientCanBeCrafted) {
-                    panRecipes.remove(recipe)
-                    break
+                keys.firstOrNull {
+                    result2Dependants[it]?.apply { if (recipeInternal !in this) this.add(recipeInternal) } != null
                 }
             }
         }
@@ -271,11 +264,5 @@ class PanCoreMetaTileEntity(
         )
 
         private lateinit var panCoreQuads: MutableList<BakedQuad>
-
-        private val panItems = (0..<90).map {
-            ItemStack(Items.DIAMOND)
-        }
-
-        private val handler = ItemStackHandler(100)
     }
 }
