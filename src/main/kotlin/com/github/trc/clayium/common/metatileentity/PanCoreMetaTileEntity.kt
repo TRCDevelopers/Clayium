@@ -25,6 +25,9 @@ import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.clayenergy.readClayEnergy
 import com.github.trc.clayium.common.clayenergy.writeClayEnergy
 import com.github.trc.clayium.common.config.ConfigCore
+import com.github.trc.clayium.common.unification.stack.ItemAndMeta
+import com.github.trc.clayium.common.unification.stack.readItemAndMeta
+import com.github.trc.clayium.common.unification.stack.writeItemAndMeta
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -58,7 +61,7 @@ class PanCoreMetaTileEntity(
     private var networkNotified = false
     private val adapters = mutableListOf<IPanAdapter>()
 
-    private val duplicationEntries = mutableSetOf<PanDuplicationEntry>()
+    private val duplicationEntries = mutableMapOf<ItemAndMeta, PanDuplicationEntry>()
 
     override fun update() {
         super.update()
@@ -99,11 +102,12 @@ class PanCoreMetaTileEntity(
 
     private fun refreshDuplicationEntries() {
         duplicationEntries.clear()
-        duplicationEntries.addAll(defaultDuplicationEntries)
+        duplicationEntries.putAll(defaultDuplicationEntries)
 
         writeCustomData(UPDATE_PAN_DUPLICATION_ENTRIES) {
             writeVarInt(duplicationEntries.size)
-            for (entry in duplicationEntries) {
+            for ((key, entry) in duplicationEntries) {
+                writeItemAndMeta(key)
                 writeItemStack(entry.stack)
                 writeClayEnergy(entry.energy)
                 writeBoolean(entry.isAllowedToDuplicate)
@@ -127,10 +131,11 @@ class PanCoreMetaTileEntity(
             duplicationEntries.clear()
             val entriesSize = buf.readVarInt()
             for (i in 0..<entriesSize) {
+                val key = buf.readItemAndMeta()
                 val stack = buf.readItemStack()
                 val energy = buf.readClayEnergy()
                 val isAllowedToDuplicate = buf.readBoolean()
-                duplicationEntries.add(PanDuplicationEntry(stack, energy, isAllowedToDuplicate))
+                duplicationEntries[key] = PanDuplicationEntry(stack, energy, isAllowedToDuplicate)
             }
         }
         super.receiveCustomData(discriminator, buf)
@@ -168,7 +173,7 @@ class PanCoreMetaTileEntity(
         if (!isRemote) {
             refreshNetwork()
         }
-        val duplicationList = duplicationEntries.toList()
+        val duplicationList = duplicationEntries.values.toList()
         val displayItems = Grid.mapToMatrix(8, duplicationList) { index, entry ->
             ItemDrawable(entry.stack).asWidget().size(16).tooltip {
                 it.addLine(entry.stack.displayName)
@@ -198,9 +203,9 @@ class PanCoreMetaTileEntity(
 
     companion object {
         const val REFRESH_RATE_TICKS = 200
-        private val defaultDuplicationEntries = setOf(
-            PanDuplicationEntry(Blocks.COBBLESTONE, ClayEnergy.micro(10)),
-            PanDuplicationEntry(Blocks.LOG, ClayEnergy.micro(10)),
+        private val defaultDuplicationEntries = mapOf(
+            ItemAndMeta(Blocks.COBBLESTONE) to PanDuplicationEntry(Blocks.COBBLESTONE, ClayEnergy.micro(10)),
+            ItemAndMeta(Blocks.LOG) to PanDuplicationEntry(Blocks.LOG, ClayEnergy.micro(10)),
         )
 
         private lateinit var panCoreQuads: MutableList<BakedQuad>
