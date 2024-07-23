@@ -1,12 +1,15 @@
 package com.github.trc.clayium.common.metatileentity
 
+import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.drawable.Rectangle
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
+import com.cleanroommc.modularui.widget.scroll.VerticalScrollData
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Grid
@@ -233,13 +236,21 @@ class PanCoreMetaTileEntity(
                     it.addLine(entry.energy.format())
                 }
         }
-        return ModularPanel.defaultPanel("pan_core")
+        val panDisplayMargin = 4
+        val panDisplayWidth = 18 * 8 + 4
+        return ModularPanel.defaultPanel("pan_core", 176, 206)
             .child(Column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(Grid().width(18 * 8 + 4).heightRel(1f)
+                    .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
+                        .align(Alignment.TopLeft))
+                    .child(IKey.lang("container.inventory").asWidget()
+                        .align(Alignment.BottomLeft))
+                    .child(Rectangle().setColor(Color.rgb(0, 0x1E, 0)).asWidget()
+                        .width(panDisplayWidth + panDisplayMargin * 2).heightRel(1f).margin(0, 9))
+                    .child(Grid().width(panDisplayWidth).heightRel(1f).margin(panDisplayMargin, 13)
                         .minElementMargin(0, 0)
                         .matrix(displayItems)
-                        .scrollable()
+                        .scrollable(VerticalScrollData())
                         .background(Rectangle().setColor(Color.rgb(0, 0x1E, 0)))
                     )
                 )
