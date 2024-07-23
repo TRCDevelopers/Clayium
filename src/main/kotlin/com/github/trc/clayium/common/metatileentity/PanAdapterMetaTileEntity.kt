@@ -28,6 +28,7 @@ import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
 import com.github.trc.clayium.api.pan.IPanRecipe
 import com.github.trc.clayium.api.pan.IPanNotifiable
+import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.toList
@@ -40,6 +41,7 @@ import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.capabilities.Capability
@@ -76,6 +78,7 @@ class PanAdapterMetaTileEntity(
     private var network: IPanNotifiable? = null
 
     private fun onSlotChanged(slot: Int) {
+        markDirty()
         refreshEntries()
     }
 
@@ -148,6 +151,25 @@ class PanAdapterMetaTileEntity(
         network = null
     }
 
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        recipeInventories.forEachIndexed { i, h ->
+            CUtils.writeItems(h, "panAdapterPattern$i", data)
+        }
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        recipeInventories.forEachIndexed { i, h ->
+            CUtils.readItems(h, "panAdapterPattern$i", data)
+        }
+    }
+
+    override fun onFirstTick() {
+        super.onFirstTick()
+        this.refreshEntries()
+    }
+
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         val tabController = PagedWidget.Controller()
         val buttons = Grid.mapToMatrix(2, resultInventories) { index, handler ->
@@ -161,7 +183,7 @@ class PanAdapterMetaTileEntity(
                     .tooltip { it.addLine(IKey.dynamic { if (handler.getStackInSlot(0).isEmpty) "<no recipe>" else handler.getStackInSlot(0).displayName }) }
                 )
         }
-        val pages = recipeInventories.zip(resultInventories).map { (pattern, result) ->
+        val pages = recipeInventories.zip(resultInventories).map{ (pattern, result) ->
             val slots = SlotGroupWidget.builder()
                 .matrix("III", "III", "III")
                 .key('I') { ItemSlot().slot(SyncHandlers.phantomItemSlot(pattern, it))
