@@ -8,6 +8,8 @@ class CItemRecipeInput(
     override val amount: Int,
 ): CRecipeInput() {
 
+    constructor(stack: ItemStack, amount: Int): this(listOf(stack), amount)
+
     init {
         validate(stacks)
     }
