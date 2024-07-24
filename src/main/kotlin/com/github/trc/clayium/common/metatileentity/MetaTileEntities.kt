@@ -138,8 +138,8 @@ object MetaTileEntities {
     val PAN_ADAPTER = registerMetaTileEntities(175, (10..13)) {
         PanAdapterMetaTileEntity(clayiumId("pan_adapter.${it.lowerName}"), it)
     }
-    val PAN_DUPLICATOR = registerMetaTileEntities(179, (10..13)) {
-        PanDuplicatorMetaTileEntity(clayiumId("pan_duplicator.${it.lowerName}"), it)
+    val PAN_DUPLICATOR = (1..10).map {
+        registerMetaTileEntity(179 + it, PanDuplicatorMetaTileEntity(clayiumId("pan_duplicator.${it}"), ClayTiers.PURE_ANTIMATTER, it))
     }
 
     /**
