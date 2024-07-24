@@ -27,15 +27,19 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.clayenergy.readClayEnergy
 import com.github.trc.clayium.common.clayenergy.writeClayEnergy
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
+import com.github.trc.clayium.common.unification.OreDictUnifier
+import com.github.trc.clayium.common.unification.material.CMaterials
+import com.github.trc.clayium.common.unification.material.PropertyKey
+import com.github.trc.clayium.common.unification.ore.OrePrefix
 import com.github.trc.clayium.common.unification.stack.ItemAndMeta
 import com.github.trc.clayium.common.unification.stack.readItemAndMeta
 import com.github.trc.clayium.common.unification.stack.writeItemAndMeta
-import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -45,7 +49,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.init.Blocks
 import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -74,12 +77,12 @@ class PanCoreMetaTileEntity(
         super.update()
         onServer {
             if (offsetTimer % REFRESH_RATE_TICKS == 0L) {
-                refreshNetwork()
+                refreshNetworkAndThenEntries()
             }
         }
     }
 
-    private fun refreshNetwork() {
+    private fun refreshNetworkAndThenEntries() {
         this.panRecipes.clear()
         val pos = this.pos ?: return
         val nodes = mutableSetOf<BlockPos>()
@@ -175,6 +178,11 @@ class PanCoreMetaTileEntity(
         return PanCoreMetaTileEntity(metaTileEntityId, tier)
     }
 
+    override fun onPlacement() {
+        super.onPlacement()
+        refreshNetworkAndThenEntries()
+    }
+
     override fun onRemoval() {
         super.onRemoval()
         for (adapter in adapters) {
@@ -186,7 +194,8 @@ class PanCoreMetaTileEntity(
         if (discriminator == UPDATE_PAN_DUPLICATION_ENTRIES) {
             duplicationEntries.clear()
             val entriesSize = buf.readVarInt()
-            for (i in 0..<entriesSize) {
+            @Suppress("unused")
+            for (unused in 0..<entriesSize) {
                 val key = buf.readItemAndMeta()
                 val energy = buf.readClayEnergy()
                 val isAllowedToDuplicate = buf.readBoolean()
@@ -226,7 +235,7 @@ class PanCoreMetaTileEntity(
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         if (!isRemote) {
-            refreshNetwork()
+            refreshNetworkAndThenEntries()
         }
         val displayItems = Grid.mapToMatrix(8, duplicationEntries.toList()) { index, (itemAndMeta, entry) ->
             val stack = itemAndMeta.asStack()
@@ -237,6 +246,11 @@ class PanCoreMetaTileEntity(
                         tooltip.addStringLines(stack.getTooltip(data.player, flag))
                     }
                     tooltip.addLine(entry.energy.format())
+                }
+                .also {
+                    if (!entry.isAllowedToDuplicate) {
+                        it.background(Rectangle().setColor(Color.RED.main))
+                    }
                 }
         }
         val panDisplayMargin = 4
@@ -273,10 +287,30 @@ class PanCoreMetaTileEntity(
 
     companion object {
         const val REFRESH_RATE_TICKS = 200
-        private val defaultDuplicationEntries = mapOf(
-            ItemAndMeta(Blocks.COBBLESTONE) to PanDuplicationEntry(ClayEnergy.micro(10)),
-            ItemAndMeta(Blocks.LOG) to PanDuplicationEntry(ClayEnergy.micro(10)),
-        )
+        private val defaultDuplicationEntries: Map<ItemAndMeta, PanDuplicationEntry> by lazy { mutableMapOf<ItemAndMeta, PanDuplicationEntry>().apply {
+            put(ItemAndMeta(Blocks.COBBLESTONE), PanDuplicationEntry(ClayEnergy.micro(10)))
+            put(ItemAndMeta(Blocks.LOG), PanDuplicationEntry(ClayEnergy.micro(10)))
+            put(ItemAndMeta(Blocks.CLAY), PanDuplicationEntry(ClayEnergy.micro(10), false))
+            ClayiumBlocks.COMPRESSED_CLAY_BLOCKS.forEach { block ->
+                block.blockState.validStates.forEach { state ->
+                    put(
+                        ItemAndMeta(OreDictUnifier.get(OrePrefix.block, block.getCMaterial(state))),
+                        PanDuplicationEntry(ClayEnergy.micro(10), false)
+                    )
+                }
+            }
+            ClayiumBlocks.ENERGIZED_CLAY_BLOCKS.forEach { block ->
+                block.blockState.validStates.forEach { state ->
+                    val material = block.getCMaterial(state)
+                    val ce = material.getProperty(PropertyKey.CLAY).energy!!
+                    put(
+                        ItemAndMeta(OrePrefix.block, material),
+                        PanDuplicationEntry(ce, false)
+                    )
+                }
+            }
+            put(ItemAndMeta(OrePrefix.gem, CMaterials.antimatter), PanDuplicationEntry(ClayEnergy.of(1), false))
+        }.toMap() }
 
         private lateinit var panCoreQuads: MutableList<BakedQuad>
     }
