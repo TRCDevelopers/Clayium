@@ -138,6 +138,9 @@ object MetaTileEntities {
     val PAN_ADAPTER = registerMetaTileEntities(175, (10..13)) {
         PanAdapterMetaTileEntity(clayiumId("pan_adapter.${it.lowerName}"), it)
     }
+    val PAN_DUPLICATOR = registerMetaTileEntities(179, (10..13)) {
+        PanDuplicatorMetaTileEntity(clayiumId("pan_duplicator.${it.lowerName}"), it)
+    }
 
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)
