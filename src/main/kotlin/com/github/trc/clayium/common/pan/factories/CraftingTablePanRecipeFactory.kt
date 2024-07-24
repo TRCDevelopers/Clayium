@@ -7,9 +7,7 @@ import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.pan.PanRecipe
 import com.github.trc.clayium.common.recipe.ingredient.CItemRecipeInput
 import com.github.trc.clayium.common.util.DummyContainer
-import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
-import net.minecraft.inventory.Container
 import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.CraftingManager
@@ -17,7 +15,6 @@ import net.minecraft.item.crafting.IRecipe
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
-import net.minecraftforge.oredict.OreIngredient
 
 object CraftingTablePanRecipeFactory : IPanRecipeFactory {
     override fun getEntry(world: IBlockAccess, pos: BlockPos, stacks: List<ItemStack>): IPanRecipe? {
