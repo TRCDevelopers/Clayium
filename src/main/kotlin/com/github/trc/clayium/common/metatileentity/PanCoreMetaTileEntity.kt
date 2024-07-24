@@ -37,10 +37,12 @@ import com.github.trc.clayium.common.unification.stack.readItemAndMeta
 import com.github.trc.clayium.common.unification.stack.writeItemAndMeta
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.init.Blocks
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -153,7 +155,7 @@ class PanCoreMetaTileEntity(
                         queue.add(result)
                         //todo calculate cost
                         val cost = ClayEnergy(1)
-                        duplicationEntries[result] = PanDuplicationEntry(result.asStack(), cost)
+                        duplicationEntries[result] = PanDuplicationEntry(cost)
                     }
                 }
             }
@@ -163,7 +165,6 @@ class PanCoreMetaTileEntity(
             writeVarInt(duplicationEntries.size)
             for ((key, entry) in duplicationEntries) {
                 writeItemAndMeta(key)
-                writeItemStack(entry.stack)
                 writeClayEnergy(entry.energy)
                 writeBoolean(entry.isAllowedToDuplicate)
             }
@@ -187,10 +188,9 @@ class PanCoreMetaTileEntity(
             val entriesSize = buf.readVarInt()
             for (i in 0..<entriesSize) {
                 val key = buf.readItemAndMeta()
-                val stack = buf.readItemStack()
                 val energy = buf.readClayEnergy()
                 val isAllowedToDuplicate = buf.readBoolean()
-                duplicationEntries[key] = PanDuplicationEntry(stack, energy, isAllowedToDuplicate)
+                duplicationEntries[key] = PanDuplicationEntry(energy, isAllowedToDuplicate)
             }
         }
         super.receiveCustomData(discriminator, buf)
@@ -228,12 +228,15 @@ class PanCoreMetaTileEntity(
         if (!isRemote) {
             refreshNetwork()
         }
-        val duplicationList = duplicationEntries.values.toList()
-        val displayItems = Grid.mapToMatrix(8, duplicationList) { index, entry ->
-            ItemDrawable(entry.stack).asWidget().size(16)
-                .tooltip {
-                    it.addLine(entry.stack.displayName)
-                    it.addLine(entry.energy.format())
+        val displayItems = Grid.mapToMatrix(8, duplicationEntries.toList()) { index, (itemAndMeta, entry) ->
+            val stack = itemAndMeta.asStack()
+            ItemDrawable(stack).asWidget().size(16)
+                .tooltip { tooltip ->
+                    if (isRemote) {
+                        val flag = if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips) ITooltipFlag.TooltipFlags.ADVANCED else ITooltipFlag.TooltipFlags.NORMAL
+                        tooltip.addStringLines(stack.getTooltip(data.player, flag))
+                    }
+                    tooltip.addLine(entry.energy.format())
                 }
         }
         val panDisplayMargin = 4
@@ -260,14 +263,9 @@ class PanCoreMetaTileEntity(
     }
 
     class PanDuplicationEntry(
-        val stack: ItemStack,
         val energy: ClayEnergy,
         val isAllowedToDuplicate: Boolean = true,
-    ) {
-        constructor(item: Item, energy: ClayEnergy, isAllowedToDuplicate: Boolean = true) : this(ItemStack(item), energy, isAllowedToDuplicate)
-        constructor(block: Block, energy: ClayEnergy, isAllowedToDuplicate: Boolean = true) : this(ItemStack(block), energy, isAllowedToDuplicate)
-    }
-
+    )
     private class PanIngredient(val ingredient: CRecipeInput, var verified: Boolean = false)
     private class PanRecipeInternal(val panRecipe: IPanRecipe) {
         val internalIngs = panRecipe.ingredients.map(::PanIngredient)
@@ -276,8 +274,8 @@ class PanCoreMetaTileEntity(
     companion object {
         const val REFRESH_RATE_TICKS = 200
         private val defaultDuplicationEntries = mapOf(
-            ItemAndMeta(Blocks.COBBLESTONE) to PanDuplicationEntry(Blocks.COBBLESTONE, ClayEnergy.micro(10)),
-            ItemAndMeta(Blocks.LOG) to PanDuplicationEntry(Blocks.LOG, ClayEnergy.micro(10)),
+            ItemAndMeta(Blocks.COBBLESTONE) to PanDuplicationEntry(ClayEnergy.micro(10)),
+            ItemAndMeta(Blocks.LOG) to PanDuplicationEntry(ClayEnergy.micro(10)),
         )
 
         private lateinit var panCoreQuads: MutableList<BakedQuad>
