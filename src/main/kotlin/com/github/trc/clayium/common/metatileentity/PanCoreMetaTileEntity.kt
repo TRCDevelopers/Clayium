@@ -262,7 +262,7 @@ class PanCoreMetaTileEntity(
                 }
                 .also {
                     if (!entry.isAllowedToDuplicate) {
-                        it.background(Rectangle().setColor(Color.RED.main))
+                        it.background(Rectangle().setColor(0xFF5E1E0E.toInt()))
                     }
                 }
         }
