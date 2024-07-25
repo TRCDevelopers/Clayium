@@ -18,7 +18,7 @@ import net.minecraft.world.World
 
 object CraftingTablePanRecipeFactory : IPanRecipeFactory {
     override fun getEntry(world: IBlockAccess, pos: BlockPos, stacks: List<ItemStack>): IPanRecipe? {
-        if (world.getBlockState(pos).block === Blocks.CRAFTING_TABLE || world !is World) return null
+        if (world.getBlockState(pos).block !== Blocks.CRAFTING_TABLE || world !is World) return null
 
         val matrix = InventoryCrafting(DummyContainer, 3, 3)
         for (slot in 0..<9) matrix.setInventorySlotContents(slot, stacks[slot])
