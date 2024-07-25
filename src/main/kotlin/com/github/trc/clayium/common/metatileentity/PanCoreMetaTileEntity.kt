@@ -63,7 +63,8 @@ import java.util.function.Function
 class PanCoreMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "${CValues.MOD_ID}.pan_core"), IPanNotifiable, IPan {
+) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList,
+    "machine.${CValues.MOD_ID}.pan_core"), IPanNotifiable, IPan {
     override val importItems = EmptyItemStackHandler
     override val exportItems = EmptyItemStackHandler
     override val itemInventory = EmptyItemStackHandler

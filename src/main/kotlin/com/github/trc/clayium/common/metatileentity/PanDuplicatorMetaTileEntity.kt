@@ -30,6 +30,7 @@ import com.github.trc.clayium.common.recipe.ingredient.COreRecipeInput
 import com.github.trc.clayium.common.unification.material.CMaterials
 import com.github.trc.clayium.common.unification.ore.OrePrefix
 import com.github.trc.clayium.common.unification.stack.ItemAndMeta
+import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -47,7 +48,8 @@ class PanDuplicatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     private val duplicatorRank: Int,
-) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[2], validOutputModesLists[1], "${CValues.MOD_ID}.pan_duplicator"), IPanUser {
+) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[2], validOutputModesLists[1],
+    "machine.${CValues.MOD_ID}.pan_duplicator"), IPanUser {
 
     private val ceConsumption = ClayEnergy(10_000 * 10.0.pow(duplicatorRank - 1).toLong())
 
@@ -88,6 +90,11 @@ class PanDuplicatorMetaTileEntity(
     }
 
     override fun registerItemModel(item: Item, meta: Int) {
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun getItemStackDisplayName(): String {
+        return I18n.format(this.translationKey, this.duplicatorRank)
     }
 
     @SideOnly(Side.CLIENT)

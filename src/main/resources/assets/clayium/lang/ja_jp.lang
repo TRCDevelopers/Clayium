@@ -605,23 +605,14 @@ tile.clayium.blockClaySteelAutoCrafter.name=粘土鋼自動クラフト装置
 tile.clayium.blockClayiumAutoCrafter.name=クレイウム自動クラフト装置
 tile.clayium.blockUltimateAutoCrafter.name=究極自動クラフト装置
 
-tile.clayium.blockPANCable.name=PAN ケーブル
-tile.clayium.blockPANCore.name=PAN コア
-tile.clayium.blockAntimatterPANAdapter.name=PAN アダプター Mk I
-tile.clayium.blockPureAntimatterPANAdapter.name=PAN アダプター Mk II
-tile.clayium.blockOECPANAdapter.name=PAN アダプター Mk III
-tile.clayium.blockOPAPANAdapter.name=PAN アダプター Mk IV
+tile.clayium.pan_cable.name=PAN ケーブル
+machine.clayium.pan_core=PAN コア
+machine.clayium.pan_adapter.antimatter=PAN アダプター Mk I
+machine.clayium.pan_adapter.pure_antimatter=PAN アダプター Mk II
+machine.clayium.pan_adapter.oec=PAN アダプター Mk III
+machine.clayium.pan_adapter.opa=PAN アダプター Mk IV
 
-tile.clayium.blockBasicPANDuplicator.name=PAN 複製機 ランク 1
-tile.clayium.blockAdvancedPANDuplicator.name=PAN 複製機 ランク 2
-tile.clayium.blockPrecisionPANDuplicator.name=PAN 複製機 ランク 3
-tile.clayium.blockClaySteelPANDuplicator.name=PAN 複製機 ランク 4
-tile.clayium.blockClayiumPANDuplicator.name=PAN 複製機 ランク 5
-tile.clayium.blockUltimatePANDuplicator.name=PAN 複製機 ランク 6
-tile.clayium.blockAntimatterPANDuplicator.name=PAN 複製機 ランク 7
-tile.clayium.blockPureAntimatterPANDuplicator.name=PAN 複製機 ランク 8
-tile.clayium.blockOECPANDuplicator.name=PAN 複製機 ランク 9
-tile.clayium.blockOPAPANDuplicator.name=PAN 複製機 ランク 10
+machine.clayium.pan_duplicator=PAN 複製機 ランク %s
 
 tile.clayium.blockBasicFluidTranslator.name=液体バッファー
 tile.clayium.blockAdvancedFluidTranslator.name=発展液体バッファー

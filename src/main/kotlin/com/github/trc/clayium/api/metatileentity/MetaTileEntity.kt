@@ -540,6 +540,11 @@ abstract class MetaTileEntity(
     }
 
     @SideOnly(Side.CLIENT)
+    open fun getItemStackDisplayName(): String {
+        return I18n.format(this.translationKey, I18n.format(this.tier.prefixTranslationKey))
+    }
+
+    @SideOnly(Side.CLIENT)
     @MustBeInvokedByOverriders
     open fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         tooltip.add(I18n.format("tooltip.clayium.tier", tier.numeric))

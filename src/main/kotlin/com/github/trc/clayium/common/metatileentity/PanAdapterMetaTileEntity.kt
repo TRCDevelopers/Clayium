@@ -54,7 +54,8 @@ import java.util.function.Function
 class PanAdapterMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "${CValues.MOD_ID}.machine.pan_adapter"), IPanAdapter {
+) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList,
+    "machine.${CValues.MOD_ID}.pan_adapter.${tier.lowerName}"), IPanAdapter {
 
     override val requiredTextures get() = listOf(clayiumId("blocks/pan_adapter"))
 
