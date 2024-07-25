@@ -143,14 +143,6 @@ class PanAdapterMetaTileEntity(
         network?.notifyNetwork()
     }
 
-    override fun setCore(network: IPanNotifiable) {
-        this.network = network
-    }
-
-    override fun coreRemoved() {
-        network = null
-    }
-
     override fun writeToNBT(data: NBTTagCompound) {
         super.writeToNBT(data)
         recipeInventories.forEachIndexed { i, h ->

@@ -13,7 +13,7 @@ fun PacketBuffer.readClayEnergy(): ClayEnergy {
 }
 
 @JvmInline
-value class ClayEnergy(val energy: Long) {
+value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
 
     // todo replace toString with this
     fun format(): String {
@@ -35,7 +35,7 @@ value class ClayEnergy(val energy: Long) {
     operator fun minus(other: ClayEnergy) = ClayEnergy(energy - other.energy)
     operator fun times(value: Int) = ClayEnergy(energy * value)
     operator fun times(value: Long) = ClayEnergy(energy * value)
-    operator fun compareTo(other: ClayEnergy) = energy.compareTo(other.energy)
+    override operator fun compareTo(other: ClayEnergy) = energy.compareTo(other.energy)
 
     companion object {
         val ZERO = ClayEnergy(0)

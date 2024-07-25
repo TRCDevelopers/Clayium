@@ -18,8 +18,9 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_PAN_DUPLIC
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.pan.IPanAdapter
+import com.github.trc.clayium.api.pan.IPan
 import com.github.trc.clayium.api.pan.IPanCable
+import com.github.trc.clayium.api.pan.IPanUser
 import com.github.trc.clayium.api.pan.IPanNotifiable
 import com.github.trc.clayium.api.pan.IPanRecipe
 import com.github.trc.clayium.api.pan.isPanCable
@@ -62,16 +63,23 @@ import java.util.function.Function
 class PanCoreMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "${CValues.MOD_ID}.pan_core"), IPanNotifiable {
+) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "${CValues.MOD_ID}.pan_core"), IPanNotifiable, IPan {
     override val importItems = EmptyItemStackHandler
     override val exportItems = EmptyItemStackHandler
     override val itemInventory = EmptyItemStackHandler
 
     private val panRecipes = mutableSetOf<IPanRecipe>()
     private var networkNotified = false
-    private val adapters = mutableListOf<IPanAdapter>()
+    private val panNodes = mutableListOf<IPanUser>()
 
     private val duplicationEntries = mutableMapOf<ItemAndMeta, PanDuplicationEntry>()
+
+    override fun getDuplicationEntries(): Map<ItemAndMeta, ClayEnergy> {
+        return duplicationEntries.asSequence()
+            .filter { (_, e) -> e.isAllowedToDuplicate }
+            .map { (k, v) -> k to v.energy }
+            .toMap()
+    }
 
     override fun update() {
         super.update()
@@ -89,11 +97,15 @@ class PanCoreMetaTileEntity(
         searchNodes(nodes, pos, 0)
         for (pos in nodes) {
             val tileEntity = world?.getTileEntity(pos) ?: continue
-            val adapter = tileEntity.getCapability(ClayiumTileCapabilities.PAN_ADAPTER, null)
-                ?: continue
-            adapters.add(adapter)
-            adapter.setCore(this)
-            this.panRecipes.addAll(adapter.getEntries())
+            val node = tileEntity.getCapability(ClayiumTileCapabilities.PAN_USER, null)
+            if (node != null) {
+                panNodes.add(node)
+                node.setNetwork(this)
+            }
+            val panAdapter = tileEntity.getCapability(ClayiumTileCapabilities.PAN_ADAPTER, null)
+            if (panAdapter != null) {
+                this.panRecipes.addAll(panAdapter.getEntries())
+            }
         }
         refreshDuplicationEntries()
     }
@@ -185,8 +197,8 @@ class PanCoreMetaTileEntity(
 
     override fun onRemoval() {
         super.onRemoval()
-        for (adapter in adapters) {
-            adapter.coreRemoved()
+        for (node in panNodes) {
+            node.resetNetwork()
         }
     }
 

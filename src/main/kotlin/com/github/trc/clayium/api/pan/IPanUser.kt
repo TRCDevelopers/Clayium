@@ -1,6 +1,6 @@
 package com.github.trc.clayium.api.pan
 
-interface IPanNode : IPanCable {
+interface IPanUser {
     fun setNetwork(network: IPan)
     fun resetNetwork()
 }
