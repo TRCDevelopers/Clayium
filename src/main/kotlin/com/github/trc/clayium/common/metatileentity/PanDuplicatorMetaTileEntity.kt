@@ -51,8 +51,8 @@ import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
-import org.apache.commons.lang3.ObjectUtils
 import java.util.function.Function
+import kotlin.math.min
 import kotlin.math.pow
 
 class PanDuplicatorMetaTileEntity(
@@ -197,6 +197,7 @@ class PanDuplicatorMetaTileEntity(
                     targetItem = duplicationEntry.first
                     energyRequired = duplicationEntry.second
                     antimatterSlot.extractItem(0, 1, false)
+                    updateProgress()
                 }
             }
         }
@@ -204,10 +205,13 @@ class PanDuplicatorMetaTileEntity(
         fun updateProgress() {
             if (currentEnergy >= energyRequired) {
                 exportItems.insertItem(0, targetItem!!.asStack(), false)
+                currentEnergy = ClayEnergy.ZERO
+                energyRequired = ClayEnergy.ZERO
+                targetItem = null
             } else {
-                val maxConsume = ceConsumption
-                val energyRequiredLeft = energyRequired - currentEnergy
-                val consume = ObjectUtils.min(maxConsume, energyRequiredLeft)
+                val maxConsume = ceConsumption.energy
+                val energyRequiredLeft = energyRequired.energy - currentEnergy.energy
+                val consume = ClayEnergy(min(maxConsume, energyRequiredLeft))
                 if (clayEnergyHolder.drawEnergy(consume, false)) {
                     currentEnergy += consume
                 }
@@ -231,7 +235,6 @@ class PanDuplicatorMetaTileEntity(
             if (targetStack.isEmpty) return null
             val input = ItemAndMeta(duplicationTargetSlot.getStackInSlot(0))
             val energy = pan?.getDuplicationEntries()[input] ?: return null
-            antimatterSlot.extractItem(0, 1, false)
             return input to energy
         }
     }
