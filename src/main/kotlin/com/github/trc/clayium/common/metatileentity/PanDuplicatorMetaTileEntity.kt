@@ -23,13 +23,21 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.pan.IPan
 import com.github.trc.clayium.api.pan.IPanCable
 import com.github.trc.clayium.api.pan.IPanUser
+import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.ingredient.COreRecipeInput
 import com.github.trc.clayium.common.unification.material.CMaterials
 import com.github.trc.clayium.common.unification.ore.OrePrefix
 import com.github.trc.clayium.common.unification.stack.ItemAndMeta
+import net.minecraft.block.state.IBlockState
+import net.minecraft.client.renderer.block.model.BakedQuad
+import net.minecraft.client.renderer.block.model.FaceBakery
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.Item
@@ -37,19 +45,26 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
+import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
 import org.apache.commons.lang3.ObjectUtils
+import java.util.function.Function
 import kotlin.math.pow
 
 class PanDuplicatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     private val duplicatorRank: Int,
+    private val machineHullTier: ITier = ClayTiers.entries[duplicatorRank + 3]
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[2], validOutputModesLists[1],
-    "machine.${CValues.MOD_ID}.pan_duplicator"), IPanUser {
+    "machine.${CValues.MOD_ID}.pan_duplicator"), IPanUser
+{
+
+    override val faceTexture = clayiumId("blocks/pan_duplicator")
 
     private val ceConsumption = ClayEnergy(10_000 * 10.0.pow(duplicatorRank - 1).toLong())
 
@@ -87,20 +102,6 @@ class PanDuplicatorMetaTileEntity(
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return PanDuplicatorMetaTileEntity(metaTileEntityId, tier, duplicatorRank)
-    }
-
-    override fun registerItemModel(item: Item, meta: Int) {
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun getItemStackDisplayName(): String {
-        return I18n.format(this.translationKey, this.duplicatorRank)
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        super.addInformation(stack, worldIn, tooltip, flagIn)
-        tooltip.add("CE Consumption Rate: ${ceConsumption.format()}/t")
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
@@ -142,6 +143,34 @@ class PanDuplicatorMetaTileEntity(
 
     override fun resetNetwork() {
         pan = null
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun registerItemModel(item: Item, meta: Int) {
+        ModelLoader.setCustomModelResourceLocation(item, meta,
+            ModelResourceLocation(clayiumId("pan_duplicator"), "rank=$duplicatorRank"))
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun getItemStackDisplayName(): String {
+        return I18n.format(this.translationKey, this.duplicatorRank)
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        super.addInformation(stack, worldIn, tooltip, flagIn)
+        tooltip.add("CE Consumption Rate: ${ceConsumption.format()}/t")
+    }
+
+    override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
+        val sprite = getter.apply(clayiumId("blocks/pan_casing"))
+        panCasingQuads = EnumFacing.entries.map { ModelTextures.createQuad(it, sprite) }
+    }
+
+    override fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+        if (state == null || side == null || state !is IExtendedBlockState) return
+        quads.add(ModelTextures.getHullQuads(this.machineHullTier)?.get(side) ?: return)
+        if (side != this.frontFacing) quads.add(panCasingQuads[side.index])
     }
 
     private inner class DuplicatorRecipeLogic : IControllable {
@@ -209,5 +238,7 @@ class PanDuplicatorMetaTileEntity(
 
     companion object {
         private val antimatterInput = COreRecipeInput(OrePrefix.gem, CMaterials.antimatter)
+
+        private lateinit var panCasingQuads: List<BakedQuad>
     }
 }
