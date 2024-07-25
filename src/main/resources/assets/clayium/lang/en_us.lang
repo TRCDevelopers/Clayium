@@ -637,7 +637,7 @@ tile.clayium.blockClaySteelAutoCrafter.name=Clay Steel Auto Crafter
 tile.clayium.blockClayiumAutoCrafter.name=Clayium Auto Crafter
 tile.clayium.blockUltimateAutoCrafter.name=Ultimate Auto Crafter
 
-tile.clayium.pan_cable.name=PAN Cable
+tile.clayium.pan_cable=PAN Cable
 machine.clayium.pan_core=PAN Core
 machine.clayium.pan_adapter.antimatter=PAN Adapter Mk I
 machine.clayium.pan_adapter.pure_antimatter=PAN Adapter Mk II

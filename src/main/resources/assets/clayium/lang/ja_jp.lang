@@ -605,7 +605,7 @@ tile.clayium.blockClaySteelAutoCrafter.name=粘土鋼自動クラフト装置
 tile.clayium.blockClayiumAutoCrafter.name=クレイウム自動クラフト装置
 tile.clayium.blockUltimateAutoCrafter.name=究極自動クラフト装置
 
-tile.clayium.pan_cable.name=PAN ケーブル
+tile.clayium.pan_cable=PAN ケーブル
 machine.clayium.pan_core=PAN コア
 machine.clayium.pan_adapter.antimatter=PAN アダプター Mk I
 machine.clayium.pan_adapter.pure_antimatter=PAN アダプター Mk II
