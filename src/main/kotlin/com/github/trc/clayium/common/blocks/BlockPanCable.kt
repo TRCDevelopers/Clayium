@@ -4,7 +4,6 @@ import com.github.trc.clayium.api.block.ITieredBlock
 import com.github.trc.clayium.api.pan.IPanCable
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.pan.isPanCable
-import com.github.trc.clayium.common.Clayium
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -18,8 +17,6 @@ import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockPanCable : Block(Material.GLASS), IPanCable, ITieredBlock {
@@ -66,17 +63,16 @@ class BlockPanCable : Block(Material.GLASS), IPanCable, ITieredBlock {
         if (s.getValue(EAST)) addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB)
     }
 
-    @SideOnly(Side.CLIENT)
-    override fun getSelectedBoundingBox(state: IBlockState, worldIn: World, pos: BlockPos): AxisAlignedBB {
-        val aabb = CENTER_AABB
-        val s = getActualState(state, worldIn, pos)
-        if (s.getValue(DOWN)) aabb.union(DOWN_AABB)
-        if (s.getValue(UP)) aabb.union(UP_AABB)
-        if (s.getValue(NORTH)) aabb.union(NORTH_AABB)
-        if (s.getValue(SOUTH)) aabb.union(SOUTH_AABB)
-        if (s.getValue(WEST)) aabb.union(WEST_AABB)
-        if (s.getValue(EAST)) aabb.union(EAST_AABB)
-        return aabb.offset(pos)
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
+        var aabb = CENTER_AABB
+        val s = getActualState(state, source, pos)
+        if (s.getValue(DOWN)) aabb = aabb.union(DOWN_AABB)
+        if (s.getValue(UP)) aabb = aabb.union(UP_AABB)
+        if (s.getValue(NORTH)) aabb = aabb.union(NORTH_AABB)
+        if (s.getValue(SOUTH)) aabb = aabb.union(SOUTH_AABB)
+        if (s.getValue(WEST)) aabb = aabb.union(WEST_AABB)
+        if (s.getValue(EAST)) aabb = aabb.union(EAST_AABB)
+        return aabb
     }
 
     override fun getTier(stack: ItemStack) = ClayTiers.PURE_ANTIMATTER
