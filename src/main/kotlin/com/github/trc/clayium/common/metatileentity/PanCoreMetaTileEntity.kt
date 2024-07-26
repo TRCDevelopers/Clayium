@@ -262,7 +262,7 @@ class PanCoreMetaTileEntity(
         if (!isRemote) {
             refreshNetworkAndThenEntries()
         }
-        val displayItems = Grid.mapToMatrix(8, duplicationEntries.toList()) { index, (itemAndMeta, entry) ->
+        val displayItems = Grid.mapToMatrix(9, duplicationEntries.toList()) { index, (itemAndMeta, entry) ->
             val stack = itemAndMeta.asStack()
             ItemDrawable(stack).asWidget().size(16)
                 .tooltip { tooltip ->
@@ -279,7 +279,7 @@ class PanCoreMetaTileEntity(
                 }
         }
         val panDisplayMargin = 4
-        val panDisplayWidth = 18 * 8 + 4
+        val panDisplayWidth = 16 * 9 + 0
         return ModularPanel.defaultPanel("pan_core", 176, 236)
             .child(Column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
