@@ -13,6 +13,10 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 
 object FurnacePanRecipeFactory : IPanRecipeFactory {
+
+    /** 40u x 200ticks */
+    private val ENERGY = ClayEnergy.milli(8)
+
     override fun getEntry(world: IBlockAccess, pos: BlockPos, stacks: List<ItemStack>): IPanRecipe? {
         if (world.getBlockState(pos).block !== Blocks.FURNACE) return null
 
@@ -21,6 +25,6 @@ object FurnacePanRecipeFactory : IPanRecipeFactory {
         val stack = actualStacks[0]
         val result = FurnaceRecipes.instance().getSmeltingResult(stack)
         if (result.isEmpty) return null
-        return PanRecipe(CItemRecipeInput(stack.copyWithSize(1), 1), result, ClayEnergy(1))
+        return PanRecipe(CItemRecipeInput(stack.copyWithSize(1), 1), result, ENERGY)
     }
 }

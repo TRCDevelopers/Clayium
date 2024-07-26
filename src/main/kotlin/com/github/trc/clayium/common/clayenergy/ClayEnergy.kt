@@ -35,10 +35,12 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
     operator fun minus(other: ClayEnergy) = ClayEnergy(energy - other.energy)
     operator fun times(value: Int) = ClayEnergy(energy * value)
     operator fun times(value: Long) = ClayEnergy(energy * value)
+    operator fun div(value: Int) = ClayEnergy(energy / value)
     override operator fun compareTo(other: ClayEnergy) = energy.compareTo(other.energy)
 
     companion object {
         val ZERO = ClayEnergy(0)
+        val MAX = ClayEnergy(Long.MAX_VALUE)
 
         val units = listOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y")
         private val matchesExcessZero = Regex("0+\$")

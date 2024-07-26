@@ -17,6 +17,9 @@ import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
 object CraftingTablePanRecipeFactory : IPanRecipeFactory {
+
+    private val ENERGY = ClayEnergy.micro(100)
+
     override fun getEntry(world: IBlockAccess, pos: BlockPos, stacks: List<ItemStack>): IPanRecipe? {
         if (world.getBlockState(pos).block !== Blocks.CRAFTING_TABLE || world !is World) return null
 
@@ -33,6 +36,6 @@ object CraftingTablePanRecipeFactory : IPanRecipeFactory {
             CItemRecipeInput(stacks.map { it.copyWithSize(1) }, 1)
         }
 
-        return PanRecipe(inputs, listOf(output), ClayEnergy.micro(10))
+        return PanRecipe(inputs, listOf(output), ENERGY)
     }
 }

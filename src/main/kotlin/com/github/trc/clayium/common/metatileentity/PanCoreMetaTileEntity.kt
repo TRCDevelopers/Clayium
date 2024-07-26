@@ -59,6 +59,7 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.function.Function
+import kotlin.math.min
 
 class PanCoreMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -78,7 +79,7 @@ class PanCoreMetaTileEntity(
     override fun getDuplicationEntries(): Map<ItemAndMeta, ClayEnergy> {
         return duplicationEntries.asSequence()
             .filter { (_, e) -> e.isAllowedToDuplicate }
-            .map { (k, v) -> k to v.energy }
+            .map { (k, v) -> k to v.ce }
             .toMap()
     }
 
@@ -127,8 +128,10 @@ class PanCoreMetaTileEntity(
         duplicationEntries.clear()
         duplicationEntries.putAll(defaultDuplicationEntries)
 
-        // Result -> Recipes that requires that as an ingredient
+        // [PanRecipeInternal] has [PanIngredient]s.
+        // PanIngredient has a flag that indicates whether the ingredient is duplicatable or not.
         val internalRecipes = panRecipes.map { PanRecipeInternal(it) }
+        // Result -> Recipes that requires that result as an ingredient
         val result2Dependants = mutableMapOf<ItemAndMeta, MutableList<PanRecipeInternal>>()
         defaultDuplicationEntries.keys.forEach { result2Dependants[it] = mutableListOf() }
 
@@ -140,37 +143,46 @@ class PanCoreMetaTileEntity(
                 result2Dependants.getOrPut(key, ::mutableListOf)
             }
         }
-        // construct recipe/ingredient map
         for (recipeInternal in internalRecipes) {
             val recipe = recipeInternal.panRecipe
             for (ingredient in recipe.ingredients) {
                 val keys = ingredient.stacks.map { ItemAndMeta(it) }
-                keys.firstOrNull {
-                    result2Dependants[it]?.apply { if (recipeInternal !in this) this.add(recipeInternal) } != null
+                keys.forEach {
+                    result2Dependants[it]?.apply { if (recipeInternal !in this) this.add(recipeInternal) }
                 }
             }
         }
 
-        val queue = ArrayDeque<ItemAndMeta>()
+        val duplicatablesQueue = ArrayDeque<ItemAndMeta>()
         val walked = mutableSetOf<ItemAndMeta>()
-        queue.addAll(defaultDuplicationEntries.keys)
-        while (queue.isNotEmpty()) {
-            val parent = queue.removeFirst()
+        duplicatablesQueue.addAll(defaultDuplicationEntries.keys)
+        while (duplicatablesQueue.isNotEmpty()) {
+            val parent: ItemAndMeta = duplicatablesQueue.removeFirst()
             if (parent in walked) {
                 Clayium.LOGGER.warn("Tried to walk a node that has already been walked: $parent")
                 continue
             }
             walked.add(parent)
             val childRecipes = result2Dependants[parent] ?: continue
-            for (recipe in childRecipes) {
-                for (ing in recipe.internalIngs) {
-                    ing.verified = ing.verified || ing.ingredient.testIgnoringAmount(parent)
+            for (childRecipe in childRecipes) {
+                var allVerified = true
+                var totalCost = ClayEnergy.ZERO
+                for (ing in childRecipe.ingsWithFlag) {
+                    val ingIsChild = ing.ingredient.testIgnoringAmount(parent)
+                    if (ingIsChild) {
+                        ing.verified = true
+                        val costByThis = duplicationEntries[parent]!!.ce
+                        val currentCostOfIng = ing.cost
+                        val newCost = ClayEnergy(min(costByThis.energy, currentCostOfIng.energy))
+                        totalCost += newCost
+                    }
+                    allVerified = allVerified && ing.verified
                 }
-                if (recipe.internalIngs.all { it.verified }) {
-                    for (result in recipe.panRecipe.results.map(::ItemAndMeta)) {
-                        queue.add(result)
-                        //todo calculate cost
-                        val cost = ClayEnergy(1)
+                if (allVerified) {
+                    val panRecipe = childRecipe.panRecipe
+                    for (result in panRecipe.results.map(::ItemAndMeta)) {
+                        duplicatablesQueue.add(result)
+                        val cost = (totalCost / panRecipe.results.sumOf { it.count }) + panRecipe.requiredClayEnergy
                         duplicationEntries[result] = PanDuplicationEntry(cost)
                     }
                 }
@@ -181,7 +193,7 @@ class PanCoreMetaTileEntity(
             writeVarInt(duplicationEntries.size)
             for ((key, entry) in duplicationEntries) {
                 writeItemAndMeta(key)
-                writeClayEnergy(entry.energy)
+                writeClayEnergy(entry.ce)
                 writeBoolean(entry.isAllowedToDuplicate)
             }
         }
@@ -258,7 +270,7 @@ class PanCoreMetaTileEntity(
                         val flag = if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips) ITooltipFlag.TooltipFlags.ADVANCED else ITooltipFlag.TooltipFlags.NORMAL
                         tooltip.addStringLines(stack.getTooltip(data.player, flag))
                     }
-                    tooltip.addLine(entry.energy.format())
+                    tooltip.addLine(entry.ce.format())
                 }
                 .also {
                     if (!entry.isAllowedToDuplicate) {
@@ -290,12 +302,16 @@ class PanCoreMetaTileEntity(
     }
 
     class PanDuplicationEntry(
-        val energy: ClayEnergy,
+        val ce: ClayEnergy,
         val isAllowedToDuplicate: Boolean = true,
     )
-    private class PanIngredient(val ingredient: CRecipeInput, var verified: Boolean = false)
+    private class PanIngredient(
+        val ingredient: CRecipeInput,
+        val cost: ClayEnergy = ClayEnergy.MAX,
+        var verified: Boolean = false,
+    )
     private class PanRecipeInternal(val panRecipe: IPanRecipe) {
-        val internalIngs = panRecipe.ingredients.map(::PanIngredient)
+        val ingsWithFlag = panRecipe.ingredients.map(::PanIngredient)
     }
 
     companion object {
