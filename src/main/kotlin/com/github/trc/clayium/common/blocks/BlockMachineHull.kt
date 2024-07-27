@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.blocks
 
-import com.github.trc.clayium.api.block.VariantBlock
 import com.github.trc.clayium.api.block.ITieredBlock
+import com.github.trc.clayium.api.block.VariantBlock
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.common.Clayium
 import net.minecraft.block.SoundType

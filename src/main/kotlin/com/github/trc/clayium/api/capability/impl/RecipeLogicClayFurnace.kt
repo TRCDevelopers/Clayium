@@ -1,7 +1,7 @@
 package com.github.trc.clayium.api.capability.impl
 
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.config.ConfigTierBalance
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.registry.CRecipes
@@ -51,7 +51,8 @@ class RecipeLogicClayFurnace(
         }
         this.inputInventory.extractItem(0, 1, false)
         val machineTierNum = metaTileEntity.tier.numeric
-        val multipliedRecipeCEt = ClayEnergy((BASE_CE_CONSUMPTION.energy.toDouble() * ConfigTierBalance.crafting.smelterConsumingEnergyMultiplier[machineTierNum - 4]).toLong())
+        val multipliedRecipeCEt =
+            ClayEnergy((BASE_CE_CONSUMPTION.energy.toDouble() * ConfigTierBalance.crafting.smelterConsumingEnergyMultiplier[machineTierNum - 4]).toLong())
         val multipliedRecipeTime = (FURNACE_RECIPE_TIME * ConfigTierBalance.crafting.smelterCraftTimeMultiplier[machineTierNum - 4]).toLong()
 
         this.itemOutputs = listOf(smeltingResult)

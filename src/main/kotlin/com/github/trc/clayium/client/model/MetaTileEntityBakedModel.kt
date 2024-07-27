@@ -6,8 +6,8 @@ import com.github.trc.clayium.api.block.BlockMachine.Companion.TILE_ENTITY
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.CUtils.clayiumId
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode.*
+import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.MachineIoMode.*
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.ItemOverrideList

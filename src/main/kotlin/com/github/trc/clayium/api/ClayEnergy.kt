@@ -1,8 +1,10 @@
-package com.github.trc.clayium.common.clayenergy
+package com.github.trc.clayium.api
 
 import net.minecraft.network.PacketBuffer
 import kotlin.math.abs
 import kotlin.math.pow
+import kotlin.text.format
+import kotlin.text.replace
 
 fun PacketBuffer.writeClayEnergy(energy: ClayEnergy) {
     writeLong(energy.energy)
