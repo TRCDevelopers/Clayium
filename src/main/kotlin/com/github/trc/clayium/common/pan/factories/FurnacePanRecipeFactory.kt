@@ -1,9 +1,9 @@
 package com.github.trc.clayium.common.pan.factories
 
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.pan.IPanRecipe
 import com.github.trc.clayium.api.pan.IPanRecipeFactory
 import com.github.trc.clayium.api.util.copyWithSize
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.pan.PanRecipe
 import com.github.trc.clayium.common.recipe.ingredient.CItemRecipeInput
 import net.minecraft.init.Blocks

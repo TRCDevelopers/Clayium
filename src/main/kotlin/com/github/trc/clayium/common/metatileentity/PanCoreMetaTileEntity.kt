@@ -29,9 +29,9 @@ import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
-import com.github.trc.clayium.common.clayenergy.readClayEnergy
-import com.github.trc.clayium.common.clayenergy.writeClayEnergy
+import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.readClayEnergy
+import com.github.trc.clayium.api.writeClayEnergy
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
 import com.github.trc.clayium.common.unification.OreDictUnifier

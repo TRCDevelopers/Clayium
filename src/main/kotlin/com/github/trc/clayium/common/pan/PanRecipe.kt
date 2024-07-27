@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.pan
 
 import com.github.trc.clayium.api.pan.IPanRecipe
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
 import net.minecraft.item.ItemStack
 
