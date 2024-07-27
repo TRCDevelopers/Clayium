@@ -1,8 +1,8 @@
 package com.github.trc.clayium.common.recipe.builder
 
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.common.Clayium
-import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.ingredient.CItemRecipeInput

@@ -1,11 +1,8 @@
 package com.github.trc.clayium.common.worldgen
 
 import com.github.trc.clayium.api.CValues
-import com.github.trc.clayium.common.blocks.ores.BlockClayOre
 import com.github.trc.clayium.common.config.ConfigCore.worldGen
 import net.minecraft.block.Block
-import net.minecraft.block.BlockStone
-import net.minecraft.block.state.IBlockState
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraft.world.chunk.IChunkProvider

@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.unification.material
 
-import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.unification.material.PropertyKey.Companion.DUST
 import com.github.trc.clayium.common.unification.material.PropertyKey.Companion.INGOT
 import com.github.trc.clayium.common.unification.material.PropertyKey.Companion.MATTER

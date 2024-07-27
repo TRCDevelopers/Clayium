@@ -1,8 +1,6 @@
 package com.github.trc.clayium.client.renderer
 
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
-import com.github.trc.clayium.client.ModelUtils
-import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.MachineIoMode.ALL
 import com.github.trc.clayium.api.util.MachineIoMode.CE
@@ -16,6 +14,8 @@ import com.github.trc.clayium.api.util.MachineIoMode.M_6
 import com.github.trc.clayium.api.util.MachineIoMode.M_ALL
 import com.github.trc.clayium.api.util.MachineIoMode.NONE
 import com.github.trc.clayium.api.util.MachineIoMode.SECOND
+import com.github.trc.clayium.client.ModelUtils
+import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.items.ClayiumItems
 import net.minecraft.client.model.PositionTextureVertex
 import net.minecraft.client.model.TexturedQuad

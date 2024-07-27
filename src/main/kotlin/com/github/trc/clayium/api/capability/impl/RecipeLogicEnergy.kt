@@ -1,7 +1,7 @@
 package com.github.trc.clayium.api.capability.impl
 
-import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 
 open class RecipeLogicEnergy(

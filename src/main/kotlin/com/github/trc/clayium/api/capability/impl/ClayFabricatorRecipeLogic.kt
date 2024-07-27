@@ -4,8 +4,8 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.TextWidget
-import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.common.recipe.builder.ClayFabricatorRecipeBuilder
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 

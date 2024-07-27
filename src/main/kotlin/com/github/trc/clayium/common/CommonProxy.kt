@@ -21,8 +21,8 @@ import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trc.clayium.common.loaders.OreDictionaryLoader
-import com.github.trc.clayium.common.metatileentity.MetaTileEntities
 import com.github.trc.clayium.common.loaders.recipe.CRecipeLoader
+import com.github.trc.clayium.common.metatileentity.MetaTileEntities
 import com.github.trc.clayium.common.unification.material.CMaterials
 import com.github.trc.clayium.common.unification.ore.OrePrefix
 import com.github.trc.clayium.common.util.DebugUtils

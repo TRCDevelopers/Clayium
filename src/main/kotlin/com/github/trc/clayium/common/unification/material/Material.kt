@@ -1,10 +1,10 @@
 package com.github.trc.clayium.common.unification.material
 
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.common.Clayium
-import com.github.trc.clayium.api.ClayEnergy
 import com.google.common.base.CaseFormat
 import net.minecraft.client.resources.I18n
 import net.minecraft.util.ResourceLocation

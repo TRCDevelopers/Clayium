@@ -5,13 +5,13 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.TextWidget
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs
 import com.github.trc.clayium.api.capability.IClayEnergyHolder
 import com.github.trc.clayium.api.metatileentity.AutoIoHandler
 import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.ClayEnergy
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 
