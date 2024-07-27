@@ -4,7 +4,7 @@ import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 import net.minecraft.util.ResourceLocation
 

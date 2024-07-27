@@ -1,7 +1,8 @@
-package com.github.trc.clayium.common.blocks.machine
+package com.github.trc.clayium.api.util
 
 import com.google.common.collect.ImmutableList
 import net.minecraft.util.IStringSerializable
+import kotlin.text.lowercase
 
 enum class MachineIoMode(
     val id: Int,

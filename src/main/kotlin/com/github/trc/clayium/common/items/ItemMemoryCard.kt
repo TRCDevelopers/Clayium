@@ -1,8 +1,8 @@
 package com.github.trc.clayium.common.items
 
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.getMetaTileEntity
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode
 import com.github.trc.clayium.common.util.UtilLocale
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.player.EntityPlayer

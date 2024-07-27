@@ -10,7 +10,7 @@ import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.RelativeDirection
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 import net.minecraft.client.resources.I18n
 import net.minecraft.network.PacketBuffer

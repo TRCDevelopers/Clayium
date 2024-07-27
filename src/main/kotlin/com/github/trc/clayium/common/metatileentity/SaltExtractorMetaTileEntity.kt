@@ -6,7 +6,7 @@ import com.github.trc.clayium.api.metatileentity.AbstractItemGeneratorMetaTileEn
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.CUtils.clayiumId
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.unification.OreDictUnifier
 import com.github.trc.clayium.common.unification.material.CMaterials
