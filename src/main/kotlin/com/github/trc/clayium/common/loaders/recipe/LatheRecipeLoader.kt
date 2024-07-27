@@ -1,6 +1,6 @@
 package com.github.trc.clayium.common.loaders.recipe
 
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.common.unification.material.CMaterials.clay

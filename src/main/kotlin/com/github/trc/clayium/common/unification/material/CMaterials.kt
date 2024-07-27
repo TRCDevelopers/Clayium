@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.unification.material
 
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.unification.material.MaterialFlags.GENERATE_CLAY_PARTS
 
 @Suppress("unused")

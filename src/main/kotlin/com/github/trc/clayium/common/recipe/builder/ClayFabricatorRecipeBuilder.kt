@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.recipe.builder
 
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.unification.material.Material
 import com.github.trc.clayium.common.unification.material.PropertyKey

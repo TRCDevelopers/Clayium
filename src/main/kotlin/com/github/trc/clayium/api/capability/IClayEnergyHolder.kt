@@ -1,6 +1,6 @@
 package com.github.trc.clayium.api.capability
 
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
+import com.github.trc.clayium.api.ClayEnergy
 import net.minecraftforge.items.IItemHandler
 
 interface IClayEnergyHolder {

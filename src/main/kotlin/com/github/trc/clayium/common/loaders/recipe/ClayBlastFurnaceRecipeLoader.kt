@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.loaders.recipe
 
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.common.unification.material.CMaterials
 import com.github.trc.clayium.common.unification.ore.OrePrefix

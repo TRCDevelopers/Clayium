@@ -12,7 +12,7 @@ import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.Mods
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
