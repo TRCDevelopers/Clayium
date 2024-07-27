@@ -13,7 +13,7 @@ import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.common.util.TransferUtils
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing

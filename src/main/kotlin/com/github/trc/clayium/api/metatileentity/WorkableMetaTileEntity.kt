@@ -18,7 +18,7 @@ import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 import net.minecraft.client.gui.GuiScreen

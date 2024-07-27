@@ -1,7 +1,7 @@
 package com.github.trc.clayium.api.metatileentity
 
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.common.config.ConfigTierBalance
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.CapabilityItemHandler

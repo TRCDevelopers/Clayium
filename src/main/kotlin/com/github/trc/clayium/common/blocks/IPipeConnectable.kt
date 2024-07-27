@@ -1,6 +1,6 @@
 package com.github.trc.clayium.common.blocks
 
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode
+import com.github.trc.clayium.api.util.MachineIoMode
 import net.minecraft.util.EnumFacing
 
 /**

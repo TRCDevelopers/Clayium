@@ -1,7 +1,9 @@
-package com.github.trc.clayium.common.clayenergy
+package com.github.trc.clayium.api
 
 import kotlin.math.abs
 import kotlin.math.pow
+import kotlin.text.format
+import kotlin.text.replace
 
 @JvmInline
 value class ClayEnergy(val energy: Long) {

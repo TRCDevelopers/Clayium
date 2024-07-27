@@ -5,12 +5,12 @@ import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ClayLaserSource
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.util.UtilLocale
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
