@@ -9,6 +9,7 @@ public class ConfigCore {
 
     public static SubCategoryRendering rendering = new SubCategoryRendering();
     public static SubCategoryMisc misc = new SubCategoryMisc();
+    public static SubCategoryWorldGen worldGen = new SubCategoryWorldGen();
 
     public static class SubCategoryRendering {
         private SubCategoryRendering() {}
@@ -30,5 +31,22 @@ public class ConfigCore {
                 "true : laser irradiates when powered"
         })
         public boolean invertClayLaserRsCondition = false;
+    }
+
+    public static class SubCategoryWorldGen {
+        private SubCategoryWorldGen() {}
+
+        public int clayOreVeinMaxY = 88;
+        public int clayOreVeinMinY = 24;
+        public int clayOreVeinNumber = 8;
+        public int clayOreVeinSize = 24;
+
+        public int denseClayOreVeinSize = 10;
+        public int largeDenseClayOreVeinNumber = 2;
+        public int largeDenseClayOreVeinSize = 6;
+        public int largeDenseClayOreVeinMinY = 10;
+        public int largeDenseClayOreVeinMaxY = 16;
+
+        public boolean generateDenseClayOreVein = true;
     }
 }

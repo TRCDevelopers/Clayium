@@ -50,7 +50,7 @@ open class CommonProxy {
         }
 
         this.registerTileEntities()
-        GameRegistry.registerWorldGenerator(ClayOreGenerator(), 0)
+        GameRegistry.registerWorldGenerator(ClayOreGenerator, 0)
         NetworkRegistry.INSTANCE.registerGuiHandler(Clayium, GuiHandler)
 
         MetaTileEntities.init()
