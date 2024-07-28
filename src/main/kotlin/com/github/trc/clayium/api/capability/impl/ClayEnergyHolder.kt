@@ -48,6 +48,10 @@ class ClayEnergyHolder(
         return true
     }
 
+    override fun addEnergy(ce: ClayEnergy) {
+        this.clayEnergy += ce
+    }
+
     /**
      * tries to consume energized clay from the slot if the current energy is not enough
      */

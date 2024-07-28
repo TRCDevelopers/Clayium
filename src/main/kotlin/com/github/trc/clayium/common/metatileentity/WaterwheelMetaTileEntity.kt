@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
@@ -19,6 +20,7 @@ import net.minecraft.block.BlockLiquid
 import net.minecraft.client.resources.I18n
 import net.minecraft.init.Blocks
 import net.minecraft.item.Item
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -36,12 +38,13 @@ class WaterwheelMetaTileEntity(
     override val exportItems = EmptyItemStackHandler
     override val itemInventory = EmptyItemStackHandler
 
-    private val maxClayEnergy = ClayEnergy((5.0 * this.tier.numeric.toDouble().pow(8)).toLong())
-    private val progressEfficiency = 1000 * this.tier.numeric.toDouble().pow(3)
+    val clayEnergyPerWork = ClayEnergy(this.tier.numeric.toDouble().pow(8).toLong())
+    private val maxClayEnergy = clayEnergyPerWork * 5
+    private val progressEfficiency = (1000 * this.tier.numeric.toDouble().pow(3)).toInt()
 
     private var waterCount = 0
     private var progress = 0
-    private var durability = 1000
+    private var durability = MAX_DURABILITY
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return WaterwheelMetaTileEntity(metaTileEntityId, tier)
@@ -52,6 +55,24 @@ class WaterwheelMetaTileEntity(
         if (isRemote) return
 
         waterCount = getWaterFlowsCount()
+        this.progress += waterCount * progressEfficiency
+        if (this.progress >= MAX_PROGRESS) {
+            this.progress = 0
+            emitEnergy()
+        }
+    }
+
+    private fun emitEnergy() {
+        val pos = pos ?: return
+        for (side in EnumFacing.entries) {
+            val energyHolder = world?.getTileEntity(pos.offset(side))?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER, side.opposite)
+                ?: continue
+
+            val energyStored = energyHolder.getEnergyStored()
+            if (energyStored < maxClayEnergy) {
+                energyHolder.addEnergy(clayEnergyPerWork)
+            }
+        }
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
