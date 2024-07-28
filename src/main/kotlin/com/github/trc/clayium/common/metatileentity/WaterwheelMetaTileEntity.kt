@@ -5,16 +5,24 @@ import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
+import net.minecraft.block.BlockLiquid
+import net.minecraft.client.resources.I18n
+import net.minecraft.init.Blocks
 import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
+import kotlin.math.pow
 
 class WaterwheelMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -28,19 +36,28 @@ class WaterwheelMetaTileEntity(
     override val exportItems = EmptyItemStackHandler
     override val itemInventory = EmptyItemStackHandler
 
+    private val maxClayEnergy = ClayEnergy((5.0 * this.tier.numeric.toDouble().pow(8)).toLong())
+    private val progressEfficiency = 1000 * this.tier.numeric.toDouble().pow(3)
+
     private var waterCount = 0
     private var progress = 0
-    private val durability = 1000
+    private var durability = 1000
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return WaterwheelMetaTileEntity(metaTileEntityId, tier)
     }
 
-    override fun registerItemModel(item: Item, meta: Int) {
-        registerItemModelDefault(item, meta, "waterwheel")
+    override fun update() {
+        super.update()
+        if (isRemote) return
+
+        waterCount = getWaterFlowsCount()
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+        syncManager.syncValue("waterCount", SyncHandlers.intNumber({ waterCount }, { waterCount = it }))
+        syncManager.syncValue("progress", SyncHandlers.intNumber({ progress }, { progress = it }))
+        syncManager.syncValue("durability", SyncHandlers.intNumber({ durability }, { durability = it }))
         return ModularPanel.defaultPanel("waterwheel")
             .child(Column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
@@ -48,7 +65,7 @@ class WaterwheelMetaTileEntity(
                         .align(Alignment.TopLeft))
                     .child(IKey.lang("container.inventory").asWidget()
                         .align(Alignment.BottomLeft))
-                    .child(IKey.lang("gui.clayium.waterwheel.waters", waterCount).asWidget()
+                    .child(IKey.dynamic { I18n.format("gui.clayium.waterwheel.waters", waterCount) }.asWidget()
                         .align(Alignment.BottomRight))
                     .child(IKey.lang("gui.clayium.waterwheel.progress", progress).asWidget()
                         .align(Alignment.CenterLeft))
@@ -59,7 +76,31 @@ class WaterwheelMetaTileEntity(
             )
     }
 
+    private fun getWaterFlowsCount(): Int {
+        val world = world ?: return 0
+        val pos = pos ?: return 0
+        var waterFlows = 0
+        for (dx in -1..1) {
+            for (dy in -1..1) {
+                for (dz in -1..1) {
+                    val state = world.getBlockState(pos.add(dx, dy, dz))
+                    val block = state.block
+                    if ((block === Blocks.WATER || block === Blocks.FLOWING_WATER) && state.getValue(BlockLiquid.LEVEL) != 0) {
+                        waterFlows++
+                    }
+                }
+            }
+        }
+        return waterFlows
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun registerItemModel(item: Item, meta: Int) {
+        registerItemModelDefault(item, meta, "waterwheel")
+    }
+
     companion object {
+        private const val MAX_DURABILITY = 1000
         private const val MAX_PROGRESS = 20_000
     }
 }
