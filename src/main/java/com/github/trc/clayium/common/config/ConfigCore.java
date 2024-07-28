@@ -31,6 +31,13 @@ public class ConfigCore {
                 "true : laser irradiates when powered"
         })
         public boolean invertClayLaserRsCondition = false;
+
+        @Config.Comment({
+                "Lower is better.",
+                "The lower the value, more chance to generate energy when ticked."
+        })
+        @Config.RangeInt(min = 1, max = 100)
+        public int waterwheelEfficiency = 40;
     }
 
     public static class SubCategoryWorldGen {

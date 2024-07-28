@@ -16,6 +16,7 @@ import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.common.config.ConfigCore
 import net.minecraft.block.BlockLiquid
 import net.minecraft.client.resources.I18n
 import net.minecraft.init.Blocks
@@ -40,7 +41,7 @@ class WaterwheelMetaTileEntity(
 
     val clayEnergyPerWork = ClayEnergy(this.tier.numeric.toDouble().pow(8).toLong())
     private val maxClayEnergy = clayEnergyPerWork * 5
-    private val progressEfficiency = (1000 * this.tier.numeric.toDouble().pow(3)).toInt()
+    private val progressPerTick = (1000 * this.tier.numeric.toDouble().pow(3)).toInt()
 
     private var waterCount = 0
     private var progress = 0
@@ -55,7 +56,10 @@ class WaterwheelMetaTileEntity(
         if (isRemote) return
 
         waterCount = getWaterFlowsCount()
-        this.progress += waterCount * progressEfficiency
+        val world = world ?: return
+        if (world.rand.nextInt(ConfigCore.misc.waterwheelEfficiency) < waterCount) {
+            progress += progressPerTick
+        }
         if (this.progress >= MAX_PROGRESS) {
             this.progress = 0
             emitEnergy()
@@ -87,9 +91,9 @@ class WaterwheelMetaTileEntity(
                     .child(IKey.lang("container.inventory").asWidget()
                         .align(Alignment.BottomLeft))
                     .child(IKey.dynamic { I18n.format("gui.clayium.waterwheel.waters", waterCount) }.asWidget()
-                        .align(Alignment.BottomRight))
+                        .widthRel(0.3f).align(Alignment.BottomRight))
                     .child(IKey.dynamic { I18n.format("gui.clayium.waterwheel.progress", progress) }.asWidget()
-                        .align(Alignment.CenterLeft))
+                        .widthRel(0.3f).align(Alignment.CenterLeft))
                     .child(IKey.dynamic { I18n.format("gui.clayium.waterwheel.durability", durability) }.asWidget()
                         .align(Alignment.CenterRight))
                 )
