@@ -45,7 +45,6 @@ class WaterwheelMetaTileEntity(
 
     private var waterCount = 0
     private var progress = 0
-    private var durability = MAX_DURABILITY
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return WaterwheelMetaTileEntity(metaTileEntityId, tier)
@@ -82,7 +81,6 @@ class WaterwheelMetaTileEntity(
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.syncValue("waterCount", SyncHandlers.intNumber({ waterCount }, { waterCount = it }))
         syncManager.syncValue("progress", SyncHandlers.intNumber({ progress }, { progress = it }))
-        syncManager.syncValue("durability", SyncHandlers.intNumber({ durability }, { durability = it }))
         return ModularPanel.defaultPanel("waterwheel", 176, 126)
             .child(Column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
@@ -91,14 +89,10 @@ class WaterwheelMetaTileEntity(
                     .child(IKey.lang("container.inventory").asWidget()
                         .align(Alignment.BottomLeft))
                     .child(IKey.dynamic { I18n.format("gui.clayium.waterwheel.waters", waterCount) }.asWidget()
-                        .widthRel(0.3f).align(Alignment.BottomRight))
+                        .widthRel(0.3f).align(Alignment.CenterRight))
                     .child(IKey.dynamic { I18n.format("gui.clayium.waterwheel.progress", progress) }.asWidget()
-                        .widthRel(0.3f).align(Alignment.CenterLeft))
-                    .child(IKey.dynamic { I18n.format("gui.clayium.waterwheel.durability", durability) }.asWidget()
-                        .align(Alignment.CenterRight))
-                )
-                .child(SlotGroupWidget.playerInventory(0))
-            )
+                        .widthRel(0.3f).align(Alignment.CenterLeft)))
+                .child(SlotGroupWidget.playerInventory(0)))
     }
 
     private fun getWaterFlowsCount(): Int {
@@ -125,7 +119,6 @@ class WaterwheelMetaTileEntity(
     }
 
     companion object {
-        private const val MAX_DURABILITY = 1000
         private const val MAX_PROGRESS = 20_000
     }
 }
