@@ -534,13 +534,13 @@ tile.clayium.blockEnergeticClayDecomposer.name=エネルギー粘土分解機
 
 tile.clayium.blockClayWaterWheel.name=粘土水車
 tile.clayium.blockDenseClayWaterWheel.name=高密度粘土水車
-tooltip.clayium.WaterWheel.line1=隣接する Tier 2, 3 機械にエネルギーを送る
-tooltip.clayium.WaterWheel.line2=__DETAIL__
-tooltip.clayium.WaterWheel.line3=周囲 3x3x3 にある水流の数により
-tooltip.clayium.WaterWheel.line4=発生するエネルギーの強度が決まる
-gui.clayium.WaterWheel.progress=進捗: %1$d
-gui.clayium.WaterWheel.durability=耐久度: %1$d
-gui.clayium.WaterWheel.surroundingWater=水流: %1$d
+tooltip.clayium.waterwheel.line1=隣接する Tier 2, 3 機械にエネルギーを送る
+tooltip.clayium.waterwheel.line2=__DETAIL__
+tooltip.clayium.waterwheel.line3=周囲 3x3x3 にある水流の数により
+tooltip.clayium.waterwheel.line4=発生するエネルギーの強度が決まる
+gui.clayium.waterwheel.progress=進捗: %1$d
+gui.clayium.waterwheel.durability=耐久度: %1$d
+gui.clayium.waterwheel.waters=水流: %1$d
 
 machine.clayium.clay_laser.clay_steel=青粘土レーザー
 machine.clayium.clay_laser.clayium=緑粘土レーザー

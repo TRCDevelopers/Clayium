@@ -28,6 +28,10 @@ class WaterwheelMetaTileEntity(
     override val exportItems = EmptyItemStackHandler
     override val itemInventory = EmptyItemStackHandler
 
+    private var waterCount = 0
+    private var progress = 0
+    private val durability = 1000
+
     override fun createMetaTileEntity(): MetaTileEntity {
         return WaterwheelMetaTileEntity(metaTileEntityId, tier)
     }
@@ -44,12 +48,18 @@ class WaterwheelMetaTileEntity(
                         .align(Alignment.TopLeft))
                     .child(IKey.lang("container.inventory").asWidget()
                         .align(Alignment.BottomLeft))
+                    .child(IKey.lang("gui.clayium.waterwheel.waters", waterCount).asWidget()
+                        .align(Alignment.BottomRight))
+                    .child(IKey.lang("gui.clayium.waterwheel.progress", progress).asWidget()
+                        .align(Alignment.CenterLeft))
+                    .child(IKey.lang("gui.clayium.waterwheel.durability", durability).asWidget()
+                        .align(Alignment.CenterRight))
                 )
                 .child(SlotGroupWidget.playerInventory(0))
             )
     }
 
     companion object {
-        private const val progressMax = 20_000
+        private const val MAX_PROGRESS = 20_000
     }
 }
