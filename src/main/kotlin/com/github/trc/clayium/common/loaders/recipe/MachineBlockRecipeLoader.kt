@@ -1,11 +1,12 @@
 package com.github.trc.clayium.common.loaders.recipe
 
+import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ClayTiers.*
 import com.github.trc.clayium.common.Clayium
-import com.github.trc.clayium.common.blocks.ClayiumBlocks
+import com.github.trc.clayium.common.blocks.ClayiumBlocks.MACHINE_HULL
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.metatileentity.MetaTileEntities
 import com.github.trc.clayium.common.recipe.RecipeUtils
@@ -56,7 +57,7 @@ object MachineBlockRecipeLoader {
         )
 
         for (tier in ClayTiers.entries) {
-            val hull = ClayiumBlocks.MACHINE_HULL
+            val hull = MACHINE_HULL
             val i = tier.numeric
             when (tier) {
                 DEFAULT -> RecipeUtils.addShapedRecipe("raw_clay_machine_hull", hull.getItem(tier),
@@ -149,7 +150,7 @@ object MachineBlockRecipeLoader {
         /* Machine Proxy */
         for (metaTileEntity in MetaTileEntities.CLAY_INTERFACE) {
             CRecipes.ASSEMBLER.builder()
-                .input(ClayiumBlocks.MACHINE_HULL.getItem(metaTileEntity.tier as ClayTiers))
+                .input(MACHINE_HULL.getItem(metaTileEntity.tier as ClayTiers))
                 .input(MetaTileEntities.CLAY_BUFFER[metaTileEntity.tier.numeric - 4])
                 .output(metaTileEntity.getStackForm())
                 .tier(4).CEt(ClayEnergy(10.0.pow(metaTileEntity.tier.numeric - 3).toLong())).duration(40)
@@ -172,14 +173,14 @@ object MachineBlockRecipeLoader {
         }
         /* CA Resonating Collector */
         CRecipes.CA_INJECTOR.builder()
-            .input(ClayiumBlocks.MACHINE_HULL.getItem(ANTIMATTER))
+            .input(MACHINE_HULL.getItem(ANTIMATTER))
             .input(OrePrefix.gem, CMaterials.antimatter, 8)
             .output(MetaTileEntities.CA_RESONATING_COLLECTOR)
             .tier(10).CEt(2.0).duration(4000)
             .buildAndRegister()
         /* CA Injector */
         assembler.builder()
-            .input(ClayiumBlocks.MACHINE_HULL.getItem(ULTIMATE))
+            .input(MACHINE_HULL.getItem(ULTIMATE))
             .input(MetaTileEntities.CLAY_REACTOR, 16)
             .output(MetaTileEntities.CA_INJECTOR[0])
             .tier(6).CEt(ClayEnergy.of(100)).duration(480)
@@ -187,7 +188,7 @@ object MachineBlockRecipeLoader {
         for (i in 1..3) {
             val mte = MetaTileEntities.CA_INJECTOR[i]
             assembler.builder()
-                .input(ClayiumBlocks.MACHINE_HULL.getItem(mte.tier as ClayTiers))
+                .input(MACHINE_HULL.getItem(mte.tier as ClayTiers))
                 .input(MetaTileEntities.CA_INJECTOR[i - 1], 2)
                 .output(mte)
                 .tier(10).CEt(ClayEnergy.of(100 * 10.0.pow(i).toLong())).duration(480)
@@ -213,7 +214,7 @@ object MachineBlockRecipeLoader {
 
         /* Storage Container */
         assembler.builder()
-            .input(ClayiumBlocks.MACHINE_HULL.getItem(AZ91D, 4))
+            .input(MACHINE_HULL.getItem(AZ91D, 4))
             .input(MetaTileEntities.CLAY_INTERFACE[0])
             .output(MetaTileEntities.STORAGE_CONTAINER, 4)
             .tier(4).CEt(ClayEnergy.milli(100)).duration(120)
@@ -230,11 +231,19 @@ object MachineBlockRecipeLoader {
             .buildAndRegister()
         /* Clay Reactor */
         assembler.builder()
-            .input(ClayiumBlocks.MACHINE_HULL.getItem(CLAY_STEEL))
+            .input(MACHINE_HULL.getItem(CLAY_STEEL))
             .input(MetaTileEntities.LASER_PROXY[0])
             .output(MetaTileEntities.CLAY_REACTOR)
             .tier(6).CEt(ClayEnergy.of(1)).duration(1200)
             .buildAndRegister()
+        /* Waterwheel */
+        val wheelHulls = listOf(MACHINE_HULL.getItem(CLAY), MACHINE_HULL.getItem(DENSE_CLAY))
+        val wheels = listOf(UnificationEntry(OrePrefix.wheel, CMaterials.clay), UnificationEntry(OrePrefix.wheel, CMaterials.denseClay))
+        for ((i, e) in wheelHulls.zip(wheels).withIndex()) {
+            val (block, item) = e
+            RecipeUtils.addShapelessRecipe("${CValues.MOD_ID}.waterwheel_$i",
+                MetaTileEntities.WATERWHEEL[i].getStackForm(), block, item)
+        }
     }
 
     private fun registerMachineRecipeHull(metaTileEntities: List<MetaTileEntity>, inputProvider: RecipeBuilder<*>.() -> RecipeBuilder<*>) {
@@ -244,7 +253,7 @@ object MachineBlockRecipeLoader {
                 continue
             }
             CRecipes.ASSEMBLER.builder()
-                .input(ClayiumBlocks.MACHINE_HULL.getItem(mte.tier))
+                .input(MACHINE_HULL.getItem(mte.tier))
                 .output(mte.getStackForm())
                 .tier(4).CEt(1.0).duration(60)
                 .inputProvider()
@@ -285,7 +294,7 @@ object MachineBlockRecipeLoader {
 
     private fun caCondenser() {
         val transformers = MetaTileEntities.MATTER_TRANSFORMER.filter { it.tier.numeric >= 9 }
-        val hulls = ClayTiers.entries.filter { it.numeric >= 9 }.map { ClayiumBlocks.MACHINE_HULL.getItem(it) }
+        val hulls = ClayTiers.entries.filter { it.numeric >= 9 }.map { MACHINE_HULL.getItem(it) }
         for (tier in 9..11) {
             val i = tier - 9
             val hull = hulls[i]

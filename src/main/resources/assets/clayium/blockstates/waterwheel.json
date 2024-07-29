@@ -1,0 +1,25 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "face": "clayium:blocks/waterwheel"
+    },
+    "model": "clayium:machine"
+  },
+  "variants": {
+    "tier": {
+      "clay": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier1"
+        },
+        "model": "clayium:machine"
+      },
+      "dense_clay": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier2"
+        },
+        "model": "clayium:machine"
+      }
+    }
+  }
+}

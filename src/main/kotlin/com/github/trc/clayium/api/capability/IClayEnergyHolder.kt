@@ -13,6 +13,7 @@ interface IClayEnergyHolder {
      * @return true if energy can/was drained, otherwise false
      */
     fun drawEnergy(ce: ClayEnergy, simulate: Boolean = false): Boolean
+    fun addEnergy(ce: ClayEnergy)
 
     fun hasEnoughEnergy(ce: ClayEnergy): Boolean
 }

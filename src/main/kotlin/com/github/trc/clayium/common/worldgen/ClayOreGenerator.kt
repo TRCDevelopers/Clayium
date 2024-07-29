@@ -25,9 +25,10 @@ object ClayOreGenerator : IWorldGenerator {
     @GameRegistry.ObjectHolder("clayium:large_dense_clay_ore")
     lateinit var LARGE_DENSE_CLAY_ORE: Block
 
-    private var clayOreGenerator = WorldGenMinable(CLAY_ORE.defaultState, worldGen.clayOreVeinSize)
-    private var denseClayOreGenerator = WorldGenMinable(DENSE_CLAY_ORE.defaultState, worldGen.denseClayOreVeinSize)
-    private var largeDenseClayOreGenerator = WorldGenMinable(LARGE_DENSE_CLAY_ORE.defaultState, worldGen.largeDenseClayOreVeinSize)
+    private lateinit var clayOreGenerator: WorldGenMinable
+    private lateinit var denseClayOreGenerator: WorldGenMinable
+    private lateinit var largeDenseClayOreGenerator: WorldGenMinable
+    private var initialized = false
 
     @Suppress("unused")
     @SubscribeEvent
@@ -40,6 +41,12 @@ object ClayOreGenerator : IWorldGenerator {
     }
 
     override fun generate(random: Random, chunkX: Int, chunkZ: Int, world: World, chunkGenerator: IChunkGenerator, chunkProvider: IChunkProvider) {
+        if (!initialized) {
+            clayOreGenerator = WorldGenMinable(CLAY_ORE.defaultState, worldGen.clayOreVeinSize)
+            denseClayOreGenerator = WorldGenMinable(DENSE_CLAY_ORE.defaultState, worldGen.denseClayOreVeinSize)
+            largeDenseClayOreGenerator = WorldGenMinable(LARGE_DENSE_CLAY_ORE.defaultState, worldGen.largeDenseClayOreVeinSize)
+            initialized = true
+        }
         if (world.provider.dimension == 0) {
             generateOre(world, random, chunkX, chunkZ)
         }

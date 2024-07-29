@@ -142,6 +142,10 @@ object MetaTileEntities {
         registerMetaTileEntity(179 + it, PanDuplicatorMetaTileEntity(clayiumId("pan_duplicator.${it}"), ClayTiers.PURE_ANTIMATTER, it))
     }
 
+    val WATERWHEEL = registerMetaTileEntities(200, (1..2)){
+        WaterwheelMetaTileEntity(clayiumId("waterwheel.${it.lowerName}"), it)
+    }
+
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)
      * @param provider tier -> MetaTileEntity
