@@ -91,7 +91,7 @@ class WaterwheelMetaTileEntity(
                     .child(IKey.dynamic { I18n.format("gui.clayium.waterwheel.waters", waterCount) }.asWidget()
                         .widthRel(0.3f).align(Alignment.CenterRight))
                     .child(IKey.dynamic { I18n.format("gui.clayium.waterwheel.progress", progress) }.asWidget()
-                        .widthRel(0.3f).align(Alignment.CenterLeft)))
+                        .widthRel(0.6f).align(Alignment.CenterLeft)))
                 .child(SlotGroupWidget.playerInventory(0)))
     }
 
