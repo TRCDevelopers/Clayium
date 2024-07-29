@@ -564,15 +564,14 @@ tile.clayium.blockCAReactorHull.9.tooltip.line1=Requires Mk III or higher Core a
 
 tile.clayium.blockEnergeticClayDecomposer.name=Energetic Clay Decomposer
 
-tile.clayium.blockClayWaterWheel.name=Clay Water Wheel
-tile.clayium.blockDenseClayWaterWheel.name=Dense Clay Water Wheel
-tooltip.clayium.WaterWheel.line1=Supplies energy to adjacent tier 2, 3 machines.
-tooltip.clayium.WaterWheel.line2=__DETAIL__
-tooltip.clayium.WaterWheel.line3=The number of water flow in the area of 3x3x3
-tooltip.clayium.WaterWheel.line4=determines the strength of energy.
-gui.clayium.WaterWheel.progress=Progress\: %1$d
-gui.clayium.WaterWheel.durability=Durability\: %1$d
-gui.clayium.WaterWheel.surroundingWater=Water\: %1$d
+machine.clayium.waterwheel=%s Water Wheel
+machine.clayium.waterwheel.tooltip1=Supplies energy to adjacent machines.
+machine.clayium.waterwheel.tooltip2=__DETAIL__
+machine.clayium.waterwheel.tooltip3=The number of water flow in the area of 3x3x3
+machine.clayium.waterwheel.tooltip4=determines the strength of energy.
+gui.clayium.waterwheel.progress=Progress\: %1$d
+gui.clayium.waterwheel.durability=Durability\: %1$d
+gui.clayium.waterwheel.waters=Water\: %1$d
 
 machine.clayium.clay_laser.clay_steel=Blue Clay Laser
 machine.clayium.clay_laser.clayium=Green Clay Laser

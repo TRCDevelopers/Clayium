@@ -134,6 +134,10 @@ object MetaTileEntities {
         ClayMultiTrackBufferMetaTileEntity(clayiumId("multi_track_buffer.${it.lowerName}"), it)
     }
 
+    val WATERWHEEL = registerMetaTileEntities(200, (1..2)){
+        WaterwheelMetaTileEntity(clayiumId("waterwheel.${it.lowerName}"), it)
+    }
+
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)
      * @param provider tier -> MetaTileEntity
