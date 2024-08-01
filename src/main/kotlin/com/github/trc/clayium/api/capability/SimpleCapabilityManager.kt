@@ -1,5 +1,9 @@
 package com.github.trc.clayium.api.capability
 
+import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
+import com.github.trc.clayium.api.pan.IPanAdapter
+import com.github.trc.clayium.api.pan.IPanCable
+import com.github.trc.clayium.api.pan.IPanUser
 import net.minecraft.nbt.NBTBase
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
@@ -22,10 +26,14 @@ object SimpleCapabilityManager {
         registerCapabilityWithNoDefault(IClayEnergyHolder::class.java)
         registerCapabilityWithNoDefault(IClayLaserSource::class.java)
         registerCapabilityWithNoDefault(IClayLaserAcceptor::class.java)
+        registerCapabilityWithNoDefault(AbstractRecipeLogic::class.java)
 
         registerCapabilityWithNoDefault(ISynchronizedInterface::class.java)
         registerCapabilityWithNoDefault(IItemFilter::class.java)
         registerCapabilityWithNoDefault(IClayEnergyProvider::class.java)
         registerCapabilityWithNoDefault(IConfigurationTool::class.java)
+        registerCapabilityWithNoDefault(IPanCable::class.java)
+        registerCapabilityWithNoDefault(IPanUser::class.java)
+        registerCapabilityWithNoDefault(IPanAdapter::class.java)
     }
 }

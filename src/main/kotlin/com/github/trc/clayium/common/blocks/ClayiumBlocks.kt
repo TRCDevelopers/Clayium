@@ -3,6 +3,7 @@ package com.github.trc.clayium.common.blocks
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.blocks.clayworktable.BlockClayWorkTable
 import com.github.trc.clayium.common.blocks.material.BlockCompressedClay
@@ -44,6 +45,8 @@ object ClayiumBlocks {
     val QUARTZ_CRUCIBLE = createBlock("quartz_crucible", BlockQuartzCrucible())
     val MACHINE_HULL = createBlock("machine_hull", BlockMachineHull())
     val RESONATOR = createBlock("resonator", BlockResonator())
+
+    val PAN_CABLE = createBlock("pan_cable", BlockPanCable())
 
     /* ---------------------------------- */
 
@@ -123,7 +126,13 @@ object ClayiumBlocks {
 
     @SideOnly(Side.CLIENT)
     fun registerModels() {
-        blocks.values.forEach(this::registerItemModel)
+        blocks.values.forEach {
+            when (it) {
+                PAN_CABLE -> ModelLoader.setCustomModelResourceLocation(it.getAsItem(), 0,
+                    ModelResourceLocation(it.registryName!!, "inventory"))
+                else -> registerItemModel(it)
+            }
+        }
         for (block in ENERGIZED_CLAY_BLOCKS) block.registerModels()
         for (block in COMPRESSED_CLAY_BLOCKS) block.registerModels()
     }

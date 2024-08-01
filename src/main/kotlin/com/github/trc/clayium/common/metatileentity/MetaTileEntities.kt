@@ -130,8 +130,16 @@ object MetaTileEntities {
     val CA_CONDENSER = registerMetaTileEntities(160, (9..11)) {
         CaCondenserMetaTileEntity(clayiumId("ca_condenser.${it.lowerName}"), it)
     }
-    val MULTI_TRACK_BUFFER = registerMetaTileEntities(163, (4..13)){
+    val MULTI_TRACK_BUFFER = registerMetaTileEntities(163, (4..13)) {
         ClayMultiTrackBufferMetaTileEntity(clayiumId("multi_track_buffer.${it.lowerName}"), it)
+    }
+
+    val PAN_CORE = registerMetaTileEntity(174, PanCoreMetaTileEntity(clayiumId("pan_core"), ClayTiers.PURE_ANTIMATTER))
+    val PAN_ADAPTER = registerMetaTileEntities(175, (10..13)) {
+        PanAdapterMetaTileEntity(clayiumId("pan_adapter.${it.lowerName}"), it)
+    }
+    val PAN_DUPLICATOR = (1..10).map {
+        registerMetaTileEntity(179 + it, PanDuplicatorMetaTileEntity(clayiumId("pan_duplicator.${it}"), ClayTiers.PURE_ANTIMATTER, it))
     }
 
     val WATERWHEEL = registerMetaTileEntities(200, (1..2)){

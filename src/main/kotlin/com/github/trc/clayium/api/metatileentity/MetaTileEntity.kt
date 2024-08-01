@@ -540,6 +540,11 @@ abstract class MetaTileEntity(
     }
 
     @SideOnly(Side.CLIENT)
+    open fun getItemStackDisplayName(): String {
+        return I18n.format(this.translationKey, I18n.format(this.tier.prefixTranslationKey))
+    }
+
+    @SideOnly(Side.CLIENT)
     @MustBeInvokedByOverriders
     open fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         tooltip.add(I18n.format("tooltip.clayium.tier", tier.numeric))
@@ -564,10 +569,9 @@ abstract class MetaTileEntity(
      * Adds base textures such as Machine hulls.
      */
     @SideOnly(Side.CLIENT)
-    open fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): MutableList<BakedQuad> {
-        if (state == null || side == null || state !is IExtendedBlockState) return mutableListOf()
-        val quads = mutableListOf(ModelTextures.getHullQuads(this.tier)?.get(side) ?: return mutableListOf())
-        return quads
+    open fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+        if (state == null || side == null || state !is IExtendedBlockState) return
+        quads.add(ModelTextures.getHullQuads(this.tier)?.get(side) ?: return)
     }
 
     /**
@@ -596,6 +600,10 @@ abstract class MetaTileEntity(
                 .child(ItemSlot().align(Alignment.Center)
                     .slot(slot)
                     .background(IDrawable.EMPTY))
+
+    protected inline fun onServer(block: () -> Unit) {
+        if (!isRemote) block()
+    }
 
     private data class FilterAndType(val filter: IItemFilter, val type: FilterType)
 

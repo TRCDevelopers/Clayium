@@ -636,23 +636,14 @@ tile.clayium.blockClaySteelAutoCrafter.name=Clay Steel Auto Crafter
 tile.clayium.blockClayiumAutoCrafter.name=Clayium Auto Crafter
 tile.clayium.blockUltimateAutoCrafter.name=Ultimate Auto Crafter
 
-tile.clayium.blockPANCable.name=PAN Cable
-tile.clayium.blockPANCore.name=PAN Core
-tile.clayium.blockAntimatterPANAdapter.name=PAN Adapter Mk I
-tile.clayium.blockPureAntimatterPANAdapter.name=PAN Adapter Mk II
-tile.clayium.blockOECPANAdapter.name=PAN Adapter Mk III
-tile.clayium.blockOPAPANAdapter.name=PAN Adapter Mk IV
+tile.clayium.pan_cable=PAN Cable
+machine.clayium.pan_core=PAN Core
+machine.clayium.pan_adapter.antimatter=PAN Adapter Mk I
+machine.clayium.pan_adapter.pure_antimatter=PAN Adapter Mk II
+machine.clayium.pan_adapter.oec=PAN Adapter Mk III
+machine.clayium.pan_adapter.opa=PAN Adapter Mk IV
 
-tile.clayium.blockBasicPANDuplicator.name=PAN Duplicator Rank 1
-tile.clayium.blockAdvancedPANDuplicator.name=PAN Duplicator Rank 2
-tile.clayium.blockPrecisionPANDuplicator.name=PAN Duplicator Rank 3
-tile.clayium.blockClaySteelPANDuplicator.name=PAN Duplicator Rank 4
-tile.clayium.blockClayiumPANDuplicator.name=PAN Duplicator Rank 5
-tile.clayium.blockUltimatePANDuplicator.name=PAN Duplicator Rank 6
-tile.clayium.blockAntimatterPANDuplicator.name=PAN Duplicator Rank 7
-tile.clayium.blockPureAntimatterPANDuplicator.name=PAN Duplicator Rank 8
-tile.clayium.blockOECPANDuplicator.name=PAN Duplicator Rank 9
-tile.clayium.blockOPAPANDuplicator.name=PAN Duplicator Rank 10
+machine.clayium.pan_duplicator=PAN Duplicator Rank %s
 
 tile.clayium.blockBasicFluidTranslator.name=Basic Fluid Buffer
 tile.clayium.blockAdvancedFluidTranslator.name=Advanced Fluid Buffer

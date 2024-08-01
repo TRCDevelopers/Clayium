@@ -1,0 +1,29 @@
+{
+  "multipart": [
+    { "apply": { "model": "clayium:pan_cable_center" }},
+    {
+      "when": { "down": "true" },
+      "apply": { "model": "clayium:pan_cable_down" }
+    },
+    {
+      "when": { "up": "true" },
+      "apply": { "model": "clayium:pan_cable_down", "x": 180 }
+    },
+    {
+      "when": { "north": "true" },
+      "apply": { "model": "clayium:pan_cable_down", "x": 90, "y": 180 }
+    },
+    {
+      "when": { "south": "true" },
+      "apply": { "model": "clayium:pan_cable_down", "x": 90 }
+    },
+    {
+      "when": { "east": "true" },
+      "apply": { "model": "clayium:pan_cable_down", "x": 90, "y": 270 }
+    },
+    {
+      "when": { "west": "true" },
+      "apply": { "model": "clayium:pan_cable_down", "x": 90, "y": 90 }
+    }
+  ]
+}

@@ -23,7 +23,7 @@ import net.minecraft.nbt.NBTTagCompound
 
 abstract class AbstractRecipeLogic(
     metaTileEntity: MetaTileEntity,
-    private val recipeRegistry: RecipeRegistry<*>,
+    val recipeRegistry: RecipeRegistry<*>,
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.RECIPE_LOGIC), IControllable {
 
     protected val inputInventory = metaTileEntity.importItems

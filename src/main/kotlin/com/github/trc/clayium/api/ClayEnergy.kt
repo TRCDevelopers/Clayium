@@ -1,12 +1,21 @@
 package com.github.trc.clayium.api
 
+import net.minecraft.network.PacketBuffer
 import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.text.format
 import kotlin.text.replace
 
+fun PacketBuffer.writeClayEnergy(energy: ClayEnergy) {
+    writeLong(energy.energy)
+}
+
+fun PacketBuffer.readClayEnergy(): ClayEnergy {
+    return ClayEnergy(readLong())
+}
+
 @JvmInline
-value class ClayEnergy(val energy: Long) {
+value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
 
     // todo replace toString with this
     fun format(): String {
@@ -28,10 +37,12 @@ value class ClayEnergy(val energy: Long) {
     operator fun minus(other: ClayEnergy) = ClayEnergy(energy - other.energy)
     operator fun times(value: Int) = ClayEnergy(energy * value)
     operator fun times(value: Long) = ClayEnergy(energy * value)
-    operator fun compareTo(other: ClayEnergy) = energy.compareTo(other.energy)
+    operator fun div(value: Int) = ClayEnergy(energy / value)
+    override operator fun compareTo(other: ClayEnergy) = energy.compareTo(other.energy)
 
     companion object {
         val ZERO = ClayEnergy(0)
+        val MAX = ClayEnergy(Long.MAX_VALUE)
 
         val units = listOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y")
         private val matchesExcessZero = Regex("0+\$")

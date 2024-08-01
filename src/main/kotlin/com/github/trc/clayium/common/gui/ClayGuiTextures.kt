@@ -2,6 +2,7 @@ package com.github.trc.clayium.common.gui
 
 import com.cleanroommc.modularui.drawable.UITexture
 import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.common.Clayium
 
 object ClayGuiTextures {
@@ -9,17 +10,17 @@ object ClayGuiTextures {
         .location(CValues.MOD_ID, "gui/slot")
         .imageSize(256, 256)
 
-    val LARGE_SLOT = UITexture.builder()
-        .location(Clayium.MOD_ID, "gui/slot")
-        .imageSize(256, 256)
+    val LARGE_SLOT = slotTexture()
         .uv(0, 32, 26, 26)
         .canApplyTheme()
         .build()
 
-    val CLAY_SLOT = UITexture.builder()
-        .location(Clayium.MOD_ID, "gui/slot")
-        .imageSize(256, 256)
+    val CLAY_SLOT = slotTexture()
         .uv(96, 0, 18, 18)
+        .build()
+
+    val FILTER_SLOT = slotTexture()
+        .uv(96, 32, 18, 18)
         .build()
 
     // memo: gui/slot slot interval is 14 pixels
@@ -62,4 +63,12 @@ object ClayGuiTextures {
         .uv(1, 0, 22, 34)
         .canApplyTheme()
         .build()
+
+    // GuiTextures.MC_BUTTON_PRESSED is bugged
+    val BUTTON_PRESSED = UITexture.builder()
+            .location(Mods.ModularUI.modId, "gui/widgets/mc_button")
+            .imageSize(16, 32)
+            .uv(0, 16, 16, 16)
+            .name("mc_button_hovered")
+            .build()
 }

@@ -23,6 +23,9 @@ import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trc.clayium.common.loaders.OreDictionaryLoader
 import com.github.trc.clayium.common.loaders.recipe.CRecipeLoader
 import com.github.trc.clayium.common.metatileentity.MetaTileEntities
+import com.github.trc.clayium.common.pan.factories.CPanRecipeFactory
+import com.github.trc.clayium.common.pan.factories.CraftingTablePanRecipeFactory
+import com.github.trc.clayium.common.pan.factories.FurnacePanRecipeFactory
 import com.github.trc.clayium.common.unification.material.CMaterials
 import com.github.trc.clayium.common.unification.ore.OrePrefix
 import com.github.trc.clayium.common.util.DebugUtils
@@ -60,6 +63,10 @@ open class CommonProxy {
         GuiManager.registerFactory(MetaTileEntityGuiFactory)
 
         SimpleCapabilityManager.registerCapabilities()
+
+        ClayiumApi.PAN_RECIPE_FACTORIES.add(CPanRecipeFactory)
+        ClayiumApi.PAN_RECIPE_FACTORIES.add(CraftingTablePanRecipeFactory)
+        ClayiumApi.PAN_RECIPE_FACTORIES.add(FurnacePanRecipeFactory)
     }
 
     open fun init(event: FMLInitializationEvent) {
@@ -124,6 +131,8 @@ open class CommonProxy {
         registry.register(createItemBlock(ClayiumBlocks.RESONATOR, ::ItemBlockTiered))
 
         registry.register(createItemBlock(ClayiumBlocks.QUARTZ_CRUCIBLE, ::ItemBlockTiered))
+
+        registry.register(createItemBlock(ClayiumBlocks.PAN_CABLE, ::ItemBlockTiered))
 
         registry.register(ItemBlock(ClayiumBlocks.LASER_REFLECTOR).apply {
             registryName = ClayiumBlocks.LASER_REFLECTOR.registryName

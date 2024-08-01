@@ -38,6 +38,12 @@ public class ConfigCore {
         })
         @Config.RangeInt(min = 1, max = 100)
         public int waterwheelEfficiency = 40;
+
+        @Config.Comment({
+                "Max search distance for PAN"
+        })
+        @Config.RangeInt(min = 1, max = 1000)
+        public int panMaxSearchDistance = 500;
     }
 
     public static class SubCategoryWorldGen {

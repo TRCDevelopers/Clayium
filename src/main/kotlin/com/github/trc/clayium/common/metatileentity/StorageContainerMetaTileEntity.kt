@@ -274,9 +274,8 @@ class StorageContainerMetaTileEntity(
     }
 
     @SideOnly(Side.CLIENT)
-    override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): MutableList<BakedQuad> {
-        if (state == null || side == null) return super.getQuads(state, side, rand)
-        val quads = super.getQuads(state, side, rand)
+    override fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+        if (state == null || side == null) return
         if (this.maxStoredItems == UPGRADED_MAX_AMOUNT) {
             quads.add(sideQuadsUpgraded[side.index])
         } else {
@@ -285,7 +284,6 @@ class StorageContainerMetaTileEntity(
                 side == EnumFacing.UP -> quads.add(topQuad)
             }
         }
-        return quads
     }
 
     @SideOnly(Side.CLIENT)

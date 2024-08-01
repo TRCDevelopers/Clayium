@@ -74,7 +74,8 @@ class MetaTileEntityBakedModel(
         if (state == null || side == null || state !is IExtendedBlockState) return emptyList()
         val mte = (state.getValue(TILE_ENTITY) as? MetaTileEntityHolder)?.metaTileEntity ?: return emptyList()
 
-        val quads = mte.getQuads(state, side, rand)
+        val quads = mutableListOf<BakedQuad>()
+        mte.getQuads(quads, state, side, rand)
         mte.overlayQuads(quads, state, side, rand)
         mte.inputModes.forEachIndexed { facingIndex, mteInputMode ->
             val side2Quad = inputModeQuads[mteInputMode] ?: return@forEachIndexed
