@@ -6,7 +6,7 @@ import com.github.trc.clayium.common.recipe.RecipeCategory
 import com.github.trc.clayium.common.recipe.builder.RecipeBuilder
 import net.minecraft.item.ItemStack
 
-class RecipeRegistry<R: RecipeBuilder<R>>(
+open class RecipeRegistry<R: RecipeBuilder<R>>(
     val category: RecipeCategory,
     private val builderSample: R,
     val maxInputs: Int,
