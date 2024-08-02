@@ -161,6 +161,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
 
         val recipe = Recipe(inputs, outputs, chancedOutputList,
             duration, cePerTick, tier)
+        recipeRegistry.addRecipe(recipe)
     }
 
     protected fun setDefaults() {

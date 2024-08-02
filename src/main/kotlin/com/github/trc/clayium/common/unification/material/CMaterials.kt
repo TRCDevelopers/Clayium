@@ -77,6 +77,7 @@ object CMaterials {
     val chromium = Material.create(22, clayiumId("chrome")) {
         tier(9).colors(0xF0D2D2, 0x191919, 0xFFFFFF)
         ingot().dust()
+        impureDust(0xF0D2D2, 0x78783C, 0xDCDCDC)
         blastSmelting(4.0, 9, 2000)
     }
     val cobalt = Material.create(23, clayiumId("cobalt")) {
@@ -129,7 +130,10 @@ object CMaterials {
         tier(11).colors(0xF0F0F0, 0xD2D2D2, 0xEBEBEB)
         ingot()
     }
-    val iron = Material.create(49, clayiumId("iron")) {}
+    val iron = Material.create(49, clayiumId("iron")) {
+        ingot().dust()
+        impureDust(0xD8D8D8, 0x78783C, 0xDCDCDC)
+    }
     val krypton = Material.create(50, clayiumId("krypton")) {}
     val lanthanum = Material.create(51, clayiumId("lanthanum")) {
         tier(8).colors(0x919191, 0xEB0000, 0xFFFFFF)

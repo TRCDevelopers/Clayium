@@ -33,6 +33,7 @@ import com.github.trc.clayium.common.worldgen.ClayOreGenerator
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
+import net.minecraft.item.crafting.IRecipe
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.RegistryEvent
@@ -70,11 +71,15 @@ open class CommonProxy {
     }
 
     open fun init(event: FMLInitializationEvent) {
-        ClayiumBlocks.registerOreDictionaries()
-        OreDictionaryLoader.loadOreDictionaries()
     }
 
     open fun postInit(event: FMLPostInitializationEvent) {
+    }
+
+    @Suppress("unused")
+    @SubscribeEvent
+    fun registerRecipes(event: RegistryEvent.Register<IRecipe>) {
+        OreDictionaryLoader.loadOreDictionaries()
         CRecipeLoader.load()
     }
 
