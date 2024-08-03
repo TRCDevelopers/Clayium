@@ -292,8 +292,7 @@ tile.clayium.blockBasicMillingMachine.name=フライス盤
 machine.clayium.assembler=%s 組立機
 machine.clayium.assembler.tooltip1=複雑なレシピにウンザリしたあなたへ
 
-tile.clayium.blockSimpleInscriber.name=簡易印刷機
-tile.clayium.blockBasicInscriber.name=印刷機
+machine.clayium.inscriber=%s印刷機
 
 tile.clayium.blockSimpleCentrifuge.name=簡易遠心分離機
 tile.clayium.blockBasicCentrifuge.name=遠心分離機

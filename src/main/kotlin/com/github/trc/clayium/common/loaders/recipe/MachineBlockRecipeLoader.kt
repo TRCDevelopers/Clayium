@@ -5,7 +5,6 @@ import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ClayTiers.*
-import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.blocks.ClayiumBlocks.MACHINE_HULL
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
@@ -17,7 +16,6 @@ import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.common.unification.material.CMaterials
 import com.github.trc.clayium.common.unification.ore.OrePrefix
 import com.github.trc.clayium.common.unification.stack.UnificationEntry
-import net.minecraft.item.ItemStack
 import kotlin.math.pow
 
 object MachineBlockRecipeLoader {
@@ -139,7 +137,6 @@ object MachineBlockRecipeLoader {
         registerMachineRecipeHull(MetaTileEntities.ASSEMBLER) {
             input(OrePrefix.gear, CMaterials.denseClay)
         }
-        //inscriber, BasicCircuit
         //centrifuge, SpindleDenseClay
         registerMachineRecipeHull(MetaTileEntities.CHEMICAL_REACTOR) {
             input(MetaItemClayParts.BASIC_CIRCUIT)
@@ -284,6 +281,15 @@ object MachineBlockRecipeLoader {
                     .CEt(ClayEnergy.of(10.0.pow(i).toLong())).duration(120)
                     .buildAndRegister()
             }
+        }
+        /* Inscriber */
+        for ((a, i) in MetaTileEntities.ASSEMBLER.take(2).zip(MetaTileEntities.INSCRIBER)) {
+            assembler.builder()
+                .input(a)
+                .input(MetaItemClayParts.BASIC_CIRCUIT)
+                .output(i)
+                .tier(4).CEt(ClayEnergy.micro(100)).duration(40)
+                .buildAndRegister()
         }
     }
 

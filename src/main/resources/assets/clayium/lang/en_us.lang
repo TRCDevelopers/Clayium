@@ -324,8 +324,7 @@ tile.clayium.blockBasicMillingMachine.name=Basic Milling Machine
 machine.clayium.assembler=%s Assembler
 machine.clayium.assembler.tooltip1=Say goodbye to complicated craft.
 
-tile.clayium.blockSimpleInscriber.name=Simple Inscriber
-tile.clayium.blockBasicInscriber.name=Basic Inscriber
+machine.clayium.inscriber=%s Inscriber
 
 tile.clayium.blockSimpleCentrifuge.name=Simple Centrifuge
 tile.clayium.blockBasicCentrifuge.name=Basic Centrifuge

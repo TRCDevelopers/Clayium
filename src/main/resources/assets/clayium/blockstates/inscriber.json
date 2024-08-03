@@ -1,0 +1,25 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "face": "clayium:blocks/inscriber"
+    },
+    "model": "clayium:machine"
+  },
+  "variants": {
+    "tier": {
+      "3": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier3"
+        },
+        "model": "clayium:machine"
+      },
+      "4": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier4"
+        },
+        "model": "clayium:machine"
+      }
+    }
+  }
+}

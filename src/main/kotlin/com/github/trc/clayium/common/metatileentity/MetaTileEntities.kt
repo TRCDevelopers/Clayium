@@ -152,6 +152,9 @@ object MetaTileEntities {
     val ELECTROLYSIS_REACTOR = registerMetaTileEntities(206, (6..9)) {
         SimpleMachineMetaTileEntity(clayiumId("electrolysis_reactor.${it.lowerName}"), it, CRecipes.ELECTROLYSIS_REACTOR)
     }
+    val INSCRIBER = registerMetaTileEntities(210, (3..4)) {
+        SimpleMachineMetaTileEntity(clayiumId("inscriber.${it.lowerName}"), it, CRecipes.INSCRIBER)
+    }
 
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)
