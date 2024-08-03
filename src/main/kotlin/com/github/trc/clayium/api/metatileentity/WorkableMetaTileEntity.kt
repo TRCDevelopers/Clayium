@@ -7,11 +7,14 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widget.Widget
+import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
@@ -82,12 +85,14 @@ abstract class WorkableMetaTileEntity(
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        val panel = ModularPanel.defaultPanel(this.metaTileEntityId.toString())
-
-        // title
-        panel.child(IKey.lang("machine.clayium.${recipeRegistry.category.categoryName}", IKey.lang(tier.prefixTranslationKey)).asWidget()
-            .top(6)
-            .left(6))
+        val ceButton = ButtonWidget()
+            .size(16, 16)
+            .overlay(ClayGuiTextures.CE_BUTTON)
+            .hoverOverlay(ClayGuiTextures.CE_BUTTON_HOVERED)
+            .onMousePressed {
+                clayEnergyHolder.addEnergy(ClayEnergy(1))
+                true
+            }
 
         val slotsAndProgressBar = Row()
             .widthRel(0.7f).height(26)
@@ -153,19 +158,26 @@ abstract class WorkableMetaTileEntity(
                     .align(Alignment.CenterRight)
             )
         }
-        panel.child(createBaseUi(syncManager)
-                .child(slotsAndProgressBar)
-                .child(clayEnergyHolder.createSlotWidget()
-                    .right(7).top(58)
-                    .setEnabledIf { GuiScreen.isShiftKeyDown() }
-                    .background(IDrawable.EMPTY))
-                .child(clayEnergyHolder.createCeTextWidget(syncManager)
-                    .widthRel(0.5f)
-                    .pos(6, 60))
-                .child(playerInventoryTitle()
-                    .align(Alignment.BottomLeft).left(8)))
 
-        return panel.bindPlayerInventory()
+        return ModularPanel.defaultPanel(this.metaTileEntityId.toString())
+            .child(Column().margin(7).sizeRel(1f)
+                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
+                    .child(IKey.lang("machine.clayium.${recipeRegistry.category.categoryName}", IKey.lang(tier.prefixTranslationKey)).asWidget()
+                        .align(Alignment.TopLeft))
+                    .child(IKey.lang("container.inventory").asWidget()
+                        .align(Alignment.BottomLeft))
+                    .child(clayEnergyHolder.createCeTextWidget(syncManager)
+                        .bottom(12).left(0).widthRel(0.5f))
+                    .child(clayEnergyHolder.createSlotWidget()
+                        .align(Alignment.BottomRight)
+                        .setEnabledIf { GuiScreen.isShiftKeyDown() }
+                        .background(IDrawable.EMPTY))
+                    .child(slotsAndProgressBar.align(Alignment.Center))
+                    .child(ceButton.align(Alignment.BottomCenter))
+                )
+                .child(SlotGroupWidget.playerInventory(0))
+            )
+
     }
 
     protected open fun createBaseUi(syncManager: GuiSyncManager): Column {
