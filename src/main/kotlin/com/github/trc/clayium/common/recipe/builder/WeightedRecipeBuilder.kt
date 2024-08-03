@@ -14,7 +14,7 @@ class WeightedRecipeBuilder : RecipeBuilder<WeightedRecipeBuilder> {
         val totalWeight = chancedOutputs.sumOf { it.chance }
         val chanceUnit = MAX_CHANCE / totalWeight
         val finalizedOutputs = chancedOutputs.map { it.copy(chance = chanceUnit * it.chance) }
-        val chancedOutputList = ChancedOutputList(finalizedOutputs, ChancedOutputList.XOR)
+        val chancedOutputList = ChancedOutputList(finalizedOutputs, ChancedOutputList.WEIGHTED)
         val recipe = Recipe(inputs, outputs, chancedOutputList, duration, cePerTick, tier)
         recipeRegistry.addRecipe(recipe)
     }

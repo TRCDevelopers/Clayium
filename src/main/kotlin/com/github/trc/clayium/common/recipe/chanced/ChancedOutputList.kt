@@ -9,6 +9,21 @@ class ChancedOutputList<RESULT>(
     }
 
     companion object {
+        val WEIGHTED = object : IChancedOutputLogic {
+            override fun <R, T : IChancedOutput<R>> roll(chancedOutputs: List<T>): List<R> {
+                val totalWeight = chancedOutputs.sumOf { it.chance }
+                val pos = (1..totalWeight).random()
+                var currentPos = 0
+                for (chancedOutput in chancedOutputs) {
+                    currentPos += chancedOutput.chance
+                    if (pos < currentPos) {
+                        return listOf(chancedOutput.result)
+                    }
+                }
+                return emptyList()
+            }
+        }
+
         val XOR = object : IChancedOutputLogic {
             override fun <R, T : IChancedOutput<R>> roll(chancedOutputs: List<T>): List<R> {
                 for (chancedOutput in chancedOutputs) {
