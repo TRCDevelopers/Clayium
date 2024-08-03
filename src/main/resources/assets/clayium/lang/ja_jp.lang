@@ -323,9 +323,7 @@ tooltip.clayium.MultitrackBuffer.line3=複線バッファー同士のアイテ�
 tooltip.clayium.MultitrackBuffer.line4=各色グループごとに独立して行われる。
 tooltip.clayium.MultitrackBuffer.line5=さらに、グループごとにフィルタースロットを持つ。
 
-tile.clayium.blockBasicChemicalReactor.name=化学反応機
-tile.clayium.blockAdvancedChemicalReactor.name=発展化学反応機
-tile.clayium.blockClayiumChemicalReactor.name=クレイウム化学反応機
+machine.clayium.chemical_reactor=%s化学反応機
 
 machine.clayium.salt_extractor=%s塩析出装置
 machine.clayium.salt_extractor.tooltip1=水から塩分を抽出する

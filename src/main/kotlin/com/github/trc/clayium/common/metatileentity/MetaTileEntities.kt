@@ -146,6 +146,9 @@ object MetaTileEntities {
         WaterwheelMetaTileEntity(clayiumId("waterwheel.${it.lowerName}"), it)
     }
     val CHEMICAL_METAL_SEPARATOR = registerMetaTileEntity(202, ChemicalMetalSeparatorMetaTileEntity(clayiumId("chemical_metal_separator"), ClayTiers.PRECISION))
+    val CHEMICAL_REACTOR = registerMetaTileEntities(203, intArrayOf(4, 5, 8)) {
+        SimpleMachineMetaTileEntity(clayiumId("chemical_reactor.${it.lowerName}"), it, CRecipes.CHEMICAL_REACTOR)
+    }
 
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)

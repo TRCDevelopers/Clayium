@@ -355,9 +355,7 @@ tooltip.clayium.MultitrackBuffer.line3=Transfer of items between two Multitrack 
 tooltip.clayium.MultitrackBuffer.line4=will be performed independently within each color group.
 tooltip.clayium.MultitrackBuffer.line5=Moreover, this buffer has one filter slot per group.
 
-tile.clayium.blockBasicChemicalReactor.name=Basic Chemical Reactor
-tile.clayium.blockAdvancedChemicalReactor.name=Advanced Chemical Reactor
-tile.clayium.blockClayiumChemicalReactor.name=Clayium Chemical Reactor
+machine.clayium.chemical_reactor=%s Chemical Reactor
 
 machine.clayium.salt_extractor=Basic Salt Extractor
 machine.clayium.salt_extractor.tooltip1=Extracts salt from water.

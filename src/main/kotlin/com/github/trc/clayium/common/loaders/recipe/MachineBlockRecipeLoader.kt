@@ -138,7 +138,9 @@ object MachineBlockRecipeLoader {
         }
         //inscriber, BasicCircuit
         //centrifuge, SpindleDenseClay
-        //chemical reactor, BasicCircuit
+        registerMachineRecipeHull(MetaTileEntities.CHEMICAL_REACTOR) {
+            input(MetaItemClayParts.BASIC_CIRCUIT)
+        }
         //AutomaticClayCondenser, Buffer+AdvancedCircuit
         registerMachineRecipeHull(MetaTileEntities.SMELTER) {
             input(MetaItemClayParts.SIMPLE_CIRCUIT)
