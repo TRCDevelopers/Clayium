@@ -12,7 +12,7 @@ object ChemicalMetalSeparatorRecipeLoader {
 
         registry.builder()
             .input(OrePrefix.dust, CMaterials.industrialClay)
-            .duration(40).CEt(ClayEnergy.milli(50))
+            .duration(40).CEt(ClayEnergy.milli(50)).tier(6)
             .chancedOutput(OrePrefix.impureDust, CMaterials.aluminum, 200)
             .chancedOutput(OrePrefix.impureDust, CMaterials.manganese, 80)
             .chancedOutput(OrePrefix.impureDust, CMaterials.magnesium, 60)
