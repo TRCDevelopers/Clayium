@@ -16,6 +16,7 @@ class MetalSeparatorRecipeWrapper(
     }
 
     override fun drawInfo(minecraft: Minecraft, recipeWidth: Int, recipeHeight: Int, mouseX: Int, mouseY: Int) {
+        super.drawInfo(minecraft, recipeWidth, recipeHeight, mouseX, mouseY)
         val chance = "${recipe.chancedOutputs!!.chancedOutputs[index].chance / 100.0} %"
         val chanceTextWidth = minecraft.fontRenderer.getStringWidth(chance)
 
