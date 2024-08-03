@@ -1,5 +1,6 @@
 package com.github.trc.clayium.common.metatileentity
 
+import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
@@ -18,6 +19,7 @@ import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.recipe.registry.CRecipes
+import net.minecraft.client.gui.GuiScreen
 import net.minecraft.util.ResourceLocation
 
 class ChemicalMetalSeparatorMetaTileEntity(
@@ -57,6 +59,12 @@ class ChemicalMetalSeparatorMetaTileEntity(
                     .child(IKey.lang("container.inventory").asWidget()
                         .align(Alignment.BottomLeft))
                     .child(slotsAndProgressBar)
+                    .child(clayEnergyHolder.createSlotWidget()
+                        .align(Alignment.BottomRight)
+                        .setEnabledIf { GuiScreen.isShiftKeyDown() }
+                        .background(IDrawable.EMPTY))
+                    .child(clayEnergyHolder.createCeTextWidget(syncManager).widthRel(0.5f)
+                        .bottom(12).left(0))
                 )
                 .child(SlotGroupWidget.playerInventory(0))
             )
