@@ -265,6 +265,26 @@ object MachineBlockRecipeLoader {
                 .tier(4).CEt(ClayEnergy.milli(100)).duration(40)
                 .buildAndRegister()
         }
+        /* Matter Transformer */
+        for ((i, mte) in MetaTileEntities.MATTER_TRANSFORMER.withIndex()) {
+            if (i in 0..2) {
+                assembler.builder()
+                    .input(MetaTileEntities.CLAY_REACTOR)
+                    .input(MetaTileEntities.ELECTROLYSIS_REACTOR[i + 1])
+                    .output(mte)
+                    .tier(6)
+                    .CEt(ClayEnergy.of(10.0.pow(i).toLong())).duration(120)
+                    .buildAndRegister()
+            } else {
+                assembler.builder()
+                    .input(MetaTileEntities.CLAY_REACTOR)
+                    .input(MetaTileEntities.CA_INJECTOR[i - 2])
+                    .output(mte)
+                    .tier(6)
+                    .CEt(ClayEnergy.of(10.0.pow(i).toLong())).duration(120)
+                    .buildAndRegister()
+            }
+        }
     }
 
     private fun registerMachineRecipeHull(metaTileEntities: List<MetaTileEntity>, inputProvider: RecipeBuilder<*>.() -> RecipeBuilder<*>) {
