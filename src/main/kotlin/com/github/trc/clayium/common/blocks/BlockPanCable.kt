@@ -2,8 +2,8 @@ package com.github.trc.clayium.common.blocks
 
 import com.github.trc.clayium.api.block.ITieredBlock
 import com.github.trc.clayium.api.pan.IPanCable
-import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.pan.isPanCable
+import com.github.trc.clayium.api.util.ClayTiers
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
