@@ -246,6 +246,13 @@ object MachineBlockRecipeLoader {
             RecipeUtils.addShapelessRecipe("${CValues.MOD_ID}.waterwheel_$i",
                 MetaTileEntities.WATERWHEEL[i].getStackForm(), block, item)
         }
+        /* Chemical Metal Separator */
+        assembler.builder()
+            .input(MetaTileEntities.CHEMICAL_REACTOR[1])
+            .input(MetaTileEntities.SMELTER[2])
+            .output(MetaTileEntities.CHEMICAL_METAL_SEPARATOR)
+            .tier(4).CEt(ClayEnergy.milli(100)).duration(40)
+            .buildAndRegister()
     }
 
     private fun registerMachineRecipeHull(metaTileEntities: List<MetaTileEntity>, inputProvider: RecipeBuilder<*>.() -> RecipeBuilder<*>) {
