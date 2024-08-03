@@ -122,7 +122,7 @@ class ClayMultiTrackBufferMetaTileEntity(
         return neighbor.getInput(side.opposite) != MachineIoMode.NONE || neighbor.getOutput(side.opposite) != MachineIoMode.NONE
     }
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel? {
+    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         (0..<trackRow).forEach { syncManager.registerSlotGroup("mt_buffer_inv_${it}", 1) }
         val slotsRowString = "I".repeat(trackInvSize)
         return ModularPanel("multi_track_buffer")

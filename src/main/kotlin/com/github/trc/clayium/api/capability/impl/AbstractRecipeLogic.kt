@@ -140,7 +140,6 @@ abstract class AbstractRecipeLogic(
 
         val widget = ProgressWidget()
             .size(22, 17)
-            .align(Alignment.Center)
             .progress(this::getNormalizedProgress)
             .texture(ClayGuiTextures.PROGRESS_BAR, 22)
             if (Mods.JustEnoughItems.isModLoaded) {

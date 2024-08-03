@@ -78,7 +78,7 @@ class SolarClayFabricatorMetaTileEntity(
             .widthRel(0.7f).height(26)
             .align(Alignment.Center)
             .top(30)
-            .child(workable.getProgressBar(syncManager))
+            .child(workable.getProgressBar(syncManager).align(Alignment.Center))
 
         slotsAndProgressBar.child(Widget()
             .size(26, 26).left(4)

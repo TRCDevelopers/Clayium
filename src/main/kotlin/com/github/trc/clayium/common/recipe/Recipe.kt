@@ -67,7 +67,7 @@ data class Recipe(
         val resultOutputs = mutableListOf<ItemStack>()
         resultOutputs.addAll(outputs.map { it.copy() })
         if (chancedOutputs != null) {
-            resultOutputs.addAll(chancedOutputs.roll())
+            resultOutputs.addAll(chancedOutputs.roll().map { it.copy() })
         }
         return ImmutableList.copyOf(resultOutputs)
     }

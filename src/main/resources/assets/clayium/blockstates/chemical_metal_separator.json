@@ -1,0 +1,19 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "face": "clayium:blocks/chemical_metal_separator"
+    },
+    "model": "clayium:machine"
+  },
+  "variants": {
+    "tier": {
+      "6": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier6"
+        },
+        "model": "clayium:machine"
+      }
+    }
+  }
+}
