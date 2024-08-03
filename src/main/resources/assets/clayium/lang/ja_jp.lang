@@ -398,10 +398,7 @@ machine.clayium.redstone_proxy.tooltip2=__DETAIL__
 machine.clayium.redstone_proxy.tooltip3=マルチブロック装置でなくても、これと
 machine.clayium.redstone_proxy.tooltip4=シンクロナイザーを用いれば赤石入出力が利用可能
 
-tile.clayium.blockPrecisionElectrolysisReactor.name=電気精錬機
-tile.clayium.blockClaySteelElectrolysisReactor.name=粘土鋼電気精錬機
-tile.clayium.blockClayiumElectrolysisReactor.name=クレイウム電気精錬機
-tile.clayium.blockUltimateElectrolysisReactor.name=究極電気精錬機
+machine.clayium.electrolysis_reactor=%s電気精錬機
 
 tile.clayium.blockClaySteelDistributor.name=分配機
 tile.clayium.blockClayiumDistributor.name=クレイウム分配機

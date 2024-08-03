@@ -430,10 +430,7 @@ machine.clayium.redstone_proxy.tooltip2=__DETAIL__
 machine.clayium.redstone_proxy.tooltip3=Synchronizer is used to apply an RSInterface
 machine.clayium.redstone_proxy.tooltip4=to a non-multiblock machine.
 
-tile.clayium.blockPrecisionElectrolysisReactor.name=Electrolysis Reactor
-tile.clayium.blockClaySteelElectrolysisReactor.name=Clay Steel Electrolysis Reactor
-tile.clayium.blockClayiumElectrolysisReactor.name=Clayium Electrolysis Reactor
-tile.clayium.blockUltimateElectrolysisReactor.name=Ultimate Electrolysis Reactor
+machine.clayium.electrolysis_reactor=%s Electrolysis Reactor
 
 tile.clayium.blockClaySteelDistributor.name=Item Distributor
 tile.clayium.blockClayiumDistributor.name=Clayium Distributor

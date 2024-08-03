@@ -1,0 +1,37 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "face": "clayium:blocks/electrolysis_reactor"
+    },
+    "model": "clayium:machine"
+  },
+  "variants": {
+    "tier": {
+      "6": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier6"
+        },
+        "model": "clayium:machine"
+      },
+      "7": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier7"
+        },
+        "model": "clayium:machine"
+      },
+      "8": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier8"
+        },
+        "model": "clayium:machine"
+      },
+      "9": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier9"
+        },
+        "model": "clayium:machine"
+      }
+    }
+  }
+}
