@@ -5,6 +5,9 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trc.clayium.common.recipe.Recipe
+import com.github.trc.clayium.common.recipe.chanced.ChancedOutput
+import com.github.trc.clayium.common.recipe.chanced.ChancedOutputList
+import com.github.trc.clayium.common.recipe.chanced.IChancedOutputLogic
 import com.github.trc.clayium.common.recipe.ingredient.CItemRecipeInput
 import com.github.trc.clayium.common.recipe.ingredient.COreRecipeInput
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
@@ -21,13 +24,17 @@ import net.minecraft.item.ItemStack
 abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     protected val inputs: MutableList<CRecipeInput>,
     protected val outputs: MutableList<ItemStack>,
+    protected val chancedOutputs: MutableList<ChancedOutput<ItemStack>>,
+    protected var chancedOutputLogic: IChancedOutputLogic?,
     protected var duration: Long,
     protected var cePerTick: ClayEnergy,
     protected var tier: Int,
 ) {
-    constructor() : this(mutableListOf(), mutableListOf(), 0, ClayEnergy.ZERO, 0)
+    constructor() : this(mutableListOf(), mutableListOf(), mutableListOf(), null, 0, ClayEnergy.ZERO, 0)
 
-    constructor(another: RecipeBuilder<R>) : this(another.inputs.toMutableList(), another.outputs.toMutableList(), another.duration, another.cePerTick, another.tier) {
+    constructor(another: RecipeBuilder<R>) : this(another.inputs.toMutableList(), another.outputs.toMutableList(),
+        another.chancedOutputs, another.chancedOutputLogic,
+        another.duration, another.cePerTick, another.tier) {
         recipeRegistry = another.recipeRegistry
     }
 
@@ -71,6 +78,26 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun output(block: Block, amount: Int = 1) = output(ItemStack(block, amount))
     fun output(oreDict: String, amount: Int = 1) = outputs(OreDictUnifier.get(oreDict, amount))
     fun output(orePrefix: OrePrefix, material: Material, amount: Int = 1) = outputs(OreDictUnifier.get(orePrefix, material, amount))
+
+    fun chancedOutput(output: ItemStack, chance: Int): R {
+        chancedOutputs.add(ChancedOutput(output, chance))
+        return this as R
+    }
+    fun chancedOutput(item: Item, amount: Int, chance: Int): R = chancedOutput(ItemStack(item, amount), chance)
+    fun chancedOutput(item: Item, chance: Int): R = chancedOutput(item, 1, chance)
+    fun chancedOutput(metaItem: MetaItemClayium.MetaValueItem, amount: Int, chance: Int): R = chancedOutput(metaItem.getStackForm(amount), chance)
+    fun chancedOutput(metaTileEntity: MetaTileEntity, amount: Int, chance: Int): R = chancedOutput(metaTileEntity.getStackForm(amount), chance)
+    fun chancedOutput(block: Block, amount: Int, chance: Int): R = chancedOutput(ItemStack(block, amount), chance)
+    fun chancedOutput(block: Block, chance: Int): R = chancedOutput(block, 1, chance)
+    fun chancedOutput(oreDict: String, amount: Int, chance: Int): R = chancedOutput(OreDictUnifier.get(oreDict, amount), chance)
+    fun chancedOutput(oreDict: String, chance: Int) = chancedOutput(oreDict, 1, chance)
+    fun chancedOutput(orePrefix: OrePrefix, material: Material, amount: Int, chance: Int): R = chancedOutput(OreDictUnifier.get(orePrefix, material, amount), chance)
+    fun chancedOutput(orePrefix: OrePrefix, material: Material, chance: Int) = chancedOutput(orePrefix, material, 1, chance)
+
+    fun chancedLogic(logic: IChancedOutputLogic): R {
+        chancedOutputLogic = logic
+        return this as R
+    }
 
     fun duration(duration: Int) = duration(duration.toLong())
     fun duration(duration: Long): R {
@@ -124,11 +151,22 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     }
 
     open fun buildAndRegister() {
+        setDefaults()
+
+        val chancedOutputList = if (chancedOutputLogic != null) {
+            ChancedOutputList(chancedOutputs, chancedOutputLogic!!)
+        } else {
+            null
+        }
+
+        val recipe = Recipe(inputs, outputs, chancedOutputList,
+            duration, cePerTick, tier)
+        recipeRegistry.addRecipe(recipe)
+    }
+
+    protected fun setDefaults() {
         if (this.cePerTick.energy == 0L) {
             this.CEt(tier = this.tier, factor = 1.0)
         }
-        recipeRegistry.addRecipe(
-            Recipe(inputs, outputs, duration, cePerTick, tier)
-        )
     }
 }

@@ -2,13 +2,16 @@ package com.github.trc.clayium.common.recipe
 
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.util.CUtils
+import com.github.trc.clayium.common.recipe.chanced.ChancedOutputList
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
+import com.google.common.collect.ImmutableList
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandlerModifiable
 
 data class Recipe(
     val inputs: List<CRecipeInput>,
     val outputs: List<ItemStack>,
+    val chancedOutputs: ChancedOutputList<ItemStack>?,
     val duration: Long,
     val cePerTick: ClayEnergy,
     /**
@@ -61,7 +64,12 @@ data class Recipe(
     }
 
     fun copyOutputs(): List<ItemStack> {
-        return outputs.map { it.copy() }
+        val resultOutputs = mutableListOf<ItemStack>()
+        resultOutputs.addAll(outputs.map { it.copy() })
+        if (chancedOutputs != null) {
+            resultOutputs.addAll(chancedOutputs.roll().map { it.copy() })
+        }
+        return ImmutableList.copyOf(resultOutputs)
     }
 
     override fun toString(): String {

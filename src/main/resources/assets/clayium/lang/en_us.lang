@@ -410,7 +410,7 @@ machine.clayium.blockClayFabricatorMK3.tooltip.line1=Duplicates clay instantly.
 
 tile.clayium.blockPrecisionAlloySmelter.name=Alloy Smelter
 
-tile.clayium.blockChemicalMetalSeparator.name=Chemical Metal Separator
+machine.clayium.chemical_metal_separator=Chemical Metal Separator
 machine.clayium.clay_blast_furnace=Clay Blast Furnace
 machine.clayium.clay_blast_furnace.tooltip1=__DETAIL__
 machine.clayium.clay_blast_furnace.tooltip2=[Multiblock]

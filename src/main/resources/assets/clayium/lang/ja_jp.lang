@@ -378,7 +378,7 @@ machine.clayium.blockClayFabricatorMK3.tooltip.line1=あらゆる粘土を瞬時
 
 tile.clayium.blockPrecisionAlloySmelter.name=合金精錬機
 
-tile.clayium.blockChemicalMetalSeparator.name=金属分離機
+machine.clayium.chemical_metal_separator=金属分離機
 machine.clayium.clay_blast_furnace=粘土高炉
 machine.clayium.clay_blast_furnace.tooltip1=__DETAIL__
 machine.clayium.clay_blast_furnace.tooltip2=[マルチブロック]

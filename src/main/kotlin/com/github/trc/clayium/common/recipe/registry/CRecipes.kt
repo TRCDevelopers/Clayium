@@ -5,6 +5,7 @@ import com.github.trc.clayium.common.recipe.builder.ClayFabricatorRecipeBuilder
 import com.github.trc.clayium.common.recipe.builder.MatterTransformerRecipeBuilder
 import com.github.trc.clayium.common.recipe.builder.RecipeBuilder
 import com.github.trc.clayium.common.recipe.builder.SimpleRecipeBuilder
+import com.github.trc.clayium.common.recipe.builder.WeightedRecipeBuilder
 import com.github.trc.clayium.integration.jei.JeiPlugin
 import com.github.trc.clayium.integration.jei.basic.SolarClayFabricatorRecipeWrapper
 
@@ -43,6 +44,7 @@ object CRecipes {
     val CHEMICAL_REACTOR = addRegistry("chemical_reactor", SimpleRecipeBuilder(), 2, 2)
     val CLAY_BLAST_FURNACE = addRegistry("clay_blast_furnace", SimpleRecipeBuilder(), 2, 2)
     val CLAY_REACTOR = addRegistry("clay_reactor", SimpleRecipeBuilder(), 2, 2)
+    val CHEMICAL_METAL_SEPARATOR = addRegistry("chemical_metal_separator", WeightedRecipeBuilder(), 1, 1)
 
     fun <R: RecipeBuilder<R>> addRegistry(name: String, buildSample: R, inputSize: Int, outputSize: Int): RecipeRegistry<R> {
         val registry = RecipeRegistry(name, buildSample, inputSize, outputSize)

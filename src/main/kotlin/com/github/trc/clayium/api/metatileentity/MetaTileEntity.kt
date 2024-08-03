@@ -4,7 +4,9 @@ import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
+import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
@@ -604,6 +606,8 @@ abstract class MetaTileEntity(
     protected inline fun onServer(block: () -> Unit) {
         if (!isRemote) block()
     }
+
+    abstract override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel
 
     private data class FilterAndType(val filter: IItemFilter, val type: FilterType)
 

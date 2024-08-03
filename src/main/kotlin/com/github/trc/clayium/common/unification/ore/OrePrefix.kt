@@ -2,6 +2,7 @@ package com.github.trc.clayium.common.unification.ore
 
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.common.unification.material.CMaterials
+import com.github.trc.clayium.common.unification.material.CMaterials.iron
 import com.github.trc.clayium.common.unification.material.Material
 import com.github.trc.clayium.common.unification.material.MaterialFlags
 import com.github.trc.clayium.common.unification.material.PropertyKey
@@ -92,6 +93,10 @@ class OrePrefix(
 
         fun init() {
             block.ignore(CMaterials.clay)
+
+            ingot.ignore(iron)
+
+            dust.ignore(iron)
         }
     }
 }

@@ -11,6 +11,7 @@ import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 import com.github.trc.clayium.integration.jei.basic.ClayiumRecipeCategory
 import com.github.trc.clayium.integration.jei.basic.ClayiumRecipeWrapper
+import com.github.trc.clayium.integration.jei.basic.MetalSeparatorRecipeWrapper
 import com.github.trc.clayium.integration.jei.clayworktable.ClayWorkTableRecipeCategory
 import com.github.trc.clayium.integration.jei.clayworktable.ClayWorkTableRecipeWrapper
 import mezz.jei.api.IJeiHelpers
@@ -51,10 +52,19 @@ class JeiPlugin : IModPlugin {
             if (specialWrapper != null) {
                 modRegistry.handleRecipes(Recipe::class.java, specialWrapper, recipeRegistry.category.uniqueId)
                 modRegistry.addRecipes(recipeRegistry.getAllRecipes(), recipeRegistry.category.uniqueId)
-                continue
+            } else if (recipeRegistry === CRecipes.CHEMICAL_METAL_SEPARATOR) {
+                // Add RecipeDrawable for every single chanced output.
+                // todo better way to do this?
+                modRegistry.handleRecipes(MetalSeparatorRecipeWrapper.RecipeData::class.java,
+                    ::MetalSeparatorRecipeWrapper, recipeRegistry.category.uniqueId)
+                modRegistry.addRecipes(recipeRegistry.getAllRecipes()
+                    .filter { it.chancedOutputs != null }
+                    .flatMap { it.chancedOutputs!!.chancedOutputs.mapIndexed { i, _ -> MetalSeparatorRecipeWrapper.RecipeData(it, i) } },
+                    recipeRegistry.category.uniqueId)
+            } else {
+                modRegistry.handleRecipes(Recipe::class.java, ::ClayiumRecipeWrapper, recipeRegistry.category.uniqueId)
+                modRegistry.addRecipes(recipeRegistry.getAllRecipes(), recipeRegistry.category.uniqueId)
             }
-            modRegistry.handleRecipes(Recipe::class.java, ::ClayiumRecipeWrapper, recipeRegistry.category.uniqueId)
-            modRegistry.addRecipes(recipeRegistry.getAllRecipes(), recipeRegistry.category.uniqueId)
         }
 
         for (metaTileEntity in ClayiumApi.MTE_REGISTRY) {

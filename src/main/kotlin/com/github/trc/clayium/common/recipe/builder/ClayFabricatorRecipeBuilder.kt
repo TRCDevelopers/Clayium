@@ -41,6 +41,7 @@ class ClayFabricatorRecipeBuilder : RecipeBuilder<ClayFabricatorRecipeBuilder> {
             outputs = this.outputs,
             duration = duration,
             cePerTick = cet,
+            chancedOutputs = null,
             tierNumeric = tier
         )
 

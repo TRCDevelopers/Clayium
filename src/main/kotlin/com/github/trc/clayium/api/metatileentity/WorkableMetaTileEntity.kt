@@ -93,7 +93,7 @@ abstract class WorkableMetaTileEntity(
             .widthRel(0.7f).height(26)
             .align(Alignment.Center)
             .top(30)
-            .child(workable.getProgressBar(syncManager))
+            .child(workable.getProgressBar(syncManager).align(Alignment.Center))
 
         //todo cleanup?
         if (importItems.slots == 1) {

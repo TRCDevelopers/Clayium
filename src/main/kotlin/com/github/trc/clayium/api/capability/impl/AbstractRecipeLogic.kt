@@ -2,7 +2,6 @@ package com.github.trc.clayium.api.capability.impl
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.api.widget.IGuiAction
-import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ProgressWidget
@@ -140,7 +139,6 @@ abstract class AbstractRecipeLogic(
 
         val widget = ProgressWidget()
             .size(22, 17)
-            .align(Alignment.Center)
             .progress(this::getNormalizedProgress)
             .texture(ClayGuiTextures.PROGRESS_BAR, 22)
             if (Mods.JustEnoughItems.isModLoaded) {
