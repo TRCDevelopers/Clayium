@@ -5,7 +5,6 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_STRUCTURE_VALIDITY
 import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity

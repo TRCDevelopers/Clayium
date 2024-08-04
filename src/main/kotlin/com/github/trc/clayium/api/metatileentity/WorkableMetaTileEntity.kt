@@ -2,7 +2,6 @@ package com.github.trc.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.api.widget.IWidget
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
@@ -10,7 +9,6 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget

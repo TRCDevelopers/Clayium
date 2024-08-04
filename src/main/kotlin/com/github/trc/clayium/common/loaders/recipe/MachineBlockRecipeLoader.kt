@@ -10,15 +10,12 @@ import com.github.trc.clayium.common.blocks.ClayiumBlocks.MACHINE_HULL
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trc.clayium.common.metatileentity.MetaTileEntities
-import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.RecipeUtils
 import com.github.trc.clayium.common.recipe.builder.RecipeBuilder
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.common.unification.material.CMaterials
-import com.github.trc.clayium.common.unification.material.Material
 import com.github.trc.clayium.common.unification.ore.OrePrefix
 import com.github.trc.clayium.common.unification.stack.UnificationEntry
-import net.minecraft.item.ItemStack
 import kotlin.math.pow
 
 object MachineBlockRecipeLoader {

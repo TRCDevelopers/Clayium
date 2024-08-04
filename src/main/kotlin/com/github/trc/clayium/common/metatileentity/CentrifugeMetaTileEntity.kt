@@ -1,32 +1,22 @@
 package com.github.trc.clayium.common.metatileentity
 
-import com.cleanroommc.modularui.api.drawable.IDrawable
-import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
-import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.CValues
-import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import net.minecraft.client.gui.GuiScreen
 import net.minecraft.util.ResourceLocation
-import kotlin.math.max
-import kotlin.math.min
 
 class CentrifugeMetaTileEntity(
     metaTileEntityId: ResourceLocation,
