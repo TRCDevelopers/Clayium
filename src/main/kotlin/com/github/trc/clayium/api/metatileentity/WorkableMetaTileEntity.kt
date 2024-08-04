@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widget.Widget
@@ -89,10 +90,7 @@ abstract class WorkableMetaTileEntity(
             .size(16, 16)
             .overlay(ClayGuiTextures.CE_BUTTON)
             .hoverOverlay(ClayGuiTextures.CE_BUTTON_HOVERED)
-            .onMousePressed {
-                clayEnergyHolder.addEnergy(ClayEnergy(1))
-                true
-            }
+            .syncHandler(InteractionSyncHandler().setOnMousePressed { clayEnergyHolder.addEnergy(ClayEnergy(1)) })
 
         val slotsAndProgressBar = Row()
             .widthRel(0.7f).height(26)
