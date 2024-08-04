@@ -10,12 +10,15 @@ import com.github.trc.clayium.common.blocks.ClayiumBlocks.MACHINE_HULL
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trc.clayium.common.metatileentity.MetaTileEntities
+import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.RecipeUtils
 import com.github.trc.clayium.common.recipe.builder.RecipeBuilder
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.common.unification.material.CMaterials
+import com.github.trc.clayium.common.unification.material.Material
 import com.github.trc.clayium.common.unification.ore.OrePrefix
 import com.github.trc.clayium.common.unification.stack.UnificationEntry
+import net.minecraft.item.ItemStack
 import kotlin.math.pow
 
 object MachineBlockRecipeLoader {
@@ -107,39 +110,52 @@ object MachineBlockRecipeLoader {
         registerMachineRecipeHull(MetaTileEntities.BENDING_MACHINE) {
             input(OrePrefix.plate, CMaterials.denseClay, 3)
         }
+        registerLowTierRecipe(MetaTileEntities.BENDING_MACHINE, "Sgp", "pHp", "Sgp")
         registerMachineRecipeHull(MetaTileEntities.MILLING_MACHINE) {
             input(OrePrefix.cuttingHead, CMaterials.denseClay)
         }
+        registerLowTierRecipe(MetaTileEntities.MILLING_MACHINE, "pCp", "MHM", "pgp")
         registerMachineRecipeHull(MetaTileEntities.ENERGETIC_CLAY_CONDENSER) {
             input(MetaItemClayParts.CEE, 2)
         }
+        registerLowTierRecipe(MetaTileEntities.ENERGETIC_CLAY_CONDENSER, "pgp", "EHE", "pcp",
+            'E', MetaItemClayParts.CEE)
         registerMachineRecipeHull(MetaTileEntities.WIRE_DRAWING_MACHINE) {
             input(OrePrefix.pipe, CMaterials.denseClay)
         }
+        registerLowTierRecipe(MetaTileEntities.WIRE_DRAWING_MACHINE, "gMg", "OHO", "gMg")
         registerMachineRecipeHull(MetaTileEntities.PIPE_DRAWING_MACHINE) {
             input(OrePrefix.cylinder, CMaterials.denseClay)
         }
+        registerLowTierRecipe(MetaTileEntities.PIPE_DRAWING_MACHINE, "gMg", "IHO", "gMg")
         registerMachineRecipeHull(MetaTileEntities.CUTTING_MACHINE) {
             input(OrePrefix.cuttingHead, CMaterials.clay)
         }
+        registerLowTierRecipe(MetaTileEntities.CUTTING_MACHINE, "pgp", "MHC", "pgp")
         registerMachineRecipeHull(MetaTileEntities.LATHE) {
             input(OrePrefix.spindle, CMaterials.clay)
         }
+        registerLowTierRecipe(MetaTileEntities.LATHE, "pgp", "SHM", "pgp")
         registerMachineRecipeHull(MetaTileEntities.CONDENSER) {
             input(OrePrefix.largePlate, CMaterials.denseClay)
         }
+        registerLowTierRecipe(MetaTileEntities.CONDENSER, "gpg", "pHp", "gpg")
         registerMachineRecipeHull(MetaTileEntities.GRINDER) {
             input(OrePrefix.grindingHead, CMaterials.denseClay)
         }
+        registerLowTierRecipe(MetaTileEntities.GRINDER, "pGp", "MHM", "pgp")
         registerMachineRecipeHull(MetaTileEntities.DECOMPOSER) {
             input(OrePrefix.gear, CMaterials.clay, 4)
         }
+        registerLowTierRecipe(MetaTileEntities.DECOMPOSER, "gMg", "cHc", "gOg")
         registerMachineRecipeHull(MetaTileEntities.ASSEMBLER) {
             input(OrePrefix.gear, CMaterials.denseClay)
         }
+        registerLowTierRecipe(MetaTileEntities.ASSEMBLER, "gcg", "MHM", "gcg")
         registerMachineRecipeHull(MetaTileEntities.CENTRIFUGE) {
             input(OrePrefix.spindle, CMaterials.denseClay)
         }
+        registerLowTierRecipe(MetaTileEntities.CENTRIFUGE, "gMg", "MHM", "gMg")
         registerMachineRecipeHull(MetaTileEntities.CHEMICAL_REACTOR) {
             input(MetaItemClayParts.BASIC_CIRCUIT)
         }
@@ -212,6 +228,7 @@ object MachineBlockRecipeLoader {
         registerMachineRecipeBuffer(MetaTileEntities.COBBLESTONE_GENERATOR) {
             input(MetaItemClayParts.SIMPLE_CIRCUIT)
         }
+        registerLowTierRecipe(MetaTileEntities.COBBLESTONE_GENERATOR, " g ", "OHO", " g ")
         registerMachineRecipeBuffer(MetaTileEntities.SALT_EXTRACTOR) {
             input(MetaItemClayParts.SIMPLE_CIRCUIT)
         }
@@ -292,6 +309,56 @@ object MachineBlockRecipeLoader {
                 .output(i)
                 .tier(4).CEt(ClayEnergy.micro(100)).duration(40)
                 .buildAndRegister()
+        }
+        registerLowTierRecipe(MetaTileEntities.INSCRIBER, "gMg", "cHc", "gcg")
+    }
+
+    /**
+     * Register workbench recipes for tier <= 4 machines.
+     * clay is [CMaterials.clay] if tier is 1, [CMaterials.denseClay] otherwise.
+     * Some characters are available for recipes by default:
+     * - 'H' for machine hull
+     * - 'p' for plate and 'P' for large plate
+     * - 'G' for grinding head and 'g' for gear
+     * - 's' for short stick and 'S' for stick
+     * - 'M' for spindle
+     * - 'c' for circuit and 'C' for cutting head
+     * - 'O' for pipe and 'I' for cylinder
+     */
+    private fun registerLowTierRecipe(metaTileEntities: List<MetaTileEntity>, vararg recipe: Any) {
+        val circuits: List<Any> = listOf(
+            Unit, // not used, but needed for indexing
+            UnificationEntry(OrePrefix.gear, CMaterials.clay), MetaItemClayParts.CLAY_CIRCUIT, MetaItemClayParts.SIMPLE_CIRCUIT, MetaItemClayParts.BASIC_CIRCUIT,
+            MetaItemClayParts.ADVANCED_CIRCUIT, MetaItemClayParts.PRECISION_CIRCUIT, MetaItemClayParts.INTEGRATED_CIRCUIT, MetaItemClayParts.CLAY_CORE,
+            MetaItemClayParts.CLAY_BRAIN, MetaItemClayParts.CLAY_SPIRIT, MetaItemClayParts.CLAY_SOUL, MetaItemClayParts.CLAY_ANIMA, MetaItemClayParts.CLAY_PSYCHE,
+        )
+        for (mte in metaTileEntities) {
+            if (mte.tier.numeric > 4 || mte.tier !is ClayTiers) continue
+            val clay = if (mte.tier.numeric == 1) CMaterials.clay else CMaterials.denseClay
+            val ingMap = mutableMapOf(
+                'p' to UnificationEntry(OrePrefix.plate, clay), 'P' to UnificationEntry(OrePrefix.largePlate, clay),
+                'g' to UnificationEntry(OrePrefix.gear, clay), 'G' to UnificationEntry(OrePrefix.cuttingHead, clay),
+                's' to UnificationEntry(OrePrefix.stick, clay), 'S' to UnificationEntry(OrePrefix.stick, clay),
+                'M' to UnificationEntry(OrePrefix.spindle, clay),
+                'c' to circuits[mte.tier.numeric], 'C' to UnificationEntry(OrePrefix.cuttingHead, clay),
+                'O' to UnificationEntry(OrePrefix.pipe, clay), 'I' to UnificationEntry(OrePrefix.cylinder, clay),
+            )
+            val recipeExtra = mutableListOf<Any>()
+            for (row in recipe) {
+                if (row !is String) continue
+                for (c in row) {
+                    val ing = ingMap[c]
+                    if (ing != null) {
+                        recipeExtra.add(c)
+                        recipeExtra.add(ing)
+                    }
+                }
+            }
+            RecipeUtils.addShapedRecipe("${mte.metaTileEntityId}.workbench", mte.getStackForm(),
+                *recipe,
+                'H', MACHINE_HULL.getItem(mte.tier),
+                *recipeExtra.toTypedArray()
+            )
         }
     }
 
