@@ -86,12 +86,6 @@ abstract class WorkableMetaTileEntity(
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        val ceButton = ButtonWidget()
-            .size(16, 16)
-            .overlay(ClayGuiTextures.CE_BUTTON)
-            .hoverOverlay(ClayGuiTextures.CE_BUTTON_HOVERED)
-            .syncHandler(InteractionSyncHandler().setOnMousePressed { clayEnergyHolder.addEnergy(ClayEnergy(1)) })
-
         val slotsAndProgressBar = Row()
             .widthRel(0.7f).height(26)
             .align(Alignment.Center)
@@ -171,7 +165,12 @@ abstract class WorkableMetaTileEntity(
                         .setEnabledIf { GuiScreen.isShiftKeyDown() }
                         .background(IDrawable.EMPTY))
                     .child(slotsAndProgressBar.align(Alignment.Center))
-                    .child(ceButton.align(Alignment.BottomCenter))
+                    .childIf(this.tier.numeric < 3, ButtonWidget()
+                        .size(16, 16).align(Alignment.BottomCenter)
+                        .overlay(ClayGuiTextures.CE_BUTTON)
+                        .hoverOverlay(ClayGuiTextures.CE_BUTTON_HOVERED)
+                        .syncHandler(InteractionSyncHandler().setOnMousePressed { clayEnergyHolder.addEnergy(ClayEnergy(1)) })
+                    )
                 )
                 .child(SlotGroupWidget.playerInventory(0))
             )
