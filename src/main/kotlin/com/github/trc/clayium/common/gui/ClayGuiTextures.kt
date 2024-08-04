@@ -3,6 +3,7 @@ package com.github.trc.clayium.common.gui
 import com.cleanroommc.modularui.drawable.UITexture
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.util.Mods
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.Clayium
 
 object ClayGuiTextures {
@@ -71,4 +72,20 @@ object ClayGuiTextures {
             .uv(0, 16, 16, 16)
             .name("mc_button_hovered")
             .build()
+
+    val CE_BUTTON_DISABLED = UITexture.builder()
+        .location(clayiumId("gui/button"))
+        .imageSize(256, 256)
+        .uv(0, 0, 16, 16)
+        .build()
+    val CE_BUTTON = UITexture.builder()
+        .location(clayiumId("gui/button"))
+        .imageSize(256, 256)
+        .uv(0, 16, 16, 16)
+        .build()
+    val CE_BUTTON_HOVERED = UITexture.builder()
+        .location(clayiumId("gui/button"))
+        .imageSize(256, 256)
+        .uv(0, 32, 16, 16)
+        .build()
 }

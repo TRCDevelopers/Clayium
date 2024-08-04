@@ -4,7 +4,7 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widget.ParentWidget
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_STRUCTURE_VALIDITY
 import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
@@ -124,7 +124,7 @@ abstract class MultiblockControllerBase(
         super.receiveCustomData(discriminator, buf)
     }
 
-    override fun createBaseUi(syncManager: GuiSyncManager): Column {
+    override fun createBaseUi(syncManager: GuiSyncManager): ParentWidget<*> {
         syncManager.syncValue("multiblock_tier", SyncHandlers.intNumber({ recipeLogicTier }, { recipeLogicTier = it }))
         return super.createBaseUi(syncManager)
             .child(IKey.dynamic { I18n.format("tooltip.clayium.tier", recipeLogicTier) }.asWidget()

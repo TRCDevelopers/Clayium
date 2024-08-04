@@ -324,14 +324,10 @@ tile.clayium.blockBasicMillingMachine.name=Basic Milling Machine
 machine.clayium.assembler=%s Assembler
 machine.clayium.assembler.tooltip1=Say goodbye to complicated craft.
 
-tile.clayium.blockSimpleInscriber.name=Simple Inscriber
-tile.clayium.blockBasicInscriber.name=Basic Inscriber
+machine.clayium.inscriber=%s Inscriber
 
-tile.clayium.blockSimpleCentrifuge.name=Simple Centrifuge
-tile.clayium.blockBasicCentrifuge.name=Basic Centrifuge
-tile.clayium.blockAdvancedCentrifuge.name=Advanced Centrifuge
-tile.clayium.blockPrecisionCentrifuge.name=Precision Centrifuge
-tooltip.clayium.Centrifuge.line1=The most important component of the first clay factory.
+machine.clayium.centrifuge=%s Centrifuge
+machine.clayium.centrifuge.tooltip1=The most important component of the first clay factory.
 
 machine.clayium.smelter=Ultimate Smelter
 machine.clayium.smelter.tooltip1=Furnace powered by CE.
@@ -355,9 +351,7 @@ tooltip.clayium.MultitrackBuffer.line3=Transfer of items between two Multitrack 
 tooltip.clayium.MultitrackBuffer.line4=will be performed independently within each color group.
 tooltip.clayium.MultitrackBuffer.line5=Moreover, this buffer has one filter slot per group.
 
-tile.clayium.blockBasicChemicalReactor.name=Basic Chemical Reactor
-tile.clayium.blockAdvancedChemicalReactor.name=Advanced Chemical Reactor
-tile.clayium.blockClayiumChemicalReactor.name=Clayium Chemical Reactor
+machine.clayium.chemical_reactor=%s Chemical Reactor
 
 machine.clayium.salt_extractor=Basic Salt Extractor
 machine.clayium.salt_extractor.tooltip1=Extracts salt from water.
@@ -432,10 +426,7 @@ machine.clayium.redstone_proxy.tooltip2=__DETAIL__
 machine.clayium.redstone_proxy.tooltip3=Synchronizer is used to apply an RSInterface
 machine.clayium.redstone_proxy.tooltip4=to a non-multiblock machine.
 
-tile.clayium.blockPrecisionElectrolysisReactor.name=Electrolysis Reactor
-tile.clayium.blockClaySteelElectrolysisReactor.name=Clay Steel Electrolysis Reactor
-tile.clayium.blockClayiumElectrolysisReactor.name=Clayium Electrolysis Reactor
-tile.clayium.blockUltimateElectrolysisReactor.name=Ultimate Electrolysis Reactor
+machine.clayium.electrolysis_reactor=%s Electrolysis Reactor
 
 tile.clayium.blockClaySteelDistributor.name=Item Distributor
 tile.clayium.blockClayiumDistributor.name=Clayium Distributor

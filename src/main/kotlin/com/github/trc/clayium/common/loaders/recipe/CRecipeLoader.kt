@@ -11,6 +11,7 @@ object CRecipeLoader {
         BendingMachineLoader.registerRecipes()
         CaCondenserRecipeLoader.registerRecipes()
         CaInjectorRecipeLoader.registerRecipes()
+        CentrifugeRecipeLoader.registerRecipes()
         ChemicalMetalSeparatorRecipeLoader.registerRecipes()
         ChemicalReactorRecipeLoader.registerRecipes()
         ClayBlastFurnaceRecipeLoader.registerRecipes()

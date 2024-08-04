@@ -292,14 +292,10 @@ tile.clayium.blockBasicMillingMachine.name=フライス盤
 machine.clayium.assembler=%s 組立機
 machine.clayium.assembler.tooltip1=複雑なレシピにウンザリしたあなたへ
 
-tile.clayium.blockSimpleInscriber.name=簡易印刷機
-tile.clayium.blockBasicInscriber.name=印刷機
+machine.clayium.inscriber=%s印刷機
 
-tile.clayium.blockSimpleCentrifuge.name=簡易遠心分離機
-tile.clayium.blockBasicCentrifuge.name=遠心分離機
-tile.clayium.blockAdvancedCentrifuge.name=発展遠心分離機
-tile.clayium.blockPrecisionCentrifuge.name=精密遠心分離機
-tooltip.clayium.Centrifuge.line1=全自動粘土工場を作ろう
+machine.clayium.centrifuge=%s遠心分離機
+machine.clayium.centrifuge.tooltip1=全自動粘土工場を作ろう
 
 machine.clayium.smelter=%s精錬機
 machine.clayium.smelter.tooltip1=粘土エネルギーで動くかまど
@@ -323,9 +319,7 @@ tooltip.clayium.MultitrackBuffer.line3=複線バッファー同士のアイテ�
 tooltip.clayium.MultitrackBuffer.line4=各色グループごとに独立して行われる。
 tooltip.clayium.MultitrackBuffer.line5=さらに、グループごとにフィルタースロットを持つ。
 
-tile.clayium.blockBasicChemicalReactor.name=化学反応機
-tile.clayium.blockAdvancedChemicalReactor.name=発展化学反応機
-tile.clayium.blockClayiumChemicalReactor.name=クレイウム化学反応機
+machine.clayium.chemical_reactor=%s化学反応機
 
 machine.clayium.salt_extractor=%s塩析出装置
 machine.clayium.salt_extractor.tooltip1=水から塩分を抽出する
@@ -400,10 +394,7 @@ machine.clayium.redstone_proxy.tooltip2=__DETAIL__
 machine.clayium.redstone_proxy.tooltip3=マルチブロック装置でなくても、これと
 machine.clayium.redstone_proxy.tooltip4=シンクロナイザーを用いれば赤石入出力が利用可能
 
-tile.clayium.blockPrecisionElectrolysisReactor.name=電気精錬機
-tile.clayium.blockClaySteelElectrolysisReactor.name=粘土鋼電気精錬機
-tile.clayium.blockClayiumElectrolysisReactor.name=クレイウム電気精錬機
-tile.clayium.blockUltimateElectrolysisReactor.name=究極電気精錬機
+machine.clayium.electrolysis_reactor=%s電気精錬機
 
 tile.clayium.blockClaySteelDistributor.name=分配機
 tile.clayium.blockClayiumDistributor.name=クレイウム分配機

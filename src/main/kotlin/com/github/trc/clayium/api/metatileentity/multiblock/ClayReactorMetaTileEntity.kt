@@ -4,7 +4,7 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widget.ParentWidget
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IClayLaserAcceptor
@@ -98,7 +98,7 @@ class ClayReactorMetaTileEntity(
         return ClayReactorMetaTileEntity(metaTileEntityId, tier)
     }
 
-    override fun createBaseUi(syncManager: GuiSyncManager): Column {
+    override fun createBaseUi(syncManager: GuiSyncManager): ParentWidget<*> {
         syncManager.syncValue("clayLaser", SyncHandlers.intNumber(
             { laser?.toInt() ?: -1 },
             { this.laser = if (it == -1) null else ClayLaser.fromInt(it, EnumFacing.UP) }
