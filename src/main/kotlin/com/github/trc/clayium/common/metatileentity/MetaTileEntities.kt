@@ -155,6 +155,9 @@ object MetaTileEntities {
     val INSCRIBER = registerMetaTileEntities(210, (3..4)) {
         SimpleMachineMetaTileEntity(clayiumId("inscriber.${it.lowerName}"), it, CRecipes.INSCRIBER)
     }
+    val CENTRIFUGE = registerMetaTileEntities(212, (3..6)) {
+        CentrifugeMetaTileEntity(clayiumId("centrifuge.${it.lowerName}"), it, it.numeric - 2)
+    }
 
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)

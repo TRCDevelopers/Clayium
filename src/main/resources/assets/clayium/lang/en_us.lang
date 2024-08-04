@@ -326,11 +326,8 @@ machine.clayium.assembler.tooltip1=Say goodbye to complicated craft.
 
 machine.clayium.inscriber=%s Inscriber
 
-tile.clayium.blockSimpleCentrifuge.name=Simple Centrifuge
-tile.clayium.blockBasicCentrifuge.name=Basic Centrifuge
-tile.clayium.blockAdvancedCentrifuge.name=Advanced Centrifuge
-tile.clayium.blockPrecisionCentrifuge.name=Precision Centrifuge
-tooltip.clayium.Centrifuge.line1=The most important component of the first clay factory.
+machine.clayium.centrifuge=%s Centrifuge
+machine.clayium.centrifuge.tooltip1=The most important component of the first clay factory.
 
 machine.clayium.smelter=Ultimate Smelter
 machine.clayium.smelter.tooltip1=Furnace powered by CE.

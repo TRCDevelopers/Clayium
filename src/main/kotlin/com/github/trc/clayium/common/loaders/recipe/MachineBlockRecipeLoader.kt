@@ -137,7 +137,9 @@ object MachineBlockRecipeLoader {
         registerMachineRecipeHull(MetaTileEntities.ASSEMBLER) {
             input(OrePrefix.gear, CMaterials.denseClay)
         }
-        //centrifuge, SpindleDenseClay
+        registerMachineRecipeHull(MetaTileEntities.CENTRIFUGE) {
+            input(OrePrefix.spindle, CMaterials.denseClay)
+        }
         registerMachineRecipeHull(MetaTileEntities.CHEMICAL_REACTOR) {
             input(MetaItemClayParts.BASIC_CIRCUIT)
         }

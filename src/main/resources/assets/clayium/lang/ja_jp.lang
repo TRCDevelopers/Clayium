@@ -294,11 +294,8 @@ machine.clayium.assembler.tooltip1=複雑なレシピにウンザリしたあな
 
 machine.clayium.inscriber=%s印刷機
 
-tile.clayium.blockSimpleCentrifuge.name=簡易遠心分離機
-tile.clayium.blockBasicCentrifuge.name=遠心分離機
-tile.clayium.blockAdvancedCentrifuge.name=発展遠心分離機
-tile.clayium.blockPrecisionCentrifuge.name=精密遠心分離機
-tooltip.clayium.Centrifuge.line1=全自動粘土工場を作ろう
+machine.clayium.centrifuge=%s遠心分離機
+machine.clayium.centrifuge.tooltip1=全自動粘土工場を作ろう
 
 machine.clayium.smelter=%s精錬機
 machine.clayium.smelter.tooltip1=粘土エネルギーで動くかまど
