@@ -2,7 +2,7 @@ package com.github.trc.clayium.api.capability.impl
 
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 
-class NotifiableItemStackHandler(
+open class NotifiableItemStackHandler(
     metaTileEntity: MetaTileEntity,
     size: Int,
     private val entitiesToNotify: MutableList<MetaTileEntity>,

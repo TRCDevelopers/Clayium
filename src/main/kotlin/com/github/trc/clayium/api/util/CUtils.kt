@@ -4,6 +4,7 @@ import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trc.clayium.common.unification.material.Material
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.item.Item
@@ -26,6 +27,12 @@ fun ItemStack.copyWithSize(size: Int): ItemStack {
     val stack = copy()
     stack.count = size
     return stack
+}
+
+fun ItemStack.canStackWith(other: ItemStack): Boolean {
+    return (this.isEmpty || other.isEmpty) || (isItemEqual(other)
+            && (!item.isDamageable || itemDamage == other.itemDamage)
+            && ItemStack.areItemStackTagsEqual(this, other))
 }
 
 fun IItemHandler.toList(): List<ItemStack> {
@@ -51,6 +58,9 @@ fun clayiumId(path: String): ResourceLocation {
 }
 
 object CUtils {
+
+    val MATERIAL_TIER_ASC = compareBy<Material> { it.tier?.numeric }
+
     fun writeItems(handler: IItemHandler, tagName: String, tag: NBTTagCompound) {
         val tagList = NBTTagList()
         for (i in 0..<handler.slots) {

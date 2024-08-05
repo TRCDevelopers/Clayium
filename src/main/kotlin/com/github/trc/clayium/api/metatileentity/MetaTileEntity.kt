@@ -543,13 +543,18 @@ abstract class MetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     open fun getItemStackDisplayName(): String {
-        return I18n.format(this.translationKey, I18n.format(this.tier.prefixTranslationKey))
+        return if (I18n.hasKey("${this.translationKey}.${tier.lowerName}")) {
+            I18n.format("${this.translationKey}.${tier.lowerName}")
+        } else {
+            I18n.format(this.translationKey, I18n.format(this.tier.prefixTranslationKey))
+        }
     }
 
     @SideOnly(Side.CLIENT)
     @MustBeInvokedByOverriders
     open fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         tooltip.add(I18n.format("tooltip.clayium.tier", tier.numeric))
+        UtilLocale.formatTooltips(tooltip, "$translationKey.${tier.lowerName}.tooltip")
         UtilLocale.formatTooltips(tooltip, "$translationKey.tooltip")
     }
 
