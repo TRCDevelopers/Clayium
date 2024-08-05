@@ -358,11 +358,10 @@ machine.clayium.salt_extractor.tooltip1=Extracts salt from water.
 machine.clayium.salt_extractor.tooltip2=__DETAIL__
 machine.clayium.salt_extractor.tooltip3=Requires CE and water source next to it.
 
-tile.clayium.blockAutoClayCondenser.name=Automatic Clay Condenser Mk I
-tile.clayium.blockAutoClayCondenser.tooltip.line1=Condenses clay automatically.
-tile.clayium.blockAutoClayCondenserMK2.name=Automatic Clay Condenser Mk II
-tile.clayium.blockAutoClayCondenserMK2.tooltip.line1=Condenses clay automatically.
-tile.clayium.blockAutoClayCondenserMK2.tooltip.line2=Much faster than Mk I.
+machine.clayium.auto_clay_condenser.advanced=Automatic Clay Condenser Mk I
+machine.clayium.auto_clay_condenser.tooltip1=Condenses clay automatically.
+machine.clayium.auto_clay_condenser.clay_steel=Automatic Clay Condenser Mk II
+machine.clayium.auto_clay_condenser.clay_steel.tooltip2=Much faster than Mk I.
 tile.clayium.quartz_crucible=Quartz Crucible
 tile.clayium.quartz_crucible.tooltip1=Purifies impure silicon.
 tile.clayium.quartz_crucible.tooltip2=__DETAIL__

@@ -326,11 +326,10 @@ machine.clayium.salt_extractor.tooltip1=水から塩分を抽出する
 machine.clayium.salt_extractor.tooltip2=__DETAIL__
 machine.clayium.salt_extractor.tooltip3=隣に水源を置き、粘土エネルギーを与えること。
 
-tile.clayium.blockAutoClayCondenser.name=全自動粘土圧縮機 Mk I
-tile.clayium.blockAutoClayCondenser.tooltip.line1=全自動粘土工場の効率化に
-tile.clayium.blockAutoClayCondenserMK2.name=全自動粘土圧縮機 Mk II
-tile.clayium.blockAutoClayCondenserMK2.tooltip.line1=全自動粘土工場の効率化に
-tile.clayium.blockAutoClayCondenserMK2.tooltip.line2=圧縮速度がさらに上昇
+machine.clayium.auto_clay_condenser.advanced=全自動粘土圧縮機 Mk I
+machine.clayium.auto_clay_condenser.tooltip1=全自動粘土工場の効率化に
+machine.clayium.auto_clay_condenser.clay_steel=全自動粘土圧縮機 Mk II
+machine.clayium.auto_clay_condenser.clay_steel.tooltip2=圧縮速度がさらに上昇
 tile.clayium.quartz_crucible=クォーツるつぼ
 tile.clayium.quartz_crucible.tooltip1=不純なシリコンを純化
 tile.clayium.quartz_crucible.tooltip2=__DETAIL__

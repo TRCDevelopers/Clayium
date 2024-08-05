@@ -158,7 +158,7 @@ object MetaTileEntities {
     val CENTRIFUGE = registerMetaTileEntities(212, (3..6)) {
         CentrifugeMetaTileEntity(clayiumId("centrifuge.${it.lowerName}"), it, it.numeric - 2)
     }
-    val AUTO_CLAY_CONDENSER = registerMetaTileEntities(216, (5..7)) {
+    val AUTO_CLAY_CONDENSER = registerMetaTileEntities(216, intArrayOf(5, 7)) {
         AutoClayCondenserMetaTileEntity(clayiumId("auto_clay_condenser.${it.lowerName}"), it)
     }
 

@@ -16,6 +16,7 @@ import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.canStackWith
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.unification.OreDictUnifier
@@ -35,6 +36,9 @@ class AutoClayCondenserMetaTileEntity(
     tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1],
     "machine.${CValues.MOD_ID}.auto_clay_condenser") {
+
+    override val faceTexture = clayiumId("blocks/auto_clay_condenser")
+
     override val itemInventory = object : NotifiableItemStackHandler(this, 16, this, isExport = false) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
             return getMaterial(stack)?.getPropOrNull(PropertyKey.CLAY) != null
@@ -65,7 +69,8 @@ class AutoClayCondenserMetaTileEntity(
 
                 val clay = m.getPropOrNull(PropertyKey.CLAY) ?: continue
                 val compressedClay = clay.compressedInto ?: continue
-                val compressedAmount = stack.count / 9
+                // slow down the process for lower tier
+                val compressedAmount = if (this.tier.numeric >= 7) { stack.count / 9 } else { min(stack.count / 9, 1) }
                 if (compressedAmount > 0) {
                     val remain = ItemHandlerHelper.insertItem(itemInventory,
                         OreDictUnifier.get(OrePrefix.block, compressedClay, compressedAmount), true)
@@ -76,10 +81,6 @@ class AutoClayCondenserMetaTileEntity(
                 }
             }
         }
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
@@ -133,5 +134,10 @@ class AutoClayCondenserMetaTileEntity(
                 if (remainSorting.isEmpty) break
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun registerItemModel(item: Item, meta: Int) {
+        registerItemModelDefault(item, meta, "auto_clay_condenser")
     }
 }
