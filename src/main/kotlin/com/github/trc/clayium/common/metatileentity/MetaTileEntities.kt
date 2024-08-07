@@ -14,6 +14,7 @@ import com.github.trc.clayium.api.metatileentity.multiblock.LaserProxyMetaTileEn
 import com.github.trc.clayium.api.util.CUtils.clayiumId
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.common.metatileentity.multiblock.CaReactorMetaTileEntity
 import com.github.trc.clayium.common.metatileentity.multiblock.RedstoneProxyMetaTileEntity
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import net.minecraftforge.fml.relauncher.Side
@@ -161,6 +162,7 @@ object MetaTileEntities {
     val AUTO_CLAY_CONDENSER = registerMetaTileEntities(216, intArrayOf(5, 7)) {
         AutoClayCondenserMetaTileEntity(clayiumId("auto_clay_condenser.${it.lowerName}"), it)
     }
+    val CA_REACTOR = registerMetaTileEntity(218, CaReactorMetaTileEntity(clayiumId("ca_reactor.${ClayTiers.ANTIMATTER.lowerName}"), ClayTiers.ANTIMATTER))
 
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)
