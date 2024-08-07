@@ -93,7 +93,8 @@ class CaReactorMetaTileEntity(
     }
 
     private fun searchAndValidateAdjacentCoil(coilPos: BlockPos, walked: MutableSet<BlockPos>): Boolean {
-        if (walked.contains(coilPos) || walked.size > MAX_COILS) return true
+        if (walked.contains(coilPos)) return true
+        if (walked.size > MAX_COILS) return false
         walked.add(coilPos)
         val world = world ?: return false
         val coilPoses = mutableListOf<BlockPos>()
