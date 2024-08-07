@@ -3,6 +3,7 @@ package com.github.trc.clayium.common
 import com.cleanroommc.modularui.factory.GuiManager
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
+import com.github.trc.clayium.api.block.ItemBlockDamaged
 import com.github.trc.clayium.api.block.ItemBlockTiered
 import com.github.trc.clayium.api.capability.SimpleCapabilityManager
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
@@ -134,6 +135,7 @@ open class CommonProxy {
 
         registry.register(createItemBlock(ClayiumBlocks.MACHINE_HULL, ::ItemBlockTiered))
         registry.register(createItemBlock(ClayiumBlocks.RESONATOR, ::ItemBlockTiered))
+        registry.register(createItemBlock(ClayiumBlocks.CA_REACTOR_HULL, ::ItemBlockDamaged))
 
         registry.register(createItemBlock(ClayiumBlocks.QUARTZ_CRUCIBLE, ::ItemBlockTiered))
 

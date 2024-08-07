@@ -12,7 +12,7 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-class ItemBlockTiered<T>(
+open class ItemBlockTiered<T>(
     private val tieredBlock: T,
     hasSubTypes: Boolean = true,
 ) : ItemBlock(tieredBlock), ITieredItem
