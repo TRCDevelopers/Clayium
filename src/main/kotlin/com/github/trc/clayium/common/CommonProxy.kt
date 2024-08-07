@@ -136,6 +136,7 @@ open class CommonProxy {
         registry.register(createItemBlock(ClayiumBlocks.MACHINE_HULL, ::ItemBlockTiered))
         registry.register(createItemBlock(ClayiumBlocks.RESONATOR, ::ItemBlockTiered))
         registry.register(createItemBlock(ClayiumBlocks.CA_REACTOR_HULL, ::ItemBlockDamaged))
+        registry.register(createItemBlock(ClayiumBlocks.CA_REACTOR_COIL, ::ItemBlockTiered))
 
         registry.register(createItemBlock(ClayiumBlocks.QUARTZ_CRUCIBLE, ::ItemBlockTiered))
 

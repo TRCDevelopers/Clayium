@@ -37,7 +37,7 @@ open class ItemBlockTiered<T>(
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         tooltip.add(ITier.tierNumericTooltip(this.getTier(stack)))
-        UtilLocale.formatTooltips(tooltip, "tile.$translationKey.tooltip")
+        UtilLocale.formatTooltips(tooltip, "$translationKey.tooltip")
         super.addInformation(stack, worldIn, tooltip, flagIn)
     }
 }

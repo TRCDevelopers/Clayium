@@ -27,6 +27,10 @@ class CaReactorMetaTileEntity(
         return ModularPanel.defaultPanel("ca_reactor")
     }
 
+    private fun checkStructure() {
+
+    }
+
     override fun createMetaTileEntity() = CaReactorMetaTileEntity(metaTileEntityId, tier)
 
     @SideOnly(Side.CLIENT)
