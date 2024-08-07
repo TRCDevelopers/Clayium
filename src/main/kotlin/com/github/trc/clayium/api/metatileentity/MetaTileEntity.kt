@@ -505,7 +505,9 @@ abstract class MetaTileEntity(
         if (!isRemote) EnumFacing.entries.forEach(this::refreshConnection)
     }
 
-    open fun onRemoval() {}
+    open fun onRemoval() {
+        this.mteTraits.values.forEach(MTETrait::onRemoval)
+    }
 
     fun getStackForm(amount: Int = 1): ItemStack {
         return ItemStack(ClayiumApi.BLOCK_MACHINE, amount, ClayiumApi.MTE_REGISTRY.getIdByKey(metaTileEntityId))

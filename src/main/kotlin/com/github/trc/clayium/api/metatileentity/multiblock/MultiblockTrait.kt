@@ -60,6 +60,10 @@ class MultiblockTrait(
         }
     }
 
+    override fun onRemoval() {
+        this.multiblockParts.forEach { it.removeFromMultiblock(metaTileEntity) }
+    }
+
     fun isPosValidForMutliblock(world: IBlockAccess, pos: BlockPos): BlockValidationResult {
         val metaTileEntity = world.getMetaTileEntity(pos)
         if (metaTileEntity == this.metaTileEntity) return BlockValidationResult.Matched(null)

@@ -88,10 +88,6 @@ class ClayLaserMetaTileEntity(
         laserManager.updateDirection(this.frontFacing)
     }
 
-    override fun onRemoval() {
-        laserManager.onRemoval()
-    }
-
     override fun onNeighborChanged(facing: EnumFacing) {
         super.onNeighborChanged(facing)
         refreshRedstone()
