@@ -39,7 +39,6 @@ class CaReactorMetaTileEntity(
 
     private val multiblockValidation = MultiblockTrait(this, ::checkStructure)
 
-
     fun getFaceInvalid(): ResourceLocation = clayiumId("blocks/ca_reactor_core_invalid")
     fun getFaceValid() = clayiumId("blocks/ca_reactor_core_valid")
     override val faceTexture get() = if (multiblockValidation.structureFormed) getFaceValid() else getFaceInvalid()
@@ -65,6 +64,7 @@ class CaReactorMetaTileEntity(
             )
     }
 
+    @Suppress("unused") // to use as a method reference in MultiblockTrait
     private fun checkStructure(handler: MultiblockTrait): StructureValidationResult {
         val hullRanks = IntArrayList()
 
