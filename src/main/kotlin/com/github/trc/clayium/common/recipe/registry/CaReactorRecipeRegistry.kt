@@ -31,7 +31,7 @@ class CaReactorRecipeRegistry(name: String) : RecipeRegistry<SimpleRecipeBuilder
     }
 
     fun findRecipeWithRank(rank: Int, inputs: List<ItemStack>) : Recipe? {
-        val index = min(rank - 1, actualRecipes.size - 1)
+        val index = (rank - 1).coerceIn(0, actualRecipes.size - 1)
         return actualRecipes[index].takeIf { it.matches(inputs) }
     }
 
