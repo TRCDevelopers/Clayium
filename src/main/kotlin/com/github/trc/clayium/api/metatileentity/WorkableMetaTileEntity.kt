@@ -1,7 +1,6 @@
 package com.github.trc.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.api.drawable.IDrawable
-import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
@@ -129,7 +128,7 @@ abstract class WorkableMetaTileEntity(
 
         return ModularPanel.defaultPanel(this.metaTileEntityId.toString())
             .child(Column().margin(7).sizeRel(1f)
-                .child(createBaseUi(syncManager)
+                .child(buildMainParentWidget(syncManager)
                     .child(slotsAndProgressBar.align(Alignment.Center))
                     .childIf(this.tier.numeric < 3, ButtonWidget()
                         .size(16, 16).align(Alignment.BottomCenter)
@@ -142,12 +141,8 @@ abstract class WorkableMetaTileEntity(
             )
     }
 
-    protected open fun createBaseUi(syncManager: GuiSyncManager): ParentWidget<*> {
-        return ParentWidget().widthRel(1f).expanded().marginBottom(2)
-            .child(IKey.lang("machine.clayium.${recipeRegistry.category.categoryName}", IKey.lang(tier.prefixTranslationKey)).asWidget()
-                .align(Alignment.TopLeft))
-            .child(IKey.lang("container.inventory").asWidget()
-                .align(Alignment.BottomLeft))
+    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+        return super.buildMainParentWidget(syncManager)
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .bottom(12).left(0).widthRel(0.5f))
             .child(clayEnergyHolder.createSlotWidget()

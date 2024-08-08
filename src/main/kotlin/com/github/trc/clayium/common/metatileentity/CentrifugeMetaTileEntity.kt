@@ -48,7 +48,7 @@ class CentrifugeMetaTileEntity(
 
         return ModularPanel.defaultPanel(this.metaTileEntityId.toString(), 176, 104 + ((outputSize + 1) * 9 + 46))
             .child(Column().margin(7).sizeRel(1f)
-                .child(createBaseUi(syncManager)
+                .child(buildMainParentWidget(syncManager)
                     .child(slotsAndProgressBar.align(Alignment.Center)))
                 .child(SlotGroupWidget.playerInventory(0))
             )

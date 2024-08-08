@@ -68,8 +68,8 @@ class ClayBlastFurnaceMetaTileEntity(
         return StructureValidationResult.Valid(mbParts, tiers)
     }
 
-    override fun createBaseUi(syncManager: GuiSyncManager): ParentWidget<*> {
-        return super.createBaseUi(syncManager)
+    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+        return super.buildMainParentWidget(syncManager)
             .child(multiblockValidation.tierTextWidget(syncManager)
                 .align(Alignment.BottomCenter))
     }

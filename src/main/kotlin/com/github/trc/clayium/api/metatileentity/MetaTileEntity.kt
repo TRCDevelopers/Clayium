@@ -634,11 +634,12 @@ abstract class MetaTileEntity(
     /**
      * returns main parent widget positioned above player inventory.
      */
-    protected open fun buildMainParentWidget() = ParentWidget().widthRel(1f).expanded().marginBottom(2)
+    protected open fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+        return ParentWidget().widthRel(1f).expanded().marginBottom(2)
             .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
                 .align(Alignment.TopLeft))
-            .child(IKey.lang("container.inventory").asWidget()
-                .align(Alignment.BottomLeft))
+            .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
+    }
 
     private data class FilterAndType(val filter: IItemFilter, val type: FilterType)
 

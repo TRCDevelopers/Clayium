@@ -86,12 +86,12 @@ class ClayReactorMetaTileEntity(
         return ClayReactorMetaTileEntity(metaTileEntityId, tier)
     }
 
-    override fun createBaseUi(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         syncManager.syncValue("clayLaser", SyncHandlers.intNumber(
             { laser?.toInt() ?: -1 },
             { this.laser = if (it == -1) null else ClayLaser.fromInt(it, EnumFacing.UP) }
         ))
-        return super.createBaseUi(syncManager)
+        return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic { I18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.laserEnergy?.toLong() ?: 0L)) }.asWidget()
                 .align(Alignment.BottomRight))
             .child(multiblockValidation.tierTextWidget(syncManager)

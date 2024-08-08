@@ -503,10 +503,10 @@ tooltip.clayium.CAReactor.line7=cover them with CA Reactor Hulls (or Interfaces)
 tooltip.clayium.CAReactor.line8=and replace one of the hulls with a CA Reactor Core.
 tooltip.clayium.CAReactor.line9=- The number of CA Reactor Hulls >= 50.
 tooltip.clayium.CAReactor.line10=- The tiers of Reactor coils (and Interfaces) >= the Reactor Core's.
-gui.clayium.CAReactor.invalid=Invalid
-gui.clayium.CAReactor.constructed=Constructed
-gui.clayium.CAReactor.rankSize=Rank %1$2.2g  Size %2$2d
-gui.clayium.CAReactor.efficiency=Efficiency %g
+gui.clayium.ca_reactor.invalid=Invalid
+gui.clayium.ca_reactor.constructed=Constructed
+gui.clayium.ca_reactor.rank_size=Rank %d  Size %d
+gui.clayium.ca_reactor.efficiency=Efficiency %s
 message.clayium.CAReactor.invalidCoil=Coil [%1$d,%2$d,%3$d] is invalid.
 message.clayium.CAReactor.tooManyCoils=The number of coils must not be higher than %1$d.
 message.clayium.CAReactor.insufficientTierCoil=Coil [%1$d,%2$d,%3$d]'s tier is insufficient.

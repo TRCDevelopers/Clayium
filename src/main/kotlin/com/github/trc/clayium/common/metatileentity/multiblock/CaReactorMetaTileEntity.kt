@@ -1,5 +1,11 @@
 package com.github.trc.clayium.common.metatileentity.multiblock
 
+import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.utils.NumberFormat
+import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.ParentWidget
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
@@ -19,6 +25,7 @@ import com.github.trc.clayium.common.blocks.BlockCaReactorHull
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.registry.CaReactorRecipeRegistry
 import it.unimi.dsi.fastutil.ints.IntArrayList
+import net.minecraft.client.resources.I18n
 import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -45,6 +52,7 @@ class CaReactorMetaTileEntity(
     override val itemInventory = ItemHandlerProxy(importItems, exportItems)
 
     private var avgHullRank = 0
+    private var hullCount = 0
     private var efficiency = 0.0
     private var cePerTickMultiplier = 0.0
 
@@ -95,10 +103,11 @@ class CaReactorMetaTileEntity(
         if (hullRanks.size < REQUIRED_HULLS) return Invalid
 
         this.avgHullRank = if (hullRanks.isEmpty) 0 else hullRanks.average().toInt()
+        this.hullCount = hullRanks.size
         this.efficiency = getEfficiency(avgHullRank.toDouble(), hullRanks.size)
         this.cePerTickMultiplier = getCEPerTickMultiplier(avgHullRank.toDouble(), hullRanks.size)
 
-        return StructureValidationResult.Valid(parts, emptyList())
+        return StructureValidationResult.Valid(emptyList(), emptyList())
     }
 
     private fun searchAndValidateAdjacentCoil(coilPos: BlockPos, walked: MutableSet<BlockPos>): Boolean {
@@ -135,6 +144,26 @@ class CaReactorMetaTileEntity(
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
         registerItemModelDefault(item, meta, "ca_reactor")
+    }
+
+    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+        syncManager.syncValue("caReactorEfficiency", SyncHandlers.doubleNumber(::efficiency, ::efficiency::set))
+        syncManager.syncValue("caReactorAvgHullRank", SyncHandlers.intNumber(::avgHullRank, ::avgHullRank::set))
+        syncManager.syncValue("caReactorHullCount", SyncHandlers.intNumber(::hullCount, ::hullCount::set))
+
+        return super.buildMainParentWidget(syncManager)
+            .child(IKey.dynamic {
+                if (multiblockValidation.structureFormed)
+                    I18n.format("gui.clayium.ca_reactor.constructed")
+                else
+                    I18n.format("gui.clayium.ca_reactor.invalid") }
+                .asWidget().widthRel(0.7f).alignment(Alignment.CenterRight).align(Alignment.BottomRight)
+            )
+            .child(IKey.dynamic { I18n.format("gui.clayium.ca_reactor.efficiency", NumberFormat.formatWithMaxDigits(efficiency)) }
+                .asWidget().widthRel(0.6f).alignment(Alignment.CenterRight).right(0).bottom(10)
+            )
+            .child(IKey.dynamic { I18n.format("gui.clayium.ca_reactor.rank_size", avgHullRank, hullCount) }
+                .asWidget().widthRel(0.5f).left(0).top(10))
     }
 
     companion object {

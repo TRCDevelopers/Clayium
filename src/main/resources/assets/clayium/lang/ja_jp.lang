@@ -471,10 +471,10 @@ tooltip.clayium.CAReactor.line7=CA 反応炉筐体かインターフェースで
 tooltip.clayium.CAReactor.line8=その囲いの内 1 つを反応炉コアブロックに置換する
 tooltip.clayium.CAReactor.line9=- CA 反応炉筐体の数は 50 個以上
 tooltip.clayium.CAReactor.line10=- コイルやインターフェースの Tier >= コアの Tier
-gui.clayium.CAReactor.invalid=無効
-gui.clayium.CAReactor.constructed=構築済
-gui.clayium.CAReactor.rankSize=ランク %1$2.2g  サイズ %2$2d
-gui.clayium.CAReactor.efficiency=効率 %g
+gui.clayium.ca_reactor.invalid=無効
+gui.clayium.ca_reactor.constructed=構築済
+gui.clayium.ca_reactor.rankSize=ランク %d サイズ %d
+gui.clayium.ca_reactor.efficiency=効率 %s
 message.clayium.CAReactor.invalidCoil=コイル [%1$d,%2$d,%3$d] が無効です。
 message.clayium.CAReactor.tooManyCoils=コイルの数が基準値(%1$d)を超えています。
 message.clayium.CAReactor.insufficientTierCoil=コイル [%1$d,%2$d,%3$d] の Tier が無効です。
