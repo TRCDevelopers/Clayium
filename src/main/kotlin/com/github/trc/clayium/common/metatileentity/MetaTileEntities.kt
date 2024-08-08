@@ -162,7 +162,7 @@ object MetaTileEntities {
     val AUTO_CLAY_CONDENSER = registerMetaTileEntities(216, intArrayOf(5, 7)) {
         AutoClayCondenserMetaTileEntity(clayiumId("auto_clay_condenser.${it.lowerName}"), it)
     }
-    val CA_REACTOR = registerMetaTileEntity(218, CaReactorMetaTileEntity(clayiumId("ca_reactor.${ClayTiers.ANTIMATTER.lowerName}"), ClayTiers.ANTIMATTER))
+    val CA_REACTOR = registerMetaTileEntities(218, (10..13)) { CaReactorMetaTileEntity(clayiumId("ca_reactor.${it.lowerName}"), it) }
 
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)

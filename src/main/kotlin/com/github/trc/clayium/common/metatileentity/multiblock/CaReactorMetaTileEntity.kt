@@ -16,6 +16,7 @@ import com.github.trc.clayium.api.metatileentity.multiblock.IMultiblockPart
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockTrait
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockTrait.StructureValidationResult
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockTrait.StructureValidationResult.Invalid
+import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getMetaTileEntity
@@ -56,6 +57,13 @@ class CaReactorMetaTileEntity(
     private var efficiency = 0.0
     private var cePerTickMultiplier = 0.0
 
+    private val supportedHullTierRange = when (tier.numeric) {
+        10 -> 1..2
+        11 -> 1..6
+        12, 13 -> 1..10
+        else -> IntRange.EMPTY
+    }
+
     override val workable: AbstractRecipeLogic = CaReactorRecipeLogic()
 
     @Suppress("unused") // to use as a method reference in MultiblockTrait
@@ -93,7 +101,9 @@ class CaReactorMetaTileEntity(
                     metaTileEntity === this -> {}
                     block is BlockCaReactorHull -> {
                         if (block.getTier(world, pos).numeric < this.tier.numeric) return Invalid
-                        hullRanks.add(block.getCaRank(world, pos))
+                        val hullRank = block.getCaRank(world, pos)
+                        if (hullRank !in supportedHullTierRange) return Invalid
+                        hullRanks.add(hullRank)
                     }
                     block is BlockCaReactorCoil -> {
                         if (block.getTier(world, pos).numeric < this.tier.numeric) return Invalid
