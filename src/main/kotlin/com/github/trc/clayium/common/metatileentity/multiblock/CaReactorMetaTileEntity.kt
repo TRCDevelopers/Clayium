@@ -70,16 +70,19 @@ class CaReactorMetaTileEntity(
         }
         if (firstCoilPos == null) return Invalid
         val parts = mutableListOf<IMultiblockPart>()
-        val walked = mutableSetOf<BlockPos>()
-        val isValid = searchAndValidateAdjacentCoil(firstCoilPos, walked)
+        val coilsWalked = mutableSetOf<BlockPos>()
+        val isValid = searchAndValidateAdjacentCoil(firstCoilPos, coilsWalked)
         if (!isValid) return Invalid
 
         // Extra checks
         // Coil is surrounded by coils or hulls or MBPart and count the hulls
         // Interfaces and coil blocks of a lower tier than the core block cannot be used.
-        for (pos in walked) {
+        val hullsWalked = mutableSetOf<BlockPos>()
+        for (pos in coilsWalked) {
             for (side in EnumFacing.entries) {
                 val pos = pos.offset(side)
+                if (hullsWalked.contains(pos)) continue
+                hullsWalked.add(pos)
                 val metaTileEntity = world.getMetaTileEntity(pos)
                 val block = world.getBlockState(pos).block
                 when {
@@ -163,7 +166,7 @@ class CaReactorMetaTileEntity(
                 .asWidget().widthRel(0.6f).alignment(Alignment.CenterRight).right(0).bottom(10)
             )
             .child(IKey.dynamic { I18n.format("gui.clayium.ca_reactor.rank_size", avgHullRank, hullCount) }
-                .asWidget().widthRel(0.5f).left(0).top(10))
+                .asWidget().widthRel(0.6f).left(0).top(10))
     }
 
     companion object {
@@ -171,14 +174,15 @@ class CaReactorMetaTileEntity(
         const val REQUIRED_HULLS = 50
         const val EFFICIENCY_BASE = 7.5
         const val CE_CONSUMPTION_MUL_BASE = 1.01
+        const val EFFICIENCY_MULTIPLIER = 0.2
         val caReactorRegistry = CaReactorRecipeRegistry("ca_reactor")
 
         private fun getEfficiency(averageRank: Double, hullCount: Int): Double {
-            return EFFICIENCY_BASE.pow(averageRank) * 1.02.pow(hullCount)
+            return EFFICIENCY_MULTIPLIER * EFFICIENCY_BASE.pow(averageRank - 1) * 1.02.pow(hullCount)
         }
 
         private fun getCEPerTickMultiplier(averageRank: Double, hullCount: Int): Double {
-            return CE_CONSUMPTION_MUL_BASE.pow(averageRank) * hullCount
+            return CE_CONSUMPTION_MUL_BASE.pow((averageRank - 1) * hullCount)
         }
     }
 
@@ -190,7 +194,7 @@ class CaReactorMetaTileEntity(
                 return
             }
             val duration = recipe.duration / efficiency.toLong()
-            val cePerTick = ClayEnergy((recipe.cePerTick.energy.toDouble() * cePerTickMultiplier).toLong())
+            val cePerTick = ClayEnergy((recipe.cePerTick.energy * cePerTickMultiplier).toLong())
             val multipliedRecipe = Recipe(recipe.inputs, recipe.outputs, recipe.chancedOutputs,
                 duration, cePerTick, recipe.tierNumeric)
             prepareRecipe(multipliedRecipe)
