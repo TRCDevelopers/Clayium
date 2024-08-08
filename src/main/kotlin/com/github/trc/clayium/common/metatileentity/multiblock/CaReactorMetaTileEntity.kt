@@ -1,9 +1,5 @@
 package com.github.trc.clayium.common.metatileentity.multiblock
 
-import com.cleanroommc.modularui.factory.PosGuiData
-import com.cleanroommc.modularui.screen.ModularPanel
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
@@ -53,16 +49,6 @@ class CaReactorMetaTileEntity(
     private var cePerTickMultiplier = 0.0
 
     override val workable: AbstractRecipeLogic = CaReactorRecipeLogic()
-
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        syncManager.syncValue("avgHullRank", SyncHandlers.intNumber(::avgHullRank, ::avgHullRank::set))
-        syncManager.syncValue("efficiency", SyncHandlers.doubleNumber(::efficiency, ::efficiency::set))
-        return ModularPanel.defaultPanel(translationKey)
-            .child(mainColumn()
-                .child(buildMainParentWidget()
-                )
-            )
-    }
 
     @Suppress("unused") // to use as a method reference in MultiblockTrait
     private fun checkStructure(handler: MultiblockTrait): StructureValidationResult {
