@@ -6,6 +6,7 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ClayTiers.*
 import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.blocks.ClayiumBlocks.MACHINE_HULL
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
@@ -16,6 +17,8 @@ import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.common.unification.material.CMaterials
 import com.github.trc.clayium.common.unification.ore.OrePrefix
 import com.github.trc.clayium.common.unification.stack.UnificationEntry
+import com.google.common.primitives.Longs.min
+import net.minecraft.item.ItemStack
 import kotlin.math.pow
 
 object MachineBlockRecipeLoader {
@@ -102,7 +105,37 @@ object MachineBlockRecipeLoader {
                     )
             }
         }
+        /* CA Reactor Hulls */
+        val antimatters = listOf(CMaterials.antimatter) + CMaterials.PURE_ANTIMATTERS
+        val caHullMaterials = listOf(CMaterials.rubidium, CMaterials.cerium, CMaterials.tantalum, CMaterials.praseodymium,
+            CMaterials.protactinium, CMaterials.neptunium, CMaterials.promethium, CMaterials.samarium, CMaterials.curium, CMaterials.europium)
+        var caHullCenter = MACHINE_HULL.getItem(ClayTiers.ANTIMATTER)
+        for ((i, entry) in antimatters.zip(caHullMaterials).withIndex()) {
+            val (matter, hullMaterial) = entry
+            val result = ItemStack(ClayiumBlocks.CA_REACTOR_HULL, 1, i)
+            RecipeUtils.addShapedRecipe("ca_reactor_hull_$i", result,
+                "MIM", "MHM", "MMM",
+                'M', UnificationEntry(OrePrefix.gem, matter),
+                'I', UnificationEntry(OrePrefix.ingot, hullMaterial),
+                'H', caHullCenter,
+            )
+            caHullCenter = result
+        }
         //endregion
+
+        /* Ca Reactor Coils */
+        for ((i, entry) in listOf(CMaterials.antimatter, CMaterials.pureAntimatter, CMaterials.octupleEnergyClay,
+            CMaterials.octuplePureAntimatter).zip(listOf(CMaterials.platinum, CMaterials.iridium, CMaterials.osmium,
+            CMaterials.rhenium)).withIndex()) {
+            val (plateMaterial, ingotMaterial) = entry
+            CRecipes.CLAY_REACTOR.builder()
+                .input(OrePrefix.plate, plateMaterial, 6)
+                .input(OrePrefix.ingot, ingotMaterial, 4.0.pow(i).toInt())
+                .output(ItemStack(ClayiumBlocks.CA_REACTOR_COIL, 1, i))
+                .tier(10 + i).duration(min(10_000_000_000_000 * 10.0.pow(i).toLong(), 1_000_000_000_000_000))
+                .CEt(ClayEnergy.of(1000 * 10.0.pow(i).toLong()))
+                .buildAndRegister()
+        }
 
         registerMachineRecipeHull(MetaTileEntities.BENDING_MACHINE) {
             input(OrePrefix.plate, CMaterials.denseClay, 3)
@@ -305,6 +338,16 @@ object MachineBlockRecipeLoader {
                 .input(MetaItemClayParts.BASIC_CIRCUIT)
                 .output(i)
                 .tier(4).CEt(ClayEnergy.micro(100)).duration(40)
+                .buildAndRegister()
+        }
+        /* CA Reactor */
+        for (i in 0..3) {
+            CRecipes.ASSEMBLER.builder()
+                .input(MACHINE_HULL.getItem(ClayTiers.entries[i + 10]))
+                .input(MetaTileEntities.CLAY_REACTOR, 16)
+                .output(MetaTileEntities.CA_REACTOR[i])
+                .tier(10).duration(120)
+                .CEt(ClayEnergy.of(1_000 * 10.0.pow(i).toLong()))
                 .buildAndRegister()
         }
         registerLowTierRecipe(MetaTileEntities.INSCRIBER, "gMg", "cHc", "gcg")
