@@ -40,8 +40,8 @@ class BlockCaReactorHull : Block(Material.IRON), ICaReactorHull, ITieredBlock {
         }
     }
 
-    override fun getCaRank(stack: ItemStack) = stack.metadata
-    override fun getCaRank(world: IBlockAccess, pos: BlockPos) = world.getBlockState(pos).getValue(META)
+    override fun getCaRank(stack: ItemStack) = stack.metadata + 1
+    override fun getCaRank(world: IBlockAccess, pos: BlockPos) = world.getBlockState(pos).getValue(META) + 1
 
     override fun createBlockState() = BlockStateContainer(this, META)
 
