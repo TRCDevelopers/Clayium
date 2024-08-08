@@ -16,7 +16,6 @@ import com.github.trc.clayium.api.metatileentity.multiblock.IMultiblockPart
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockTrait
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockTrait.StructureValidationResult
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockTrait.StructureValidationResult.Invalid
-import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getMetaTileEntity
@@ -203,7 +202,7 @@ class CaReactorMetaTileEntity(
                 invalidInputsForRecipes = true
                 return
             }
-            val duration = recipe.duration / efficiency.toLong()
+            val duration = (recipe.duration / efficiency).toLong()
             val cePerTick = ClayEnergy((recipe.cePerTick.energy * cePerTickMultiplier).toLong())
             val multipliedRecipe = Recipe(recipe.inputs, recipe.outputs, recipe.chancedOutputs,
                 duration, cePerTick, recipe.tierNumeric)
