@@ -120,7 +120,7 @@ class CaReactorMetaTileEntity(
         this.efficiency = getEfficiency(avgHullRank.toDouble(), hullRanks.size)
         this.cePerTickMultiplier = getCEPerTickMultiplier(avgHullRank.toDouble(), hullRanks.size)
 
-        return StructureValidationResult.Valid(emptyList(), emptyList())
+        return StructureValidationResult.Valid(parts, emptyList())
     }
 
     private fun searchAndValidateAdjacentCoil(coilPos: BlockPos, walked: MutableSet<BlockPos>): Boolean {
