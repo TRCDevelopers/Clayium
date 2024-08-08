@@ -110,7 +110,7 @@ class ClayLaserSource(
         isActive = data.getBoolean("isActive")
     }
 
-    fun onRemoval() {
+    override fun onRemoval() {
         laserTarget?.takeUnless { it.isInvalid }
             ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
             ?.laserChanged(laser.laserDirection.opposite, null)

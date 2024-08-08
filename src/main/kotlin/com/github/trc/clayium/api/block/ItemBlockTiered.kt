@@ -12,7 +12,7 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-class ItemBlockTiered<T>(
+open class ItemBlockTiered<T>(
     private val tieredBlock: T,
     hasSubTypes: Boolean = true,
 ) : ItemBlock(tieredBlock), ITieredItem
@@ -37,7 +37,7 @@ class ItemBlockTiered<T>(
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         tooltip.add(ITier.tierNumericTooltip(this.getTier(stack)))
-        UtilLocale.formatTooltips(tooltip, "tile.$translationKey.tooltip")
+        UtilLocale.formatTooltips(tooltip, "$translationKey.tooltip")
         super.addInformation(stack, worldIn, tooltip, flagIn)
     }
 }

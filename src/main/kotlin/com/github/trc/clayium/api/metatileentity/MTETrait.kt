@@ -20,6 +20,7 @@ abstract class MTETrait(
     }
 
     open fun update() {}
+    open fun onRemoval() {}
 
     open fun serializeNBT(): NBTTagCompound = NBTTagCompound()
     open fun deserializeNBT(data: NBTTagCompound) {}

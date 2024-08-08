@@ -104,13 +104,13 @@ abstract class ProxyMetaTileEntityBase(
         // no-op, this block is a proxy
     }
 
-    final override fun addToMultiblock(controller: MultiblockControllerBase) {
+    final override fun addToMultiblock(controller: MetaTileEntity) {
         this.isAttachedToMultiblock = true
         this.target = controller
         this.onLink(controller)
     }
 
-    final override fun removeFromMultiblock(controller: MultiblockControllerBase) {
+    final override fun removeFromMultiblock(controller: MetaTileEntity) {
         this.isAttachedToMultiblock = false
         this.target = null
         this.onUnlink()

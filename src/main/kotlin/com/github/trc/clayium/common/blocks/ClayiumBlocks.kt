@@ -45,6 +45,8 @@ object ClayiumBlocks {
     val QUARTZ_CRUCIBLE = createBlock("quartz_crucible", BlockQuartzCrucible())
     val MACHINE_HULL = createBlock("machine_hull", BlockMachineHull())
     val RESONATOR = createBlock("resonator", BlockResonator())
+    val CA_REACTOR_HULL = createBlock("ca_reactor_hull", BlockCaReactorHull())
+    val CA_REACTOR_COIL = createBlock("ca_reactor_coil", BlockCaReactorCoil())
 
     val PAN_CABLE = createBlock("pan_cable", BlockPanCable())
 

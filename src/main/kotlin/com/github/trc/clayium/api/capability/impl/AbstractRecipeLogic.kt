@@ -36,7 +36,7 @@ abstract class AbstractRecipeLogic(
     // item stacks that will be produced when the recipe is done
     protected var itemOutputs: List<ItemStack> = emptyList()
 
-    private var invalidInputsForRecipes = false
+    protected var invalidInputsForRecipes = false
     protected var outputsFull = false
 
     override val isWorking: Boolean get() = currentProgress != 0L

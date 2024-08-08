@@ -9,6 +9,8 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.BlockMachine.Companion.IS_PIPE
@@ -505,7 +507,9 @@ abstract class MetaTileEntity(
         if (!isRemote) EnumFacing.entries.forEach(this::refreshConnection)
     }
 
-    open fun onRemoval() {}
+    open fun onRemoval() {
+        this.mteTraits.values.forEach(MTETrait::onRemoval)
+    }
 
     fun getStackForm(amount: Int = 1): ItemStack {
         return ItemStack(ClayiumApi.BLOCK_MACHINE, amount, ClayiumApi.MTE_REGISTRY.getIdByKey(metaTileEntityId))
@@ -612,7 +616,30 @@ abstract class MetaTileEntity(
         if (!isRemote) block()
     }
 
+    /**
+     * ```
+     * ModularPanel.defaultPanel(translationKey)
+     *     .child(mainColumn()
+     *          .child(buildMainParentWidget()
+     *              .child(....)
+     *          )
+     *     )
+     * ```
+     */
     abstract override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel
+
+    protected fun mainColumn() = Column().margin(7).sizeRel(1f)
+        .child(SlotGroupWidget.playerInventory(0))
+
+    /**
+     * returns main parent widget positioned above player inventory.
+     */
+    protected open fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+        return ParentWidget().widthRel(1f).expanded().marginBottom(2)
+            .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
+                .align(Alignment.TopLeft))
+            .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
+    }
 
     private data class FilterAndType(val filter: IItemFilter, val type: FilterType)
 
