@@ -8,7 +8,6 @@ import com.github.trc.clayium.common.unification.OreDictUnifier
 import com.github.trc.clayium.common.unification.material.CMaterials
 import com.github.trc.clayium.common.unification.ore.OrePrefix
 import net.minecraft.item.ItemStack
-import kotlin.math.min
 import kotlin.math.pow
 
 class CaReactorRecipeRegistry(name: String) : RecipeRegistry<SimpleRecipeBuilder>(name, SimpleRecipeBuilder(), 1, 1) {

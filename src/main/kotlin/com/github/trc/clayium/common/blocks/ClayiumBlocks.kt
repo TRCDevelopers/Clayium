@@ -5,6 +5,8 @@ import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.common.blocks.claytree.BlockClayLeaves
+import com.github.trc.clayium.common.blocks.claytree.BlockClayTreeLog
 import com.github.trc.clayium.common.blocks.clayworktable.BlockClayWorkTable
 import com.github.trc.clayium.common.blocks.material.BlockCompressedClay
 import com.github.trc.clayium.common.blocks.ores.BlockClayOre
@@ -16,11 +18,11 @@ import com.github.trc.clayium.common.unification.ore.OrePrefix
 import com.google.common.collect.ImmutableMap
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import net.minecraft.block.Block
+import net.minecraft.block.BlockLeaves
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper
-import net.minecraft.init.Blocks
+import net.minecraft.client.renderer.block.statemap.StateMap
 import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.relauncher.Side
@@ -49,6 +51,9 @@ object ClayiumBlocks {
     val CA_REACTOR_COIL = createBlock("ca_reactor_coil", BlockCaReactorCoil())
 
     val PAN_CABLE = createBlock("pan_cable", BlockPanCable())
+
+    val CLAY_TREE_LOG = createBlock("clay_tree_log", BlockClayTreeLog())
+    val CLAY_TREE_LEAVES = createBlock("clay_tree_leaves", BlockClayLeaves())
 
     /* ---------------------------------- */
 
@@ -121,9 +126,9 @@ object ClayiumBlocks {
         metaMaterialMap.values.forEach { compressedClay[it] = block }
     }
 
-    //todo
-    fun getCompressedClayStack(tier: Int): ItemStack {
-        return ItemStack(Blocks.CLAY, 1)
+    @SideOnly(Side.CLIENT)
+    fun registerStateMappers() {
+        ModelLoader.setCustomStateMapper(CLAY_TREE_LEAVES, StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build())
     }
 
     @SideOnly(Side.CLIENT)
@@ -141,11 +146,16 @@ object ClayiumBlocks {
 
     @SideOnly(Side.CLIENT)
     private fun registerItemModel(block: Block) {
-        for (state in block.blockState.validStates) {
-            ModelLoader.setCustomModelResourceLocation(
-                Item.getItemFromBlock(block), block.getMetaFromState(state),
-                ModelResourceLocation(block.registryName!!, defaultStateMapper.getPropertyString(state.properties))
-            )
+        val item = block.getAsItem()
+        if (item.hasSubtypes) {
+            for (state in block.blockState.validStates) {
+                ModelLoader.setCustomModelResourceLocation(
+                    Item.getItemFromBlock(block), block.getMetaFromState(state),
+                    ModelResourceLocation(block.registryName!!, defaultStateMapper.getPropertyString(state.properties))
+                )
+            }
+        } else {
+            ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(block.registryName!!, "normal"))
         }
     }
 }

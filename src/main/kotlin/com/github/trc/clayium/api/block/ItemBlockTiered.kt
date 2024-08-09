@@ -40,4 +40,8 @@ open class ItemBlockTiered<T>(
         UtilLocale.formatTooltips(tooltip, "$translationKey.tooltip")
         super.addInformation(stack, worldIn, tooltip, flagIn)
     }
+
+    companion object {
+        fun <T> noSubTypes(tieredBlock: T) where T : Block, T : ITieredBlock = ItemBlockTiered(tieredBlock, false)
+    }
 }

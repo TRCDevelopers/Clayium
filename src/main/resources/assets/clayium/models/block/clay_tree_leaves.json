@@ -1,0 +1,6 @@
+{
+  "parent": "block/leaves",
+  "textures": {
+    "all": "clayium:blocks/clay_tree_leaves"
+  }
+}
