@@ -35,7 +35,7 @@ class ClientProxy : CommonProxy() {
         ModelLoaderRegistry.registerLoader(LaserReflectorModelLoader)
         ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, MetaTileEntityRenderDispatcher)
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayLaserReflector::class.java, ClayLaserReflectorRenderer)
-        ClayiumBlocks.CLAY_TREE_LEAVES.setGraphicsLevel(Minecraft.getMinecraft().gameSettings.fancyGraphics)
+        ClayiumBlocks.CLAY_LEAVES.setGraphicsLevel(Minecraft.getMinecraft().gameSettings.fancyGraphics)
     }
 
     override fun init(event: FMLInitializationEvent) {

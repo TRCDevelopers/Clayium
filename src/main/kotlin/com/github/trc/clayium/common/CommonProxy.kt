@@ -142,8 +142,9 @@ open class CommonProxy {
 
         registry.register(createItemBlock(ClayiumBlocks.PAN_CABLE, ItemBlockTiered<*>::noSubTypes))
 
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_TREE_LOG, ItemBlockTiered<*>::noSubTypes))
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_TREE_LEAVES, ItemBlockTiered<*>::noSubTypes))
+        registry.register(createItemBlock(ClayiumBlocks.CLAY_LOG, ItemBlockTiered<*>::noSubTypes))
+        registry.register(createItemBlock(ClayiumBlocks.CLAY_LEAVES, ItemBlockTiered<*>::noSubTypes))
+        registry.register(createItemBlock(ClayiumBlocks.CLAY_SAPLING, ItemBlockTiered<*>::noSubTypes))
 
         registry.register(ItemBlock(ClayiumBlocks.LASER_REFLECTOR).apply {
             registryName = ClayiumBlocks.LASER_REFLECTOR.registryName

@@ -11,7 +11,7 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 
-class BlockClayTreeLog : BlockRotatedPillar(Material.WOOD), ITieredBlock {
+class BlockClayLog : BlockRotatedPillar(Material.WOOD), ITieredBlock {
     init {
         setHardness(1.5f)
         setSoundType(SoundType.GROUND)

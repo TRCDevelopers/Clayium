@@ -6,7 +6,8 @@ import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.blocks.claytree.BlockClayLeaves
-import com.github.trc.clayium.common.blocks.claytree.BlockClayTreeLog
+import com.github.trc.clayium.common.blocks.claytree.BlockClayLog
+import com.github.trc.clayium.common.blocks.claytree.BlockClaySapling
 import com.github.trc.clayium.common.blocks.clayworktable.BlockClayWorkTable
 import com.github.trc.clayium.common.blocks.material.BlockCompressedClay
 import com.github.trc.clayium.common.blocks.ores.BlockClayOre
@@ -19,8 +20,11 @@ import com.google.common.collect.ImmutableMap
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import net.minecraft.block.Block
 import net.minecraft.block.BlockLeaves
+import net.minecraft.block.BlockSapling
+import net.minecraft.client.model.ModelRenderer
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper
+import net.minecraft.client.renderer.block.statemap.IStateMapper
 import net.minecraft.client.renderer.block.statemap.StateMap
 import net.minecraft.item.Item
 import net.minecraftforge.client.model.ModelLoader
@@ -52,8 +56,9 @@ object ClayiumBlocks {
 
     val PAN_CABLE = createBlock("pan_cable", BlockPanCable())
 
-    val CLAY_TREE_LOG = createBlock("clay_tree_log", BlockClayTreeLog())
-    val CLAY_TREE_LEAVES = createBlock("clay_tree_leaves", BlockClayLeaves())
+    val CLAY_LOG = createBlock("clay_log", BlockClayLog())
+    val CLAY_LEAVES = createBlock("clay_leaves", BlockClayLeaves())
+    val CLAY_SAPLING = createBlock("clay_sapling", BlockClaySapling())
 
     /* ---------------------------------- */
 
@@ -62,6 +67,10 @@ object ClayiumBlocks {
 
     private val compressedClay = mutableMapOf<Material, BlockCompressedClay>()
     private val energizedClay = mutableMapOf<Material, BlockEnergizedClay>()
+
+    /* ---------------------------------- */
+
+    private val stateMapperCache = mutableMapOf<Block, IStateMapper>()
 
     init {
         createMaterialBlock(
@@ -128,7 +137,14 @@ object ClayiumBlocks {
 
     @SideOnly(Side.CLIENT)
     fun registerStateMappers() {
-        ModelLoader.setCustomStateMapper(CLAY_TREE_LEAVES, StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build())
+        setStateMapper(CLAY_LEAVES, StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build())
+        setStateMapper(CLAY_SAPLING, StateMap.Builder().ignore(BlockSapling.STAGE).build())
+    }
+
+    @SideOnly(Side.CLIENT)
+    private fun setStateMapper(block: Block, stateMapper: IStateMapper) {
+        stateMapperCache[block] = stateMapper
+        ModelLoader.setCustomStateMapper(block, stateMapper)
     }
 
     @SideOnly(Side.CLIENT)
@@ -142,20 +158,32 @@ object ClayiumBlocks {
         }
         for (block in ENERGIZED_CLAY_BLOCKS) block.registerModels()
         for (block in COMPRESSED_CLAY_BLOCKS) block.registerModels()
+
+        stateMapperCache.clear()
     }
 
     @SideOnly(Side.CLIENT)
     private fun registerItemModel(block: Block) {
         val item = block.getAsItem()
-        if (item.hasSubtypes) {
-            for (state in block.blockState.validStates) {
-                ModelLoader.setCustomModelResourceLocation(
-                    Item.getItemFromBlock(block), block.getMetaFromState(state),
-                    ModelResourceLocation(block.registryName!!, defaultStateMapper.getPropertyString(state.properties))
-                )
+        when {
+            block === CLAY_SAPLING -> {
+                ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(clayiumId("clay_sapling"), "inventory"))
             }
-        } else {
-            ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(block.registryName!!, "normal"))
+            else -> {
+                val customStateMapper = stateMapperCache[block]
+                if (customStateMapper != null) {
+                    val map = customStateMapper.putStateModelLocations(block)
+                    for (state in block.blockState.validStates) {
+                        ModelLoader.setCustomModelResourceLocation(item, block.getMetaFromState(state),
+                            map[state] ?: error("Missing model for state $state"))
+                    }
+                } else {
+                    for (state in block.blockState.validStates) {
+                        ModelLoader.setCustomModelResourceLocation(item, block.getMetaFromState(state),
+                            ModelResourceLocation(block.registryName!!, defaultStateMapper.getPropertyString(state.properties)))
+                    }
+                }
+            }
         }
     }
 }
