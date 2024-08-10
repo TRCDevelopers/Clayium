@@ -150,6 +150,10 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
         return this as R
     }
 
+    fun defaultCEt(): R {
+        return this.CEt(tier = this.tier)
+    }
+
     open fun buildAndRegister() {
         setDefaults()
 
