@@ -1,6 +1,7 @@
 package com.github.trc.clayium.common.loaders.recipe
 
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.common.unification.material.CMaterials
@@ -60,6 +61,13 @@ object CentrifugeRecipeLoader {
             .tier(6).CEt(ClayEnergy.micro(80)).duration(2)
             .buildAndRegister()
 
-        /* todo: ClayTree Log */
+        registry.builder()
+            .input(ClayiumBlocks.CLAY_TREE_LOG)
+            .output(OrePrefix.dust, CMaterials.advancedIndustrialClay, 16)
+            .output(OrePrefix.dust, CMaterials.manganese, 5)
+            .output(OrePrefix.dust, CMaterials.lithium, 3)
+            .output(OrePrefix.dust, CMaterials.zirconium)
+            .tier(6).defaultCEt().duration(400)
+            .buildAndRegister()
     }
 }

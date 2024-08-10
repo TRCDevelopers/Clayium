@@ -546,9 +546,9 @@ machine.clayium.clay_laser.tooltip5=赤石信号によりレーザー照射を�
 tile.clayium.laser_reflector.name=レーザーリフレクター
 tile.clayium.laser_reflector.tooltip1=レーザーの向きを変える
 
-tile.clayium.blockClayTreeSapling.name=粘土樹の苗木
-tile.clayium.blockClayTreeLog.name=粘土樹の原木
-tile.clayium.blockClayTreeLeaf.name=粘土樹の葉
+tile.clayium.clay_tree_sapling.name=粘土樹の苗木
+tile.clayium.clay_tree_log.name=粘土樹の原木
+tile.clayium.clay_tree_leaves.name=粘土樹の葉
 
 tile.clayium.blockClayChunkLoader.name=3x3 チャンクローダー
 machine.clayium.storage_container=ストレージコンテナ

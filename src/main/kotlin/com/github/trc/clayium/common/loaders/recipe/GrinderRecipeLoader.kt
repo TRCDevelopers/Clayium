@@ -3,6 +3,8 @@ package com.github.trc.clayium.common.loaders.recipe
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.recipe.registry.CRecipes
+import com.github.trc.clayium.common.unification.material.CMaterials
+import com.github.trc.clayium.common.unification.ore.OrePrefix
 
 object GrinderRecipeLoader {
     fun registerRecipes() {
@@ -22,6 +24,11 @@ object GrinderRecipeLoader {
             .input(ClayiumBlocks.LARGE_DENSE_CLAY_ORE)
             .output(MetaItemClayParts.ADV_INDUSTRIAL_CLAY_SHARD, 5)
             .duration(9)
+            .buildAndRegister()
+        registry.builder()
+            .input(ClayiumBlocks.CLAY_TREE_LOG)
+            .output(OrePrefix.dust, CMaterials.organicClay)
+            .tier(5).defaultCEt().duration(200)
             .buildAndRegister()
     }
 }
