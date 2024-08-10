@@ -21,12 +21,10 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import net.minecraft.block.Block
 import net.minecraft.block.BlockLeaves
 import net.minecraft.block.BlockSapling
-import net.minecraft.client.model.ModelRenderer
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper
 import net.minecraft.client.renderer.block.statemap.IStateMapper
 import net.minecraft.client.renderer.block.statemap.StateMap
-import net.minecraft.item.Item
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.relauncher.Side
