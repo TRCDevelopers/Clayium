@@ -578,9 +578,9 @@ machine.clayium.clay_laser.tooltip5=Laser irradiation will stop when a redstone 
 tile.clayium.laser_reflector.name=Laser Reflector
 tile.clayium.laser_reflector.tooltip1=Changes the direction of Laser.
 
-tile.clayium.blockClayTreeSapling.name=Clay Tree Sapling
-tile.clayium.blockClayTreeLog.name=Clay Tree Log
-tile.clayium.blockClayTreeLeaf.name=Clay Tree Leaf
+tile.clayium.clay_tree_sapling.name=Clay Tree Sapling
+tile.clayium.clay_tree_log.name=Clay Tree Log
+tile.clayium.clay_tree_leaves.name=Clay Tree Leaves
 
 tile.clayium.blockClayChunkLoader.name=3x3 Chunk Loader
 machine.clayium.storage_container=Storage Container

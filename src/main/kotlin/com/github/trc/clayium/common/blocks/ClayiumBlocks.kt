@@ -54,9 +54,9 @@ object ClayiumBlocks {
 
     val PAN_CABLE = createBlock("pan_cable", BlockPanCable())
 
-    val CLAY_LOG = createBlock("clay_log", BlockClayLog())
-    val CLAY_LEAVES = createBlock("clay_leaves", BlockClayLeaves())
-    val CLAY_SAPLING = createBlock("clay_sapling", BlockClaySapling())
+    val CLAY_TREE_LOG = createBlock("clay_tree_log", BlockClayLog())
+    val CLAY_TREE_LEAVES = createBlock("clay_tree_leaves", BlockClayLeaves())
+    val CLAY_TREE_SAPLING = createBlock("clay_tree_sapling", BlockClaySapling())
 
     /* ---------------------------------- */
 
@@ -135,8 +135,8 @@ object ClayiumBlocks {
 
     @SideOnly(Side.CLIENT)
     fun registerStateMappers() {
-        setStateMapper(CLAY_LEAVES, StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build())
-        setStateMapper(CLAY_SAPLING, StateMap.Builder().ignore(BlockSapling.STAGE).build())
+        setStateMapper(CLAY_TREE_LEAVES, StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build())
+        setStateMapper(CLAY_TREE_SAPLING, StateMap.Builder().ignore(BlockSapling.STAGE).build())
     }
 
     @SideOnly(Side.CLIENT)
@@ -147,13 +147,7 @@ object ClayiumBlocks {
 
     @SideOnly(Side.CLIENT)
     fun registerModels() {
-        blocks.values.forEach {
-            when (it) {
-                PAN_CABLE -> ModelLoader.setCustomModelResourceLocation(it.getAsItem(), 0,
-                    ModelResourceLocation(it.registryName!!, "inventory"))
-                else -> registerItemModel(it)
-            }
-        }
+        blocks.values.forEach(::registerItemModel)
         for (block in ENERGIZED_CLAY_BLOCKS) block.registerModels()
         for (block in COMPRESSED_CLAY_BLOCKS) block.registerModels()
 
@@ -163,10 +157,9 @@ object ClayiumBlocks {
     @SideOnly(Side.CLIENT)
     private fun registerItemModel(block: Block) {
         val item = block.getAsItem()
-        when {
-            block === CLAY_SAPLING -> {
-                ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(clayiumId("clay_sapling"), "inventory"))
-            }
+        when (block) {
+            CLAY_TREE_SAPLING -> ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(clayiumId("clay_tree_sapling"), "inventory"))
+            PAN_CABLE -> ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(clayiumId("pan_cable"), "inventory"))
             else -> {
                 val customStateMapper = stateMapperCache[block]
                 if (customStateMapper != null) {

@@ -22,7 +22,7 @@ import java.util.Random
 
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockClaySapling : BlockBush(), IGrowable, ITieredBlock {
-    val clayTreeGen = WorldGenTrees(true, 4, ClayiumBlocks.CLAY_LOG.defaultState, ClayiumBlocks.CLAY_LEAVES.defaultState, false)
+    val clayTreeGen = WorldGenTrees(true, 4, ClayiumBlocks.CLAY_TREE_LOG.defaultState, ClayiumBlocks.CLAY_TREE_LEAVES.defaultState, false)
     val saplingAabb = AxisAlignedBB(0.09999999403953552, 0.0, 0.09999999403953552, 0.8999999761581421, 0.800000011920929, 0.8999999761581421)
 
     init {

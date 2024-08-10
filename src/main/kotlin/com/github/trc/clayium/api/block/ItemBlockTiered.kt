@@ -26,12 +26,19 @@ open class ItemBlockTiered<T>(
 
     @SideOnly(Side.CLIENT)
     override fun getItemStackDisplayName(stack: ItemStack): String {
+        val tieredKey = "$translationKey.${this.getTier(stack).lowerName}"
         // first search for tiered
-        if (I18n.hasKey("$translationKey.${this.getTier(stack).lowerName}")) {
-            return I18n.format("$translationKey.${this.getTier(stack).lowerName}")
+        return if (I18n.hasKey(tieredKey)) {
+            return I18n.format(tieredKey)
         }
         // then search for tier-less
-        return I18n.format(translationKey, I18n.format(this.getTier(stack).prefixTranslationKey))
+        else if (I18n.hasKey(translationKey)) {
+            return I18n.format(translationKey, I18n.format(this.getTier(stack).prefixTranslationKey))
+        }
+        // fallback to super
+        else {
+            return super.getItemStackDisplayName(stack)
+        }
     }
 
     @SideOnly(Side.CLIENT)
