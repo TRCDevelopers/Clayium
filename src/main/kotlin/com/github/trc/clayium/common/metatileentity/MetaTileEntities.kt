@@ -163,6 +163,17 @@ object MetaTileEntities {
         AutoClayCondenserMetaTileEntity(clayiumId("auto_clay_condenser.${it.lowerName}"), it)
     }
     val CA_REACTOR = registerMetaTileEntities(218, (10..13)) { CaReactorMetaTileEntity(clayiumId("ca_reactor.${it.lowerName}"), it) }
+    val CLAY_FABRICATOR = registerMetaTileEntities(222, intArrayOf(8, 9, 13)) {
+        when (it) {
+            ClayTiers.CLAYIUM ->
+                ClayFabricatorMetaTileEntity(clayiumId("clay_fabricator.${it.lowerName}"), it, 11, ClayFabricatorMetaTileEntity::mk1)
+            ClayTiers.ULTIMATE ->
+                ClayFabricatorMetaTileEntity(clayiumId("clay_fabricator.${it.lowerName}"), it, 13, ClayFabricatorMetaTileEntity::mk2)
+            ClayTiers.OPA ->
+                ClayFabricatorMetaTileEntity(clayiumId("clay_fabricator.${it.lowerName}"), it, 15, ClayFabricatorMetaTileEntity::mk3)
+            else -> throw IllegalArgumentException()
+        }
+    }
 
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)
@@ -176,7 +187,7 @@ object MetaTileEntities {
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)
      * @param provider tier -> MetaTileEntity
      */
-    fun <T : MetaTileEntity> registerMetaTileEntities(startId: Int, tiers: IntArray, provider: (ITier) -> T): List<T> {
+    fun <T : MetaTileEntity> registerMetaTileEntities(startId: Int, tiers: IntArray, provider: (ClayTiers) -> T): List<T> {
         return tiers.mapIndexed { i, tierNumeric ->
             val id = startId + i
             val iTier = ClayTiers.entries[tierNumeric]

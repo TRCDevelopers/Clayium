@@ -9,6 +9,8 @@ import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.common.gui.ClayGuiTextures
+import com.github.trc.clayium.common.util.TransferUtils
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 
 abstract class AbstractWorkable(
@@ -26,8 +28,14 @@ abstract class AbstractWorkable(
     override var isWorkingEnabled: Boolean = true
     private var canProgress = false
 
+    // item stacks that will be produced when the recipe is done
+    protected var itemOutputs: List<ItemStack> = emptyList()
+
+    /**
+     * try to search for a new recipe.
+     * you should mutate [invalidInputsForRecipes] or [outputsFull] here.
+     */
     protected abstract fun trySearchNewRecipe()
-    protected abstract fun completeWork()
 
     /**
      * Show recipes in JEI.
@@ -40,6 +48,7 @@ abstract class AbstractWorkable(
         if (metaTileEntity.offsetTimer % 20 == 0L) {
             this.canProgress = canProgress()
         }
+        if (!canProgress) return
 
         if (isWorking) {
             updateWorkingProgress()
@@ -66,6 +75,11 @@ abstract class AbstractWorkable(
         }
     }
 
+    protected open fun completeWork() {
+        currentProgress = 0
+        TransferUtils.insertToHandler(metaTileEntity.exportItems, itemOutputs)
+    }
+
     protected open fun shouldSearchForRecipe(): Boolean {
         return canWorkWithInputs() && canFitNewOutputs()
     }
@@ -79,11 +93,17 @@ abstract class AbstractWorkable(
     }
 
     private fun canFitNewOutputs(): Boolean {
-        if (outputsFull && !metaTileEntity.hasNotifiedOutputs) return false
-
-        outputsFull = false
-        metaTileEntity.hasNotifiedOutputs = false
         return true
+        
+        // currently, NotifiableItemStackHandler.onContentsChanged isn't called if item is extracted without pressing shift key in GUI.
+        // therefore, metaTileEntity.hasNotifiedOutputs is remains false on that case.
+        // so output full check is disabled.
+
+//        if (outputsFull && !metaTileEntity.hasNotifiedOutputs) return false
+//
+//        outputsFull = false
+//        metaTileEntity.hasNotifiedOutputs = false
+//        return true
     }
 
     override fun serializeNBT(): NBTTagCompound {

@@ -1,0 +1,31 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "face": "clayium:blocks/clay_fabricator"
+    },
+    "model": "clayium:machine"
+  },
+  "variants": {
+    "tier": {
+      "clayium": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier8"
+        },
+        "model": "clayium:machine"
+      },
+      "ultimate": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier9"
+        },
+        "model": "clayium:machine"
+      },
+      "opa": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier13"
+        },
+        "model": "clayium:machine"
+      }
+    }
+  }
+}

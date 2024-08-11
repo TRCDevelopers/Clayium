@@ -354,7 +354,7 @@ object CMaterials {
         tier(12)
         colors(0xFFFF00, 0x8C8C8C, 0xFFFFFF)
         dust()
-        clay(energy = ClayEnergy.of(100_000_000))
+        clay(13, energy = ClayEnergy.of(100_000_000))
         plate(ClayEnergy.of(10000), 20, tier = 9)
     }
     //endregion
@@ -561,66 +561,66 @@ object CMaterials {
         //region Clay Materials
         compressedEnergeticClay7 = Material.create(163, clayiumId("compressed_energetic_clay7")) {
             tier(11)
-            clay(octupleEnergyClay, ClayEnergy.of(10_000_000))
+            clay(12, octupleEnergyClay, ClayEnergy.of(10_000_000))
         }
 
         compressedEnergeticClay6 = Material.create(162, clayiumId("compressed_energetic_clay6")) {
             tier(10)
-            clay(compressedEnergeticClay7, ClayEnergy.of(1_000_000))
+            clay(11, compressedEnergeticClay7, ClayEnergy.of(1_000_000))
         }
 
         compressedEnergeticClay5 = Material.create(161, clayiumId("compressed_energetic_clay5")) {
             tier(9)
-            clay(compressedEnergeticClay6, ClayEnergy.of(100_000))
+            clay(10, compressedEnergeticClay6, ClayEnergy.of(100_000))
         }
 
         compressedEnergeticClay4 = Material.create(160, clayiumId("compressed_energetic_clay4")) {
             tier(8)
-            clay(compressedEnergeticClay5, ClayEnergy.of(10_000))
+            clay(9, compressedEnergeticClay5, ClayEnergy.of(10_000))
         }
 
         compressedEnergeticClay3 = Material.create(159, clayiumId("compressed_energetic_clay3")) {
             tier(7)
-            clay(compressedEnergeticClay4, ClayEnergy.of(1_000))
+            clay(8, compressedEnergeticClay4, ClayEnergy.of(1_000))
         }
 
         compressedEnergeticClay2 = Material.create(158, clayiumId("compressed_energetic_clay2")) {
             tier(6)
-            clay(compressedEnergeticClay3, ClayEnergy.of(100))
+            clay(7, compressedEnergeticClay3, ClayEnergy.of(100))
         }
 
         compressedEnergeticClay = Material.create(157, clayiumId("compressed_energetic_clay")) {
             tier(5)
-            clay(compressedEnergeticClay2, ClayEnergy.of(10))
+            clay(6, compressedEnergeticClay2, ClayEnergy.of(10))
         }
 
         energeticClay = Material.create(156, clayiumId("energetic_clay")) {
             tier(4)
-            clay(compressedEnergeticClay, ClayEnergy.of(1))
+            clay(5, compressedEnergeticClay, ClayEnergy.of(1))
         }
 
         advancedIndustrialClay = Material.create(155, clayiumId("advanced_industrial_clay")) {
             tier(3)
-            clay(energeticClay)
+            clay(4, energeticClay)
             dust()
             plate(ClayEnergy.micro(40), 4, tier = 3)
         }
 
         industrialClay = Material.create(154, clayiumId("industrial_clay")) {
             tier(2)
-            clay(advancedIndustrialClay)
+            clay(3, advancedIndustrialClay)
             dust()
             plate(ClayEnergy.micro(20), 4, tier = 2)
         }
 
         compressedClay = Material.create(153, clayiumId("compressed_clay")) {
             tier(1)
-            clay(industrialClay)
+            clay(2, industrialClay)
         }
 
         denseClay = Material.create(152, clayiumId("dense_clay")) {
             tier(0)
-            clay(compressedClay)
+            clay(1, compressedClay)
             dust()
             plate(ClayEnergy.micro(10), 4, tier = 0)
             flags(GENERATE_CLAY_PARTS)
@@ -628,7 +628,7 @@ object CMaterials {
 
         clay = Material.create(151, clayiumId("clay")) {
             tier(0)
-            clay(denseClay)
+            clay(0, denseClay)
             dust()
             plate(ClayEnergy.micro(10), 1, tier = 0)
             flags(GENERATE_CLAY_PARTS)

@@ -33,8 +33,6 @@ abstract class AbstractRecipeLogic(
 
     protected var previousRecipe: Recipe? = null
     protected var recipeCEt = ClayEnergy.ZERO
-    // item stacks that will be produced when the recipe is done
-    protected var itemOutputs: List<ItemStack> = emptyList()
 
     /**
      * Draw energy from the energy container
@@ -53,11 +51,6 @@ abstract class AbstractRecipeLogic(
         if (currentProgress > requiredProgress) {
             completeWork()
         }
-    }
-
-    override fun completeWork() {
-        currentProgress = 0
-        TransferUtils.insertToHandler(metaTileEntity.exportItems, itemOutputs)
     }
 
     override fun trySearchNewRecipe() {
