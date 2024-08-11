@@ -111,7 +111,7 @@ class ClayReactorMetaTileEntity(
 
     private inner class ClayReactorRecipeLogic(private val clayReactor: ClayReactorMetaTileEntity)
         : MultiblockRecipeLogic(clayReactor, CRecipes.CLAY_REACTOR, multiblockValidation::structureFormed) {
-        override fun updateRecipeProgress() {
+        override fun updateWorkingProgress() {
             if (drawEnergy(recipeCEt)) {
                 currentProgress++
                 currentProgress += clayReactor.laser?.laserEnergy?.toLong() ?: 0L

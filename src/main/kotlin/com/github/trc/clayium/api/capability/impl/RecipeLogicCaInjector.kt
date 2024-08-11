@@ -2,6 +2,7 @@ package com.github.trc.clayium.api.capability.impl
 
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
+import kotlin.math.pow
 
 class RecipeLogicCaInjector(
     metaTileEntity: MetaTileEntity,
@@ -17,12 +18,12 @@ class RecipeLogicCaInjector(
         else -> 1.0
     }
 
-    override fun updateRecipeProgress() {
+    override fun updateWorkingProgress() {
         if (drawEnergy(recipeCEt)) {
-            currentProgress += Math.pow(resonanceManager.resonance, accelerationExponent).toLong()
+            currentProgress += resonanceManager.resonance.pow(accelerationExponent).toLong()
         }
         if (currentProgress > requiredProgress) {
-            completeRecipe()
+            completeWork()
         }
     }
 }

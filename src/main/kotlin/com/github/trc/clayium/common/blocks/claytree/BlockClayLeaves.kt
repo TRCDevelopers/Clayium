@@ -10,11 +10,13 @@ import net.minecraft.block.BlockLeaves
 import net.minecraft.block.BlockPlanks
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import java.util.Random
@@ -41,6 +43,11 @@ class BlockClayLeaves : BlockLeaves(), ITieredBlock {
 
     override fun damageDropped(state: IBlockState): Int {
         return OreDictUnifier.get(OrePrefix.dust, CMaterials.clay).itemDamage
+    }
+
+    // default implementation uses damageDropped for metadata. so we have to adjust it to 0.
+    override fun getPickBlock(state: IBlockState, target: RayTraceResult, world: World, pos: BlockPos, player: EntityPlayer): ItemStack {
+        return ItemStack(this)
     }
 
     override fun getStateFromMeta(meta: Int) = defaultState.withProperty(CHECK_DECAY, meta and 0b01 != 0).withProperty(DECAYABLE, meta and 0b10 != 0)

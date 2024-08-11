@@ -1,6 +1,7 @@
 package com.github.trc.clayium.recipe
 
 import com.cleanroommc.modularui.factory.PosGuiData
+import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trc.clayium.Bootstrap
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
@@ -9,7 +10,6 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.util.CUtils.clayiumId
 import com.github.trc.clayium.api.util.ClayTiers
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.recipe.builder.SimpleRecipeBuilder
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 import io.kotest.core.spec.style.StringSpec
@@ -48,11 +48,11 @@ class TestAbstractRecipeLogic : StringSpec({
             override val importItems: IItemHandlerModifiable = ItemStackHandler(1)
             override val exportItems: IItemHandlerModifiable = ItemStackHandler(1)
             override val itemInventory: IItemHandler = ItemStackHandler(1)
-            override val autoIoHandler: AutoIoHandler = AutoIoHandler.Importer(this)
+            val autoIoHandler: AutoIoHandler = AutoIoHandler.Importer(this)
 
             override fun createMetaTileEntity() = this
             override fun registerItemModel(item: Item, meta: Int) {}
-            override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager) = null
+            override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager) = ModularPanel.defaultPanel("test_panel")
         }
         holder = MetaTileEntityHolder().apply {
             setMetaTileEntity(dummyMte)
