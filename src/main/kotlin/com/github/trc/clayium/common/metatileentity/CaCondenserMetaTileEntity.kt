@@ -35,7 +35,7 @@ class CaCondenserMetaTileEntity(
     }
 
     private inner class RecipeLogicCaCondenser : RecipeLogicEnergy(this@CaCondenserMetaTileEntity, recipeRegistry, energyHolder) {
-        override fun completeRecipe() {
+        override fun completeWork() {
             currentProgress = 0
             TransferUtils.insertToHandler(metaTileEntity.exportItems, itemOutputs.map { it.apply {
                 count = (ln(resonanceManager.resonance).toInt() + 1).coerceIn(1..64)
@@ -43,10 +43,10 @@ class CaCondenserMetaTileEntity(
             )
         }
 
-        override fun updateRecipeProgress() {
+        override fun updateWorkingProgress() {
             if (drawEnergy(recipeCEt)) currentProgress += craftTimeMultiplier
             if (currentProgress > requiredProgress) {
-                completeRecipe()
+                completeWork()
             }
         }
     }

@@ -22,9 +22,9 @@ open class ClayFabricatorRecipeLogic(
         return true
     }
 
-    override fun completeRecipe() {
+    override fun completeWork() {
         clayEnergy = ClayEnergy.ZERO
-        super.completeRecipe()
+        super.completeWork()
     }
 
     fun createCeTextWidget(syncManager: GuiSyncManager): TextWidget {

@@ -10,11 +10,15 @@ import com.github.trc.clayium.common.util.TransferUtils
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.FurnaceRecipes
 
+/**
+ * This logic can process vanilla furnace recipes in addition to the recipes in the recipe registry.
+ * Speed and energy consumption increase with the tier of the machine.
+ */
 class RecipeLogicClayFurnace(
     metaTileEntity: MetaTileEntity,
-    unused: RecipeRegistry<*>,
+    registry: RecipeRegistry<*>,
     clayEnergyHolder: ClayEnergyHolder,
-) : RecipeLogicEnergy(metaTileEntity, CRecipes.SMELTER, clayEnergyHolder) {
+) : RecipeLogicEnergy(metaTileEntity, registry, clayEnergyHolder) {
 
     override fun trySearchNewRecipe() {
         val smeltingResult = FurnaceRecipes.instance().getSmeltingResult(inputInventory.getStackInSlot(0)).copy()
