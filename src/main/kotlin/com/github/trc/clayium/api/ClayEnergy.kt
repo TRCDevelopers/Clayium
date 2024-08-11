@@ -4,7 +4,6 @@ import net.minecraft.network.PacketBuffer
 import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.text.format
-import kotlin.text.replace
 
 fun PacketBuffer.writeClayEnergy(energy: ClayEnergy) {
     writeLong(energy.energy)
@@ -23,9 +22,7 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
         val digits = abs(energy).toString().length
         val microCe = energy.toDouble() * 10.0
         val unitIndex = digits / 3
-        val displayValue = String.format("%.3f", microCe / 10.0.pow(unitIndex * 3))
-            .replace(matchesExcessZero, "")
-            .replace(matchesExcessDecimalPoint, "")
+        val displayValue = String.format("%.03f", microCe / 10.0.pow(unitIndex * 3))
         return "$displayValue${units[unitIndex]}CE"
     }
 
@@ -45,8 +42,6 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
         val MAX = ClayEnergy(Long.MAX_VALUE)
 
         val units = listOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y")
-        private val matchesExcessZero = Regex("0+\$")
-        private val matchesExcessDecimalPoint = Regex("\\.$")
 
         fun micro(energy: Long): ClayEnergy {
             require(energy % 10 == 0.toLong()) {
