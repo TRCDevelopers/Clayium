@@ -1,7 +1,9 @@
 package com.github.trc.clayium.api.laser
 
 import net.minecraft.util.EnumFacing
+import kotlin.math.ln
 import kotlin.math.max
+import kotlin.math.pow
 
 data class ClayLaser(
     override val laserDirection: EnumFacing,
@@ -28,12 +30,12 @@ data class ClayLaser(
             if (n_i <= 0 || r <= 0.0 || m_i < 0.0 || b_i  < 1.0) return 1.0
             val nd = n_i.toDouble()
             val r1 = r + 1.0
-            val C_i = Math.pow(b_i, (r1) * (Math.log(r1 / r) / Math.log(m_i)))
-            val ai_top = Math.log(r1 / (Math.pow(C_i, -nd) + r))
-            val ai_bottom = Math.log(r1 / r)
+            val C_i = b_i.pow((r1) * (ln(r1 / r) / ln(m_i)))
+            val ai_top = ln(r1 / (C_i.pow(-nd) + r))
+            val ai_bottom = ln(r1 / r)
             val ai = ai_top / ai_bottom
 
-            val E_i = Math.pow(m_i, ai) * ((1 + r * n_i * Math.pow(C_i, nd)) / (1 + r * Math.pow(C_i, nd)))
+            val E_i = m_i.pow(ai) * ((1 + r * n_i * C_i.pow(nd)) / (1 + r * C_i.pow(nd)))
             return max(1.0, E_i)
         }
 

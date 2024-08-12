@@ -4,7 +4,6 @@ import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.common.config.ConfigTierBalance
 import com.github.trc.clayium.common.recipe.Recipe
-import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 import com.github.trc.clayium.common.util.TransferUtils
 import net.minecraft.item.ItemStack
