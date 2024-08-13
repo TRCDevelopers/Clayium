@@ -473,15 +473,13 @@ tooltip.clayium.CAReactor.line9=- CA 反応炉筐体の数は 50 個以上
 tooltip.clayium.CAReactor.line10=- コイルやインターフェースの Tier >= コアの Tier
 gui.clayium.ca_reactor.invalid=無効
 gui.clayium.ca_reactor.constructed=構築済
-gui.clayium.ca_reactor.rankSize=ランク %d サイズ %d
+gui.clayium.ca_reactor.rank_size=ランク %d サイズ %d
 gui.clayium.ca_reactor.efficiency=効率 %s
-message.clayium.CAReactor.invalidCoil=コイル [%1$d,%2$d,%3$d] が無効です。
-message.clayium.CAReactor.tooManyCoils=コイルの数が基準値(%1$d)を超えています。
-message.clayium.CAReactor.insufficientTierCoil=コイル [%1$d,%2$d,%3$d] の Tier が無効です。
-message.clayium.CAReactor.invalidHull=筐体 [%1$d,%2$d,%3$d] が無効です。
-message.clayium.CAReactor.tooHighTierHull=筐体 [%1$d,%2$d,%3$d] の Tier が高すぎます。
-message.clayium.CAReactor.insufficientTierInterface=インターフェース [%1$d,%2$d,%3$d] の Tier が無効です。
-message.clayium.CAReactor.invalidReactorSize=反応炉のサイズ(%1$d) が基準値(%2$d)を下回っています。
+message.clayium.ca_reactor.invalid_coil=コイル %s が無効です。
+message.clayium.ca_reactor.too_many_coils=コイルの数が基準値(%s)を超えています。
+message.clayium.ca_reactor.insufficient_tier_coil=コイル %s の Tier が無効です。
+message.clayium.ca_reactor.too_high_tier_hull=筐体 %s の Tier が高すぎます。
+message.clayium.ca_reactor.insufficient_tier_interface=インターフェース %s の Tier が無効です。
 
 tile.clayium.ca_reactor_coil.antimatter=反物質反応炉コイル Mk I
 tile.clayium.ca_reactor_coil.pure_antimatter=反物質反応炉コイル Mk II
