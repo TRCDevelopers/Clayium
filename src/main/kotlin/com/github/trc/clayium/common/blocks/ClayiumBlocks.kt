@@ -59,6 +59,7 @@ object ClayiumBlocks {
     val CLAY_TREE_SAPLING = createBlock("clay_tree_sapling", BlockClaySapling())
 
     val OVERCLOCKER = createBlock("overclocker", BlockOverclocker())
+    val ENERGY_STORAGE_UPGRADE = createBlock("energy_storage_upgrade", BlockEnergyStorageUpgrade())
 
     /* ---------------------------------- */
 

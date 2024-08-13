@@ -16,9 +16,7 @@ import net.minecraft.world.World
 
 class BlockOverclocker : VariantBlock<BlockOverclocker.BlockType>(Material.IRON), IOverclockerBlock, ITieredBlock {
 
-    override fun getOverclockFactor(world: IBlockAccess, pos: BlockPos): Double {
-        return getOcFactor(getEnum(world.getBlockState(pos)))
-    }
+    override fun getOverclockFactor(world: IBlockAccess, pos: BlockPos) = getOcFactor(getEnum(world.getBlockState(pos)))
 
     private fun getOcFactor(type: BlockType): Double {
         return when (type) {
@@ -29,13 +27,8 @@ class BlockOverclocker : VariantBlock<BlockOverclocker.BlockType>(Material.IRON)
         }
     }
 
-    override fun getTier(stack: ItemStack): ITier {
-        return getEnum(stack).tier
-    }
-
-    override fun getTier(world: IBlockAccess, pos: BlockPos): ITier {
-        return getEnum(world.getBlockState(pos)).tier
-    }
+    override fun getTier(stack: ItemStack) = getEnum(stack).tier
+    override fun getTier(world: IBlockAccess, pos: BlockPos) = getEnum(world.getBlockState(pos)).tier
 
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)

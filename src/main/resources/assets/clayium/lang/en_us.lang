@@ -476,18 +476,15 @@ tile.clayium.overclocker.opa=OPA Overclocker
 tile.clayium.overclocker.tooltip1=Accelerates the adjacent machine.
 tile.clayium.overclocker.factor=OC Factor \: x%1$4.3g
 
-tile.clayium.blockEnergyStorageUpgrade.antimatter.name=Antimatter Energy Storage Upgrade
-tile.clayium.blockEnergyStorageUpgrade.pureantimatter.name=Pure Antimatter Energy Storage Upgrade
-tile.clayium.blockEnergyStorageUpgrade.oec.name=OEC Energy Storage Upgrade
-tile.clayium.blockEnergyStorageUpgrade.opa.name=OPA Energy Storage Upgrade
-tile.clayium.blockEnergyStorageUpgrade.antimatter.tooltip.line1=Adds 1 to the number of Energetic Clay
-tile.clayium.blockEnergyStorageUpgrade.antimatter.tooltip.line2=that an adjacent machine can hold.
-tile.clayium.blockEnergyStorageUpgrade.pureantimatter.tooltip.line1=Adds 3 to the number of Energetic Clay
-tile.clayium.blockEnergyStorageUpgrade.pureantimatter.tooltip.line2=that an adjacent machine can hold.
-tile.clayium.blockEnergyStorageUpgrade.oec.tooltip.line1=Adds 7 to the number of Energetic Clay
-tile.clayium.blockEnergyStorageUpgrade.oec.tooltip.line2=that an adjacent machine can hold.
-tile.clayium.blockEnergyStorageUpgrade.opa.tooltip.line1=Allows an adjacent machine to hold
-tile.clayium.blockEnergyStorageUpgrade.opa.tooltip.line2=a full stack of Energetic Clay.
+tile.clayium.energy_storage_upgrade=%s Antimatter Energy Storage Upgrade
+tile.clayium.energy_storage_upgrade.antimatter.tooltip1=Adds 1 to the number of Energetic Clay
+tile.clayium.energy_storage_upgrade.antimatter.tooltip2=that an adjacent machine can hold.
+tile.clayium.energy_storage_upgrade.pure_antimatter.tooltip1=Adds 3 to the number of Energetic Clay
+tile.clayium.energy_storage_upgrade.pure_antimatter.tooltip2=that an adjacent machine can hold.
+tile.clayium.energy_storage_upgrade.oec.tooltip1=Adds 7 to the number of Energetic Clay
+tile.clayium.energy_storage_upgrade.oec.tooltip2=that an adjacent machine can hold.
+tile.clayium.energy_storage_upgrade.opa.tooltip1=Allows an adjacent machine to hold
+tile.clayium.energy_storage_upgrade.opa.tooltip2=a full stack of Energetic Clay.
 
 machine.clayium.ca_reactor.antimatter=CA Reactor Core Mk I
 machine.clayium.ca_reactor.pure_antimatter=CA Reactor Core Mk II
