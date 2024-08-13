@@ -120,8 +120,8 @@ class ClayFabricatorMetaTileEntity(
         }
 
         override fun updateWorkingProgress() {
-            this.currentCe += this.cePerTick
             super.updateWorkingProgress()
+            this.currentCe = this.cePerTick * this.currentProgress
         }
 
         override fun completeWork() {

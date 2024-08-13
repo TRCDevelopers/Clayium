@@ -58,6 +58,8 @@ object ClayiumBlocks {
     val CLAY_TREE_LEAVES = createBlock("clay_tree_leaves", BlockClayLeaves())
     val CLAY_TREE_SAPLING = createBlock("clay_tree_sapling", BlockClaySapling())
 
+    val OVERCLOCKER = createBlock("overclocker", BlockOverclocker())
+
     /* ---------------------------------- */
 
     val COMPRESSED_CLAY_BLOCKS = mutableListOf<BlockCompressedClay>()

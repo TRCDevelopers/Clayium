@@ -6,7 +6,7 @@ tooltip.clayium.HoldShiftForDetails=--§f詳細は§lShift§rキー§7--
 
 gui.clayium.laser_energy=レーザー %1$s
 gui.clayium.resonance=共鳴率 %1$s
-gui.clayium.overclockFactor=オーバークロック x%1$s
+gui.clayium.overclock=オーバークロック x%1$s
 
 tooltip.clayium.tier=§rTier %1$s
 tooltip.clayium.ce=%1$sCE
@@ -437,12 +437,12 @@ tile.clayium.resonator=%s共鳴装置
 tooltip.clayium.resonator.tooltip1=5x5x5の範囲内にある各種 CA 装置の
 tooltip.clayium.resonator.tooltip2=共鳴率を上昇させる
 
-tile.clayium.blockOverclocker.antimatter.name=反物質オーバークロッカー
-tile.clayium.blockOverclocker.pureantimatter.name=純反物質オーバークロッカー
-tile.clayium.blockOverclocker.oec.name=OEC オーバークロッカー
-tile.clayium.blockOverclocker.opa.name=OPA オーバークロッカー
-tooltip.clayium.Overclocker.line1=隣接する装置を加速する
-tooltip.clayium.Overclocker.overclockFactor=加速度 : x%1$4.3g
+tile.clayium.overclocker.antimatter=反物質オーバークロッカー
+tile.clayium.overclocker.pureantimatter=純反物質オーバークロッカー
+tile.clayium.overclocker.oec=OEC オーバークロッカー
+tile.clayium.overclocker.opa=OPA オーバークロッカー
+tile.clayium.overclocker.tooltip1=隣接する装置を加速する
+tile.clayium.overclocker.factor=加速度 : x%1$4.3g
 
 tile.clayium.blockEnergyStorageUpgrade.antimatter.name=反物質エネルギーストレージアップグレード
 tile.clayium.blockEnergyStorageUpgrade.pureantimatter.name=純反物質エネルギーストレージアップグレード

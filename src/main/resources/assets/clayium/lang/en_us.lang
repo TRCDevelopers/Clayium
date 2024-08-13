@@ -9,7 +9,7 @@ tooltip.clayium.HoldShiftForDetails=--§fHold §lShift§r For Details§7--
 
 gui.clayium.laser_energy=Laser \: %1$s
 gui.clayium.resonance=Resonance %1$s
-gui.clayium.overclockFactor=Overclock x%1$s
+gui.clayium.overclock=Overclock x%1$s
 
 tooltip.clayium.tier=§rTier %1$s
 tooltip.clayium.ce=%1$sCE
@@ -469,12 +469,12 @@ tile.clayium.resonator=%s Resonator
 tooltip.clayium.resonator.tooltip1=Increases the efficiency of CA machines
 tooltip.clayium.resonator.tooltip2=in the area of 5x5x5.
 
-tile.clayium.blockOverclocker.antimatter.name=Antimatter Overclocker
-tile.clayium.blockOverclocker.pureantimatter.name=Pure Antimatter Overclocker
-tile.clayium.blockOverclocker.oec.name=OEC Overclocker
-tile.clayium.blockOverclocker.opa.name=OPA Overclocker
-tooltip.clayium.Overclocker.line1=Accelerates the adjacent machine.
-tooltip.clayium.Overclocker.overclockFactor=OC Factor \: x%1$4.3g
+tile.clayium.overclocker.antimatter=Antimatter Overclocker
+tile.clayium.overclocker.pureantimatter=Pure Antimatter Overclocker
+tile.clayium.overclocker.oec=OEC Overclocker
+tile.clayium.overclocker.opa=OPA Overclocker
+tile.clayium.overclocker.tooltip1=Accelerates the adjacent machine.
+tile.clayium.overclocker.factor=OC Factor \: x%1$4.3g
 
 tile.clayium.blockEnergyStorageUpgrade.antimatter.name=Antimatter Energy Storage Upgrade
 tile.clayium.blockEnergyStorageUpgrade.pureantimatter.name=Pure Antimatter Energy Storage Upgrade

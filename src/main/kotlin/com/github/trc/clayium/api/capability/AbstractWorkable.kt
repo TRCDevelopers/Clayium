@@ -70,10 +70,16 @@ abstract class AbstractWorkable(
      * If you have to consume Energy or other resources, You should do it here.
      */
     protected open fun updateWorkingProgress() {
-        if (currentProgress++ >= requiredProgress) {
+        addProgress()
+        if (currentProgress >= requiredProgress) {
             completeWork()
         }
     }
+
+    protected fun addProgress() {
+        currentProgress += metaTileEntity.overclock.toLong()
+    }
+
 
     protected open fun completeWork() {
         currentProgress = 0
