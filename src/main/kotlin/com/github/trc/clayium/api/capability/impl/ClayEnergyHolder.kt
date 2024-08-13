@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.block.IEnergyStorageUpgradeBlock
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs
 import com.github.trc.clayium.api.capability.IClayEnergyHolder
@@ -14,6 +15,7 @@ import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
 
 class ClayEnergyHolder(
     metaTileEntity: MetaTileEntity,
@@ -25,8 +27,17 @@ class ClayEnergyHolder(
         }
 
         override fun getStackLimit(slot: Int, stack: ItemStack): Int {
-            //todo: upgradable
-            return 1
+            val world = metaTileEntity.world ?: return 1
+            val pos = metaTileEntity.pos ?: return 1
+            var limit = 1
+            for (side in EnumFacing.entries) {
+                val state = world.getBlockState(pos.offset(side))
+                val block = state.block
+                if (block is IEnergyStorageUpgradeBlock) {
+                    limit += block.getExtraStackLimit(world, pos.offset(side))
+                }
+            }
+            return limit
         }
     }
 

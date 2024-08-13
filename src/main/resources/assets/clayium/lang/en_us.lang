@@ -476,7 +476,7 @@ tile.clayium.overclocker.opa=OPA Overclocker
 tile.clayium.overclocker.tooltip1=Accelerates the adjacent machine.
 tile.clayium.overclocker.factor=OC Factor \: x%1$4.3g
 
-tile.clayium.energy_storage_upgrade=%s Antimatter Energy Storage Upgrade
+tile.clayium.energy_storage_upgrade=%s Energy Storage Upgrade
 tile.clayium.energy_storage_upgrade.antimatter.tooltip1=Adds 1 to the number of Energetic Clay
 tile.clayium.energy_storage_upgrade.antimatter.tooltip2=that an adjacent machine can hold.
 tile.clayium.energy_storage_upgrade.pure_antimatter.tooltip1=Adds 3 to the number of Energetic Clay

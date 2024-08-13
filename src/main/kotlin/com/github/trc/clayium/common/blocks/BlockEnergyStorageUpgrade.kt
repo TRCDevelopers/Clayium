@@ -12,7 +12,7 @@ import net.minecraft.world.World
 
 class BlockEnergyStorageUpgrade : VariantBlock<BlockOverclocker.BlockType>(Material.IRON), IEnergyStorageUpgradeBlock, ITieredBlock {
 
-    override fun getMultiplier(world: IBlockAccess, pos: BlockPos) = getMultiplier(getEnum(world.getBlockState(pos)))
+    override fun getExtraStackLimit(world: IBlockAccess, pos: BlockPos) = getMultiplier(getEnum(world.getBlockState(pos)))
 
     override fun getTier(stack: ItemStack) = getEnum(stack).tier
     override fun getTier(world: IBlockAccess, pos: BlockPos) = getEnum(world.getBlockState(pos)).tier

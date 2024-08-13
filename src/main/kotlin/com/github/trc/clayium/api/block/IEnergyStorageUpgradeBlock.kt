@@ -4,5 +4,5 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 
 interface IEnergyStorageUpgradeBlock {
-    fun getMultiplier(world: IBlockAccess, pos: BlockPos): Int
+    fun getExtraStackLimit(world: IBlockAccess, pos: BlockPos): Int
 }
