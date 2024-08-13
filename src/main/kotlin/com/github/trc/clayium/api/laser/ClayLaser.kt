@@ -6,19 +6,19 @@ import kotlin.math.max
 import kotlin.math.pow
 
 data class ClayLaser(
-    override val laserDirection: EnumFacing,
-    override val laserRed: Int,
-    override val laserGreen: Int,
-    override val laserBlue: Int,
-    override val laserAge: Int = 0,
+    override val direction: EnumFacing,
+    override val red: Int,
+    override val green: Int,
+    override val blue: Int,
+    override val age: Int = 0,
 ) : IClayLaser {
 
-    override val laserEnergy: Double = calcLaserEnergyPerColor(laserBlue, bases[0], maxEnergies[0]) *
-                                       calcLaserEnergyPerColor(laserGreen, bases[1], maxEnergies[1]) *
-                                       calcLaserEnergyPerColor(laserRed, bases[2], maxEnergies[2]) - 1
+    override val energy: Double = calcLaserEnergyPerColor(blue, bases[0], maxEnergies[0]) *
+                                       calcLaserEnergyPerColor(green, bases[1], maxEnergies[1]) *
+                                       calcLaserEnergyPerColor(red, bases[2], maxEnergies[2]) - 1
 
     fun changeDirection(direction: EnumFacing): ClayLaser {
-        return ClayLaser(direction, laserRed, laserGreen, laserBlue)
+        return ClayLaser(direction, red, green, blue)
     }
 
     companion object {

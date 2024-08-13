@@ -92,7 +92,7 @@ class ClayReactorMetaTileEntity(
             { this.laser = if (it == -1) null else ClayLaser.fromInt(it, EnumFacing.UP) }
         ))
         return super.buildMainParentWidget(syncManager)
-            .child(IKey.dynamic { I18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.laserEnergy?.toLong() ?: 0L)) }.asWidget()
+            .child(IKey.dynamic { I18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.energy?.toLong() ?: 0L)) }.asWidget()
                 .align(Alignment.BottomRight))
             .child(multiblockValidation.tierTextWidget(syncManager)
                 .align(Alignment.BottomCenter))
@@ -114,7 +114,7 @@ class ClayReactorMetaTileEntity(
         override fun updateWorkingProgress() {
             if (drawEnergy(recipeCEt)) {
                 currentProgress++
-                currentProgress += clayReactor.laser?.laserEnergy?.toLong() ?: 0L
+                currentProgress += clayReactor.laser?.energy?.toLong() ?: 0L
             }
             if (currentProgress > requiredProgress) {
                 currentProgress = 0

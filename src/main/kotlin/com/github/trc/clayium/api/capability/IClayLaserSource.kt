@@ -1,11 +1,11 @@
 package com.github.trc.clayium.api.capability
 
 import com.github.trc.clayium.api.laser.IClayLaser
+import com.github.trc.clayium.api.util.takeIfValid
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import net.minecraft.block.material.Material
 import net.minecraft.init.Blocks
 import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
@@ -17,7 +17,6 @@ interface IClayLaserSource {
      * Current laser length of this source.
      */
     val laserLength: Int
-    val laserDirection: EnumFacing
 
     /**
      * updates laser length and target if exists.
@@ -29,35 +28,32 @@ interface IClayLaserSource {
      */
     fun updateLengthAndTarget(world: World, thisPos: BlockPos, previousTarget: TileEntity?, ifUpdated: (() -> Unit)? = null): Pair<Int, TileEntity?> {
         val newLaserLength = getLaserLength(world, thisPos)
-        val targetSide = laserDirection.opposite
-        val targetPos = thisPos.offset(laserDirection, newLaserLength)
+        val targetSide = laser.direction.opposite
+        val targetPos = thisPos.offset(laser.direction, newLaserLength)
         val newTarget = world.getTileEntity(targetPos)
-        return if (newTarget == null) {
-            previousTarget?.takeUnless { it.isInvalid }
+        if (newTarget == null) {
+            previousTarget.takeIfValid()
                 ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
                 ?.laserChanged(targetSide, null)
-            irradiateLaserBlock(world, targetPos, laser.laserEnergy)
-            Pair(newLaserLength, null)
+            irradiateLaserBlock(world, targetPos, laser.energy)
+            return Pair(newLaserLength, null)
         } else if (previousTarget != newTarget) {
-            previousTarget?.takeUnless { it.isInvalid }
+            previousTarget.takeIfValid()
                 ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
                 ?.laserChanged(targetSide, null)
             if (isActive) {
                 newTarget.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
                     ?.laserChanged(targetSide, this.laser)
             }
-            Pair(newLaserLength, newTarget)
         } else if (laserLength != newLaserLength) {
             ifUpdated?.invoke()
-            Pair(newLaserLength, newTarget)
-        } else {
-            Pair(newLaserLength, newTarget)
         }
+        return Pair(newLaserLength, newTarget)
     }
 
     fun getLaserLength(world: IBlockAccess, pos: BlockPos): Int {
         for (i in 1..MAX_LASER_LENGTH) {
-            val targetPos = pos.offset(laserDirection, i)
+            val targetPos = pos.offset(laser.direction, i)
             if (canGoThroughBlock(world, targetPos)) continue
             return i
         }

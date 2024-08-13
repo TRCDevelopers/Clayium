@@ -20,7 +20,6 @@ import net.minecraftforge.common.util.Constants
 class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, IClayLaserAcceptor {
 
     override var laser: ClayLaser = ClayLaser(EnumFacing.NORTH, 0, 0, 0, 1)
-    override val laserDirection get() = laser.laserDirection
     override var laserLength: Int = IClayLaserSource.MAX_LASER_LENGTH
         set(value) {
             val syncFlag = field != value && !world.isRemote
@@ -60,7 +59,7 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
     }
 
     override fun invalidate() {
-        val laserDirection = this.laser.laserDirection
+        val laserDirection = this.laser.direction
         this.laserTarget.takeIfValid()
             ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laserDirection.opposite)
             ?.laserChanged(laserDirection.opposite, null)
@@ -78,17 +77,17 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
         this.laser = mergeLasers(this.receivedLasers.values, mergedLaserDirection)
         this.isActive = this.receivedLasers.isNotEmpty()
         laserTarget?.takeIfValid()
-            ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laserDirection.opposite)
-            ?.laserChanged(laserDirection.opposite, this.laser)
+            ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, this.laser.direction.opposite)
+            ?.laserChanged(this.laser.direction.opposite, this.laser)
         notifyWorld()
     }
 
     override fun getUpdateTag(): NBTTagCompound {
-        val laserRgb = (laser.laserRed shl 16) or (laser.laserGreen shl 8) or laser.laserBlue
+        val laserRgb = (this.laser.red shl 16) or (this.laser.green shl 8) or this.laser.blue
         @Suppress("UsePropertyAccessSyntax")
         return super.getUpdateTag().apply {
             setInteger("laserRgb", laserRgb)
-            setInteger("laserDirection", laser.laserDirection.index)
+            setInteger("laserDirection", laser.direction.index)
             setInteger("laserLength", laserLength)
             setBoolean("isActive", isActive)
         }
@@ -96,24 +95,16 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
 
     override fun handleUpdateTag(tag: NBTTagCompound) {
         super.readFromNBT(tag)
-        val laserRgb = tag.getInteger("laserRgb")
-        val laserRed = laserRgb shr 16 and 0xFF
-        val laserGreen = laserRgb shr 8 and 0xFF
-        val laserBlue = laserRgb and 0xFF
-        val laserDirection = EnumFacing.byIndex(tag.getInteger("laserDirection"))
-
-        this.laser = ClayLaser(laserDirection, laserRed, laserGreen, laserBlue)
-        this.laserLength = tag.getInteger("laserLength")
-        this.isActive = tag.getBoolean("isActive")
+        readLaserData(tag)
     }
 
     override fun getUpdatePacket(): SPacketUpdateTileEntity {
-        val laserRgb = (laser.laserRed shl 16) or (laser.laserGreen shl 8) or laser.laserBlue
+        val laserRgb = (this.laser.red shl 16) or (this.laser.green shl 8) or this.laser.blue
         return SPacketUpdateTileEntity(
             this.pos, 0,
             NBTTagCompound().apply {
                 setInteger("laserRgb", laserRgb)
-                setInteger("laserDirection", laser.laserDirection.index)
+                setInteger("laserDirection", laser.direction.index)
                 setInteger("laserLength", laserLength)
                 setBoolean("isActive", isActive)
             }
@@ -121,14 +112,17 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
     }
 
     override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
-        val data = pkt.nbtCompound
+        readLaserData(pkt.nbtCompound)
+    }
+
+    private fun readLaserData(data: NBTTagCompound) {
         val laserRgb = data.getInteger("laserRgb")
-        val laserRed = laserRgb shr 16 and 0xFF
-        val laserGreen = laserRgb shr 8 and 0xFF
-        val laserBlue = laserRgb and 0xFF
+        val red = laserRgb shr 16 and 0xFF
+        val green = laserRgb shr 8 and 0xFF
+        val blue = laserRgb and 0xFF
         val laserDirection = EnumFacing.byIndex(data.getInteger("laserDirection"))
 
-        this.laser = ClayLaser(laserDirection, laserRed, laserGreen, laserBlue)
+        this.laser = ClayLaser(laserDirection, red, green, blue)
         this.laserLength = data.getInteger("laserLength")
         this.isActive = data.getBoolean("isActive")
     }
@@ -147,21 +141,21 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
 
         private fun mergeLasers(lasers: Collection<IClayLaser>, direction: EnumFacing): ClayLaser {
             if (lasers.isEmpty()) return ClayLaser(direction, 0, 0, 0)
-            val maxAge = lasers.maxOf { it.laserAge }
+            val maxAge = lasers.maxOf { it.age }
             if (maxAge >= MAX_LASER_AGE) {
                 return ClayLaser(
                     direction,
-                    lasers.maxOf { it.laserRed },
-                    lasers.maxOf { it.laserGreen },
-                    lasers.maxOf { it.laserBlue },
+                    lasers.maxOf { it.red },
+                    lasers.maxOf { it.green },
+                    lasers.maxOf { it.blue },
                     maxAge,
                 )
             } else {
                 return ClayLaser(
                     direction,
-                    lasers.sumOf { it.laserRed },
-                    lasers.sumOf { it.laserGreen },
-                    lasers.sumOf { it.laserBlue },
+                    lasers.sumOf { it.red },
+                    lasers.sumOf { it.green },
+                    lasers.sumOf { it.blue },
                     maxAge + 1,
                 )
             }

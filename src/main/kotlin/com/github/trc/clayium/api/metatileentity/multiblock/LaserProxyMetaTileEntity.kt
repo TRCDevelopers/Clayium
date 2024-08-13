@@ -78,7 +78,7 @@ class LaserProxyMetaTileEntity(
 
     override fun onToolClick(toolType: IConfigurationTool.ToolType, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         super.onToolClick(toolType, player, hand, clickedSide, hitX, hitY, hitZ)
-        if (laser?.laserDirection != this.frontFacing.opposite) {
+        if (laser?.direction != this.frontFacing.opposite) {
             this.laser = null
         }
     }

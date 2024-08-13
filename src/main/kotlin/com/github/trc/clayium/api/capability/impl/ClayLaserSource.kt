@@ -27,7 +27,6 @@ class ClayLaserSource(
             field = value.coerceIn(1, IClayLaserSource.MAX_LASER_LENGTH)
             if (syncFlag) { writeLaserData() }
         }
-    override val laserDirection get() = laser.laserDirection
     private var laserTarget: TileEntity? = null
     override var isActive: Boolean = false
         public set(value) {
@@ -39,13 +38,13 @@ class ClayLaserSource(
             if (value) {
                 laserTarget
                     ?.takeUnless { it.isInvalid }
-                    ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
-                    ?.laserChanged(laser.laserDirection.opposite, laser)
+                    ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.direction.opposite)
+                    ?.laserChanged(laser.direction.opposite, laser)
             } else {
                 laserTarget
                     ?.takeUnless { it.isInvalid }
-                    ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
-                    ?.laserChanged(laser.laserDirection.opposite, null)
+                    ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.direction.opposite)
+                    ?.laserChanged(laser.direction.opposite, null)
             }
             if (syncFlag) {
                 writeCustomData(UPDATE_LASER_ACTIVATION) {
@@ -85,15 +84,15 @@ class ClayLaserSource(
 
     override fun onRemoval() {
         laserTarget?.takeUnless { it.isInvalid }
-            ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
-            ?.laserChanged(laser.laserDirection.opposite, null)
+            ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.direction.opposite)
+            ?.laserChanged(laser.direction.opposite, null)
         writeLaserData()
     }
 
 
     override fun writeInitialSyncData(buf: PacketBuffer) {
         buf.writeVarInt(laserLength)
-        buf.writeVarInt(laser.laserDirection.index)
+        buf.writeVarInt(laser.direction.index)
         buf.writeBoolean(isActive)
     }
 
@@ -108,13 +107,13 @@ class ClayLaserSource(
     private fun writeLaserData() {
         writeCustomData(UPDATE_LASER) {
             writeVarInt(laserLength)
-            writeVarInt(laser.laserDirection.index)
+            writeVarInt(laser.direction.index)
         }
     }
 
     override fun serializeNBT(): NBTTagCompound {
         return NBTTagCompound().apply {
-            setByte("laserDirection", laser.laserDirection.index.toByte())
+            setByte("laserDirection", laser.direction.index.toByte())
             setInteger("laserLength", laserLength)
             setBoolean("isActive", isActive)
         }

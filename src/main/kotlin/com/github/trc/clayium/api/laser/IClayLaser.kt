@@ -3,16 +3,16 @@ package com.github.trc.clayium.api.laser
 import net.minecraft.util.EnumFacing
 
 interface IClayLaser {
-    val laserDirection: EnumFacing
+    val direction: EnumFacing
 
-    val laserRed: Int
-    val laserGreen: Int
-    val laserBlue: Int
+    val red: Int
+    val green: Int
+    val blue: Int
 
-    val laserEnergy: Double
-    val laserAge: Int
+    val energy: Double
+    val age: Int
 
     fun toInt(): Int {
-        return (laserRed shl 16) or (laserGreen shl 8) or laserBlue
+        return (red shl 16) or (green shl 8) or blue
     }
 }
