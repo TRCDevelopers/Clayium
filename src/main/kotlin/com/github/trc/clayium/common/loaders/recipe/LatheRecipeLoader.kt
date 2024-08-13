@@ -27,7 +27,7 @@ object LatheRecipeLoader {
             .buildAndRegister()
 
         registry.builder()
-            .input(MetaItemClayParts.LARGE_CLAY_BALL)
+            .input(MetaItemClayParts.LargeClayBall)
             .output(cylinder, clay)
             .tier(0).CEt(ClayEnergy.micro(10)).duration(4)
             .buildAndRegister()

@@ -9,7 +9,7 @@ import com.github.trc.clayium.common.unification.ore.OrePrefix
 object CaCondenserRecipeLoader {
     fun registerRecipes() {
         CRecipes.CA_CONDENSER.register {
-            input(MetaItemClayParts.ANTIMATTER_SEED)
+            input(MetaItemClayParts.AntimatterSeed)
             output(OrePrefix.gem, CMaterials.antimatter)
             CEt(ClayEnergy.of(250))
             duration(2000)

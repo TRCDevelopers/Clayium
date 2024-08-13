@@ -12,19 +12,19 @@ object MillingMachineRecipeLoader {
 
         registry.builder()
             .input(OrePrefix.plate, CMaterials.denseClay)
-            .output(MetaItemClayParts.CLAY_CIRCUIT_BOARD)
+            .output(MetaItemClayParts.ClayCircuitBoard)
             .tier(0).CEt().duration(32)
             .buildAndRegister()
 
         registry.builder()
             .input(OrePrefix.plate, CMaterials.industrialClay)
-            .output(MetaItemClayParts.CLAY_CIRCUIT_BOARD)
+            .output(MetaItemClayParts.ClayCircuitBoard)
             .tier(0).CEt().duration(1)
             .buildAndRegister()
 
         registry.builder()
             .input(OrePrefix.plate, CMaterials.advancedIndustrialClay)
-            .output(MetaItemClayParts.CEE_BOARD)
+            .output(MetaItemClayParts.CeeBoard)
             .tier(3).CEt(ClayEnergy.micro(20)).duration(32)
             .buildAndRegister()
     }

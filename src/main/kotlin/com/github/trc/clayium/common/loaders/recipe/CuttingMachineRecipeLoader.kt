@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.loaders.recipe
 
 import com.github.trc.clayium.api.ClayEnergy
-import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts.LARGE_CLAY_BALL
+import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts.LargeClayBall
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.common.unification.material.CMaterials
 import com.github.trc.clayium.common.unification.ore.OrePrefix
@@ -11,7 +11,7 @@ object CuttingMachineRecipeLoader {
         val registry = CRecipes.CUTTING_MACHINE
 
         registry.builder()
-            .input(LARGE_CLAY_BALL)
+            .input(LargeClayBall)
             .output(OrePrefix.disc, CMaterials.clay)
             .tier(0).CEt(ClayEnergy.micro(10)).duration(2)
             .buildAndRegister()

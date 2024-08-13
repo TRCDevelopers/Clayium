@@ -6,7 +6,7 @@ import com.github.trc.clayium.common.blocks.clayworktable.ClayWorkTableMethod.CU
 import com.github.trc.clayium.common.blocks.clayworktable.ClayWorkTableMethod.PUNCH
 import com.github.trc.clayium.common.blocks.clayworktable.ClayWorkTableMethod.ROLLING_HAND
 import com.github.trc.clayium.common.blocks.clayworktable.ClayWorkTableMethod.ROLLING_PIN
-import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts.LARGE_CLAY_BALL
+import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts.LargeClayBall
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts.RawClaySlicer
 import com.github.trc.clayium.common.recipe.CWTRecipes
 import com.github.trc.clayium.common.unification.material.CMaterials.clay
@@ -30,14 +30,14 @@ object ClayWorkTableRecipes {
             clicks(4)
         }
         CWTRecipes.CLAY_WORK_TABLE.register {
-            input(LARGE_CLAY_BALL)
+            input(LargeClayBall)
             output(OrePrefix.cylinder, clay)
             method(ROLLING_HAND)
             clicks(5)
         }
         CWTRecipes.CLAY_WORK_TABLE.register {
             input(OrePrefix.plate, clay, 3)
-            output(LARGE_CLAY_BALL)
+            output(LargeClayBall)
             method(ROLLING_HAND)
             clicks(40)
         }
@@ -55,7 +55,7 @@ object ClayWorkTableRecipes {
             clicks(15)
         }
         CWTRecipes.CLAY_WORK_TABLE.register {
-            input(LARGE_CLAY_BALL)
+            input(LargeClayBall)
             output(OrePrefix.disc, clay)
             method(PUNCH)
             clicks(30)
@@ -69,7 +69,7 @@ object ClayWorkTableRecipes {
             clicks(1)
         }
         CWTRecipes.CLAY_WORK_TABLE.register {
-            input(LARGE_CLAY_BALL)
+            input(LargeClayBall)
             output(OrePrefix.disc, clay)
             output(ItemStack(Items.CLAY_BALL, 2))
             method(ROLLING_PIN)
