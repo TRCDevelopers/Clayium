@@ -9,7 +9,7 @@ import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
-import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockTrait.StructureValidationResult
+import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult
 import com.github.trc.clayium.api.util.CUtils.clayiumId
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.common.recipe.registry.CRecipes
@@ -28,21 +28,21 @@ class ClayBlastFurnaceMetaTileEntity(
     "machine.${CValues.MOD_ID}.clay_blast_furnace",
     CRecipes.CLAY_BLAST_FURNACE,
 ) {
-    private val multiblockValidation = MultiblockTrait(this, ::checkStructure)
+    private val multiblockLogic = MultiblockLogic(this, ::checkStructure)
 
     //todo: fix these code duplication?
     fun getFaceInvalid(): ResourceLocation = clayiumId("blocks/blastfurnace")
     fun getFaceValid() = clayiumId("blocks/blastfurnace_1")
-    override val faceTexture get() = if (multiblockValidation.structureFormed) getFaceValid() else getFaceInvalid()
+    override val faceTexture get() = if (multiblockLogic.structureFormed) getFaceValid() else getFaceInvalid()
     override val requiredTextures get() = listOf(getFaceValid(), getFaceInvalid())
 
     override val importItems = NotifiableItemStackHandler(this, 2, this, isExport = false)
     override val exportItems = NotifiableItemStackHandler(this, 2, this, isExport = true)
     override val itemInventory = ItemHandlerProxy(importItems, exportItems)
 
-    override val workable: MultiblockRecipeLogic = MultiblockRecipeLogic(this, recipeRegistry, multiblockValidation::structureFormed)
+    override val workable: MultiblockRecipeLogic = MultiblockRecipeLogic(this, recipeRegistry, multiblockLogic::structureFormed)
 
-    private fun checkStructure(handler: MultiblockTrait): StructureValidationResult {
+    private fun checkStructure(handler: MultiblockLogic): StructureValidationResult {
         val world = world
         val controllerPos = pos
         if (world == null || controllerPos == null) return StructureValidationResult.Invalid
@@ -54,12 +54,12 @@ class ClayBlastFurnaceMetaTileEntity(
                     val mbPartPos = handler.getControllerRelativeCoord(controllerPos, xx, yy, zz)
                     val result = handler.isPosValidForMutliblock(world, mbPartPos)
                     when (result) {
-                        MultiblockTrait.BlockValidationResult.Invalid ->
+                        MultiblockLogic.BlockValidationResult.Invalid ->
                             return StructureValidationResult.Invalid
-                        is MultiblockTrait.BlockValidationResult.Matched -> {
+                        is MultiblockLogic.BlockValidationResult.Matched -> {
                             result.tier?.let { tiers.add(it) }
                         }
-                        is MultiblockTrait.BlockValidationResult.MultiblockPart ->
+                        is MultiblockLogic.BlockValidationResult.MultiblockPart ->
                             mbParts.add(result.part)
                     }
                 }
@@ -70,7 +70,7 @@ class ClayBlastFurnaceMetaTileEntity(
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
-            .child(multiblockValidation.tierTextWidget(syncManager)
+            .child(multiblockLogic.tierTextWidget(syncManager)
                 .align(Alignment.BottomCenter))
     }
 

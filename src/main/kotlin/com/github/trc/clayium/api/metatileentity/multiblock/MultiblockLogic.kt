@@ -17,9 +17,9 @@ import net.minecraft.network.PacketBuffer
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 
-class MultiblockTrait(
+class MultiblockLogic(
     metaTileEntity: MetaTileEntity,
-    private val checkStructure: (MultiblockTrait) -> StructureValidationResult,
+    private val checkStructure: (MultiblockLogic) -> StructureValidationResult,
 ) : MTETrait(metaTileEntity, "${CValues.MOD_ID}.structure_validator") {
 
     var structureFormed = false
