@@ -3,6 +3,8 @@ package com.github.trc.clayium.common.metatileentity.multiblock
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.NumberFormat
+import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
@@ -38,7 +40,7 @@ class CaReactorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
 ) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1],
-    "machines.${CValues.MOD_ID}.ca_reactor", caReactorRegistry) {
+    "machine.${CValues.MOD_ID}.ca_reactor", caReactorRegistry) {
 
     private val multiblockValidation = MultiblockTrait(this, ::checkStructure)
 
@@ -55,6 +57,12 @@ class CaReactorMetaTileEntity(
     private var hullCount = 0
     private var efficiency = 0.0
     private var cePerTickMultiplier = 0.0
+
+    /**
+     * if the structure is invalid, the reason should be stored here.
+     * null if the structure is valid.
+     */
+    private var errorMsg: Pair<String, Array<String>?>? = null
 
     private val supportedHullTierRange = when (tier.numeric) {
         10 -> 1..2
@@ -75,7 +83,10 @@ class CaReactorMetaTileEntity(
         val firstCoilPos = EnumFacing.entries.firstNotNullOfOrNull {
             if (world.getBlockState(pos.offset(it)).block is BlockCaReactorCoil) pos.offset(it) else null
         }
-        if (firstCoilPos == null) return Invalid
+        if (firstCoilPos == null) {
+            errorMsg = Pair("message.clayium.ca_reactor.no_near_coil", null)
+            return Invalid
+        }
         val parts = mutableListOf<IMultiblockPart>()
         val coilsWalked = mutableSetOf<BlockPos>()
         val isValid = searchAndValidateAdjacentCoil(firstCoilPos, coilsWalked)
@@ -94,18 +105,26 @@ class CaReactorMetaTileEntity(
                 val block = world.getBlockState(pos).block
                 when {
                     metaTileEntity is IMultiblockPart -> {
-                        if (metaTileEntity.tier.numeric < this.tier.numeric) return Invalid
+                        if (metaTileEntity.tier.numeric < this.tier.numeric) {
+                            errorMsg = Pair("message.clayium.ca_reactor.insufficient_tier_interface", arrayOf(pos.toString()))
+                            return Invalid
+                        }
                         parts.add(metaTileEntity)
                     }
                     metaTileEntity === this -> {}
                     block is BlockCaReactorHull -> {
-                        if (block.getTier(world, pos).numeric < this.tier.numeric) return Invalid
                         val hullRank = block.getCaRank(world, pos)
-                        if (hullRank !in supportedHullTierRange) return Invalid
+                        if (hullRank !in supportedHullTierRange) {
+                            errorMsg = Pair("message.clayium.ca_reactor.too_high_tier_hull", arrayOf(pos.toString()))
+                            return Invalid
+                        }
                         hullRanks.add(hullRank)
                     }
                     block is BlockCaReactorCoil -> {
-                        if (block.getTier(world, pos).numeric < this.tier.numeric) return Invalid
+                        if (block.getTier(world, pos).numeric < this.tier.numeric) {
+                            errorMsg = Pair("message.clayium.ca_reactor.insufficient_tier_coil", arrayOf(pos.toString()))
+                            return Invalid
+                        }
                     }
                     else -> return Invalid
                 }
@@ -116,6 +135,7 @@ class CaReactorMetaTileEntity(
 
         this.avgHullRank = if (hullRanks.isEmpty) 0 else hullRanks.average().toInt()
         this.hullCount = hullRanks.size
+
         this.efficiency = getEfficiency(avgHullRank.toDouble(), hullRanks.size)
         this.cePerTickMultiplier = getCEPerTickMultiplier(avgHullRank.toDouble(), hullRanks.size)
 
@@ -124,7 +144,10 @@ class CaReactorMetaTileEntity(
 
     private fun searchAndValidateAdjacentCoil(coilPos: BlockPos, walked: MutableSet<BlockPos>): Boolean {
         if (walked.contains(coilPos)) return true
-        if (walked.size > MAX_COILS) return false
+        if (walked.size > MAX_COILS) {
+            errorMsg = Pair("message.clayium.ca_reactor.too_many_coils", arrayOf(MAX_COILS.toString()))
+            return false
+        }
         walked.add(coilPos)
         val world = world ?: return false
         val coilPoses = mutableListOf<BlockPos>()
@@ -142,10 +165,11 @@ class CaReactorMetaTileEntity(
             }
         }
         if (coilPoses.size == 2) {
-            for (coilPos in coilPoses) {
-                valid = valid && searchAndValidateAdjacentCoil(coilPos, walked)
+            for (neighborCoilPos in coilPoses) {
+                valid = valid && searchAndValidateAdjacentCoil(neighborCoilPos, walked)
             }
         } else {
+            errorMsg = Pair("message.clayium.ca_reactor.invalid_coil", arrayOf(coilPos.toString()))
             valid = false
         }
         return valid
@@ -162,6 +186,27 @@ class CaReactorMetaTileEntity(
         syncManager.syncValue("caReactorEfficiency", SyncHandlers.doubleNumber(::efficiency, ::efficiency::set))
         syncManager.syncValue("caReactorAvgHullRank", SyncHandlers.intNumber(::avgHullRank, ::avgHullRank::set))
         syncManager.syncValue("caReactorHullCount", SyncHandlers.intNumber(::hullCount, ::hullCount::set))
+        syncManager.syncValue("caReactorErrorMsg", SyncHandlers.string({ errorMsg?.first }, { errorMsg = Pair(it, errorMsg?.second) }))
+        syncManager.syncValue("caReactorErrorMsgArgs", GenericListSyncHandler(
+            { errorMsg?.second?.toList() ?: emptyList() },
+            {
+                errorMsg = if (errorMsg != null) {
+                    Pair(errorMsg!!.first, it.toTypedArray())
+                } else {
+                    null
+                }
+            },
+            ByteBufAdapters.STRING)
+        )
+
+        val errorMsgDrawable = IKey.dynamic {
+            val msg = errorMsg
+            if (msg != null) {
+                I18n.format(msg.first, *msg.second ?: emptyArray())
+            } else {
+                I18n.format("message.clayium.ca_reactor.valid")
+            }
+        }
 
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic {
@@ -170,6 +215,7 @@ class CaReactorMetaTileEntity(
                 else
                     I18n.format("gui.clayium.ca_reactor.invalid") }
                 .asWidget().widthRel(0.7f).alignment(Alignment.CenterRight).align(Alignment.BottomRight)
+                .tooltip { it.addLine(errorMsgDrawable) }
             )
             .child(IKey.dynamic { I18n.format("gui.clayium.ca_reactor.efficiency", NumberFormat.formatWithMaxDigits(efficiency)) }
                 .asWidget().widthRel(0.6f).alignment(Alignment.CenterRight).right(0).bottom(10)
