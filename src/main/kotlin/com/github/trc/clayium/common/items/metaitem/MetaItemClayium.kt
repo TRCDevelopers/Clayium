@@ -79,7 +79,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         }
     }
 
-    open fun afterRegistration() {
+    open fun registerOreDicts() {
         metaOreDicts.forEach { (meta, oreDict) ->
             OreDictUnifier.registerOre(ItemStack(this, 1, meta.toInt()), oreDict)
         }

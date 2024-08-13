@@ -3,6 +3,7 @@ package com.github.trc.clayium.common.items
 import com.github.trc.clayium.api.capability.IConfigurationTool
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.items.filter.ItemSimpleItemFilter
+import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import net.minecraft.item.Item
 
 object ClayiumItems {
@@ -24,6 +25,12 @@ object ClayiumItems {
     val CLAY_SHOVEL = createItem("clay_shovel", ItemClayShovel())
 
     val simpleItemFilter = createItem("simple_item_filter", ItemSimpleItemFilter())
+
+    fun registerOreDicts() {
+        for (metaItem in MetaItemClayium.META_ITEMS) {
+            metaItem.registerOreDicts()
+        }
+    }
 
     private fun <T: Item> createItem(name: String, item: T): T {
         return item.apply {
