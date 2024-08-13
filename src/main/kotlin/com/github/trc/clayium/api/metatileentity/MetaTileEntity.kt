@@ -612,10 +612,6 @@ abstract class MetaTileEntity(
                     .slot(slot)
                     .background(IDrawable.EMPTY))
 
-    protected inline fun onServer(block: () -> Unit) {
-        if (!isRemote) block()
-    }
-
     /**
      * ```
      * ModularPanel.defaultPanel(translationKey)

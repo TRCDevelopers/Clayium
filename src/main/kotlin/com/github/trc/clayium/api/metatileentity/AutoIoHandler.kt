@@ -77,7 +77,7 @@ abstract class AutoIoHandler(
         traitName : String = ClayiumDataCodecs.AUTO_IO_HANDLER,
     ) : AutoIoHandler(metaTileEntity, isBuffer, traitName) {
         override fun update() {
-            if (metaTileEntity.world?.isRemote == true) return
+            if (metaTileEntity.isRemote) return
             if (ticked++ < intervalTick) return
             importFromNeighbors()
             ticked = 0
