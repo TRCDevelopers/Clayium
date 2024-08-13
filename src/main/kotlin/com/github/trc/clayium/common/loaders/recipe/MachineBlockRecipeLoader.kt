@@ -226,7 +226,7 @@ object MachineBlockRecipeLoader {
             .input(MACHINE_HULL.getItem(ANTIMATTER))
             .input(OrePrefix.gem, CMaterials.antimatter, 8)
             .output(MetaTileEntities.CA_RESONATING_COLLECTOR)
-            .tier(10).CEt(2.0).duration(4000)
+            .tier(10).CEtFactor(2.0).duration(4000)
             .buildAndRegister()
         /* CA Injector */
         assembler.builder()
@@ -411,7 +411,7 @@ object MachineBlockRecipeLoader {
             CRecipes.ASSEMBLER.builder()
                 .input(MACHINE_HULL.getItem(mte.tier))
                 .output(mte.getStackForm())
-                .tier(4).CEt(1.0).duration(60)
+                .tier(4).CEtFactor(1.0).duration(60)
                 .inputProvider()
                 .buildAndRegister()
         }
@@ -424,7 +424,7 @@ object MachineBlockRecipeLoader {
             CRecipes.ASSEMBLER.builder()
                 .input(MetaTileEntities.CLAY_BUFFER[i])
                 .output(mte.getStackForm())
-                .tier(4).CEt(1.0).duration(60)
+                .tier(4).CEtFactor(1.0).duration(60)
                 .inputProvider()
                 .buildAndRegister()
         }
