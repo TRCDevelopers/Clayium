@@ -1,36 +1,30 @@
 {
   "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "overlay": "clayium:blocks/energy_storage_upgrade"
-    },
-    "model": "clayium:overlay"
-  },
   "variants": {
     "variant": {
       "antimatter": {
         "textures": {
-          "base": "clayium:blocks/machinehull_tier10"
+          "all": "clayium:blocks/estorage_upgrade_antimatter"
         },
-        "model": "clayium:overlay"
+        "model": "cube_all"
       },
       "pure_antimatter": {
         "textures": {
-          "base": "clayium:blocks/machinehull_tier11"
+          "all": "clayium:blocks/estorage_upgrade_pure_antimatter"
         },
-        "model": "clayium:overlay"
+        "model": "cube_all"
       },
       "oec": {
         "textures": {
-          "base": "clayium:blocks/machinehull_tier12"
+          "all": "clayium:blocks/estorage_upgrade_oec"
         },
-        "model": "clayium:overlay"
+        "model": "cube_all"
       },
       "opa": {
         "textures": {
-          "base": "clayium:blocks/machinehull_tier13"
+          "all": "clayium:blocks/estorage_upgrade_opa"
         },
-        "model": "clayium:overlay"
+        "model": "cube_all"
       }
     }
   }
