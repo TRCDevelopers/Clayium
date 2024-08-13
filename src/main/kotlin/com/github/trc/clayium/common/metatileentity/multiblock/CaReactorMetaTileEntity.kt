@@ -40,7 +40,7 @@ class CaReactorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
 ) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1],
-    "machines.${CValues.MOD_ID}.ca_reactor", caReactorRegistry) {
+    "machine.${CValues.MOD_ID}.ca_reactor", caReactorRegistry) {
 
     private val multiblockValidation = MultiblockTrait(this, ::checkStructure)
 
