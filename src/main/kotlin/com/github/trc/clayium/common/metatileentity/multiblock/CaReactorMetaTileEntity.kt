@@ -15,9 +15,9 @@ import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.IMultiblockPart
-import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockTrait
-import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockTrait.StructureValidationResult
-import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockTrait.StructureValidationResult.Invalid
+import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic
+import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult
+import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult.Invalid
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getMetaTileEntity
@@ -42,11 +42,11 @@ class CaReactorMetaTileEntity(
 ) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1],
     "machine.${CValues.MOD_ID}.ca_reactor", caReactorRegistry) {
 
-    private val multiblockValidation = MultiblockTrait(this, ::checkStructure)
+    private val multiblockLogic = MultiblockLogic(this, ::checkStructure)
 
     fun getFaceInvalid(): ResourceLocation = clayiumId("blocks/ca_reactor_core_invalid")
     fun getFaceValid() = clayiumId("blocks/ca_reactor_core_valid")
-    override val faceTexture get() = if (multiblockValidation.structureFormed) getFaceValid() else getFaceInvalid()
+    override val faceTexture get() = if (multiblockLogic.structureFormed) getFaceValid() else getFaceInvalid()
     override val requiredTextures get() = listOf(getFaceValid(), getFaceInvalid())
 
     override val importItems = NotifiableItemStackHandler(this, 1, this, isExport = false)
@@ -74,7 +74,7 @@ class CaReactorMetaTileEntity(
     override val workable: AbstractRecipeLogic = CaReactorRecipeLogic()
 
     @Suppress("unused") // to use as a method reference in MultiblockTrait
-    private fun checkStructure(handler: MultiblockTrait): StructureValidationResult {
+    private fun checkStructure(handler: MultiblockLogic): StructureValidationResult {
         val hullRanks = IntArrayList()
 
         val pos = pos ?: return Invalid
@@ -210,7 +210,7 @@ class CaReactorMetaTileEntity(
 
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic {
-                if (multiblockValidation.structureFormed)
+                if (multiblockLogic.structureFormed)
                     I18n.format("gui.clayium.ca_reactor.constructed")
                 else
                     I18n.format("gui.clayium.ca_reactor.invalid") }
@@ -256,7 +256,7 @@ class CaReactorMetaTileEntity(
         }
 
         override fun drawEnergy(ce: ClayEnergy, simulate: Boolean): Boolean {
-            return multiblockValidation.structureFormed
+            return multiblockLogic.structureFormed
                     && clayEnergyHolder.drawEnergy(ce, simulate)
         }
     }

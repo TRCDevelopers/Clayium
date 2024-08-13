@@ -61,7 +61,7 @@ object CraftingRecipeLoader {
 
     private fun registerClayPartsRecipes() {
 
-        RecipeUtils.addShapelessRecipe("large_clay_ball", MetaItemClayParts.LARGE_CLAY_BALL.getStackForm(),
+        RecipeUtils.addShapelessRecipe("large_clay_ball", MetaItemClayParts.LargeClayBall.getStackForm(),
             *Array(8) { Items.CLAY_BALL })
         RecipeUtils.addShapelessRecipe("clay_short_stick",
             OreDictUnifier.get(OrePrefix.shortStick, clay, 2), UnificationEntry(OrePrefix.stick, clay))
@@ -79,17 +79,17 @@ object CraftingRecipeLoader {
             "CCC", "CCC", "CCC",
             'C', UnificationEntry(OrePrefix.plate, clay))
         RecipeUtils.addShapedRecipe("clay_circuit",
-            MetaItemClayParts.CLAY_CIRCUIT.getStackForm(),
+            MetaItemClayParts.ClayCircuit.getStackForm(),
             "SGS", "RBR", "SGS",
             'S', UnificationEntry(OrePrefix.stick, clay),
             'G', UnificationEntry(OrePrefix.gear, clay),
             'R', UnificationEntry(OrePrefix.ring, clay),
-            'B', MetaItemClayParts.CLAY_CIRCUIT_BOARD)
+            'B', MetaItemClayParts.ClayCircuitBoard)
         RecipeUtils.addShapedRecipe("simple_circuit",
-            MetaItemClayParts.SIMPLE_CIRCUIT.getStackForm(),
+            MetaItemClayParts.SimpleCircuit.getStackForm(),
             "DDD", "DBD", "DDD",
             'D', MetaItemClayParts.EnergizedClayDust,
-            'B', MetaItemClayParts.CLAY_CIRCUIT_BOARD)
+            'B', MetaItemClayParts.ClayCircuitBoard)
 
         for (m in listOf(clay, denseClay)) {
             RecipeUtils.addShapedRecipe("${m.materialId.path}_gear",

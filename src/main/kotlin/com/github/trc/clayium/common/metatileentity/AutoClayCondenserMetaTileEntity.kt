@@ -55,30 +55,29 @@ class AutoClayCondenserMetaTileEntity(
 
     override fun update() {
         super.update()
-        onServer {
-            if (!hasNotifiedInputs) return
-            sortInv()
-            // compress clays
-            val maxCompress = getMaterial(maxCompressedClay.getStackInSlot(0))?.tier?.numeric ?: Int.MAX_VALUE
-            for (i in 0..<itemInventory.slots) {
-                val stack = itemInventory.getStackInSlot(i)
-                if (stack.isEmpty) break // inventory is sorted
+        if (isRemote) return
+        if (!hasNotifiedInputs) return
+        sortInv()
+        // compress clays
+        val maxCompress = getMaterial(maxCompressedClay.getStackInSlot(0))?.tier?.numeric ?: Int.MAX_VALUE
+        for (i in 0..<itemInventory.slots) {
+            val stack = itemInventory.getStackInSlot(i)
+            if (stack.isEmpty) break // inventory is sorted
 
-                val m = getMaterial(stack) ?: continue
-                if ((m.tier?.numeric ?: Int.MAX_VALUE) >= maxCompress) continue
+            val m = getMaterial(stack) ?: continue
+            if ((m.tier?.numeric ?: Int.MAX_VALUE) >= maxCompress) continue
 
-                val clay = m.getPropOrNull(PropertyKey.CLAY) ?: continue
-                val compressedClay = clay.compressedInto ?: continue
-                // slow down the process for lower tier
-                val compressedAmount = if (this.tier.numeric >= 7) { stack.count / 9 } else { min(stack.count / 9, 1) }
-                if (compressedAmount > 0) {
-                    val remain = ItemHandlerHelper.insertItem(itemInventory,
-                        OreDictUnifier.get(OrePrefix.block, compressedClay, compressedAmount), true)
-                    if (!remain.isEmpty) break
-                    ItemHandlerHelper.insertItem(itemInventory,
-                        OreDictUnifier.get(OrePrefix.block, compressedClay, compressedAmount), false)
-                    itemInventory.extractItem(i, compressedAmount * 9, false)
-                }
+            val clay = m.getPropOrNull(PropertyKey.CLAY) ?: continue
+            val compressedClay = clay.compressedInto ?: continue
+            // slow down the process for lower tier
+            val compressedAmount = if (this.tier.numeric >= 7) { stack.count / 9 } else { min(stack.count / 9, 1) }
+            if (compressedAmount > 0) {
+                val remain = ItemHandlerHelper.insertItem(itemInventory,
+                    OreDictUnifier.get(OrePrefix.block, compressedClay, compressedAmount), true)
+                if (!remain.isEmpty) break
+                ItemHandlerHelper.insertItem(itemInventory,
+                    OreDictUnifier.get(OrePrefix.block, compressedClay, compressedAmount), false)
+                itemInventory.extractItem(i, compressedAmount * 9, false)
             }
         }
     }

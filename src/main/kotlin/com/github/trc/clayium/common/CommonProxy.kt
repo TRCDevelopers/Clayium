@@ -19,7 +19,6 @@ import com.github.trc.clayium.common.blocks.TileEntityCreativeEnergySource
 import com.github.trc.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
-import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trc.clayium.common.loaders.OreDictionaryLoader
 import com.github.trc.clayium.common.loaders.recipe.CRecipeLoader
@@ -109,8 +108,6 @@ open class CommonProxy {
             registry.register(metaPrefixItem)
             metaPrefixItem.registerSubItems()
         }
-
-        for (metaItem in MetaItemClayium.META_ITEMS) { metaItem.afterRegistration() }
 
         registerItem(registry, ClayiumItems.CLAY_ROLLING_PIN)
         registerItem(registry, ClayiumItems.CLAY_SLICER)

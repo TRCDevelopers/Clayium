@@ -13,7 +13,7 @@ import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.laser.IClayLaser
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
-import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockTrait.StructureValidationResult
+import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.CUtils.clayiumId
 import com.github.trc.clayium.api.util.ITier
@@ -35,17 +35,17 @@ class ClayReactorMetaTileEntity(
     "machine.${CValues.MOD_ID}.clay_reactor",
     CRecipes.CLAY_REACTOR
 ), IClayLaserAcceptor {
-    private val multiblockValidation = MultiblockTrait(this, ::checkStructure)
+    private val multiblockLogic = MultiblockLogic(this, ::checkStructure)
 
     var laser: IClayLaser? = null
         private set
 
     fun getFaceInvalid() = clayiumId("blocks/reactor")
     fun getFaceValid() = clayiumId("blocks/reactor_1")
-    override val faceTexture get() = if (multiblockValidation.structureFormed) getFaceValid() else getFaceInvalid()
+    override val faceTexture get() = if (multiblockLogic.structureFormed) getFaceValid() else getFaceInvalid()
     override val requiredTextures get() = listOf(getFaceValid(), getFaceInvalid())
 
-    private fun checkStructure(handler: MultiblockTrait): StructureValidationResult {
+    private fun checkStructure(handler: MultiblockLogic): StructureValidationResult {
         val world = world ?: return StructureValidationResult.Invalid
         val controllerPos = pos ?: return StructureValidationResult.Invalid
         val mbParts = mutableListOf<IMultiblockPart>()
@@ -61,12 +61,12 @@ class ClayReactorMetaTileEntity(
                     }
                     val result = handler.isPosValidForMutliblock(world, relPos)
                     when (result) {
-                        MultiblockTrait.BlockValidationResult.Invalid ->
+                        MultiblockLogic.BlockValidationResult.Invalid ->
                             return StructureValidationResult.Invalid
-                        is MultiblockTrait.BlockValidationResult.Matched -> {
+                        is MultiblockLogic.BlockValidationResult.Matched -> {
                             result.tier?.let { tiers.add(it) }
                         }
-                        is MultiblockTrait.BlockValidationResult.MultiblockPart ->
+                        is MultiblockLogic.BlockValidationResult.MultiblockPart ->
                             mbParts.add(result.part)
                     }
                 }
@@ -94,7 +94,7 @@ class ClayReactorMetaTileEntity(
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic { I18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.energy?.toLong() ?: 0L)) }.asWidget()
                 .align(Alignment.BottomRight))
-            .child(multiblockValidation.tierTextWidget(syncManager)
+            .child(multiblockLogic.tierTextWidget(syncManager)
                 .align(Alignment.BottomCenter))
     }
 
@@ -110,7 +110,7 @@ class ClayReactorMetaTileEntity(
     }
 
     private inner class ClayReactorRecipeLogic(private val clayReactor: ClayReactorMetaTileEntity)
-        : MultiblockRecipeLogic(clayReactor, CRecipes.CLAY_REACTOR, multiblockValidation::structureFormed) {
+        : MultiblockRecipeLogic(clayReactor, CRecipes.CLAY_REACTOR, multiblockLogic::structureFormed) {
         override fun updateWorkingProgress() {
             if (drawEnergy(recipeCEt)) {
                 currentProgress++

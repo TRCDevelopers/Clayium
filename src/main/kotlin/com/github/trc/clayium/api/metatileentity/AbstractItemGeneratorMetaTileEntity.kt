@@ -75,7 +75,7 @@ abstract class AbstractItemGeneratorMetaTileEntity(
 
     override fun update() {
         super.update()
-        if (world?.isRemote == true) return
+        if (isRemote) return
         if (offsetTimer % 20 == 0L) isTerrainValid = isTerrainValid()
         if (hasNotifiedOutputs) outputFull = false
         if (!isTerrainValid || outputFull) return // don't progress if terrain is invalid or output is full.

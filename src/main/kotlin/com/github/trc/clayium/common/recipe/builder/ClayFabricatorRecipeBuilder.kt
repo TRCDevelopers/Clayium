@@ -12,7 +12,7 @@ import com.github.trc.clayium.common.unification.ore.OrePrefix
  *
  * Output is automatically set if input material has clay property, or can be set manually.
  * Duration is calculated by [requiredTicksCalculator], or can be set manually.
- * [CEt] is automatically calculated.
+ * [CEtFactor] is automatically calculated.
  */
 class ClayFabricatorRecipeBuilder : RecipeBuilder<ClayFabricatorRecipeBuilder> {
 

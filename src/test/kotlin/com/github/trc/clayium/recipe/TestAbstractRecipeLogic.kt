@@ -71,13 +71,13 @@ class TestAbstractRecipeLogic : StringSpec({
         testRecipeRegistry.register {
             input(ItemStack(Blocks.STONE))
             output(ItemStack(Items.STICK))
-            CEt(ClayEnergy.of(1))
+            CEtFactor(ClayEnergy.of(1))
             duration(1)
         }
         testRecipeRegistry.register {
             input(ItemStack(Items.CLAY_BALL))
             output(ItemStack(Blocks.CLAY))
-            CEt(ClayEnergy.ZERO)
+            CEtFactor(ClayEnergy.ZERO)
             duration(1)
         }
     }

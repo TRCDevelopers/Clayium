@@ -120,7 +120,7 @@ class StorageContainerMetaTileEntity(
 
     override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         val stack = player.getHeldItem(hand)
-        val clayCore = MetaItemClayParts.CLAY_CORE.getStackForm()
+        val clayCore = MetaItemClayParts.ClayCore.getStackForm()
         //todo use capability
         if (stack.isItemEqual(clayCore) && stack.metadata == clayCore.metadata && maxStoredItems == INITIAL_MAX_AMOUNT) {
             val world = this.world

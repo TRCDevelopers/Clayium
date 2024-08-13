@@ -46,18 +46,18 @@ object MachineBlockRecipeLoader {
         val circuits: List<Any> = listOf(
             Unit, // not used, but needed for indexing
             UnificationEntry(OrePrefix.gear, CMaterials.clay),
-            MetaItemClayParts.CLAY_CIRCUIT,
-            MetaItemClayParts.SIMPLE_CIRCUIT,
-            MetaItemClayParts.BASIC_CIRCUIT,
-            MetaItemClayParts.ADVANCED_CIRCUIT,
-            MetaItemClayParts.PRECISION_CIRCUIT,
-            MetaItemClayParts.INTEGRATED_CIRCUIT,
-            MetaItemClayParts.CLAY_CORE,
-            MetaItemClayParts.CLAY_BRAIN,
-            MetaItemClayParts.CLAY_SPIRIT,
-            MetaItemClayParts.CLAY_SOUL,
-            MetaItemClayParts.CLAY_ANIMA,
-            MetaItemClayParts.CLAY_PSYCHE,
+            MetaItemClayParts.ClayCircuit,
+            MetaItemClayParts.SimpleCircuit,
+            MetaItemClayParts.BasicCircuit,
+            MetaItemClayParts.AdvancedCircuit,
+            MetaItemClayParts.PrecisionCircuit,
+            MetaItemClayParts.IntegratedCircuit,
+            MetaItemClayParts.ClayCore,
+            MetaItemClayParts.ClayBrain,
+            MetaItemClayParts.ClaySpirit,
+            MetaItemClayParts.ClaySoul,
+            MetaItemClayParts.ClayAnima,
+            MetaItemClayParts.ClayPsyche,
         )
 
         for (tier in ClayTiers.entries) {
@@ -93,14 +93,14 @@ object MachineBlockRecipeLoader {
                     )
                 AZ91D -> CRecipes.ASSEMBLER.builder()
                     .input(OrePrefix.largePlate, CMaterials.az91d)
-                    .input(MetaItemClayParts.PRECISION_CIRCUIT)
+                    .input(MetaItemClayParts.PrecisionCircuit)
                     .output(hull.getItem(tier))
                     .tier(4).CEt(ClayEnergy.milli(100)).duration(120)
                     .buildAndRegister()
                 ZK60A ->
                     RecipeUtils.addShapedRecipe("machine_hull_${tier.lowerName}", hull.getItem(tier),
                         "PPP", "PCP", "PPP",
-                        'C', MetaItemClayParts.PRECISION_CIRCUIT,
+                        'C', MetaItemClayParts.PrecisionCircuit,
                         'P', UnificationEntry(OrePrefix.largePlate, CMaterials.zk60a)
                     )
             }
@@ -187,11 +187,11 @@ object MachineBlockRecipeLoader {
         }
         registerLowTierRecipe(MetaTileEntities.CENTRIFUGE, "gMg", "MHM", "gMg")
         registerMachineRecipeHull(MetaTileEntities.CHEMICAL_REACTOR) {
-            input(MetaItemClayParts.BASIC_CIRCUIT)
+            input(MetaItemClayParts.BasicCircuit)
         }
         //AutomaticClayCondenser, Buffer+AdvancedCircuit
         registerMachineRecipeHull(MetaTileEntities.SMELTER) {
-            input(MetaItemClayParts.SIMPLE_CIRCUIT)
+            input(MetaItemClayParts.SimpleCircuit)
         }
         registerMachineRecipeHull(MetaTileEntities.SOLAR_CLAY_FABRICATOR) {
             input(OrePrefix.plate, CMaterials.silicon, 16)
@@ -226,7 +226,7 @@ object MachineBlockRecipeLoader {
             .input(MACHINE_HULL.getItem(ANTIMATTER))
             .input(OrePrefix.gem, CMaterials.antimatter, 8)
             .output(MetaTileEntities.CA_RESONATING_COLLECTOR)
-            .tier(10).CEt(2.0).duration(4000)
+            .tier(10).CEtFactor(2.0).duration(4000)
             .buildAndRegister()
         /* CA Injector */
         assembler.builder()
@@ -250,17 +250,17 @@ object MachineBlockRecipeLoader {
         for ((i, m) in listOf(CMaterials.clay, CMaterials.denseClay, CMaterials.industrialClay).withIndex()) {
             assembler.builder()
                 .input(OrePrefix.largePlate, m)
-                .input(MetaItemClayParts.SIMPLE_CIRCUIT)
+                .input(MetaItemClayParts.SimpleCircuit)
                 .output(MetaTileEntities.COBBLESTONE_GENERATOR[i])
                 .tier(4).duration(40)
                 .buildAndRegister()
         }
         registerMachineRecipeBuffer(MetaTileEntities.COBBLESTONE_GENERATOR) {
-            input(MetaItemClayParts.SIMPLE_CIRCUIT)
+            input(MetaItemClayParts.SimpleCircuit)
         }
         registerLowTierRecipe(MetaTileEntities.COBBLESTONE_GENERATOR, " g ", "OHO", " g ")
         registerMachineRecipeBuffer(MetaTileEntities.SALT_EXTRACTOR) {
-            input(MetaItemClayParts.SIMPLE_CIRCUIT)
+            input(MetaItemClayParts.SimpleCircuit)
         }
 
         /* Storage Container */
@@ -271,7 +271,7 @@ object MachineBlockRecipeLoader {
             .tier(4).CEt(ClayEnergy.milli(100)).duration(120)
             .buildAndRegister()
         RecipeUtils.addShapelessRecipe("upgrade_storage_container", MetaTileEntities.STORAGE_CONTAINER_UPGRADED.getStackForm(),
-            MetaTileEntities.STORAGE_CONTAINER, MetaItemClayParts.CLAY_CORE)
+            MetaTileEntities.STORAGE_CONTAINER, MetaItemClayParts.ClayCore)
 
         /* Clay Blast Furnace */
         assembler.builder()
@@ -335,7 +335,7 @@ object MachineBlockRecipeLoader {
         for ((a, i) in MetaTileEntities.ASSEMBLER.take(2).zip(MetaTileEntities.INSCRIBER)) {
             assembler.builder()
                 .input(a)
-                .input(MetaItemClayParts.BASIC_CIRCUIT)
+                .input(MetaItemClayParts.BasicCircuit)
                 .output(i)
                 .tier(4).CEt(ClayEnergy.micro(100)).duration(40)
                 .buildAndRegister()
@@ -368,9 +368,9 @@ object MachineBlockRecipeLoader {
     private fun registerLowTierRecipe(metaTileEntities: List<MetaTileEntity>, vararg recipe: Any) {
         val circuits: List<Any> = listOf(
             Unit, // not used, but needed for indexing
-            UnificationEntry(OrePrefix.gear, CMaterials.clay), MetaItemClayParts.CLAY_CIRCUIT, MetaItemClayParts.SIMPLE_CIRCUIT, MetaItemClayParts.BASIC_CIRCUIT,
-            MetaItemClayParts.ADVANCED_CIRCUIT, MetaItemClayParts.PRECISION_CIRCUIT, MetaItemClayParts.INTEGRATED_CIRCUIT, MetaItemClayParts.CLAY_CORE,
-            MetaItemClayParts.CLAY_BRAIN, MetaItemClayParts.CLAY_SPIRIT, MetaItemClayParts.CLAY_SOUL, MetaItemClayParts.CLAY_ANIMA, MetaItemClayParts.CLAY_PSYCHE,
+            UnificationEntry(OrePrefix.gear, CMaterials.clay), MetaItemClayParts.ClayCircuit, MetaItemClayParts.SimpleCircuit, MetaItemClayParts.BasicCircuit,
+            MetaItemClayParts.AdvancedCircuit, MetaItemClayParts.PrecisionCircuit, MetaItemClayParts.IntegratedCircuit, MetaItemClayParts.ClayCore,
+            MetaItemClayParts.ClayBrain, MetaItemClayParts.ClaySpirit, MetaItemClayParts.ClaySoul, MetaItemClayParts.ClayAnima, MetaItemClayParts.ClayPsyche,
         )
         for (mte in metaTileEntities) {
             if (mte.tier.numeric > 4 || mte.tier !is ClayTiers) continue
@@ -411,7 +411,7 @@ object MachineBlockRecipeLoader {
             CRecipes.ASSEMBLER.builder()
                 .input(MACHINE_HULL.getItem(mte.tier))
                 .output(mte.getStackForm())
-                .tier(4).CEt(1.0).duration(60)
+                .tier(4).CEtFactor(1.0).duration(60)
                 .inputProvider()
                 .buildAndRegister()
         }
@@ -424,7 +424,7 @@ object MachineBlockRecipeLoader {
             CRecipes.ASSEMBLER.builder()
                 .input(MetaTileEntities.CLAY_BUFFER[i])
                 .output(mte.getStackForm())
-                .tier(4).CEt(1.0).duration(60)
+                .tier(4).CEtFactor(1.0).duration(60)
                 .inputProvider()
                 .buildAndRegister()
         }
@@ -434,9 +434,9 @@ object MachineBlockRecipeLoader {
         val materials = listOf(CMaterials.advancedIndustrialClay, CMaterials.impureSilicon, CMaterials.aluminum,
             CMaterials.claySteel, CMaterials.clayium, CMaterials.ultimateAlloy, CMaterials.antimatter, CMaterials.pureAntimatter,
             CMaterials.octupleEnergyClay, CMaterials.octuplePureAntimatter)
-        val circuits = listOf(MetaItemClayParts.BASIC_CIRCUIT, MetaItemClayParts.ADVANCED_CIRCUIT,
-            MetaItemClayParts.PRECISION_CIRCUIT, MetaItemClayParts.INTEGRATED_CIRCUIT, MetaItemClayParts.CLAY_CORE,
-            MetaItemClayParts.CLAY_BRAIN, MetaItemClayParts.CLAY_SPIRIT, MetaItemClayParts.CLAY_SOUL, MetaItemClayParts.CLAY_ANIMA, MetaItemClayParts.CLAY_PSYCHE)
+        val circuits = listOf(MetaItemClayParts.BasicCircuit, MetaItemClayParts.AdvancedCircuit,
+            MetaItemClayParts.PrecisionCircuit, MetaItemClayParts.IntegratedCircuit, MetaItemClayParts.ClayCore,
+            MetaItemClayParts.ClayBrain, MetaItemClayParts.ClaySpirit, MetaItemClayParts.ClaySoul, MetaItemClayParts.ClayAnima, MetaItemClayParts.ClayPsyche)
 
         for (i in 0..9) {
             CRecipes.ASSEMBLER.builder()

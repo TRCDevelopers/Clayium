@@ -19,6 +19,7 @@ import com.github.trc.clayium.common.unification.stack.UnificationEntry
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import kotlin.math.pow
 
 @Suppress("UNCHECKED_CAST")
 abstract class RecipeBuilder<R: RecipeBuilder<R>>(
@@ -105,7 +106,6 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
         return this as R
     }
 
-    //todo: clearer func name
     @Suppress("FunctionName")
     fun CEt(cePerTick: ClayEnergy): R {
         this.cePerTick = cePerTick
@@ -136,13 +136,13 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     }
 
     @Suppress("FunctionName")
-    fun CEt(factor: Double): R {
+    fun CEtFactor(factor: Double): R {
         return this.CEt(factor, this.tier)
     }
 
     @Suppress("FunctionName")
     fun CEt(factor: Double, tier: Int): R{
-        return this.CEt(ClayEnergy((factor * 100.0 * Math.pow(10.0, tier - 4.0)).toLong().coerceAtLeast(1)))
+        return this.CEt(ClayEnergy((factor * 100.0 * 10.0.pow(tier - 4.0)).toLong().coerceAtLeast(1)))
     }
 
     fun tier(tier: Int): R {

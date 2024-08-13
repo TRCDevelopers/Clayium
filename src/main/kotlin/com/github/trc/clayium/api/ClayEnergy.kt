@@ -16,7 +16,6 @@ fun PacketBuffer.readClayEnergy(): ClayEnergy {
 @JvmInline
 value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
 
-    // todo replace toString with this
     fun format(): String {
         if (energy == 0L) return "0CE"
         val digits = abs(energy).toString().length
