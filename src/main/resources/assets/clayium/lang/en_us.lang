@@ -335,21 +335,12 @@ machine.clayium.smelter.tooltip1=Furnace powered by CE.
 machine.clayium.clay_buffer=%s Buffer
 machine.clayium.clay_buffer.tooltip1=Transfers items. Acts as an item pipe.
 
-tile.clayium.blockBasicMultitrackBuffer.name=Basic Multitrack  Buffer
-tile.clayium.blockAdvancedMultitrackBuffer.name=Advanced Multitrack Buffer
-tile.clayium.blockPrecisionMultitrackBuffer.name=Precision Multitrack Buffer
-tile.clayium.blockClaySteelMultitrackBuffer.name=Clay Steel Multitrack Buffer
-tile.clayium.blockClayiumMultitrackBuffer.name=Clayium Multitrack Buffer
-tile.clayium.blockUltimateMultitrackBuffer.name=Ultimate Multitrack Buffer
-tile.clayium.blockAntimatterMultitrackBuffer.name=Antimatter Multitrack Buffer
-tile.clayium.blockPureAntimatterMultitrackBuffer.name=Pure Antimatter Multitrack Buffer
-tile.clayium.blockOECMultitrackBuffer.name=OEC Multitrack Buffer
-tile.clayium.blockOPAMultitrackBuffer.name=OPA Multitrack Buffer
-tooltip.clayium.MultitrackBuffer.line1=__DETAIL__
-tooltip.clayium.MultitrackBuffer.line2=This buffer's slots are separated into some color groups.
-tooltip.clayium.MultitrackBuffer.line3=Transfer of items between two Multitrack Buffers
-tooltip.clayium.MultitrackBuffer.line4=will be performed independently within each color group.
-tooltip.clayium.MultitrackBuffer.line5=Moreover, this buffer has one filter slot per group.
+machine.clayium.multitrack_buffer=%s Multitrack Buffer
+machine.clayium.multitrack_buffer.tooltip1=__DETAIL__
+machine.clayium.multitrack_buffer.tooltip2=This buffer's slots are separated into some color groups.
+machine.clayium.multitrack_buffer.tooltip3=Transfer of items between two Multitrack Buffers
+machine.clayium.multitrack_buffer.tooltip4=will be performed independently within each color group.
+machine.clayium.multitrack_buffer.tooltip5=Moreover, this buffer has one filter slot per group.
 
 machine.clayium.chemical_reactor=%s Chemical Reactor
 

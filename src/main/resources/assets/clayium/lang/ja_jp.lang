@@ -303,22 +303,12 @@ machine.clayium.smelter.tooltip1=粘土エネルギーで動くかまど
 machine.clayium.clay_buffer=%sバッファー
 machine.clayium.clay_buffer.tooltip1=いわゆるアイテムパイプ
 
-tile.clayium.blockBasicMultitrackBuffer.name=複線バッファー
-tile.clayium.blockAdvancedMultitrackBuffer.name=発展複線バッファー
-tile.clayium.blockPrecisionMultitrackBuffer.name=精密複線バッファー
-tile.clayium.blockClaySteelMultitrackBuffer.name=粘土鋼複線バッファー
-tile.clayium.blockClayiumMultitrackBuffer.name=クレイウム複線バッファー
-tile.clayium.blockUltimateMultitrackBuffer.name=究極複線バッファー
-tile.clayium.blockAntimatterMultitrackBuffer.name=反物質複線バッファー
-tile.clayium.blockPureAntimatterMultitrackBuffer.name=純反物質複線バッファー
-tile.clayium.blockOECMultitrackBuffer.name=OEC 複線バッファー
-tile.clayium.blockOPAMultitrackBuffer.name=OPA 複線バッファー
-tooltip.clayium.MultitrackBuffer.line1=__DETAIL__
-tooltip.clayium.MultitrackBuffer.line2=スロットが幾つかに色分けされており、
-tooltip.clayium.MultitrackBuffer.line3=複線バッファー同士のアイテム輸送は
-tooltip.clayium.MultitrackBuffer.line4=各色グループごとに独立して行われる。
-tooltip.clayium.MultitrackBuffer.line5=さらに、グループごとにフィルタースロットを持つ。
-
+machine.clayium.multitrack_buffer=%s 複線バッファー
+machine.clayium.multitrack_buffer.tooltip1=__DETAIL__
+machine.clayium.multitrack_buffer.tooltip2=スロットが幾つかに色分けされており、
+machine.clayium.multitrack_buffer.tooltip3=複線バッファー同士のアイテム輸送は
+machine.clayium.multitrack_buffer.tooltip4=各色グループごとに独立して行われる。
+machine.clayium.multitrack_buffer.tooltip5=さらに、グループごとにフィルタースロットを持つ。
 machine.clayium.chemical_reactor=%s化学反応機
 
 machine.clayium.salt_extractor=%s塩析出装置
@@ -445,13 +435,13 @@ tile.clayium.overclocker.tooltip1=隣接する装置を加速する
 tile.clayium.overclocker.factor=加速度 : x%1$4.3g
 
 tile.clayium.energy_storage_upgrade.antimatter=反物質エネルギーストレージアップグレード
-tile.clayium.energy_storage_upgrade.pureantimatter=純反物質エネルギーストレージアップグレード
+tile.clayium.energy_storage_upgrade.pure_antimatter=純反物質エネルギーストレージアップグレード
 tile.clayium.energy_storage_upgrade.oec=OEC エネルギーストレージアップグレード
 tile.clayium.energy_storage_upgrade.opa=OPA エネルギーストレージアップグレード
 tile.clayium.energy_storage_upgrade.antimatter.tooltip1=隣接する機械が保持できる
 tile.clayium.energy_storage_upgrade.antimatter.tooltip2=エネルギー粘土の数を 1 上昇させる
-tile.clayium.energy_storage_upgrade.pureantimatter.tooltip1=隣接する機械が保持できる
-tile.clayium.energy_storage_upgrade.pureantimatter.tooltip2=エネルギー粘土の数を 3 上昇させる
+tile.clayium.energy_storage_upgrade.pure_antimatter.tooltip1=隣接する機械が保持できる
+tile.clayium.energy_storage_upgrade.pure_antimatter.tooltip2=エネルギー粘土の数を 3 上昇させる
 tile.clayium.energy_storage_upgrade.oec.tooltip1=隣接する機械が保持できる
 tile.clayium.energy_storage_upgrade.oec.tooltip2=エネルギー粘土の数を 7 上昇させる
 tile.clayium.energy_storage_upgrade.opa.tooltip1=隣接する機械が保持できる
