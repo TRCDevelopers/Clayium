@@ -66,7 +66,7 @@ class ClayLaserMetaTileEntity(
         val y = pos.y.toDouble()
         val z = pos.z.toDouble()
 
-        val direction = laser.laserDirection
+        val direction = laser.direction
         val xOffset = direction.xOffset.toDouble()
         val yOffset = direction.yOffset.toDouble()
         val zOffset = direction.zOffset.toDouble()

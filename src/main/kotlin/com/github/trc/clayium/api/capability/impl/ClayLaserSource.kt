@@ -8,13 +8,10 @@ import com.github.trc.clayium.api.capability.IClayLaserSource
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import net.minecraft.block.material.Material
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.IBlockAccess
 
 class ClayLaserSource(
     metaTileEntity: MetaTileEntity,
@@ -24,10 +21,10 @@ class ClayLaserSource(
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.LASER_CONTROLLER), IClayLaserSource {
 
     override var laser: ClayLaser = ClayLaser(EnumFacing.NORTH, laserRed, laserGreen, laserBlue, 1)
-    override var laserLength: Int = MAX_LASER_LENGTH
+    override var laserLength: Int = IClayLaserSource.MAX_LASER_LENGTH
         set(value) {
             val syncFlag = field != value && (metaTileEntity.world?.isRemote == false)
-            field = value.coerceIn(1, MAX_LASER_LENGTH)
+            field = value.coerceIn(1, IClayLaserSource.MAX_LASER_LENGTH)
             if (syncFlag) { writeLaserData() }
         }
     private var laserTarget: TileEntity? = null
@@ -41,13 +38,13 @@ class ClayLaserSource(
             if (value) {
                 laserTarget
                     ?.takeUnless { it.isInvalid }
-                    ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
-                    ?.laserChanged(laser.laserDirection.opposite, laser)
+                    ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.direction.opposite)
+                    ?.laserChanged(laser.direction.opposite, laser)
             } else {
                 laserTarget
                     ?.takeUnless { it.isInvalid }
-                    ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
-                    ?.laserChanged(laser.laserDirection.opposite, null)
+                    ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.direction.opposite)
+                    ?.laserChanged(laser.direction.opposite, null)
             }
             if (syncFlag) {
                 writeCustomData(UPDATE_LASER_ACTIVATION) {
@@ -57,16 +54,14 @@ class ClayLaserSource(
         }
 
     override fun update() {
-        if (metaTileEntity.world?.isRemote == true || !this.isActive) return
-        updateLaserLength()
-        updateTargetInstance()
-    }
-
-    override fun updateDirection(direction: EnumFacing) {
-        laser = laser.changeDirection(direction)
-        updateLaserLength()
-        updateTargetInstance()
-        writeLaserData()
+        if (metaTileEntity.isRemote || !this.isActive) return
+        val world = metaTileEntity.world ?: return
+        val pos = metaTileEntity.pos ?: return
+        val (laserLength, laserTarget) = updateLengthAndTarget(world, pos, laserTarget) {
+            writeLaserData()
+        }
+        this.laserLength = laserLength
+        this.laserTarget = laserTarget
     }
 
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
@@ -82,9 +77,22 @@ class ClayLaserSource(
         }
     }
 
+    fun updateDirection(direction: EnumFacing) {
+        this.laser = this.laser.changeDirection(direction)
+        writeLaserData()
+    }
+
+    override fun onRemoval() {
+        laserTarget?.takeUnless { it.isInvalid }
+            ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.direction.opposite)
+            ?.laserChanged(laser.direction.opposite, null)
+        writeLaserData()
+    }
+
+
     override fun writeInitialSyncData(buf: PacketBuffer) {
         buf.writeVarInt(laserLength)
-        buf.writeVarInt(laser.laserDirection.index)
+        buf.writeVarInt(laser.direction.index)
         buf.writeBoolean(isActive)
     }
 
@@ -96,9 +104,16 @@ class ClayLaserSource(
         isActive = buf.readBoolean()
     }
 
+    private fun writeLaserData() {
+        writeCustomData(UPDATE_LASER) {
+            writeVarInt(laserLength)
+            writeVarInt(laser.direction.index)
+        }
+    }
+
     override fun serializeNBT(): NBTTagCompound {
         return NBTTagCompound().apply {
-            setByte("laserDirection", laser.laserDirection.index.toByte())
+            setByte("laserDirection", laser.direction.index.toByte())
             setInteger("laserLength", laserLength)
             setBoolean("isActive", isActive)
         }
@@ -108,60 +123,5 @@ class ClayLaserSource(
         laser = ClayLaser(EnumFacing.byIndex(data.getByte("laserDirection").toInt()), laserRed, laserGreen, laserBlue)
         laserLength = data.getInteger("laserLength")
         isActive = data.getBoolean("isActive")
-    }
-
-    override fun onRemoval() {
-        laserTarget?.takeUnless { it.isInvalid }
-            ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.laserDirection.opposite)
-            ?.laserChanged(laser.laserDirection.opposite, null)
-        writeLaserData()
-    }
-
-    private fun updateLaserLength() {
-        val pos = metaTileEntity.pos ?: return
-        val world = metaTileEntity.world ?: return
-        for (i in 1..MAX_LASER_LENGTH) {
-            val targetPos = pos.offset(metaTileEntity.frontFacing, i)
-            if (canGoThroughBlock(world, targetPos)) continue
-            this.laserLength = i
-            return
-        }
-        this.laserLength = MAX_LASER_LENGTH
-        this.laserTarget = null
-    }
-
-    private fun updateTargetInstance() {
-        val pos = metaTileEntity.pos ?: return
-        val world = metaTileEntity.world ?: return
-        val targetSide = metaTileEntity.frontFacing.opposite
-        val previousTarget = this.laserTarget
-        this.laserTarget = world.getTileEntity(pos.offset(this.laser.laserDirection, this.laserLength))
-            ?.takeIf { it.hasCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide) }
-        if (previousTarget != laserTarget) {
-            previousTarget?.takeUnless { it.isInvalid }
-                ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
-                ?.laserChanged(targetSide, null)
-            if (isActive) {
-                laserTarget?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
-                    ?.laserChanged(targetSide, this.laser)
-            }
-            writeLaserData()
-        }
-    }
-
-    private fun canGoThroughBlock(world: IBlockAccess, pos: BlockPos): Boolean {
-        val material = world.getBlockState(pos).material
-        return (material == Material.AIR) || (material == Material.GLASS)
-    }
-
-    private fun writeLaserData() {
-        writeCustomData(UPDATE_LASER) {
-            writeVarInt(laserLength)
-            writeVarInt(laser.laserDirection.index)
-        }
-    }
-
-    private companion object {
-        private const val MAX_LASER_LENGTH = 32
     }
 }

@@ -11,6 +11,7 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
+import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
@@ -51,6 +52,10 @@ fun IBlockState.toItemStack(count: Int = 1): ItemStack {
 
 fun Block.getAsItem(): Item {
     return Item.getItemFromBlock(this)
+}
+
+fun TileEntity?.takeIfValid(): TileEntity? {
+    return this?.takeUnless { it.isInvalid }
 }
 
 fun clayiumId(path: String): ResourceLocation {

@@ -1,24 +1,14 @@
 package com.github.trc.clayium.api.capability.impl
 
-import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.api.widget.IGuiAction
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.AbstractWorkable
-import com.github.trc.clayium.api.capability.ClayiumDataCodecs
 import com.github.trc.clayium.api.capability.IControllable
-import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.CUtils
-import com.github.trc.clayium.api.util.Mods
-import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 import com.github.trc.clayium.common.util.TransferUtils
 import com.github.trc.clayium.integration.jei.JeiPlugin
-import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 
 /**
