@@ -37,7 +37,7 @@ abstract class AbstractRecipeLogic(
     }
 
     override fun updateWorkingProgress() {
-        if (drawEnergy(recipeCEt)) currentProgress++
+        if (drawEnergy(recipeCEt)) addProgress()
         if (currentProgress > requiredProgress) {
             completeWork()
         }

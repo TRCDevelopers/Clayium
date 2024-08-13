@@ -44,7 +44,7 @@ class CaCondenserMetaTileEntity(
         }
 
         override fun updateWorkingProgress() {
-            if (drawEnergy(recipeCEt)) currentProgress += craftTimeMultiplier
+            if (drawEnergy(recipeCEt)) currentProgress += (craftTimeMultiplier * overclock.toLong())
             if (currentProgress > requiredProgress) {
                 completeWork()
             }

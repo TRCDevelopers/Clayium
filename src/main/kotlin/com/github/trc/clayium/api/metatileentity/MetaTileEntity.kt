@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.BlockMachine.Companion.IS_PIPE
+import com.github.trc.clayium.api.block.IOverclockerBlock
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_CONNECTIONS
@@ -136,6 +137,20 @@ abstract class MetaTileEntity(
      * If true, [faceTexture] will be added to all [EnumFacing].
      */
     open val useFaceForAllSides = false
+
+    val overclock: Double get() {
+        var value = 1.0
+        val world = this.world ?: return value
+        val pos = this.pos ?: return value
+        for (side in EnumFacing.entries) {
+            val neighborState = this.getNeighborBlockState(side) ?: continue
+            val neighboringBlock = neighborState.block
+            if (neighboringBlock is IOverclockerBlock) {
+                value *= (neighboringBlock as IOverclockerBlock).getOverclockFactor(world, pos.offset(side))
+            }
+        }
+        return value
+    }
 
     @SideOnly(Side.CLIENT)
     abstract fun registerItemModel(item: Item, meta: Int)
@@ -637,6 +652,10 @@ abstract class MetaTileEntity(
             .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
                 .align(Alignment.TopLeft))
             .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
+            .child(IKey.dynamic {
+                if (overclock != 1.0) I18n.format("gui.clayium.overclock", overclock) else ""
+            }.asWidget()
+                .widthRel(0.4f).alignment(Alignment.CenterRight).align(Alignment.BottomRight))
     }
 
     private data class FilterAndType(val filter: IItemFilter, val type: FilterType)
