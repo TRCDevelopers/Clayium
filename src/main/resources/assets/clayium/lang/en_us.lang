@@ -489,20 +489,20 @@ tile.clayium.blockEnergyStorageUpgrade.oec.tooltip.line2=that an adjacent machin
 tile.clayium.blockEnergyStorageUpgrade.opa.tooltip.line1=Allows an adjacent machine to hold
 tile.clayium.blockEnergyStorageUpgrade.opa.tooltip.line2=a full stack of Energetic Clay.
 
-tile.clayium.blockAntimatterCAReactorCore.name=CA Reactor Core Mk I
-tile.clayium.blockPureAntimatterCAReactorCore.name=CA Reactor Core Mk II
-tile.clayium.blockOECCAReactorCore.name=CA Reactor Core Mk III
-tile.clayium.blockOPACAReactorCore.name=CA Reactor Core Mk IV
-tooltip.clayium.CAReactor.line1=Transforms Antimatter into Pure Antimatter.
-tooltip.clayium.CAReactor.line2=__DETAIL__
-tooltip.clayium.CAReactor.line3=The Reactor's rank(the mean of the ranks of its components)
-tooltip.clayium.CAReactor.line4=determines how much compressed Pure Antimatter it produces.
-tooltip.clayium.CAReactor.line5=[Multiblock]
-tooltip.clayium.CAReactor.line6=Place CA Reactor Coils in the shape of a ring,
-tooltip.clayium.CAReactor.line7=cover them with CA Reactor Hulls (or Interfaces),
-tooltip.clayium.CAReactor.line8=and replace one of the hulls with a CA Reactor Core.
-tooltip.clayium.CAReactor.line9=- The number of CA Reactor Hulls >= 50.
-tooltip.clayium.CAReactor.line10=- The tiers of Reactor coils (and Interfaces) >= the Reactor Core's.
+machine.clayium.ca_reactor.antimatter=CA Reactor Core Mk I
+machine.clayium.ca_reactor.pure_antimatter=CA Reactor Core Mk II
+machine.clayium.ca_reactor.oec=CA Reactor Core Mk III
+machine.clayium.ca_reactor.opa=CA Reactor Core Mk IV
+machine.clayium.ca_reactor.tooltip1=Transforms Antimatter into Pure Antimatter.
+machine.clayium.ca_reactor.tooltip2=__DETAIL__
+machine.clayium.ca_reactor.tooltip3=The Reactor's rank(the mean of the ranks of its components)
+machine.clayium.ca_reactor.tooltip4=determines how much compressed Pure Antimatter it produces.
+machine.clayium.ca_reactor.tooltip5=[Multiblock]
+machine.clayium.ca_reactor.tooltip6=Place CA Reactor Coils in the shape of a ring,
+machine.clayium.ca_reactor.tooltip7=cover them with CA Reactor Hulls (or Interfaces),
+machine.clayium.ca_reactor.tooltip8=and replace one of the hulls with a CA Reactor Core.
+machine.clayium.ca_reactor.tooltip9=- The number of CA Reactor Hulls >= 50.
+machine.clayium.ca_reactor.tooltip10=- The tiers of Reactor coils (and Interfaces) >= the Reactor Core's.
 gui.clayium.ca_reactor.invalid=Invalid
 gui.clayium.ca_reactor.constructed=Constructed
 gui.clayium.ca_reactor.rank_size=Rank %d  Size %d
