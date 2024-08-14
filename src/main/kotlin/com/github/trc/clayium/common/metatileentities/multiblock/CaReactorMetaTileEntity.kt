@@ -1,4 +1,4 @@
-package com.github.trc.clayium.common.metatileentity.multiblock
+package com.github.trc.clayium.common.metatileentities.multiblock
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment

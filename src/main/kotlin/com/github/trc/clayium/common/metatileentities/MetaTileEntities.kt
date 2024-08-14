@@ -1,4 +1,4 @@
-package com.github.trc.clayium.common.metatileentity
+package com.github.trc.clayium.common.metatileentities
 
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.capability.impl.RecipeLogicClayFurnace
@@ -14,8 +14,8 @@ import com.github.trc.clayium.api.metatileentity.multiblock.LaserProxyMetaTileEn
 import com.github.trc.clayium.api.util.CUtils.clayiumId
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.common.metatileentity.multiblock.CaReactorMetaTileEntity
-import com.github.trc.clayium.common.metatileentity.multiblock.RedstoneProxyMetaTileEntity
+import com.github.trc.clayium.common.metatileentities.multiblock.CaReactorMetaTileEntity
+import com.github.trc.clayium.common.metatileentities.multiblock.RedstoneProxyMetaTileEntity
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import it.unimi.dsi.fastutil.ints.Int2ObjectAVLTreeMap
 import it.unimi.dsi.fastutil.ints.IntArrayList

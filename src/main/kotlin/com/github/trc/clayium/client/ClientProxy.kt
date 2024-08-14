@@ -9,7 +9,7 @@ import com.github.trc.clayium.common.CommonProxy
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.blocks.TileEntityClayLaserReflector
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
-import com.github.trc.clayium.common.metatileentity.MetaTileEntities
+import com.github.trc.clayium.common.metatileentities.MetaTileEntities
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item

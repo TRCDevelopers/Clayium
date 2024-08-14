@@ -3,7 +3,7 @@ package com.github.trc.clayium.integration.jei
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
-import com.github.trc.clayium.common.metatileentity.SolarClayFabricatorMetaTileEntity
+import com.github.trc.clayium.common.metatileentities.SolarClayFabricatorMetaTileEntity
 import com.github.trc.clayium.common.recipe.CWTRecipes
 import com.github.trc.clayium.common.recipe.ClayWorkTableRecipe
 import com.github.trc.clayium.common.recipe.Recipe

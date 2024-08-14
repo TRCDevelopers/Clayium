@@ -10,7 +10,7 @@ import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.blocks.ClayiumBlocks.MACHINE_HULL
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
-import com.github.trc.clayium.common.metatileentity.MetaTileEntities
+import com.github.trc.clayium.common.metatileentities.MetaTileEntities
 import com.github.trc.clayium.common.recipe.RecipeUtils
 import com.github.trc.clayium.common.recipe.builder.RecipeBuilder
 import com.github.trc.clayium.common.recipe.registry.CRecipes
