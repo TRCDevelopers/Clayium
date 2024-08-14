@@ -2,6 +2,7 @@ package com.github.trc.clayium.common.metatileentities
 
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.capability.impl.RecipeLogicClayFurnace
+import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.metatileentity.ClayBufferMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.ClayInterfaceMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.ClayLaserMetaTileEntity
@@ -14,6 +15,7 @@ import com.github.trc.clayium.api.metatileentity.multiblock.LaserProxyMetaTileEn
 import com.github.trc.clayium.api.util.CUtils.clayiumId
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.common.config.ConfigTierBalance
 import com.github.trc.clayium.common.metatileentities.multiblock.CaReactorMetaTileEntity
 import com.github.trc.clayium.common.metatileentities.multiblock.RedstoneProxyMetaTileEntity
 import com.github.trc.clayium.common.recipe.registry.CRecipes
@@ -38,7 +40,11 @@ object MetaTileEntities {
         SimpleMachineMetaTileEntity(clayiumId("bending_machine.${it.lowerName}"), it, CRecipes.BENDING)
     }
     val CONDENSER = registerMetaTileEntities(19, intArrayOf(2, 3, 4, 5, 10)) { //+5
-        SimpleMachineMetaTileEntity(clayiumId("condenser.${it.lowerName}"), it, CRecipes.CONDENSER)
+        SimpleMachineMetaTileEntity(clayiumId("condenser.${it.lowerName}"), it, CRecipes.CONDENSER) { mte, reg, ceHolder ->
+            RecipeLogicEnergy(mte, reg, ceHolder)
+                .setDurationMultiplier(ConfigTierBalance.crafting::getCraftTimeMultiplier)
+                .setEnergyConsumingMultiplier(ConfigTierBalance.crafting::getConsumingEnergyMultiplier)
+        }
     }
     val CUTTING_MACHINE = registerMetaTileEntities(24, (1..4)) { //+4
         SimpleMachineMetaTileEntity(clayiumId("cutting_machine.${it.lowerName}"), it, CRecipes.CUTTING_MACHINE)
@@ -50,7 +56,11 @@ object MetaTileEntities {
         SimpleMachineMetaTileEntity(clayiumId("energetic_clay_condenser.${it.lowerName}"), it, CRecipes.ENERGETIC_CLAY_CONDENSER)
     }
     val GRINDER = registerMetaTileEntities(33, intArrayOf(2, 3, 4, 5, 6, 10)) { //+6
-        SimpleMachineMetaTileEntity(clayiumId("grinder.${it.lowerName}"), it, CRecipes.GRINDER)
+        SimpleMachineMetaTileEntity(clayiumId("grinder.${it.lowerName}"), it, CRecipes.GRINDER) { mte, reg, ceHolder ->
+            RecipeLogicEnergy(mte, reg, ceHolder)
+                .setDurationMultiplier(ConfigTierBalance.crafting::getCraftTimeMultiplier)
+                .setEnergyConsumingMultiplier(ConfigTierBalance.crafting::getConsumingEnergyMultiplier)
+        }
     }
     val LATHE = registerMetaTileEntities(39, (1..4)) { //+4
         SimpleMachineMetaTileEntity(clayiumId("lathe.${it.lowerName}"), it, CRecipes.LATHE)

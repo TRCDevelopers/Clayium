@@ -78,7 +78,7 @@ abstract class AbstractWorkable(
         }
     }
 
-    protected fun addProgress() {
+    protected open fun addProgress() {
         currentProgress += metaTileEntity.overclock.toLong()
     }
 
