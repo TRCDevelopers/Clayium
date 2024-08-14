@@ -118,9 +118,8 @@ class MultiTrackBufferMetaTileEntity(
 
     private fun getTrackWithFilter(track: Int): IItemHandler = FilteredItemHandler(tracks[track], slotFilters[track])
 
-    override fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
-        return neighbor.getInput(side.opposite) != MachineIoMode.NONE || neighbor.getOutput(side.opposite) != MachineIoMode.NONE
-    }
+    override fun canImportFrom(side: EnumFacing) = true
+    override fun canExportTo(side: EnumFacing) = true
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         (0..<trackRow).forEach { syncManager.registerSlotGroup("mt_buffer_inv_${it}", 1) }

@@ -29,4 +29,7 @@ object ClayiumTileCapabilities {
     lateinit var PAN_ADAPTER: Capability<IPanAdapter>
     @CapabilityInject(IPanUser::class)
     lateinit var PAN_USER: Capability<IPanUser>
+
+    @CapabilityInject(IPipeConnectable::class)
+    lateinit var PIPE_CONNECTABLE: Capability<IPipeConnectable>
 }
