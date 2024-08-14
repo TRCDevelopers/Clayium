@@ -303,12 +303,12 @@ machine.clayium.smelter.tooltip1=粘土エネルギーで動くかまど
 machine.clayium.clay_buffer=%sバッファー
 machine.clayium.clay_buffer.tooltip1=いわゆるアイテムパイプ
 
-machine.clayium.multitrack_buffer=%s複線バッファー
-machine.clayium.multitrack_buffer.tooltip1=__DETAIL__
-machine.clayium.multitrack_buffer.tooltip2=スロットが幾つかに色分けされており、
-machine.clayium.multitrack_buffer.tooltip3=複線バッファー同士のアイテム輸送は
-machine.clayium.multitrack_buffer.tooltip4=各色グループごとに独立して行われる。
-machine.clayium.multitrack_buffer.tooltip5=さらに、グループごとにフィルタースロットを持つ。
+machine.clayium.multi_track_buffer=%s複線バッファー
+machine.clayium.multi_track_buffer.tooltip1=__DETAIL__
+machine.clayium.multi_track_buffer.tooltip2=スロットが幾つかに色分けされており、
+machine.clayium.multi_track_buffer.tooltip3=複線バッファー同士のアイテム輸送は
+machine.clayium.multi_track_buffer.tooltip4=各色グループごとに独立して行われる。
+machine.clayium.multi_track_buffer.tooltip5=さらに、グループごとにフィルタースロットを持つ。
 machine.clayium.chemical_reactor=%s化学反応機
 
 machine.clayium.salt_extractor=%s塩析出装置

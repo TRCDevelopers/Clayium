@@ -335,12 +335,12 @@ machine.clayium.smelter.tooltip1=Furnace powered by CE.
 machine.clayium.clay_buffer=%s Buffer
 machine.clayium.clay_buffer.tooltip1=Transfers items. Acts as an item pipe.
 
-machine.clayium.multitrack_buffer=%s Multitrack Buffer
-machine.clayium.multitrack_buffer.tooltip1=__DETAIL__
-machine.clayium.multitrack_buffer.tooltip2=This buffer's slots are separated into some color groups.
-machine.clayium.multitrack_buffer.tooltip3=Transfer of items between two Multitrack Buffers
-machine.clayium.multitrack_buffer.tooltip4=will be performed independently within each color group.
-machine.clayium.multitrack_buffer.tooltip5=Moreover, this buffer has one filter slot per group.
+machine.clayium.multi_track_buffer=%s Multitrack Buffer
+machine.clayium.multi_track_buffer.tooltip1=__DETAIL__
+machine.clayium.multi_track_buffer.tooltip2=This buffer's slots are separated into some color groups.
+machine.clayium.multi_track_buffer.tooltip3=Transfer of items between two Multitrack Buffers
+machine.clayium.multi_track_buffer.tooltip4=will be performed independently within each color group.
+machine.clayium.multi_track_buffer.tooltip5=Moreover, this buffer has one filter slot per group.
 
 machine.clayium.chemical_reactor=%s Chemical Reactor
 
