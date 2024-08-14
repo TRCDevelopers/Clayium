@@ -240,14 +240,14 @@ recipe.clayium.SaltExtractor=塩析出装置
 recipe.clayium.SaltExtractor.efficiency=%1$4.2g アイテム/t
 recipe.clayium.SaltExtractor.energyConsumption=%1$s CE/t
 recipe.clayium.SaltExtractor.description=塩析出装置は塩を水から抽出する機械。稼動するには隣に水を置いてエネルギーを供給してあげる必要がある。
-recipe.clayium.QuartzCrucible=クォーツるつぼ
-recipe.clayium.QuartzCrucible.timeToCraft=%1$st = %2$s秒
-recipe.clayium.QuartzCrucible.description=クォーツるつぼは最初のシリコンの入手に使われる。クォーツるつぼの中に不純なシリコンインゴットを投入し、暫く待った後で糸を投入する。
+recipe.clayium.quartz_crucible=クォーツるつぼ
+recipe.clayium.quartz_crucible.timeToCraft=%1$st = %2$s秒
+recipe.clayium.quartz_crucible.description=クォーツるつぼは最初のシリコンの入手に使われる。クォーツるつぼの中に不純なシリコンインゴットを投入し、暫く待った後で糸を投入する。
 recipe.clayium.SolarClayFabricator=ソーラー粘土製造機
 recipe.clayium.SolarClayFabricator.timeToCraft=%1$st = %2$s秒 (%3$s CE/t)
 recipe.clayium.SolarClayFabricator.description=上面が空から見える位置に設置すること
-recipe.clayium.ClayTree=粘土樹
-recipe.clayium.ClayTree.description=粘土樹はリチウムの良い入手源であるが、地上世界には生成されない。粘土樹の苗木は、地面に植えられたバニラの苗木に粘土レーザーを照射することで得られる。レーザーのエネルギー値は 1000 以上でなければならない。
+recipe.clayium.clay_tree=粘土樹
+recipe.clayium.clay_tree.description=粘土樹はリチウムの良い入手源であるが、地上世界には生成されない。粘土樹の苗木は、地面に植えられたバニラの苗木に粘土レーザーを照射することで得られる。レーザーのエネルギー値は 1000 以上でなければならない。
 
 tile.clayium.clay_ore.name=粘土鉱石
 tile.clayium.dense_clay_ore.name=高密度粘土鉱石
@@ -303,7 +303,7 @@ machine.clayium.smelter.tooltip1=粘土エネルギーで動くかまど
 machine.clayium.clay_buffer=%sバッファー
 machine.clayium.clay_buffer.tooltip1=いわゆるアイテムパイプ
 
-machine.clayium.multitrack_buffer=%s 複線バッファー
+machine.clayium.multitrack_buffer=%s複線バッファー
 machine.clayium.multitrack_buffer.tooltip1=__DETAIL__
 machine.clayium.multitrack_buffer.tooltip2=スロットが幾つかに色分けされており、
 machine.clayium.multitrack_buffer.tooltip3=複線バッファー同士のアイテム輸送は

@@ -251,14 +251,14 @@ recipe.clayium.SaltExtractor=Salt Extractor
 recipe.clayium.SaltExtractor.efficiency=%1$4.2g Items/t
 recipe.clayium.SaltExtractor.energyConsumption=%1$s CE/t
 recipe.clayium.SaltExtractor.description=A Salt Extractor is used to extract Salt from water. To run the machine, place water next to it.
-recipe.clayium.QuartzCrucible=Quartz Crucible
-recipe.clayium.QuartzCrucible.timeToCraft=%1$st = %2$ssec
-recipe.clayium.QuartzCrucible.description=Quartz Crucible is a device to get the first Silicon Ingot. Throw Impure Silicon Ingots in a Quartz Crucible, wait a few seconds, and throw a String in it.
+recipe.clayium.quartz_crucible=Quartz Crucible
+recipe.clayium.quartz_crucible.timeToCraft=%1$st = %2$ssec
+recipe.clayium.quartz_crucible.description=Quartz Crucible is a device to get the first Silicon Ingot. Throw Impure Silicon Ingots in a Quartz Crucible, wait a few seconds, and throw a String in it.
 recipe.clayium.SolarClayFabricator=Solar Clay Fabricator
 recipe.clayium.SolarClayFabricator.timeToCraft=%1$st = %2$ssec (%3$s CE/t)
 recipe.clayium.SolarClayFabricator.description=Requires an unobstructed view of the sky.
-recipe.clayium.ClayTree=Clay Tree
-recipe.clayium.ClayTree.description=A Clay Tree is a good source of Lithium, but it isn't generated in the Overworld. A sapling of Clay Tree is obtained by irradiating a vanilla sapling, planted on the ground, with Clay Laser. The energy value of Clay Laser must be higher than 1000.
+recipe.clayium.clay_tree=Clay Tree
+recipe.clayium.clay_tree.description=A Clay Tree is a good source of Lithium, but it isn't generated in the Overworld. A sapling of Clay Tree is obtained by irradiating a vanilla sapling, planted on the ground, with Clay Laser. The energy value of Clay Laser must be higher than 1000.
 
 tile.clayium.clay_ore.name=Clay Ore
 tile.clayium.dense_clay_ore.name=Dense Clay Ore
