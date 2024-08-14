@@ -245,7 +245,7 @@ abstract class MetaTileEntity(
         for (i in 0..<numberOfTraits) {
             val id = buf.readVarInt()
             traitByNetworkId[id]?.receiveInitialSyncData(buf)
-                ?: Clayium.LOGGER.error("Could not find MTETrait with id $id at $pos")
+                ?: Clayium.LOGGER.error("Could not find MTETrait with id $id at $pos during initial sync")
         }
     }
 
