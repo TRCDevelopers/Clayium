@@ -68,7 +68,7 @@ class WaterwheelMetaTileEntity(
     private fun emitEnergy() {
         val pos = pos ?: return
         for (side in EnumFacing.entries) {
-            val energyHolder = world?.getTileEntity(pos.offset(side))?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER, side.opposite)
+            val energyHolder = world?.getTileEntity(pos.offset(side))?.getCapability(ClayiumTileCapabilities.CLAY_ENERGY_HOLDER, side.opposite)
                 ?: continue
 
             val energyStored = energyHolder.getEnergyStored()

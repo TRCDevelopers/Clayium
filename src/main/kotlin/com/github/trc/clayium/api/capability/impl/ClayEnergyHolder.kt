@@ -9,6 +9,7 @@ import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.block.IEnergyStorageUpgradeBlock
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs
+import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IClayEnergyHolder
 import com.github.trc.clayium.api.metatileentity.AutoIoHandler
 import com.github.trc.clayium.api.metatileentity.MTETrait
@@ -16,6 +17,7 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
+import net.minecraftforge.common.capabilities.Capability
 
 class ClayEnergyHolder(
     metaTileEntity: MetaTileEntity,
@@ -103,5 +105,13 @@ class ClayEnergyHolder(
     override fun deserializeNBT(data: NBTTagCompound) {
         super.deserializeNBT(data)
         clayEnergy = ClayEnergy(data.getLong("clayEnergy"))
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        return if (capability === ClayiumTileCapabilities.CLAY_ENERGY_HOLDER) {
+            capability.cast(this)
+        } else {
+            super.getCapability(capability, facing)
+        }
     }
 }

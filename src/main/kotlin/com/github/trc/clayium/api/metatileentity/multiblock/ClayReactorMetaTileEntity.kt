@@ -103,8 +103,8 @@ class ClayReactorMetaTileEntity(
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        if (capability == ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR) {
-            return ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR.cast(this)
+        if (capability == ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR) {
+            return ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR.cast(this)
         }
         return super.getCapability(capability, facing)
     }

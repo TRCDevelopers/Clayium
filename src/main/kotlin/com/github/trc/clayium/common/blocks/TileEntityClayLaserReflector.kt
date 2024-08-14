@@ -32,18 +32,18 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
     private val receivedLasers = Object2ObjectOpenHashMap<EnumFacing, IClayLaser>()
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
-        return capability === ClayiumTileCapabilities.CAPABILITY_CLAY_LASER
-                || capability === ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR
+        return capability === ClayiumTileCapabilities.CLAY_LASER_SOURCE
+                || capability === ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR
                 || super.hasCapability(capability, facing)
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         return when {
-            capability === ClayiumTileCapabilities.CAPABILITY_CLAY_LASER -> {
-                ClayiumTileCapabilities.CAPABILITY_CLAY_LASER.cast(this)
+            capability === ClayiumTileCapabilities.CLAY_LASER_SOURCE -> {
+                ClayiumTileCapabilities.CLAY_LASER_SOURCE.cast(this)
             }
-            capability === ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR -> {
-                ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR.cast(this)
+            capability === ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR -> {
+                ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR.cast(this)
             }
             else -> super.getCapability(capability, facing)
         }
@@ -61,7 +61,7 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
     override fun invalidate() {
         val laserDirection = this.laser.direction
         this.laserTarget.takeIfValid()
-            ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laserDirection.opposite)
+            ?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, laserDirection.opposite)
             ?.laserChanged(laserDirection.opposite, null)
         super.invalidate()
     }
@@ -77,7 +77,7 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
         this.laser = mergeLasers(this.receivedLasers.values, mergedLaserDirection)
         this.isActive = this.receivedLasers.isNotEmpty()
         laserTarget?.takeIfValid()
-            ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, this.laser.direction.opposite)
+            ?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.laser.direction.opposite)
             ?.laserChanged(this.laser.direction.opposite, this.laser)
         notifyWorld()
     }

@@ -14,7 +14,6 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.ClayEnergy
-import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
@@ -30,7 +29,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
-import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
@@ -60,14 +58,6 @@ abstract class WorkableMetaTileEntity(
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
         ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation("${recipeRegistry.category.modid}:${recipeRegistry.category.categoryName}", "tier=${tier.numeric}"))
-    }
-
-    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        return when {
-            capability === ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER -> capability.cast(clayEnergyHolder)
-            capability === ClayiumTileCapabilities.RECIPE_LOGIC -> capability.cast(workable)
-            else -> super.getCapability(capability, facing)
-        }
     }
 
     override fun onPlacement() {

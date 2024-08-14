@@ -9,13 +9,13 @@ import net.minecraftforge.common.capabilities.CapabilityInject
 
 object ClayiumTileCapabilities {
     @CapabilityInject(IClayEnergyHolder::class)
-    lateinit var CAPABILITY_CLAY_ENERGY_HOLDER: Capability<IClayEnergyHolder>
+    lateinit var CLAY_ENERGY_HOLDER: Capability<IClayEnergyHolder>
 
     @CapabilityInject(IClayLaserSource::class)
-    lateinit var CAPABILITY_CLAY_LASER: Capability<IClayLaserSource>
+    lateinit var CLAY_LASER_SOURCE: Capability<IClayLaserSource>
 
     @CapabilityInject(IClayLaserAcceptor::class)
-    lateinit var CAPABILITY_CLAY_LASER_ACCEPTOR: Capability<IClayLaserAcceptor>
+    lateinit var CLAY_LASER_ACCEPTOR: Capability<IClayLaserAcceptor>
 
     @CapabilityInject(IControllable::class)
     lateinit var CONTROLLABLE: Capability<IControllable>

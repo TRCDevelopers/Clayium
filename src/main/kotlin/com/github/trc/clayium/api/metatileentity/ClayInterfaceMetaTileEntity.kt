@@ -55,7 +55,7 @@ class ClayInterfaceMetaTileEntity(
         this.exportItems = target.exportItems
         this.itemInventory = ItemHandlerProxy(this.importItems, this.exportItems)
         this.autoIoHandler = AutoIoHandler.Combined(this)
-        target.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER, null)?.let { targetEnergyHolder ->
+        target.getCapability(ClayiumTileCapabilities.CLAY_ENERGY_HOLDER, null)?.let { targetEnergyHolder ->
             this.ecImporter = AutoIoHandler.EcImporter(this, targetEnergyHolder.energizedClayItemHandler)
         }
 

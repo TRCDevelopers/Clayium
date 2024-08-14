@@ -12,6 +12,8 @@ import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.util.TransferUtils
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
+import net.minecraftforge.common.capabilities.Capability
 
 abstract class AbstractWorkable(
     metaTileEntity: MetaTileEntity,
@@ -154,5 +156,13 @@ abstract class AbstractWorkable(
     fun getNormalizedProgress(): Double {
         if (currentProgress == 0L || requiredProgress == 0L) return 0.0
         return (currentProgress.toDouble() - 1.0) / requiredProgress.toDouble()
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        return if (capability === ClayiumTileCapabilities.CONTROLLABLE) {
+            capability.cast(this)
+        } else {
+            super.getCapability(capability, facing)
+        }
     }
 }

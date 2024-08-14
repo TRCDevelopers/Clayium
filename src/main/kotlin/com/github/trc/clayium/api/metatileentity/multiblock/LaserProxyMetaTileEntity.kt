@@ -39,19 +39,19 @@ class LaserProxyMetaTileEntity(
     override fun onLink(target: MetaTileEntity) {
         super.onLink(target)
         if (this.laser != null) {
-            target.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
+            target.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
                 ?.laserChanged(this.frontFacing.opposite, this.laser)
         }
     }
 
     override fun onUnlink() {
         super.onUnlink()
-        this.target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
+        this.target?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
             ?.laserChanged(this.frontFacing.opposite, null)
     }
 
     override fun canLink(target: MetaTileEntity): Boolean {
-        return super.canLink(target) && target.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, this.frontFacing.opposite) != null
+        return super.canLink(target) && target.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite) != null
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
@@ -71,7 +71,7 @@ class LaserProxyMetaTileEntity(
         println("Laser changed: $laser")
         if (irradiatedSide == this.frontFacing) {
             this.laser = laser
-            this.target?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
+            this.target?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
                 ?.laserChanged(this.frontFacing.opposite, laser)
         }
     }
@@ -84,8 +84,8 @@ class LaserProxyMetaTileEntity(
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        if (capability == ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR && facing == this.frontFacing) {
-            return ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR.cast(this)
+        if (capability == ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR && facing == this.frontFacing) {
+            return ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR.cast(this)
         }
         return super.getCapability(capability, facing)
     }

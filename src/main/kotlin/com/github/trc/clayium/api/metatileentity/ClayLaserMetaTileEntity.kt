@@ -6,7 +6,6 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
-import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ClayLaserSource
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
@@ -22,7 +21,6 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
-import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.IItemHandler
@@ -125,15 +123,6 @@ class ClayLaserMetaTileEntity(
                     .left(3)
             )
             .bindPlayerInventory()
-    }
-
-    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        if (capability === ClayiumTileCapabilities.CAPABILITY_CLAY_LASER) {
-            return ClayiumTileCapabilities.CAPABILITY_CLAY_LASER.cast(laserManager)
-        } else if (capability === ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER) {
-            return ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER.cast(clayEnergyHolder)
-        }
-        return super.getCapability(capability, facing)
     }
 
     override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
