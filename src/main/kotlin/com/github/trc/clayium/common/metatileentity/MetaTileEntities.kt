@@ -17,11 +17,18 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.common.metatileentity.multiblock.CaReactorMetaTileEntity
 import com.github.trc.clayium.common.metatileentity.multiblock.RedstoneProxyMetaTileEntity
 import com.github.trc.clayium.common.recipe.registry.CRecipes
+import it.unimi.dsi.fastutil.ints.Int2ObjectAVLTreeMap
+import it.unimi.dsi.fastutil.ints.IntArrayList
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 @Suppress("unused")
 object MetaTileEntities {
+
+    /**
+     * Used in CA Injector
+     */
+    val ID_TO_MTEs = Int2ObjectAVLTreeMap<MutableList<MetaTileEntity>>()
 
     val CLAY_BUFFER = registerMetaTileEntities(1, (4..13)) {
         ClayBufferMetaTileEntity(clayiumId("clay_buffer.${it.lowerName}"), it)
@@ -188,12 +195,16 @@ object MetaTileEntities {
      * @param provider tier -> MetaTileEntity
      */
     fun <T : MetaTileEntity> registerMetaTileEntities(startId: Int, tiers: IntArray, provider: (ClayTiers) -> T): List<T> {
-        return tiers.mapIndexed { i, tierNumeric ->
+        val intIds = IntArrayList()
+        val mteList =  tiers.mapIndexed { i, tierNumeric ->
             val id = startId + i
+            intIds.add(id)
             val iTier = ClayTiers.entries[tierNumeric]
             val metaTileEntity = provider(iTier)
             registerMetaTileEntity(id, metaTileEntity)
         }
+        intIds.forEach { id -> ID_TO_MTEs.computeIfAbsent(id) { mutableListOf() }.addAll(mteList) }
+        return mteList
     }
 
     fun <T : MetaTileEntity> registerMetaTileEntity(id: Int, sampleMetaTileEntity: T): T {
