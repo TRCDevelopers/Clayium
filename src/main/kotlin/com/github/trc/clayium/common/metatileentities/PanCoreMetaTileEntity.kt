@@ -1,4 +1,4 @@
-package com.github.trc.clayium.common.metatileentity
+package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.ItemDrawable
@@ -21,7 +21,6 @@ import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.pan.IPan
 import com.github.trc.clayium.api.pan.IPanCable
-import com.github.trc.clayium.api.pan.IPanNotifiable
 import com.github.trc.clayium.api.pan.IPanRecipe
 import com.github.trc.clayium.api.pan.IPanUser
 import com.github.trc.clayium.api.pan.isPanCable
@@ -65,13 +64,12 @@ class PanCoreMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList,
-    "machine.${CValues.MOD_ID}.pan_core"), IPanNotifiable, IPan {
+    "machine.${CValues.MOD_ID}.pan_core"), IPan {
     override val importItems = EmptyItemStackHandler
     override val exportItems = EmptyItemStackHandler
     override val itemInventory = EmptyItemStackHandler
 
     private val panRecipes = mutableSetOf<IPanRecipe>()
-    private var networkNotified = false
     private val panNodes = mutableListOf<IPanUser>()
 
     private val duplicationEntries = mutableMapOf<ItemAndMeta, PanDuplicationEntry>()
@@ -234,10 +232,6 @@ class PanCoreMetaTileEntity(
             return capability.cast(IPanCable.INSTANCE)
         }
         return super.getCapability(capability, facing)
-    }
-
-    override fun notifyNetwork() {
-        networkNotified = true
     }
 
     @SideOnly(Side.CLIENT)

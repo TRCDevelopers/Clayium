@@ -1,4 +1,4 @@
-package com.github.trc.clayium.common.metatileentity
+package com.github.trc.clayium.common.metatileentities
 
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.metatileentity.AbstractItemGeneratorMetaTileEntity

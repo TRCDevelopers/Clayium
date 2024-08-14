@@ -29,7 +29,8 @@ object RecipeUtils {
     }
 
     fun addShapedRecipe(registryName: String, result: ItemStack, isMirrored: Boolean, vararg recipe: Any) {
-        val actualRegName = clayiumId(registryName)
+        // default modid to clayium
+        val actualRegName = if (registryName.contains(":")) ResourceLocation(registryName) else clayiumId(registryName)
         if (validateRecipe(actualRegName, result, recipe)) {
             ForgeRegistries.RECIPES.register(
                 ShapedOreRecipe(null, result, *finalizeRecipe(recipe))
@@ -39,8 +40,9 @@ object RecipeUtils {
     }
 
     fun addShapelessRecipe(registryName: String, result: ItemStack, vararg recipe: Any) {
+        val actualRegName = if (registryName.contains(":")) ResourceLocation(registryName) else clayiumId(registryName)
         ForgeRegistries.RECIPES.register(ShapelessOreRecipe(null, result, *finalizeRecipe(recipe))
-            .setRegistryName(clayiumId(registryName)))
+            .setRegistryName(actualRegName))
     }
 
     private fun finalizeRecipe(recipe: Array<out Any>): Array<out Any> {

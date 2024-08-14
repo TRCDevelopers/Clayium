@@ -1,4 +1,4 @@
-package com.github.trc.clayium.common.metatileentity
+package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
@@ -23,7 +23,6 @@ import com.github.trc.clayium.api.metatileentity.AutoIoHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.CUtils.clayiumId
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.copyWithSize
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
@@ -143,9 +142,8 @@ class StorageContainerMetaTileEntity(
         return super.getCapability(capability, facing)
     }
 
-    override fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
-        return neighbor.getInput(side.opposite) != MachineIoMode.NONE || neighbor.getOutput(side.opposite) != MachineIoMode.NONE
-    }
+    override fun canImportFrom(side: EnumFacing) = true
+    override fun canExportTo(side: EnumFacing) = true
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return StorageContainerMetaTileEntity(this.metaTileEntityId, this.tier, maxStoredItems == UPGRADED_MAX_AMOUNT)

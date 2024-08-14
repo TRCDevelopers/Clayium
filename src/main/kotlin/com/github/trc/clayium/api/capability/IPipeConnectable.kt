@@ -1,4 +1,4 @@
-package com.github.trc.clayium.common.blocks
+package com.github.trc.clayium.api.capability
 
 import com.github.trc.clayium.api.util.MachineIoMode
 import net.minecraft.util.EnumFacing
@@ -14,4 +14,9 @@ interface IPipeConnectable {
 
     fun canImportFrom(side: EnumFacing): Boolean = getInput(side) != MachineIoMode.NONE
     fun canExportTo(side: EnumFacing): Boolean = getOutput(side) != MachineIoMode.NONE
+
+    fun canConnectTo(neighbor: IPipeConnectable, side: EnumFacing): Boolean {
+        return (this.canImportFrom(side) && neighbor.canExportTo(side.opposite)) ||
+                (this.canExportTo(side) && neighbor.canImportFrom(side.opposite))
+    }
 }

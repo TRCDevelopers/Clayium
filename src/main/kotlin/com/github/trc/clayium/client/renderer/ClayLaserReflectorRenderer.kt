@@ -71,7 +71,7 @@ object ClayLaserReflectorRenderer : TileEntitySpecialRenderer<TileEntityClayLase
         GlStateManager.popMatrix()
 
         if (!reflector.isActive) return
-        val laserSource = reflector.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER, null) ?: return
+        val laserSource = reflector.getCapability(ClayiumTileCapabilities.CLAY_LASER_SOURCE, null) ?: return
 
         ClayLaserRenderer.renderLaser(laserSource, x, y, z, this::bindTexture)
     }

@@ -14,7 +14,6 @@ import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.util.CUtils.clayiumId
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.api.util.MachineIoMode
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
@@ -67,9 +66,8 @@ class ClayBufferMetaTileEntity(
         return true
     }
 
-    override fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
-        return neighbor.getInput(side.opposite) != MachineIoMode.NONE || neighbor.getOutput(side.opposite) != MachineIoMode.NONE
-    }
+    override fun canImportFrom(side: EnumFacing) = true
+    override fun canExportTo(side: EnumFacing) = true
 
     override fun onPlacement() {
         this.toggleInput(this.frontFacing.opposite)

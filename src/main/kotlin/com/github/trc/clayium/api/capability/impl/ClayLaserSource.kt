@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
+import net.minecraftforge.common.capabilities.Capability
 
 class ClayLaserSource(
     metaTileEntity: MetaTileEntity,
@@ -38,12 +39,12 @@ class ClayLaserSource(
             if (value) {
                 laserTarget
                     ?.takeUnless { it.isInvalid }
-                    ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.direction.opposite)
+                    ?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, laser.direction.opposite)
                     ?.laserChanged(laser.direction.opposite, laser)
             } else {
                 laserTarget
                     ?.takeUnless { it.isInvalid }
-                    ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.direction.opposite)
+                    ?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, laser.direction.opposite)
                     ?.laserChanged(laser.direction.opposite, null)
             }
             if (syncFlag) {
@@ -84,7 +85,7 @@ class ClayLaserSource(
 
     override fun onRemoval() {
         laserTarget?.takeUnless { it.isInvalid }
-            ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, laser.direction.opposite)
+            ?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, laser.direction.opposite)
             ?.laserChanged(laser.direction.opposite, null)
         writeLaserData()
     }
@@ -123,5 +124,13 @@ class ClayLaserSource(
         laser = ClayLaser(EnumFacing.byIndex(data.getByte("laserDirection").toInt()), laserRed, laserGreen, laserBlue)
         laserLength = data.getInteger("laserLength")
         isActive = data.getBoolean("isActive")
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        return if (capability === ClayiumTileCapabilities.CLAY_LASER_SOURCE) {
+            capability.cast(this)
+        } else {
+            super.getCapability(capability, facing)
+        }
     }
 }

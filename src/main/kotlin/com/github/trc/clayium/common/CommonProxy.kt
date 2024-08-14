@@ -22,7 +22,7 @@ import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trc.clayium.common.loaders.OreDictionaryLoader
 import com.github.trc.clayium.common.loaders.recipe.CRecipeLoader
-import com.github.trc.clayium.common.metatileentity.MetaTileEntities
+import com.github.trc.clayium.common.metatileentities.MetaTileEntities
 import com.github.trc.clayium.common.pan.factories.CPanRecipeFactory
 import com.github.trc.clayium.common.pan.factories.CraftingTablePanRecipeFactory
 import com.github.trc.clayium.common.pan.factories.FurnacePanRecipeFactory

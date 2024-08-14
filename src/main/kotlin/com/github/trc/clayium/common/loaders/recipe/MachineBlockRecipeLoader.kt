@@ -10,7 +10,7 @@ import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.blocks.ClayiumBlocks.MACHINE_HULL
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
-import com.github.trc.clayium.common.metatileentity.MetaTileEntities
+import com.github.trc.clayium.common.metatileentities.MetaTileEntities
 import com.github.trc.clayium.common.recipe.RecipeUtils
 import com.github.trc.clayium.common.recipe.builder.RecipeBuilder
 import com.github.trc.clayium.common.recipe.registry.CRecipes
@@ -109,7 +109,7 @@ object MachineBlockRecipeLoader {
         val antimatters = listOf(CMaterials.antimatter) + CMaterials.PURE_ANTIMATTERS
         val caHullMaterials = listOf(CMaterials.rubidium, CMaterials.cerium, CMaterials.tantalum, CMaterials.praseodymium,
             CMaterials.protactinium, CMaterials.neptunium, CMaterials.promethium, CMaterials.samarium, CMaterials.curium, CMaterials.europium)
-        var caHullCenter = MACHINE_HULL.getItem(ClayTiers.ANTIMATTER)
+        var caHullCenter = MACHINE_HULL.getItem(ANTIMATTER)
         for ((i, entry) in antimatters.zip(caHullMaterials).withIndex()) {
             val (matter, hullMaterial) = entry
             val result = ItemStack(ClayiumBlocks.CA_REACTOR_HULL, 1, i)

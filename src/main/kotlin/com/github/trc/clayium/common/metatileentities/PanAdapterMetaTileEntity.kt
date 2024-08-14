@@ -1,4 +1,4 @@
-package com.github.trc.clayium.common.metatileentity
+package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.DynamicDrawable
@@ -26,7 +26,6 @@ import com.github.trc.clayium.api.capability.impl.ListeningItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
-import com.github.trc.clayium.api.pan.IPanNotifiable
 import com.github.trc.clayium.api.pan.IPanRecipe
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
@@ -75,8 +74,6 @@ class PanAdapterMetaTileEntity(
     private val resultInventories = List(pageNum) { ItemStackHandler(9) }
     private val laserInventory = ListeningItemStackHandler(9, ::onSlotChanged)
     private val currentEntries = mutableSetOf<IPanRecipe>()
-
-    private var network: IPanNotifiable? = null
 
     private fun onSlotChanged(slot: Int) {
         markDirty()
@@ -141,7 +138,6 @@ class PanAdapterMetaTileEntity(
 
     override fun onRemoval() {
         super.onRemoval()
-        network?.notifyNetwork()
     }
 
     override fun writeToNBT(data: NBTTagCompound) {

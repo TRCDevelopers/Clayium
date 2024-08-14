@@ -33,16 +33,16 @@ interface IClayLaserSource {
         val newTarget = world.getTileEntity(targetPos)
         if (newTarget == null) {
             previousTarget.takeIfValid()
-                ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
+                ?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, targetSide)
                 ?.laserChanged(targetSide, null)
             irradiateLaserBlock(world, targetPos, laser.energy)
             return Pair(newLaserLength, null)
         } else if (previousTarget != newTarget) {
             previousTarget.takeIfValid()
-                ?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
+                ?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, targetSide)
                 ?.laserChanged(targetSide, null)
             if (isActive) {
-                newTarget.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR, targetSide)
+                newTarget.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, targetSide)
                     ?.laserChanged(targetSide, this.laser)
             }
         } else if (laserLength != newLaserLength) {

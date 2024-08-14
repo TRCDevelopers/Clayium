@@ -3,7 +3,7 @@ package com.github.trc.clayium.integration.jei
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
-import com.github.trc.clayium.common.metatileentity.SolarClayFabricatorMetaTileEntity
+import com.github.trc.clayium.common.metatileentities.SolarClayFabricatorMetaTileEntity
 import com.github.trc.clayium.common.recipe.CWTRecipes
 import com.github.trc.clayium.common.recipe.ClayWorkTableRecipe
 import com.github.trc.clayium.common.recipe.Recipe
@@ -19,6 +19,7 @@ import mezz.jei.api.IJeiRuntime
 import mezz.jei.api.IModPlugin
 import mezz.jei.api.IModRegistry
 import mezz.jei.api.JEIPlugin
+import mezz.jei.api.ingredients.VanillaTypes
 import mezz.jei.api.recipe.IRecipeCategoryRegistration
 import mezz.jei.api.recipe.IRecipeWrapperFactory
 import net.minecraft.item.ItemStack
@@ -75,6 +76,10 @@ class JeiPlugin : IModPlugin {
                     modRegistry.addRecipeCatalyst(metaTileEntity.getStackForm(), metaTileEntity.registry.category.uniqueId)
             }
         }
+
+        modRegistry.addIngredientInfo(listOf(ItemStack(ClayiumBlocks.CLAY_TREE_SAPLING), ItemStack(ClayiumBlocks.CLAY_TREE_LOG), ItemStack(ClayiumBlocks.CLAY_TREE_LEAVES)),
+            VanillaTypes.ITEM, "recipe.clayium.clay_tree.description")
+        modRegistry.addIngredientInfo(ItemStack(ClayiumBlocks.QUARTZ_CRUCIBLE), VanillaTypes.ITEM, "recipe.clayium.quartz_crucible.description")
     }
 
     companion object {

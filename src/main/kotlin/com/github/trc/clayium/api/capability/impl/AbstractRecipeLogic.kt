@@ -2,7 +2,7 @@ package com.github.trc.clayium.api.capability.impl
 
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.AbstractWorkable
-import com.github.trc.clayium.api.capability.IControllable
+import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.common.recipe.Recipe
@@ -10,6 +10,8 @@ import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 import com.github.trc.clayium.common.util.TransferUtils
 import com.github.trc.clayium.integration.jei.JeiPlugin
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
+import net.minecraftforge.common.capabilities.Capability
 
 /**
  * Recipe-based implementation of [AbstractWorkable]
@@ -17,7 +19,7 @@ import net.minecraft.nbt.NBTTagCompound
 abstract class AbstractRecipeLogic(
     metaTileEntity: MetaTileEntity,
     val recipeRegistry: RecipeRegistry<*>,
-) : AbstractWorkable(metaTileEntity), IControllable {
+) : AbstractWorkable(metaTileEntity) {
 
     protected val inputInventory = metaTileEntity.importItems
 
@@ -84,5 +86,13 @@ abstract class AbstractRecipeLogic(
         super.deserializeNBT(data)
         itemOutputs = CUtils.readItems("itemOutputs", data)
         recipeCEt = ClayEnergy(data.getLong("recipeCEt"))
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        return if (capability === ClayiumTileCapabilities.RECIPE_LOGIC) {
+            capability.cast(this)
+        } else {
+            super.getCapability(capability, facing)
+        }
     }
 }

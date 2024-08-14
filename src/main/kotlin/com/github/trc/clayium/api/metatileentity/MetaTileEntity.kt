@@ -22,9 +22,11 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FRONT_FACING
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_INPUT_MODE
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_OUTPUT_MODE
+import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IConfigurationTool
 import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.*
 import com.github.trc.clayium.api.capability.IItemFilter
+import com.github.trc.clayium.api.capability.IPipeConnectable
 import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
@@ -37,7 +39,6 @@ import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.MachineIoMode.*
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.Clayium
-import com.github.trc.clayium.common.blocks.IPipeConnectable
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.items.filter.FilterType
 import com.github.trc.clayium.common.util.UtilLocale
@@ -245,7 +246,7 @@ abstract class MetaTileEntity(
         for (i in 0..<numberOfTraits) {
             val id = buf.readVarInt()
             traitByNetworkId[id]?.receiveInitialSyncData(buf)
-                ?: Clayium.LOGGER.error("Could not find MTETrait with id $id at $pos")
+                ?: Clayium.LOGGER.error("Could not find MTETrait with id $id at $pos during initial sync")
         }
     }
 
@@ -304,6 +305,9 @@ abstract class MetaTileEntity(
     }
 
     open fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === ClayiumTileCapabilities.PIPE_CONNECTABLE) {
+            return ClayiumTileCapabilities.PIPE_CONNECTABLE.cast(this)
+        }
         if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (facing == null) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemInventory)
             val i = facing.index
@@ -467,13 +471,17 @@ abstract class MetaTileEntity(
     protected fun refreshConnection(side: EnumFacing) {
         val previous = _connectionsCache[side.index]
         val i = side.index
-        when (val neighborTileEntity = this.getNeighbor(side)) {
-            is MetaTileEntityHolder -> {
-                val neighborMetaTileEntity = neighborTileEntity.metaTileEntity ?: return
-                _connectionsCache[i] = (this.canConnectToMte(neighborMetaTileEntity, side) || neighborMetaTileEntity.canConnectToMte(this, side.opposite))
+        val neighborTileEntity = this.getNeighbor(side)
+        if (neighborTileEntity == null) {
+            _connectionsCache[i] = false
+        } else {
+            val iPipeConnectable = neighborTileEntity.getCapability(ClayiumTileCapabilities.PIPE_CONNECTABLE, side.opposite)
+            if (iPipeConnectable == null) {
+                _connectionsCache[i] = this.canConnectTo(neighborTileEntity, side)
+            } else {
+                _connectionsCache[i] = this.canConnectTo(iPipeConnectable, side)
+                        || iPipeConnectable.canConnectTo(this, side.opposite)
             }
-            null -> _connectionsCache[i] = false
-            else -> _connectionsCache[i] = this.canConnectTo(neighborTileEntity, side)
         }
         if (previous != _connectionsCache[i]) {
             writeCustomData(UPDATE_CONNECTIONS) {
@@ -497,13 +505,6 @@ abstract class MetaTileEntity(
             writeVarInt(side.index)
             writeVarInt(-1)
         }
-    }
-
-    protected open fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
-        val i = side.index
-        val o = side.opposite.index
-        return (this._inputModes[i] != NONE && neighbor._outputModes[o] != NONE
-                || this._outputModes[i] != NONE && neighbor._inputModes[o] != NONE)
     }
 
     protected fun canConnectTo(neighbor: TileEntity, side: EnumFacing): Boolean {

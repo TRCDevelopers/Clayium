@@ -251,14 +251,14 @@ recipe.clayium.SaltExtractor=Salt Extractor
 recipe.clayium.SaltExtractor.efficiency=%1$4.2g Items/t
 recipe.clayium.SaltExtractor.energyConsumption=%1$s CE/t
 recipe.clayium.SaltExtractor.description=A Salt Extractor is used to extract Salt from water. To run the machine, place water next to it.
-recipe.clayium.QuartzCrucible=Quartz Crucible
-recipe.clayium.QuartzCrucible.timeToCraft=%1$st = %2$ssec
-recipe.clayium.QuartzCrucible.description=Quartz Crucible is a device to get the first Silicon Ingot. Throw Impure Silicon Ingots in a Quartz Crucible, wait a few seconds, and throw a String in it.
+recipe.clayium.quartz_crucible=Quartz Crucible
+recipe.clayium.quartz_crucible.timeToCraft=%1$st = %2$ssec
+recipe.clayium.quartz_crucible.description=Quartz Crucible is a device to get the first Silicon Ingot. Throw Impure Silicon Ingots in a Quartz Crucible, wait a few seconds, and throw a String in it.
 recipe.clayium.SolarClayFabricator=Solar Clay Fabricator
 recipe.clayium.SolarClayFabricator.timeToCraft=%1$st = %2$ssec (%3$s CE/t)
 recipe.clayium.SolarClayFabricator.description=Requires an unobstructed view of the sky.
-recipe.clayium.ClayTree=Clay Tree
-recipe.clayium.ClayTree.description=A Clay Tree is a good source of Lithium, but it isn't generated in the Overworld. A sapling of Clay Tree is obtained by irradiating a vanilla sapling, planted on the ground, with Clay Laser. The energy value of Clay Laser must be higher than 1000.
+recipe.clayium.clay_tree=Clay Tree
+recipe.clayium.clay_tree.description=A Clay Tree is a good source of Lithium, but it isn't generated in the Overworld. A sapling of Clay Tree is obtained by irradiating a vanilla sapling, planted on the ground, with Clay Laser. The energy value of Clay Laser must be higher than 1000.
 
 tile.clayium.clay_ore.name=Clay Ore
 tile.clayium.dense_clay_ore.name=Dense Clay Ore
@@ -335,21 +335,12 @@ machine.clayium.smelter.tooltip1=Furnace powered by CE.
 machine.clayium.clay_buffer=%s Buffer
 machine.clayium.clay_buffer.tooltip1=Transfers items. Acts as an item pipe.
 
-tile.clayium.blockBasicMultitrackBuffer.name=Basic Multitrack  Buffer
-tile.clayium.blockAdvancedMultitrackBuffer.name=Advanced Multitrack Buffer
-tile.clayium.blockPrecisionMultitrackBuffer.name=Precision Multitrack Buffer
-tile.clayium.blockClaySteelMultitrackBuffer.name=Clay Steel Multitrack Buffer
-tile.clayium.blockClayiumMultitrackBuffer.name=Clayium Multitrack Buffer
-tile.clayium.blockUltimateMultitrackBuffer.name=Ultimate Multitrack Buffer
-tile.clayium.blockAntimatterMultitrackBuffer.name=Antimatter Multitrack Buffer
-tile.clayium.blockPureAntimatterMultitrackBuffer.name=Pure Antimatter Multitrack Buffer
-tile.clayium.blockOECMultitrackBuffer.name=OEC Multitrack Buffer
-tile.clayium.blockOPAMultitrackBuffer.name=OPA Multitrack Buffer
-tooltip.clayium.MultitrackBuffer.line1=__DETAIL__
-tooltip.clayium.MultitrackBuffer.line2=This buffer's slots are separated into some color groups.
-tooltip.clayium.MultitrackBuffer.line3=Transfer of items between two Multitrack Buffers
-tooltip.clayium.MultitrackBuffer.line4=will be performed independently within each color group.
-tooltip.clayium.MultitrackBuffer.line5=Moreover, this buffer has one filter slot per group.
+machine.clayium.multi_track_buffer=%s Multitrack Buffer
+machine.clayium.multi_track_buffer.tooltip1=__DETAIL__
+machine.clayium.multi_track_buffer.tooltip2=This buffer's slots are separated into some color groups.
+machine.clayium.multi_track_buffer.tooltip3=Transfer of items between two Multitrack Buffers
+machine.clayium.multi_track_buffer.tooltip4=will be performed independently within each color group.
+machine.clayium.multi_track_buffer.tooltip5=Moreover, this buffer has one filter slot per group.
 
 machine.clayium.chemical_reactor=%s Chemical Reactor
 

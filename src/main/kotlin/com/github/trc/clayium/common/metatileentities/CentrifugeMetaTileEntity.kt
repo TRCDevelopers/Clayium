@@ -1,4 +1,4 @@
-package com.github.trc.clayium.common.metatileentity
+package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
@@ -15,6 +15,7 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.common.config.ConfigTierBalance
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import net.minecraft.util.ResourceLocation
 
@@ -26,6 +27,8 @@ class CentrifugeMetaTileEntity(
     "machine.${CValues.MOD_ID}.centrifuge", CRecipes.CENTRIFUGE, outputSize = outputSize) {
     override val faceTexture = clayiumId("blocks/centrifuge")
     override val workable = RecipeLogicEnergy(this, recipeRegistry, clayEnergyHolder)
+        .setDurationMultiplier(ConfigTierBalance.crafting::getCraftTimeMultiplier)
+        .setEnergyConsumingMultiplier(ConfigTierBalance.crafting::getConsumingEnergyMultiplier)
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         val slotsAndProgressBar = Row()

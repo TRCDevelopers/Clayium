@@ -1,12 +1,13 @@
-package com.github.trc.clayium.common.metatileentity
+package com.github.trc.clayium.common.metatileentities
 
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.capability.impl.RecipeLogicClayFurnace
+import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.metatileentity.ClayBufferMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.ClayInterfaceMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.ClayLaserMetaTileEntity
-import com.github.trc.clayium.api.metatileentity.ClayMultiTrackBufferMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MultiTrackBufferMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.SimpleMachineMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.ClayBlastFurnaceMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.ClayReactorMetaTileEntity
@@ -14,14 +15,22 @@ import com.github.trc.clayium.api.metatileentity.multiblock.LaserProxyMetaTileEn
 import com.github.trc.clayium.api.util.CUtils.clayiumId
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.common.metatileentity.multiblock.CaReactorMetaTileEntity
-import com.github.trc.clayium.common.metatileentity.multiblock.RedstoneProxyMetaTileEntity
+import com.github.trc.clayium.common.config.ConfigTierBalance
+import com.github.trc.clayium.common.metatileentities.multiblock.CaReactorMetaTileEntity
+import com.github.trc.clayium.common.metatileentities.multiblock.RedstoneProxyMetaTileEntity
 import com.github.trc.clayium.common.recipe.registry.CRecipes
+import it.unimi.dsi.fastutil.ints.Int2ObjectAVLTreeMap
+import it.unimi.dsi.fastutil.ints.IntArrayList
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 @Suppress("unused")
 object MetaTileEntities {
+
+    /**
+     * Used in CA Injector
+     */
+    val ID_TO_MTEs = Int2ObjectAVLTreeMap<MutableList<MetaTileEntity>>()
 
     val CLAY_BUFFER = registerMetaTileEntities(1, (4..13)) {
         ClayBufferMetaTileEntity(clayiumId("clay_buffer.${it.lowerName}"), it)
@@ -31,7 +40,11 @@ object MetaTileEntities {
         SimpleMachineMetaTileEntity(clayiumId("bending_machine.${it.lowerName}"), it, CRecipes.BENDING)
     }
     val CONDENSER = registerMetaTileEntities(19, intArrayOf(2, 3, 4, 5, 10)) { //+5
-        SimpleMachineMetaTileEntity(clayiumId("condenser.${it.lowerName}"), it, CRecipes.CONDENSER)
+        SimpleMachineMetaTileEntity(clayiumId("condenser.${it.lowerName}"), it, CRecipes.CONDENSER) { mte, reg, ceHolder ->
+            RecipeLogicEnergy(mte, reg, ceHolder)
+                .setDurationMultiplier(ConfigTierBalance.crafting::getCraftTimeMultiplier)
+                .setEnergyConsumingMultiplier(ConfigTierBalance.crafting::getConsumingEnergyMultiplier)
+        }
     }
     val CUTTING_MACHINE = registerMetaTileEntities(24, (1..4)) { //+4
         SimpleMachineMetaTileEntity(clayiumId("cutting_machine.${it.lowerName}"), it, CRecipes.CUTTING_MACHINE)
@@ -43,7 +56,11 @@ object MetaTileEntities {
         SimpleMachineMetaTileEntity(clayiumId("energetic_clay_condenser.${it.lowerName}"), it, CRecipes.ENERGETIC_CLAY_CONDENSER)
     }
     val GRINDER = registerMetaTileEntities(33, intArrayOf(2, 3, 4, 5, 6, 10)) { //+6
-        SimpleMachineMetaTileEntity(clayiumId("grinder.${it.lowerName}"), it, CRecipes.GRINDER)
+        SimpleMachineMetaTileEntity(clayiumId("grinder.${it.lowerName}"), it, CRecipes.GRINDER) { mte, reg, ceHolder ->
+            RecipeLogicEnergy(mte, reg, ceHolder)
+                .setDurationMultiplier(ConfigTierBalance.crafting::getCraftTimeMultiplier)
+                .setEnergyConsumingMultiplier(ConfigTierBalance.crafting::getConsumingEnergyMultiplier)
+        }
     }
     val LATHE = registerMetaTileEntities(39, (1..4)) { //+4
         SimpleMachineMetaTileEntity(clayiumId("lathe.${it.lowerName}"), it, CRecipes.LATHE)
@@ -132,7 +149,7 @@ object MetaTileEntities {
         CaCondenserMetaTileEntity(clayiumId("ca_condenser.${it.lowerName}"), it)
     }
     val MULTI_TRACK_BUFFER = registerMetaTileEntities(163, (4..13)) {
-        ClayMultiTrackBufferMetaTileEntity(clayiumId("multi_track_buffer.${it.lowerName}"), it)
+        MultiTrackBufferMetaTileEntity(clayiumId("multi_track_buffer.${it.lowerName}"), it)
     }
 
     val PAN_CORE = registerMetaTileEntity(174, PanCoreMetaTileEntity(clayiumId("pan_core"), ClayTiers.PURE_ANTIMATTER))
@@ -188,12 +205,16 @@ object MetaTileEntities {
      * @param provider tier -> MetaTileEntity
      */
     fun <T : MetaTileEntity> registerMetaTileEntities(startId: Int, tiers: IntArray, provider: (ClayTiers) -> T): List<T> {
-        return tiers.mapIndexed { i, tierNumeric ->
+        val intIds = IntArrayList()
+        val mteList =  tiers.mapIndexed { i, tierNumeric ->
             val id = startId + i
+            intIds.add(id)
             val iTier = ClayTiers.entries[tierNumeric]
             val metaTileEntity = provider(iTier)
             registerMetaTileEntity(id, metaTileEntity)
         }
+        intIds.forEach { id -> ID_TO_MTEs.computeIfAbsent(id) { mutableListOf() }.addAll(mteList) }
+        return mteList
     }
 
     fun <T : MetaTileEntity> registerMetaTileEntity(id: Int, sampleMetaTileEntity: T): T {
