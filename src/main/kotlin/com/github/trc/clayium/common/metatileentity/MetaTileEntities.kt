@@ -5,8 +5,8 @@ import com.github.trc.clayium.api.capability.impl.RecipeLogicClayFurnace
 import com.github.trc.clayium.api.metatileentity.ClayBufferMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.ClayInterfaceMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.ClayLaserMetaTileEntity
-import com.github.trc.clayium.api.metatileentity.ClayMultiTrackBufferMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MultiTrackBufferMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.SimpleMachineMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.ClayBlastFurnaceMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.ClayReactorMetaTileEntity
@@ -132,7 +132,7 @@ object MetaTileEntities {
         CaCondenserMetaTileEntity(clayiumId("ca_condenser.${it.lowerName}"), it)
     }
     val MULTI_TRACK_BUFFER = registerMetaTileEntities(163, (4..13)) {
-        ClayMultiTrackBufferMetaTileEntity(clayiumId("multi_track_buffer.${it.lowerName}"), it)
+        MultiTrackBufferMetaTileEntity(clayiumId("multi_track_buffer.${it.lowerName}"), it)
     }
 
     val PAN_CORE = registerMetaTileEntity(174, PanCoreMetaTileEntity(clayiumId("pan_core"), ClayTiers.PURE_ANTIMATTER))

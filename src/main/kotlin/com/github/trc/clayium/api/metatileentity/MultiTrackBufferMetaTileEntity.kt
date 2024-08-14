@@ -38,11 +38,11 @@ import kotlin.Int
 import kotlin.math.max
 import kotlin.math.min
 
-class ClayMultiTrackBufferMetaTileEntity(
+class MultiTrackBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier,
-    validInputModes = emptyList(), validOutputModes = emptyList(), "machine.${CValues.MOD_ID}.clay_multi_track_buffer") {
+    validInputModes = emptyList(), validOutputModes = emptyList(), "machine.${CValues.MOD_ID}.multi_track_buffer") {
 
     override val hasFrontFacing: Boolean = true
     val trackRow = when (tier.numeric) {
@@ -84,7 +84,7 @@ class ClayMultiTrackBufferMetaTileEntity(
 
     override fun createMetaTileEntity(): MetaTileEntity {
         validInputModes
-        return ClayMultiTrackBufferMetaTileEntity(this.metaTileEntityId, this.tier)
+        return MultiTrackBufferMetaTileEntity(this.metaTileEntityId, this.tier)
     }
 
     override fun registerItemModel(item: Item, meta: Int) {
@@ -171,16 +171,16 @@ class ClayMultiTrackBufferMetaTileEntity(
         CUtils.readItems(filtersHandler, "filterSlots", data)
     }
 
-    private inner class MultiTrackIoHandler : AutoIoHandler.Combined(this@ClayMultiTrackBufferMetaTileEntity, isBuffer = true) {
+    private inner class MultiTrackIoHandler : AutoIoHandler.Combined(this@MultiTrackBufferMetaTileEntity, isBuffer = true) {
         override fun importFromNeighbors() {
             var remaining = amountPerAction
             for (side in EnumFacing.entries) {
                 if (!(remaining > 0 && isImporting(side))) continue
 
                 val neighbor = getNeighbor(side) ?: continue
-                if (neighbor is MetaTileEntityHolder && neighbor.metaTileEntity is ClayMultiTrackBufferMetaTileEntity) {
-                    val neighborBuffer = neighbor.metaTileEntity as ClayMultiTrackBufferMetaTileEntity
-                    remaining = transferMultiTrack(neighborBuffer, this@ClayMultiTrackBufferMetaTileEntity, remaining)
+                if (neighbor is MetaTileEntityHolder && neighbor.metaTileEntity is MultiTrackBufferMetaTileEntity) {
+                    val neighborBuffer = neighbor.metaTileEntity as MultiTrackBufferMetaTileEntity
+                    remaining = transferMultiTrack(neighborBuffer, this@MultiTrackBufferMetaTileEntity, remaining)
                 } else {
                     remaining = transferItemStack(
                         from = neighbor.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
@@ -197,9 +197,9 @@ class ClayMultiTrackBufferMetaTileEntity(
                 if (!(remaining > 0 && isExporting(side))) continue
 
                 val neighbor = getNeighbor(side) ?: continue
-                if (neighbor is MetaTileEntityHolder && neighbor.metaTileEntity is ClayMultiTrackBufferMetaTileEntity) {
-                    val neighborBuffer = neighbor.metaTileEntity as ClayMultiTrackBufferMetaTileEntity
-                    remaining = transferMultiTrack(this@ClayMultiTrackBufferMetaTileEntity, neighborBuffer, remaining)
+                if (neighbor is MetaTileEntityHolder && neighbor.metaTileEntity is MultiTrackBufferMetaTileEntity) {
+                    val neighborBuffer = neighbor.metaTileEntity as MultiTrackBufferMetaTileEntity
+                    remaining = transferMultiTrack(this@MultiTrackBufferMetaTileEntity, neighborBuffer, remaining)
                 } else {
                     remaining = transferItemStack(
                         from = getExportItems(side) ?: continue,
@@ -214,8 +214,8 @@ class ClayMultiTrackBufferMetaTileEntity(
          * returns remaining amount
          */
         private fun transferMultiTrack(
-            from: ClayMultiTrackBufferMetaTileEntity,
-            to: ClayMultiTrackBufferMetaTileEntity,
+            from: MultiTrackBufferMetaTileEntity,
+            to: MultiTrackBufferMetaTileEntity,
             maxAmount: Int
         ): Int {
             var remain = maxAmount
