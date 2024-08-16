@@ -1,6 +1,9 @@
 package com.github.trc.clayium.common.loaders.recipe
 
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.util.ClayTiers
+import com.github.trc.clayium.common.blocks.BlockCaReactorCoil
+import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.common.unification.material.CMaterials
@@ -144,6 +147,32 @@ object ClayReactorRecipeLoader {
             .input(OrePrefix.gem, CMaterials.antimatter)
             .output(OrePrefix.gem, CMaterials.pureAntimatter)
             .tier(10).CEt(ClayEnergy.of(100)).duration(300)
+            .buildAndRegister()
+
+        /* Overclocker */
+        registry.builder()
+            .input(ClayiumBlocks.MACHINE_HULL.getItem(ClayTiers.ANTIMATTER))
+            .input(ClayiumBlocks.RESONATOR.getItem(BlockCaReactorCoil.BlockType.ANTIMATTER, 8))
+            .output(ClayiumBlocks.OVERCLOCKER.getItem(BlockCaReactorCoil.BlockType.ANTIMATTER))
+            .tier(10).CEtFactor(5.0).duration(10_000_000_000_000)
+            .buildAndRegister()
+        registry.builder()
+            .input(ClayiumBlocks.MACHINE_HULL.getItem(ClayTiers.PURE_ANTIMATTER, 4))
+            .input(ClayiumBlocks.RESONATOR.getItem(BlockCaReactorCoil.BlockType.PURE_ANTIMATTER, 16))
+            .output(ClayiumBlocks.OVERCLOCKER.getItem(BlockCaReactorCoil.BlockType.PURE_ANTIMATTER))
+            .tier(11).CEtFactor(5.0).duration(100_000_000_000_000)
+            .buildAndRegister()
+        registry.builder()
+            .input(ClayiumBlocks.MACHINE_HULL.getItem(ClayTiers.OEC, 16))
+            .input(ClayiumBlocks.RESONATOR.getItem(BlockCaReactorCoil.BlockType.OEC, 32))
+            .output(ClayiumBlocks.OVERCLOCKER.getItem(BlockCaReactorCoil.BlockType.OEC))
+            .tier(12).CEtFactor(5.0).duration(1_000_000_000_000_000)
+            .buildAndRegister()
+        registry.builder()
+            .input(ClayiumBlocks.MACHINE_HULL.getItem(ClayTiers.OPA, 64))
+            .input(ClayiumBlocks.RESONATOR.getItem(BlockCaReactorCoil.BlockType.OPA, 64))
+            .output(ClayiumBlocks.OVERCLOCKER.getItem(BlockCaReactorCoil.BlockType.OPA))
+            .tier(13).CEtFactor(5.0).duration(1_000_000_000_000_000)
             .buildAndRegister()
     }
 }
