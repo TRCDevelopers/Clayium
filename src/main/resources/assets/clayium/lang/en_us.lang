@@ -461,7 +461,7 @@ tooltip.clayium.resonator.tooltip1=Increases the efficiency of CA machines
 tooltip.clayium.resonator.tooltip2=in the area of 5x5x5.
 
 tile.clayium.overclocker.antimatter=Antimatter Overclocker
-tile.clayium.overclocker.pureantimatter=Pure Antimatter Overclocker
+tile.clayium.overclocker.pure_antimatter=Pure Antimatter Overclocker
 tile.clayium.overclocker.oec=OEC Overclocker
 tile.clayium.overclocker.opa=OPA Overclocker
 tile.clayium.overclocker.tooltip1=Accelerates the adjacent machine.

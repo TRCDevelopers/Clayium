@@ -428,7 +428,7 @@ tooltip.clayium.resonator.tooltip1=5x5x5の範囲内にある各種 CA 装置の
 tooltip.clayium.resonator.tooltip2=共鳴率を上昇させる
 
 tile.clayium.overclocker.antimatter=反物質オーバークロッカー
-tile.clayium.overclocker.pureantimatter=純反物質オーバークロッカー
+tile.clayium.overclocker.pure_antimatter=純反物質オーバークロッカー
 tile.clayium.overclocker.oec=OEC オーバークロッカー
 tile.clayium.overclocker.opa=OPA オーバークロッカー
 tile.clayium.overclocker.tooltip1=隣接する装置を加速する
@@ -772,7 +772,8 @@ item.clayium.advanced_circuit.name=発展回路
 item.clayium.precision_circuit.name=精密回路
 item.clayium.integrated_circuit.name=集積回路
 item.clayium.clay_core.name=粘土コア
-item.clayium.clay_core.tooltip1=ストレージコンテナに右クリックすると、その容量を 21 億個にまで拡張する
+item.clayium.clay_core.tooltip1=ストレージコンテナに右クリックすると、
+item.clayium.clay_core.tooltip2=その容量を 21 億個にまで拡張する
 item.clayium.clay_brain.name=粘土脳
 item.clayium.clay_spirit.name=粘土スピリット
 item.clayium.clay_soul.name=粘土ソウル
@@ -795,4 +796,3 @@ item.clayium.antimatter_seed.name=反物質の種
 item.clayium.energized_clay_dust.name=活性化粘土粉
 item.clayium.excited_clay_dust.name=励起粘土粉
 
-item.clayium.organic_clay_dust.name=有機粘土
