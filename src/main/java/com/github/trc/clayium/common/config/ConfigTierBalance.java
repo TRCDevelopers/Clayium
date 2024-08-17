@@ -1,13 +1,13 @@
 package com.github.trc.clayium.common.config;
 
-import com.github.trc.clayium.common.Clayium;
+import com.github.trc.clayium.api.CValues;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.LangKey;
 import net.minecraftforge.common.config.Config.RangeInt;
 
 @LangKey("clayium.config.tier")
-@Config(modid = Clayium.MOD_ID, name = Clayium.MOD_ID + "/tier_balance")
+@Config(modid = CValues.MOD_ID, name = CValues.MOD_ID + "/tier_balance")
 public class ConfigTierBalance {
     private ConfigTierBalance() {}
     @RangeInt(min = 1)

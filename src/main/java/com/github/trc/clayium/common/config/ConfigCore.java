@@ -1,10 +1,10 @@
 package com.github.trc.clayium.common.config;
 
-import com.github.trc.clayium.common.Clayium;
+import com.github.trc.clayium.api.CValues;
 import net.minecraftforge.common.config.Config;
 
 @Config.LangKey("clayium.config.core")
-@Config(modid = Clayium.MOD_ID, name = Clayium.MOD_ID + "/core")
+@Config(modid = CValues.MOD_ID, name = CValues.MOD_ID + "/core")
 public class ConfigCore {
 
     public static SubCategoryRendering rendering = new SubCategoryRendering();

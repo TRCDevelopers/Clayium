@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.items.metaitem
 
 import com.github.trc.clayium.api.ClayiumApi
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.items.metaitem.component.IItemColorHandler
 import com.github.trc.clayium.common.unification.material.Material
 import com.github.trc.clayium.common.unification.material.PropertyKey
@@ -36,7 +36,7 @@ open class MetaPrefixItem private constructor(
             if (material.colors == null) {
                 ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${material.materialId}_${orePrefix.snake}", "inventory"))
             } else {
-                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:colored/${orePrefix.snake}", "inventory"))
+                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation(clayiumId("colored/${orePrefix.snake}"), "inventory"))
             }
         }
     }
@@ -90,7 +90,7 @@ open class MetaPrefixItem private constructor(
             for (item in metaValueItems.values) {
                 ModelLoader.setCustomModelResourceLocation(
                     this, item.meta.toInt(),
-                    ModelResourceLocation("${Clayium.MOD_ID}:colored/dust", "inventory")
+                    ModelResourceLocation(clayiumId("colored/dust"), "inventory")
                 )
             }
         }

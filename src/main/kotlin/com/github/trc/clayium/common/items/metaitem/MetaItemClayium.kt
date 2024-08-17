@@ -1,6 +1,7 @@
 package com.github.trc.clayium.common.items.metaitem
 
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.items.ItemClayium
 import com.github.trc.clayium.common.items.metaitem.component.*
 import com.github.trc.clayium.common.unification.OreDictUnifier
@@ -56,7 +57,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
     @SideOnly(Side.CLIENT)
     open fun registerModels() {
         for (item in this.metaValueItems.values) {
-            ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:${item.name}", "inventory"))
+            ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation(clayiumId(item.name), "inventory"))
         }
     }
 
@@ -99,7 +100,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         val meta: Short,
         val name: String,
     ) {
-        val translationKey = "item.${Clayium.MOD_ID}.$name"
+        val translationKey = "item.${CValues.MOD_ID}.$name"
         val behaviors = mutableListOf<IItemBehavior>()
         var colorHandler: IItemColorHandler? = null
         var rarity: IRarity = EnumRarity.COMMON

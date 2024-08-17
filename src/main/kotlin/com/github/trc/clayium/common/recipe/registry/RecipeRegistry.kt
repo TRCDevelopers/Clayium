@@ -1,5 +1,6 @@
 package com.github.trc.clayium.common.recipe.registry
 
+import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.RecipeCategory
@@ -13,7 +14,8 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
     val maxOutputs: Int,
 ) {
 
-    constructor(translationKey: String, builderSample: R, maxInputs: Int, maxOutputs: Int) : this(RecipeCategory.create(Clayium.MOD_ID, translationKey), builderSample, maxInputs, maxOutputs)
+    constructor(translationKey: String, builderSample: R, maxInputs: Int, maxOutputs: Int) :
+            this(RecipeCategory.create(CValues.MOD_ID, translationKey), builderSample, maxInputs, maxOutputs)
 
     init {
         builderSample.setRegistry(this)

@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.unification.material
 
 import com.github.trc.clayium.api.ClayEnergy
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.unification.material.PropertyKey.Companion.DUST
 import com.github.trc.clayium.common.unification.material.PropertyKey.Companion.INGOT
 import com.github.trc.clayium.common.unification.material.PropertyKey.Companion.MATTER
@@ -15,7 +15,7 @@ sealed interface MaterialProperty {
     class Matter(
         texture: String = "matter",
     ) : MaterialProperty {
-        val modelLocation = ModelResourceLocation("${Clayium.MOD_ID}:colored/$texture", "inventory")
+        val modelLocation = ModelResourceLocation(clayiumId("colored/$texture"), "inventory")
     }
 
     class Plate(
