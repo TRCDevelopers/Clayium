@@ -15,13 +15,19 @@ import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.metatileentity.interfaces.IMarkDirty
 import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.common.gui.ClayGuiTextures
+import com.github.trc.clayium.common.util.DummyContainer
 import com.github.trc.clayium.integration.jei.JeiPlugin
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.inventory.InventoryCrafting
+import net.minecraft.item.ItemStack
+import net.minecraft.item.crafting.CraftingManager
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 
@@ -54,7 +60,11 @@ class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
                             .matrix("III", "III", "III")
                             .key('I') { i ->
                                 ItemSlot().slot(SyncHandlers.itemSlot(inputInventory, i)
-                                    .slotGroup("input_inventory"))
+                                    .slotGroup("input_inventory")
+                                    .changeListener { newItem, onlyAmountChanged, client, init ->
+                                        onInputSlotChanged()
+                                    }
+                                )
                             }.build().align(Alignment.CenterLeft)
                         )
                         .child(ProgressWidget().size(22, 17).progress { 0.0 }.texture(ClayGuiTextures.PROGRESS_BAR, 22)
@@ -72,12 +82,39 @@ class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
                         )
                         .child(ParentWidget().size(26, 26).background(ClayGuiTextures.LARGE_SLOT)
                             .child(ItemSlot().align(Alignment.Center)
-                                .slot(SyncHandlers.itemSlot(outputInventory, 0))
+                                .slot(object: ModularSlot(outputInventory, 0) {
+                                        override fun onTake(thePlayer: EntityPlayer, stack: ItemStack): ItemStack {
+                                            onOutputSlotTake()
+                                            return super.onTake(thePlayer, stack)
+                                        }
+                                    }.accessibility(false, true))
                                 .background(IDrawable.EMPTY))
                             .align(Alignment.CenterRight))
                     )
                 )
                 .child(SlotGroupWidget.playerInventory(0))
             )
+    }
+
+    private fun onInputSlotChanged() {
+        val matrix = InventoryCrafting(DummyContainer, 3, 3)
+        for (slot in 0..<9) matrix.setInventorySlotContents(slot, inputInventory.getStackInSlot(slot))
+        val recipe = CraftingManager.findMatchingRecipe(matrix, world)
+        if (recipe == null) {
+            outputInventory.setStackInSlot(0, ItemStack.EMPTY)
+        } else {
+            val output = recipe.getCraftingResult(matrix)
+            outputInventory.setStackInSlot(0, output)
+        }
+        markDirty()
+    }
+
+    private fun onOutputSlotTake() {
+        val matrix = InventoryCrafting(DummyContainer, 3, 3)
+        for (slot in 0..<9) matrix.setInventorySlotContents(slot, inputInventory.getStackInSlot(slot))
+        val recipe = CraftingManager.findMatchingRecipe(matrix, world) ?: return
+        recipe.getRemainingItems(matrix).forEachIndexed { i, stack ->
+            inputInventory.setStackInSlot(i, stack)
+        }
     }
 }
