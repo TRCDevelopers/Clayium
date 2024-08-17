@@ -3,7 +3,7 @@ package com.github.trc.clayium.common.items
 import com.cleanroommc.modularui.utils.ItemCapabilityProvider
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.IConfigurationTool
-import com.github.trc.clayium.api.util.CUtils
+import com.github.trc.clayium.api.util.getMetaTileEntity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -36,7 +36,7 @@ class ItemClayConfigTool(
         val typeToSend = (if (player.isSneaking) typeWhenSneak else type)
             ?: return EnumActionResult.PASS
 
-        val metaTileEntity = CUtils.getMetaTileEntity(world, pos)
+        val metaTileEntity = world.getMetaTileEntity(pos)
         if (metaTileEntity == null) {
             return EnumActionResult.PASS
         } else {

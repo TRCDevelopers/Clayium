@@ -8,7 +8,7 @@ import com.github.trc.clayium.api.block.ItemBlockTiered
 import com.github.trc.clayium.api.capability.SimpleCapabilityManager
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
-import com.github.trc.clayium.api.util.CUtils.clayiumId
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.renderer.LaserReflectorItemStackRenderer
 import com.github.trc.clayium.common.blocks.BlockQuartzCrucible
 import com.github.trc.clayium.common.blocks.ClayiumBlocks

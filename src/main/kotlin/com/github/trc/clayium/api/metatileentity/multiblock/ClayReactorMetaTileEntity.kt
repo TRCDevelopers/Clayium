@@ -14,9 +14,9 @@ import com.github.trc.clayium.api.laser.IClayLaser
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult
-import com.github.trc.clayium.api.util.CUtils
-import com.github.trc.clayium.api.util.CUtils.clayiumId
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.common.util.TransferUtils
 import com.github.trc.clayium.common.util.UtilLocale
@@ -76,8 +76,7 @@ class ClayReactorMetaTileEntity(
     }
 
     private fun getLaserProxy(pos: BlockPos): LaserProxyMetaTileEntity? {
-        val metaTileEntity = CUtils.getMetaTileEntity(world, pos)
-        return if (metaTileEntity is LaserProxyMetaTileEntity) metaTileEntity else null
+        return world.getMetaTileEntity(pos) as? LaserProxyMetaTileEntity
     }
 
     override val workable: MultiblockRecipeLogic = ClayReactorRecipeLogic(this)

@@ -4,7 +4,6 @@ import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
-import com.github.trc.clayium.common.unification.material.Material
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.item.Item
@@ -63,8 +62,6 @@ fun clayiumId(path: String): ResourceLocation {
 }
 
 object CUtils {
-
-    val MATERIAL_TIER_ASC = compareBy<Material> { it.tier?.numeric }
 
     fun writeItems(handler: IItemHandler, tagName: String, tag: NBTTagCompound) {
         val tagList = NBTTagList()
@@ -132,16 +129,7 @@ object CUtils {
         }
     }
 
-    fun getMetaTileEntity(world: IBlockAccess?, pos: BlockPos?): MetaTileEntity? {
-        if (world == null || pos == null) return null
-        return (world.getTileEntity(pos) as? MetaTileEntityHolder)?.metaTileEntity
-    }
-
     fun getMetaTileEntity(stack: ItemStack): MetaTileEntity? {
         return ClayiumApi.MTE_REGISTRY.getObjectById(stack.itemDamage)
-    }
-
-    fun clayiumId(path: String): ResourceLocation {
-        return ResourceLocation(CValues.MOD_ID, path)
     }
 }

@@ -12,9 +12,9 @@ import com.github.trc.clayium.api.metatileentity.SimpleMachineMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.ClayBlastFurnaceMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.ClayReactorMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.LaserProxyMetaTileEntity
-import com.github.trc.clayium.api.util.CUtils.clayiumId
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.config.ConfigTierBalance
 import com.github.trc.clayium.common.metatileentities.multiblock.CaReactorMetaTileEntity
 import com.github.trc.clayium.common.metatileentities.multiblock.RedstoneProxyMetaTileEntity

@@ -1,7 +1,7 @@
 package com.github.trc.clayium.client.model
 
 import com.github.trc.clayium.api.ClayiumApi
-import com.github.trc.clayium.api.util.CUtils.clayiumId
+import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.client.renderer.block.model.IBakedModel
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.renderer.vertex.VertexFormat
