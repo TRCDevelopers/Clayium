@@ -22,11 +22,25 @@ import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.integration.jei.JeiPlugin
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 
 class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
     private val inputInventory = ClayiumItemStackHandler(this, 9)
     private val outputInventory = ClayiumItemStackHandler(this, 1)
+
+    override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
+        val data = super.writeToNBT(compound)
+        data.setTag("input_inventory", inputInventory.serializeNBT())
+        data.setTag("output_inventory", outputInventory.serializeNBT())
+        return data
+    }
+
+    override fun readFromNBT(compound: NBTTagCompound) {
+        super.readFromNBT(compound)
+        inputInventory.deserializeNBT(compound.getCompoundTag("input_inventory"))
+        outputInventory.deserializeNBT(compound.getCompoundTag("output_inventory"))
+    }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.registerSlotGroup("input_inventory", 3)
