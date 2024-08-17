@@ -14,6 +14,8 @@ import net.minecraft.world.World
 
 class BlockEnergyStorageUpgrade : VariantBlock<BlockCaReactorCoil.BlockType>(Material.IRON), IEnergyStorageUpgradeBlock, ITieredBlock {
     init {
+        setHardness(2.0f)
+        setResistance(2.0f)
         soundType = SoundType.METAL
     }
 

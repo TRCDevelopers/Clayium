@@ -5,14 +5,10 @@ import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.GuiHandler
 import net.minecraft.block.Block
-import net.minecraft.block.BlockContainer
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
-import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
@@ -22,6 +18,10 @@ import net.minecraftforge.items.CapabilityItemHandler
 
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockClayWorkTable : Block(Material.ROCK), ITieredBlock {
+    init {
+        setHardness(2.0f)
+        setResistance(2.0f)
+    }
 
     override fun getTier(stack: ItemStack) = ClayTiers.DEFAULT
     override fun getTier(world: IBlockAccess, pos: BlockPos) = ClayTiers.DEFAULT

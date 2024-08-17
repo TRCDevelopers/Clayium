@@ -18,8 +18,12 @@ import net.minecraft.world.World
 
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockClayCraftingBoard : Block(Material.CLAY), ITieredBlock {
-    private val aabb = AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.25, 1.0)
+    init {
+        setHardness(0.6f)
+        setResistance(0.6f)
+    }
 
+    private val aabb = AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.25, 1.0)
     override fun hasTileEntity(state: IBlockState) = true
     override fun createTileEntity(world: World, state: IBlockState) = TileClayCraftingTable()
     override fun getTier(stack: ItemStack) = ClayTiers.DEFAULT

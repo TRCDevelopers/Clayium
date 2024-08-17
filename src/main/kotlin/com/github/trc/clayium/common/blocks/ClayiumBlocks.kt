@@ -38,7 +38,8 @@ object ClayiumBlocks {
 
     val defaultStateMapper = DefaultStateMapper()
 
-    val CREATIVE_ENERGY_SOURCE = createBlock("creative_energy_source", BlockSimpleTileEntityHolder(::TileEntityCreativeEnergySource))
+    val CREATIVE_ENERGY_SOURCE = createBlock("creative_energy_source", BlockSimpleTileEntityHolder(::TileEntityCreativeEnergySource)
+        .apply { setBlockUnbreakable() })
 
     val CLAY_CRAFTING_BOARD = createBlock("clay_crafting_board", BlockClayCraftingBoard())
     val CLAY_WORK_TABLE = createBlock("clay_work_table", BlockClayWorkTable())

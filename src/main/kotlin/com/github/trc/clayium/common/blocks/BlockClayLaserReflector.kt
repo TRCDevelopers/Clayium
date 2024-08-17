@@ -22,6 +22,8 @@ import net.minecraft.world.World
 class BlockClayLaserReflector : Block(Material.IRON) {
     init {
         soundType = SoundType.GLASS
+        setHardness(1.0f)
+        setResistance(1.0f)
         defaultState = defaultState.withProperty(FACING, EnumFacing.NORTH)
     }
 
