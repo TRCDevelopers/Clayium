@@ -255,10 +255,10 @@ tile.clayium.large_dense_clay_ore.name=高密度粘土鉱石大
 
 tile.clayium.clay_work_table=粘土作業台
 tile.clayium.clay_work_table.tooltip1=工業化への第一歩
-tile.clayium.blockClayCraftingTable.name=粘土作業板
-tile.clayium.blockClayCraftingTable.tooltip.line1=ちょっと便利な作業台
-tile.clayium.blockClayCraftingTable.tooltip.line2=__DETAIL__
-tile.clayium.blockClayCraftingTable.tooltip.line3=クラフト時隣接チェストにアクセス可能
+tile.clayium.clay_crafting_board.name=粘土作業板
+tile.clayium.clay_crafting_board.tooltip1=ちょっと便利な作業台
+tile.clayium.clay_crafting_board.tooltip2=__DETAIL__
+tile.clayium.clay_crafting_board.tooltip3=クラフト時隣接チェストにアクセス可能
 
 machine.clayium.milling_machine=%sフライス盤
 machine.clayium.milling_machine_tier1.tooltip1=初めての回路

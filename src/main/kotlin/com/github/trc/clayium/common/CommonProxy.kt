@@ -124,6 +124,7 @@ open class CommonProxy {
 
         registry.register(createItemBlock(ClayiumBlocks.CREATIVE_ENERGY_SOURCE, ::ItemBlock))
 
+        registry.register(createItemBlock(ClayiumBlocks.CLAY_CRAFTING_BOARD, ::ItemBlockTiered))
         registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ::ItemBlockTiered))
 
         registry.register(createItemBlock(ClayiumBlocks.CLAY_ORE, ::ItemBlock))

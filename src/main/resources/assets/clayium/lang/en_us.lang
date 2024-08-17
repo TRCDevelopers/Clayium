@@ -287,10 +287,10 @@ tile.clayium.blockZK60AHull.name=ZK60A Alloy Hull
 
 tile.clayium.clay_work_table=Clay Work Table
 tile.clayium.clay_work_table.tooltip1=The first step to Clay Industry.
-tile.clayium.blockClayCraftingTable.name=Clay Crafting Board
-tile.clayium.blockClayCraftingTable.tooltip.line1=A convenient version of vanilla Crafting Table.
-tile.clayium.blockClayCraftingTable.tooltip.line2=__DETAIL__
-tile.clayium.blockClayCraftingTable.tooltip.line3=You can access the content of a nearby chest while using it.
+tile.clayium.clay_crafting_board.name=Clay Crafting Board
+tile.clayium.clay_crafting_board.tooltip1=A convenient version of vanilla Crafting Table.
+tile.clayium.clay_crafting_board.tooltip2=__DETAIL__
+tile.clayium.clay_crafting_board.tooltip3=You can access the content of a nearby chest while using it.
 
 machine.clayium.milling_machine=%s Milling Machine
 machine.clayium.milling_machine_tier1.tooltip1=To obtain the first circuit.

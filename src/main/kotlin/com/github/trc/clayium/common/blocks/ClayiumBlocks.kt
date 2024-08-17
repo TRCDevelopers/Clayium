@@ -5,6 +5,7 @@ import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.common.blocks.claycraftingtable.BlockClayCraftingBoard
 import com.github.trc.clayium.common.blocks.claytree.BlockClayLeaves
 import com.github.trc.clayium.common.blocks.claytree.BlockClayLog
 import com.github.trc.clayium.common.blocks.claytree.BlockClaySapling
@@ -39,6 +40,7 @@ object ClayiumBlocks {
 
     val CREATIVE_ENERGY_SOURCE = createBlock("creative_energy_source", BlockSimpleTileEntityHolder(::TileEntityCreativeEnergySource))
 
+    val CLAY_CRAFTING_BOARD = createBlock("clay_crafting_board", BlockClayCraftingBoard())
     val CLAY_WORK_TABLE = createBlock("clay_work_table", BlockClayWorkTable())
 
     val CLAY_ORE = createBlock("clay_ore", BlockClayOre())
