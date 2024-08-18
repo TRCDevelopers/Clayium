@@ -19,8 +19,8 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_ITEMS_STOR
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_MAX_ITEMS_STORED
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_STORED_ITEMSTACK
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
-import com.github.trc.clayium.api.metatileentity.AutoIoHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.copyWithSize

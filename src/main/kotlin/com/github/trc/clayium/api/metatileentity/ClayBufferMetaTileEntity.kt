@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
+import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.client.renderer.block.model.ModelResourceLocation

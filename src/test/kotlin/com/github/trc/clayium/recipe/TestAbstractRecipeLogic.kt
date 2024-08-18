@@ -5,11 +5,11 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trc.clayium.Bootstrap
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
-import com.github.trc.clayium.api.metatileentity.AutoIoHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
-import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ClayTiers
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.recipe.builder.SimpleRecipeBuilder
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 import io.kotest.core.spec.style.StringSpec
