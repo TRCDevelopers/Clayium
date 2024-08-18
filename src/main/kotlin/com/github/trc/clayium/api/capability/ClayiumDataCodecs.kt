@@ -6,6 +6,7 @@ object ClayiumDataCodecs {
 
     val INITIALIZE_MTE = assignId()
     val UPDATE_FRONT_FACING = assignId()
+    val UPDATE_OC_FACTOR = assignId()
 
     val UPDATE_INPUT_MODE = assignId()
     val UPDATE_OUTPUT_MODE = assignId()
@@ -34,4 +35,5 @@ object ClayiumDataCodecs {
     const val ENERGY_HOLDER = "energyHolder"
     const val LASER_CONTROLLER = "laserController"
     const val RESONANCE_LISTENER = "resonanceListener"
+    const val OVERCLOCK_HANDLER = "overclockHandler"
 }

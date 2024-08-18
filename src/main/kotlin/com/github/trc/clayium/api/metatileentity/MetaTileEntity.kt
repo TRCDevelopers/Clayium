@@ -14,7 +14,6 @@ import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.BlockMachine.Companion.IS_PIPE
-import com.github.trc.clayium.api.block.IOverclockerBlock
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_CONNECTIONS
@@ -33,6 +32,7 @@ import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trc.clayium.api.metatileentity.interfaces.IMarkDirty
 import com.github.trc.clayium.api.metatileentity.interfaces.ISyncedTileEntity
+import com.github.trc.clayium.api.metatileentity.trait.OverclockHandler
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
@@ -140,19 +140,8 @@ abstract class MetaTileEntity(
      */
     open val useFaceForAllSides = false
 
-    val overclock: Double get() {
-        var value = 1.0
-        val world = this.world ?: return value
-        val pos = this.pos ?: return value
-        for (side in EnumFacing.entries) {
-            val neighborState = this.getNeighborBlockState(side) ?: continue
-            val neighboringBlock = neighborState.block
-            if (neighboringBlock is IOverclockerBlock) {
-                value *= (neighboringBlock as IOverclockerBlock).getOverclockFactor(world, pos.offset(side))
-            }
-        }
-        return value
-    }
+    private val overclockHandler = OverclockHandler(this)
+    val overclock: Double get() = overclockHandler.overclockFactor
 
     @SideOnly(Side.CLIENT)
     abstract fun registerItemModel(item: Item, meta: Int)
@@ -176,7 +165,9 @@ abstract class MetaTileEntity(
         timer++
     }
 
-    open fun onFirstTick() {}
+    open fun onFirstTick() {
+        mteTraits.values.forEach(MTETrait::onFirstTick)
+    }
 
     open fun writeToNBT(data: NBTTagCompound) {
         data.setByte("frontFacing", frontFacing.index.toByte())
@@ -522,6 +513,7 @@ abstract class MetaTileEntity(
     @MustBeInvokedByOverriders
     open fun onPlacement() {
         if (!isRemote) EnumFacing.entries.forEach(this::refreshConnection)
+        overclockHandler.onNeighborBlockChange()
     }
 
     open fun onRemoval() {
@@ -538,7 +530,9 @@ abstract class MetaTileEntity(
     open fun onNeighborChanged(facing: EnumFacing) {
     }
     open fun neighborChanged() {
+        println("NEIGHBOR BLOCK CHANGED")
         EnumFacing.entries.forEach(this::refreshConnection)
+        overclockHandler.onNeighborBlockChange()
     }
 
     open fun canConnectRedstone(side: EnumFacing?) = false
