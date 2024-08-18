@@ -1,5 +1,6 @@
 package com.github.trc.clayium.common
 
+import com.github.trc.clayium.CTags
 import com.github.trc.clayium.api.CValues
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.init.Items
@@ -18,7 +19,7 @@ import org.apache.logging.log4j.Logger
 @Mod(
     modid = CValues.MOD_ID,
     name = CValues.MOD_NAME,
-    version = Clayium.VERSION,
+    version = CTags.VERSION,
     modLanguageAdapter = "io.github.chaosunity.forgelin.KotlinAdapter",
     dependencies = "required:forge@[14.23.5.2847,);" +
             "required-after:forgelin_continuous@[2.0.0.0,);" +
@@ -27,8 +28,6 @@ import org.apache.logging.log4j.Logger
             "after:jei@[4.15.0,);"
 )
 object Clayium {
-    //todo: auto generate using gradle
-    const val VERSION = "0.0.1"
 
     @JvmField
     val LOGGER: Logger = LogManager.getLogger(CValues.MOD_ID)
