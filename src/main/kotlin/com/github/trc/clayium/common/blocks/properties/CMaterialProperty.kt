@@ -1,22 +1,22 @@
 package com.github.trc.clayium.common.blocks.properties
 
-import com.github.trc.clayium.common.unification.material.Material
+import com.github.trc.clayium.api.unification.material.CMaterial
 import com.google.common.base.Optional
 import com.google.common.collect.ImmutableList
 import net.minecraft.block.properties.PropertyHelper
 
 class CMaterialProperty(
-    allowedValues: Collection<Material>,
+    allowedValues: Collection<CMaterial>,
     name: String,
-) : PropertyHelper<Material>(name, Material::class.java) {
+) : PropertyHelper<CMaterial>(name, CMaterial::class.java) {
 
     private val allowedValues = ImmutableList.copyOf(allowedValues)
 
-    override fun getAllowedValues(): ImmutableList<Material> {
+    override fun getAllowedValues(): ImmutableList<CMaterial> {
         return allowedValues
     }
 
-    override fun parseValue(value: String): Optional<Material> {
+    override fun parseValue(value: String): Optional<CMaterial> {
         val modIdAndName = value.split("__")
         if (modIdAndName.size != 2) return Optional.absent()
         val namespace = modIdAndName[0]
@@ -25,7 +25,7 @@ class CMaterialProperty(
         return Optional.fromNullable(material)
     }
 
-    override fun getName(value: Material): String {
+    override fun getName(value: CMaterial): String {
         // we can't use ":" in blockState property names
         return "${value.materialId.namespace}__${value.materialId.path}"
     }

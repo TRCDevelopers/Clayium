@@ -1,11 +1,11 @@
 package com.github.trc.clayium.common.loaders.recipe
 
+import com.github.trc.clayium.api.unification.material.CMaterials
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.common.blocks.BlockCaReactorCoil
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import com.github.trc.clayium.common.unification.material.CMaterials
-import com.github.trc.clayium.common.unification.ore.OrePrefix
 import net.minecraft.item.ItemStack
 
 object CaInjectorRecipeLoader {

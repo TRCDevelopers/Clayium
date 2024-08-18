@@ -1,9 +1,9 @@
-package com.github.trc.clayium.common.unification.stack
+package com.github.trc.clayium.api.unification.stack
 
+import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.getAsItem
-import com.github.trc.clayium.common.unification.OreDictUnifier
-import com.github.trc.clayium.common.unification.material.Material
-import com.github.trc.clayium.common.unification.ore.OrePrefix
 import net.minecraft.block.Block
 import net.minecraft.init.Items
 import net.minecraft.item.Item
@@ -27,7 +27,7 @@ data class ItemAndMeta(
 ) {
     constructor(block: Block, meta: Int = 0) : this(block.getAsItem(), meta)
     constructor(itemStack: ItemStack) : this(itemStack.item, itemStack.metadata)
-    constructor(orePrefix: OrePrefix, material: Material) : this(OreDictUnifier.get(orePrefix, material))
+    constructor(orePrefix: OrePrefix, material: CMaterial) : this(OreDictUnifier.get(orePrefix, material))
 
     init {
         require(item !== Items.AIR) { "Empty ItemAndMeta is not allowed" }

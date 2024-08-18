@@ -8,6 +8,8 @@ import com.github.trc.clayium.api.block.ItemBlockTiered
 import com.github.trc.clayium.api.capability.SimpleCapabilityManager
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trc.clayium.api.unification.material.CMaterials
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.renderer.LaserReflectorItemStackRenderer
 import com.github.trc.clayium.common.blocks.BlockQuartzCrucible
@@ -27,8 +29,6 @@ import com.github.trc.clayium.common.metatileentities.MetaTileEntities
 import com.github.trc.clayium.common.pan.factories.CPanRecipeFactory
 import com.github.trc.clayium.common.pan.factories.CraftingTablePanRecipeFactory
 import com.github.trc.clayium.common.pan.factories.FurnacePanRecipeFactory
-import com.github.trc.clayium.common.unification.material.CMaterials
-import com.github.trc.clayium.common.unification.ore.OrePrefix
 import com.github.trc.clayium.common.util.DebugUtils
 import com.github.trc.clayium.common.worldgen.ClayOreGenerator
 import net.minecraft.block.Block

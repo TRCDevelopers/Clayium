@@ -3,8 +3,8 @@ package com.github.trc.clayium.common.blocks
 import com.cleanroommc.modularui.utils.ItemCapabilityProvider
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.IClayEnergyProvider
-import com.github.trc.clayium.common.unification.material.PropertyKey
-import com.github.trc.clayium.common.unification.ore.OrePrefix
+import com.github.trc.clayium.api.unification.material.CPropertyKey
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.common.capabilities.Capability
@@ -15,7 +15,7 @@ class ItemBlockEnergizedClay(block: BlockEnergizedClay, orePrefix: OrePrefix, ) 
         return object : ItemCapabilityProvider {
             override fun <T : Any> getCapability(capability: Capability<T?>): T? {
                 if (capability == ClayiumCapabilities.ENERGIZED_CLAY) {
-                    val energy = blockMaterial.getCMaterial(stack).getPropOrNull(PropertyKey.CLAY)?.energy
+                    val energy = blockMaterial.getCMaterial(stack).getPropOrNull(CPropertyKey.CLAY)?.energy
                     if (energy != null) {
                         return ClayiumCapabilities.ENERGIZED_CLAY.cast(IClayEnergyProvider { energy })
                     }

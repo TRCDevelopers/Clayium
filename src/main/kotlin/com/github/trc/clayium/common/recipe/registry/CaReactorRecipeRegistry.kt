@@ -1,12 +1,12 @@
 package com.github.trc.clayium.common.recipe.registry
 
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.unification.material.CMaterials
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.builder.SimpleRecipeBuilder
 import com.github.trc.clayium.common.recipe.ingredient.COreRecipeInput
-import com.github.trc.clayium.common.unification.OreDictUnifier
-import com.github.trc.clayium.common.unification.material.CMaterials
-import com.github.trc.clayium.common.unification.ore.OrePrefix
 import net.minecraft.item.ItemStack
 import kotlin.math.pow
 

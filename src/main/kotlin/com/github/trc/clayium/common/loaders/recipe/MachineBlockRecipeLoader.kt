@@ -3,6 +3,9 @@ package com.github.trc.clayium.common.loaders.recipe
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.unification.material.CMaterials
+import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ClayTiers.*
 import com.github.trc.clayium.common.Clayium
@@ -14,9 +17,6 @@ import com.github.trc.clayium.common.metatileentities.MetaTileEntities
 import com.github.trc.clayium.common.recipe.RecipeUtils
 import com.github.trc.clayium.common.recipe.builder.RecipeBuilder
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import com.github.trc.clayium.common.unification.material.CMaterials
-import com.github.trc.clayium.common.unification.ore.OrePrefix
-import com.github.trc.clayium.common.unification.stack.UnificationEntry
 import com.google.common.primitives.Longs.min
 import net.minecraft.item.ItemStack
 import kotlin.math.pow

@@ -8,8 +8,8 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.github.trc.clayium.api.capability.impl.InfiniteItemStackHandler
+import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.util.toItemStack
-import com.github.trc.clayium.common.unification.material.PropertyKey
 import net.minecraft.block.state.IBlockState
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
@@ -23,8 +23,8 @@ class TileEntityCreativeEnergySource : TileEntity(), IGuiHolder<PosGuiData> {
         for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) {
             for (state in block.blockState.validStates) {
                 if (highest == null) highest = state
-                val matCe = block.getCMaterial(state).getProperty(PropertyKey.CLAY).energy
-                val currentCe = (highest.block as BlockEnergizedClay).getCMaterial(highest).getProperty(PropertyKey.CLAY).energy!!
+                val matCe = block.getCMaterial(state).getProperty(CPropertyKey.CLAY).energy
+                val currentCe = (highest.block as BlockEnergizedClay).getCMaterial(highest).getProperty(CPropertyKey.CLAY).energy!!
                 if (matCe == null) continue
                 if (matCe > currentCe) {
                     highest = state
