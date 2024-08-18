@@ -118,17 +118,6 @@ object CUtils {
         return items
     }
 
-    fun handlerToList(handler: IItemHandler): List<ItemStack> {
-        return object : AbstractList<ItemStack>() {
-            override val size = handler.slots
-
-            override fun get(index: Int): ItemStack {
-                return handler.getStackInSlot(index)
-            }
-
-        }
-    }
-
     fun getMetaTileEntity(stack: ItemStack): MetaTileEntity? {
         return ClayiumApi.MTE_REGISTRY.getObjectById(stack.itemDamage)
     }

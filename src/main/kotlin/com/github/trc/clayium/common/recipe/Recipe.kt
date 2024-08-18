@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.recipe
 
 import com.github.trc.clayium.api.ClayEnergy
-import com.github.trc.clayium.api.util.CUtils
+import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.common.recipe.chanced.ChancedOutputList
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
 import com.google.common.collect.ImmutableList
@@ -22,7 +22,7 @@ data class Recipe(
     fun matches(consumeOnMatch: Boolean, inputsIn: IItemHandlerModifiable, tier: Int): Boolean {
 
         if (this.tierNumeric > tier) return false
-        val (isItemsMatched, amountsToConsume) = matchesItems(CUtils.handlerToList(inputsIn))
+        val (isItemsMatched, amountsToConsume) = matchesItems(inputsIn.toList())
         if (!isItemsMatched) return false
 
         if (consumeOnMatch) {
