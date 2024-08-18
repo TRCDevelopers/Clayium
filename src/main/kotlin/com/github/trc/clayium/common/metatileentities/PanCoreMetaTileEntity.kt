@@ -25,6 +25,13 @@ import com.github.trc.clayium.api.pan.IPanRecipe
 import com.github.trc.clayium.api.pan.IPanUser
 import com.github.trc.clayium.api.pan.isPanCable
 import com.github.trc.clayium.api.readClayEnergy
+import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.unification.material.CMaterials
+import com.github.trc.clayium.api.unification.material.CPropertyKey
+import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.unification.stack.ItemAndMeta
+import com.github.trc.clayium.api.unification.stack.readItemAndMeta
+import com.github.trc.clayium.api.unification.stack.writeItemAndMeta
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.writeClayEnergy
@@ -33,13 +40,6 @@ import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
-import com.github.trc.clayium.common.unification.OreDictUnifier
-import com.github.trc.clayium.common.unification.material.CMaterials
-import com.github.trc.clayium.common.unification.material.PropertyKey
-import com.github.trc.clayium.common.unification.ore.OrePrefix
-import com.github.trc.clayium.common.unification.stack.ItemAndMeta
-import com.github.trc.clayium.common.unification.stack.readItemAndMeta
-import com.github.trc.clayium.common.unification.stack.writeItemAndMeta
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -324,7 +324,7 @@ class PanCoreMetaTileEntity(
             ClayiumBlocks.ENERGIZED_CLAY_BLOCKS.forEach { block ->
                 block.blockState.validStates.forEach { state ->
                     val material = block.getCMaterial(state)
-                    val ce = material.getProperty(PropertyKey.CLAY).energy!!
+                    val ce = material.getProperty(CPropertyKey.CLAY).energy!!
                     put(
                         ItemAndMeta(OrePrefix.block, material),
                         PanDuplicationEntry(ce, false)

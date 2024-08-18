@@ -1,5 +1,7 @@
 package com.github.trc.clayium.common.loaders.recipe
 
+import com.github.trc.clayium.api.unification.material.CMaterials.clay
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.blocks.clayworktable.ClayWorkTableMethod.CUT
 import com.github.trc.clayium.common.blocks.clayworktable.ClayWorkTableMethod.CUT_DISC
 import com.github.trc.clayium.common.blocks.clayworktable.ClayWorkTableMethod.CUT_PLATE
@@ -9,8 +11,6 @@ import com.github.trc.clayium.common.blocks.clayworktable.ClayWorkTableMethod.RO
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts.LargeClayBall
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts.RawClaySlicer
 import com.github.trc.clayium.common.recipe.CWTRecipes
-import com.github.trc.clayium.common.unification.material.CMaterials.clay
-import com.github.trc.clayium.common.unification.ore.OrePrefix
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 

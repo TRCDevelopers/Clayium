@@ -1,11 +1,11 @@
 package com.github.trc.clayium.common.blocks
 
+import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.api.util.toItemStack
 import com.github.trc.clayium.client.model.MaterialStateMapper
 import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
-import com.github.trc.clayium.common.unification.material.CMaterials
-import com.github.trc.clayium.common.unification.material.Material
 import net.minecraft.block.Block
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
@@ -22,12 +22,12 @@ import net.minecraftforge.fml.relauncher.SideOnly
 @Suppress("OVERRIDE_DEPRECATION")
 abstract class BlockMaterialBase(
     blockMaterial: net.minecraft.block.material.Material,
-    val mapping: Map<Int, Material>,
+    val mapping: Map<Int, CMaterial>,
 ) : Block(blockMaterial) {
 
     abstract fun getMaterialProperty(): CMaterialProperty
 
-    fun getItemStack(material: Material, count: Int = 1): ItemStack {
+    fun getItemStack(material: CMaterial, count: Int = 1): ItemStack {
         return defaultState.withProperty(getMaterialProperty(), material).toItemStack(count)
     }
 

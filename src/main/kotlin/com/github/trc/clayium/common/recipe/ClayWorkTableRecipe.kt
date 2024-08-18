@@ -1,11 +1,11 @@
 package com.github.trc.clayium.common.recipe
 
+import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.common.blocks.clayworktable.ClayWorkTableMethod
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
-import com.github.trc.clayium.common.unification.OreDictUnifier
-import com.github.trc.clayium.common.unification.material.Material
-import com.github.trc.clayium.common.unification.ore.OrePrefix
-import com.github.trc.clayium.common.unification.stack.UnificationEntry
 import com.google.common.base.Preconditions
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -58,12 +58,12 @@ class ClayWorkTableRecipe(
 
         fun input(item: Item, amount: Int = 1) { input(RecipeInput(item, amount)) }
         fun input(item: MetaItemClayium.MetaValueItem, amount: Int = 1) { input(RecipeInput(Ingredient.fromStacks(item.getStackForm(1)), amount)) }
-        fun input(orePrefix: OrePrefix, material: Material, amount: Int = 1) { input(RecipeInput(OreIngredient(UnificationEntry(orePrefix, material).toString()), amount)) }
+        fun input(orePrefix: OrePrefix, material: CMaterial, amount: Int = 1) { input(RecipeInput(OreIngredient(UnificationEntry(orePrefix, material).toString()), amount)) }
 
         fun output(itemStack: ItemStack) { outputs.add(itemStack) }
         fun output(item: Item, amount: Int = 1) { output(ItemStack(item, amount)) }
         fun output(item: MetaItemClayium.MetaValueItem, amount: Int = 1) { output(item.getStackForm(amount)) }
-        fun output(orePrefix: OrePrefix, material: Material, amount: Int = 1) { output(OreDictUnifier.get(orePrefix, material, 1)) }
+        fun output(orePrefix: OrePrefix, material: CMaterial, amount: Int = 1) { output(OreDictUnifier.get(orePrefix, material, 1)) }
 
         fun build(): ClayWorkTableRecipe {
             val primaryOutput = outputs[0]

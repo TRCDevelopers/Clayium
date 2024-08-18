@@ -1,12 +1,13 @@
 package com.github.trc.clayium.common.items.metaitem
 
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.unification.stack.UnificationEntry
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.items.ItemClayium
 import com.github.trc.clayium.common.items.metaitem.component.*
-import com.github.trc.clayium.common.unification.OreDictUnifier
-import com.github.trc.clayium.common.unification.material.Material
-import com.github.trc.clayium.common.unification.ore.OrePrefix
-import com.github.trc.clayium.common.unification.stack.UnificationEntry
 import com.github.trc.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.shorts.Short2ObjectAVLTreeMap
 import net.minecraft.client.Minecraft
@@ -56,7 +57,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
     @SideOnly(Side.CLIENT)
     open fun registerModels() {
         for (item in this.metaValueItems.values) {
-            ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${Clayium.MOD_ID}:${item.name}", "inventory"))
+            ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation(clayiumId(item.name), "inventory"))
         }
     }
 
@@ -99,7 +100,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         val meta: Short,
         val name: String,
     ) {
-        val translationKey = "item.${Clayium.MOD_ID}.$name"
+        val translationKey = "item.${CValues.MOD_ID}.$name"
         val behaviors = mutableListOf<IItemBehavior>()
         var colorHandler: IItemColorHandler? = null
         var rarity: IRarity = EnumRarity.COMMON
@@ -138,7 +139,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
             return this
         }
 
-        fun oreDict(orePrefix: OrePrefix, material: Material): MetaValueItem {
+        fun oreDict(orePrefix: OrePrefix, material: CMaterial): MetaValueItem {
             metaOreDicts.put(meta, UnificationEntry(orePrefix, material).toString())
             return this
         }

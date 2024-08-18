@@ -1,15 +1,15 @@
 package com.github.trc.clayium.common.loaders.recipe
 
+import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.unification.material.CMaterials
+import com.github.trc.clayium.api.unification.material.CMaterials.clay
+import com.github.trc.clayium.api.unification.material.CMaterials.denseClay
+import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.recipe.RecipeUtils
-import com.github.trc.clayium.common.unification.OreDictUnifier
-import com.github.trc.clayium.common.unification.material.CMaterials
-import com.github.trc.clayium.common.unification.material.CMaterials.clay
-import com.github.trc.clayium.common.unification.material.CMaterials.denseClay
-import com.github.trc.clayium.common.unification.ore.OrePrefix
-import com.github.trc.clayium.common.unification.stack.UnificationEntry
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 

@@ -1,9 +1,9 @@
 package com.github.trc.clayium.common.blocks
 
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
+import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
-import com.github.trc.clayium.common.unification.material.Material
 import net.minecraft.block.SoundType
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemStack
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 abstract class BlockEnergizedClay(
-    mapping: Map<Int, Material>,
+    mapping: Map<Int, CMaterial>,
 ) : BlockMaterialBase(net.minecraft.block.material.Material.GROUND, mapping) {
 
     init {
@@ -32,7 +32,7 @@ abstract class BlockEnergizedClay(
     }
 
     companion object {
-        fun create(mapping: Map<Int, Material>): BlockEnergizedClay {
+        fun create(mapping: Map<Int, CMaterial>): BlockEnergizedClay {
             val materials = mapping.values
             val prop = CMaterialProperty(materials, "material")
             return object : BlockEnergizedClay(mapping) {

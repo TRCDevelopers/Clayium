@@ -4,7 +4,6 @@ import com.cleanroommc.modularui.drawable.UITexture
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.Clayium
 
 object ClayGuiTextures {
     private fun slotTexture() = UITexture.builder()
@@ -59,7 +58,7 @@ object ClayGuiTextures {
     val M_TRACK_FILTER_SLOTS = arrayOf(FILTER_SLOT_M1, FILTER_SLOT_M2, FILTER_SLOT_M3, FILTER_SLOT_M4, FILTER_SLOT_M5, FILTER_SLOT_M6)
 
     val PROGRESS_BAR = UITexture.builder()
-        .location(Clayium.MOD_ID, "gui/progress_bar")
+        .location(clayiumId("gui/progress_bar"))
         .imageSize(256, 256)
         .uv(1, 0, 22, 34)
         .canApplyTheme()

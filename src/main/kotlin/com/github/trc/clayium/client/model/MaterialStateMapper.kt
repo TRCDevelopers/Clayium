@@ -1,8 +1,8 @@
 package com.github.trc.clayium.client.model
 
+import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.common.blocks.BlockMaterialBase
 import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
-import com.github.trc.clayium.common.unification.material.Material
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -20,7 +20,7 @@ object MaterialStateMapper : IStateMapper {
 
     fun createModelLocation(state: IBlockState): ModelResourceLocation {
         for ((property, value) in state.properties) {
-            if (property !is CMaterialProperty || value !is Material) continue
+            if (property !is CMaterialProperty || value !is CMaterial) continue
 
             val name = property.getName(value)
             val split = name.split("__")

@@ -1,6 +1,6 @@
 package com.github.trc.clayium.client.renderer
 
-import com.github.trc.clayium.api.util.CUtils.clayiumId
+import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer

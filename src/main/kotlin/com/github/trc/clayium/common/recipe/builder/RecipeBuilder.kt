@@ -2,6 +2,10 @@ package com.github.trc.clayium.common.recipe.builder
 
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trc.clayium.common.recipe.Recipe
@@ -12,10 +16,6 @@ import com.github.trc.clayium.common.recipe.ingredient.CItemRecipeInput
 import com.github.trc.clayium.common.recipe.ingredient.COreRecipeInput
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
-import com.github.trc.clayium.common.unification.OreDictUnifier
-import com.github.trc.clayium.common.unification.material.Material
-import com.github.trc.clayium.common.unification.ore.OrePrefix
-import com.github.trc.clayium.common.unification.stack.UnificationEntry
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -65,7 +65,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun input(metaTileEntity: MetaTileEntity, amount: Int = 1) = input(metaTileEntity.getStackForm(amount))
     fun input(block: Block, amount: Int = 1) = input(ItemStack(block, amount))
     fun input(oreDict: String, amount: Int = 1) = inputs(COreRecipeInput(oreDict, amount))
-    open fun input(orePrefix: OrePrefix, material: Material, amount: Int = 1) = inputs(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
+    open fun input(orePrefix: OrePrefix, material: CMaterial, amount: Int = 1) = inputs(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
 
     private fun outputs(vararg stacks: ItemStack): R {
         outputs.addAll(stacks)
@@ -78,7 +78,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun output(metaTileEntity: MetaTileEntity, amount: Int = 1) = output(metaTileEntity.getStackForm(amount))
     fun output(block: Block, amount: Int = 1) = output(ItemStack(block, amount))
     fun output(oreDict: String, amount: Int = 1) = outputs(OreDictUnifier.get(oreDict, amount))
-    fun output(orePrefix: OrePrefix, material: Material, amount: Int = 1) = outputs(OreDictUnifier.get(orePrefix, material, amount))
+    fun output(orePrefix: OrePrefix, material: CMaterial, amount: Int = 1) = outputs(OreDictUnifier.get(orePrefix, material, amount))
 
     fun chancedOutput(output: ItemStack, chance: Int): R {
         chancedOutputs.add(ChancedOutput(output, chance))
@@ -92,8 +92,8 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun chancedOutput(block: Block, chance: Int): R = chancedOutput(block, 1, chance)
     fun chancedOutput(oreDict: String, amount: Int, chance: Int): R = chancedOutput(OreDictUnifier.get(oreDict, amount), chance)
     fun chancedOutput(oreDict: String, chance: Int) = chancedOutput(oreDict, 1, chance)
-    fun chancedOutput(orePrefix: OrePrefix, material: Material, amount: Int, chance: Int): R = chancedOutput(OreDictUnifier.get(orePrefix, material, amount), chance)
-    fun chancedOutput(orePrefix: OrePrefix, material: Material, chance: Int) = chancedOutput(orePrefix, material, 1, chance)
+    fun chancedOutput(orePrefix: OrePrefix, material: CMaterial, amount: Int, chance: Int): R = chancedOutput(OreDictUnifier.get(orePrefix, material, amount), chance)
+    fun chancedOutput(orePrefix: OrePrefix, material: CMaterial, chance: Int) = chancedOutput(orePrefix, material, 1, chance)
 
     fun chancedLogic(logic: IChancedOutputLogic): R {
         chancedOutputLogic = logic

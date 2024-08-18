@@ -1,6 +1,7 @@
 package com.github.trc.clayium.integration.jei.basic
 
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.recipe.RecipeCategory
 import mezz.jei.api.IGuiHelper
 import mezz.jei.api.gui.IDrawable
@@ -11,7 +12,6 @@ import mezz.jei.api.ingredients.VanillaTypes
 import mezz.jei.api.recipe.IRecipeCategory
 import net.minecraft.client.Minecraft
 import net.minecraft.client.resources.I18n
-import net.minecraft.util.ResourceLocation
 
 class ClayiumRecipeCategory(
     private val guiHelper: IGuiHelper,
@@ -19,15 +19,15 @@ class ClayiumRecipeCategory(
 ) : IRecipeCategory<ClayiumRecipeWrapper> {
 
     private val background = guiHelper.createDrawable(
-        ResourceLocation(Clayium.MOD_ID, "textures/gui/jei.png"),
+        clayiumId("textures/gui/jei.png"),
         5, 11, 166, 65,
     )
     private val progressBarBackground = guiHelper.createDrawable(
-        ResourceLocation(Clayium.MOD_ID, "textures/gui/progress_bar.png"),
+        clayiumId("textures/gui/progress_bar.png"),
         0, 0, 24, 17,
     )
     private val progressBar = guiHelper.createAnimatedDrawable(
-        guiHelper.createDrawable(ResourceLocation(Clayium.MOD_ID, "textures/gui/progress_bar.png"), 0, 17, 24, 17),
+        guiHelper.createDrawable(clayiumId("textures/gui/progress_bar.png"), 0, 17, 24, 17),
         40, IDrawableAnimated.StartDirection.LEFT, false,
     )
 
@@ -41,7 +41,7 @@ class ClayiumRecipeCategory(
     }
 
     override fun getModName(): String {
-        return Clayium.MOD_NAME
+        return CValues.MOD_NAME
     }
 
     override fun getBackground(): IDrawable {

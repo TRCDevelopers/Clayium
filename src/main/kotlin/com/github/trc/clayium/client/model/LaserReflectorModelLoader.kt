@@ -1,7 +1,7 @@
 package com.github.trc.clayium.client.model
 
 import com.github.trc.clayium.api.CValues
-import com.github.trc.clayium.api.util.CUtils.clayiumId
+import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.IBakedModel

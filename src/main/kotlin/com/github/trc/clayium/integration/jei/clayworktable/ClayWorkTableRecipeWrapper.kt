@@ -1,6 +1,6 @@
 package com.github.trc.clayium.integration.jei.clayworktable
 
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.clayworktable.ClayWorkTableMethod
 import com.github.trc.clayium.common.recipe.ClayWorkTableRecipe
 import com.github.trc.clayium.integration.jei.JeiPlugin
@@ -11,14 +11,13 @@ import mezz.jei.api.recipe.IRecipeWrapper
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.item.ItemStack
-import net.minecraft.util.ResourceLocation
 
 class ClayWorkTableRecipeWrapper(
     val recipe: ClayWorkTableRecipe
 ) : IRecipeWrapper {
 
     private val progressBar = guiHelper.createAnimatedDrawable(
-        guiHelper.createDrawable(ResourceLocation(Clayium.MOD_ID, "textures/gui/clayworktable.png"), 176, 0, 80, 16),
+        guiHelper.createDrawable(clayiumId("textures/gui/clayworktable.png"), 176, 0, 80, 16),
         recipe.clicks * 5,
         IDrawableAnimated.StartDirection.LEFT,
         false
@@ -46,7 +45,7 @@ class ClayWorkTableRecipeWrapper(
     }
 
     companion object {
-        private val GUI_IMAGE = ResourceLocation(Clayium.MOD_ID, "textures/gui/clayworktable.png")
+        private val GUI_IMAGE = clayiumId("textures/gui/clayworktable.png")
         private val guiHelper = JeiPlugin.jeiHelpers.guiHelper
 
         /**

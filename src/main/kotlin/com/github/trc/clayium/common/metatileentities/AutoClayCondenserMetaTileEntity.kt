@@ -14,15 +14,15 @@ import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.material.CPropertyKey
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.canStackWith
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
 import com.github.trc.clayium.common.gui.ClayGuiTextures
-import com.github.trc.clayium.common.unification.OreDictUnifier
-import com.github.trc.clayium.common.unification.material.Material
-import com.github.trc.clayium.common.unification.material.PropertyKey
-import com.github.trc.clayium.common.unification.ore.OrePrefix
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
@@ -41,7 +41,7 @@ class AutoClayCondenserMetaTileEntity(
 
     override val itemInventory = object : NotifiableItemStackHandler(this, 16, this, isExport = false) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
-            return getMaterial(stack)?.getPropOrNull(PropertyKey.CLAY) != null
+            return getMaterial(stack)?.getPropOrNull(CPropertyKey.CLAY) != null
         }
     }
     override val importItems = itemInventory
@@ -49,7 +49,7 @@ class AutoClayCondenserMetaTileEntity(
 
     private val maxCompressedClay = object : ClayiumItemStackHandler(this, 1) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
-            return getMaterial(stack)?.getPropOrNull(PropertyKey.CLAY) != null
+            return getMaterial(stack)?.getPropOrNull(CPropertyKey.CLAY) != null
         }
     }
 
@@ -67,7 +67,7 @@ class AutoClayCondenserMetaTileEntity(
             val m = getMaterial(stack) ?: continue
             if ((m.tier?.numeric ?: Int.MAX_VALUE) >= maxCompress) continue
 
-            val clay = m.getPropOrNull(PropertyKey.CLAY) ?: continue
+            val clay = m.getPropOrNull(CPropertyKey.CLAY) ?: continue
             val compressedClay = clay.compressedInto ?: continue
             // slow down the process for lower tier
             val compressedAmount = if (this.tier.numeric >= 7) { stack.count / 9 } else { min(stack.count / 9, 1) }
@@ -95,12 +95,12 @@ class AutoClayCondenserMetaTileEntity(
                         .matrix("IIII", "IIII", "IIII", "IIII")
                         .key('I') {
                             ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, it)
-                                .filter { getMaterial(it)?.getPropOrNull(PropertyKey.CLAY) != null }
+                                .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null }
                                 .slotGroup("compressor_inventory"))
                         }
                         .build().align(Alignment.Center))
                     .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(maxCompressedClay, 0)
-                        .filter { getMaterial(it)?.getPropOrNull(PropertyKey.CLAY) != null })
+                        .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null })
                         .align(Alignment.TopRight)
                         .background(ClayGuiTextures.CLAY_SLOT))
                 )
@@ -112,7 +112,7 @@ class AutoClayCondenserMetaTileEntity(
         return AutoClayCondenserMetaTileEntity(metaTileEntityId, tier)
     }
 
-    private fun getMaterial(stack: ItemStack): Material? {
+    private fun getMaterial(stack: ItemStack): CMaterial? {
         if (stack.isEmpty) return null
         val item = stack.item
         if (item !is ItemBlockMaterial) return null

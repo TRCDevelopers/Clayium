@@ -2,13 +2,13 @@ package com.github.trc.clayium.common.recipe.handler
 
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.ClayiumApi
+import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.material.CPropertyKey
+import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.common.recipe.RecipeUtils
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import com.github.trc.clayium.common.unification.OreDictUnifier
-import com.github.trc.clayium.common.unification.material.Material
-import com.github.trc.clayium.common.unification.material.PropertyKey
-import com.github.trc.clayium.common.unification.ore.OrePrefix
-import com.github.trc.clayium.common.unification.stack.UnificationEntry
 import net.minecraftforge.fml.common.registry.GameRegistry
 import kotlin.math.pow
 
@@ -16,12 +16,12 @@ object MaterialRecipeHandler {
     fun registerRecipes() {
         for (material in ClayiumApi.materialRegistry) {
             if (material.hasOre(OrePrefix.ingot)) {
-                if (material.hasProperty(PropertyKey.PLATE)) addPlateRecipe(OrePrefix.ingot, material)
+                if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.ingot, material)
                 tryAddGrindingRecipe(OrePrefix.ingot, material)
             }
 
             if (material.hasOre(OrePrefix.gem)) {
-                if (material.hasProperty(PropertyKey.PLATE)) addPlateRecipe(OrePrefix.gem, material)
+                if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.gem, material)
                 tryAddGrindingRecipe(OrePrefix.gem, material)
             }
 
@@ -42,11 +42,11 @@ object MaterialRecipeHandler {
         }
     }
 
-    private fun Material.hasOre(orePrefix: OrePrefix): Boolean {
+    private fun CMaterial.hasOre(orePrefix: OrePrefix): Boolean {
         return !OreDictUnifier.get(orePrefix, this).isEmpty
     }
 
-    private fun handleDust(dustPrefix: OrePrefix, material: Material) {
+    private fun handleDust(dustPrefix: OrePrefix, material: CMaterial) {
         val tier = material.tier?.numeric ?: 0
         fun addDustCondenseRecipe(outputPrefix: OrePrefix) {
             if (OreDictUnifier.get(outputPrefix, material).isEmpty) return
@@ -62,9 +62,9 @@ object MaterialRecipeHandler {
         addDustCondenseRecipe(OrePrefix.block)
         addDustCondenseRecipe(OrePrefix.gem)
 
-        if (material.hasProperty(PropertyKey.INGOT)) {
-            if (material.hasProperty(PropertyKey.BLAST_SMELTING)) {
-                val prop = material.getProperty(PropertyKey.BLAST_SMELTING)
+        if (material.hasProperty(CPropertyKey.INGOT)) {
+            if (material.hasProperty(CPropertyKey.BLAST_SMELTING)) {
+                val prop = material.getProperty(CPropertyKey.BLAST_SMELTING)
                 CRecipes.CLAY_BLAST_FURNACE.register {
                     input(dustPrefix, material)
                     output(OrePrefix.ingot, material)
@@ -72,8 +72,8 @@ object MaterialRecipeHandler {
                     duration(prop.duration)
                     tier(prop.tier)
                 }
-            } else if (material.hasProperty(PropertyKey.CLAY_SMELTING)) {
-                val prop = material.getProperty(PropertyKey.CLAY_SMELTING)
+            } else if (material.hasProperty(CPropertyKey.CLAY_SMELTING)) {
+                val prop = material.getProperty(CPropertyKey.CLAY_SMELTING)
                 CRecipes.SMELTER.register {
                     input(dustPrefix, material)
                     output(OrePrefix.ingot, material)
@@ -91,7 +91,7 @@ object MaterialRecipeHandler {
         }
     }
 
-    private fun handleImpureDust(material: Material) {
+    private fun handleImpureDust(material: CMaterial) {
         val tier = material.tier?.numeric ?: 0
         val (cePerTick, duration) = when (tier) {
             6 -> ClayEnergy.milli(100) to 100
@@ -109,10 +109,10 @@ object MaterialRecipeHandler {
         }
     }
 
-    private fun handleBlock(material: Material) {
-        if (material.hasProperty(PropertyKey.PLATE)) addPlateRecipe(OrePrefix.block, material)
-        if (material.hasProperty(PropertyKey.CLAY)) {
-            val prop = material.getProperty(PropertyKey.CLAY)
+    private fun handleBlock(material: CMaterial) {
+        if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.block, material)
+        if (material.hasProperty(CPropertyKey.CLAY)) {
+            val prop = material.getProperty(CPropertyKey.CLAY)
             if (prop.compressedInto != null) addClayBlockRecipe(material, prop.compressedInto)
         }
         tryAddGrindingRecipe(OrePrefix.block, material)
@@ -122,8 +122,8 @@ object MaterialRecipeHandler {
      * Adds plate and largePlate recipe for [material].
      * Assumes that [material] has a plate property.
      */
-    private fun addPlateRecipe(inputPrefix: OrePrefix, material: Material) {
-        val plateProperty = material.getProperty(PropertyKey.PLATE)
+    private fun addPlateRecipe(inputPrefix: OrePrefix, material: CMaterial) {
+        val plateProperty = material.getProperty(CPropertyKey.PLATE)
         CRecipes.BENDING.register {
             input(inputPrefix, material)
             output(OrePrefix.plate, material)
@@ -141,7 +141,7 @@ object MaterialRecipeHandler {
         }
     }
 
-    private fun tryAddGrindingRecipe(inputPrefix: OrePrefix, material: Material, outputAmount: Int = 1) {
+    private fun tryAddGrindingRecipe(inputPrefix: OrePrefix, material: CMaterial, outputAmount: Int = 1) {
         if (OreDictUnifier.get(OrePrefix.dust, material).isEmpty) return
         CRecipes.GRINDER.register {
             input(inputPrefix, material)
@@ -152,9 +152,9 @@ object MaterialRecipeHandler {
         }
     }
 
-    private fun addClayBlockRecipe(material: Material, compressedInto: Material) {
-        val clayProperty = material.getPropOrNull(PropertyKey.CLAY)
-        val resultClayProperty = compressedInto.getProperty(PropertyKey.CLAY)
+    private fun addClayBlockRecipe(material: CMaterial, compressedInto: CMaterial) {
+        val clayProperty = material.getPropOrNull(CPropertyKey.CLAY)
+        val resultClayProperty = compressedInto.getProperty(CPropertyKey.CLAY)
         if (clayProperty != null) {
             // generate recipes for non-energy clay blocks
             if (resultClayProperty.energy == null) {

@@ -14,15 +14,15 @@ import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.AutoIoHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.material.CPropertyKey
+import com.github.trc.clayium.api.unification.material.Clay
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
-import com.github.trc.clayium.common.unification.OreDictUnifier
-import com.github.trc.clayium.common.unification.material.Clay
-import com.github.trc.clayium.common.unification.material.Material
-import com.github.trc.clayium.common.unification.material.PropertyKey
-import com.github.trc.clayium.common.unification.ore.OrePrefix
 import com.github.trc.clayium.common.util.TransferUtils
 import net.minecraft.init.Blocks
 import net.minecraft.item.Item
@@ -88,7 +88,7 @@ class ClayFabricatorMetaTileEntity(
 
             if (inputItem is ItemBlockMaterial) {
                 val material = inputItem.blockMaterial.getCMaterial(inputStack)
-                val clayProperty = material.getPropOrNull(PropertyKey.CLAY)
+                val clayProperty = material.getPropOrNull(CPropertyKey.CLAY)
                 if (clayProperty == null || clayProperty.compressionLevel > maxClayCompressionLevel) return invalidateInput()
                 prepareCMaterialClay(material, clayProperty, inputStack.count)
             }
@@ -105,7 +105,7 @@ class ClayFabricatorMetaTileEntity(
             this.currentProgress = 1
         }
 
-        private fun prepareCMaterialClay(material: Material, clayProperty: Clay, count: Int) {
+        private fun prepareCMaterialClay(material: CMaterial, clayProperty: Clay, count: Int) {
             val outputs = listOf(OreDictUnifier.get(OrePrefix.block, material, count))
             if (!TransferUtils.insertToHandler(metaTileEntity.exportItems, outputs, true)) {
                 this.outputsFull = true

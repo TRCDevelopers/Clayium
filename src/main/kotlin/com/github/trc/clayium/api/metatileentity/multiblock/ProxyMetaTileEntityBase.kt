@@ -5,8 +5,8 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.INTERFACE_SYNC_MI
 import com.github.trc.clayium.api.capability.ISynchronizedInterface
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.getMetaTileEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
@@ -92,7 +92,7 @@ abstract class ProxyMetaTileEntityBase(
         super.onFirstTick()
         if (this.targetPos != null && this.targetDimensionId != -1) {
             val world = DimensionManager.getWorld(this.targetDimensionId) ?: return
-            val metaTileEntity = CUtils.getMetaTileEntity(world, this.targetPos) ?: return
+            val metaTileEntity = world.getMetaTileEntity(this.targetPos) ?: return
             if (canLink(metaTileEntity)) {
                 this.target = metaTileEntity
                 this.onLink(metaTileEntity)
@@ -118,7 +118,7 @@ abstract class ProxyMetaTileEntityBase(
 
     final override fun synchronize(pos: BlockPos, dimensionId: Int): Boolean {
         val world = DimensionManager.getWorld(dimensionId) ?: return false
-        val metaTileEntity = CUtils.getMetaTileEntity(world, pos) ?: return false
+        val metaTileEntity = world.getMetaTileEntity(pos) ?: return false
         if (!canLink(metaTileEntity)) return false
 
         this.target = metaTileEntity

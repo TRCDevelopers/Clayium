@@ -25,10 +25,10 @@ class BlockCaReactorCoil : VariantBlock<BlockCaReactorCoil.BlockType>(Material.I
     override fun getTier(world: IBlockAccess, pos: BlockPos) = getEnum(world.getBlockState(pos)).tier
 
     enum class BlockType(val tier: ITier) : IStringSerializable {
-        ANTIMATTER_COIL(ClayTiers.ANTIMATTER),
-        PURE_ANTIMATTER_COIL(ClayTiers.PURE_ANTIMATTER),
-        OEC_COIL(ClayTiers.OEC),
-        OPA_COIL(ClayTiers.OPA),
+        ANTIMATTER(ClayTiers.ANTIMATTER),
+        PURE_ANTIMATTER(ClayTiers.PURE_ANTIMATTER),
+        OEC(ClayTiers.OEC),
+        OPA(ClayTiers.OPA),
         ;
 
         override fun getName() = name.lowercase()

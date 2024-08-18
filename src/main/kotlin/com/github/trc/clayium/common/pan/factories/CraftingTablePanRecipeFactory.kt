@@ -27,7 +27,7 @@ object CraftingTablePanRecipeFactory : IPanRecipeFactory {
         for (slot in 0..<9) matrix.setInventorySlotContents(slot, stacks[slot])
 
         val recipe: IRecipe = CraftingManager.findMatchingRecipe(matrix, world) ?: return null
-        val output = recipe.recipeOutput
+        val output = recipe.recipeOutput.copy()
         val inputs = recipe.ingredients.map { ingredient ->
             // field `matchingStacks` and method `getMatchingStacks` is not the same.
             // `matchingStacks` is an empty list in OreIngredient.

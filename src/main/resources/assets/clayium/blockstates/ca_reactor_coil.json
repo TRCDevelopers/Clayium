@@ -8,25 +8,25 @@
         },
         "model": "cube_all"
       },
-      "antimatter_coil": {
+      "antimatter": {
         "textures": {
           "all":"clayium:blocks/ca_reactor_coil_antimatter"
         },
         "model": "cube_all"
       },
-      "pure_antimatter_coil": {
+      "pure_antimatter": {
         "textures": {
           "all":"clayium:blocks/ca_reactor_coil_pure_antimatter"
         },
         "model": "cube_all"
       },
-      "oec_coil": {
+      "oec": {
         "textures": {
           "all":"clayium:blocks/ca_reactor_coil_oec"
         },
         "model": "cube_all"
       },
-      "opa_coil": {
+      "opa": {
         "textures": {
           "all":"clayium:blocks/ca_reactor_coil_opa"
         },

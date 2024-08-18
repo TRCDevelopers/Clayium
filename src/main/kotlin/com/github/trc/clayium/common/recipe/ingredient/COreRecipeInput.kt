@@ -1,9 +1,9 @@
 package com.github.trc.clayium.common.recipe.ingredient
 
-import com.github.trc.clayium.common.unification.material.Material
-import com.github.trc.clayium.common.unification.ore.OrePrefix
-import com.github.trc.clayium.common.unification.stack.ItemAndMeta
-import com.github.trc.clayium.common.unification.stack.UnificationEntry
+import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.unification.stack.ItemAndMeta
+import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import net.minecraft.item.ItemStack
 import net.minecraftforge.oredict.OreDictionary
 
@@ -13,7 +13,7 @@ class COreRecipeInput(
 ) : CRecipeInput() {
 
     constructor(oreDict: String, amount: Int = 1) : this(OreDictionary.getOreID(oreDict), amount)
-    constructor(orePrefix: OrePrefix, material: Material, amount: Int = 1) : this(UnificationEntry(orePrefix, material).toString(), amount)
+    constructor(orePrefix: OrePrefix, material: CMaterial, amount: Int = 1) : this(UnificationEntry(orePrefix, material).toString(), amount)
 
     override val stacks by lazy {
         val oreStacks = OreDictionary.getOres(OreDictionary.getOreName(oreId)).map {

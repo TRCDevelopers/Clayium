@@ -1,10 +1,10 @@
 package com.github.trc.clayium.common.recipe
 
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
-import com.github.trc.clayium.common.unification.stack.UnificationEntry
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.FurnaceRecipes
 import net.minecraft.util.ResourceLocation

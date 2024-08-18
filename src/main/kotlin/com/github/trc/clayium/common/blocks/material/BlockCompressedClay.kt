@@ -1,13 +1,13 @@
 package com.github.trc.clayium.common.blocks.material
 
+import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.blocks.BlockMaterialBase
 import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
-import com.github.trc.clayium.common.unification.material.Material
 import net.minecraft.block.SoundType
 
 abstract class BlockCompressedClay(
-    mapping: Map<Int, Material>
+    mapping: Map<Int, CMaterial>
 ) : BlockMaterialBase(net.minecraft.block.material.Material.CLAY, mapping) {
     init {
         setSoundType(SoundType.GROUND)
@@ -19,7 +19,7 @@ abstract class BlockCompressedClay(
     }
 
     companion object {
-        fun create(mapping: Map<Int, Material>): BlockCompressedClay {
+        fun create(mapping: Map<Int, CMaterial>): BlockCompressedClay {
             val materials = mapping.values
             val prop = CMaterialProperty(materials, "material")
             return object : BlockCompressedClay(mapping) {

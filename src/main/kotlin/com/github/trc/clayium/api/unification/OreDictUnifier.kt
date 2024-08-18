@@ -1,8 +1,8 @@
-package com.github.trc.clayium.common.unification
+package com.github.trc.clayium.api.unification
 
-import com.github.trc.clayium.common.unification.material.Material
-import com.github.trc.clayium.common.unification.ore.OrePrefix
-import com.github.trc.clayium.common.unification.stack.UnificationEntry
+import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import net.minecraft.item.ItemStack
 import net.minecraftforge.oredict.OreDictionary
 
@@ -12,7 +12,7 @@ object OreDictUnifier {
         OreDictionary.registerOre(oreDict, stack)
     }
 
-    fun registerOre(stack: ItemStack, orePrefix: OrePrefix, material: Material) {
+    fun registerOre(stack: ItemStack, orePrefix: OrePrefix, material: CMaterial) {
         registerOre(stack, UnificationEntry(orePrefix, material).toString())
     }
 
@@ -24,7 +24,7 @@ object OreDictUnifier {
         }
     }
 
-    fun get(orePrefix: OrePrefix, material: Material, stackSize: Int = 1): ItemStack {
+    fun get(orePrefix: OrePrefix, material: CMaterial, stackSize: Int = 1): ItemStack {
         return get(UnificationEntry(orePrefix, material).toString(), stackSize)
     }
 }

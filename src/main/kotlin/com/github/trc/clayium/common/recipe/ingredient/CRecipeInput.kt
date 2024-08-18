@@ -1,6 +1,6 @@
 package com.github.trc.clayium.common.recipe.ingredient
 
-import com.github.trc.clayium.common.unification.stack.ItemAndMeta
+import com.github.trc.clayium.api.unification.stack.ItemAndMeta
 import net.minecraft.item.ItemStack
 
 abstract class CRecipeInput {

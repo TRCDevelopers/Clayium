@@ -2,7 +2,7 @@ package com.github.trc.clayium.client.renderer
 
 import com.github.trc.clayium.api.capability.ISynchronizedInterface
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
-import com.github.trc.clayium.api.util.CUtils
+import com.github.trc.clayium.api.util.getMetaTileEntity
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
@@ -27,7 +27,7 @@ object InterfaceRenderer {
         if (!isBlockSelected) return
 
         val targetWorld = DimensionManager.getWorld(targetDimension)
-        val targetMetaTileEntity = CUtils.getMetaTileEntity(targetWorld, targetPos)
+        val targetMetaTileEntity = targetWorld.getMetaTileEntity(targetPos)
         if (targetMetaTileEntity == null) return
 
         val tickTime = (targetMetaTileEntity.world?.totalWorldTime ?: 0) + partialTicks

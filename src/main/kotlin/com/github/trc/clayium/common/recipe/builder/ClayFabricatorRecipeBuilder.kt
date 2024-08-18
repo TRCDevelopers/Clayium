@@ -2,10 +2,10 @@ package com.github.trc.clayium.common.recipe.builder
 
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
+import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.material.CPropertyKey
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.recipe.Recipe
-import com.github.trc.clayium.common.unification.material.Material
-import com.github.trc.clayium.common.unification.material.PropertyKey
-import com.github.trc.clayium.common.unification.ore.OrePrefix
 
 /**
  * Builder for creating a recipe for the (solar) clay fabricator.
@@ -48,9 +48,9 @@ class ClayFabricatorRecipeBuilder : RecipeBuilder<ClayFabricatorRecipeBuilder> {
         recipeRegistry.addRecipe(recipe)
     }
 
-    override fun input(orePrefix: OrePrefix, material: Material, amount: Int): ClayFabricatorRecipeBuilder {
+    override fun input(orePrefix: OrePrefix, material: CMaterial, amount: Int): ClayFabricatorRecipeBuilder {
         super.input(orePrefix, material, amount)
-        val clay = material.getPropOrNull(PropertyKey.CLAY)
+        val clay = material.getPropOrNull(CPropertyKey.CLAY)
         if (clay != null && clay.compressedInto != null) {
             this.output(orePrefix, clay.compressedInto)
         }

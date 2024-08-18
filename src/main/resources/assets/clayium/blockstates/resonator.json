@@ -1,26 +1,26 @@
 {
   "forge_marker": 1,
   "variants": {
-    "meta": {
-      "0": {
+    "variant": {
+      "antimatter": {
         "textures": {
           "all": "clayium:blocks/resonator-antimatter"
         },
         "model": "cube_all"
       },
-      "1": {
+      "pure_antimatter": {
         "textures": {
           "all": "clayium:blocks/resonator-pureantimatter"
         },
         "model": "cube_all"
       },
-      "2": {
+      "oec": {
         "textures": {
           "all": "clayium:blocks/resonator-oec"
         },
         "model": "cube_all"
       },
-      "3": {
+      "opa": {
         "textures": {
           "all": "clayium:blocks/resonator-opa"
         },

@@ -34,7 +34,7 @@ class TileClayWorkTable : TileEntity() {
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        return if (capability === ITEM_HANDLER_CAPABILITY) itemHandler as T else super.getCapability(capability, facing)
+        return if (capability === ITEM_HANDLER_CAPABILITY) capability.cast(itemHandler) else super.getCapability(capability, facing)
     }
 
     private val currentTool: ItemStack

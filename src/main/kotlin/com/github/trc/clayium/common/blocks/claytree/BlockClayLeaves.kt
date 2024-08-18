@@ -1,11 +1,11 @@
 package com.github.trc.clayium.common.blocks.claytree
 
 import com.github.trc.clayium.api.block.ITieredBlock
+import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.unification.material.CMaterials
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.getAsItem
-import com.github.trc.clayium.common.unification.OreDictUnifier
-import com.github.trc.clayium.common.unification.material.CMaterials
-import com.github.trc.clayium.common.unification.ore.OrePrefix
 import net.minecraft.block.BlockLeaves
 import net.minecraft.block.BlockPlanks
 import net.minecraft.block.state.BlockStateContainer
