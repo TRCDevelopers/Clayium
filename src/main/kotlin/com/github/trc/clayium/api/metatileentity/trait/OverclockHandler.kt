@@ -6,29 +6,37 @@ import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
+import kotlin.math.min
 
 class OverclockHandler(
     metaTileEntity: MetaTileEntity,
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.OVERCLOCK_HANDLER) {
 
-    var overclockFactor: Double = 1.0
+    var rawOcFactor: Double = 1.0
         private set(value) {
             val syncFlag = !metaTileEntity.isRemote && field != value
             field = value
             if (syncFlag) {
                 writeCustomData(ClayiumDataCodecs.UPDATE_OC_FACTOR) {
-                    writeDouble(overclockFactor)
+                    writeDouble(rawOcFactor)
                 }
             }
+            accelerationFactor = min(rawOcFactor, 10.0)
+            compensatedFactor = if (rawOcFactor > 10.0) rawOcFactor / accelerationFactor else 1.0
         }
+
+    var accelerationFactor = 1.0
+        private set
+    var compensatedFactor = 1.0
+        private set
 
     override fun onFirstTick() {
         super.onFirstTick()
-        overclockFactor = getOcFactor()
+        rawOcFactor = getOcFactor()
     }
 
     fun onNeighborBlockChange() {
-        overclockFactor = getOcFactor()
+        rawOcFactor = getOcFactor()
     }
 
     private fun getOcFactor(): Double {
@@ -47,7 +55,7 @@ class OverclockHandler(
 
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
         if (discriminator == ClayiumDataCodecs.UPDATE_OC_FACTOR) {
-            overclockFactor = buf.readDouble()
+            rawOcFactor = buf.readDouble()
         }
     }
 }

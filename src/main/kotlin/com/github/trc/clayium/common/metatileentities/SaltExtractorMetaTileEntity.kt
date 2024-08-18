@@ -65,7 +65,7 @@ class SaltExtractorMetaTileEntity(
     }
 
     override fun canProgress(): Boolean {
-        return super.canProgress() && this.clayEnergyHolder.drawEnergy(energyPerProgress)
+        return super.canProgress() && this.clayEnergyHolder.drawEnergy(energyPerProgress, simulate = false)
     }
 
     @SideOnly(Side.CLIENT)

@@ -140,8 +140,8 @@ abstract class MetaTileEntity(
      */
     open val useFaceForAllSides = false
 
-    private val overclockHandler = OverclockHandler(this)
-    val overclock: Double get() = overclockHandler.overclockFactor
+    val overclockHandler = OverclockHandler(this)
+    val overclock: Double get() = overclockHandler.rawOcFactor
 
     @SideOnly(Side.CLIENT)
     abstract fun registerItemModel(item: Item, meta: Int)

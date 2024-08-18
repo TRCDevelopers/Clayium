@@ -23,6 +23,7 @@ abstract class AbstractWorkable(
     var currentProgress = 0L
         protected set
 
+    protected val ocHandler = metaTileEntity.overclockHandler
     protected var invalidInputsForRecipes = false
     protected var outputsFull = false
 
@@ -79,9 +80,8 @@ abstract class AbstractWorkable(
     }
 
     protected open fun addProgress() {
-        currentProgress += metaTileEntity.overclock.toLong()
+        currentProgress += ocHandler.accelerationFactor.toLong()
     }
-
 
     protected open fun completeWork() {
         currentProgress = 0

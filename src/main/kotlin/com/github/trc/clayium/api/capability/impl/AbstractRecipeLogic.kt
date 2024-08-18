@@ -13,6 +13,7 @@ import com.github.trc.clayium.integration.jei.JeiPlugin
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
+import kotlin.math.pow
 
 /**
  * Recipe-based implementation of [AbstractWorkable]
@@ -28,7 +29,8 @@ abstract class AbstractRecipeLogic(
     protected var recipeCEt = ClayEnergy.ZERO
 
     /**
-     * Draw energy from the energy container
+     * Draw energy from the energy container.
+     * Overclocking should be applied.
      * @param ce the Clay Energy to remove
      * @param simulate whether to simulate energy extraction or not, default is false
      * @return true if energy can/was drained, otherwise false
@@ -69,11 +71,22 @@ abstract class AbstractRecipeLogic(
             return
         }
         if (!recipe.matches(true, inputInventory, tierNum)) return
+        val (cePerTick, duration) = applyOverclock(recipe.cePerTick, recipe.duration, ocHandler.compensatedFactor)
         this.itemOutputs = outputs
-        this.recipeCEt = recipe.cePerTick
-        this.requiredProgress = recipe.duration
+        this.recipeCEt = ClayEnergy(cePerTick)
+        this.requiredProgress = duration
         this.currentProgress = 1
         this.previousRecipe = recipe
+    }
+
+    /**
+     * Applies overclock to the recipe.
+     * @return { RawCEt, duration }
+     */
+    protected open fun applyOverclock(cePt: ClayEnergy, duration: Long, compensatedFactor: Double): LongArray {
+        val rawCEt = cePt.energy * compensatedFactor.pow(1.5)
+        val durationOCed = (duration / compensatedFactor)
+        return longArrayOf(rawCEt.toLong(), durationOCed.toLong())
     }
 
     override fun serializeNBT(): NBTTagCompound {
