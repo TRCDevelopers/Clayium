@@ -25,6 +25,15 @@ class RecipeLogicClayFurnace(
         prepareVanillaFurnaceRecipe(smeltingResult)
     }
 
+    override fun applyOverclock(cePt: ClayEnergy, duration: Long, compensatedFactor: Double): LongArray {
+        val (cet, duration) = super.applyOverclock(cePt, duration, compensatedFactor)
+        val machineTierNum = metaTileEntity.tier.numeric
+        val multipliedRecipeCEt =
+            ClayEnergy((cet.toDouble() * ConfigTierBalance.crafting.smelterConsumingEnergyMultiplier[machineTierNum - 4]).toLong())
+        val multipliedRecipeTime = (duration * ConfigTierBalance.crafting.smelterCraftTimeMultiplier[machineTierNum - 4]).toLong()
+        return longArrayOf(multipliedRecipeCEt.energy, multipliedRecipeTime)
+    }
+
     override fun prepareRecipe(recipe: Recipe) {
         val multipliedRecipeCEt = ClayEnergy(
             (recipe.cePerTick.energy.toDouble() * ConfigTierBalance.crafting.smelterConsumingEnergyMultiplier[metaTileEntity.tier.numeric - 4]).toLong()
@@ -53,19 +62,16 @@ class RecipeLogicClayFurnace(
             return
         }
         this.inputInventory.extractItem(0, 1, false)
-        val machineTierNum = metaTileEntity.tier.numeric
-        val multipliedRecipeCEt =
-            ClayEnergy((BASE_CE_CONSUMPTION.energy.toDouble() * ConfigTierBalance.crafting.smelterConsumingEnergyMultiplier[machineTierNum - 4]).toLong())
-        val multipliedRecipeTime = (FURNACE_RECIPE_TIME * ConfigTierBalance.crafting.smelterCraftTimeMultiplier[machineTierNum - 4]).toLong()
 
+        val (cet, duration) = applyOverclock(BASE_CE_CONSUMPTION, FURNACE_RECIPE_TIME, ocHandler.compensatedFactor)
         this.itemOutputs = listOf(smeltingResult)
-        this.recipeCEt = multipliedRecipeCEt
-        this.requiredProgress = multipliedRecipeTime
+        this.recipeCEt = ClayEnergy(cet)
+        this.requiredProgress = duration
         this.currentProgress = 1
     }
 
     private companion object {
-        private const val FURNACE_RECIPE_TIME = 200 //ticks
+        private const val FURNACE_RECIPE_TIME = 200L //ticks
         private val BASE_CE_CONSUMPTION = ClayEnergy(4)
     }
 }

@@ -147,7 +147,7 @@ class ClayLaserMetaTileEntity(
         super.update()
         if (isRemote) return
         if (canActivateByRedstone) {
-            laserManager.isActive = clayEnergyHolder.drawEnergy(energyCost)
+            laserManager.isActive = clayEnergyHolder.drawEnergy(energyCost, simulate = false)
         } else {
             laserManager.isActive = false
         }

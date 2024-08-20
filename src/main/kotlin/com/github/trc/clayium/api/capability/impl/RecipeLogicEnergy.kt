@@ -2,7 +2,6 @@ package com.github.trc.clayium.api.capability.impl
 
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 
 open class RecipeLogicEnergy(
@@ -14,24 +13,27 @@ open class RecipeLogicEnergy(
     private var energyConsumingMultiplier = 1.0
 
     override fun drawEnergy(ce: ClayEnergy, simulate: Boolean): Boolean {
-        val energy = ce.energy * energyConsumingMultiplier
-        return energyHolder.drawEnergy(ClayEnergy(energy.toLong()), simulate)
+        return energyHolder.drawEnergy(ClayEnergy((ce.energy * ocHandler.accelerationFactor).toLong()), simulate)
     }
 
-    override fun addProgress() {
-        currentProgress += metaTileEntity.overclock.toLong()
+    override fun applyOverclock(cePt: ClayEnergy, duration: Long, compensatedFactor: Double): LongArray {
+        val (cet, duration) = super.applyOverclock(cePt, duration, compensatedFactor)
+        return longArrayOf((cet * energyConsumingMultiplier).toLong(), (duration * durationMultiplier).toLong())
     }
 
-    override fun prepareRecipe(recipe: Recipe) {
-        super.prepareRecipe(recipe)
-        this.requiredProgress = (recipe.duration * durationMultiplier).toLong()
-    }
-
+    /**
+     * Mainly used by Condensers, Grinders, Centrifuges.
+     * The speed of these machines depends on the tier.
+     */
     fun setDurationMultiplier(provider: (tier: Int) -> Double): RecipeLogicEnergy {
         durationMultiplier = provider(this.tierNum)
         return this
     }
 
+    /**
+     * Mainly used by Condensers, Grinders, Centrifuges.
+     * The speed of these machines depends on the tier.
+     */
     fun setEnergyConsumingMultiplier(provider: (tier: Int) -> Double): RecipeLogicEnergy {
         energyConsumingMultiplier = provider(this.tierNum)
         return this

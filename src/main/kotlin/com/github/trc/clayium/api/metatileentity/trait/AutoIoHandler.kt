@@ -1,6 +1,8 @@
-package com.github.trc.clayium.api.metatileentity
+package com.github.trc.clayium.api.metatileentity.trait
 
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs
+import com.github.trc.clayium.api.metatileentity.MTETrait
+import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.common.config.ConfigTierBalance
 import net.minecraft.util.EnumFacing

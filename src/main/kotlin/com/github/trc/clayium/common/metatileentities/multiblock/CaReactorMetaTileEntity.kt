@@ -12,6 +12,7 @@ import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
+import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.IMultiblockPart
@@ -241,7 +242,7 @@ class CaReactorMetaTileEntity(
         }
     }
 
-    private inner class CaReactorRecipeLogic : AbstractRecipeLogic(this@CaReactorMetaTileEntity, caReactorRegistry) {
+    private inner class CaReactorRecipeLogic : MultiblockRecipeLogic(this@CaReactorMetaTileEntity, caReactorRegistry, multiblockLogic::structureFormed) {
         override fun trySearchNewRecipe() {
             val recipe = caReactorRegistry.findRecipeWithRank(avgHullRank, inputInventory.toList())
             if (recipe == null) {
@@ -253,11 +254,6 @@ class CaReactorMetaTileEntity(
             val multipliedRecipe = Recipe(recipe.inputs, recipe.outputs, recipe.chancedOutputs,
                 duration, cePerTick, recipe.tierNumeric)
             prepareRecipe(multipliedRecipe)
-        }
-
-        override fun drawEnergy(ce: ClayEnergy, simulate: Boolean): Boolean {
-            return multiblockLogic.structureFormed
-                    && clayEnergyHolder.drawEnergy(ce, simulate)
         }
     }
 }

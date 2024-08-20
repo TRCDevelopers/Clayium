@@ -35,6 +35,7 @@ class CaCondenserMetaTileEntity(
     }
 
     private inner class RecipeLogicCaCondenser : RecipeLogicEnergy(this@CaCondenserMetaTileEntity, recipeRegistry, energyHolder) {
+        //todo 生成される量を加工開始時にも考慮するべきか否か
         override fun completeWork() {
             currentProgress = 0
             TransferUtils.insertToHandler(metaTileEntity.exportItems, itemOutputs.map { it.apply {
@@ -43,11 +44,8 @@ class CaCondenserMetaTileEntity(
             )
         }
 
-        override fun updateWorkingProgress() {
-            if (drawEnergy(recipeCEt)) currentProgress += (craftTimeMultiplier * overclock.toLong())
-            if (currentProgress > requiredProgress) {
-                completeWork()
-            }
+        override fun getProgressPerTick(): Long {
+            return craftTimeMultiplier.toLong()
         }
     }
 }
