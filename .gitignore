@@ -118,4 +118,4 @@ run/
 !gradle-wrapper.jar
 
 # Kotlin
-./kotlin
+.kotlin/
