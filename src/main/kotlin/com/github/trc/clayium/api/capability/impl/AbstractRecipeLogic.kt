@@ -31,7 +31,7 @@ abstract class AbstractRecipeLogic(
     /**
      * Draw energy from the energy container.
      * Overclocking should be applied.
-     * @param ce the Clay Energy to remove
+     * @param ce Clay Energy to remove
      * @param simulate whether to simulate energy extraction or not, default is false
      * @return true if energy can/was drained, otherwise false
      */
@@ -41,11 +41,9 @@ abstract class AbstractRecipeLogic(
         JeiPlugin.jeiRuntime.recipesGui.showCategories(listOf(this.recipeRegistry.category.uniqueId))
     }
 
-    override fun updateWorkingProgress() {
-        if (drawEnergy(recipeCEt)) addProgress()
-        if (currentProgress > requiredProgress) {
-            completeWork()
-        }
+    final override fun updateWorkingProgress() {
+        if (!drawEnergy(recipeCEt)) return
+        super.updateWorkingProgress()
     }
 
     override fun trySearchNewRecipe() {

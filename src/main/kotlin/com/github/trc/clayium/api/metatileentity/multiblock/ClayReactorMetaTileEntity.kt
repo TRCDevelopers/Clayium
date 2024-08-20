@@ -18,7 +18,6 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import com.github.trc.clayium.common.util.TransferUtils
 import com.github.trc.clayium.common.util.UtilLocale
 import net.minecraft.client.resources.I18n
 import net.minecraft.util.EnumFacing
@@ -79,7 +78,7 @@ class ClayReactorMetaTileEntity(
         return world.getMetaTileEntity(pos) as? LaserProxyMetaTileEntity
     }
 
-    override val workable: MultiblockRecipeLogic = ClayReactorRecipeLogic(this)
+    override val workable: MultiblockRecipeLogic = ClayReactorRecipeLogic()
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayReactorMetaTileEntity(metaTileEntityId, tier)
@@ -108,17 +107,10 @@ class ClayReactorMetaTileEntity(
         return super.getCapability(capability, facing)
     }
 
-    private inner class ClayReactorRecipeLogic(private val clayReactor: ClayReactorMetaTileEntity)
-        : MultiblockRecipeLogic(clayReactor, CRecipes.CLAY_REACTOR, multiblockLogic::structureFormed) {
-        override fun updateWorkingProgress() {
-            if (drawEnergy(recipeCEt)) {
-                currentProgress++
-                currentProgress += clayReactor.laser?.energy?.toLong() ?: 0L
-            }
-            if (currentProgress > requiredProgress) {
-                currentProgress = 0
-                TransferUtils.insertToHandler(metaTileEntity.exportItems, itemOutputs)
-            }
+    private inner class ClayReactorRecipeLogic : MultiblockRecipeLogic(this@ClayReactorMetaTileEntity,
+        CRecipes.CLAY_REACTOR, multiblockLogic::structureFormed) {
+        override fun getProgressPerTick(): Long {
+            return 1L + (laser?.energy ?: 0.0).toLong()
         }
     }
 }

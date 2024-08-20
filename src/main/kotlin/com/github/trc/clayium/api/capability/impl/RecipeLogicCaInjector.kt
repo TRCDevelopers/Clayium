@@ -18,13 +18,8 @@ class RecipeLogicCaInjector(
         else -> 1.0
     }
 
-    override fun updateWorkingProgress() {
-        if (drawEnergy(recipeCEt)) {
-            currentProgress += (resonanceManager.resonance.pow(accelerationExponent).toLong() * metaTileEntity.overclock.toLong())
-        }
-        if (currentProgress > requiredProgress) {
-            completeWork()
-        }
+    override fun getProgressPerTick(): Long {
+        return resonanceManager.resonance.pow(accelerationExponent).toLong()
     }
 
     /**

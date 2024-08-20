@@ -79,8 +79,16 @@ abstract class AbstractWorkable(
         }
     }
 
-    protected open fun addProgress() {
-        currentProgress += ocHandler.accelerationFactor.toLong()
+    /**
+     * returns the progress per tick without overclocking.
+     * called every tick when the machine is working.
+     */
+    protected open fun getProgressPerTick(): Long {
+        return 1
+    }
+
+    protected fun addProgress() {
+        currentProgress += (getProgressPerTick() * ocHandler.accelerationFactor).toLong()
     }
 
     protected open fun completeWork() {
@@ -103,8 +111,9 @@ abstract class AbstractWorkable(
     private fun canFitNewOutputs(): Boolean {
         return true
         
-        // currently, NotifiableItemStackHandler.onContentsChanged isn't called if item is extracted without pressing shift key in GUI.
-        // therefore, metaTileEntity.hasNotifiedOutputs is remains false on that case.
+        // currently, NotifiableItemStackHandler.onContentsChanged isn't called
+        // if the item is extracted without pressing a shift key in GUI.
+        // therefore, metaTileEntity.hasNotifiedOutputs is remains false in that case.
         // so output full check is disabled.
 
 //        if (outputsFull && !metaTileEntity.hasNotifiedOutputs) return false
