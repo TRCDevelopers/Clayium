@@ -1,18 +1,16 @@
 package com.github.trc.clayium.common.metatileentities
 
-import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widget.Widget
-import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
-import com.github.trc.clayium.api.capability.impl.ClayFabricatorRecipeLogic
+import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
@@ -20,7 +18,6 @@ import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.builder.ClayFabricatorRecipeBuilder
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -68,48 +65,48 @@ class SolarClayFabricatorMetaTileEntity(
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        val panel = ModularPanel.defaultPanel(this.metaTileEntityId.toString())
-
-        panel.child(IKey.lang("machine.${CValues.MOD_ID}.solar_clay_fabricator").asWidget()
-            .top(6)
-            .left(6))
-
-        val slotsAndProgressBar = Row()
-            .widthRel(0.7f).height(26)
-            .align(Alignment.Center)
-            .top(30)
-            .child(workable.getProgressBar(syncManager).align(Alignment.Center))
-
-        slotsAndProgressBar.child(Widget()
-            .size(26, 26).left(4)
-            .background(ClayGuiTextures.LARGE_SLOT))
-            .child(ItemSlot().left(8).top(4)
-                .slot(SyncHandlers.itemSlot(importItems, 0)
-                    .singletonSlotGroup(2))
-                .background(IDrawable.EMPTY))
-        slotsAndProgressBar.child(Widget()
-            .size(26, 26).right(4)
-            .background(ClayGuiTextures.LARGE_SLOT))
-            .child(ItemSlot().right(8).top(4)
-                .slot(SyncHandlers.itemSlot(exportItems, 0)
-                    .accessibility(false, true)
-                    .singletonSlotGroup(0))
-                .background(IDrawable.EMPTY))
-
-        panel.child(slotsAndProgressBar)
-        panel.child(workable.createCeTextWidget(syncManager)
-            .widthRel(0.3f)
-            .pos(6, 60))
-            .child(playerInventoryTitle())
-
-        return panel.bindPlayerInventory()
+        return ModularPanel.defaultPanel(this.metaTileEntityId.toString())
+            .child(mainColumn {
+                child(buildMainParentWidget(syncManager)
+                    .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
+                        .child(largeSlot(SyncHandlers.itemSlot(importItems, 0)
+                            .singletonSlotGroup(2)).align(Alignment.CenterLeft))
+                        .child(workable.getProgressBar(syncManager).align(Alignment.Center))
+                        .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0)
+                            .accessibility(false, true)
+                            .singletonSlotGroup(0)).align(Alignment.CenterRight))
+                    )
+                    .child(workable.createCeTextWidget(syncManager)
+                        .bottom(12).left(0).widthRel(0.5f))
+                )
+            })
     }
 
-    private inner class SolarClayFabricatorRecipeLogic : ClayFabricatorRecipeLogic(this@SolarClayFabricatorMetaTileEntity, registry) {
+    private inner class SolarClayFabricatorRecipeLogic : AbstractRecipeLogic(this@SolarClayFabricatorMetaTileEntity, registry) {
+        private var clayEnergy = ClayEnergy.ZERO
+
         override fun drawEnergy(ce: ClayEnergy, simulate: Boolean): Boolean {
-            if (simulate) return true
+            val world = world ?: return false
             val pos = pos ?: return false
-            return world?.canSeeSky(pos.up()) == true && super.drawEnergy(ce, simulate)
+            if (!world.canSeeSky(pos.up())) return false
+
+            if (simulate) return true
+            clayEnergy += ce
+            return true
+        }
+
+        override fun completeWork() {
+            clayEnergy = ClayEnergy.ZERO
+            super.completeWork()
+        }
+
+        fun createCeTextWidget(syncManager: GuiSyncManager): TextWidget {
+            syncManager.syncValue("clayEnergy", SyncHandlers.longNumber(
+                { clayEnergy.energy },
+                { clayEnergy = ClayEnergy(it) }
+            ))
+
+            return IKey.dynamic { clayEnergy.format() }.asWidget()
         }
     }
 

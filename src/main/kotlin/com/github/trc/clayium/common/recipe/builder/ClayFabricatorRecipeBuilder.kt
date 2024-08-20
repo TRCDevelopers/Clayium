@@ -10,9 +10,9 @@ import com.github.trc.clayium.common.recipe.Recipe
 /**
  * Builder for creating a recipe for the (solar) clay fabricator.
  *
- * Output is automatically set if input material has clay property, or can be set manually.
+ * Output is automatically set if input material has clay property or can be set manually.
  * Duration is calculated by [requiredTicksCalculator], or can be set manually.
- * [CEtFactor] is automatically calculated.
+ * [cePerTick] is automatically calculated.
  */
 class ClayFabricatorRecipeBuilder : RecipeBuilder<ClayFabricatorRecipeBuilder> {
 

@@ -636,12 +636,12 @@ abstract class MetaTileEntity(
      */
     abstract override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel
 
-    protected fun mainColumn(builder: (Column.() -> Column)) = Column().margin(7).sizeRel(1f)
+    protected inline fun mainColumn(builder: (Column.() -> Column)) = Column().margin(7).sizeRel(1f)
         .builder()
         .child(SlotGroupWidget.playerInventory(0))
 
     /**
-     * returns main parent widget positioned above player inventory.
+     * returns the main parent widget positioned above player inventory.
      */
     protected open fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         return ParentWidget().widthRel(1f).expanded().marginBottom(2)
@@ -691,8 +691,5 @@ abstract class MetaTileEntity(
                 }
             }
         }
-
-        fun playerInventoryTitle() = IKey.lang("container.inventory").asWidget()
-            .debugName("player inventory title")
     }
 }
