@@ -46,6 +46,8 @@ abstract class AbstractWorkable(
      */
     protected abstract fun showRecipesInJei()
 
+    protected open fun getTier(): Int = metaTileEntity.tier.numeric
+
     override fun update() {
         if (metaTileEntity.isRemote || !isWorkingEnabled) return
         if (metaTileEntity.offsetTimer % 20 == 0L) {

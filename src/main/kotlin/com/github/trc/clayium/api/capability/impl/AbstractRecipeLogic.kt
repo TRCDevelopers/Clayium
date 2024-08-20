@@ -48,10 +48,10 @@ abstract class AbstractRecipeLogic(
 
     override fun trySearchNewRecipe() {
         var currentRecipe: Recipe? = null
-        currentRecipe = if (previousRecipe?.matches(false, inputInventory, tierNum) == true) {
+        currentRecipe = if (previousRecipe?.matches(false, inputInventory, getTier()) == true) {
             previousRecipe
         } else {
-            recipeRegistry.findRecipe(tierNum, inputInventory.toList())
+            recipeRegistry.findRecipe(getTier(), inputInventory.toList())
         }
 
         if (currentRecipe == null) {
@@ -68,7 +68,7 @@ abstract class AbstractRecipeLogic(
             this.outputsFull = true
             return
         }
-        if (!recipe.matches(true, inputInventory, tierNum)) return
+        if (!recipe.matches(true, inputInventory, getTier())) return
         val (cePerTick, duration) = applyOverclock(recipe.cePerTick, recipe.duration, ocHandler.compensatedFactor)
         this.itemOutputs = outputs
         this.recipeCEt = ClayEnergy(cePerTick)

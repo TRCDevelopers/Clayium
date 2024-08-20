@@ -17,11 +17,11 @@ data class Recipe(
     /**
      * if `machine.tier.numeric < recipe.tier`, then the recipe is not matched
      */
-    val tierNumeric: Int,
+    val recipeTier: Int,
 ) {
-    fun matches(consumeOnMatch: Boolean, inputsIn: IItemHandlerModifiable, tier: Int): Boolean {
+    fun matches(consumeOnMatch: Boolean, inputsIn: IItemHandlerModifiable, machineTier: Int): Boolean {
 
-        if (this.tierNumeric > tier) return false
+        if (this.recipeTier > machineTier) return false
         val (isItemsMatched, amountsToConsume) = matchesItems(inputsIn.toList())
         if (!isItemsMatched) return false
 
@@ -73,6 +73,6 @@ data class Recipe(
     }
 
     override fun toString(): String {
-        return "Recipe(inputs=$inputs, outputs=$outputs, duration=$duration, cePerTick=$cePerTick, tierNumeric=$tierNumeric)"
+        return "Recipe(inputs=$inputs, outputs=$outputs, duration=$duration, cePerTick=$cePerTick, tierNumeric=$recipeTier)"
     }
 }

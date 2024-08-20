@@ -42,7 +42,7 @@ class ClayFabricatorRecipeBuilder : RecipeBuilder<ClayFabricatorRecipeBuilder> {
             duration = duration,
             cePerTick = cet,
             chancedOutputs = null,
-            tierNumeric = tier
+            recipeTier = tier
         )
 
         recipeRegistry.addRecipe(recipe)

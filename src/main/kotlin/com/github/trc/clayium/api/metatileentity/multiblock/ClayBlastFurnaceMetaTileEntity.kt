@@ -40,7 +40,7 @@ class ClayBlastFurnaceMetaTileEntity(
     override val exportItems = NotifiableItemStackHandler(this, 2, this, isExport = true)
     override val itemInventory = ItemHandlerProxy(importItems, exportItems)
 
-    override val workable: MultiblockRecipeLogic = MultiblockRecipeLogic(this, recipeRegistry, multiblockLogic::structureFormed)
+    override val workable: MultiblockRecipeLogic = MultiblockRecipeLogic(this, recipeRegistry, multiblockLogic)
 
     private fun checkStructure(handler: MultiblockLogic): StructureValidationResult {
         val world = world

@@ -530,7 +530,6 @@ abstract class MetaTileEntity(
     open fun onNeighborChanged(facing: EnumFacing) {
     }
     open fun neighborChanged() {
-        println("NEIGHBOR BLOCK CHANGED")
         EnumFacing.entries.forEach(this::refreshConnection)
         overclockHandler.onNeighborBlockChange()
     }

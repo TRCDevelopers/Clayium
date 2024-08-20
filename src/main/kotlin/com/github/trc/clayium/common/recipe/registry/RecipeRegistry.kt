@@ -34,9 +34,9 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
         builder.buildAndRegister()
     }
 
-    fun findRecipe(tier: Int, inputsIn: List<ItemStack>): Recipe? {
-        return _recipes.find {
-            it.tierNumeric <= tier && it.matches(inputsIn)
+    fun findRecipe(machineTier: Int, inputsIn: List<ItemStack>): Recipe? {
+        return _recipes.find { recipe ->
+            recipe.recipeTier <= machineTier && recipe.matches(inputsIn)
         }
     }
 
@@ -59,7 +59,7 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
             Clayium.LOGGER.error("invalid recipe: Output has an empty ItemStack.")
             return Result.failure(IllegalArgumentException())
         }
-        if (recipe.tierNumeric < 0) {
+        if (recipe.recipeTier < 0) {
             Clayium.LOGGER.info("invalid recipe: Tier is less than 0.")
             return Result.failure(IllegalArgumentException())
         }
