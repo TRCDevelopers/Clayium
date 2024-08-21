@@ -6,6 +6,7 @@ import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.recipe.Recipe
+import kotlin.math.pow
 
 /**
  * Builder for creating a recipe for the (solar) clay fabricator.
@@ -85,9 +86,9 @@ class ClayFabricatorRecipeBuilder : RecipeBuilder<ClayFabricatorRecipeBuilder> {
                 else -> 1
             }
 
-            val n = (Math.pow(10.0, a + 1.0) * (b - 1)) / (Math.pow(b, a)  - 1)
+            val n = (10.0.pow(a + 1.0) * (b - 1)) / (b.pow(a) - 1)
 
-            return (Math.pow(b, inputTier.toDouble()) * (n / multi)).toLong()
+            return (b.pow(inputTier.toDouble()) * (n / multi)).toLong()
         }
     }
 }

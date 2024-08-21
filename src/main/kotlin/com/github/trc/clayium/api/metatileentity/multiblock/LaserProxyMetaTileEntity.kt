@@ -68,7 +68,6 @@ class LaserProxyMetaTileEntity(
     }
 
     override fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?) {
-        println("Laser changed: $laser")
         if (irradiatedSide == this.frontFacing) {
             this.laser = laser
             this.target?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)

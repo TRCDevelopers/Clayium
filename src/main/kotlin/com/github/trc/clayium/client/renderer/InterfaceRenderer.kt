@@ -60,7 +60,8 @@ object InterfaceRenderer {
             GlStateManager.pushMatrix()
                 GlStateManager.translate(0f, 0.275f, 0f)
                 GlStateManager.scale(0.25f, 0.25f, 0.25f)
-                renderString("${targetPos.x}, ${targetPos.y}, ${targetPos.z}; ${targetWorld.provider.dimensionType.getName()}") // .getName() instead of .name for lower-case
+            @Suppress("UsePropertyAccessSyntax") // .getName() instead of .name for lower-case
+            renderString("${targetPos.x}, ${targetPos.y}, ${targetPos.z}; ${targetWorld.provider.dimensionType.getName()}")
             GlStateManager.popMatrix()
         }
         GlStateManager.popMatrix()

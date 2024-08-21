@@ -27,6 +27,7 @@ import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.pow
 
 class ClayLaserMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -49,7 +50,7 @@ class ClayLaserMetaTileEntity(
     private val clayEnergyHolder = ClayEnergyHolder(this)
     val energyCost = ClayEnergy.milli(
         when (tier.numeric) {
-            in 7..10 -> 400 * Math.pow(10.toDouble(), (tier.numeric - 7).toDouble())
+            in 7..10 -> 400 * 10.toDouble().pow((tier.numeric - 7).toDouble())
             else -> 400
         }.toLong()
     )
