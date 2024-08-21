@@ -112,7 +112,7 @@ class ClayFabricatorMetaTileEntity(
                 return
             }
             this.itemOutputs = outputs
-            this.requiredProgress = craftTimeLogic(clayProperty.compressionLevel, count)
+            this.requiredProgress = (craftTimeLogic(clayProperty.compressionLevel, count) / overclockHandler.compensatedFactor).toLong()
             this.currentProgress = 1
             if (clayProperty.energy != null) {
                 this.cePerTick = ClayEnergy((clayProperty.energy * count).energy / this.requiredProgress)
