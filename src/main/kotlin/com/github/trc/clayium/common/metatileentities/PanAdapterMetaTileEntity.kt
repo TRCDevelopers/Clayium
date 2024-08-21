@@ -14,7 +14,6 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.PageButton
 import com.cleanroommc.modularui.widgets.PagedWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Grid
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
@@ -190,13 +189,9 @@ class PanAdapterMetaTileEntity(
                 .child(slots.left(32 + 8))
                 .child(resultSlots.align(Alignment.TopRight))
         }
-        val panel = ModularPanel.defaultPanel("pan_adapter", 176, 196)
-            .child(Column().margin(7).sizeRel(1f)
-                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
-                        .align(Alignment.TopLeft))
-                    .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
+        return ModularPanel.defaultPanel("pan_adapter", 176, 196)
+            .child(mainColumn {
+                child(buildMainParentWidget(syncManager)
                     .child(PagedWidget().margin(0, 9).widthRel(1f).height(16*4)
                         .controller(tabController)
                         .apply { for (page in pages) addPage(page) }
@@ -208,9 +203,7 @@ class PanAdapterMetaTileEntity(
                         .bottom(10)
                     )
                 )
-                .child(SlotGroupWidget.playerInventory(0))
-            )
-        return panel
+            })
     }
 
     @SideOnly(Side.CLIENT)

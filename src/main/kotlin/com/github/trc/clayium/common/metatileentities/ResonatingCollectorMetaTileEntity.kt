@@ -7,10 +7,8 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.NumberFormat
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.ResonanceManager
 import com.github.trc.clayium.api.metatileentity.AbstractItemGeneratorMetaTileEntity
@@ -64,12 +62,8 @@ class ResonatingCollectorMetaTileEntity(
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.registerSlotGroup("machine_inventory", 3)
         return ModularPanel.defaultPanel("resonating_collector")
-            .child(Column().margin(7)
-                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.lang(this.translationKey).asWidget()
-                        .align(Alignment.TopLeft))
-                    .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
+            .child(mainColumn {
+                child(buildMainParentWidget(syncManager)
                     .child(IKey.dynamic {
                         I18n.format("gui.${CValues.MOD_ID}.resonance", NumberFormat.formatWithMaxDigits(resonanceManager.resonance))
                     }.asWidget()
@@ -78,10 +72,9 @@ class ResonatingCollectorMetaTileEntity(
                         .matrix("III", "III", "III")
                         .key('I') { i ->
                             ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, i)
-                            .slotGroup("machine_inventory"))
+                                .slotGroup("machine_inventory"))
                         }.build().align(Alignment.Center))
                 )
-                .child(SlotGroupWidget.playerInventory(0))
-            )
+            })
     }
 }

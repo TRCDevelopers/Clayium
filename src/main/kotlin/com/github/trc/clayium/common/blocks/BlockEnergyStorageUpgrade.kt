@@ -30,10 +30,10 @@ class BlockEnergyStorageUpgrade : VariantBlock<BlockCaReactorCoil.BlockType>(Mat
 
     private fun getExtraStackLimit(type: BlockCaReactorCoil.BlockType): Int {
         return when (type) {
-            BlockCaReactorCoil.BlockType.ANTIMATTER -> 2
-            BlockCaReactorCoil.BlockType.PURE_ANTIMATTER -> 4
-            BlockCaReactorCoil.BlockType.OEC -> 8
-            BlockCaReactorCoil.BlockType.OPA -> 64
+            BlockCaReactorCoil.BlockType.ANTIMATTER -> 1
+            BlockCaReactorCoil.BlockType.PURE_ANTIMATTER -> 3
+            BlockCaReactorCoil.BlockType.OEC -> 7
+            BlockCaReactorCoil.BlockType.OPA -> 63
         }
     }
 

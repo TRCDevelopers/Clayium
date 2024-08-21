@@ -629,8 +629,7 @@ abstract class MetaTileEntity(
      *          .child(buildMainParentWidget()
      *              .child(....)
      *          )
-     *     }
-     *     )
+     *     })
      * ```
      */
     abstract override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel
@@ -644,7 +643,7 @@ abstract class MetaTileEntity(
      */
     protected open fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         return ParentWidget().widthRel(1f).expanded().marginBottom(2)
-            .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
+            .child(IKey.str(getStackForm().displayName).asWidget()
                 .align(Alignment.TopLeft))
             .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
             .child(IKey.dynamic {

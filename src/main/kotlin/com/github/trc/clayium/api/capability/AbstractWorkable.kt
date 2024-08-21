@@ -64,6 +64,11 @@ abstract class AbstractWorkable(
         }
     }
 
+    override fun onFirstTick() {
+        super.onFirstTick()
+        this.canProgress = canProgress()
+    }
+
     /**
      * Called every second.
      * You can check some extra conditions like neighbouring blocks here.

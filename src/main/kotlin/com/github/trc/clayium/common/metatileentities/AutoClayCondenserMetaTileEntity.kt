@@ -1,33 +1,37 @@
 package com.github.trc.clayium.common.metatileentities
 
-import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
+import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
+import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode.ALL
 import com.github.trc.clayium.api.util.canStackWith
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import kotlin.math.min
 
@@ -46,6 +50,7 @@ class AutoClayCondenserMetaTileEntity(
     }
     override val importItems = itemInventory
     override val exportItems = itemInventory
+    @Suppress("Unused") private val ioHandler = AutoIoHandler.Combined(this)
 
     private val maxCompressedClay = object : ClayiumItemStackHandler(this, 1) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
@@ -85,27 +90,22 @@ class AutoClayCondenserMetaTileEntity(
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.registerSlotGroup("compressor_inventory", 4)
         return ModularPanel.defaultPanel("auto_clay_condenser", 176, 190)
-            .child(Column().margin(7).sizeRel(1f)
-                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
-                        .align(Alignment.TopLeft))
-                    .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
+            .child(mainColumn {
+                child(buildMainParentWidget(syncManager)
                     .child(SlotGroupWidget.builder()
-                        .matrix("IIII", "IIII", "IIII", "IIII")
-                        .key('I') {
-                            ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, it)
-                                .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null }
-                                .slotGroup("compressor_inventory"))
-                        }
-                        .build().align(Alignment.Center))
+                    .matrix("IIII", "IIII", "IIII", "IIII")
+                    .key('I') {
+                        ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, it)
+                            .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null }
+                            .slotGroup("compressor_inventory"))
+                    }
+                    .build().align(Alignment.Center))
                     .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(maxCompressedClay, 0)
                         .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null })
                         .align(Alignment.TopRight)
                         .background(ClayGuiTextures.CLAY_SLOT))
-                )
-                .child(SlotGroupWidget.playerInventory(0))
-            )
+                    )
+            })
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
@@ -133,6 +133,26 @@ class AutoClayCondenserMetaTileEntity(
                 if (remainSorting.isEmpty) break
             }
         }
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (facing == null) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemInventory)
+            val i = facing.index
+            val inputSlots = when (inputModes[i]) {
+                ALL -> createFilteredItemHandler(importItems, facing)
+                else -> null
+            }
+            val outputSlots = when (outputModes[i]) {
+                ALL -> createFilteredItemHandler(FilteredItemHandler(exportItems) { itemStack ->
+                    val maxCompress = maxCompressedClay.getStackInSlot(0)
+                    maxCompress.isEmpty || maxCompress.canStackWith(itemStack)
+                }, facing)
+                else -> null
+            }
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(ItemHandlerProxy(inputSlots, outputSlots))
+        }
+        return super.getCapability(capability, facing)
     }
 
     @SideOnly(Side.CLIENT)
