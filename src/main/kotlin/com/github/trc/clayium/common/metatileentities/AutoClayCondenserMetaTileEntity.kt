@@ -1,21 +1,19 @@
 package com.github.trc.clayium.common.metatileentities
 
-import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CPropertyKey
@@ -52,6 +50,7 @@ class AutoClayCondenserMetaTileEntity(
     }
     override val importItems = itemInventory
     override val exportItems = itemInventory
+    @Suppress("Unused") private val ioHandler = AutoIoHandler.Combined(this)
 
     private val maxCompressedClay = object : ClayiumItemStackHandler(this, 1) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
@@ -91,27 +90,22 @@ class AutoClayCondenserMetaTileEntity(
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.registerSlotGroup("compressor_inventory", 4)
         return ModularPanel.defaultPanel("auto_clay_condenser", 176, 190)
-            .child(Column().margin(7).sizeRel(1f)
-                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
-                        .align(Alignment.TopLeft))
-                    .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
+            .child(mainColumn {
+                child(buildMainParentWidget(syncManager)
                     .child(SlotGroupWidget.builder()
-                        .matrix("IIII", "IIII", "IIII", "IIII")
-                        .key('I') {
-                            ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, it)
-                                .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null }
-                                .slotGroup("compressor_inventory"))
-                        }
-                        .build().align(Alignment.Center))
+                    .matrix("IIII", "IIII", "IIII", "IIII")
+                    .key('I') {
+                        ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, it)
+                            .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null }
+                            .slotGroup("compressor_inventory"))
+                    }
+                    .build().align(Alignment.Center))
                     .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(maxCompressedClay, 0)
                         .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null })
                         .align(Alignment.TopRight)
                         .background(ClayGuiTextures.CLAY_SLOT))
-                )
-                .child(SlotGroupWidget.playerInventory(0))
-            )
+                    )
+            })
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {

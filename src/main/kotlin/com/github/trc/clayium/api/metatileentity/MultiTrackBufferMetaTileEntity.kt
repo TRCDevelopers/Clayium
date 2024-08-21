@@ -1,13 +1,11 @@
 package com.github.trc.clayium.api.metatileentity
 
 
-import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
@@ -130,17 +128,13 @@ class MultiTrackBufferMetaTileEntity(
                 it.size(max(176, trackInvSize * 18 + 4 + 18 + /* margin*/ 12), 18 + trackRow * 18 + 94 + 2)
                 it.align(Alignment.Center)
             }
-            .child(Column().margin(7)
-                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
-                        .align(Alignment.TopLeft))
-                    .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
+            .child(mainColumn {
+                child(buildMainParentWidget(syncManager)
                     .child(Column().width(trackInvSize * 18 + 4 + 18).height(trackRow * 18)
                         .align(Alignment.Center)
-                        .also {
+                        .also { column ->
                             for ((i, handler) in tracks.withIndex()) {
-                                it.child(Row().width(trackInvSize * 18 + 4 + 18).height(18)
+                                column.child(Row().width(trackInvSize * 18 + 4 + 18).height(18)
                                     .child(SlotGroupWidget.builder()
                                         .matrix(slotsRowString)
                                         .key('I') { slotIndex ->
@@ -157,8 +151,7 @@ class MultiTrackBufferMetaTileEntity(
                         }
                     )
                 )
-                .child(SlotGroupWidget.playerInventory(0))
-            )
+            })
     }
 
     override fun writeToNBT(data: NBTTagCompound) {

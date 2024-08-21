@@ -19,6 +19,7 @@ import com.github.trc.clayium.api.metatileentity.multiblock.IMultiblockPart
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult.Invalid
+import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getMetaTileEntity
@@ -43,6 +44,7 @@ class CaReactorMetaTileEntity(
 ) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1],
     "machine.${CValues.MOD_ID}.ca_reactor", caReactorRegistry) {
 
+    @Suppress("Unused") private val ioHandler = AutoIoHandler.Combined(this)
     private val multiblockLogic = MultiblockLogic(this, ::checkStructure)
 
     fun getFaceInvalid(): ResourceLocation = clayiumId("blocks/ca_reactor_core_invalid")
@@ -53,6 +55,7 @@ class CaReactorMetaTileEntity(
     override val importItems = NotifiableItemStackHandler(this, 1, this, isExport = false)
     override val exportItems = NotifiableItemStackHandler(this, 1, this, isExport = true)
     override val itemInventory = ItemHandlerProxy(importItems, exportItems)
+
 
     private var avgHullRank = 0
     private var hullCount = 0

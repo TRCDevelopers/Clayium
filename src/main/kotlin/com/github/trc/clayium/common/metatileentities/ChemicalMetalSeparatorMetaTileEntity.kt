@@ -1,16 +1,13 @@
 package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IDrawable
-import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
@@ -52,12 +49,8 @@ class ChemicalMetalSeparatorMetaTileEntity(
             )
 
         return ModularPanel.defaultPanel("chemical_metal_separator", 176, 190)
-            .child(Column().margin(7).sizeRel(1f)
-                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
-                        .align(Alignment.TopLeft))
-                    .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
+            .child(mainColumn {
+                child(buildMainParentWidget(syncManager)
                     .child(slotsAndProgressBar)
                     .child(clayEnergyHolder.createSlotWidget()
                         .align(Alignment.BottomRight)
@@ -66,8 +59,7 @@ class ChemicalMetalSeparatorMetaTileEntity(
                     .child(clayEnergyHolder.createCeTextWidget(syncManager).widthRel(0.5f)
                         .bottom(12).left(0))
                 )
-                .child(SlotGroupWidget.playerInventory(0))
-            )
+            })
     }
 
     override fun createMetaTileEntity() = ChemicalMetalSeparatorMetaTileEntity(metaTileEntityId, tier)

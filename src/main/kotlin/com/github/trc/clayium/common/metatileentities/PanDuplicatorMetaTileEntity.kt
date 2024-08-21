@@ -1,16 +1,13 @@
 package com.github.trc.clayium.common.metatileentities
 
-import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
@@ -75,8 +72,7 @@ class PanDuplicatorMetaTileEntity(
     override val exportItems = NotifiableItemStackHandler(this, 1, this, isExport = true)
     override val itemInventory = ItemHandlerProxy(importItems, exportItems)
 
-    @Suppress("unused")
-    private val ioHandler = AutoIoHandler.Combined(this)
+    @Suppress("unused") private val ioHandler = AutoIoHandler.Combined(this)
     private val clayEnergyHolder = ClayEnergyHolder(this)
     private val recipeLogic = DuplicatorRecipeLogic()
 
@@ -106,12 +102,8 @@ class PanDuplicatorMetaTileEntity(
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("pan_duplicator")
-            .child(Column().margin(7).sizeRel(1f)
-                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
-                        .align(Alignment.TopLeft))
-                    .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
+            .child(mainColumn {
+                child(buildMainParentWidget(syncManager)
                     .child(clayEnergyHolder.createCeTextWidget(syncManager)
                         .bottom(12).left(0).widthRel(0.5f))
                     .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
@@ -133,8 +125,7 @@ class PanDuplicatorMetaTileEntity(
                         )
                     )
                 )
-                .child(SlotGroupWidget.playerInventory(0))
-            )
+            })
     }
 
     override fun setNetwork(network: IPan) {

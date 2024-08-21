@@ -7,9 +7,7 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.NumberFormat
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
-import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
@@ -233,12 +231,8 @@ class StorageContainerMetaTileEntity(
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("storage_container")
-            .child(Column().margin(7)
-                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.lang(translationKey).asWidget()
-                        .align(Alignment.TopLeft))
-                    .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
+            .child(mainColumn {
+                child(buildMainParentWidget(syncManager)
                     .child(IKey.dynamic { "$itemsStored / $maxStoredItems" }.asWidget()
                         .widthRel(0.5f).align(Alignment.BottomRight))
                     .child(Column().widthRel(0.6f).height(26)
@@ -246,11 +240,11 @@ class StorageContainerMetaTileEntity(
                             .align(Alignment.CenterLeft))
                         .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).accessibility(/* canPut = */ false, /* canTake = */ true))
                             .align(Alignment.CenterRight))
-                    .align(Alignment.Center))
+                        .align(Alignment.Center))
                     .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0))
                         .right(10).top(15))
                 )
-                .child(SlotGroupWidget.playerInventory(0)))
+            })
     }
 
     @SideOnly(Side.CLIENT)
