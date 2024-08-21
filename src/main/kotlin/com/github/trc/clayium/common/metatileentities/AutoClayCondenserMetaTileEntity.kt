@@ -12,6 +12,8 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
+import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
+import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.unification.OreDictUnifier
@@ -19,15 +21,19 @@ import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode.ALL
 import com.github.trc.clayium.api.util.canStackWith
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import kotlin.math.min
 
@@ -133,6 +139,26 @@ class AutoClayCondenserMetaTileEntity(
                 if (remainSorting.isEmpty) break
             }
         }
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (facing == null) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemInventory)
+            val i = facing.index
+            val inputSlots = when (inputModes[i]) {
+                ALL -> createFilteredItemHandler(importItems, facing)
+                else -> null
+            }
+            val outputSlots = when (outputModes[i]) {
+                ALL -> createFilteredItemHandler(FilteredItemHandler(exportItems) { itemStack ->
+                    val maxCompress = maxCompressedClay.getStackInSlot(0)
+                    maxCompress.isEmpty || maxCompress.canStackWith(itemStack)
+                }, facing)
+                else -> null
+            }
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(ItemHandlerProxy(inputSlots, outputSlots))
+        }
+        return super.getCapability(capability, facing)
     }
 
     @SideOnly(Side.CLIENT)
