@@ -44,7 +44,7 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
         validateRecipe(recipe)
             .onSuccess { recipe ->
                 _recipes.add(recipe)
-                _recipes.sortWith(TIER_DURATION_CE)
+                _recipes.sortWith(TIER_DURATION_CE_REVERSED)
             }
             .onFailure { Clayium.LOGGER.error("Failed to add recipe: $recipe") }
     }
@@ -74,12 +74,14 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
     }
 
     fun getAllRecipes(): List<Recipe> {
-        return _recipes.toList()
+        return _recipes.sortedWith(TIER_DURATION_CE)
     }
 
     companion object {
         val TIER_DURATION_CE = Comparator.comparingInt(Recipe::recipeTier)
             .thenComparingLong(Recipe::duration)
             .thenComparingLong { recipe -> recipe.cePerTick.energy }
+
+        val TIER_DURATION_CE_REVERSED = TIER_DURATION_CE.reversed()
     }
 }
