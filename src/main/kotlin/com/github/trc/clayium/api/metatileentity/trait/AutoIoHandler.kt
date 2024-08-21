@@ -16,10 +16,20 @@ abstract class AutoIoHandler(
     traitName: String = ClayiumDataCodecs.AUTO_IO_HANDLER,
 ) : MTETrait(metaTileEntity, traitName) {
 
-    protected val intervalTick = if (isBuffer) ConfigTierBalance.bufferInterval[metaTileEntity.tier.numeric] else ConfigTierBalance.machineInterval[metaTileEntity.tier.numeric]
+    protected val coolTime = if (isBuffer) ConfigTierBalance.bufferInterval[metaTileEntity.tier.numeric] else ConfigTierBalance.machineInterval[metaTileEntity.tier.numeric]
     protected val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[metaTileEntity.tier.numeric] else ConfigTierBalance.machineAmount[metaTileEntity.tier.numeric]
 
     protected var ticked = 0
+
+    protected abstract fun transferItems()
+
+    override fun update() {
+        super.update()
+        if (metaTileEntity.isRemote) return
+        if (ticked++ <= coolTime) return
+        transferItems()
+        ticked = 0
+    }
 
     protected open fun isImporting(side: EnumFacing): Boolean = metaTileEntity.getInput(side).allowAutoIo
     protected open fun isExporting(side: EnumFacing): Boolean = metaTileEntity.getOutput(side).allowAutoIo
@@ -78,11 +88,8 @@ abstract class AutoIoHandler(
         isBuffer: Boolean = false,
         traitName : String = ClayiumDataCodecs.AUTO_IO_HANDLER,
     ) : AutoIoHandler(metaTileEntity, isBuffer, traitName) {
-        override fun update() {
-            if (metaTileEntity.isRemote) return
-            if (ticked++ < intervalTick) return
+        override fun transferItems() {
             importFromNeighbors()
-            ticked = 0
         }
     }
 
@@ -104,21 +111,15 @@ abstract class AutoIoHandler(
         isBuffer: Boolean = false,
         traitName: String = ClayiumDataCodecs.AUTO_IO_HANDLER,
     ) : AutoIoHandler(metaTileEntity, isBuffer, traitName) {
-        override fun update() {
-            if (metaTileEntity.world?.isRemote == true) return
-            if (ticked++ < intervalTick) return
+        override fun transferItems() {
             exportToNeighbors()
-            ticked = 0
         }
     }
 
     open class Combined(metaTileEntity: MetaTileEntity, isBuffer: Boolean = false) : AutoIoHandler(metaTileEntity, isBuffer) {
-        override fun update() {
-            if (metaTileEntity.world?.isRemote == true) return
-            if (ticked++ < intervalTick) return
+        override fun transferItems() {
             importFromNeighbors()
             exportToNeighbors()
-            ticked = 0
         }
     }
 }
