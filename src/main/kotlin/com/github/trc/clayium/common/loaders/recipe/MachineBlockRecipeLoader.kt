@@ -508,13 +508,12 @@ object MachineBlockRecipeLoader {
         val ingotMaterials = listOf(CMaterials.rubidium, CMaterials.lanthanum, CMaterials.caesium, CMaterials.francium,
             CMaterials.radium, CMaterials.tantalum, CMaterials.bismuth, CMaterials.actinium, CMaterials.vanadium)
         for ((i, duplicator) in MetaTileEntities.PAN_DUPLICATOR.slice(1..9).withIndex()) {
-            RecipeUtils.addShapedRecipe("pan_duplicator_rank${i + 1}",
-                duplicator.getStackForm(),
-                "PIP,", "DHD", "PIP",
-                "P", UnificationEntry(OrePrefix.gem, CMaterials.PURE_ANTIMATTERS[i]),
-                "I", UnificationEntry(OrePrefix.ingot, ingotMaterials[i]),
-                "D", MetaTileEntities.PAN_DUPLICATOR[i - 1].getStackForm(),
-                "H", MACHINE_HULL.getItem(ClayTiers.entries[i + 5]))
+            RecipeUtils.addShapedRecipe("pan_duplicator_rank${i + 1}", duplicator.getStackForm(),
+                "PIP", "DHD", "PIP",
+                'P', UnificationEntry(OrePrefix.gem, CMaterials.PURE_ANTIMATTERS[i]),
+                'I', UnificationEntry(OrePrefix.ingot, ingotMaterials[i]),
+                'D', MetaTileEntities.PAN_DUPLICATOR[i].getStackForm(),
+                'H', MACHINE_HULL.getItem(ClayTiers.entries[i + 5]))
         }
     }
 }
