@@ -4,6 +4,7 @@ import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trc.clayium.Bootstrap
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
@@ -27,7 +28,6 @@ import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemStackHandler
 
-//todo: minecraft bootstrap
 class TestAbstractRecipeLogic : StringSpec({
 
     lateinit var mockWorld: World
@@ -71,13 +71,13 @@ class TestAbstractRecipeLogic : StringSpec({
         testRecipeRegistry.register {
             input(ItemStack(Blocks.STONE))
             output(ItemStack(Items.STICK))
-            CEtFactor(ClayEnergy.of(1))
+            CEt(ClayEnergy.of(1))
             duration(1)
         }
         testRecipeRegistry.register {
             input(ItemStack(Items.CLAY_BALL))
             output(ItemStack(Blocks.CLAY))
-            CEtFactor(ClayEnergy.ZERO)
+            CEt(ClayEnergy.ZERO)
             duration(1)
         }
     }

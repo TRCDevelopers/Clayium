@@ -1,6 +1,6 @@
 package com.github.trc.clayium.clayenergy
 
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
+import com.github.trc.clayium.api.ClayEnergy
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 
