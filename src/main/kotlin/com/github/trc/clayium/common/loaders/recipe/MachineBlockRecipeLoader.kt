@@ -9,6 +9,7 @@ import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ClayTiers.*
 import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.common.blocks.BlockCaReactorCoil
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.blocks.ClayiumBlocks.MACHINE_HULL
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
@@ -23,6 +24,7 @@ import kotlin.math.pow
 
 object MachineBlockRecipeLoader {
     fun registerRecipes() {
+        panDuplicators()
         val assembler = CRecipes.ASSEMBLER
 
         //region Hulls
@@ -44,7 +46,7 @@ object MachineBlockRecipeLoader {
         )
 
         val circuits: List<Any> = listOf(
-            Unit, // not used, but needed for indexing
+            Unit, // not used but needed for indexing
             UnificationEntry(OrePrefix.gear, CMaterials.clay),
             MetaItemClayParts.ClayCircuit,
             MetaItemClayParts.SimpleCircuit,
@@ -122,6 +124,16 @@ object MachineBlockRecipeLoader {
             caHullCenter = result
         }
         //endregion
+
+        /* Automatic Clay Condenser */
+        for ((i, tier) in listOf(ADVANCED, CLAY_STEEL).withIndex())  {
+            CRecipes.ASSEMBLER.builder()
+                .input(MetaTileEntities.CLAY_BUFFER[tier.numeric - 4])
+                .input(MetaItemClayParts.AdvancedCircuit)
+                .output(MetaTileEntities.AUTO_CLAY_CONDENSER[i])
+                .tier(4).CEtFactor(1.0).duration(40)
+                .buildAndRegister()
+        }
 
         /* Ca Reactor Coils */
         for ((i, entry) in listOf(CMaterials.antimatter, CMaterials.pureAntimatter, CMaterials.octupleEnergyClay,
@@ -351,11 +363,30 @@ object MachineBlockRecipeLoader {
                 .buildAndRegister()
         }
         registerLowTierRecipe(MetaTileEntities.INSCRIBER, "gMg", "cHc", "gcg")
+        /* Clay Fabricator */
+        CRecipes.CLAY_REACTOR.builder()
+            .input(MACHINE_HULL.getItem(CLAYIUM))
+            .input(MetaTileEntities.SOLAR_CLAY_FABRICATOR[2])
+            .output(MetaTileEntities.CLAY_FABRICATOR[0])
+            .tier(8).CEt(ClayEnergy.of(30)).duration(100_000_000)
+            .buildAndRegister()
+        CRecipes.CLAY_REACTOR.builder()
+            .input(MACHINE_HULL.getItem(ULTIMATE))
+            .input(MetaTileEntities.SOLAR_CLAY_FABRICATOR[2])
+            .output(MetaTileEntities.CLAY_FABRICATOR[1])
+            .tier(9).CEt(ClayEnergy.of(300)).duration(100_000_000_000)
+            .buildAndRegister()
+        CRecipes.CLAY_REACTOR.builder()
+            .input(MetaTileEntities.CLAY_FABRICATOR[1], 64)
+            .input(ClayiumBlocks.OVERCLOCKER.getItem(BlockCaReactorCoil.BlockType.OPA, 16))
+            .output(MetaTileEntities.CLAY_FABRICATOR[2])
+            .tier(13).CEt(ClayEnergy.of(10_000_000)).duration(100_000_000_000_000_000)
+            .buildAndRegister()
     }
 
     /**
      * Register workbench recipes for tier <= 4 machines.
-     * clay is [CMaterials.clay] if tier is 1, [CMaterials.denseClay] otherwise.
+     * Clay is [CMaterials.clay] if tier is 1, [CMaterials.denseClay] otherwise.
      * Some characters are available for recipes by default:
      * - 'H' for machine hull
      * - 'p' for plate and 'P' for large plate
@@ -367,7 +398,7 @@ object MachineBlockRecipeLoader {
      */
     private fun registerLowTierRecipe(metaTileEntities: List<MetaTileEntity>, vararg recipe: Any) {
         val circuits: List<Any> = listOf(
-            Unit, // not used, but needed for indexing
+            Unit, // not used but needed for indexing
             UnificationEntry(OrePrefix.gear, CMaterials.clay), MetaItemClayParts.ClayCircuit, MetaItemClayParts.SimpleCircuit, MetaItemClayParts.BasicCircuit,
             MetaItemClayParts.AdvancedCircuit, MetaItemClayParts.PrecisionCircuit, MetaItemClayParts.IntegratedCircuit, MetaItemClayParts.ClayCore,
             MetaItemClayParts.ClayBrain, MetaItemClayParts.ClaySpirit, MetaItemClayParts.ClaySoul, MetaItemClayParts.ClayAnima, MetaItemClayParts.ClayPsyche,
@@ -463,6 +494,27 @@ object MachineBlockRecipeLoader {
                 .CEt(ClayEnergy.of(100 * 10.0.pow(i).toLong()))
                 .duration(480)
                 .buildAndRegister()
+        }
+    }
+
+    private fun panDuplicators() {
+        CRecipes.ASSEMBLER.builder()
+            .input(MACHINE_HULL.getItem(BASIC))
+            .input(ClayiumBlocks.PAN_CABLE, 4)
+            .output(MetaTileEntities.PAN_DUPLICATOR[0])
+            .tier(10).CEt(ClayEnergy.of(1000)).duration(20)
+            .buildAndRegister()
+
+        val ingotMaterials = listOf(CMaterials.rubidium, CMaterials.lanthanum, CMaterials.caesium, CMaterials.francium,
+            CMaterials.radium, CMaterials.tantalum, CMaterials.bismuth, CMaterials.actinium, CMaterials.vanadium)
+        for ((i, duplicator) in MetaTileEntities.PAN_DUPLICATOR.slice(1..9).withIndex()) {
+            RecipeUtils.addShapedRecipe("pan_duplicator_rank${i + 1}",
+                duplicator.getStackForm(),
+                "PIP,", "DHD", "PIP",
+                "P", UnificationEntry(OrePrefix.gem, CMaterials.PURE_ANTIMATTERS[i]),
+                "I", UnificationEntry(OrePrefix.ingot, ingotMaterials[i]),
+                "D", MetaTileEntities.PAN_DUPLICATOR[i - 1].getStackForm(),
+                "H", MACHINE_HULL.getItem(ClayTiers.entries[i + 5]))
         }
     }
 }
