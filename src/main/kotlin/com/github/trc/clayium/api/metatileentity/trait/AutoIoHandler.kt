@@ -9,15 +9,17 @@ import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
+import kotlin.Int
 
 abstract class AutoIoHandler(
     metaTileEntity: MetaTileEntity,
     isBuffer: Boolean = false,
     traitName: String = ClayiumDataCodecs.AUTO_IO_HANDLER,
+    tier: Int = metaTileEntity.tier.numeric,
 ) : MTETrait(metaTileEntity, traitName) {
 
-    protected val coolTime = if (isBuffer) ConfigTierBalance.bufferInterval[metaTileEntity.tier.numeric] else ConfigTierBalance.machineInterval[metaTileEntity.tier.numeric]
-    protected val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[metaTileEntity.tier.numeric] else ConfigTierBalance.machineAmount[metaTileEntity.tier.numeric]
+    protected val coolTime = if (isBuffer) ConfigTierBalance.bufferInterval[tier] else ConfigTierBalance.machineInterval[tier]
+    protected val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[tier] else ConfigTierBalance.machineAmount[tier]
 
     protected var ticked = 0
 
@@ -26,9 +28,11 @@ abstract class AutoIoHandler(
     override fun update() {
         super.update()
         if (metaTileEntity.isRemote) return
-        if (ticked++ <= coolTime) return
-        transferItems()
-        ticked = 0
+
+        if (++ticked <= coolTime) {
+            transferItems()
+            ticked = 0
+        }
     }
 
     protected open fun isImporting(side: EnumFacing): Boolean = metaTileEntity.getInput(side).allowAutoIo
@@ -87,7 +91,8 @@ abstract class AutoIoHandler(
         metaTileEntity: MetaTileEntity,
         isBuffer: Boolean = false,
         traitName : String = ClayiumDataCodecs.AUTO_IO_HANDLER,
-    ) : AutoIoHandler(metaTileEntity, isBuffer, traitName) {
+        tier: Int = metaTileEntity.tier.numeric,
+    ) : AutoIoHandler(metaTileEntity, isBuffer, traitName, tier) {
         override fun transferItems() {
             importFromNeighbors()
         }
@@ -109,14 +114,18 @@ abstract class AutoIoHandler(
     open class Exporter(
         metaTileEntity: MetaTileEntity,
         isBuffer: Boolean = false,
-        traitName: String = ClayiumDataCodecs.AUTO_IO_HANDLER,
-    ) : AutoIoHandler(metaTileEntity, isBuffer, traitName) {
+        tier: Int = metaTileEntity.tier.numeric,
+    ) : AutoIoHandler(metaTileEntity, isBuffer, ClayiumDataCodecs.AUTO_IO_HANDLER, tier) {
         override fun transferItems() {
             exportToNeighbors()
         }
     }
 
-    open class Combined(metaTileEntity: MetaTileEntity, isBuffer: Boolean = false) : AutoIoHandler(metaTileEntity, isBuffer) {
+    open class Combined(
+        metaTileEntity: MetaTileEntity,
+        isBuffer: Boolean = false,
+        tier: Int = metaTileEntity.tier.numeric,
+    ) : AutoIoHandler(metaTileEntity, isBuffer, ClayiumDataCodecs.AUTO_IO_HANDLER, tier) {
         override fun transferItems() {
             importFromNeighbors()
             exportToNeighbors()
