@@ -112,7 +112,7 @@ class ClayFabricatorMetaTileEntity(
                 return
             }
             this.itemOutputs = outputs
-            this.requiredProgress = craftTimeLogic(clayProperty.compressionLevel, count)
+            this.requiredProgress = (craftTimeLogic(clayProperty.compressionLevel, count) / overclockHandler.compensatedFactor).toLong()
             this.currentProgress = 1
             if (clayProperty.energy != null) {
                 this.cePerTick = ClayEnergy((clayProperty.energy * count).energy / this.requiredProgress)
@@ -155,7 +155,6 @@ class ClayFabricatorMetaTileEntity(
          * calculation logic is same as original. you can find that on the japanese wiki page: https://clayium.wiki.fc2.com/wiki/%E6%A9%9F%E6%A2%B0
          */
         private fun getCraftTime(compLevel: Int, stackCount: Int, maxCompLevel: Int, compMitigationFactor: Double, countMitigationFactor: Double, eff: Double): Long {
-            println("compLevel: $compLevel, stackCount: $stackCount, maxCompLevel: $maxCompLevel, compMitigationFactor: $compMitigationFactor, countMitigationFactor: $countMitigationFactor, eff: $eff")
             return (64 * 10.0.pow(maxCompLevel) * (stackCount.toDouble() / 64.0).pow(countMitigationFactor) * compMitigationFactor.pow(compLevel - maxCompLevel) * 20.0 / eff).toLong()
         }
 

@@ -26,7 +26,7 @@ open class RecipeLogicEnergy(
      * The speed of these machines depends on the tier.
      */
     fun setDurationMultiplier(provider: (tier: Int) -> Double): RecipeLogicEnergy {
-        durationMultiplier = provider(this.tierNum)
+        durationMultiplier = provider(this.getTier())
         return this
     }
 
@@ -35,7 +35,7 @@ open class RecipeLogicEnergy(
      * The speed of these machines depends on the tier.
      */
     fun setEnergyConsumingMultiplier(provider: (tier: Int) -> Double): RecipeLogicEnergy {
-        energyConsumingMultiplier = provider(this.tierNum)
+        energyConsumingMultiplier = provider(this.getTier())
         return this
     }
 }

@@ -35,8 +35,9 @@ class ClayInterfaceMetaTileEntity(
     override var importItems: IItemHandlerModifiable = EmptyItemStackHandler
     override var exportItems: IItemHandlerModifiable = EmptyItemStackHandler
     override var itemInventory: IItemHandler = EmptyItemStackHandler
-    var autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
+
     private var ecImporter: AutoIoHandler.EcImporter? = null
+    private var autoIoHandler: AutoIoHandler? = null
 
     override var validInputModes: List<MachineIoMode> = onlyNoneList
     override var validOutputModes: List<MachineIoMode> = onlyNoneList
@@ -54,8 +55,8 @@ class ClayInterfaceMetaTileEntity(
         super.onLink(target)
         this.importItems = target.importItems
         this.exportItems = target.exportItems
-        this.itemInventory = ItemHandlerProxy(this.importItems, this.exportItems)
-        this.autoIoHandler = AutoIoHandler.Combined(this)
+        this.itemInventory = ItemHandlerProxy(target.importItems, target.exportItems)
+        this.autoIoHandler = AutoIoHandler.Combined(this, tier = target.tier.numeric)
         target.getCapability(ClayiumTileCapabilities.CLAY_ENERGY_HOLDER, null)?.let { targetEnergyHolder ->
             this.ecImporter = AutoIoHandler.EcImporter(this, targetEnergyHolder.energizedClayItemHandler)
         }
@@ -69,7 +70,7 @@ class ClayInterfaceMetaTileEntity(
         this.importItems = EmptyItemStackHandler
         this.exportItems = EmptyItemStackHandler
         this.itemInventory = EmptyItemStackHandler
-        this.autoIoHandler = AutoIoHandler.Combined(this)
+        this.autoIoHandler = null
         this.ecImporter = null
 
         this.validInputModes = onlyNoneList

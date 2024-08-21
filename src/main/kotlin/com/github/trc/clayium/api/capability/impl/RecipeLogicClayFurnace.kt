@@ -47,7 +47,7 @@ class RecipeLogicClayFurnace(
             this.outputsFull = true
             return
         }
-        if (!recipe.matches(true, inputInventory, tierNum)) return
+        if (!recipe.matches(true, inputInventory, getTier())) return
         this.itemOutputs = outputs
         this.recipeCEt = multipliedRecipeCEt
         this.requiredProgress = multipliedRecipeTime

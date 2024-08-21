@@ -108,7 +108,7 @@ class ClayReactorMetaTileEntity(
     }
 
     private inner class ClayReactorRecipeLogic : MultiblockRecipeLogic(this@ClayReactorMetaTileEntity,
-        CRecipes.CLAY_REACTOR, multiblockLogic::structureFormed) {
+        CRecipes.CLAY_REACTOR, multiblockLogic) {
         override fun getProgressPerTick(): Long {
             return 1L + (laser?.energy ?: 0.0).toLong()
         }

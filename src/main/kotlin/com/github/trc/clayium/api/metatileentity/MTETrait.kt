@@ -12,7 +12,6 @@ abstract class MTETrait(
     val name: String,
 ) : ISyncedTileEntity {
 
-    val tierNum = metaTileEntity.tier.numeric
     val networkId = idByName.computeIfAbsent(name) { nextId++ }
 
     init {
