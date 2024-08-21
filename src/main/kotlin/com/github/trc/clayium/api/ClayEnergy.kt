@@ -16,12 +16,15 @@ fun PacketBuffer.readClayEnergy(): ClayEnergy {
 @JvmInline
 value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
 
+    //todo: minimum digits?
     fun format(): String {
         if (energy == 0L) return "0CE"
         val digits = abs(energy).toString().length
         val microCe = energy.toDouble() * 10.0
         val unitIndex = digits / 3
-        val displayValue = String.format("%.03f", microCe / 10.0.pow(unitIndex * 3))
+        val displayValue = String.format("%.3f", microCe / 10.0.pow(unitIndex * 3))
+            .replace(matchesExcessZero, "")
+            .replace(matchesExcessDecimalPoint, "")
         return "$displayValue${units[unitIndex]}CE"
     }
 
@@ -41,6 +44,8 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
         val MAX = ClayEnergy(Long.MAX_VALUE)
 
         val units = listOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y")
+        private val matchesExcessZero = Regex("0+\$")
+        private val matchesExcessDecimalPoint = Regex("\\.$")
 
         fun micro(energy: Long): ClayEnergy {
             require(energy % 10 == 0.toLong()) {
