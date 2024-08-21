@@ -57,7 +57,9 @@ abstract class AbstractWorkable(
 
         if (isWorking) {
             updateWorkingProgress()
-        } else if (shouldSearchForRecipe()) {
+        }
+        // isWorking can be set to false at [updateWorkingProgress]
+        if (!isWorking && shouldSearchForRecipe()) {
             trySearchNewRecipe()
         }
     }
