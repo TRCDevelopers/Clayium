@@ -620,6 +620,7 @@ machine.clayium.pan_adapter.antimatter=PAN Adapter Mk I
 machine.clayium.pan_adapter.pure_antimatter=PAN Adapter Mk II
 machine.clayium.pan_adapter.oec=PAN Adapter Mk III
 machine.clayium.pan_adapter.opa=PAN Adapter Mk IV
+machine.clayium.pan_adapter.laser_slot_tooltip=Laser Slot
 
 machine.clayium.pan_duplicator=PAN Duplicator Rank %s
 

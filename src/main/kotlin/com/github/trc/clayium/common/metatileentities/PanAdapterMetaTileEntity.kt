@@ -225,7 +225,10 @@ class PanAdapterMetaTileEntity(
                     )
                     .child(SlotGroupWidget.builder()
                         .row("I".repeat(9))
-                        .key('I') { index -> ItemSlot().slot(ModularSlot(laserInventory, index)) }
+                        .key('I') { index ->
+                            ItemSlot().slot(ModularSlot(laserInventory, index))
+                                .tooltip { it.addLine(IKey.lang("machine.clayium.pan_adapter.laser_slot_tooltip")) }
+                        }
                         .build()
                         .bottom(10)
                     )

@@ -588,6 +588,7 @@ machine.clayium.pan_adapter.antimatter=PAN アダプター Mk I
 machine.clayium.pan_adapter.pure_antimatter=PAN アダプター Mk II
 machine.clayium.pan_adapter.oec=PAN アダプター Mk III
 machine.clayium.pan_adapter.opa=PAN アダプター Mk IV
+machine.clayium.pan_adapter.laser_slot_tooltip=レーザースロット
 
 machine.clayium.pan_duplicator=PAN 複製機 ランク %s
 
