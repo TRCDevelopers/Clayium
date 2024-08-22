@@ -19,9 +19,11 @@ import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
+import com.github.trc.clayium.api.block.ItemBlockMachine
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.ListeningItemStackHandler
+import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
@@ -79,6 +81,22 @@ class PanAdapterMetaTileEntity(
         refreshEntries()
     }
 
+    private fun calculateLaserEnergy(): Double {
+        val laserRgb = IntArray(3)
+        for (i in 0..<laserInventory.slots) {
+            val stack = laserInventory.getStackInSlot(i)
+            if (stack.item !is ItemBlockMachine) continue
+            val laser = CUtils.getMetaTileEntity(stack)
+                ?.getCapability(ClayiumTileCapabilities.CLAY_LASER_SOURCE, null)
+                ?.laser
+                ?: continue
+            laserRgb[0] += laser.red
+            laserRgb[1] += laser.green
+            laserRgb[2] += laser.blue
+        }
+        return ClayLaser(EnumFacing.NORTH, laserRgb[0], laserRgb[1], laserRgb[2]).energy
+    }
+
     override fun createMetaTileEntity(): MetaTileEntity {
         return PanAdapterMetaTileEntity(metaTileEntityId, tier)
     }
@@ -98,13 +116,14 @@ class PanAdapterMetaTileEntity(
     private fun refreshEntries() {
         val world = world ?: return
         val pos = pos ?: return
+        val laserEnergy = calculateLaserEnergy()
         currentEntries.clear()
         for ((pattern, result) in recipeInventories.zip(resultInventories)) {
             val stacks = pattern.toList()
             var entry: IPanRecipe? = null
             for (side in EnumFacing.entries) {
                 entry = ClayiumApi.PAN_RECIPE_FACTORIES.firstNotNullOfOrNull { factory ->
-                    factory.getEntry(world, pos.offset(side), stacks)
+                    factory.getEntry(world, pos.offset(side), stacks, laserEnergy)
                 }
                 if (entry != null) break
             }

@@ -20,7 +20,7 @@ object CraftingTablePanRecipeFactory : IPanRecipeFactory {
 
     private val ENERGY = ClayEnergy.micro(100)
 
-    override fun getEntry(world: IBlockAccess, pos: BlockPos, stacks: List<ItemStack>): IPanRecipe? {
+    override fun getEntry(world: IBlockAccess, pos: BlockPos, stacks: List<ItemStack>, laserEnergy: Double): IPanRecipe? {
         if (world.getBlockState(pos).block !== Blocks.CRAFTING_TABLE || world !is World) return null
 
         val matrix = InventoryCrafting(DummyContainer, 3, 3)
