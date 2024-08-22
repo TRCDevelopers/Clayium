@@ -1,5 +1,6 @@
 package com.github.trc.clayium.api.pan
 
+import com.github.trc.clayium.api.ClayEnergy
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
@@ -14,5 +15,6 @@ interface IPanRecipeFactory {
      * @param pos the position of this block.
      * @param stacks the inventory of the PAN Adapter.
      */
-    fun getEntry(world: IBlockAccess, pos: BlockPos, stacks: List<ItemStack>, laserEnergy: Double): IPanRecipe?
+    fun getEntry(world: IBlockAccess, pos: BlockPos, stacks: List<ItemStack>,
+                 laserEnergy: Double, laserCostPerTick: ClayEnergy): IPanRecipe?
 }
