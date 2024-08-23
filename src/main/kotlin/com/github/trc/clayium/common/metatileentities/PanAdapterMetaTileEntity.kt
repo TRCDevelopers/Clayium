@@ -20,7 +20,6 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.ClayiumApi
-import com.github.trc.clayium.api.block.ItemBlockMachine
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.ListeningItemStackHandler
@@ -91,16 +90,13 @@ class PanAdapterMetaTileEntity(
         var energyCost = ClayEnergy.ZERO
         for (i in 0..<laserInventory.slots) {
             val stack = laserInventory.getStackInSlot(i)
-            if (stack.item !is ItemBlockMachine) continue
             val laserMte = (CUtils.getMetaTileEntity(stack) as? ClayLaserMetaTileEntity)  ?: continue
             val laser = laserMte.laserManager.laser
             val laserCostPerTick = laserMte.energyCost
-            (0..<stack.count).forEach {
-                laserRgb[0] += laser.red
-                laserRgb[1] += laser.green
-                laserRgb[2] += laser.blue
-                energyCost += laserCostPerTick
-            }
+            laserRgb[0] += (laser.red * stack.count)
+            laserRgb[1] += (laser.green * stack.count)
+            laserRgb[2] += (laser.blue * stack.count)
+            energyCost += laserCostPerTick * stack.count
         }
         return Pair(ClayLaser(EnumFacing.NORTH, laserRgb[0], laserRgb[1], laserRgb[2]).energy, energyCost)
     }

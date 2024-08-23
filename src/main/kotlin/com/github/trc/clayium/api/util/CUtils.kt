@@ -2,6 +2,7 @@ package com.github.trc.clayium.api.util
 
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
+import com.github.trc.clayium.api.block.ItemBlockMachine
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import net.minecraft.block.Block
@@ -119,6 +120,10 @@ object CUtils {
     }
 
     fun getMetaTileEntity(stack: ItemStack): MetaTileEntity? {
-        return ClayiumApi.MTE_REGISTRY.getObjectById(stack.itemDamage)
+        return if (stack.item is ItemBlockMachine) {
+            null
+        } else {
+            ClayiumApi.MTE_REGISTRY.getObjectById(stack.itemDamage)
+        }
     }
 }
