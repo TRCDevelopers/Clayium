@@ -247,7 +247,7 @@ class CaReactorMetaTileEntity(
 
     private inner class CaReactorRecipeLogic : MultiblockRecipeLogic(this@CaReactorMetaTileEntity, caReactorRegistry, multiblockLogic) {
         override fun trySearchNewRecipe() {
-            val recipe = caReactorRegistry.findRecipeWithRank(avgHullRank, inputInventory.toList())
+            val recipe = caReactorRegistry.findRecipeWithRank(tier.numeric, avgHullRank, inputInventory.toList())
             if (recipe == null) {
                 invalidInputsForRecipes = true
                 return

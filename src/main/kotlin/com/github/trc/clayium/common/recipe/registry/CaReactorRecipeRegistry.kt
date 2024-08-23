@@ -29,9 +29,9 @@ class CaReactorRecipeRegistry(name: String) : RecipeRegistry<SimpleRecipeBuilder
         }
     }
 
-    fun findRecipeWithRank(rank: Int, inputs: List<ItemStack>) : Recipe? {
+    fun findRecipeWithRank(reactorTier: Int, rank: Int, inputs: List<ItemStack>) : Recipe? {
         val index = (rank - 1).coerceIn(0, actualRecipes.size - 1)
-        return actualRecipes[index].takeIf { it.matches(inputs) }
+        return actualRecipes[index].takeIf { it.matches(inputs, reactorTier) }
     }
 
     companion object {

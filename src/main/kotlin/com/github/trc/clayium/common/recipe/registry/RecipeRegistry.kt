@@ -35,9 +35,7 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
     }
 
     fun findRecipe(machineTier: Int, inputsIn: List<ItemStack>): Recipe? {
-        return _recipes.find { recipe ->
-            recipe.recipeTier <= machineTier && recipe.matches(inputsIn)
-        }
+        return _recipes.find { it.matches(inputsIn, machineTier) }
     }
 
     fun addRecipe(recipe: Recipe) {
