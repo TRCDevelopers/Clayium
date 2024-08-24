@@ -19,7 +19,7 @@ class GuiClayWorkTable(
     private val tile: TileClayWorkTable
 ) : GuiContainer(ContainerClayWorkTable(playerInv, tile)) {
     override fun drawGuiContainerForegroundLayer(mouseX: Int, mouseY: Int) {
-        fontRenderer.drawString(I18n.format("recipe.clayium.ClayWorkTable"), 6, 6, 0x404040)
+        fontRenderer.drawString(I18n.format("tile.clayium.clay_work_table.name"), 6, 6, 0x404040)
         fontRenderer.drawString(I18n.format("container.inventory"), 8, ySize - 94, 0x404040)
     }
 
