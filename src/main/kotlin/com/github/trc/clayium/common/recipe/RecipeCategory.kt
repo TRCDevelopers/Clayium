@@ -8,7 +8,7 @@ class RecipeCategory private constructor(
     val categoryName: String,
 ) {
     val uniqueId = createUID(modid, categoryName)
-    val translationKey = "machine.clayium.$categoryName"
+    val translationKey = "recipe.clayium.$categoryName"
 
     companion object {
         val categories = Object2ObjectOpenHashMap<String, RecipeCategory>()

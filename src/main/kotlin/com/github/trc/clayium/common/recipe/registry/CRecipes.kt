@@ -30,9 +30,9 @@ object CRecipes {
     val CA_CONDENSER = addRegistry("ca_condenser", SimpleRecipeBuilder(), 1, 1)
 
     //solar
-    val SOLAR_1 = addRegistry("solar_1", ClayFabricatorRecipeBuilder(ClayFabricatorRecipeBuilder::solarClayFabricator), 1, 1)
-    val SOLAR_2 = addRegistry("solar_2", ClayFabricatorRecipeBuilder(ClayFabricatorRecipeBuilder::solarClayFabricator), 1, 1)
-    val SOLAR_3 = addRegistry("solar_3", ClayFabricatorRecipeBuilder(ClayFabricatorRecipeBuilder::solarClayFabricator), 1, 1)
+    val SOLAR_1 = addRegistry("solar_clay_fabricator_1", ClayFabricatorRecipeBuilder(ClayFabricatorRecipeBuilder::solarClayFabricator), 1, 1)
+    val SOLAR_2 = addRegistry("solar_clay_fabricator_2", ClayFabricatorRecipeBuilder(ClayFabricatorRecipeBuilder::solarClayFabricator), 1, 1)
+    val SOLAR_3 = addRegistry("solar_clay_fabricator_3", ClayFabricatorRecipeBuilder(ClayFabricatorRecipeBuilder::solarClayFabricator), 1, 1)
 
     // 2 -> 1 recipes
     val ASSEMBLER = addRegistry("assembler", SimpleRecipeBuilder(), 2, 1)

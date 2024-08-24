@@ -33,7 +33,7 @@ class ClayLaserMetaTileEntity(
 ) : MetaTileEntity(
     metaTileEntityId, tier,
     validInputModesLists[0], validOutputModesLists[0],
-    "machine.${CValues.MOD_ID}.clay_laser.${tier.lowerName}",
+    "machine.${CValues.MOD_ID}.clay_laser",
 ) {
 
     override val faceTexture = ResourceLocation(CValues.MOD_ID, "blocks/clay_laser")
