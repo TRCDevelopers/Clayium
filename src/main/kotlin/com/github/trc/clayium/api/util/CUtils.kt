@@ -128,9 +128,9 @@ object CUtils {
 
     fun getMetaTileEntity(stack: ItemStack): MetaTileEntity? {
         return if (stack.item is ItemBlockMachine) {
-            null
-        } else {
             ClayiumApi.MTE_REGISTRY.getObjectById(stack.itemDamage)
+        } else {
+            null
         }
     }
 }
