@@ -55,12 +55,14 @@ abstract class AbstractWorkable(
         }
         if (!canProgress) return
 
-        if (isWorking) {
-            updateWorkingProgress()
-        }
-        // isWorking can be set to false at [updateWorkingProgress]
+        // if you updateProgress then searchRecipe, it practically increases recipe duration by 1 tick.
+        // this is because when the (recipe output > half of the max stack size),
+        // next recipe output cannot fit in the output slot and thus will not match.
         if (!isWorking && shouldSearchForRecipe()) {
             trySearchNewRecipe()
+        }
+        if (isWorking) {
+            updateWorkingProgress()
         }
     }
 
@@ -82,7 +84,7 @@ abstract class AbstractWorkable(
      * If you have to consume Energy or other resources, You should do it here.
      */
     protected open fun updateWorkingProgress() {
-        addProgress()
+        currentProgress += (getProgressPerTick() * ocHandler.accelerationFactor).toLong()
         if (currentProgress >= requiredProgress) {
             completeWork()
         }
@@ -94,10 +96,6 @@ abstract class AbstractWorkable(
      */
     protected open fun getProgressPerTick(): Long {
         return 1
-    }
-
-    protected fun addProgress() {
-        currentProgress += (getProgressPerTick() * ocHandler.accelerationFactor).toLong()
     }
 
     protected open fun completeWork() {
@@ -146,14 +144,8 @@ abstract class AbstractWorkable(
     }
 
     fun getProgressBar(syncManager: GuiSyncManager): ProgressWidget {
-        syncManager.syncValue("requiredProgress", SyncHandlers.longNumber(
-            { requiredProgress },
-            { rProgress -> requiredProgress = rProgress }
-        ))
-        syncManager.syncValue("craftingProgress", SyncHandlers.longNumber(
-            { currentProgress },
-            { cProgress -> currentProgress = cProgress }
-        ))
+        syncManager.syncValue("requiredProgress", SyncHandlers.longNumber(::requiredProgress, ::requiredProgress::set))
+        syncManager.syncValue("craftingProgress", SyncHandlers.longNumber(::currentProgress, ::currentProgress::set))
 
         val widget = ProgressWidget()
             .size(22, 17)
