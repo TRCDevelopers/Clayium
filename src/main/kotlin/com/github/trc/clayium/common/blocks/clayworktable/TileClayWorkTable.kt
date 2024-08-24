@@ -62,6 +62,7 @@ class TileClayWorkTable : TileEntity() {
             craftingProgress = 0
         }
         craftingProgress++
+        currentTool.attemptDamageItem(1, world.rand, null)
         if (craftingProgress >= requiredProgress) {
             input.count -= recipe.input.amount
             if (itemHandler.getStackInSlot(2).isEmpty) {
