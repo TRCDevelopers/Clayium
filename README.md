@@ -3,7 +3,12 @@ An **unofficial** 1.12.2 port of Clayium.
 The original version was made by deb_rk,
 and published on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/clayium) under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
+## Ported Features
+Features have been ported up to tier 13 Clay Fabricator Mk3, 
+including PAN, except for those listed below.
+
 ## WIP Features
+- Alloy Smelter
 - Auto Crafter
 - Auto Trader
 - CE-RF Converter
@@ -25,6 +30,7 @@ and published on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/clayi
   - Chunk Loader
   - Item Collectors
 - Configs (ProgressionRate, HardcoreXXX, etc.)
+- Other Mod Integrations
 
 ## License
 ### Code
