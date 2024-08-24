@@ -73,7 +73,7 @@ class TileClayWorkTable : TileEntity() {
         }
     }
 
-    private fun canStartCraft(input: ItemStack, method: ClayWorkTableMethod): Boolean {
+    fun canStartCraft(input: ItemStack, method: ClayWorkTableMethod): Boolean {
         val recipe = CWTRecipes.getClayWorkTableRecipe(input, method) ?: return false
         if (!method.isValidTool(currentTool)) return false
 

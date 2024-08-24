@@ -22,6 +22,10 @@ class ContainerClayWorkTable(
         val itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
         // Input
         addSlotToContainer(object : SlotItemHandler(itemHandler, 0, 17, 30) {
+            override fun isItemValid(stack: ItemStack): Boolean {
+                return ClayWorkTableMethod.entries.any { tile.canStartCraft(stack, it) }
+            }
+
             override fun onSlotChanged() {
                 tile.resetRecipeIfEmptyInput()
                 tile.markDirty()
