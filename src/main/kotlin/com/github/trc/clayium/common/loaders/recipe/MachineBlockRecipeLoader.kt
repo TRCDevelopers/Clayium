@@ -201,14 +201,28 @@ object MachineBlockRecipeLoader {
         registerMachineRecipeHull(MetaTileEntities.CHEMICAL_REACTOR) {
             input(MetaItemClayParts.BasicCircuit)
         }
-        //AutomaticClayCondenser, Buffer+AdvancedCircuit
         registerMachineRecipeHull(MetaTileEntities.SMELTER) {
             input(MetaItemClayParts.SimpleCircuit)
         }
         registerMachineRecipeHull(MetaTileEntities.SOLAR_CLAY_FABRICATOR) {
             input(OrePrefix.plate, CMaterials.silicon, 16)
         }
-        clayBuffers()
+        /* Clay (MultiTrack) Buffers */
+        for (i in 0..9) {
+            val materialIndex = i + 4
+            CRecipes.ASSEMBLER.builder()
+                .input(OrePrefix.plate, mainHullMaterials[materialIndex])
+                .input(circuits[materialIndex] as MetaItemClayium.MetaValueItem)
+                .output(MetaTileEntities.CLAY_BUFFER[i], 16)
+                .tier(4).CEt(ClayEnergy(10.0.pow((i + 1.0)).toLong())).duration(40)
+                .buildAndRegister()
+            CRecipes.ASSEMBLER.builder()
+                .input(MetaTileEntities.CLAY_BUFFER[i], 6)
+                .input(OrePrefix.largePlate, mainHullMaterials[materialIndex])
+                .output(MetaTileEntities.MULTI_TRACK_BUFFER[i])
+                .tier(4).CEt(ClayEnergy(10.0.pow((i + 1.0)).toLong())).duration(40)
+                .buildAndRegister()
+        }
         /* Machine Proxy */
         for (metaTileEntity in MetaTileEntities.CLAY_INTERFACE) {
             CRecipes.ASSEMBLER.builder()
@@ -382,6 +396,25 @@ object MachineBlockRecipeLoader {
             .output(MetaTileEntities.CLAY_FABRICATOR[2])
             .tier(13).CEt(ClayEnergy.of(10_000_000)).duration(100_000_000_000_000_000)
             .buildAndRegister()
+
+        /* PAN Core */
+        CRecipes.CLAY_REACTOR.builder()
+            .input(MetaTileEntities.PAN_ADAPTER[0], 4)
+            .input(MetaItemClayParts.ClaySoul)
+            .output(MetaTileEntities.PAN_CORE)
+            .tier(11).CEt(ClayEnergy.of(10_000))
+            .duration(100_000_000_000_000)
+            .buildAndRegister()
+
+        /* Pan Adapters */
+        for ((i, type) in BlockCaReactorCoil.BlockType.entries.withIndex()) {
+            CRecipes.ASSEMBLER.builder()
+                .input(ClayiumBlocks.RESONATOR.getItem(type))
+                .input(ClayiumBlocks.PAN_CABLE, 6)
+                .output(MetaTileEntities.PAN_ADAPTER[i])
+                .tier(10).CEt(ClayEnergy(10.0.pow((i + 9.0)).toLong())).duration(60)
+                .buildAndRegister()
+        }
     }
 
     /**
@@ -457,24 +490,6 @@ object MachineBlockRecipeLoader {
                 .output(mte.getStackForm())
                 .tier(4).CEtFactor(1.0).duration(60)
                 .inputProvider()
-                .buildAndRegister()
-        }
-    }
-
-    private fun clayBuffers() {
-        val materials = listOf(CMaterials.advancedIndustrialClay, CMaterials.impureSilicon, CMaterials.aluminum,
-            CMaterials.claySteel, CMaterials.clayium, CMaterials.ultimateAlloy, CMaterials.antimatter, CMaterials.pureAntimatter,
-            CMaterials.octupleEnergyClay, CMaterials.octuplePureAntimatter)
-        val circuits = listOf(MetaItemClayParts.BasicCircuit, MetaItemClayParts.AdvancedCircuit,
-            MetaItemClayParts.PrecisionCircuit, MetaItemClayParts.IntegratedCircuit, MetaItemClayParts.ClayCore,
-            MetaItemClayParts.ClayBrain, MetaItemClayParts.ClaySpirit, MetaItemClayParts.ClaySoul, MetaItemClayParts.ClayAnima, MetaItemClayParts.ClayPsyche)
-
-        for (i in 0..9) {
-            CRecipes.ASSEMBLER.builder()
-                .input(OrePrefix.plate, materials[i])
-                .input(circuits[i])
-                .output(MetaTileEntities.CLAY_BUFFER[i], 16)
-                .tier(4).CEt(ClayEnergy(10.0.pow((i + 1.0)).toLong())).duration(40)
                 .buildAndRegister()
         }
     }
