@@ -12,9 +12,11 @@ import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
@@ -41,6 +43,23 @@ class ClayInterfaceMetaTileEntity(
 
     override var validInputModes: List<MachineIoMode> = onlyNoneList
     override var validOutputModes: List<MachineIoMode> = onlyNoneList
+
+    var hasSynchroParts = false
+        private set
+
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        data.setBoolean("hasSynchroParts", hasSynchroParts)
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        hasSynchroParts = data.getBoolean("hasSynchroParts")
+    }
+
+    override fun canSynchronize(): Boolean {
+        return hasSynchroParts
+    }
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayInterfaceMetaTileEntity(metaTileEntityId, tier)
@@ -77,13 +96,18 @@ class ClayInterfaceMetaTileEntity(
         this.validOutputModes = onlyNoneList
     }
 
-    fun isSynchronized(): Boolean {
-        return false
-    }
-
     override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
-        val mimicTarget = this.target ?: return
-        if (mimicTarget.canOpenGui()) {
+        if (!this.hasSynchroParts) {
+            val stack = player.getHeldItem(hand)
+            val synchroParts = MetaItemClayParts.SynchronousParts.getStackForm()
+            if (stack.isItemEqual(synchroParts) && stack.metadata == synchroParts.metadata) {
+                this.hasSynchroParts = true
+                if (!player.isCreative) stack.shrink(1)
+                return
+            }
+        }
+        val mimicTarget = this.target
+        if (mimicTarget?.canOpenGui() == true) {
             mimicTarget.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
         }
     }

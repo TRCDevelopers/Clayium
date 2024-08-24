@@ -116,7 +116,13 @@ abstract class ProxyMetaTileEntityBase(
         this.onUnlink()
     }
 
+    /**
+     * check if synchronization with a Synchronizer Item is allowed.
+     */
+    protected open fun canSynchronize() = true
+
     final override fun synchronize(pos: BlockPos, dimensionId: Int): Boolean {
+        if (!canSynchronize()) return false
         val world = DimensionManager.getWorld(dimensionId) ?: return false
         val metaTileEntity = world.getMetaTileEntity(pos) ?: return false
         if (!canLink(metaTileEntity)) return false
