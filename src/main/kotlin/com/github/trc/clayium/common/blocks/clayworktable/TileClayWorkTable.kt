@@ -64,14 +64,15 @@ class TileClayWorkTable : TileEntity() {
         craftingProgress++
         currentTool.attemptDamageItem(1, world.rand, null)
         if (craftingProgress >= requiredProgress) {
-            input.count -= recipe.input.amount
-            if (itemHandler.getStackInSlot(2).isEmpty) {
-                itemHandler.setStackInSlot(2, recipe.primaryOutput)
-            } else {
-                itemHandler.getStackInSlot(2).count += recipe.primaryOutput.count
-            }
-            resetRecipe()
+            itemHandler.extractItem(0, recipe.input.amount, false)
+            completeRecipe(recipe)
         }
+    }
+
+    fun completeRecipe(recipe: ClayWorkTableRecipe) {
+        itemHandler.insertItem(2, recipe.primaryOutput, false)
+        itemHandler.insertItem(3, recipe.secondaryOutput, false)
+        resetRecipe()
     }
 
     fun canStartCraft(input: ItemStack, method: ClayWorkTableMethod): Boolean {
