@@ -197,46 +197,40 @@ tile.clayium.blockZK60AHull.name=ZK60A 合金マシン筐体
 
 recipe.clayium.second=%1$s秒
 
-recipe.clayium.ClayWorkTable=粘土作業台
+recipe.clayium.alloy_smelter=粘土合金精錬機
+recipe.clayium.assembler=粘土組立機
+recipe.clayium.bending_machine=粘土プレート作成機
+recipe.clayium.clay_blast_furnace=粘土高炉
+recipe.clayium.ca_condenser=CA 凝縮機
+recipe.clayium.ca_injector=CA 注入機
+recipe.clayium.ca_reactor=反物質反応炉
+recipe.clayium.centrifuge=粘土遠心分離機
+recipe.clayium.chemical_metal_separator=粘土金属分離機
+recipe.clayium.chemical_reactor=粘土化学反応機
+recipe.clayium.clay_reactor=粘土反応炉
+recipe.clayium.condenser=粘土コンデンサー
+recipe.clayium.cutting_machine=粘土切断機
+recipe.clayium.decomposer=粘土分解機
+recipe.clayium.electrolysis_reactor=粘土電気精錬機
+recipe.clayium.energetic_clay_condenser=エネルギー粘土凝縮機
+recipe.clayium.energetic_clay_decomposer=エネルギー粘土分解機
+recipe.clayium.fluid_transfer_machine=液体転移装置
+recipe.clayium.grinder=粘土粉砕機
+recipe.clayium.inscriber=粘土印刷機
+recipe.clayium.lathe=粘土旋盤
+recipe.clayium.matter_transformer=粘土物質変換装置
+recipe.clayium.milling_machine=粘土フライス盤
+recipe.clayium.pipe_drawing_machine=粘土パイプ圧延機
+recipe.clayium.smelter=粘土精錬機
+recipe.clayium.wire_drawing_machine=粘土ワイヤー圧延機
+recipe.clayium.solar_clay_fabricator_1=ソーラー粘土製造機 Mk I
+recipe.clayium.solar_clay_fabricator_2=ソーラー粘土製造機 Mk II
+recipe.clayium.solar_clay_fabricator_3=リチウムソーラー粘土製造機
 
-recipe.clayium.WireDrawingMachine=粘土ワイヤー圧延機
-recipe.clayium.PipeDrawingMachine=粘土パイプ圧延機
-recipe.clayium.CuttingMachine=粘土切断機
-recipe.clayium.Lathe=粘土旋盤
-recipe.clayium.MillingMachine=粘土フライス盤
-
-recipe.clayium.Condenser=粘土コンデンサー
-recipe.clayium.Grinder=粘土粉砕機
-recipe.clayium.Decomposer=粘土分解機
-
-recipe.clayium.ECCondenser=エネルギー粘土凝縮機
-recipe.clayium.Assembler=粘土組立機
-recipe.clayium.Inscriber=粘土印刷機
-recipe.clayium.Centrifuge=粘土遠心分離機
-
-recipe.clayium.Smelter=粘土精錬機
-
-recipe.clayium.ChemicalReactor=粘土化学反応機
-recipe.clayium.BlastFurnace=粘土高炉
-recipe.clayium.ElectrolysisReactor=粘土電気精錬機
-recipe.clayium.Reactor=粘土反応炉
-
-recipe.clayium.AlloySmelter=粘土合金精錬機
-recipe.clayium.ChemicalMetalSeparator=粘土金属分離機
-recipe.clayium.MatterTransformer=粘土物質変換装置
-
-recipe.clayium.CACondenser=CA 凝縮機
-recipe.clayium.CAInjector=CA 注入機
-recipe.clayium.CAReactor=反物質反応炉
-
-recipe.clayium.ECDecomposer=エネルギー粘土分解機
-
-recipe.clayium.FluidTransferMachine=液体転移装置
-
-recipe.clayium.CobblestoneGenerator=丸石製造機
+recipe.clayium.cobblestone_generator=丸石製造機
 recipe.clayium.CobblestoneGenerator.efficiency=%1$4.2g ブロック/t
 recipe.clayium.CobblestoneGenerator.description=丸石製造機は水と溶岩で作るもの。この機械も、隣に水と溶岩をそれぞれ置いてあげることで稼動する。
-recipe.clayium.SaltExtractor=塩析出装置
+recipe.clayium.salt_extractor=塩析出装置
 recipe.clayium.SaltExtractor.efficiency=%1$4.2g アイテム/t
 recipe.clayium.SaltExtractor.energyConsumption=%1$s CE/t
 recipe.clayium.SaltExtractor.description=塩析出装置は塩を水から抽出する機械。稼動するには隣に水を置いてエネルギーを供給してあげる必要がある。
@@ -253,7 +247,7 @@ tile.clayium.clay_ore.name=粘土鉱石
 tile.clayium.dense_clay_ore.name=高密度粘土鉱石
 tile.clayium.large_dense_clay_ore.name=高密度粘土鉱石大
 
-tile.clayium.clay_work_table=粘土作業台
+tile.clayium.clay_work_table.name=粘土作業台
 tile.clayium.clay_work_table.tooltip1=工業化への第一歩
 tile.clayium.clay_crafting_board.name=粘土作業板
 tile.clayium.clay_crafting_board.tooltip1=ちょっと便利な作業台
@@ -279,17 +273,14 @@ machine.clayium.lathe=%s旋盤
 
 machine.clayium.cobblestone_generator=%s丸石製造機
 
-machine.clayium.condenser=粘土コンデンサー
+machine.clayium.condenser=%sコンデンサー
 
-machine.clayium.grinder=高密度粘土粉砕機
-machine.clayium.grinder_tier2.tooltip1=高密度粘土鉱石を粉砕しよう
+machine.clayium.grinder=%s粉砕機
+machine.clayium.grinder.dense_clay.tooltip1=高密度粘土鉱石を粉砕しよう
 
-machine.clayium.decomposer=高密度粘土分解機
+machine.clayium.decomposer=%s分解機
 
-tile.clayium.blockSimpleMillingMachine.name=簡易フライス盤
-tile.clayium.blockBasicMillingMachine.name=フライス盤
-
-machine.clayium.assembler=%s 組立機
+machine.clayium.assembler=%s組立機
 machine.clayium.assembler.tooltip1=複雑なレシピにウンザリしたあなたへ
 
 machine.clayium.inscriber=%s印刷機

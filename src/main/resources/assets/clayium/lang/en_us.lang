@@ -208,46 +208,40 @@ tile.clayium.machine_hull=%s Machine Hull
 
 recipe.clayium.second=%1$s sec
 
-recipe.clayium.ClayWorkTable=Clay Work Table
+recipe.clayium.alloy_smelter=Alloy Smelter
+recipe.clayium.assembler=Clay Assembler
+recipe.clayium.bending_machine=Clay Bending Machine
+recipe.clayium.clay_blast_furnace=Clay Blast Furnace
+recipe.clayium.ca_condenser=CA Condenser
+recipe.clayium.ca_injector=CA Injector
+recipe.clayium.ca_reactor=CA Reactor
+recipe.clayium.centrifuge=Clay Centrifuge
+recipe.clayium.chemical_metal_separator=Chemical Metal Separator
+recipe.clayium.chemical_reactor=Clay Chemical Reactor
+recipe.clayium.clay_reactor=Clay Reactor
+recipe.clayium.condenser=Clay Condenser
+recipe.clayium.cutting_machine=Clay Cutting Machine
+recipe.clayium.decomposer=Clay Decomposer
+recipe.clayium.electrolysis_reactor=Clay Electrolysis Reactor
+recipe.clayium.energetic_clay_condenser=Energetic Clay Condenser
+recipe.clayium.energetic_clay_decomposer=Energetic Clay Decomposer
+recipe.clayium.fluid_transfer_machine=Fluid Transfer Machine
+recipe.clayium.grinder=Clay Grinder
+recipe.clayium.inscriber=Clay Inscriber
+recipe.clayium.lathe=Clay Lathe
+recipe.clayium.matter_transformer=Matter Transformer
+recipe.clayium.milling_machine=Clay Milling Machine
+recipe.clayium.pipe_drawing_machine=Clay Pipe Drawing Machine
+recipe.clayium.smelter=Clay Smelter
+recipe.clayium.wire_drawing_machine=Clay Wire Drawing Machine
+recipe.clayium.solar_clay_fabricator_1=Solar Clay Fabricator Mk I
+recipe.clayium.solar_clay_fabricator_2=Solar Clay Fabricator Mk II
+recipe.clayium.solar_clay_fabricator_3=Lithium-Solar Clay Fabricator
 
-recipe.clayium.WireDrawingMachine=Clay Wire Drawing Machine
-recipe.clayium.PipeDrawingMachine=Clay Pipe Drawing Machine
-recipe.clayium.CuttingMachine=Clay Cutting Machine
-recipe.clayium.Lathe=Clay Lathe
-recipe.clayium.MillingMachine=Clay Milling Machine
-
-recipe.clayium.Condenser=Clay Condenser
-recipe.clayium.Grinder=Clay Grinder
-recipe.clayium.Decomposer=Clay Decomposer
-
-recipe.clayium.ECCondenser=Energetic Clay Condenser
-recipe.clayium.Assembler=Clay Assembler
-recipe.clayium.Inscriber=Clay Inscriber
-recipe.clayium.Centrifuge=Clay Centrifuge
-
-recipe.clayium.Smelter=Clay Smelter
-
-recipe.clayium.ChemicalReactor=Clay Chemical Reactor
-recipe.clayium.BlastFurnace=Clay Blast Furnace
-recipe.clayium.ElectrolysisReactor=Clay Electrolysis Reactor
-recipe.clayium.Reactor=Clay Reactor
-
-recipe.clayium.AlloySmelter=Alloy Smelter
-recipe.clayium.ChemicalMetalSeparator=Chemical Metal Separator
-recipe.clayium.MatterTransformer=Matter Transformer
-
-recipe.clayium.CACondenser=CA Condenser
-recipe.clayium.CAInjector=CA Injector
-recipe.clayium.CAReactor=CA Reactor
-
-recipe.clayium.ECDecomposer=Energetic Clay Decomposer
-
-recipe.clayium.FluidTransferMachine=Fluid Transfer Machine
-
-recipe.clayium.CobblestoneGenerator=Cobblestone Generator
+recipe.clayium.cobblestone_generator=Cobblestone Generator
 recipe.clayium.CobblestoneGenerator.efficiency=%1$4.2g Blocks/t
 recipe.clayium.CobblestoneGenerator.description=As you know, a cobblestone generator is consist of water and lava. Clayium's Cobblestone Generator also needs them. If you place both of them next to the machine, it will work.
-recipe.clayium.SaltExtractor=Salt Extractor
+recipe.clayium.salt_extractor=Salt Extractor
 recipe.clayium.SaltExtractor.efficiency=%1$4.2g Items/t
 recipe.clayium.SaltExtractor.energyConsumption=%1$s CE/t
 recipe.clayium.SaltExtractor.description=A Salt Extractor is used to extract Salt from water. To run the machine, place water next to it.
@@ -285,7 +279,7 @@ tile.clayium.blockRawClayMachineHull.0.name=Raw Clay Machine Hull
 tile.clayium.blockAZ91DHull.name=AZ91D Alloy Hull
 tile.clayium.blockZK60AHull.name=ZK60A Alloy Hull
 
-tile.clayium.clay_work_table=Clay Work Table
+tile.clayium.clay_work_table.name=Clay Work Table
 tile.clayium.clay_work_table.tooltip1=The first step to Clay Industry.
 tile.clayium.clay_crafting_board.name=Clay Crafting Board
 tile.clayium.clay_crafting_board.tooltip1=A convenient version of vanilla Crafting Table.
@@ -314,12 +308,9 @@ machine.clayium.cobblestone_generator=%s Cobblestone Generator
 machine.clayium.condenser=%s Condenser
 
 machine.clayium.grinder=%s Grinder
-machine.clayium.grinder_tier2.tooltip1=Grinds Dense Clay Ores.
+machine.clayium.grinder.dense_clay.tooltip1=Grinds Dense Clay Ores.
 
 machine.clayium.decomposer=%s Decomposer
-
-tile.clayium.blockSimpleMillingMachine.name=Simple Milling Machine
-tile.clayium.blockBasicMillingMachine.name=Basic Milling Machine
 
 machine.clayium.assembler=%s Assembler
 machine.clayium.assembler.tooltip1=Say goodbye to complicated craft.

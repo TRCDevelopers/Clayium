@@ -1,6 +1,5 @@
 package com.github.trc.clayium.api.metatileentity
 
-import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
@@ -11,15 +10,11 @@ import com.github.trc.clayium.api.capability.impl.ClayLaserSource
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.common.config.ConfigCore
-import com.github.trc.clayium.common.util.UtilLocale
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
-import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -38,7 +33,7 @@ class ClayLaserMetaTileEntity(
 ) : MetaTileEntity(
     metaTileEntityId, tier,
     validInputModesLists[0], validOutputModesLists[0],
-    "machine.${CValues.MOD_ID}.clay_laser.${tier.lowerName}",
+    "machine.${CValues.MOD_ID}.clay_laser",
 ) {
 
     override val faceTexture = ResourceLocation(CValues.MOD_ID, "blocks/clay_laser")
@@ -112,30 +107,16 @@ class ClayLaserMetaTileEntity(
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("clay_laser_tier$tier", 176, 32 + 94)
-            .child(
-                IKey.lang("machine.clayium.clay_laser.${tier.lowerName}", IKey.lang(tier.prefixTranslationKey))
-                    .asWidget()
-                    .top(6)
-                    .left(6)
-            )
-            .child(
-                clayEnergyHolder.createCeTextWidget(syncManager)
-                    .top(16)
-                    .left(3)
-            )
-            .bindPlayerInventory()
+            .child(mainColumn {
+                child(buildMainParentWidget(syncManager)
+                    .child(clayEnergyHolder.createCeTextWidget(syncManager)
+                        .bottom(12).left(0))
+                )
+            })
     }
 
     override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
     override fun shouldRenderInPass(pass: Int) = (pass == 1)
-
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        super.addInformation(stack, worldIn, tooltip, flagIn)
-        // add the tier-specific tooltip first
-        UtilLocale.formatTooltips(tooltip, "machine.clayium.${metaTileEntityId.path}.tooltip")
-        // then add the machine-specific tooltip
-        UtilLocale.formatTooltips(tooltip, "machine.clayium.clay_laser.tooltip")
-    }
 
     private fun refreshRedstone() {
         val pos = this.pos ?: return
