@@ -42,6 +42,7 @@ object CraftingRecipeLoader {
             'B', UnificationEntry(OrePrefix.blade, clay))
 
         RecipeUtils.addSmeltingRecipe(MetaItemClayParts.RawClayRollingPin.getStackForm(), ItemStack(ClayiumItems.CLAY_ROLLING_PIN))
+        RecipeUtils.addSmeltingRecipe(MetaItemClayParts.RawClaySlicer.getStackForm(), ItemStack(ClayiumItems.CLAY_SLICER))
         RecipeUtils.addSmeltingRecipe(MetaItemClayParts.RawClaySpatula.getStackForm(), ItemStack(ClayiumItems.CLAY_SPATULA))
 
         RecipeUtils.addShapedRecipe("clay_shovel", ItemStack(ClayiumItems.CLAY_SHOVEL),
