@@ -18,11 +18,11 @@ and published on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/clayi
 - Metal Chests
 - Void Container
 - World Interactive Machines
-    - Block Breaker
-    - Item Collector
-    - Activator
-    - Chunk Loader
-    - etc.
+  - Activators
+  - Area Replacer
+  - Block Breaker, Area Miners
+  - Chunk Loader
+  - Item Collectors
 
 ## License
 ### Code
