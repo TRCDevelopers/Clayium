@@ -1,9 +1,12 @@
 package com.github.trc.clayium.api.util
 
+import com.cleanroommc.modularui.api.drawable.IKey
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
+import com.github.trc.clayium.api.block.ItemBlockMachine
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trc.clayium.common.gui.ResizingTextWidget
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.item.Item
@@ -57,9 +60,14 @@ fun TileEntity?.takeIfValid(): TileEntity? {
     return this?.takeUnless { it.isInvalid }
 }
 
+fun IKey.asWidgetResizing(): ResizingTextWidget {
+    return ResizingTextWidget(this)
+}
+
 fun clayiumId(path: String): ResourceLocation {
     return ResourceLocation(CValues.MOD_ID, path)
 }
+
 
 object CUtils {
 
@@ -119,6 +127,10 @@ object CUtils {
     }
 
     fun getMetaTileEntity(stack: ItemStack): MetaTileEntity? {
-        return ClayiumApi.MTE_REGISTRY.getObjectById(stack.itemDamage)
+        return if (stack.item is ItemBlockMachine) {
+            null
+        } else {
+            ClayiumApi.MTE_REGISTRY.getObjectById(stack.itemDamage)
+        }
     }
 }

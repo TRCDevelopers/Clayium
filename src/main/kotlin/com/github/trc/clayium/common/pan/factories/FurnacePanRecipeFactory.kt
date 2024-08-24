@@ -17,7 +17,7 @@ object FurnacePanRecipeFactory : IPanRecipeFactory {
     /** 40u x 200ticks */
     private val ENERGY = ClayEnergy.milli(8)
 
-    override fun getEntry(world: IBlockAccess, pos: BlockPos, stacks: List<ItemStack>): IPanRecipe? {
+    override fun getEntry(world: IBlockAccess, pos: BlockPos, stacks: List<ItemStack>, laserEnergy: Double, laserCostPerTick: ClayEnergy): IPanRecipe? {
         if (world.getBlockState(pos).block !== Blocks.FURNACE) return null
 
         val actualStacks = stacks.filterNot(ItemStack::isEmpty)

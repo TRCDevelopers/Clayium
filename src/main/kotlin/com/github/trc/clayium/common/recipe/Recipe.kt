@@ -33,8 +33,10 @@ data class Recipe(
         return true
     }
 
-    fun matches(inputsIn: List<ItemStack>): Boolean {
-        return matchesItems(inputsIn).first
+    fun matches(inputsIn: List<ItemStack>, machineTier: Int): Boolean {
+        if (this.recipeTier > machineTier) return false
+        val (isItemsMatched, _) = matchesItems(inputsIn)
+        return isItemsMatched
     }
 
     private fun matchesItems(inputsIn: List<ItemStack>): Pair<Boolean, IntArray> {

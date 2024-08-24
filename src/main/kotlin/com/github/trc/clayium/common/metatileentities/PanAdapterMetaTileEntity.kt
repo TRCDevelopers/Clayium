@@ -18,10 +18,13 @@ import com.cleanroommc.modularui.widgets.layout.Grid
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.ListeningItemStackHandler
+import com.github.trc.clayium.api.laser.ClayLaser
+import com.github.trc.clayium.api.metatileentity.ClayLaserMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
@@ -79,6 +82,25 @@ class PanAdapterMetaTileEntity(
         refreshEntries()
     }
 
+    /**
+     * @return LaserEnergy, EnergyCost/t
+     */
+    private fun calculateLaserEnergy(): Pair<Double, ClayEnergy> {
+        val laserRgb = IntArray(3)
+        var energyCost = ClayEnergy.ZERO
+        for (i in 0..<laserInventory.slots) {
+            val stack = laserInventory.getStackInSlot(i)
+            val laserMte = (CUtils.getMetaTileEntity(stack) as? ClayLaserMetaTileEntity)  ?: continue
+            val laser = laserMte.laserManager.laser
+            val laserCostPerTick = laserMte.energyCost
+            laserRgb[0] += (laser.red * stack.count)
+            laserRgb[1] += (laser.green * stack.count)
+            laserRgb[2] += (laser.blue * stack.count)
+            energyCost += laserCostPerTick * stack.count
+        }
+        return Pair(ClayLaser(EnumFacing.NORTH, laserRgb[0], laserRgb[1], laserRgb[2]).energy, energyCost)
+    }
+
     override fun createMetaTileEntity(): MetaTileEntity {
         return PanAdapterMetaTileEntity(metaTileEntityId, tier)
     }
@@ -98,13 +120,14 @@ class PanAdapterMetaTileEntity(
     private fun refreshEntries() {
         val world = world ?: return
         val pos = pos ?: return
+        val (laserEnergy, cet) = calculateLaserEnergy()
         currentEntries.clear()
         for ((pattern, result) in recipeInventories.zip(resultInventories)) {
             val stacks = pattern.toList()
             var entry: IPanRecipe? = null
             for (side in EnumFacing.entries) {
                 entry = ClayiumApi.PAN_RECIPE_FACTORIES.firstNotNullOfOrNull { factory ->
-                    factory.getEntry(world, pos.offset(side), stacks)
+                    factory.getEntry(world, pos.offset(side), stacks, laserEnergy, cet)
                 }
                 if (entry != null) break
             }
@@ -198,7 +221,10 @@ class PanAdapterMetaTileEntity(
                     )
                     .child(SlotGroupWidget.builder()
                         .row("I".repeat(9))
-                        .key('I') { index -> ItemSlot().slot(ModularSlot(laserInventory, index)) }
+                        .key('I') { index ->
+                            ItemSlot().slot(ModularSlot(laserInventory, index))
+                                .tooltip { it.addLine(IKey.lang("machine.clayium.pan_adapter.laser_slot_tooltip")) }
+                        }
                         .build()
                         .bottom(10)
                     )

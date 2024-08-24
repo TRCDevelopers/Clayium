@@ -14,6 +14,7 @@ import com.github.trc.clayium.api.capability.IClayEnergyHolder
 import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
+import com.github.trc.clayium.api.util.asWidgetResizing
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
@@ -85,7 +86,7 @@ class ClayEnergyHolder(
             { clayEnergy = ClayEnergy(it) }
         ))
 
-        return IKey.dynamic { this.clayEnergy.format() }.asWidget()
+        return IKey.dynamic { this.clayEnergy.format() }.asWidgetResizing()
     }
 
     private fun tryConsumeEnergizedClay() {
