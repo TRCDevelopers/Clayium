@@ -15,7 +15,7 @@ import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 
 
-object ClayWorkTableRecipes {
+object ClayWorkTableRecipeLoader {
     fun registerRecipes() {
         CWTRecipes.CLAY_WORK_TABLE.register {
             input(OrePrefix.cylinder, clay)
@@ -43,7 +43,7 @@ object ClayWorkTableRecipes {
         }
 
         CWTRecipes.CLAY_WORK_TABLE.register {
-            input(OrePrefix.largePlate, clay)
+            input(OrePrefix.plate, clay)
             output(OrePrefix.blade, clay)
             method(PUNCH)
             clicks(10)

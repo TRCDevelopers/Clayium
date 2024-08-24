@@ -1,5 +1,6 @@
 package com.github.trc.clayium.common.gui
 
+import com.github.trc.clayium.common.blocks.clayworktable.ClayWorkTableMethod
 import com.github.trc.clayium.common.blocks.clayworktable.TileClayWorkTable
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IContainerListener
@@ -21,6 +22,10 @@ class ContainerClayWorkTable(
         val itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
         // Input
         addSlotToContainer(object : SlotItemHandler(itemHandler, 0, 17, 30) {
+            override fun isItemValid(stack: ItemStack): Boolean {
+                return ClayWorkTableMethod.entries.any { tile.canStartCraft(stack, it) }
+            }
+
             override fun onSlotChanged() {
                 tile.resetRecipeIfEmptyInput()
                 tile.markDirty()
@@ -28,6 +33,10 @@ class ContainerClayWorkTable(
         })
         // Tool
         addSlotToContainer(object : SlotItemHandler(itemHandler, 1, 80, 17) {
+            override fun isItemValid(stack: ItemStack): Boolean {
+                return ClayWorkTableMethod.entries.any { stack.item in it.requiredTools }
+            }
+
             override fun onSlotChanged() {
                 tile.markDirty()
             }

@@ -1,5 +1,6 @@
 package com.github.trc.clayium.client.gui
 
+import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.gui.button.GuiButtonImageToggleable
 import com.github.trc.clayium.common.blocks.clayworktable.ClayWorkTableMethod
@@ -19,7 +20,7 @@ class GuiClayWorkTable(
     private val tile: TileClayWorkTable
 ) : GuiContainer(ContainerClayWorkTable(playerInv, tile)) {
     override fun drawGuiContainerForegroundLayer(mouseX: Int, mouseY: Int) {
-        fontRenderer.drawString(I18n.format("recipe.clayium.ClayWorkTable"), 6, 6, 0x404040)
+        fontRenderer.drawString(I18n.format("tile.${CValues.MOD_ID}.clay_work_table.name"), 6, 6, 0x404040)
         fontRenderer.drawString(I18n.format("container.inventory"), 8, ySize - 94, 0x404040)
     }
 
