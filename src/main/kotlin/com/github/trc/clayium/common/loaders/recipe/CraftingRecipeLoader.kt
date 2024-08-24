@@ -46,7 +46,7 @@ object CraftingRecipeLoader {
         RecipeUtils.addSmeltingRecipe(MetaItemClayParts.RawClaySpatula.getStackForm(), ItemStack(ClayiumItems.CLAY_SPATULA))
 
         RecipeUtils.addShapedRecipe("clay_shovel", ItemStack(ClayiumItems.CLAY_SHOVEL),
-            " H ", " I ", " I ",
+            "H", "I", "I",
             'H', UnificationEntry(OrePrefix.plate, clay),
             'I', UnificationEntry(OrePrefix.stick, clay))
         RecipeUtils.addShapedRecipe("clay_pickaxe", ItemStack(ClayiumItems.CLAY_PICKAXE),
