@@ -12,6 +12,7 @@ and published on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/clayi
 - Clay Guns
 - ClaySteel tools
 - Decoration Blocks
+- Distributor
 - Energetic Clay Decomposer
 - Filters other than black/white list
 - Fluid related features
@@ -23,6 +24,7 @@ and published on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/clayi
   - Block Breaker, Area Miners
   - Chunk Loader
   - Item Collectors
+- Configs (ProgressionRate, HardcoreXXX, etc.)
 
 ## License
 ### Code
