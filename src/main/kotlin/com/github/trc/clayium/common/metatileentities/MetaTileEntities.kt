@@ -44,7 +44,7 @@ object MetaTileEntities {
     val STORAGE_CONTAINER = registerMetaTileEntity(101, StorageContainerMetaTileEntity(clayiumId("storage_container"), ClayTiers.AZ91D, false))
     val STORAGE_CONTAINER_UPGRADED = registerMetaTileEntity(102, StorageContainerMetaTileEntity(clayiumId("storage_container_upgraded"), ClayTiers.AZ91D, true))
 
-    /* Singleblock Item Processing Machines 200-500 */
+    /* Singleblock Item Processing Machines 201-500 */
     // todo
     // val ALLOY_SMELTER = registerMetaTileEntity(5, SimpleMachineMetaTileEntity(clayiumId("alloy_smelter"), ClayTiers.ALUMINUM, CRecipes.ALLOY_SMELTER))
 
@@ -102,7 +102,9 @@ object MetaTileEntities {
         SimpleMachineMetaTileEntity(clayiumId("energetic_clay_condenser.${it.lowerName}"), it, CRecipes.ENERGETIC_CLAY_CONDENSER)
     }
 
-    val GRINDER = registerMetaTileEntities(249, intArrayOf(2, 3, 4, 5, 6, 10)) { //+6
+    // val ENERGETIC_CLAY_DECOMPOSE = registerMetaTileEntity(249, SimpleMachineMetaTileEntity(clayiumId("energetic_clay_decompose"), ClayTiers.OPA, CRecipes.ENERGETIC_CLAY_DECOMPOSE))
+
+    val GRINDER = registerMetaTileEntities(250, intArrayOf(2, 3, 4, 5, 6, 10)) { //+6
         SimpleMachineMetaTileEntity(clayiumId("grinder.${it.lowerName}"), it, CRecipes.GRINDER) { mte, reg, ceHolder ->
             RecipeLogicEnergy(mte, reg, ceHolder)
                 .setDurationMultiplier(ConfigTierBalance.crafting::getCraftTimeMultiplier)
@@ -110,36 +112,36 @@ object MetaTileEntities {
         }
     }
 
-    val INSCRIBER = registerMetaTileEntities(255, (3..4)) { //+2
+    val INSCRIBER = registerMetaTileEntities(256, (3..4)) { //+2
         SimpleMachineMetaTileEntity(clayiumId("inscriber.${it.lowerName}"), it, CRecipes.INSCRIBER)
     }
 
-    val LATHE = registerMetaTileEntities(257, (1..4)) { //+4
+    val LATHE = registerMetaTileEntities(258, (1..4)) { //+4
         SimpleMachineMetaTileEntity(clayiumId("lathe.${it.lowerName}"), it, CRecipes.LATHE)
     }
 
-    val MATTER_TRANSFORMER = registerMetaTileEntities(261, (7..12)) { //+6
+    val MATTER_TRANSFORMER = registerMetaTileEntities(262, (7..12)) { //+6
         SimpleMachineMetaTileEntity(clayiumId("matter_transformer.${it.lowerName}"), it, CRecipes.MATTER_TRANSFORMER)
     }
 
-    val MILLING_MACHINE = registerMetaTileEntities(267, intArrayOf(1, 3, 4)) { //+3
+    val MILLING_MACHINE = registerMetaTileEntities(268, intArrayOf(1, 3, 4)) { //+3
         SimpleMachineMetaTileEntity(clayiumId("milling_machine.${it.lowerName}"), it, CRecipes.MILLING_MACHINE)
     }
 
-    val PIPE_DRAWING_MACHINE = registerMetaTileEntities(270, (1..4)) { //+4
+    val PIPE_DRAWING_MACHINE = registerMetaTileEntities(271, (1..4)) { //+4
         SimpleMachineMetaTileEntity(clayiumId("pipe_drawing_machine.${it.lowerName}"), it, CRecipes.PIPE_DRAWING_MACHINE)
     }
 
-    val SMELTER = registerMetaTileEntities(274, (4..9)) { //+6
+    val SMELTER = registerMetaTileEntities(275, (4..9)) { //+6
         SimpleMachineMetaTileEntity(clayiumId("smelter.${it.lowerName}"), it, CRecipes.SMELTER, ::RecipeLogicClayFurnace)
     }
 
-    val WIRE_DRAWING_MACHINE = registerMetaTileEntities(280, (1..4)) { //+4
+    val WIRE_DRAWING_MACHINE = registerMetaTileEntities(281, (1..4)) { //+4
         SimpleMachineMetaTileEntity(clayiumId("wire_drawing_machine.${it.lowerName}"), it, CRecipes.WIRE_DRAWING_MACHINE)
     }
 
 
-    /* Item Generators 500-600 */
+    /* Item Generators 501-600 */
     val CA_RESONATING_COLLECTOR = registerMetaTileEntity(501, ResonatingCollectorMetaTileEntity(clayiumId("resonating_collector"), ClayTiers.ANTIMATTER))
 
     val COBBLESTONE_GENERATOR = registerMetaTileEntities(502, (1..7)) { //+7
@@ -173,12 +175,12 @@ object MetaTileEntities {
 
     val CA_REACTOR = registerMetaTileEntities(627, (10..13)) { CaReactorMetaTileEntity(clayiumId("ca_reactor.${it.lowerName}"), it) }
 
-    /* Clay Fabrication Machines 700-800 */
-    val WATERWHEEL = registerMetaTileEntities(700, (1..2)){ //+2
+    /* Clay Fabrication Machines 701-800 */
+    val WATERWHEEL = registerMetaTileEntities(701, (1..2)){ //+2
         WaterwheelMetaTileEntity(clayiumId("waterwheel.${it.lowerName}"), it)
     }
 
-    val SOLAR_CLAY_FABRICATOR = registerMetaTileEntities(702, (5..7)) { //+3
+    val SOLAR_CLAY_FABRICATOR = registerMetaTileEntities(703, (5..7)) { //+3
         when (it) {
             ClayTiers.ADVANCED ->
                 SolarClayFabricatorMetaTileEntity(clayiumId("solar_clay_fabricator.${it.lowerName}"), it, CRecipes.SOLAR_1)
@@ -190,7 +192,7 @@ object MetaTileEntities {
         }
     }
 
-    val CLAY_FABRICATOR = registerMetaTileEntities(705, intArrayOf(8, 9, 13)) {
+    val CLAY_FABRICATOR = registerMetaTileEntities(706, intArrayOf(8, 9, 13)) {
         when (it) {
             ClayTiers.CLAYIUM ->
                 ClayFabricatorMetaTileEntity(clayiumId("clay_fabricator.${it.lowerName}"), it, 11, ClayFabricatorMetaTileEntity::mk1)
@@ -202,8 +204,8 @@ object MetaTileEntities {
         }
     }
 
-    /* Special Machines 800-1000 */
-    val CLAY_LASER = registerMetaTileEntities(800, (7..10)) { //+4
+    /* Special Machines 801-1000 */
+    val CLAY_LASER = registerMetaTileEntities(801, (7..10)) { //+4
         when (it) {
             ClayTiers.CLAY_STEEL -> ClayLaserMetaTileEntity(clayiumId("clay_laser.${it.lowerName}"), it, laserBlue = 1)
             ClayTiers.CLAYIUM -> ClayLaserMetaTileEntity(clayiumId("clay_laser.${it.lowerName}"), it, laserGreen = 1)
@@ -213,14 +215,14 @@ object MetaTileEntities {
         }
     }
 
-    val PAN_CORE = registerMetaTileEntity(804, PanCoreMetaTileEntity(clayiumId("pan_core"), ClayTiers.PURE_ANTIMATTER))
+    val PAN_CORE = registerMetaTileEntity(805, PanCoreMetaTileEntity(clayiumId("pan_core"), ClayTiers.PURE_ANTIMATTER))
 
-    val PAN_ADAPTER = registerMetaTileEntities(805, (10..13)) { //+4
+    val PAN_ADAPTER = registerMetaTileEntities(806, (10..13)) { //+4
         PanAdapterMetaTileEntity(clayiumId("pan_adapter.${it.lowerName}"), it)
     }
 
     val PAN_DUPLICATOR = (1..10).map { //+10
-        registerMetaTileEntity(809 + it, PanDuplicatorMetaTileEntity(clayiumId("pan_duplicator.${it}"), ClayTiers.PURE_ANTIMATTER, it))
+        registerMetaTileEntity(810 + it, PanDuplicatorMetaTileEntity(clayiumId("pan_duplicator.${it}"), ClayTiers.PURE_ANTIMATTER, it))
     }
 
     /**
