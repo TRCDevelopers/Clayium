@@ -1,6 +1,7 @@
 package com.github.trc.clayium.common.metatileentities.multiblock
 
 import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.NumberFormat
 import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters
@@ -8,6 +9,7 @@ import com.cleanroommc.modularui.value.sync.GenericListSyncHandler
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
+import com.cleanroommc.modularui.widget.Widget
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
@@ -21,6 +23,7 @@ import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.Stru
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult.Invalid
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.api.util.toList
@@ -213,19 +216,22 @@ class CaReactorMetaTileEntity(
         }
 
         return super.buildMainParentWidget(syncManager)
-            .child(IKey.dynamic {
+            .child(Widget().height(12).widthRel(0.3f)
+                .background(GuiTextures.BUTTON_CLEAN)
+                .overlay(
+                    IKey.dynamic {
                 if (multiblockLogic.structureFormed)
                     I18n.format("gui.clayium.ca_reactor.constructed")
                 else
-                    I18n.format("gui.clayium.ca_reactor.invalid") }
-                .asWidget().widthRel(0.7f).alignment(Alignment.CenterRight).align(Alignment.BottomRight)
+                    I18n.format("gui.clayium.ca_reactor.invalid") }.color(IKey.TEXT_COLOR))
+                .align(Alignment.BottomRight)
                 .tooltip { it.addLine(errorMsgDrawable) }
             )
             .child(IKey.dynamic { I18n.format("gui.clayium.ca_reactor.efficiency", NumberFormat.formatWithMaxDigits(efficiency)) }
-                .asWidget().widthRel(0.6f).alignment(Alignment.CenterRight).right(0).bottom(10)
+                .asWidgetResizing().alignment(Alignment.CenterRight).alignX(Alignment.BottomRight.x).bottom(14)
             )
             .child(IKey.dynamic { I18n.format("gui.clayium.ca_reactor.rank_size", avgHullRank, hullCount) }
-                .asWidget().widthRel(0.6f).left(0).top(10))
+                .asWidgetResizing().left(0).top(10))
     }
 
     companion object {

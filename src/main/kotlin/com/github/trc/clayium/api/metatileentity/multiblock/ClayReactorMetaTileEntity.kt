@@ -15,6 +15,7 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.common.recipe.registry.CRecipes
@@ -90,10 +91,10 @@ class ClayReactorMetaTileEntity(
             { this.laser = if (it == -1) null else ClayLaser.fromInt(it, EnumFacing.UP) }
         ))
         return super.buildMainParentWidget(syncManager)
-            .child(IKey.dynamic { I18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.energy?.toLong() ?: 0L)) }.asWidget()
-                .align(Alignment.BottomRight))
+            .child(IKey.dynamic { I18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.energy?.toLong() ?: 0L)) }.asWidgetResizing()
+                .pos(102, 53))
             .child(multiblockLogic.tierTextWidget(syncManager)
-                .align(Alignment.BottomCenter))
+                .alignX(Alignment.Center.x).bottom(12))
     }
 
     override fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?) {

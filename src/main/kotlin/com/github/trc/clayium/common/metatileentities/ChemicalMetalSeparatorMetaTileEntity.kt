@@ -56,7 +56,7 @@ class ChemicalMetalSeparatorMetaTileEntity(
                         .align(Alignment.BottomRight)
                         .setEnabledIf { GuiScreen.isShiftKeyDown() }
                         .background(IDrawable.EMPTY))
-                    .child(clayEnergyHolder.createCeTextWidget(syncManager).widthRel(0.5f)
+                    .child(clayEnergyHolder.createCeTextWidget(syncManager)
                         .bottom(12).left(0))
                 )
             })

@@ -10,6 +10,7 @@ import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.RelativeDirection
+import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.common.blocks.BlockMachineHull
 import net.minecraft.client.resources.I18n
@@ -115,7 +116,7 @@ class MultiblockLogic(
 
     fun tierTextWidget(syncManager: GuiSyncManager): TextWidget {
         syncManager.syncValue("multiblock_tier", SyncHandlers.intNumber({ recipeLogicTier }, { recipeLogicTier = it }))
-        return IKey.dynamic { I18n.format("tooltip.clayium.tier", recipeLogicTier) }.asWidget()
+        return IKey.dynamic { I18n.format("tooltip.clayium.tier", recipeLogicTier) }.asWidgetResizing()
     }
 
     sealed interface BlockValidationResult {

@@ -135,7 +135,7 @@ abstract class WorkableMetaTileEntity(
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
-                .bottom(12).left(0).widthRel(0.5f))
+                .bottom(12).left(0))
             .child(clayEnergyHolder.createSlotWidget()
                 .align(Alignment.BottomRight)
                 .setEnabledIf { GuiScreen.isShiftKeyDown() }

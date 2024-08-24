@@ -37,6 +37,7 @@ import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.MachineIoMode.*
+import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.Clayium
@@ -647,9 +648,9 @@ abstract class MetaTileEntity(
                 .align(Alignment.TopLeft))
             .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
             .child(IKey.dynamic {
-                if (overclock != 1.0) I18n.format("gui.clayium.overclock", overclock) else ""
-            }.asWidget()
-                .widthRel(0.4f).alignment(Alignment.CenterRight).align(Alignment.BottomRight))
+                // if empty string, a bug occurs.
+                if (overclock != 1.0) I18n.format("gui.clayium.overclock", overclock) else " "
+            }.asWidgetResizing().alignment(Alignment.CenterRight).align(Alignment.BottomRight))
     }
 
     private data class FilterAndType(val filter: IItemFilter, val type: FilterType)

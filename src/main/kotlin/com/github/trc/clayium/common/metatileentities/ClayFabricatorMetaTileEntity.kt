@@ -20,6 +20,7 @@ import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.material.Clay
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
@@ -60,8 +61,8 @@ class ClayFabricatorMetaTileEntity(
             .child(mainColumn {
                 child(buildMainParentWidget(syncManager)
                     .child(slotsAndProgressBar.align(Alignment.Center))
-                    .child(IKey.dynamic { workable.currentCe.format() }.asWidget()
-                        .left(0).bottom(10).widthRel(0.5f))
+                    .child(IKey.dynamic { workable.currentCe.format() }.asWidgetResizing()
+                        .left(0).bottom(10))
                 )
             })
     }
