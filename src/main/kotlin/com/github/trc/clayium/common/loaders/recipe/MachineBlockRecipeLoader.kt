@@ -261,7 +261,7 @@ object MachineBlockRecipeLoader {
             .output(MetaTileEntities.CA_INJECTOR[0])
             .tier(6).CEt(ClayEnergy.of(100)).duration(480)
             .buildAndRegister()
-        for (i in 1..3) {
+        for (i in 1..4) {
             val mte = MetaTileEntities.CA_INJECTOR[i]
             assembler.builder()
                 .input(MACHINE_HULL.getItem(mte.tier as ClayTiers))
