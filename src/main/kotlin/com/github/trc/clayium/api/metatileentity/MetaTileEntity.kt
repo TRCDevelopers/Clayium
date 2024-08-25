@@ -146,10 +146,17 @@ abstract class MetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     abstract fun registerItemModel(item: Item, meta: Int)
+    @Deprecated("move machine status to machines/ subdirectory")
     @SideOnly(Side.CLIENT)
     fun registerItemModelDefault(item: Item, meta: Int, name: String) {
         ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId(name), "tier=${tier.lowerName}"))
     }
+    @SideOnly(Side.CLIENT)
+    fun registerItemModelDefaultNew(item: Item, meta: Int, name: String) {
+        ModelLoader.setCustomModelResourceLocation(item, meta,
+            ModelResourceLocation(clayiumId("machines/$name"), "tier=${tier.lowerName}"))
+    }
+
 
     fun addMetaTileEntityTrait(trait: MTETrait) {
         mteTraits[trait.name] = trait
@@ -635,9 +642,16 @@ abstract class MetaTileEntity(
      */
     abstract override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel
 
+    @Deprecated("use ModularPanel.columnWithPlayerInv instead")
     protected inline fun mainColumn(builder: (Column.() -> Column)) = Column().margin(7).sizeRel(1f)
         .builder()
         .child(SlotGroupWidget.playerInventory(0))
+
+    protected inline fun ModularPanel.columnWithPlayerInv(builder: (Column.() -> Column)) = this.child(
+        Column().margin(7).sizeRel(1f)
+            .builder()
+            .child(SlotGroupWidget.playerInventory(0))
+    )
 
     /**
      * returns the main parent widget positioned above player inventory.

@@ -225,6 +225,10 @@ object MetaTileEntities {
         registerMetaTileEntity(810 + it, PanDuplicatorMetaTileEntity(clayiumId("pan_duplicator.${it}"), ClayTiers.PURE_ANTIMATTER, it))
     }
 
+    /* Builder Machines 1001-1100 */
+    val BLOCK_BREAKER = registerMetaTileEntity(1001,
+        BlockBreakerMetaTileEntity(clayiumId("block_breaker"), ClayTiers.AZ91D))
+
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)
      * @param provider tier -> MetaTileEntity
