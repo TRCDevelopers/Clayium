@@ -1,0 +1,19 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "face": "clayium:blocks/area_miner"
+    },
+    "model": "clayium:machine"
+  },
+  "variants": {
+    "tier": {
+      "az91d": {
+        "textures": {
+          "base": "clayium:blocks/az91d_hull"
+        },
+        "model": "clayium:machine"
+      }
+    }
+  }
+}

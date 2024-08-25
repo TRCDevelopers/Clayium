@@ -146,10 +146,17 @@ abstract class MetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     abstract fun registerItemModel(item: Item, meta: Int)
+    @Deprecated("move machine status to machines/ subdirectory")
     @SideOnly(Side.CLIENT)
     fun registerItemModelDefault(item: Item, meta: Int, name: String) {
         ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId(name), "tier=${tier.lowerName}"))
     }
+    @SideOnly(Side.CLIENT)
+    fun registerItemModelDefaultNew(item: Item, meta: Int, name: String) {
+        ModelLoader.setCustomModelResourceLocation(item, meta,
+            ModelResourceLocation(clayiumId("machines/$name"), "tier=${tier.lowerName}"))
+    }
+
 
     fun addMetaTileEntityTrait(trait: MTETrait) {
         mteTraits[trait.name] = trait

@@ -35,7 +35,7 @@ class BlockBreakerMetaTileEntity(
     private val inventoryRow = 3
     private val inventoryColumn = 3
 
-    override val faceTexture: ResourceLocation = clayiumId("blocks/block_breaker")
+    override val faceTexture: ResourceLocation = clayiumId("blocks/area_miner")
 
     override val itemInventory = ClayiumItemStackHandler(this, inventoryRow * inventoryColumn)
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
@@ -48,7 +48,7 @@ class BlockBreakerMetaTileEntity(
     }
 
     override fun registerItemModel(item: Item, meta: Int) {
-        registerItemModelDefault(item, meta, "block_breaker")
+        registerItemModelDefaultNew(item, meta, "block_breaker")
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
@@ -75,7 +75,8 @@ class BlockBreakerMetaTileEntity(
                     .child(Grid().coverChildren()
                         .row(startButton, stopButton)
                         .row(displayRange, resetButton)
-                        .left(0).top(12)
+                        .minElementMargin(1, 1)
+                        .left(4).top(12)
                     )
                     .child(SlotGroupWidget.builder()
                         .matrix(*matrixStr.toTypedArray())

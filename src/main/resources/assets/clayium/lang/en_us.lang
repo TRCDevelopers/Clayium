@@ -585,7 +585,7 @@ tile.clayium.blockClayPrismMarker.tooltip.line2=__DETAIL__
 tile.clayium.blockClayPrismMarker.tooltip.line3=Its designated area will be
 tile.clayium.blockClayPrismMarker.tooltip.line4=automatically expanded to Y = 1~255.
 
-tile.clayium.blockMiner.name=Block Breaker
+machine.clayium.block_breaker.name=Block Breaker
 tile.clayium.blockAreaCollector.name=Area Item Collector
 tile.clayium.blockAreaMiner.name=Area Miner
 tile.clayium.blockAdvancedAreaMiner.name=Advanced Area Miner
