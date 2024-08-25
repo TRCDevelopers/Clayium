@@ -4,76 +4,78 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.TextWidget
+import com.github.trc.clayium.api.LaserEnergy
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IClayLaserAcceptor
 import com.github.trc.clayium.api.laser.IClayLaser
 import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.common.clayenergy.LaserPower
+import com.github.trc.clayium.api.util.asWidgetResizing
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 
-class LaserPowerHolder(
+class LaserEnergyHolder(
     metaTileEntity: MetaTileEntity,
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.ENERGY_HOLDER), IClayLaserAcceptor {
 
-    private var power: LaserPower = LaserPower.ZERO
-    private var laser: Array<IClayLaser?> = arrayOfNulls(6)
+    private var storedPower = LaserEnergy.ZERO
+    private var receivedLasers: Array<IClayLaser?> = arrayOfNulls(6)
+
     override fun update() {
         if (metaTileEntity.isRemote) return
-        (0..5).map {
-            if (this.laser[it] != null){
-                this.power += LaserPower.of(this.laser[it]!!.laserEnergy)
+        for (i in EnumFacing.entries.indices) {
+            val laser = receivedLasers[i]
+            if (laser != null) {
+                this.storedPower += LaserEnergy(laser.energy)
             }
         }
     }
 
-    fun getPowerStored(): LaserPower {
-        return this.power
+    fun getPowerStored(): LaserEnergy {
+        return this.storedPower
     }
 
-    fun drawPower(lp: LaserPower, simulate: Boolean): Boolean {
-        if (!hasEnoughPower(lp)) return false
-        if (!simulate) this.power -= lp
+    fun drawPower(power: LaserEnergy, simulate: Boolean): Boolean {
+        if (!hasEnoughPower(power)) return false
+        if (!simulate) this.storedPower -= power
         return true
     }
-    fun hasEnoughPower(lp: LaserPower): Boolean {
-        return this.power >= lp
+
+    fun hasEnoughPower(power: LaserEnergy): Boolean {
+        return this.storedPower >= power
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        if (capability == ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR) {
-            return ClayiumTileCapabilities.CAPABILITY_CLAY_LASER_ACCEPTOR.cast(this);
+        if (capability == ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR) {
+            return ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR.cast(this)
         }
         return super.getCapability(capability, facing)
     }
+
     fun createLpTextWidget(syncManager: GuiSyncManager): TextWidget {
-        syncManager.syncValue("${this.name}.text", SyncHandlers.doubleNumber(
-            { power.lp },
-            { power = LaserPower(it) }
+        syncManager.syncValue("laser_power", SyncHandlers.doubleNumber(
+            { storedPower.energy },
+            { storedPower = LaserEnergy(it) }
         ))
 
-        return IKey.dynamic { "Laser : ${this.power.format()}" }.asWidget()
+        return IKey.dynamic { "Laser : ${this.storedPower.format()}" }.asWidgetResizing()
     }
 
     override fun serializeNBT(): NBTTagCompound {
         return super.serializeNBT().apply {
-            setDouble("laserPower", power.lp)
+            setDouble("storedPower", storedPower.energy)
         }
     }
 
     override fun deserializeNBT(data: NBTTagCompound) {
         super.deserializeNBT(data)
-        power = LaserPower(data.getDouble("laserPower"))
+        storedPower = LaserEnergy(data.getDouble("laserPower"))
     }
 
-    override fun laserChanged(
-        irradiatedSide: EnumFacing,
-        laser: IClayLaser?
-    ) {
-        this.laser[irradiatedSide.index] = laser
+    override fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?) {
+        this.receivedLasers[irradiatedSide.index] = laser
     }
 
 }

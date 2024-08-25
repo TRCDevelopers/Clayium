@@ -635,9 +635,16 @@ abstract class MetaTileEntity(
      */
     abstract override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel
 
+    @Deprecated("use ModularPanel.columnWithPlayerInv instead")
     protected inline fun mainColumn(builder: (Column.() -> Column)) = Column().margin(7).sizeRel(1f)
         .builder()
         .child(SlotGroupWidget.playerInventory(0))
+
+    protected inline fun ModularPanel.columnWithPlayerInv(builder: (Column.() -> Column)) = this.child(
+        Column().margin(7).sizeRel(1f)
+            .builder()
+            .child(SlotGroupWidget.playerInventory(0))
+    )
 
     /**
      * returns the main parent widget positioned above player inventory.
