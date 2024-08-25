@@ -17,15 +17,21 @@ import com.github.trc.clayium.api.capability.impl.LaserEnergyHolder
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.util.TransferUtils
+import net.minecraft.client.renderer.block.model.BakedQuad
+import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.NonNullList
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.client.model.ModelLoader
+import java.util.function.Function
 import kotlin.math.ln
 
 abstract class AbstractMinerMetaTileEntity(
@@ -148,8 +154,16 @@ abstract class AbstractMinerMetaTileEntity(
             }
     }
 
+    override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
+        val atlas = getter.apply(clayiumId("blocks/miner_back"))
+        MINER_BACK = EnumFacing.entries.map { ModelTextures.createQuad(it, atlas) }
+    }
+
     companion object {
         private const val INV_ROW = 3
         private const val INV_COLUMN = 3
+
+        @JvmStatic // for protected visibility
+        protected lateinit var MINER_BACK: List<BakedQuad>
     }
 }

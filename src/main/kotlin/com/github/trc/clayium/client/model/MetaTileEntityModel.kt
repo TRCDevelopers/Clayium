@@ -20,6 +20,8 @@ class MetaTileEntityModel(
             ClayiumApi.MTE_REGISTRY.forEach { metaTileEntity ->
                 addAll(metaTileEntity.requiredTextures.filterNotNull())
             }
+            // Block Breaker & Item Collector Back
+            add(clayiumId("blocks/miner_back"))
             // io textures
             add(clayiumId("blocks/import_energy"))
             add(clayiumId("blocks/import"))
