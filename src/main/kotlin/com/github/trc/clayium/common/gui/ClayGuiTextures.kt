@@ -6,9 +6,6 @@ import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.api.util.clayiumId
 
 object ClayGuiTextures {
-    private fun slotTexture() = UITexture.builder()
-        .location(CValues.MOD_ID, "gui/slot")
-        .imageSize(256, 256)
 
     val LARGE_SLOT = slotTexture()
         .uv(0, 32, 26, 26)
@@ -72,19 +69,35 @@ object ClayGuiTextures {
             .name("mc_button_hovered")
             .build()
 
-    val CE_BUTTON_DISABLED = UITexture.builder()
-        .location(clayiumId("gui/button"))
+    //region Buttons
+    val CE_BUTTON_DISABLED = button(0, 0)
+    val CE_BUTTON = button(0, 16)
+    val CE_BUTTON_HOVERED = button(0, 32)
+
+    val START_BUTTON_DISABLED = button(16, 0)
+    val START_BUTTON = button(16, 16)
+    val START_BUTTON_HOVERED = button(16, 32)
+
+    val STOP_BUTTON_DISABLED = button(32, 0)
+    val STOP_BUTTON = button(32, 16)
+    val STOP_BUTTON_HOVERED = button(32, 32)
+
+    val DISPLAY_RANGE_DISABLED = button(48, 0)
+    val DISPLAY_RANGE = button(48, 16)
+    val DISPLAY_RANGE_HOVERED = button(48, 32)
+
+    val RESET_DISABLED = button(64, 0)
+    val RESET = button(64, 16)
+    val RESET_HOVERED = button(64, 32)
+    //endregion
+
+    private fun slotTexture() = UITexture.builder()
+        .location(CValues.MOD_ID, "gui/slot")
         .imageSize(256, 256)
-        .uv(0, 0, 16, 16)
-        .build()
-    val CE_BUTTON = UITexture.builder()
-        .location(clayiumId("gui/button"))
+
+    private fun button(u: Int, v: Int) = UITexture.builder()
+        .location(CValues.MOD_ID, "gui/button")
         .imageSize(256, 256)
-        .uv(0, 16, 16, 16)
-        .build()
-    val CE_BUTTON_HOVERED = UITexture.builder()
-        .location(clayiumId("gui/button"))
-        .imageSize(256, 256)
-        .uv(0, 32, 16, 16)
+        .uv(u, v, 16, 16)
         .build()
 }
