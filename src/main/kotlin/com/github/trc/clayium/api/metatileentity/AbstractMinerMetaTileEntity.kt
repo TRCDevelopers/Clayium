@@ -1,5 +1,6 @@
 package com.github.trc.clayium.api.metatileentity
 
+import codechicken.lib.vec.Cuboid6
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
@@ -8,6 +9,7 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
+import com.cleanroommc.modularui.widgets.CycleButtonWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.ToggleButton
@@ -20,15 +22,18 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.model.ModelTextures
+import com.github.trc.clayium.client.renderer.AreaMarkerRenderer
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.util.TransferUtils
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
+import net.minecraft.client.resources.I18n
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.NonNullList
 import net.minecraft.util.ResourceLocation
@@ -57,11 +62,22 @@ abstract class AbstractMinerMetaTileEntity(
     private var currentTargetPos: BlockPos? = null
     private var workingEnabled = true
 
+    private var rangeRenderMode = RangeRenderMode.DISABLED
+        set(value) {
+            field = value
+            markDirty()
+        }
+
     /**
      * next block pos to harvest. called if current block is broken.
      * null if no more block to harvest.
      */
     abstract fun getNextBlockPos(): BlockPos?
+
+    /**
+     * Used for rendering.
+     */
+    abstract val range: Cuboid6
 
     override fun onFirstTick() {
         super.onFirstTick()
@@ -136,9 +152,14 @@ abstract class AbstractMinerMetaTileEntity(
             .background(ClayGuiTextures.STOP_BUTTON)
             .hoverBackground(ClayGuiTextures.STOP_BUTTON_HOVERED)
             .selectedBackground(ClayGuiTextures.STOP_BUTTON_DISABLED)
-        val displayRange = ButtonWidget()
+        val displayRange = CycleButtonWidget()
             .background(ClayGuiTextures.DISPLAY_RANGE)
             .hoverBackground(ClayGuiTextures.DISPLAY_RANGE_HOVERED)
+            .length(3)
+            .value(SyncHandlers.enumValue(RangeRenderMode::class.java, ::rangeRenderMode, ::rangeRenderMode::set))
+            .tooltip(0) { it.addLine(I18n.format("gui.clayium.range_visualization_mode.disabled")) }
+            .tooltip(1) { it.addLine(I18n.format("gui.clayium.range_visualization_mode.enabled")) }
+            .tooltip(2) { it.addLine(I18n.format("gui.clayium.range_visualization_mode.enabled_xray")) }
         val resetButton = ButtonWidget()
             .background(ClayGuiTextures.RESET)
             .hoverBackground(ClayGuiTextures.RESET_HOVERED)
@@ -167,20 +188,45 @@ abstract class AbstractMinerMetaTileEntity(
             }
     }
 
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        data.setBoolean("workingEnabled", workingEnabled)
+        data.setInteger("rangeRenderMode", rangeRenderMode.ordinal)
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        workingEnabled = data.getBoolean("workingEnabled")
+        rangeRenderMode = RangeRenderMode.entries[data.getInteger("rangeRenderMode")]
+    }
+
+    override fun writeInitialSyncData(buf: PacketBuffer) {
+        super.writeInitialSyncData(buf)
+        buf.writeByte(rangeRenderMode.ordinal)
+    }
+
+    override fun receiveInitialSyncData(buf: PacketBuffer) {
+        super.receiveInitialSyncData(buf)
+        rangeRenderMode = RangeRenderMode.entries[buf.readByte().toInt()]
+    }
+
     @SideOnly(Side.CLIENT)
     override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
         val atlas = getter.apply(clayiumId("blocks/miner_back"))
         MINER_BACK = EnumFacing.entries.map { ModelTextures.createQuad(it, atlas) }
     }
 
-    override fun writeToNBT(data: NBTTagCompound) {
-        super.writeToNBT(data)
-        data.setBoolean("workingEnabled", workingEnabled)
+    override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
+        val source = Cuboid6() //todo
+        when (rangeRenderMode) {
+            RangeRenderMode.ENABLED -> AreaMarkerRenderer.render(source, range, x, y, z, false)
+            RangeRenderMode.ENABLED_XRAY -> AreaMarkerRenderer.render(source, range, x, y, z, true)
+            else -> {}
+        }
     }
 
-    override fun readFromNBT(data: NBTTagCompound) {
-        super.readFromNBT(data)
-        workingEnabled = data.getBoolean("workingEnabled")
+    protected enum class RangeRenderMode {
+        DISABLED, ENABLED, ENABLED_XRAY
     }
 
     companion object {

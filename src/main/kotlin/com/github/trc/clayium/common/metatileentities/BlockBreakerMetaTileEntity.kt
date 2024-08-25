@@ -1,5 +1,6 @@
 package com.github.trc.clayium.common.metatileentities
 
+import codechicken.lib.vec.Cuboid6
 import com.github.trc.clayium.api.metatileentity.AbstractMinerMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
@@ -17,6 +18,14 @@ class BlockBreakerMetaTileEntity(
 ) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, "block_breaker") {
 
     override val faceTexture: ResourceLocation = clayiumId("blocks/area_miner")
+
+    private val backingRange = Cuboid6()
+    private val backingBlockPos = BlockPos.MutableBlockPos()
+    override val range: Cuboid6 get() {
+        backingBlockPos.setPos(BlockPos.ORIGIN)
+        backingBlockPos.move(this.frontFacing.opposite)
+        return backingRange.set(backingBlockPos, backingBlockPos.add(1, 1, 1))
+    }
 
     override fun getNextBlockPos(): BlockPos? {
         return this.pos?.offset(this.frontFacing.opposite)

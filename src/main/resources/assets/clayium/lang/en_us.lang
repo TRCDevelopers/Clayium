@@ -585,6 +585,9 @@ tile.clayium.blockClayPrismMarker.tooltip.line2=__DETAIL__
 tile.clayium.blockClayPrismMarker.tooltip.line3=Its designated area will be
 tile.clayium.blockClayPrismMarker.tooltip.line4=automatically expanded to Y = 1~255.
 
+gui.clayium.range_visualization_mode.disabled=Range Display: Disabled
+gui.clayium.range_visualization_mode.enabled=Range Display: Enabled
+gui.clayium.range_visualization_mode.enabled_xray=Range Display: Enabled (X-Ray)
 machine.clayium.block_breaker=Block Breaker
 tile.clayium.blockAreaCollector.name=Area Item Collector
 tile.clayium.blockAreaMiner.name=Area Miner

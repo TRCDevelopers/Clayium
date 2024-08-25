@@ -553,6 +553,9 @@ tile.clayium.blockClayPrismMarker.tooltip.line2=__DETAIL__
 tile.clayium.blockClayPrismMarker.tooltip.line3=指定領域の上下面が自動的に
 tile.clayium.blockClayPrismMarker.tooltip.line4=Y = 1 ～ 255 まで拡張される。
 
+gui.clayium.range_visualization_mode.disabled=範囲表示: 無効
+gui.clayium.range_visualization_mode.enabled=範囲表示: 有効
+gui.clayium.range_visualization_mode.enabled_xray=範囲表示: 有効 (X-Ray)
 machine.clayium.block_breaker=採掘機
 tile.clayium.blockAreaCollector.name=範囲収集機
 tile.clayium.blockAreaMiner.name=範囲採掘機
