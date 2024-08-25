@@ -20,7 +20,8 @@ class LaserEnergyHolder(
     metaTileEntity: MetaTileEntity,
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.ENERGY_HOLDER), IClayLaserAcceptor {
 
-    private var storedPower = LaserEnergy.ZERO
+    var storedPower = LaserEnergy.ZERO
+        private set
     private var receivedLasers: Array<IClayLaser?> = arrayOfNulls(6)
 
     override fun update() {
@@ -33,11 +34,12 @@ class LaserEnergyHolder(
         }
     }
 
-    fun getPowerStored(): LaserEnergy {
-        return this.storedPower
+    fun drawAll(): Boolean {
+        this.storedPower = LaserEnergy.ZERO
+        return true
     }
 
-    fun drawPower(power: LaserEnergy, simulate: Boolean): Boolean {
+    fun drawEnergy(power: LaserEnergy, simulate: Boolean): Boolean {
         if (!hasEnoughPower(power)) return false
         if (!simulate) this.storedPower -= power
         return true
