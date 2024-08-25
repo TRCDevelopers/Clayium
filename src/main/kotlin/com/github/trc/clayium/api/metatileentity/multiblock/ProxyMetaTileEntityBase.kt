@@ -5,8 +5,8 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.INTERFACE_SYNC_MI
 import com.github.trc.clayium.api.capability.ISynchronizedInterface
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.getMetaTileEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
@@ -92,7 +92,7 @@ abstract class ProxyMetaTileEntityBase(
         super.onFirstTick()
         if (this.targetPos != null && this.targetDimensionId != -1) {
             val world = DimensionManager.getWorld(this.targetDimensionId) ?: return
-            val metaTileEntity = CUtils.getMetaTileEntity(world, this.targetPos) ?: return
+            val metaTileEntity = world.getMetaTileEntity(this.targetPos) ?: return
             if (canLink(metaTileEntity)) {
                 this.target = metaTileEntity
                 this.onLink(metaTileEntity)
@@ -104,21 +104,27 @@ abstract class ProxyMetaTileEntityBase(
         // no-op, this block is a proxy
     }
 
-    final override fun addToMultiblock(controller: MultiblockControllerBase) {
+    final override fun addToMultiblock(controller: MetaTileEntity) {
         this.isAttachedToMultiblock = true
         this.target = controller
         this.onLink(controller)
     }
 
-    final override fun removeFromMultiblock(controller: MultiblockControllerBase) {
+    final override fun removeFromMultiblock(controller: MetaTileEntity) {
         this.isAttachedToMultiblock = false
         this.target = null
         this.onUnlink()
     }
 
+    /**
+     * check if synchronization with a Synchronizer Item is allowed.
+     */
+    protected open fun canSynchronize() = true
+
     final override fun synchronize(pos: BlockPos, dimensionId: Int): Boolean {
+        if (!canSynchronize()) return false
         val world = DimensionManager.getWorld(dimensionId) ?: return false
-        val metaTileEntity = CUtils.getMetaTileEntity(world, pos) ?: return false
+        val metaTileEntity = world.getMetaTileEntity(pos) ?: return false
         if (!canLink(metaTileEntity)) return false
 
         this.target = metaTileEntity

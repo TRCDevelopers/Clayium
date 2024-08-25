@@ -11,12 +11,14 @@ class ClayWorkTableRecipeRegistry {
 
     fun register(input: RecipeInput, primaryOutput: ItemStack, secondaryOutput: ItemStack = ItemStack.EMPTY, method: ClayWorkTableMethod, clicks: Int) {
         _recipes.add(ClayWorkTableRecipe(input, primaryOutput, secondaryOutput, method, clicks))
+        _recipes.sortWith(RECIPE_COMPARATOR)
     }
 
     fun register(create: ClayWorkTableRecipe.Builder.() -> Unit) {
         val builder = ClayWorkTableRecipe.Builder()
         builder.create()
         _recipes.add(builder.build())
+        _recipes.sortWith(RECIPE_COMPARATOR)
     }
 
     fun getRecipe(input: ItemStack, method: ClayWorkTableMethod): ClayWorkTableRecipe? {
@@ -26,5 +28,11 @@ class ClayWorkTableRecipeRegistry {
             }
         }
         return null
+    }
+
+    companion object {
+        private val RECIPE_COMPARATOR = compareBy<ClayWorkTableRecipe> {
+            it.input.amount
+        }.reversed()
     }
 }

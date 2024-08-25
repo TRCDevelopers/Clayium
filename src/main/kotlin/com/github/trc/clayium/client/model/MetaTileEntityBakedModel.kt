@@ -4,10 +4,10 @@ import codechicken.lib.render.particle.IModelParticleProvider
 import codechicken.lib.texture.TextureUtils
 import com.github.trc.clayium.api.block.BlockMachine.Companion.TILE_ENTITY
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
-import com.github.trc.clayium.api.util.CUtils
-import com.github.trc.clayium.api.util.CUtils.clayiumId
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode.*
+import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.MachineIoMode.*
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.getMetaTileEntity
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.ItemOverrideList
@@ -74,7 +74,8 @@ class MetaTileEntityBakedModel(
         if (state == null || side == null || state !is IExtendedBlockState) return emptyList()
         val mte = (state.getValue(TILE_ENTITY) as? MetaTileEntityHolder)?.metaTileEntity ?: return emptyList()
 
-        val quads = mte.getQuads(state, side, rand)
+        val quads = mutableListOf<BakedQuad>()
+        mte.getQuads(quads, state, side, rand)
         mte.overlayQuads(quads, state, side, rand)
         mte.inputModes.forEachIndexed { facingIndex, mteInputMode ->
             val side2Quad = inputModeQuads[mteInputMode] ?: return@forEachIndexed
@@ -91,12 +92,12 @@ class MetaTileEntityBakedModel(
     }
 
     override fun getHitEffects(traceResult: RayTraceResult, state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite> {
-        val metaTileEntity = CUtils.getMetaTileEntity(world, pos) ?: return setOf(TextureUtils.getMissingSprite())
+        val metaTileEntity = world.getMetaTileEntity(pos) ?: return setOf(TextureUtils.getMissingSprite())
         return setOf(ModelTextures.getHullTexture(metaTileEntity.tier))
     }
 
     override fun getDestroyEffects(state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite> {
-        val metaTileEntity = CUtils.getMetaTileEntity(world, pos) ?: return setOf(TextureUtils.getMissingSprite())
+        val metaTileEntity = world.getMetaTileEntity(pos) ?: return setOf(TextureUtils.getMissingSprite())
         return setOf(ModelTextures.getHullTexture(metaTileEntity.tier))
     }
 

@@ -12,7 +12,6 @@ abstract class MTETrait(
     val name: String,
 ) : ISyncedTileEntity {
 
-    val tierNum = metaTileEntity.tier.numeric
     val networkId = idByName.computeIfAbsent(name) { nextId++ }
 
     init {
@@ -20,6 +19,8 @@ abstract class MTETrait(
     }
 
     open fun update() {}
+    open fun onFirstTick() {}
+    open fun onRemoval() {}
 
     open fun serializeNBT(): NBTTagCompound = NBTTagCompound()
     open fun deserializeNBT(data: NBTTagCompound) {}

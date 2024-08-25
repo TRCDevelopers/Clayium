@@ -1,6 +1,6 @@
 package com.github.trc.clayium.api.capability
 
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
+import com.github.trc.clayium.api.ClayEnergy
 import net.minecraftforge.items.IItemHandler
 
 interface IClayEnergyHolder {
@@ -12,7 +12,8 @@ interface IClayEnergyHolder {
     /**
      * @return true if energy can/was drained, otherwise false
      */
-    fun drawEnergy(ce: ClayEnergy, simulate: Boolean = false): Boolean
+    fun drawEnergy(ce: ClayEnergy, simulate: Boolean): Boolean
+    fun addEnergy(ce: ClayEnergy)
 
     fun hasEnoughEnergy(ce: ClayEnergy): Boolean
 }

@@ -9,7 +9,8 @@ import com.github.trc.clayium.common.CommonProxy
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.blocks.TileEntityClayLaserReflector
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
-import com.github.trc.clayium.common.metatileentity.MetaTileEntities
+import com.github.trc.clayium.common.metatileentities.MetaTileEntities
+import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraftforge.client.event.ModelRegistryEvent
@@ -34,6 +35,7 @@ class ClientProxy : CommonProxy() {
         ModelLoaderRegistry.registerLoader(LaserReflectorModelLoader)
         ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, MetaTileEntityRenderDispatcher)
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayLaserReflector::class.java, ClayLaserReflectorRenderer)
+        ClayiumBlocks.CLAY_TREE_LEAVES.setGraphicsLevel(Minecraft.getMinecraft().gameSettings.fancyGraphics)
     }
 
     override fun init(event: FMLInitializationEvent) {
@@ -55,8 +57,9 @@ class ClientProxy : CommonProxy() {
 
     @SubscribeEvent
     fun registerModels(event: ModelRegistryEvent) {
-        MetaItemClayium.registerModels()
+        ClayiumBlocks.registerStateMappers()
         ClayiumBlocks.registerModels()
+        MetaItemClayium.registerModels()
         MetaTileEntities.registerItemModels()
     }
 }

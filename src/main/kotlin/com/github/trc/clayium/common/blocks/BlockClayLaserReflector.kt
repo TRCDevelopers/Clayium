@@ -19,9 +19,11 @@ import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
 @Suppress("OVERRIDE_DEPRECATION")
-class BlockClayLaserReflector : Block(Material.GLASS) {
+class BlockClayLaserReflector : Block(Material.IRON) {
     init {
         soundType = SoundType.GLASS
+        setHardness(1.0f)
+        setResistance(1.0f)
         defaultState = defaultState.withProperty(FACING, EnumFacing.NORTH)
     }
 

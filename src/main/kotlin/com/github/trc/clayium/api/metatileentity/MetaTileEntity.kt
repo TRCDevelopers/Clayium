@@ -4,9 +4,13 @@ import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
+import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.BlockMachine.Companion.IS_PIPE
@@ -17,22 +21,26 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FRONT_FACING
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_INPUT_MODE
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_OUTPUT_MODE
+import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IConfigurationTool
 import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.*
 import com.github.trc.clayium.api.capability.IItemFilter
+import com.github.trc.clayium.api.capability.IPipeConnectable
 import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
+import com.github.trc.clayium.api.metatileentity.interfaces.IMarkDirty
 import com.github.trc.clayium.api.metatileentity.interfaces.ISyncedTileEntity
+import com.github.trc.clayium.api.metatileentity.trait.OverclockHandler
 import com.github.trc.clayium.api.util.CUtils
-import com.github.trc.clayium.api.util.CUtils.clayiumId
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.MachineIoMode.*
+import com.github.trc.clayium.api.util.asWidgetResizing
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.Clayium
-import com.github.trc.clayium.common.blocks.IPipeConnectable
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode.*
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.items.filter.FilterType
 import com.github.trc.clayium.common.util.UtilLocale
@@ -77,7 +85,7 @@ abstract class MetaTileEntity(
      * used in item/block name and gui title
      */
     val translationKey: String,
-) : ISyncedTileEntity, IGuiHolder<PosGuiData>, IPipeConnectable {
+) : ISyncedTileEntity, IMarkDirty, IGuiHolder<PosGuiData>, IPipeConnectable {
 
     val forgeRarity = tier.rarity
 
@@ -133,6 +141,9 @@ abstract class MetaTileEntity(
      */
     open val useFaceForAllSides = false
 
+    val overclockHandler = OverclockHandler(this)
+    val overclock: Double get() = overclockHandler.rawOcFactor
+
     @SideOnly(Side.CLIENT)
     abstract fun registerItemModel(item: Item, meta: Int)
     @SideOnly(Side.CLIENT)
@@ -145,7 +156,7 @@ abstract class MetaTileEntity(
         traitByNetworkId[trait.networkId] = trait
     }
 
-    fun markDirty() = holder?.markDirty()
+    override fun markDirty() { holder?.markDirty() }
 
     open fun update() {
         if (timer == 0L) {
@@ -155,7 +166,9 @@ abstract class MetaTileEntity(
         timer++
     }
 
-    open fun onFirstTick() {}
+    open fun onFirstTick() {
+        mteTraits.values.forEach(MTETrait::onFirstTick)
+    }
 
     open fun writeToNBT(data: NBTTagCompound) {
         data.setByte("frontFacing", frontFacing.index.toByte())
@@ -226,7 +239,7 @@ abstract class MetaTileEntity(
         for (i in 0..<numberOfTraits) {
             val id = buf.readVarInt()
             traitByNetworkId[id]?.receiveInitialSyncData(buf)
-                ?: Clayium.LOGGER.error("Could not find MTETrait with id $id at $pos")
+                ?: Clayium.LOGGER.error("Could not find MTETrait with id $id at $pos during initial sync")
         }
     }
 
@@ -285,6 +298,9 @@ abstract class MetaTileEntity(
     }
 
     open fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === ClayiumTileCapabilities.PIPE_CONNECTABLE) {
+            return ClayiumTileCapabilities.PIPE_CONNECTABLE.cast(this)
+        }
         if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (facing == null) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemInventory)
             val i = facing.index
@@ -448,13 +464,17 @@ abstract class MetaTileEntity(
     protected fun refreshConnection(side: EnumFacing) {
         val previous = _connectionsCache[side.index]
         val i = side.index
-        when (val neighborTileEntity = this.getNeighbor(side)) {
-            is MetaTileEntityHolder -> {
-                val neighborMetaTileEntity = neighborTileEntity.metaTileEntity ?: return
-                _connectionsCache[i] = (this.canConnectToMte(neighborMetaTileEntity, side) || neighborMetaTileEntity.canConnectToMte(this, side.opposite))
+        val neighborTileEntity = this.getNeighbor(side)
+        if (neighborTileEntity == null) {
+            _connectionsCache[i] = false
+        } else {
+            val iPipeConnectable = neighborTileEntity.getCapability(ClayiumTileCapabilities.PIPE_CONNECTABLE, side.opposite)
+            if (iPipeConnectable == null) {
+                _connectionsCache[i] = this.canConnectTo(neighborTileEntity, side)
+            } else {
+                _connectionsCache[i] = this.canConnectTo(iPipeConnectable, side)
+                        || iPipeConnectable.canConnectTo(this, side.opposite)
             }
-            null -> _connectionsCache[i] = false
-            else -> _connectionsCache[i] = this.canConnectTo(neighborTileEntity, side)
         }
         if (previous != _connectionsCache[i]) {
             writeCustomData(UPDATE_CONNECTIONS) {
@@ -480,13 +500,6 @@ abstract class MetaTileEntity(
         }
     }
 
-    protected open fun canConnectToMte(neighbor: MetaTileEntity, side: EnumFacing): Boolean {
-        val i = side.index
-        val o = side.opposite.index
-        return (this._inputModes[i] != NONE && neighbor._outputModes[o] != NONE
-                || this._outputModes[i] != NONE && neighbor._inputModes[o] != NONE)
-    }
-
     protected fun canConnectTo(neighbor: TileEntity, side: EnumFacing): Boolean {
         return neighbor.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite)
     }
@@ -501,9 +514,12 @@ abstract class MetaTileEntity(
     @MustBeInvokedByOverriders
     open fun onPlacement() {
         if (!isRemote) EnumFacing.entries.forEach(this::refreshConnection)
+        overclockHandler.onNeighborBlockChange()
     }
 
-    open fun onRemoval() {}
+    open fun onRemoval() {
+        this.mteTraits.values.forEach(MTETrait::onRemoval)
+    }
 
     fun getStackForm(amount: Int = 1): ItemStack {
         return ItemStack(ClayiumApi.BLOCK_MACHINE, amount, ClayiumApi.MTE_REGISTRY.getIdByKey(metaTileEntityId))
@@ -516,6 +532,7 @@ abstract class MetaTileEntity(
     }
     open fun neighborChanged() {
         EnumFacing.entries.forEach(this::refreshConnection)
+        overclockHandler.onNeighborBlockChange()
     }
 
     open fun canConnectRedstone(side: EnumFacing?) = false
@@ -540,9 +557,19 @@ abstract class MetaTileEntity(
     }
 
     @SideOnly(Side.CLIENT)
+    open fun getItemStackDisplayName(): String {
+        return if (I18n.hasKey("${this.translationKey}.${tier.lowerName}")) {
+            I18n.format("${this.translationKey}.${tier.lowerName}")
+        } else {
+            I18n.format(this.translationKey, I18n.format(this.tier.prefixTranslationKey))
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
     @MustBeInvokedByOverriders
     open fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         tooltip.add(I18n.format("tooltip.clayium.tier", tier.numeric))
+        UtilLocale.formatTooltips(tooltip, "$translationKey.${tier.lowerName}.tooltip")
         UtilLocale.formatTooltips(tooltip, "$translationKey.tooltip")
     }
 
@@ -564,10 +591,9 @@ abstract class MetaTileEntity(
      * Adds base textures such as Machine hulls.
      */
     @SideOnly(Side.CLIENT)
-    open fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): MutableList<BakedQuad> {
-        if (state == null || side == null || state !is IExtendedBlockState) return mutableListOf()
-        val quads = mutableListOf(ModelTextures.getHullQuads(this.tier)?.get(side) ?: return mutableListOf())
-        return quads
+    open fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+        if (state == null || side == null || state !is IExtendedBlockState) return
+        quads.add(ModelTextures.getHullQuads(this.tier)?.get(side) ?: return)
     }
 
     /**
@@ -596,6 +622,36 @@ abstract class MetaTileEntity(
                 .child(ItemSlot().align(Alignment.Center)
                     .slot(slot)
                     .background(IDrawable.EMPTY))
+
+    /**
+     * ```
+     * ModularPanel.defaultPanel(translationKey)
+     *     .child(mainColumn {
+     *          .child(buildMainParentWidget()
+     *              .child(....)
+     *          )
+     *     })
+     * ```
+     */
+    abstract override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel
+
+    protected inline fun mainColumn(builder: (Column.() -> Column)) = Column().margin(7).sizeRel(1f)
+        .builder()
+        .child(SlotGroupWidget.playerInventory(0))
+
+    /**
+     * returns the main parent widget positioned above player inventory.
+     */
+    protected open fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+        return ParentWidget().widthRel(1f).expanded().marginBottom(2)
+            .child(IKey.str(getStackForm().displayName).asWidget()
+                .align(Alignment.TopLeft))
+            .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
+            .child(IKey.dynamic {
+                // if empty string, a bug occurs.
+                if (overclock != 1.0) I18n.format("gui.clayium.overclock", overclock) else " "
+            }.asWidgetResizing().alignment(Alignment.CenterRight).align(Alignment.BottomRight))
+    }
 
     private data class FilterAndType(val filter: IItemFilter, val type: FilterType)
 
@@ -634,8 +690,5 @@ abstract class MetaTileEntity(
                 }
             }
         }
-
-        fun playerInventoryTitle() = IKey.lang("container.inventory").asWidget()
-            .debugName("player inventory title")
     }
 }

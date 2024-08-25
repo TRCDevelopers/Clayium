@@ -1,21 +1,21 @@
 package com.github.trc.clayium.client.renderer
 
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.MachineIoMode.ALL
+import com.github.trc.clayium.api.util.MachineIoMode.CE
+import com.github.trc.clayium.api.util.MachineIoMode.FIRST
+import com.github.trc.clayium.api.util.MachineIoMode.M_1
+import com.github.trc.clayium.api.util.MachineIoMode.M_2
+import com.github.trc.clayium.api.util.MachineIoMode.M_3
+import com.github.trc.clayium.api.util.MachineIoMode.M_4
+import com.github.trc.clayium.api.util.MachineIoMode.M_5
+import com.github.trc.clayium.api.util.MachineIoMode.M_6
+import com.github.trc.clayium.api.util.MachineIoMode.M_ALL
+import com.github.trc.clayium.api.util.MachineIoMode.NONE
+import com.github.trc.clayium.api.util.MachineIoMode.SECOND
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.ModelUtils
-import com.github.trc.clayium.common.Clayium
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode.ALL
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode.CE
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode.FIRST
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode.M_1
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode.M_2
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode.M_3
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode.M_4
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode.M_5
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode.M_6
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode.M_ALL
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode.NONE
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode.SECOND
 import com.github.trc.clayium.common.items.ClayiumItems
 import net.minecraft.client.model.PositionTextureVertex
 import net.minecraft.client.model.TexturedQuad
@@ -34,33 +34,33 @@ object PipedMachineIoRenderer {
     private val inputTextures: Map<MachineIoMode, ResourceLocation?> = MachineIoMode.entries.associateWith {
         when (it) {
             NONE -> null
-            FIRST -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_1_p.png")
-            SECOND -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_2_p.png")
-            ALL -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_p.png")
-            CE -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_energy_p.png")
-            M_ALL -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_m0_p.png")
-            M_1 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_m1_p.png")
-            M_2 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_m2_p.png")
-            M_3 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_m3_p.png")
-            M_4 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_m4_p.png")
-            M_5 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/import_m5_p.png")
-            M_6 -> ResourceLocation (Clayium.MOD_ID, "textures/blocks/import_m6_p.png")
+            FIRST -> clayiumId("textures/blocks/import_1_p.png")
+            SECOND -> clayiumId("textures/blocks/import_2_p.png")
+            ALL -> clayiumId("textures/blocks/import_p.png")
+            CE -> clayiumId("textures/blocks/import_energy_p.png")
+            M_ALL -> clayiumId("textures/blocks/import_m0_p.png")
+            M_1 -> clayiumId("textures/blocks/import_m1_p.png")
+            M_2 -> clayiumId("textures/blocks/import_m2_p.png")
+            M_3 -> clayiumId("textures/blocks/import_m3_p.png")
+            M_4 -> clayiumId("textures/blocks/import_m4_p.png")
+            M_5 -> clayiumId("textures/blocks/import_m5_p.png")
+            M_6 -> clayiumId("textures/blocks/import_m6_p.png")
         }
     }
 
     private val outputTextures: Map<MachineIoMode, ResourceLocation?> = MachineIoMode.entries.associateWith {
         when (it) {
             NONE, CE -> null
-            FIRST -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_1_p.png")
-            SECOND -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_2_p.png")
-            ALL -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_p.png")
-            M_ALL -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_m0_p.png")
-            M_1 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_m1_p.png")
-            M_2 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_m2_p.png")
-            M_3 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_m3_p.png")
-            M_4 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_m4_p.png")
-            M_5 -> ResourceLocation(Clayium.MOD_ID, "textures/blocks/export_m5_p.png")
-            M_6 -> ResourceLocation (Clayium.MOD_ID, "textures/blocks/export_m6_p.png")
+            FIRST -> clayiumId("textures/blocks/export_1_p.png")
+            SECOND -> clayiumId("textures/blocks/export_2_p.png")
+            ALL -> clayiumId("textures/blocks/export_p.png")
+            M_ALL -> clayiumId("textures/blocks/export_m0_p.png")
+            M_1 -> clayiumId("textures/blocks/export_m1_p.png")
+            M_2 -> clayiumId("textures/blocks/export_m2_p.png")
+            M_3 -> clayiumId("textures/blocks/export_m3_p.png")
+            M_4 -> clayiumId("textures/blocks/export_m4_p.png")
+            M_5 -> clayiumId("textures/blocks/export_m5_p.png")
+            M_6 -> clayiumId("textures/blocks/export_m6_p.png")
         }
     }
 

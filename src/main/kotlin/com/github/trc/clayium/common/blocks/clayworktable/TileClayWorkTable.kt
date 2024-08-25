@@ -34,7 +34,7 @@ class TileClayWorkTable : TileEntity() {
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        return if (capability === ITEM_HANDLER_CAPABILITY) itemHandler as T else super.getCapability(capability, facing)
+        return if (capability === ITEM_HANDLER_CAPABILITY) capability.cast(itemHandler) else super.getCapability(capability, facing)
     }
 
     private val currentTool: ItemStack
@@ -62,18 +62,20 @@ class TileClayWorkTable : TileEntity() {
             craftingProgress = 0
         }
         craftingProgress++
+        currentTool.attemptDamageItem(1, world.rand, null)
         if (craftingProgress >= requiredProgress) {
-            input.count -= recipe.input.amount
-            if (itemHandler.getStackInSlot(2).isEmpty) {
-                itemHandler.setStackInSlot(2, recipe.primaryOutput)
-            } else {
-                itemHandler.getStackInSlot(2).count += recipe.primaryOutput.count
-            }
-            resetRecipe()
+            itemHandler.extractItem(0, recipe.input.amount, false)
+            completeRecipe(recipe)
         }
     }
 
-    private fun canStartCraft(input: ItemStack, method: ClayWorkTableMethod): Boolean {
+    fun completeRecipe(recipe: ClayWorkTableRecipe) {
+        itemHandler.insertItem(2, recipe.primaryOutput, false)
+        itemHandler.insertItem(3, recipe.secondaryOutput, false)
+        resetRecipe()
+    }
+
+    fun canStartCraft(input: ItemStack, method: ClayWorkTableMethod): Boolean {
         val recipe = CWTRecipes.getClayWorkTableRecipe(input, method) ?: return false
         if (!method.isValidTool(currentTool)) return false
 

@@ -1,19 +1,21 @@
 package com.github.trc.clayium.common.recipe.registry
 
+import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.RecipeCategory
 import com.github.trc.clayium.common.recipe.builder.RecipeBuilder
 import net.minecraft.item.ItemStack
 
-class RecipeRegistry<R: RecipeBuilder<R>>(
+open class RecipeRegistry<R: RecipeBuilder<R>>(
     val category: RecipeCategory,
     private val builderSample: R,
     val maxInputs: Int,
     val maxOutputs: Int,
 ) {
 
-    constructor(translationKey: String, builderSample: R, maxInputs: Int, maxOutputs: Int) : this(RecipeCategory.create(Clayium.MOD_ID, translationKey), builderSample, maxInputs, maxOutputs)
+    constructor(translationKey: String, builderSample: R, maxInputs: Int, maxOutputs: Int) :
+            this(RecipeCategory.create(CValues.MOD_ID, translationKey), builderSample, maxInputs, maxOutputs)
 
     init {
         builderSample.setRegistry(this)
@@ -32,15 +34,16 @@ class RecipeRegistry<R: RecipeBuilder<R>>(
         builder.buildAndRegister()
     }
 
-    fun findRecipe(tier: Int, inputsIn: List<ItemStack>): Recipe? {
-        return _recipes.find {
-            it.tierNumeric <= tier && it.matches(inputsIn)
-        }
+    fun findRecipe(machineTier: Int, inputsIn: List<ItemStack>): Recipe? {
+        return _recipes.find { it.matches(inputsIn, machineTier) }
     }
 
     fun addRecipe(recipe: Recipe) {
         validateRecipe(recipe)
-            .onSuccess { _recipes.add(it) }
+            .onSuccess { recipe ->
+                _recipes.add(recipe)
+                _recipes.sortWith(TIER_DURATION_CE_REVERSED)
+            }
             .onFailure { Clayium.LOGGER.error("Failed to add recipe: $recipe") }
     }
 
@@ -57,7 +60,7 @@ class RecipeRegistry<R: RecipeBuilder<R>>(
             Clayium.LOGGER.error("invalid recipe: Output has an empty ItemStack.")
             return Result.failure(IllegalArgumentException())
         }
-        if (recipe.tierNumeric < 0) {
+        if (recipe.recipeTier < 0) {
             Clayium.LOGGER.info("invalid recipe: Tier is less than 0.")
             return Result.failure(IllegalArgumentException())
         }
@@ -69,6 +72,14 @@ class RecipeRegistry<R: RecipeBuilder<R>>(
     }
 
     fun getAllRecipes(): List<Recipe> {
-        return _recipes.toList()
+        return _recipes.sortedWith(TIER_DURATION_CE)
+    }
+
+    companion object {
+        val TIER_DURATION_CE = Comparator.comparingInt(Recipe::recipeTier)
+            .thenComparingLong(Recipe::duration)
+            .thenComparingLong { recipe -> recipe.cePerTick.energy }
+
+        val TIER_DURATION_CE_REVERSED = TIER_DURATION_CE.reversed()
     }
 }

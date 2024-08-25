@@ -21,7 +21,7 @@ import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.api.capability.impl.SimpleItemFilter
-import com.github.trc.clayium.api.util.CUtils
+import com.github.trc.clayium.api.util.getMetaTileEntity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.Item
@@ -104,7 +104,7 @@ class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
     }
 
     override fun onItemUseFirst(player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, hand: EnumHand): EnumActionResult {
-        val metaTileEntity = CUtils.getMetaTileEntity(world, pos) ?: return EnumActionResult.PASS
+        val metaTileEntity = world.getMetaTileEntity(pos) ?: return EnumActionResult.PASS
         if (world.isRemote) return EnumActionResult.SUCCESS
         metaTileEntity.setFilter(side, createFilter(player.getHeldItem(hand)), FilterType.SIMPLE)
         return EnumActionResult.SUCCESS

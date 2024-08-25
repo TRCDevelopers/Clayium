@@ -6,7 +6,7 @@ tooltip.clayium.HoldShiftForDetails=--§f詳細は§lShift§rキー§7--
 
 gui.clayium.laser_energy=レーザー %1$s
 gui.clayium.resonance=共鳴率 %1$s
-gui.clayium.overclockFactor=オーバークロック x%1$s
+gui.clayium.overclock=オーバークロック x%1$s
 
 tooltip.clayium.tier=§rTier %1$s
 tooltip.clayium.ce=%1$sCE
@@ -197,68 +197,62 @@ tile.clayium.blockZK60AHull.name=ZK60A 合金マシン筐体
 
 recipe.clayium.second=%1$s秒
 
-recipe.clayium.ClayWorkTable=粘土作業台
+recipe.clayium.alloy_smelter=粘土合金精錬機
+recipe.clayium.assembler=粘土組立機
+recipe.clayium.bending_machine=粘土プレート作成機
+recipe.clayium.clay_blast_furnace=粘土高炉
+recipe.clayium.ca_condenser=CA 凝縮機
+recipe.clayium.ca_injector=CA 注入機
+recipe.clayium.ca_reactor=反物質反応炉
+recipe.clayium.centrifuge=粘土遠心分離機
+recipe.clayium.chemical_metal_separator=粘土金属分離機
+recipe.clayium.chemical_reactor=粘土化学反応機
+recipe.clayium.clay_reactor=粘土反応炉
+recipe.clayium.condenser=粘土コンデンサー
+recipe.clayium.cutting_machine=粘土切断機
+recipe.clayium.decomposer=粘土分解機
+recipe.clayium.electrolysis_reactor=粘土電気精錬機
+recipe.clayium.energetic_clay_condenser=エネルギー粘土凝縮機
+recipe.clayium.energetic_clay_decomposer=エネルギー粘土分解機
+recipe.clayium.fluid_transfer_machine=液体転移装置
+recipe.clayium.grinder=粘土粉砕機
+recipe.clayium.inscriber=粘土印刷機
+recipe.clayium.lathe=粘土旋盤
+recipe.clayium.matter_transformer=粘土物質変換装置
+recipe.clayium.milling_machine=粘土フライス盤
+recipe.clayium.pipe_drawing_machine=粘土パイプ圧延機
+recipe.clayium.smelter=粘土精錬機
+recipe.clayium.wire_drawing_machine=粘土ワイヤー圧延機
+recipe.clayium.solar_clay_fabricator_1=ソーラー粘土製造機 Mk I
+recipe.clayium.solar_clay_fabricator_2=ソーラー粘土製造機 Mk II
+recipe.clayium.solar_clay_fabricator_3=リチウムソーラー粘土製造機
 
-recipe.clayium.WireDrawingMachine=粘土ワイヤー圧延機
-recipe.clayium.PipeDrawingMachine=粘土パイプ圧延機
-recipe.clayium.CuttingMachine=粘土切断機
-recipe.clayium.Lathe=粘土旋盤
-recipe.clayium.MillingMachine=粘土フライス盤
-
-recipe.clayium.Condenser=粘土コンデンサー
-recipe.clayium.Grinder=粘土粉砕機
-recipe.clayium.Decomposer=粘土分解機
-
-recipe.clayium.ECCondenser=エネルギー粘土凝縮機
-recipe.clayium.Assembler=粘土組立機
-recipe.clayium.Inscriber=粘土印刷機
-recipe.clayium.Centrifuge=粘土遠心分離機
-
-recipe.clayium.Smelter=粘土精錬機
-
-recipe.clayium.ChemicalReactor=粘土化学反応機
-recipe.clayium.BlastFurnace=粘土高炉
-recipe.clayium.ElectrolysisReactor=粘土電気精錬機
-recipe.clayium.Reactor=粘土反応炉
-
-recipe.clayium.AlloySmelter=粘土合金精錬機
-recipe.clayium.ChemicalMetalSeparator=粘土金属分離機
-recipe.clayium.MatterTransformer=粘土物質変換装置
-
-recipe.clayium.CACondenser=CA 凝縮機
-recipe.clayium.CAInjector=CA 注入機
-recipe.clayium.CAReactor=反物質反応炉
-
-recipe.clayium.ECDecomposer=エネルギー粘土分解機
-
-recipe.clayium.FluidTransferMachine=液体転移装置
-
-recipe.clayium.CobblestoneGenerator=丸石製造機
+recipe.clayium.cobblestone_generator=丸石製造機
 recipe.clayium.CobblestoneGenerator.efficiency=%1$4.2g ブロック/t
 recipe.clayium.CobblestoneGenerator.description=丸石製造機は水と溶岩で作るもの。この機械も、隣に水と溶岩をそれぞれ置いてあげることで稼動する。
-recipe.clayium.SaltExtractor=塩析出装置
+recipe.clayium.salt_extractor=塩析出装置
 recipe.clayium.SaltExtractor.efficiency=%1$4.2g アイテム/t
 recipe.clayium.SaltExtractor.energyConsumption=%1$s CE/t
 recipe.clayium.SaltExtractor.description=塩析出装置は塩を水から抽出する機械。稼動するには隣に水を置いてエネルギーを供給してあげる必要がある。
-recipe.clayium.QuartzCrucible=クォーツるつぼ
-recipe.clayium.QuartzCrucible.timeToCraft=%1$st = %2$s秒
-recipe.clayium.QuartzCrucible.description=クォーツるつぼは最初のシリコンの入手に使われる。クォーツるつぼの中に不純なシリコンインゴットを投入し、暫く待った後で糸を投入する。
+recipe.clayium.quartz_crucible=クォーツるつぼ
+recipe.clayium.quartz_crucible.timeToCraft=%1$st = %2$s秒
+recipe.clayium.quartz_crucible.description=クォーツるつぼは最初のシリコンの入手に使われる。クォーツるつぼの中に不純なシリコンインゴットを投入し、暫く待った後で糸を投入する。
 recipe.clayium.SolarClayFabricator=ソーラー粘土製造機
 recipe.clayium.SolarClayFabricator.timeToCraft=%1$st = %2$s秒 (%3$s CE/t)
 recipe.clayium.SolarClayFabricator.description=上面が空から見える位置に設置すること
-recipe.clayium.ClayTree=粘土樹
-recipe.clayium.ClayTree.description=粘土樹はリチウムの良い入手源であるが、地上世界には生成されない。粘土樹の苗木は、地面に植えられたバニラの苗木に粘土レーザーを照射することで得られる。レーザーのエネルギー値は 1000 以上でなければならない。
+recipe.clayium.clay_tree=粘土樹
+recipe.clayium.clay_tree.description=粘土樹はリチウムの良い入手源であるが、地上世界には生成されない。粘土樹の苗木は、地面に植えられたバニラの苗木に粘土レーザーを照射することで得られる。レーザーのエネルギー値は 1000 以上でなければならない。
 
 tile.clayium.clay_ore.name=粘土鉱石
 tile.clayium.dense_clay_ore.name=高密度粘土鉱石
 tile.clayium.large_dense_clay_ore.name=高密度粘土鉱石大
 
-tile.clayium.clay_work_table=粘土作業台
+tile.clayium.clay_work_table.name=粘土作業台
 tile.clayium.clay_work_table.tooltip1=工業化への第一歩
-tile.clayium.blockClayCraftingTable.name=粘土作業板
-tile.clayium.blockClayCraftingTable.tooltip.line1=ちょっと便利な作業台
-tile.clayium.blockClayCraftingTable.tooltip.line2=__DETAIL__
-tile.clayium.blockClayCraftingTable.tooltip.line3=クラフト時隣接チェストにアクセス可能
+tile.clayium.clay_crafting_board.name=粘土作業板
+tile.clayium.clay_crafting_board.tooltip1=ちょっと便利な作業台
+tile.clayium.clay_crafting_board.tooltip2=__DETAIL__
+tile.clayium.clay_crafting_board.tooltip3=クラフト時隣接チェストにアクセス可能
 
 machine.clayium.milling_machine=%sフライス盤
 machine.clayium.milling_machine_tier1.tooltip1=初めての回路
@@ -279,27 +273,20 @@ machine.clayium.lathe=%s旋盤
 
 machine.clayium.cobblestone_generator=%s丸石製造機
 
-machine.clayium.condenser=粘土コンデンサー
+machine.clayium.condenser=%sコンデンサー
 
-machine.clayium.grinder=高密度粘土粉砕機
-machine.clayium.grinder_tier2.tooltip1=高密度粘土鉱石を粉砕しよう
+machine.clayium.grinder=%s粉砕機
+machine.clayium.grinder.dense_clay.tooltip1=高密度粘土鉱石を粉砕しよう
 
-machine.clayium.decomposer=高密度粘土分解機
+machine.clayium.decomposer=%s分解機
 
-tile.clayium.blockSimpleMillingMachine.name=簡易フライス盤
-tile.clayium.blockBasicMillingMachine.name=フライス盤
-
-machine.clayium.assembler=%s 組立機
+machine.clayium.assembler=%s組立機
 machine.clayium.assembler.tooltip1=複雑なレシピにウンザリしたあなたへ
 
-tile.clayium.blockSimpleInscriber.name=簡易印刷機
-tile.clayium.blockBasicInscriber.name=印刷機
+machine.clayium.inscriber=%s印刷機
 
-tile.clayium.blockSimpleCentrifuge.name=簡易遠心分離機
-tile.clayium.blockBasicCentrifuge.name=遠心分離機
-tile.clayium.blockAdvancedCentrifuge.name=発展遠心分離機
-tile.clayium.blockPrecisionCentrifuge.name=精密遠心分離機
-tooltip.clayium.Centrifuge.line1=全自動粘土工場を作ろう
+machine.clayium.centrifuge=%s遠心分離機
+machine.clayium.centrifuge.tooltip1=全自動粘土工場を作ろう
 
 machine.clayium.smelter=%s精錬機
 machine.clayium.smelter.tooltip1=粘土エネルギーで動くかまど
@@ -307,36 +294,23 @@ machine.clayium.smelter.tooltip1=粘土エネルギーで動くかまど
 machine.clayium.clay_buffer=%sバッファー
 machine.clayium.clay_buffer.tooltip1=いわゆるアイテムパイプ
 
-tile.clayium.blockBasicMultitrackBuffer.name=複線バッファー
-tile.clayium.blockAdvancedMultitrackBuffer.name=発展複線バッファー
-tile.clayium.blockPrecisionMultitrackBuffer.name=精密複線バッファー
-tile.clayium.blockClaySteelMultitrackBuffer.name=粘土鋼複線バッファー
-tile.clayium.blockClayiumMultitrackBuffer.name=クレイウム複線バッファー
-tile.clayium.blockUltimateMultitrackBuffer.name=究極複線バッファー
-tile.clayium.blockAntimatterMultitrackBuffer.name=反物質複線バッファー
-tile.clayium.blockPureAntimatterMultitrackBuffer.name=純反物質複線バッファー
-tile.clayium.blockOECMultitrackBuffer.name=OEC 複線バッファー
-tile.clayium.blockOPAMultitrackBuffer.name=OPA 複線バッファー
-tooltip.clayium.MultitrackBuffer.line1=__DETAIL__
-tooltip.clayium.MultitrackBuffer.line2=スロットが幾つかに色分けされており、
-tooltip.clayium.MultitrackBuffer.line3=複線バッファー同士のアイテム輸送は
-tooltip.clayium.MultitrackBuffer.line4=各色グループごとに独立して行われる。
-tooltip.clayium.MultitrackBuffer.line5=さらに、グループごとにフィルタースロットを持つ。
-
-tile.clayium.blockBasicChemicalReactor.name=化学反応機
-tile.clayium.blockAdvancedChemicalReactor.name=発展化学反応機
-tile.clayium.blockClayiumChemicalReactor.name=クレイウム化学反応機
+machine.clayium.multi_track_buffer=%s複線バッファー
+machine.clayium.multi_track_buffer.tooltip1=__DETAIL__
+machine.clayium.multi_track_buffer.tooltip2=スロットが幾つかに色分けされており、
+machine.clayium.multi_track_buffer.tooltip3=複線バッファー同士のアイテム輸送は
+machine.clayium.multi_track_buffer.tooltip4=各色グループごとに独立して行われる。
+machine.clayium.multi_track_buffer.tooltip5=さらに、グループごとにフィルタースロットを持つ。
+machine.clayium.chemical_reactor=%s化学反応機
 
 machine.clayium.salt_extractor=%s塩析出装置
 machine.clayium.salt_extractor.tooltip1=水から塩分を抽出する
 machine.clayium.salt_extractor.tooltip2=__DETAIL__
 machine.clayium.salt_extractor.tooltip3=隣に水源を置き、粘土エネルギーを与えること。
 
-tile.clayium.blockAutoClayCondenser.name=全自動粘土圧縮機 Mk I
-tile.clayium.blockAutoClayCondenser.tooltip.line1=全自動粘土工場の効率化に
-tile.clayium.blockAutoClayCondenserMK2.name=全自動粘土圧縮機 Mk II
-tile.clayium.blockAutoClayCondenserMK2.tooltip.line1=全自動粘土工場の効率化に
-tile.clayium.blockAutoClayCondenserMK2.tooltip.line2=圧縮速度がさらに上昇
+machine.clayium.auto_clay_condenser.advanced=全自動粘土圧縮機 Mk I
+machine.clayium.auto_clay_condenser.tooltip1=全自動粘土工場の効率化に
+machine.clayium.auto_clay_condenser.clay_steel=全自動粘土圧縮機 Mk II
+machine.clayium.auto_clay_condenser.clay_steel.tooltip1=圧縮速度がさらに上昇
 tile.clayium.quartz_crucible=クォーツるつぼ
 tile.clayium.quartz_crucible.tooltip1=不純なシリコンを純化
 tile.clayium.quartz_crucible.tooltip2=__DETAIL__
@@ -361,24 +335,24 @@ machine.clayium.solar_clay_fabricator.clay_steel.tooltip3=__DETAIL__
 machine.clayium.solar_clay_fabricator.clay_steel.tooltip4=4 重圧縮エネルギー粘土まで対応
 machine.clayium.solar_clay_fabricator.clay_steel.tooltip5=さらに、3 重圧縮エネルギー粘土の
 machine.clayium.solar_clay_fabricator.clay_steel.tooltip6=代わりにリチウムインゴットを投入可能
-machine.clayium.blockClayFabricatorMK1.name=粘土製造機 Mk I
-machine.clayium.blockClayFabricatorMK1.tooltip.line1=粘土を複製
-machine.clayium.blockClayFabricatorMK1.tooltip.line2=__DETAIL__
-machine.clayium.blockClayFabricatorMK1.tooltip.line3=6 重圧縮エネルギー粘土まで対応
-machine.clayium.blockClayFabricatorMK1.tooltip.line4=複製スピードは粘土の圧縮回数や
-machine.clayium.blockClayFabricatorMK1.tooltip.line5=そのスタックサイズに依存する
-machine.clayium.blockClayFabricatorMK2.name=粘土製造機 Mk II
-machine.clayium.blockClayFabricatorMK2.tooltip.line1=あらゆる粘土を複製
-machine.clayium.blockClayFabricatorMK2.tooltip.line2=__DETAIL__
-machine.clayium.blockClayFabricatorMK2.tooltip.line3=6 重圧縮エネルギー粘土までは Mk I の方が効果的
-machine.clayium.blockClayFabricatorMK2.tooltip.line4=複製スピードは粘土の圧縮回数や
-machine.clayium.blockClayFabricatorMK2.tooltip.line5=そのスタックサイズに依存する
-machine.clayium.blockClayFabricatorMK3.name=粘土製造機 Mk III
-machine.clayium.blockClayFabricatorMK3.tooltip.line1=あらゆる粘土を瞬時に複製
+machine.clayium.clay_fabricator.clayium=粘土製造機 Mk I
+machine.clayium.clay_fabricator.clayium.tooltip1=粘土を複製
+machine.clayium.clay_fabricator.clayium.tooltip2=__DETAIL__
+machine.clayium.clay_fabricator.clayium.tooltip3=6 重圧縮エネルギー粘土まで対応
+machine.clayium.clay_fabricator.clayium.tooltip4=複製スピードは粘土の圧縮回数や
+machine.clayium.clay_fabricator.clayium.tooltip5=そのスタックサイズに依存する
+machine.clayium.clay_fabricator.ultimate=粘土製造機 Mk II
+machine.clayium.clay_fabricator.ultimate.tooltip1=あらゆる粘土を複製
+machine.clayium.clay_fabricator.ultimate.tooltip2=__DETAIL__
+machine.clayium.clay_fabricator.ultimate.tooltip3=6 重圧縮エネルギー粘土までは Mk I の方が効果的
+machine.clayium.clay_fabricator.ultimate.tooltip4=複製スピードは粘土の圧縮回数や
+machine.clayium.clay_fabricator.ultimate.tooltip5=そのスタックサイズに依存する
+machine.clayium.clay_fabricator.opa=粘土製造機 Mk III
+machine.clayium.clay_fabricator.opa.tooltip1=あらゆる粘土を瞬時に複製
 
 tile.clayium.blockPrecisionAlloySmelter.name=合金精錬機
 
-tile.clayium.blockChemicalMetalSeparator.name=金属分離機
+machine.clayium.chemical_metal_separator=金属分離機
 machine.clayium.clay_blast_furnace=粘土高炉
 machine.clayium.clay_blast_furnace.tooltip1=__DETAIL__
 machine.clayium.clay_blast_furnace.tooltip2=[マルチブロック]
@@ -400,10 +374,7 @@ machine.clayium.redstone_proxy.tooltip2=__DETAIL__
 machine.clayium.redstone_proxy.tooltip3=マルチブロック装置でなくても、これと
 machine.clayium.redstone_proxy.tooltip4=シンクロナイザーを用いれば赤石入出力が利用可能
 
-tile.clayium.blockPrecisionElectrolysisReactor.name=電気精錬機
-tile.clayium.blockClaySteelElectrolysisReactor.name=粘土鋼電気精錬機
-tile.clayium.blockClayiumElectrolysisReactor.name=クレイウム電気精錬機
-tile.clayium.blockUltimateElectrolysisReactor.name=究極電気精錬機
+machine.clayium.electrolysis_reactor=%s電気精錬機
 
 tile.clayium.blockClaySteelDistributor.name=分配機
 tile.clayium.blockClayiumDistributor.name=クレイウム分配機
@@ -447,100 +418,97 @@ tile.clayium.resonator=%s共鳴装置
 tooltip.clayium.resonator.tooltip1=5x5x5の範囲内にある各種 CA 装置の
 tooltip.clayium.resonator.tooltip2=共鳴率を上昇させる
 
-tile.clayium.blockOverclocker.antimatter.name=反物質オーバークロッカー
-tile.clayium.blockOverclocker.pureantimatter.name=純反物質オーバークロッカー
-tile.clayium.blockOverclocker.oec.name=OEC オーバークロッカー
-tile.clayium.blockOverclocker.opa.name=OPA オーバークロッカー
-tooltip.clayium.Overclocker.line1=隣接する装置を加速する
-tooltip.clayium.Overclocker.overclockFactor=加速度 : x%1$4.3g
+tile.clayium.overclocker.antimatter=反物質オーバークロッカー
+tile.clayium.overclocker.pure_antimatter=純反物質オーバークロッカー
+tile.clayium.overclocker.oec=OEC オーバークロッカー
+tile.clayium.overclocker.opa=OPA オーバークロッカー
+tile.clayium.overclocker.tooltip1=隣接する装置を加速する
+tile.clayium.overclocker.factor=加速度 : x%1$4.3g
 
-tile.clayium.blockEnergyStorageUpgrade.antimatter.name=反物質エネルギーストレージアップグレード
-tile.clayium.blockEnergyStorageUpgrade.pureantimatter.name=純反物質エネルギーストレージアップグレード
-tile.clayium.blockEnergyStorageUpgrade.oec.name=OEC エネルギーストレージアップグレード
-tile.clayium.blockEnergyStorageUpgrade.opa.name=OPA エネルギーストレージアップグレード
-tile.clayium.blockEnergyStorageUpgrade.antimatter.tooltip.line1=隣接する機械が保持できる
-tile.clayium.blockEnergyStorageUpgrade.antimatter.tooltip.line2=エネルギー粘土の数を 1 上昇させる
-tile.clayium.blockEnergyStorageUpgrade.pureantimatter.tooltip.line1=隣接する機械が保持できる
-tile.clayium.blockEnergyStorageUpgrade.pureantimatter.tooltip.line2=エネルギー粘土の数を 3 上昇させる
-tile.clayium.blockEnergyStorageUpgrade.oec.tooltip.line1=隣接する機械が保持できる
-tile.clayium.blockEnergyStorageUpgrade.oec.tooltip.line2=エネルギー粘土の数を 7 上昇させる
-tile.clayium.blockEnergyStorageUpgrade.opa.tooltip.line1=隣接する機械が保持できる
-tile.clayium.blockEnergyStorageUpgrade.opa.tooltip.line2=エネルギー粘土の数を 63 上昇させる
+tile.clayium.energy_storage_upgrade.antimatter=反物質エネルギーストレージアップグレード
+tile.clayium.energy_storage_upgrade.pure_antimatter=純反物質エネルギーストレージアップグレード
+tile.clayium.energy_storage_upgrade.oec=OEC エネルギーストレージアップグレード
+tile.clayium.energy_storage_upgrade.opa=OPA エネルギーストレージアップグレード
+tile.clayium.energy_storage_upgrade.antimatter.tooltip1=隣接する機械が保持できる
+tile.clayium.energy_storage_upgrade.antimatter.tooltip2=エネルギー粘土の数を 1 上昇させる
+tile.clayium.energy_storage_upgrade.pure_antimatter.tooltip1=隣接する機械が保持できる
+tile.clayium.energy_storage_upgrade.pure_antimatter.tooltip2=エネルギー粘土の数を 3 上昇させる
+tile.clayium.energy_storage_upgrade.oec.tooltip1=隣接する機械が保持できる
+tile.clayium.energy_storage_upgrade.oec.tooltip2=エネルギー粘土の数を 7 上昇させる
+tile.clayium.energy_storage_upgrade.opa.tooltip1=隣接する機械が保持できる
+tile.clayium.energy_storage_upgrade.opa.tooltip2=エネルギー粘土の数を 63 上昇させる
 
-tile.clayium.blockAntimatterCAReactorCore.name=反物質反応炉コア Mk I
-tile.clayium.blockPureAntimatterCAReactorCore.name=反物質反応炉コア Mk II
-tile.clayium.blockOECCAReactorCore.name=反物質反応炉コア Mk III
-tile.clayium.blockOPACAReactorCore.name=反物質反応炉コア Mk IV
-tooltip.clayium.CAReactor.line1=反物質から純反物質を精製する
-tooltip.clayium.CAReactor.line2=__DETAIL__
-tooltip.clayium.CAReactor.line3=反応炉のランク (構成要素のランクの平均) により
-tooltip.clayium.CAReactor.line4=精製される純反物質の圧縮回数が変化する
-tooltip.clayium.CAReactor.line5=[マルチブロック]
-tooltip.clayium.CAReactor.line6=リング状に CA 反応炉コイルを設置し、
-tooltip.clayium.CAReactor.line7=CA 反応炉筐体かインターフェースで囲う
-tooltip.clayium.CAReactor.line8=その囲いの内 1 つを反応炉コアブロックに置換する
-tooltip.clayium.CAReactor.line9=- CA 反応炉筐体の数は 50 個以上
-tooltip.clayium.CAReactor.line10=- コイルやインターフェースの Tier >= コアの Tier
-gui.clayium.CAReactor.invalid=無効
-gui.clayium.CAReactor.constructed=構築済
-gui.clayium.CAReactor.rankSize=ランク %1$2.2g  サイズ %2$2d
-gui.clayium.CAReactor.efficiency=効率 %g
-message.clayium.CAReactor.invalidCoil=コイル [%1$d,%2$d,%3$d] が無効です。
-message.clayium.CAReactor.tooManyCoils=コイルの数が基準値(%1$d)を超えています。
-message.clayium.CAReactor.insufficientTierCoil=コイル [%1$d,%2$d,%3$d] の Tier が無効です。
-message.clayium.CAReactor.invalidHull=筐体 [%1$d,%2$d,%3$d] が無効です。
-message.clayium.CAReactor.tooHighTierHull=筐体 [%1$d,%2$d,%3$d] の Tier が高すぎます。
-message.clayium.CAReactor.insufficientTierInterface=インターフェース [%1$d,%2$d,%3$d] の Tier が無効です。
-message.clayium.CAReactor.invalidReactorSize=反応炉のサイズ(%1$d) が基準値(%2$d)を下回っています。
+machine.clayium.ca_reactor.antimatter=反物質反応炉コア Mk I
+machine.clayium.ca_reactor.pure_antimatter=反物質反応炉コア Mk II
+machine.clayium.ca_reactor.oec=反物質反応炉コア Mk III
+machine.clayium.ca_reactor.opa=反物質反応炉コア Mk IV
+machine.clayium.ca_reactor.tootlip1=反物質から純反物質を精製する
+machine.clayium.ca_reactor.tootlip2=__DETAIL__
+machine.clayium.ca_reactor.tootlip3=反応炉のランク (構成要素のランクの平均) により
+machine.clayium.ca_reactor.tootlip4=精製される純反物質の圧縮回数が変化する
+machine.clayium.ca_reactor.tootlip5=[マルチブロック]
+machine.clayium.ca_reactor.tootlip6=リング状に CA 反応炉コイルを設置し、
+machine.clayium.ca_reactor.tootlip7=CA 反応炉筐体かインターフェースで囲う
+machine.clayium.ca_reactor.tootlip8=その囲いの内 1 つを反応炉コアブロックに置換する
+machine.clayium.ca_reactor.tootlip9=- CA 反応炉筐体の数は 50 個以上
+machine.clayium.ca_reactor.tootlip10=- コイルやインターフェースの Tier >= コアの Tier
+gui.clayium.ca_reactor.invalid=無効
+gui.clayium.ca_reactor.constructed=構築済
+gui.clayium.ca_reactor.rank_size=ランク %d サイズ %d
+gui.clayium.ca_reactor.efficiency=効率 %s
+message.clayium.ca_reactor.invalid_coil=コイル %s が無効です。
+message.clayium.ca_reactor.too_many_coils=コイルの数が基準値(%s)を超えています。
+message.clayium.ca_reactor.insufficient_tier_coil=コイル %s の Tier が無効です。
+message.clayium.ca_reactor.too_high_tier_hull=筐体 %s の Tier が高すぎます。
+message.clayium.ca_reactor.insufficient_tier_interface=インターフェース %s の Tier が無効です。
 
-tile.clayium.blockCAReactorCoil.antimatter.name=反物質反応炉コイル Mk I
-tile.clayium.blockCAReactorCoil.pureantimatter.name=反物質反応炉コイル Mk II
-tile.clayium.blockCAReactorCoil.oec.name=反物質反応炉コイル Mk III
-tile.clayium.blockCAReactorCoil.opa.name=反物質反応炉コイル Mk IV
-tooltip.clayium.CAReactorCoil.line1=__DETAIL__
-tooltip.clayium.CAReactorCoil.line2=- 周囲六方向は別のブロックで覆われなければならない
-tooltip.clayium.CAReactorCoil.line3=- 隣接するコイルの数は 2 個でなければならない
-tooltip.clayium.CAReactorCoil.line4=NG :
-tooltip.clayium.CAReactorCoil.line5=CCCCC
-tooltip.clayium.CAReactorCoil.line6=C___C <- 隣接コイルが 4 つ
-tooltip.clayium.CAReactorCoil.line7=CCCCC
-tooltip.clayium.CAReactorCoil.line8=OK :
-tooltip.clayium.CAReactorCoil.line9=_CCC_
-tooltip.clayium.CAReactorCoil.line10=C___C
-tooltip.clayium.CAReactorCoil.line11=_CCC_
+tile.clayium.ca_reactor_coil.antimatter=反物質反応炉コイル Mk I
+tile.clayium.ca_reactor_coil.pure_antimatter=反物質反応炉コイル Mk II
+tile.clayium.ca_reactor_coil.oec=反物質反応炉コイル Mk III
+tile.clayium.ca_reactor_coil.opa=反物質反応炉コイル Mk IV
+tile.clayium.ca_reactor_coil.tooltip1=__DETAIL__
+tile.clayium.ca_reactor_coil.tooltip2=- 周囲六方向は別のブロックで覆われなければならない
+tile.clayium.ca_reactor_coil.tooltip3=- 隣接するコイルの数は 2 個でなければならない
+tile.clayium.ca_reactor_coil.tooltip4=NG :
+tile.clayium.ca_reactor_coil.tooltip5=CCCCC
+tile.clayium.ca_reactor_coil.tooltip6=C___C <- 隣接コイルが 4 つ
+tile.clayium.ca_reactor_coil.tooltip7=CCCCC
+tile.clayium.ca_reactor_coil.tooltip8=OK :
+tile.clayium.ca_reactor_coil.tooltip9=_CCC_
+tile.clayium.ca_reactor_coil.tooltip10=C___C
+tile.clayium.ca_reactor_coil.tooltip11=_CCC_
 
-tile.clayium.blockCAReactorHull.0.name=反物質反応炉筐体 ランク 1
-tile.clayium.blockCAReactorHull.1.name=反物質反応炉筐体 ランク 2
-tile.clayium.blockCAReactorHull.2.name=反物質反応炉筐体 ランク 3
-tile.clayium.blockCAReactorHull.3.name=反物質反応炉筐体 ランク 4
-tile.clayium.blockCAReactorHull.4.name=反物質反応炉筐体 ランク 5
-tile.clayium.blockCAReactorHull.5.name=反物質反応炉筐体 ランク 6
-tile.clayium.blockCAReactorHull.6.name=反物質反応炉筐体 ランク 7
-tile.clayium.blockCAReactorHull.7.name=反物質反応炉筐体 ランク 8
-tile.clayium.blockCAReactorHull.8.name=反物質反応炉筐体 ランク 9
-tile.clayium.blockCAReactorHull.9.name=反物質反応炉筐体 ランク 10
-tile.clayium.blockCAReactorHull.0.tooltip.line1=コアとコイルは Mk I 以上でなければならない
-tile.clayium.blockCAReactorHull.1.tooltip.line1=コアとコイルは Mk I 以上でなければならない
-tile.clayium.blockCAReactorHull.2.tooltip.line1=コアとコイルは Mk II 以上でなければならない
-tile.clayium.blockCAReactorHull.3.tooltip.line1=コアとコイルは Mk II 以上でなければならない
-tile.clayium.blockCAReactorHull.4.tooltip.line1=コアとコイルは Mk II 以上でなければならない
-tile.clayium.blockCAReactorHull.5.tooltip.line1=コアとコイルは Mk II 以上でなければならない
-tile.clayium.blockCAReactorHull.6.tooltip.line1=コアとコイルは Mk III 以上でなければならない
-tile.clayium.blockCAReactorHull.7.tooltip.line1=コアとコイルは Mk III 以上でなければならない
-tile.clayium.blockCAReactorHull.8.tooltip.line1=コアとコイルは Mk III 以上でなければならない
-tile.clayium.blockCAReactorHull.9.tooltip.line1=コアとコイルは Mk III 以上でなければならない
+tile.clayium.ca_reactor_hull.0=反物質反応炉筐体 ランク 1
+tile.clayium.ca_reactor_hull.1=反物質反応炉筐体 ランク 2
+tile.clayium.ca_reactor_hull.2=反物質反応炉筐体 ランク 3
+tile.clayium.ca_reactor_hull.3=反物質反応炉筐体 ランク 4
+tile.clayium.ca_reactor_hull.4=反物質反応炉筐体 ランク 5
+tile.clayium.ca_reactor_hull.5=反物質反応炉筐体 ランク 6
+tile.clayium.ca_reactor_hull.6=反物質反応炉筐体 ランク 7
+tile.clayium.ca_reactor_hull.7=反物質反応炉筐体 ランク 8
+tile.clayium.ca_reactor_hull.8=反物質反応炉筐体 ランク 9
+tile.clayium.ca_reactor_hull.9=反物質反応炉筐体 ランク 10
+tile.clayium.ca_reactor_hull.0.tooltip1=コアとコイルは Mk I 以上でなければならない
+tile.clayium.ca_reactor_hull.1.tooltip1=コアとコイルは Mk I 以上でなければならない
+tile.clayium.ca_reactor_hull.2.tooltip1=コアとコイルは Mk II 以上でなければならない
+tile.clayium.ca_reactor_hull.3.tooltip1=コアとコイルは Mk II 以上でなければならない
+tile.clayium.ca_reactor_hull.4.tooltip1=コアとコイルは Mk II 以上でなければならない
+tile.clayium.ca_reactor_hull.5.tooltip1=コアとコイルは Mk II 以上でなければならない
+tile.clayium.ca_reactor_hull.6.tooltip1=コアとコイルは Mk III 以上でなければならない
+tile.clayium.ca_reactor_hull.7.tooltip1=コアとコイルは Mk III 以上でなければならない
+tile.clayium.ca_reactor_hull.8.tooltip1=コアとコイルは Mk III 以上でなければならない
+tile.clayium.ca_reactor_hull.9.tooltip1=コアとコイルは Mk III 以上でなければならない
 
 tile.clayium.blockEnergeticClayDecomposer.name=エネルギー粘土分解機
 
-tile.clayium.blockClayWaterWheel.name=粘土水車
-tile.clayium.blockDenseClayWaterWheel.name=高密度粘土水車
-tooltip.clayium.WaterWheel.line1=隣接する Tier 2, 3 機械にエネルギーを送る
-tooltip.clayium.WaterWheel.line2=__DETAIL__
-tooltip.clayium.WaterWheel.line3=周囲 3x3x3 にある水流の数により
-tooltip.clayium.WaterWheel.line4=発生するエネルギーの強度が決まる
-gui.clayium.WaterWheel.progress=進捗: %1$d
-gui.clayium.WaterWheel.durability=耐久度: %1$d
-gui.clayium.WaterWheel.surroundingWater=水流: %1$d
+machine.clayium.waterwheel=%s水車
+machine.clayium.waterwheel.tooltip1=隣接する機械にエネルギーを送る
+machine.clayium.waterwheel.tooltip2=__DETAIL__
+machine.clayium.waterwheel.tooltip3=周囲 3x3x3 にある水流の数により
+machine.clayium.waterwheel.tooltip4=発生するエネルギーの強度が決まる
+gui.clayium.waterwheel.progress=進捗: %1$d
+gui.clayium.waterwheel.durability=耐久度: %1$d
+gui.clayium.waterwheel.waters=水流: %1$d
 
 machine.clayium.clay_laser.clay_steel=青粘土レーザー
 machine.clayium.clay_laser.clayium=緑粘土レーザー
@@ -557,9 +525,9 @@ machine.clayium.clay_laser.tooltip5=赤石信号によりレーザー照射を�
 tile.clayium.laser_reflector.name=レーザーリフレクター
 tile.clayium.laser_reflector.tooltip1=レーザーの向きを変える
 
-tile.clayium.blockClayTreeSapling.name=粘土樹の苗木
-tile.clayium.blockClayTreeLog.name=粘土樹の原木
-tile.clayium.blockClayTreeLeaf.name=粘土樹の葉
+tile.clayium.clay_tree_sapling.name=粘土樹の苗木
+tile.clayium.clay_tree_log.name=粘土樹の原木
+tile.clayium.clay_tree_leaves.name=粘土樹の葉
 
 tile.clayium.blockClayChunkLoader.name=3x3 チャンクローダー
 machine.clayium.storage_container=ストレージコンテナ
@@ -605,23 +573,15 @@ tile.clayium.blockClaySteelAutoCrafter.name=粘土鋼自動クラフト装置
 tile.clayium.blockClayiumAutoCrafter.name=クレイウム自動クラフト装置
 tile.clayium.blockUltimateAutoCrafter.name=究極自動クラフト装置
 
-tile.clayium.blockPANCable.name=PAN ケーブル
-tile.clayium.blockPANCore.name=PAN コア
-tile.clayium.blockAntimatterPANAdapter.name=PAN アダプター Mk I
-tile.clayium.blockPureAntimatterPANAdapter.name=PAN アダプター Mk II
-tile.clayium.blockOECPANAdapter.name=PAN アダプター Mk III
-tile.clayium.blockOPAPANAdapter.name=PAN アダプター Mk IV
+tile.clayium.pan_cable=PAN ケーブル
+machine.clayium.pan_core=PAN コア
+machine.clayium.pan_adapter.antimatter=PAN アダプター Mk I
+machine.clayium.pan_adapter.pure_antimatter=PAN アダプター Mk II
+machine.clayium.pan_adapter.oec=PAN アダプター Mk III
+machine.clayium.pan_adapter.opa=PAN アダプター Mk IV
+machine.clayium.pan_adapter.laser_slot_tooltip=レーザースロット
 
-tile.clayium.blockBasicPANDuplicator.name=PAN 複製機 ランク 1
-tile.clayium.blockAdvancedPANDuplicator.name=PAN 複製機 ランク 2
-tile.clayium.blockPrecisionPANDuplicator.name=PAN 複製機 ランク 3
-tile.clayium.blockClaySteelPANDuplicator.name=PAN 複製機 ランク 4
-tile.clayium.blockClayiumPANDuplicator.name=PAN 複製機 ランク 5
-tile.clayium.blockUltimatePANDuplicator.name=PAN 複製機 ランク 6
-tile.clayium.blockAntimatterPANDuplicator.name=PAN 複製機 ランク 7
-tile.clayium.blockPureAntimatterPANDuplicator.name=PAN 複製機 ランク 8
-tile.clayium.blockOECPANDuplicator.name=PAN 複製機 ランク 9
-tile.clayium.blockOPAPANDuplicator.name=PAN 複製機 ランク 10
+machine.clayium.pan_duplicator=PAN 複製機 ランク %s
 
 tile.clayium.blockBasicFluidTranslator.name=液体バッファー
 tile.clayium.blockAdvancedFluidTranslator.name=発展液体バッファー
@@ -804,7 +764,8 @@ item.clayium.advanced_circuit.name=発展回路
 item.clayium.precision_circuit.name=精密回路
 item.clayium.integrated_circuit.name=集積回路
 item.clayium.clay_core.name=粘土コア
-item.clayium.clay_core.tooltip1=ストレージコンテナに右クリックすると、その容量を 21 億個にまで拡張する
+item.clayium.clay_core.tooltip1=ストレージコンテナに右クリックすると、
+item.clayium.clay_core.tooltip2=その容量を 21 億個にまで拡張する
 item.clayium.clay_brain.name=粘土脳
 item.clayium.clay_spirit.name=粘土スピリット
 item.clayium.clay_soul.name=粘土ソウル
@@ -827,4 +788,3 @@ item.clayium.antimatter_seed.name=反物質の種
 item.clayium.energized_clay_dust.name=活性化粘土粉
 item.clayium.excited_clay_dust.name=励起粘土粉
 
-item.clayium.organic_clay_dust.name=有機粘土

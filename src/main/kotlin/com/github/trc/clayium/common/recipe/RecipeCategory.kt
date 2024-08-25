@@ -1,14 +1,14 @@
 package com.github.trc.clayium.common.recipe
 
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.api.CValues
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 
 class RecipeCategory private constructor(
-    val modid: String = Clayium.MOD_ID,
+    val modid: String = CValues.MOD_ID,
     val categoryName: String,
 ) {
     val uniqueId = createUID(modid, categoryName)
-    val translationKey = "machine.clayium.$categoryName"
+    val translationKey = "recipe.clayium.$categoryName"
 
     companion object {
         val categories = Object2ObjectOpenHashMap<String, RecipeCategory>()

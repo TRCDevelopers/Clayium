@@ -1,18 +1,19 @@
 package com.github.trc.clayium.common.recipe.builder
 
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
+import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.material.CPropertyKey
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.recipe.Recipe
-import com.github.trc.clayium.common.unification.material.Material
-import com.github.trc.clayium.common.unification.material.PropertyKey
-import com.github.trc.clayium.common.unification.ore.OrePrefix
+import kotlin.math.pow
 
 /**
  * Builder for creating a recipe for the (solar) clay fabricator.
  *
- * Output is automatically set if input material has clay property, or can be set manually.
+ * Output is automatically set if input material has clay property or can be set manually.
  * Duration is calculated by [requiredTicksCalculator], or can be set manually.
- * [CEt] is automatically calculated.
+ * [cePerTick] is automatically calculated.
  */
 class ClayFabricatorRecipeBuilder : RecipeBuilder<ClayFabricatorRecipeBuilder> {
 
@@ -41,15 +42,16 @@ class ClayFabricatorRecipeBuilder : RecipeBuilder<ClayFabricatorRecipeBuilder> {
             outputs = this.outputs,
             duration = duration,
             cePerTick = cet,
-            tierNumeric = tier
+            chancedOutputs = null,
+            recipeTier = tier
         )
 
         recipeRegistry.addRecipe(recipe)
     }
 
-    override fun input(orePrefix: OrePrefix, material: Material, amount: Int): ClayFabricatorRecipeBuilder {
+    override fun input(orePrefix: OrePrefix, material: CMaterial, amount: Int): ClayFabricatorRecipeBuilder {
         super.input(orePrefix, material, amount)
-        val clay = material.getPropOrNull(PropertyKey.CLAY)
+        val clay = material.getPropOrNull(CPropertyKey.CLAY)
         if (clay != null && clay.compressedInto != null) {
             this.output(orePrefix, clay.compressedInto)
         }
@@ -84,9 +86,9 @@ class ClayFabricatorRecipeBuilder : RecipeBuilder<ClayFabricatorRecipeBuilder> {
                 else -> 1
             }
 
-            val n = (Math.pow(10.0, a + 1.0) * (b - 1)) / (Math.pow(b, a)  - 1)
+            val n = (10.0.pow(a + 1.0) * (b - 1)) / (b.pow(a) - 1)
 
-            return (Math.pow(b, inputTier.toDouble()) * (n / multi)).toLong()
+            return (b.pow(inputTier.toDouble()) * (n / multi)).toLong()
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.items
 
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
-import com.github.trc.clayium.api.util.CUtils
+import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.common.util.UtilLocale
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.player.EntityPlayer
@@ -22,7 +22,7 @@ class ItemSynchronizer : Item() {
     }
 
     override fun onItemUseFirst(player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, hand: EnumHand): EnumActionResult {
-        if (CUtils.getMetaTileEntity(world, pos) == null || player.isSneaking) return EnumActionResult.PASS
+        if (world.getMetaTileEntity(pos) == null || player.isSneaking) return EnumActionResult.PASS
         if (world.isRemote) return EnumActionResult.SUCCESS
 
         val itemStack = player.getHeldItem(hand)

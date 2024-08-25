@@ -3,11 +3,14 @@ package com.github.trc.clayium.common
 import com.cleanroommc.modularui.factory.GuiManager
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
+import com.github.trc.clayium.api.block.ItemBlockDamaged
 import com.github.trc.clayium.api.block.ItemBlockTiered
 import com.github.trc.clayium.api.capability.SimpleCapabilityManager
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
-import com.github.trc.clayium.api.util.CUtils.clayiumId
+import com.github.trc.clayium.api.unification.material.CMaterials
+import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.renderer.LaserReflectorItemStackRenderer
 import com.github.trc.clayium.common.blocks.BlockQuartzCrucible
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
@@ -15,22 +18,23 @@ import com.github.trc.clayium.common.blocks.ItemBlockEnergizedClay
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
 import com.github.trc.clayium.common.blocks.TileEntityClayLaserReflector
 import com.github.trc.clayium.common.blocks.TileEntityCreativeEnergySource
+import com.github.trc.clayium.common.blocks.claycraftingtable.TileClayCraftingTable
 import com.github.trc.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
-import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trc.clayium.common.loaders.OreDictionaryLoader
-import com.github.trc.clayium.common.metatileentity.MetaTileEntities
 import com.github.trc.clayium.common.loaders.recipe.CRecipeLoader
-import com.github.trc.clayium.common.unification.material.CMaterials
-import com.github.trc.clayium.common.unification.ore.OrePrefix
+import com.github.trc.clayium.common.metatileentities.MetaTileEntities
+import com.github.trc.clayium.common.pan.factories.CPanRecipeFactory
+import com.github.trc.clayium.common.pan.factories.CraftingTablePanRecipeFactory
+import com.github.trc.clayium.common.pan.factories.FurnacePanRecipeFactory
 import com.github.trc.clayium.common.util.DebugUtils
 import com.github.trc.clayium.common.worldgen.ClayOreGenerator
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
-import net.minecraft.util.ResourceLocation
+import net.minecraft.item.crafting.IRecipe
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
@@ -50,7 +54,7 @@ open class CommonProxy {
         }
 
         this.registerTileEntities()
-        GameRegistry.registerWorldGenerator(ClayOreGenerator(), 0)
+        GameRegistry.registerWorldGenerator(ClayOreGenerator, 0)
         NetworkRegistry.INSTANCE.registerGuiHandler(Clayium, GuiHandler)
 
         MetaTileEntities.init()
@@ -60,14 +64,22 @@ open class CommonProxy {
         GuiManager.registerFactory(MetaTileEntityGuiFactory)
 
         SimpleCapabilityManager.registerCapabilities()
+
+        ClayiumApi.PAN_RECIPE_FACTORIES.add(CPanRecipeFactory)
+        ClayiumApi.PAN_RECIPE_FACTORIES.add(CraftingTablePanRecipeFactory)
+        ClayiumApi.PAN_RECIPE_FACTORIES.add(FurnacePanRecipeFactory)
     }
 
     open fun init(event: FMLInitializationEvent) {
-        ClayiumBlocks.registerOreDictionaries()
-        OreDictionaryLoader.loadOreDictionaries()
     }
 
     open fun postInit(event: FMLPostInitializationEvent) {
+    }
+
+    @Suppress("unused")
+    @SubscribeEvent
+    fun registerRecipes(event: RegistryEvent.Register<IRecipe>) {
+        OreDictionaryLoader.loadOreDictionaries()
         CRecipeLoader.load()
     }
 
@@ -97,8 +109,6 @@ open class CommonProxy {
             metaPrefixItem.registerSubItems()
         }
 
-        for (metaItem in MetaItemClayium.META_ITEMS) { metaItem.afterRegistration() }
-
         registerItem(registry, ClayiumItems.CLAY_ROLLING_PIN)
         registerItem(registry, ClayiumItems.CLAY_SLICER)
         registerItem(registry, ClayiumItems.CLAY_SPATULA)
@@ -114,6 +124,7 @@ open class CommonProxy {
 
         registry.register(createItemBlock(ClayiumBlocks.CREATIVE_ENERGY_SOURCE, ::ItemBlock))
 
+        registry.register(createItemBlock(ClayiumBlocks.CLAY_CRAFTING_BOARD, ::ItemBlockTiered))
         registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ::ItemBlockTiered))
 
         registry.register(createItemBlock(ClayiumBlocks.CLAY_ORE, ::ItemBlock))
@@ -122,8 +133,19 @@ open class CommonProxy {
 
         registry.register(createItemBlock(ClayiumBlocks.MACHINE_HULL, ::ItemBlockTiered))
         registry.register(createItemBlock(ClayiumBlocks.RESONATOR, ::ItemBlockTiered))
+        registry.register(createItemBlock(ClayiumBlocks.CA_REACTOR_HULL, ::ItemBlockDamaged))
+        registry.register(createItemBlock(ClayiumBlocks.CA_REACTOR_COIL, ::ItemBlockTiered))
 
-        registry.register(createItemBlock(ClayiumBlocks.QUARTZ_CRUCIBLE, ::ItemBlockTiered))
+        registry.register(createItemBlock(ClayiumBlocks.QUARTZ_CRUCIBLE, ItemBlockTiered<*>::noSubTypes))
+
+        registry.register(createItemBlock(ClayiumBlocks.PAN_CABLE, ItemBlockTiered<*>::noSubTypes))
+
+        registry.register(createItemBlock(ClayiumBlocks.CLAY_TREE_LOG, ItemBlockTiered<*>::noSubTypes))
+        registry.register(createItemBlock(ClayiumBlocks.CLAY_TREE_LEAVES, ItemBlockTiered<*>::noSubTypes))
+        registry.register(createItemBlock(ClayiumBlocks.CLAY_TREE_SAPLING, ItemBlockTiered<*>::noSubTypes))
+
+        registry.register(createItemBlock(ClayiumBlocks.OVERCLOCKER, ::ItemBlockTiered))
+        registry.register(createItemBlock(ClayiumBlocks.ENERGY_STORAGE_UPGRADE, ::ItemBlockTiered))
 
         registry.register(ItemBlock(ClayiumBlocks.LASER_REFLECTOR).apply {
             registryName = ClayiumBlocks.LASER_REFLECTOR.registryName
@@ -151,11 +173,12 @@ open class CommonProxy {
         }
     }
 
-    open fun registerTileEntities() {
-        GameRegistry.registerTileEntity(TileClayWorkTable::class.java, ResourceLocation(Clayium.MOD_ID, "clayWorkTable"))
+    fun registerTileEntities() {
+        GameRegistry.registerTileEntity(TileClayWorkTable::class.java, clayiumId("clayWorkTable"))
         GameRegistry.registerTileEntity(TileEntityClayLaserReflector::class.java, clayiumId("laser_reflector"))
-        GameRegistry.registerTileEntity(TileEntityCreativeEnergySource::class.java, ResourceLocation(Clayium.MOD_ID, "creativeEnergySource"))
-        GameRegistry.registerTileEntity(MetaTileEntityHolder::class.java, ResourceLocation(Clayium.MOD_ID, "metaTileEntityHolder"))
+        GameRegistry.registerTileEntity(TileEntityCreativeEnergySource::class.java, clayiumId("creativeEnergySource"))
+        GameRegistry.registerTileEntity(MetaTileEntityHolder::class.java, clayiumId("metaTileEntityHolder"))
         GameRegistry.registerTileEntity(BlockQuartzCrucible.QuartzCrucibleTileEntity::class.java, clayiumId("quartzCrucibleTileEntity"))
+        GameRegistry.registerTileEntity(TileClayCraftingTable::class.java, clayiumId("clayCraftingTable"))
     }
 }

@@ -1,14 +1,15 @@
 package com.github.trc.clayium.common.config;
 
-import com.github.trc.clayium.common.Clayium;
+import com.github.trc.clayium.api.CValues;
 import net.minecraftforge.common.config.Config;
 
 @Config.LangKey("clayium.config.core")
-@Config(modid = Clayium.MOD_ID, name = Clayium.MOD_ID + "/core")
+@Config(modid = CValues.MOD_ID, name = CValues.MOD_ID + "/core")
 public class ConfigCore {
 
     public static SubCategoryRendering rendering = new SubCategoryRendering();
     public static SubCategoryMisc misc = new SubCategoryMisc();
+    public static SubCategoryWorldGen worldGen = new SubCategoryWorldGen();
 
     public static class SubCategoryRendering {
         private SubCategoryRendering() {}
@@ -30,5 +31,35 @@ public class ConfigCore {
                 "true : laser irradiates when powered"
         })
         public boolean invertClayLaserRsCondition = false;
+
+        @Config.Comment({
+                "Lower is better.",
+                "The lower the value, more chance to generate energy when ticked."
+        })
+        @Config.RangeInt(min = 1, max = 100)
+        public int waterwheelEfficiency = 40;
+
+        @Config.Comment({
+                "Max search distance for PAN"
+        })
+        @Config.RangeInt(min = 1, max = 1000)
+        public int panMaxSearchDistance = 500;
+    }
+
+    public static class SubCategoryWorldGen {
+        private SubCategoryWorldGen() {}
+
+        public int clayOreVeinMaxY = 88;
+        public int clayOreVeinMinY = 24;
+        public int clayOreVeinNumber = 8;
+        public int clayOreVeinSize = 24;
+
+        public int denseClayOreVeinSize = 10;
+        public int largeDenseClayOreVeinNumber = 2;
+        public int largeDenseClayOreVeinSize = 6;
+        public int largeDenseClayOreVeinMinY = 10;
+        public int largeDenseClayOreVeinMaxY = 16;
+
+        public boolean generateDenseClayOreVein = true;
     }
 }

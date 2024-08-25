@@ -1,9 +1,9 @@
 package com.github.trc.clayium.common.recipe.builder
 
-import com.github.trc.clayium.common.unification.OreDictUnifier
-import com.github.trc.clayium.common.unification.material.Material
-import com.github.trc.clayium.common.unification.ore.OrePrefix
-import com.github.trc.clayium.common.unification.stack.UnificationEntry
+import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.unification.stack.UnificationEntry
 
 class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuilder> {
 
@@ -20,8 +20,8 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
         return this
     }
 
-    fun input(material: Material) = input(defaultPrefix!!, material)
-    fun output(material: Material) = output(defaultPrefix!!, material)
+    fun input(material: CMaterial) = input(defaultPrefix!!, material)
+    fun output(material: CMaterial) = output(defaultPrefix!!, material)
 
     /**
      * Returns a new builder instance with the current output set as the input,
@@ -56,6 +56,6 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
         return newBuilder
     }
 
-    fun chain(orePrefix: OrePrefix, material: Material) = chain(UnificationEntry(orePrefix, material).toString())
-    fun chain(material: Material) = chain(defaultPrefix!!, material)
+    fun chain(orePrefix: OrePrefix, material: CMaterial) = chain(UnificationEntry(orePrefix, material).toString())
+    fun chain(material: CMaterial) = chain(defaultPrefix!!, material)
 }

@@ -1,10 +1,10 @@
 package com.github.trc.clayium.common.loaders.recipe
 
+import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.unification.material.CMaterials
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import com.github.trc.clayium.common.unification.material.CMaterials
-import com.github.trc.clayium.common.unification.ore.OrePrefix
 import net.minecraft.init.Items
 
 object ClayBlastFurnaceRecipeLoader {
@@ -22,28 +22,28 @@ object ClayBlastFurnaceRecipeLoader {
             .input(OrePrefix.dust, CMaterials.industrialClay, 2)
             .input(OrePrefix.impureDust, CMaterials.manganese)
             .output(OrePrefix.ingot, CMaterials.claySteel, 2)
-            .tier(6).CEt(5.0).duration(200)
+            .tier(6).CEtFactor(5.0).duration(200)
             .buildAndRegister()
 
         registry.builder()
             .input(OrePrefix.dust, CMaterials.advancedIndustrialClay)
             .input(OrePrefix.impureDust, CMaterials.manganese)
             .output(OrePrefix.ingot, CMaterials.claySteel)
-            .tier(7).CEt(5.0).duration(5)
+            .tier(7).CEtFactor(5.0).duration(5)
             .buildAndRegister()
 
         registry.builder()
             .input(OrePrefix.dust, CMaterials.advancedIndustrialClay)
             .input(OrePrefix.dust, CMaterials.manganese)
             .output(OrePrefix.ingot, CMaterials.claySteel)
-            .tier(8).CEt(5.0).duration(1)
+            .tier(8).CEtFactor(5.0).duration(1)
             .buildAndRegister()
 
         registry.builder()
             .input(OrePrefix.dust, CMaterials.industrialClay)
             .input(OrePrefix.dust, CMaterials.quartz, 8)
             .output(ClayiumBlocks.LASER_REFLECTOR)
-            .tier(7).CEt(2.0).duration(100)
+            .tier(7).CEtFactor(2.0).duration(100)
             .buildAndRegister()
 
         registry.builder()

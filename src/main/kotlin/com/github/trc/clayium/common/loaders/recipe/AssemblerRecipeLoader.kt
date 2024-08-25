@@ -1,12 +1,12 @@
 package com.github.trc.clayium.common.loaders.recipe
 
+import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.unification.material.CMaterials
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import com.github.trc.clayium.common.unification.material.CMaterials
-import com.github.trc.clayium.common.unification.ore.OrePrefix
 import net.minecraft.init.Blocks
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
@@ -20,13 +20,13 @@ object AssemblerRecipeLoader {
             .input(ClayiumItems.CLAY_ROLLING_PIN)
             .input(ClayiumItems.CLAY_SLICER)
             .output(ClayiumItems.CLAY_IO_CONFIGURATOR)
-            .tier(6).CEt(1.0).duration(20)
+            .tier(6).CEtFactor(1.0).duration(20)
             .buildAndRegister()
         registry.builder()
             .input(ClayiumItems.CLAY_SPATULA)
             .input(ClayiumItems.CLAY_WRENCH)
             .output(ClayiumItems.CLAY_PIPING_TOOL)
-            .tier(6).CEt(1.0).duration(20)
+            .tier(6).CEtFactor(1.0).duration(20)
             .buildAndRegister()
         registry.builder()
             .input(OrePrefix.plate, CMaterials.az91d, 3)
@@ -37,7 +37,7 @@ object AssemblerRecipeLoader {
         //endregion
 
         registry.builder()
-            .input(MetaItemClayParts.ADVANCED_CIRCUIT)
+            .input(MetaItemClayParts.AdvancedCircuit)
             .input(OrePrefix.plate, CMaterials.industrialClay)
             .output(ClayiumItems.simpleItemFilter)
             .tier(4).CEt(ClayEnergy.micro(80)).duration(20)
@@ -81,25 +81,25 @@ object AssemblerRecipeLoader {
                 .buildAndRegister()
         }
         registry.builder()
-            .input(MetaItemClayParts.CEECircuit)
+            .input(MetaItemClayParts.CeeCircuit)
             .input(OrePrefix.plate, CMaterials.industrialClay)
             .output(MetaItemClayParts.CEE)
             .CEt(ClayEnergy.micro(80)).duration(20)
             .buildAndRegister()
         registry.builder()
-            .input(MetaItemClayParts.PRECISION_CIRCUIT)
+            .input(MetaItemClayParts.PrecisionCircuit)
             .input(MetaItemClayParts.EnergizedClayDust, 32)
-            .output(MetaItemClayParts.INTEGRATED_CIRCUIT)
+            .output(MetaItemClayParts.IntegratedCircuit)
             .tier(0).CEt(ClayEnergy.milli(100)).duration(1200)
             .buildAndRegister()
         registry.builder()
-            .input(MetaItemClayParts.INTEGRATED_CIRCUIT)
+            .input(MetaItemClayParts.IntegratedCircuit)
             .input(MetaItemClayParts.CEE)
             .output(MetaItemClayParts.LaserParts)
             .tier(6).CEt(ClayEnergy.milli(100)).duration(20)
             .buildAndRegister()
         registry.builder()
-            .input(MetaItemClayParts.INTEGRATED_CIRCUIT)
+            .input(MetaItemClayParts.IntegratedCircuit)
             .input(OrePrefix.dust, CMaterials.beryllium, 8)
             .output(MetaItemClayParts.SynchronousParts)
             .tier(6).duration(432_000)

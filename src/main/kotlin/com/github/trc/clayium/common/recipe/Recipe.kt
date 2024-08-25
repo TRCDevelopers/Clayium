@@ -1,25 +1,28 @@
 package com.github.trc.clayium.common.recipe
 
-import com.github.trc.clayium.api.util.CUtils
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
+import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.util.toList
+import com.github.trc.clayium.common.recipe.chanced.ChancedOutputList
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
+import com.google.common.collect.ImmutableList
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandlerModifiable
 
 data class Recipe(
     val inputs: List<CRecipeInput>,
     val outputs: List<ItemStack>,
+    val chancedOutputs: ChancedOutputList<ItemStack>?,
     val duration: Long,
     val cePerTick: ClayEnergy,
     /**
      * if `machine.tier.numeric < recipe.tier`, then the recipe is not matched
      */
-    val tierNumeric: Int,
+    val recipeTier: Int,
 ) {
-    fun matches(consumeOnMatch: Boolean, inputsIn: IItemHandlerModifiable, tier: Int): Boolean {
+    fun matches(consumeOnMatch: Boolean, inputsIn: IItemHandlerModifiable, machineTier: Int): Boolean {
 
-        if (this.tierNumeric > tier) return false
-        val (isItemsMatched, amountsToConsume) = matchesItems(CUtils.handlerToList(inputsIn))
+        if (this.recipeTier > machineTier) return false
+        val (isItemsMatched, amountsToConsume) = matchesItems(inputsIn.toList())
         if (!isItemsMatched) return false
 
         if (consumeOnMatch) {
@@ -30,8 +33,10 @@ data class Recipe(
         return true
     }
 
-    fun matches(inputsIn: List<ItemStack>): Boolean {
-        return matchesItems(inputsIn).first
+    fun matches(inputsIn: List<ItemStack>, machineTier: Int): Boolean {
+        if (this.recipeTier > machineTier) return false
+        val (isItemsMatched, _) = matchesItems(inputsIn)
+        return isItemsMatched
     }
 
     private fun matchesItems(inputsIn: List<ItemStack>): Pair<Boolean, IntArray> {
@@ -61,10 +66,15 @@ data class Recipe(
     }
 
     fun copyOutputs(): List<ItemStack> {
-        return outputs.map { it.copy() }
+        val resultOutputs = mutableListOf<ItemStack>()
+        resultOutputs.addAll(outputs.map { it.copy() })
+        if (chancedOutputs != null) {
+            resultOutputs.addAll(chancedOutputs.roll().map { it.copy() })
+        }
+        return ImmutableList.copyOf(resultOutputs)
     }
 
     override fun toString(): String {
-        return "Recipe(inputs=$inputs, outputs=$outputs, duration=$duration, cePerTick=$cePerTick, tierNumeric=$tierNumeric)"
+        return "Recipe(inputs=$inputs, outputs=$outputs, duration=$duration, cePerTick=$cePerTick, tierNumeric=$recipeTier)"
     }
 }

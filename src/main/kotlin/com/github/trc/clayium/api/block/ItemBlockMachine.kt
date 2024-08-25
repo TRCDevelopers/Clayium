@@ -1,7 +1,6 @@
 package com.github.trc.clayium.api.block
 
 import com.github.trc.clayium.api.util.CUtils
-import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
@@ -19,7 +18,7 @@ class ItemBlockMachine(
         return when (val mte = CUtils.getMetaTileEntity(stack)) {
             null -> "unnamed"
             else -> {
-                I18n.format(mte.translationKey, I18n.format(mte.tier.prefixTranslationKey))
+                mte.getItemStackDisplayName()
             }
         }
     }

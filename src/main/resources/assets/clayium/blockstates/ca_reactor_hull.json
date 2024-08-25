@@ -1,0 +1,67 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "meta": {
+      "0": {
+        "textures": {
+          "all":"clayium:blocks/ca_reactor_hull_0"
+        },
+        "model": "cube_all"
+      },
+      "1": {
+        "textures": {
+          "all":"clayium:blocks/ca_reactor_hull_1"
+        },
+        "model": "cube_all"
+      },
+      "2": {
+        "textures": {
+          "all":"clayium:blocks/ca_reactor_hull_2"
+        },
+        "model": "cube_all"
+      },
+      "3": {
+        "textures": {
+          "all":"clayium:blocks/ca_reactor_hull_3"
+        },
+        "model": "cube_all"
+      },
+      "4": {
+        "textures": {
+          "all":"clayium:blocks/ca_reactor_hull_4"
+        },
+        "model": "cube_all"
+      },
+      "5": {
+        "textures": {
+          "all":"clayium:blocks/ca_reactor_hull_5"
+        },
+        "model": "cube_all"
+      },
+      "6": {
+        "textures": {
+          "all":"clayium:blocks/ca_reactor_hull_6"
+        },
+        "model": "cube_all"
+      },
+      "7": {
+        "textures": {
+          "all":"clayium:blocks/ca_reactor_hull_7"
+        },
+        "model": "cube_all"
+      },
+      "8": {
+        "textures": {
+          "all":"clayium:blocks/ca_reactor_hull_8"
+        },
+        "model": "cube_all"
+      },
+      "9": {
+        "textures": {
+          "all":"clayium:blocks/ca_reactor_hull_9"
+        },
+        "model": "cube_all"
+      }
+    }
+  }
+}

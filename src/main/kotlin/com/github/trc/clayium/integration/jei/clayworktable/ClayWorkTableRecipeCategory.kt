@@ -1,6 +1,7 @@
 package com.github.trc.clayium.integration.jei.clayworktable
 
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import mezz.jei.api.IGuiHelper
 import mezz.jei.api.gui.IDrawable
@@ -11,13 +12,12 @@ import mezz.jei.api.recipe.IRecipeCategory
 import net.minecraft.client.Minecraft
 import net.minecraft.client.resources.I18n
 import net.minecraft.item.ItemStack
-import net.minecraft.util.ResourceLocation
 
 class ClayWorkTableRecipeCategory(
     guiHelper: IGuiHelper
 ) : IRecipeCategory<ClayWorkTableRecipeWrapper> {
 
-    private val overlay = guiHelper.createDrawable(ResourceLocation(Clayium.MOD_ID, "textures/gui/clayworktable.png"), 4, 6, 168, 74)
+    private val overlay = guiHelper.createDrawable(clayiumId("textures/gui/clayworktable.png"), 4, 6, 168, 74)
     private val icon = guiHelper.createDrawableIngredient(ItemStack(ClayiumBlocks.CLAY_WORK_TABLE))
 
     override fun getUid(): String {
@@ -29,7 +29,7 @@ class ClayWorkTableRecipeCategory(
     }
 
     override fun getModName(): String {
-        return Clayium.MOD_NAME
+        return CValues.MOD_NAME
     }
 
     override fun getBackground(): IDrawable {

@@ -8,12 +8,15 @@ import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.metatileentity.multiblock.ProxyMetaTileEntityBase
-import com.github.trc.clayium.api.util.CUtils.clayiumId
+import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode
+import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
@@ -34,11 +37,29 @@ class ClayInterfaceMetaTileEntity(
     override var importItems: IItemHandlerModifiable = EmptyItemStackHandler
     override var exportItems: IItemHandlerModifiable = EmptyItemStackHandler
     override var itemInventory: IItemHandler = EmptyItemStackHandler
-    var autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
+
     private var ecImporter: AutoIoHandler.EcImporter? = null
+    private var autoIoHandler: AutoIoHandler? = null
 
     override var validInputModes: List<MachineIoMode> = onlyNoneList
     override var validOutputModes: List<MachineIoMode> = onlyNoneList
+
+    var hasSynchroParts = false
+        private set
+
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        data.setBoolean("hasSynchroParts", hasSynchroParts)
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        hasSynchroParts = data.getBoolean("hasSynchroParts")
+    }
+
+    override fun canSynchronize(): Boolean {
+        return hasSynchroParts
+    }
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayInterfaceMetaTileEntity(metaTileEntityId, tier)
@@ -53,9 +74,9 @@ class ClayInterfaceMetaTileEntity(
         super.onLink(target)
         this.importItems = target.importItems
         this.exportItems = target.exportItems
-        this.itemInventory = ItemHandlerProxy(this.importItems, this.exportItems)
-        this.autoIoHandler = AutoIoHandler.Combined(this)
-        target.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER, null)?.let { targetEnergyHolder ->
+        this.itemInventory = ItemHandlerProxy(target.importItems, target.exportItems)
+        this.autoIoHandler = AutoIoHandler.Combined(this, tier = target.tier.numeric)
+        target.getCapability(ClayiumTileCapabilities.CLAY_ENERGY_HOLDER, null)?.let { targetEnergyHolder ->
             this.ecImporter = AutoIoHandler.EcImporter(this, targetEnergyHolder.energizedClayItemHandler)
         }
 
@@ -68,20 +89,25 @@ class ClayInterfaceMetaTileEntity(
         this.importItems = EmptyItemStackHandler
         this.exportItems = EmptyItemStackHandler
         this.itemInventory = EmptyItemStackHandler
-        this.autoIoHandler = AutoIoHandler.Combined(this)
+        this.autoIoHandler = null
         this.ecImporter = null
 
         this.validInputModes = onlyNoneList
         this.validOutputModes = onlyNoneList
     }
 
-    fun isSynchronized(): Boolean {
-        return false
-    }
-
     override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
-        val mimicTarget = this.target ?: return
-        if (mimicTarget.canOpenGui()) {
+        if (!this.hasSynchroParts) {
+            val stack = player.getHeldItem(hand)
+            val synchroParts = MetaItemClayParts.SynchronousParts.getStackForm()
+            if (stack.isItemEqual(synchroParts) && stack.metadata == synchroParts.metadata) {
+                this.hasSynchroParts = true
+                if (!player.isCreative) stack.shrink(1)
+                return
+            }
+        }
+        val mimicTarget = this.target
+        if (mimicTarget?.canOpenGui() == true) {
             mimicTarget.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
         }
     }

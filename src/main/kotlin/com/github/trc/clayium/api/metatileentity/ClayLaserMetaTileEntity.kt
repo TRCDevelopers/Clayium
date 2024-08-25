@@ -1,34 +1,28 @@
 package com.github.trc.clayium.api.metatileentity
 
-import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trc.clayium.api.CValues
-import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
+import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ClayLaserSource
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
 import com.github.trc.clayium.common.config.ConfigCore
-import com.github.trc.clayium.common.util.UtilLocale
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
-import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
-import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.pow
 
 class ClayLaserMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -39,7 +33,7 @@ class ClayLaserMetaTileEntity(
 ) : MetaTileEntity(
     metaTileEntityId, tier,
     validInputModesLists[0], validOutputModesLists[0],
-    "machine.${CValues.MOD_ID}.clay_laser.${tier.lowerName}",
+    "machine.${CValues.MOD_ID}.clay_laser",
 ) {
 
     override val faceTexture = ResourceLocation(CValues.MOD_ID, "blocks/clay_laser")
@@ -51,7 +45,7 @@ class ClayLaserMetaTileEntity(
     private val clayEnergyHolder = ClayEnergyHolder(this)
     val energyCost = ClayEnergy.milli(
         when (tier.numeric) {
-            in 7..10 -> 400 * Math.pow(10.toDouble(), (tier.numeric - 7).toDouble())
+            in 7..10 -> 400 * 10.toDouble().pow((tier.numeric - 7).toDouble())
             else -> 400
         }.toLong()
     )
@@ -66,7 +60,7 @@ class ClayLaserMetaTileEntity(
         val y = pos.y.toDouble()
         val z = pos.z.toDouble()
 
-        val direction = laser.laserDirection
+        val direction = laser.direction
         val xOffset = direction.xOffset.toDouble()
         val yOffset = direction.yOffset.toDouble()
         val zOffset = direction.zOffset.toDouble()
@@ -86,10 +80,6 @@ class ClayLaserMetaTileEntity(
     override fun onPlacement() {
         super.onPlacement()
         laserManager.updateDirection(this.frontFacing)
-    }
-
-    override fun onRemoval() {
-        laserManager.onRemoval()
     }
 
     override fun onNeighborChanged(facing: EnumFacing) {
@@ -117,39 +107,16 @@ class ClayLaserMetaTileEntity(
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("clay_laser_tier$tier", 176, 32 + 94)
-            .child(
-                IKey.lang("machine.clayium.clay_laser.${tier.lowerName}", IKey.lang(tier.prefixTranslationKey))
-                    .asWidget()
-                    .top(6)
-                    .left(6)
-            )
-            .child(
-                clayEnergyHolder.createCeTextWidget(syncManager)
-                    .top(16)
-                    .left(3)
-            )
-            .bindPlayerInventory()
-    }
-
-    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        if (capability === ClayiumTileCapabilities.CAPABILITY_CLAY_LASER) {
-            return ClayiumTileCapabilities.CAPABILITY_CLAY_LASER.cast(laserManager)
-        } else if (capability === ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER) {
-            return ClayiumTileCapabilities.CAPABILITY_CLAY_ENERGY_HOLDER.cast(clayEnergyHolder)
-        }
-        return super.getCapability(capability, facing)
+            .child(mainColumn {
+                child(buildMainParentWidget(syncManager)
+                    .child(clayEnergyHolder.createCeTextWidget(syncManager)
+                        .bottom(12).left(0))
+                )
+            })
     }
 
     override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
     override fun shouldRenderInPass(pass: Int) = (pass == 1)
-
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        super.addInformation(stack, worldIn, tooltip, flagIn)
-        // add the tier-specific tooltip first
-        UtilLocale.formatTooltips(tooltip, "machine.clayium.${metaTileEntityId.path}.tooltip")
-        // then add the machine-specific tooltip
-        UtilLocale.formatTooltips(tooltip, "machine.clayium.clay_laser.tooltip")
-    }
 
     private fun refreshRedstone() {
         val pos = this.pos ?: return
@@ -162,7 +129,7 @@ class ClayLaserMetaTileEntity(
         super.update()
         if (isRemote) return
         if (canActivateByRedstone) {
-            laserManager.isActive = clayEnergyHolder.drawEnergy(energyCost)
+            laserManager.isActive = clayEnergyHolder.drawEnergy(energyCost, simulate = false)
         } else {
             laserManager.isActive = false
         }

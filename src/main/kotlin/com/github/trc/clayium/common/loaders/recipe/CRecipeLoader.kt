@@ -4,6 +4,8 @@ import com.github.trc.clayium.common.recipe.handler.MaterialRecipeHandler
 
 object CRecipeLoader {
     fun load() {
+        ClayWorkTableRecipeLoader.registerRecipes()
+
         CraftingRecipeLoader.registerRecipes()
         MaterialRecipeHandler.registerRecipes()
 
@@ -11,10 +13,11 @@ object CRecipeLoader {
         BendingMachineLoader.registerRecipes()
         CaCondenserRecipeLoader.registerRecipes()
         CaInjectorRecipeLoader.registerRecipes()
+        CentrifugeRecipeLoader.registerRecipes()
+        ChemicalMetalSeparatorRecipeLoader.registerRecipes()
         ChemicalReactorRecipeLoader.registerRecipes()
         ClayBlastFurnaceRecipeLoader.registerRecipes()
         ClayReactorRecipeLoader.registerRecipes()
-        ClayWorkTableRecipes.registerRecipes()
         CondenserRecipeLoader.registerRecipes()
         CuttingMachineRecipeLoader.registerRecipes()
         DecomposerRecipeLoader.registerRecipes()

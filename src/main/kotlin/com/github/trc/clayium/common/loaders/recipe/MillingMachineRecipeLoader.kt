@@ -1,10 +1,10 @@
 package com.github.trc.clayium.common.loaders.recipe
 
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
+import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.unification.material.CMaterials
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import com.github.trc.clayium.common.unification.material.CMaterials
-import com.github.trc.clayium.common.unification.ore.OrePrefix
 
 object MillingMachineRecipeLoader {
     fun registerRecipes() {
@@ -12,19 +12,19 @@ object MillingMachineRecipeLoader {
 
         registry.builder()
             .input(OrePrefix.plate, CMaterials.denseClay)
-            .output(MetaItemClayParts.CLAY_CIRCUIT_BOARD)
+            .output(MetaItemClayParts.ClayCircuitBoard)
             .tier(0).CEt().duration(32)
             .buildAndRegister()
 
         registry.builder()
             .input(OrePrefix.plate, CMaterials.industrialClay)
-            .output(MetaItemClayParts.CLAY_CIRCUIT_BOARD)
+            .output(MetaItemClayParts.ClayCircuitBoard)
             .tier(0).CEt().duration(1)
             .buildAndRegister()
 
         registry.builder()
             .input(OrePrefix.plate, CMaterials.advancedIndustrialClay)
-            .output(MetaItemClayParts.CEE_BOARD)
+            .output(MetaItemClayParts.CeeBoard)
             .tier(3).CEt(ClayEnergy.micro(20)).duration(32)
             .buildAndRegister()
     }

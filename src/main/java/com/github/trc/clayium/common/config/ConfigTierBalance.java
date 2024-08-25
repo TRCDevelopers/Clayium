@@ -1,13 +1,13 @@
 package com.github.trc.clayium.common.config;
 
-import com.github.trc.clayium.common.Clayium;
+import com.github.trc.clayium.api.CValues;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.LangKey;
 import net.minecraftforge.common.config.Config.RangeInt;
 
 @LangKey("clayium.config.tier")
-@Config(modid = Clayium.MOD_ID, name = Clayium.MOD_ID + "/tier_balance")
+@Config(modid = CValues.MOD_ID, name = CValues.MOD_ID + "/tier_balance")
 public class ConfigTierBalance {
     private ConfigTierBalance() {}
     @RangeInt(min = 1)
@@ -53,5 +53,38 @@ public class ConfigTierBalance {
                 "These values correspond to the tiers 4 to 9 respectively, from top to bottom."
         })
         public double[] smelterConsumingEnergyMultiplier = new double[] { 1.0, 14.0, 200.0, 2800.0, 40000.0, 560000.0 };
+
+        @Comment({
+                "used in Grinder, Condenser, Centrifuge",
+                "Tier: default, 5, 6, 10"
+        })
+        public double[] craftTimeMultiplier = new double[] { 1.0, 0.25, 0.0625, 0.01 };
+
+        @Comment({
+                "used in Grinder, Condenser, Centrifuge",
+                "Tier: default, 5, 6, 10"
+        })
+        public double[] consumingEnergyMultiplier = new double[] { 1.0, 5.0, 25.0, 250.0 };
+
+        public double getCraftTimeMultiplier(int tier) {
+            return getMachineTierValues(craftTimeMultiplier, tier);
+        }
+
+        public double getConsumingEnergyMultiplier(int tier) {
+            return getMachineTierValues(consumingEnergyMultiplier, tier);
+        }
+
+        private double getMachineTierValues(double[] arr, int tier) {
+            switch (tier) {
+                case 5:
+                    return arr[1];
+                case 6:
+                    return arr[2];
+                case 10:
+                    return arr[3];
+                default:
+                    return arr[0];
+            }
+        }
     }
 }

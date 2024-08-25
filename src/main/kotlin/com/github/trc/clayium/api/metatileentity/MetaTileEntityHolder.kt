@@ -114,6 +114,7 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
         return oldState.block != newSate.block
     }
     override fun shouldRenderInPass(pass: Int) = metaTileEntity?.shouldRenderInPass(pass) ?: super.shouldRenderInPass(pass)
+    @Suppress("UsePropertyAccessSyntax") // `super.maxRenderDistanceSquared` errors with "Unresolved reference"
     override fun getMaxRenderDistanceSquared() = metaTileEntity?.getMaxRenderDistanceSquared() ?: super.getMaxRenderDistanceSquared()
     override fun getRenderBoundingBox() = metaTileEntity?.renderBoundingBox ?: super.getRenderBoundingBox()
 }

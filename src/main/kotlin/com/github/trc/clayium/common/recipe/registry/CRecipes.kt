@@ -5,6 +5,7 @@ import com.github.trc.clayium.common.recipe.builder.ClayFabricatorRecipeBuilder
 import com.github.trc.clayium.common.recipe.builder.MatterTransformerRecipeBuilder
 import com.github.trc.clayium.common.recipe.builder.RecipeBuilder
 import com.github.trc.clayium.common.recipe.builder.SimpleRecipeBuilder
+import com.github.trc.clayium.common.recipe.builder.WeightedRecipeBuilder
 import com.github.trc.clayium.integration.jei.JeiPlugin
 import com.github.trc.clayium.integration.jei.basic.SolarClayFabricatorRecipeWrapper
 
@@ -29,20 +30,22 @@ object CRecipes {
     val CA_CONDENSER = addRegistry("ca_condenser", SimpleRecipeBuilder(), 1, 1)
 
     //solar
-    val SOLAR_1 = addRegistry("solar_1", ClayFabricatorRecipeBuilder(ClayFabricatorRecipeBuilder::solarClayFabricator), 1, 1)
-    val SOLAR_2 = addRegistry("solar_2", ClayFabricatorRecipeBuilder(ClayFabricatorRecipeBuilder::solarClayFabricator), 1, 1)
-    val SOLAR_3 = addRegistry("solar_3", ClayFabricatorRecipeBuilder(ClayFabricatorRecipeBuilder::solarClayFabricator), 1, 1)
+    val SOLAR_1 = addRegistry("solar_clay_fabricator_1", ClayFabricatorRecipeBuilder(ClayFabricatorRecipeBuilder::solarClayFabricator), 1, 1)
+    val SOLAR_2 = addRegistry("solar_clay_fabricator_2", ClayFabricatorRecipeBuilder(ClayFabricatorRecipeBuilder::solarClayFabricator), 1, 1)
+    val SOLAR_3 = addRegistry("solar_clay_fabricator_3", ClayFabricatorRecipeBuilder(ClayFabricatorRecipeBuilder::solarClayFabricator), 1, 1)
 
     // 2 -> 1 recipes
     val ASSEMBLER = addRegistry("assembler", SimpleRecipeBuilder(), 2, 1)
     val INSCRIBER = addRegistry("inscriber", SimpleRecipeBuilder(), 2, 1)
-    val ALLOT_SMELTER = addRegistry("allot_smelter", SimpleRecipeBuilder(), 2, 1)
+    val ALLOY_SMELTER = addRegistry("allot_smelter", SimpleRecipeBuilder(), 2, 1)
     val CA_INJECTOR = addRegistry("ca_injector", SimpleRecipeBuilder(), 2, 1) //todo special registry or builder?
 
     // others
     val CHEMICAL_REACTOR = addRegistry("chemical_reactor", SimpleRecipeBuilder(), 2, 2)
     val CLAY_BLAST_FURNACE = addRegistry("clay_blast_furnace", SimpleRecipeBuilder(), 2, 2)
     val CLAY_REACTOR = addRegistry("clay_reactor", SimpleRecipeBuilder(), 2, 2)
+    val CHEMICAL_METAL_SEPARATOR = addRegistry("chemical_metal_separator", WeightedRecipeBuilder(), 1, 1)
+    val CENTRIFUGE = addRegistry("centrifuge", SimpleRecipeBuilder(), 1, 4)
 
     fun <R: RecipeBuilder<R>> addRegistry(name: String, buildSample: R, inputSize: Int, outputSize: Int): RecipeRegistry<R> {
         val registry = RecipeRegistry(name, buildSample, inputSize, outputSize)

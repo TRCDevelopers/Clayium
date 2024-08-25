@@ -12,7 +12,7 @@ object MetaTileEntityRenderDispatcher : TileEntitySpecialRenderer<MetaTileEntity
         if (holder.blockType !is BlockMachine) return
         val metaTileEntity = holder.metaTileEntity ?: return
         metaTileEntity.renderMetaTileEntity(x, y, z, partialTicks)
-        val clayLaserManager = metaTileEntity.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER, null)
+        val clayLaserManager = metaTileEntity.getCapability(ClayiumTileCapabilities.CLAY_LASER_SOURCE, null)
         if (clayLaserManager?.isActive == true) {
             ClayLaserRenderer.renderLaser(clayLaserManager, x, y, z, this::bindTexture)
         }
@@ -25,6 +25,6 @@ object MetaTileEntityRenderDispatcher : TileEntitySpecialRenderer<MetaTileEntity
     }
 
     override fun isGlobalRenderer(te: MetaTileEntityHolder): Boolean {
-        return te.metaTileEntity?.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER, null) != null
+        return te.metaTileEntity?.getCapability(ClayiumTileCapabilities.CLAY_LASER_SOURCE, null) != null
     }
 }

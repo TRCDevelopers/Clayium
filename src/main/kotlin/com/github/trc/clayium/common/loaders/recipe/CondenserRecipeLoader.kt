@@ -1,27 +1,27 @@
 package com.github.trc.clayium.common.loaders.recipe
 
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
+import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.unification.material.CMaterials
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import com.github.trc.clayium.common.unification.material.CMaterials
-import com.github.trc.clayium.common.unification.ore.OrePrefix
 
 object CondenserRecipeLoader {
     fun registerRecipes() {
         val registry = CRecipes.CONDENSER
 
         registry.builder()
-            .input(MetaItemClayParts.COMPRESSED_CLAY_SHARD, 4)
+            .input(MetaItemClayParts.CompressedClayShard, 4)
             .output(OrePrefix.block, CMaterials.compressedClay)
             .duration(3)
             .buildAndRegister()
         registry.builder()
-            .input(MetaItemClayParts.INDUSTRIAL_CLAY_SHARD, 4)
+            .input(MetaItemClayParts.IndustrialClayShard, 4)
             .output(OrePrefix.block, CMaterials.industrialClay)
             .duration(6)
             .buildAndRegister()
         registry.builder()
-            .input(MetaItemClayParts.ADV_INDUSTRIAL_CLAY_SHARD, 4)
+            .input(MetaItemClayParts.AdvancedIndustrialClayShard, 4)
             .output(OrePrefix.block, CMaterials.advancedIndustrialClay)
             .duration(9)
             .buildAndRegister()

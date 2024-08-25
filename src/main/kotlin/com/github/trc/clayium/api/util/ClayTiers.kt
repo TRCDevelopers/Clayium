@@ -1,6 +1,5 @@
 package com.github.trc.clayium.api.util
 
-import com.github.trc.clayium.api.util.CUtils.clayiumId
 import net.minecraft.item.EnumRarity
 import net.minecraft.util.IStringSerializable
 import net.minecraft.util.ResourceLocation

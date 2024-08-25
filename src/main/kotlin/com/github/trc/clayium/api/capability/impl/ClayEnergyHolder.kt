@@ -5,15 +5,20 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.TextWidget
+import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.block.IEnergyStorageUpgradeBlock
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs
+import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IClayEnergyHolder
-import com.github.trc.clayium.api.metatileentity.AutoIoHandler
 import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
+import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
+import com.github.trc.clayium.api.util.asWidgetResizing
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
+import net.minecraftforge.common.capabilities.Capability
 
 class ClayEnergyHolder(
     metaTileEntity: MetaTileEntity,
@@ -25,8 +30,17 @@ class ClayEnergyHolder(
         }
 
         override fun getStackLimit(slot: Int, stack: ItemStack): Int {
-            //todo: upgradable
-            return 1
+            val world = metaTileEntity.world ?: return 1
+            val pos = metaTileEntity.pos ?: return 1
+            var limit = 1
+            for (side in EnumFacing.entries) {
+                val state = world.getBlockState(pos.offset(side))
+                val block = state.block
+                if (block is IEnergyStorageUpgradeBlock) {
+                    limit += block.getExtraStackLimit(world, pos.offset(side))
+                }
+            }
+            return limit
         }
     }
 
@@ -46,6 +60,10 @@ class ClayEnergyHolder(
         if (!hasEnoughEnergy(ce)) return false
         if (!simulate) this.clayEnergy -= ce
         return true
+    }
+
+    override fun addEnergy(ce: ClayEnergy) {
+        this.clayEnergy += ce
     }
 
     /**
@@ -68,7 +86,7 @@ class ClayEnergyHolder(
             { clayEnergy = ClayEnergy(it) }
         ))
 
-        return IKey.dynamic { this.clayEnergy.format() }.asWidget()
+        return IKey.dynamic { this.clayEnergy.format() }.asWidgetResizing()
     }
 
     private fun tryConsumeEnergizedClay() {
@@ -88,5 +106,13 @@ class ClayEnergyHolder(
     override fun deserializeNBT(data: NBTTagCompound) {
         super.deserializeNBT(data)
         clayEnergy = ClayEnergy(data.getLong("clayEnergy"))
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        return if (capability === ClayiumTileCapabilities.CLAY_ENERGY_HOLDER) {
+            capability.cast(this)
+        } else {
+            super.getCapability(capability, facing)
+        }
     }
 }

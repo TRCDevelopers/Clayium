@@ -2,24 +2,25 @@ package com.github.trc.clayium.common.gui
 
 import com.cleanroommc.modularui.drawable.UITexture
 import com.github.trc.clayium.api.CValues
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.api.util.Mods
+import com.github.trc.clayium.api.util.clayiumId
 
 object ClayGuiTextures {
     private fun slotTexture() = UITexture.builder()
         .location(CValues.MOD_ID, "gui/slot")
         .imageSize(256, 256)
 
-    val LARGE_SLOT = UITexture.builder()
-        .location(Clayium.MOD_ID, "gui/slot")
-        .imageSize(256, 256)
+    val LARGE_SLOT = slotTexture()
         .uv(0, 32, 26, 26)
         .canApplyTheme()
         .build()
 
-    val CLAY_SLOT = UITexture.builder()
-        .location(Clayium.MOD_ID, "gui/slot")
-        .imageSize(256, 256)
+    val CLAY_SLOT = slotTexture()
         .uv(96, 0, 18, 18)
+        .build()
+
+    val FILTER_SLOT = slotTexture()
+        .uv(96, 32, 18, 18)
         .build()
 
     // memo: gui/slot slot interval is 14 pixels
@@ -57,9 +58,33 @@ object ClayGuiTextures {
     val M_TRACK_FILTER_SLOTS = arrayOf(FILTER_SLOT_M1, FILTER_SLOT_M2, FILTER_SLOT_M3, FILTER_SLOT_M4, FILTER_SLOT_M5, FILTER_SLOT_M6)
 
     val PROGRESS_BAR = UITexture.builder()
-        .location(Clayium.MOD_ID, "gui/progress_bar")
+        .location(clayiumId("gui/progress_bar"))
         .imageSize(256, 256)
         .uv(1, 0, 22, 34)
         .canApplyTheme()
+        .build()
+
+    // GuiTextures.MC_BUTTON_PRESSED is bugged
+    val BUTTON_PRESSED = UITexture.builder()
+            .location(Mods.ModularUI.modId, "gui/widgets/mc_button")
+            .imageSize(16, 32)
+            .uv(0, 16, 16, 16)
+            .name("mc_button_hovered")
+            .build()
+
+    val CE_BUTTON_DISABLED = UITexture.builder()
+        .location(clayiumId("gui/button"))
+        .imageSize(256, 256)
+        .uv(0, 0, 16, 16)
+        .build()
+    val CE_BUTTON = UITexture.builder()
+        .location(clayiumId("gui/button"))
+        .imageSize(256, 256)
+        .uv(0, 16, 16, 16)
+        .build()
+    val CE_BUTTON_HOVERED = UITexture.builder()
+        .location(clayiumId("gui/button"))
+        .imageSize(256, 256)
+        .uv(0, 32, 16, 16)
         .build()
 }

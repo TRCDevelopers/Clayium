@@ -1,10 +1,10 @@
 package com.github.trc.clayium.common.recipe
 
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
-import com.github.trc.clayium.common.unification.stack.UnificationEntry
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.FurnaceRecipes
 import net.minecraft.util.ResourceLocation
@@ -29,7 +29,8 @@ object RecipeUtils {
     }
 
     fun addShapedRecipe(registryName: String, result: ItemStack, isMirrored: Boolean, vararg recipe: Any) {
-        val actualRegName = clayiumId(registryName)
+        // default modid to clayium
+        val actualRegName = if (registryName.contains(":")) ResourceLocation(registryName) else clayiumId(registryName)
         if (validateRecipe(actualRegName, result, recipe)) {
             ForgeRegistries.RECIPES.register(
                 ShapedOreRecipe(null, result, *finalizeRecipe(recipe))
@@ -39,8 +40,9 @@ object RecipeUtils {
     }
 
     fun addShapelessRecipe(registryName: String, result: ItemStack, vararg recipe: Any) {
+        val actualRegName = if (registryName.contains(":")) ResourceLocation(registryName) else clayiumId(registryName)
         ForgeRegistries.RECIPES.register(ShapelessOreRecipe(null, result, *finalizeRecipe(recipe))
-            .setRegistryName(clayiumId(registryName)))
+            .setRegistryName(actualRegName))
     }
 
     private fun finalizeRecipe(recipe: Array<out Any>): Array<out Any> {

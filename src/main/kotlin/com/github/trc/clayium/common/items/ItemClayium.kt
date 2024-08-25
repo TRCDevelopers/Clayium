@@ -1,8 +1,9 @@
 package com.github.trc.clayium.common.items
 
+import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.Clayium
 import net.minecraft.item.Item
-import net.minecraft.util.ResourceLocation
 
 /**
  * @param name name without mod id
@@ -10,7 +11,7 @@ import net.minecraft.util.ResourceLocation
 open class ItemClayium(name: String) : Item() {
     init {
         this.creativeTab = Clayium.creativeTab
-        this.registryName = ResourceLocation(Clayium.MOD_ID, name)
-        this.translationKey = "${Clayium.MOD_ID}.$name"
+        this.registryName = clayiumId(name)
+        this.translationKey = "${CValues.MOD_ID}.$name"
     }
 }

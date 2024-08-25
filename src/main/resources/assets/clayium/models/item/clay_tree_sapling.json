@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "clayium:blocks/clay_tree_sapling"
+  }
+}

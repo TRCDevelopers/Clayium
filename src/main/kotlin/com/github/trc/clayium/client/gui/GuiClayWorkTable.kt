@@ -1,7 +1,8 @@
 package com.github.trc.clayium.client.gui
 
+import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.gui.button.GuiButtonImageToggleable
-import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.blocks.clayworktable.ClayWorkTableMethod
 import com.github.trc.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trc.clayium.common.gui.ContainerClayWorkTable
@@ -10,7 +11,6 @@ import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.resources.I18n
 import net.minecraft.inventory.IInventory
-import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
@@ -20,7 +20,7 @@ class GuiClayWorkTable(
     private val tile: TileClayWorkTable
 ) : GuiContainer(ContainerClayWorkTable(playerInv, tile)) {
     override fun drawGuiContainerForegroundLayer(mouseX: Int, mouseY: Int) {
-        fontRenderer.drawString(I18n.format("recipe.clayium.ClayWorkTable"), 6, 6, 0x404040)
+        fontRenderer.drawString(I18n.format("tile.${CValues.MOD_ID}.clay_work_table.name"), 6, 6, 0x404040)
         fontRenderer.drawString(I18n.format("container.inventory"), 8, ySize - 94, 0x404040)
     }
 
@@ -98,6 +98,6 @@ class GuiClayWorkTable(
     }
 
     companion object {
-        private val GUI_IMAGE = ResourceLocation(Clayium.MOD_ID, "textures/gui/clayworktable.png")
+        private val GUI_IMAGE = clayiumId("textures/gui/clayworktable.png")
     }
 }

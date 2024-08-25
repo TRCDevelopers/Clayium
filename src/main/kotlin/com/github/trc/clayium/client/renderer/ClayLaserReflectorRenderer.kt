@@ -1,7 +1,7 @@
 package com.github.trc.clayium.client.renderer
 
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
-import com.github.trc.clayium.api.util.CUtils.clayiumId
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.BlockClayLaserReflector
 import com.github.trc.clayium.common.blocks.TileEntityClayLaserReflector
 import net.minecraft.client.renderer.GlStateManager
@@ -71,7 +71,7 @@ object ClayLaserReflectorRenderer : TileEntitySpecialRenderer<TileEntityClayLase
         GlStateManager.popMatrix()
 
         if (!reflector.isActive) return
-        val laserSource = reflector.getCapability(ClayiumTileCapabilities.CAPABILITY_CLAY_LASER, null) ?: return
+        val laserSource = reflector.getCapability(ClayiumTileCapabilities.CLAY_LASER_SOURCE, null) ?: return
 
         ClayLaserRenderer.renderLaser(laserSource, x, y, z, this::bindTexture)
     }

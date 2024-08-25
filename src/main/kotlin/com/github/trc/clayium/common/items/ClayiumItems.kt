@@ -1,8 +1,11 @@
 package com.github.trc.clayium.common.items
 
+import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.IConfigurationTool
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.items.filter.ItemSimpleItemFilter
+import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import net.minecraft.item.Item
 
 object ClayiumItems {
@@ -25,11 +28,17 @@ object ClayiumItems {
 
     val simpleItemFilter = createItem("simple_item_filter", ItemSimpleItemFilter())
 
+    fun registerOreDicts() {
+        for (metaItem in MetaItemClayium.META_ITEMS) {
+            metaItem.registerOreDicts()
+        }
+    }
+
     private fun <T: Item> createItem(name: String, item: T): T {
         return item.apply {
             setCreativeTab(Clayium.creativeTab)
-            setRegistryName(Clayium.MOD_ID, name)
-            setTranslationKey("${Clayium.MOD_ID}.$name")
+            setRegistryName(clayiumId(name))
+            setTranslationKey("${CValues.MOD_ID}.$name")
         }
     }
 }

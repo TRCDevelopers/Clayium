@@ -1,6 +1,5 @@
 package com.github.trc.clayium.api.metatileentity
 
-import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
@@ -8,12 +7,11 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.TextWidget
-import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
+import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.common.blocks.machine.MachineIoMode
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.common.util.TransferUtils
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
@@ -75,7 +73,7 @@ abstract class AbstractItemGeneratorMetaTileEntity(
 
     override fun update() {
         super.update()
-        if (world?.isRemote == true) return
+        if (isRemote) return
         if (offsetTimer % 20 == 0L) isTerrainValid = isTerrainValid()
         if (hasNotifiedOutputs) outputFull = false
         if (!isTerrainValid || outputFull) return // don't progress if terrain is invalid or output is full.
@@ -121,33 +119,18 @@ abstract class AbstractItemGeneratorMetaTileEntity(
         val columnStr = "I".repeat(inventoryColumnSize)
         val matrixStr = (0..<inventoryRowSize).map { columnStr }
 
-        return ModularPanel("simple_item_generator")
-            .size(176, 18 + inventoryRowSize * 18 + 94 + 2)
-            .align(Alignment.Center)
-            .child(
-                Column()
-                    .widthRel(1f).height(18 + inventoryRowSize * 18 + 10)
-                    .child(
-                        TextWidget(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)))
-                            .margin(6)
-                            .align(Alignment.TopLeft)
-                    )
-                    .child(
-                        SlotGroupWidget.builder()
-                            .matrix(*matrixStr.toTypedArray())
-                            .key('I') { index ->
-                                ItemSlot().slot(
-                                    SyncHandlers.itemSlot(itemInventory, index)
-                                        .slotGroup("machine_inventory")
-                                )
-                            }.build()
-                            .marginTop(18)
-                    )
-                    .child(
-                        playerInventoryTitle()
-                            .align(Alignment.BottomLeft).left(8)
-                    )
-            )
-            .bindPlayerInventory()
+        return ModularPanel.defaultPanel("simple_item_generator", 176, 18 + inventoryRowSize * 18 + 94 + 2)
+            .child(mainColumn {
+                child(buildMainParentWidget(syncManager)
+                    .child(SlotGroupWidget.builder()
+                        .matrix(*matrixStr.toTypedArray())
+                        .key('I') { index ->
+                            ItemSlot().slot(
+                                SyncHandlers.itemSlot(itemInventory, index)
+                                    .slotGroup("machine_inventory")
+                            )
+                        }.build().align(Alignment.Center))
+                )
+            })
     }
 }

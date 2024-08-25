@@ -12,7 +12,7 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-class ItemBlockTiered<T>(
+open class ItemBlockTiered<T>(
     private val tieredBlock: T,
     hasSubTypes: Boolean = true,
 ) : ItemBlock(tieredBlock), ITieredItem
@@ -26,18 +26,30 @@ class ItemBlockTiered<T>(
 
     @SideOnly(Side.CLIENT)
     override fun getItemStackDisplayName(stack: ItemStack): String {
+        val tieredKey = "$translationKey.${this.getTier(stack).lowerName}"
         // first search for tiered
-        if (I18n.hasKey("$translationKey.${this.getTier(stack).lowerName}")) {
-            return I18n.format("$translationKey.${this.getTier(stack).lowerName}")
+        return if (I18n.hasKey(tieredKey)) {
+            return I18n.format(tieredKey)
         }
         // then search for tier-less
-        return I18n.format(translationKey, I18n.format(this.getTier(stack).prefixTranslationKey))
+        else if (I18n.hasKey(translationKey)) {
+            return I18n.format(translationKey, I18n.format(this.getTier(stack).prefixTranslationKey))
+        }
+        // fallback to super
+        else {
+            return super.getItemStackDisplayName(stack)
+        }
     }
 
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         tooltip.add(ITier.tierNumericTooltip(this.getTier(stack)))
-        UtilLocale.formatTooltips(tooltip, "tile.$translationKey.tooltip")
+        UtilLocale.formatTooltips(tooltip, "$translationKey.${this.getTier(stack).lowerName}.tooltip")
+        UtilLocale.formatTooltips(tooltip, "$translationKey.tooltip")
         super.addInformation(stack, worldIn, tooltip, flagIn)
+    }
+
+    companion object {
+        fun <T> noSubTypes(tieredBlock: T) where T : Block, T : ITieredBlock = ItemBlockTiered(tieredBlock, false)
     }
 }

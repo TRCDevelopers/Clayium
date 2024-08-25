@@ -2,6 +2,7 @@ package com.github.trc.clayium.api.metatileentity
 
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
+import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.items.IItemHandler

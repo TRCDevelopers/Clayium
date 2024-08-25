@@ -1,15 +1,19 @@
 package com.github.trc.clayium.api.capability.impl
 
-import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockControllerBase
-import com.github.trc.clayium.common.clayenergy.ClayEnergy
+import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
+import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 
 open class MultiblockRecipeLogic(
-    private val controller: MultiblockControllerBase,
+    metaTileEntity: WorkableMetaTileEntity,
     recipeRegistry: RecipeRegistry<*>,
-) : RecipeLogicEnergy(controller, recipeRegistry, controller.clayEnergyHolder) {
-    override fun drawEnergy(ce: ClayEnergy, simulate: Boolean): Boolean {
-        if (!controller.structureFormed) return false
-        return super.drawEnergy(ce, simulate)
+    private val multiblockLogic: MultiblockLogic,
+) : RecipeLogicEnergy(metaTileEntity, recipeRegistry, metaTileEntity.clayEnergyHolder) {
+    override fun getTier(): Int {
+        return multiblockLogic.recipeLogicTier
+    }
+
+    override fun canProgress(): Boolean {
+        return multiblockLogic.structureFormed
     }
 }

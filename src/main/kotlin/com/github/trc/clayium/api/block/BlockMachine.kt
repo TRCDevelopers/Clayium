@@ -5,7 +5,7 @@ import codechicken.lib.render.particle.CustomParticleHandler
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
-import com.github.trc.clayium.api.util.CUtils
+import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.common.Clayium
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
@@ -75,7 +75,7 @@ class BlockMachine : Block(Material.IRON) {
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
         if (!state.getValue(IS_PIPE)) return super.getBoundingBox(state, source, pos)
 
-        val connections = CUtils.getMetaTileEntity(source, pos)?.connectionsCache ?: return super.getBoundingBox(state, source, pos)
+        val connections = source.getMetaTileEntity(pos)?.connectionsCache ?: return super.getBoundingBox(state, source, pos)
         var aabb = CENTER_AABB
         for (i in 0..5) {
             if (connections[i]) {
@@ -90,7 +90,7 @@ class BlockMachine : Block(Material.IRON) {
         state: IBlockState, worldIn: World, pos: BlockPos,
         entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, isActualState: Boolean
     ) {
-        val metaTileEntity = CUtils.getMetaTileEntity(worldIn, pos) ?: return
+        val metaTileEntity = worldIn.getMetaTileEntity(pos) ?: return
         if (state.getValue(IS_PIPE)) {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, CENTER_AABB)
             val connections = metaTileEntity.connectionsCache
@@ -128,7 +128,7 @@ class BlockMachine : Block(Material.IRON) {
     val beingBrokenMetaTileEntity = ThreadLocal<MetaTileEntity>()
 
     override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
-        CUtils.getMetaTileEntity(worldIn, pos)?.let { mte ->
+        worldIn.getMetaTileEntity(pos)?.let { mte ->
             mutableListOf<ItemStack>().apply { mte.clearMachineInventory(this) }
                 .forEach { spawnAsEntity(worldIn, pos, it) }
 
@@ -182,11 +182,11 @@ class BlockMachine : Block(Material.IRON) {
     }
 
     override fun getPickBlock(state: IBlockState, target: RayTraceResult, world: World, pos: BlockPos, player: EntityPlayer): ItemStack {
-        return CUtils.getMetaTileEntity(world, pos)?.getStackForm() ?: ItemStack.EMPTY
+        return world.getMetaTileEntity(pos)?.getStackForm() ?: ItemStack.EMPTY
     }
 
     override fun canConnectRedstone(state: IBlockState, world: IBlockAccess, pos: BlockPos, side: EnumFacing?): Boolean {
-        return CUtils.getMetaTileEntity(world, pos)?.canConnectRedstone(side?.opposite) ?: false
+        return world.getMetaTileEntity(pos)?.canConnectRedstone(side?.opposite) ?: false
     }
 
     override fun shouldCheckWeakPower(state: IBlockState, world: IBlockAccess, pos: BlockPos, side: EnumFacing): Boolean {
@@ -196,7 +196,7 @@ class BlockMachine : Block(Material.IRON) {
     }
 
     override fun getWeakPower(state: IBlockState, world: IBlockAccess, pos: BlockPos, side: EnumFacing): Int {
-        return CUtils.getMetaTileEntity(world, pos)?.getWeakPower(side) ?: 0
+        return world.getMetaTileEntity(pos)?.getWeakPower(side) ?: 0
     }
 
     @SideOnly(Side.CLIENT)

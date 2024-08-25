@@ -1,6 +1,6 @@
 package com.github.trc.clayium.common.blocks
 
-import com.github.trc.clayium.common.unification.ore.OrePrefix
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
 import net.minecraftforge.common.IRarity
