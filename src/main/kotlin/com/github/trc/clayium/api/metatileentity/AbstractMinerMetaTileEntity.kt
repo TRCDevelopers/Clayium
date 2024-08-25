@@ -3,12 +3,14 @@ package com.github.trc.clayium.api.metatileentity
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.BoolValue
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Grid
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
@@ -26,11 +28,14 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.NonNullList
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.function.Function
 import kotlin.math.ln
 
@@ -50,6 +55,7 @@ abstract class AbstractMinerMetaTileEntity(
 
     protected var progress = 0.0
     private var currentTargetPos: BlockPos? = null
+    private var workingEnabled = true
 
     /**
      * next block pos to harvest. called if current block is broken.
@@ -63,8 +69,9 @@ abstract class AbstractMinerMetaTileEntity(
     }
 
     override fun update() {
+        //todo fortune, silk touch handling
         super.update()
-        if (isRemote) return
+        if (isRemote || !workingEnabled) return
         val world = world ?: return
         val targetPos = currentTargetPos ?: return
 
@@ -114,15 +121,21 @@ abstract class AbstractMinerMetaTileEntity(
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         syncManager.registerSlotGroup("breaker_inv", INV_ROW)
+        val workingEnabledSync = SyncHandlers.bool(::workingEnabled, ::workingEnabled::set)
+        syncManager.syncValue("working_enabled", workingEnabledSync)
         val columnStr = "I".repeat(INV_COLUMN)
         val matrixStr = (0..<INV_ROW).map { columnStr }
 
-        val startButton = ButtonWidget()
+        val startButton = ToggleButton()
+            .value(BoolValue.Dynamic(workingEnabledSync::getValue) { workingEnabledSync.value = true })
             .background(ClayGuiTextures.START_BUTTON)
             .hoverBackground(ClayGuiTextures.START_BUTTON_HOVERED)
-        val stopButton = ButtonWidget()
+            .selectedBackground(ClayGuiTextures.START_BUTTON_DISABLED)
+        val stopButton = ToggleButton()
+            .value(BoolValue.Dynamic({ !workingEnabledSync.value }, { workingEnabledSync.value = false }))
             .background(ClayGuiTextures.STOP_BUTTON)
             .hoverBackground(ClayGuiTextures.STOP_BUTTON_HOVERED)
+            .selectedBackground(ClayGuiTextures.STOP_BUTTON_DISABLED)
         val displayRange = ButtonWidget()
             .background(ClayGuiTextures.DISPLAY_RANGE)
             .hoverBackground(ClayGuiTextures.DISPLAY_RANGE_HOVERED)
@@ -154,9 +167,20 @@ abstract class AbstractMinerMetaTileEntity(
             }
     }
 
+    @SideOnly(Side.CLIENT)
     override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
         val atlas = getter.apply(clayiumId("blocks/miner_back"))
         MINER_BACK = EnumFacing.entries.map { ModelTextures.createQuad(it, atlas) }
+    }
+
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        data.setBoolean("workingEnabled", workingEnabled)
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        workingEnabled = data.getBoolean("workingEnabled")
     }
 
     companion object {
