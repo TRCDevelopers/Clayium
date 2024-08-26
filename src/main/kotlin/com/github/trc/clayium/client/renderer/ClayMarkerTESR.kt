@@ -9,4 +9,6 @@ object ClayMarkerTESR : TileEntitySpecialRenderer<TileClayMarker>() {
         val range = te.rangeRelative ?: return
         AreaMarkerRenderer.render(Cuboid6(), range, x, y, z, true)
     }
+
+    override fun isGlobalRenderer(te: TileClayMarker) = true
 }

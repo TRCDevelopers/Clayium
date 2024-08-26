@@ -1,12 +1,15 @@
 package com.github.trc.clayium.common.blocks.marker
 
+import com.github.trc.clayium.api.util.ClayTiers
 import net.minecraft.util.IStringSerializable
 
-enum class ClayMarkerType : IStringSerializable {
-    NO_EXTEND,
-    EXTEND_TO_GROUND,
-    EXTEND_TO_SKY,
-    ALL_HEIGHT,
+enum class ClayMarkerType(
+    val tier: ClayTiers
+) : IStringSerializable {
+    NO_EXTEND(ClayTiers.CLAY_STEEL),
+    EXTEND_TO_GROUND(ClayTiers.CLAYIUM),
+    EXTEND_TO_SKY(ClayTiers.CLAYIUM),
+    ALL_HEIGHT(ClayTiers.CLAYIUM),
     ;
 
     override fun getName(): String {

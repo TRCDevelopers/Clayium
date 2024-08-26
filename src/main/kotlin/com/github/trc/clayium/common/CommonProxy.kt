@@ -148,7 +148,7 @@ open class CommonProxy {
         registry.register(createItemBlock(ClayiumBlocks.OVERCLOCKER, ::ItemBlockTiered))
         registry.register(createItemBlock(ClayiumBlocks.ENERGY_STORAGE_UPGRADE, ::ItemBlockTiered))
 
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_MARKER, ::ItemBlock))
+        registry.register(createItemBlock(ClayiumBlocks.CLAY_MARKER, ::ItemBlockTiered))
 
         registry.register(ItemBlock(ClayiumBlocks.LASER_REFLECTOR).apply {
             registryName = ClayiumBlocks.LASER_REFLECTOR.registryName

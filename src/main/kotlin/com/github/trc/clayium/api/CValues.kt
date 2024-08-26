@@ -10,6 +10,9 @@ object CValues {
 
     const val HARDNESS_UNBREAKABLE = -1.0f
 
+    const val MIN_WORLD_BUILD_HEIGHT = 0
+    const val MAX_WORLD_BUILD_HEIGHT = 255
+
     val isClient by lazy { FMLCommonHandler.instance().side.isClient }
     val isDeobf by lazy { FMLLaunchHandler.isDeobfuscatedEnvironment() }
 }

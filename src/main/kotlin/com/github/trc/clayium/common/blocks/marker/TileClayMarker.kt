@@ -1,13 +1,13 @@
 package com.github.trc.clayium.common.blocks.marker
 
 import codechicken.lib.vec.Cuboid6
-import com.github.trc.clayium.api.metatileentity.SyncedTileEntityBase
 import com.github.trc.clayium.common.config.ConfigCore
-import net.minecraft.network.PacketBuffer
+import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 
-abstract class TileClayMarker : SyncedTileEntityBase() {
+abstract class TileClayMarker : TileEntity() {
 
     /**
      * range of this marker.
@@ -31,19 +31,19 @@ abstract class TileClayMarker : SyncedTileEntityBase() {
             }
         }
         this.rangeRelative = constructRange(markerPoses)
+            .subtract(pos)
     }
 
     /**
-     * @return relative.
+     * @return Absolute.
      */
     abstract fun constructRange(markerPoses: List<BlockPos>): Cuboid6
 
-    override fun writeInitialSyncData(buf: PacketBuffer) {}
-    override fun receiveInitialSyncData(buf: PacketBuffer) {}
+    override fun getRenderBoundingBox(): AxisAlignedBB {
+        return INFINITE_EXTENT_AABB
+    }
 
-    override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {}
-
-    class NoExtend : TileClayMarker() {
+    open class NoExtend : TileClayMarker() {
         override fun constructRange(markerPoses: List<BlockPos>): Cuboid6 {
             return Cuboid6(
                     markerPoses.minOf { it.x }.toDouble(),
@@ -52,7 +52,28 @@ abstract class TileClayMarker : SyncedTileEntityBase() {
                     markerPoses.maxOf { it.x }.toDouble() + 1.0,
                     markerPoses.maxOf { it.y }.toDouble() + 1.0,
                     markerPoses.maxOf { it.z }.toDouble() + 1.0
-            ).subtract(pos)
+            )
+        }
+    }
+
+    class ExtendToGround : NoExtend() {
+        override fun constructRange(markerPoses: List<BlockPos>): Cuboid6 {
+            return super.constructRange(markerPoses)
+                .apply { min.y = 0.0 }
+        }
+    }
+
+    class ExtendToSky : NoExtend() {
+        override fun constructRange(markerPoses: List<BlockPos>): Cuboid6 {
+            return super.constructRange(markerPoses)
+                .apply { max.y = 255.0 }
+        }
+    }
+
+    class AllHeight : NoExtend() {
+        override fun constructRange(markerPoses: List<BlockPos>): Cuboid6 {
+            return super.constructRange(markerPoses)
+                .apply { min.y = 0.0; max.y = 255.0 }
         }
     }
 }
