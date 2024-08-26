@@ -73,9 +73,10 @@ abstract class AbstractMinerMetaTileEntity(
     abstract fun getNextBlockPos(): BlockPos?
 
     /**
-     * Used for rendering.
+     * used for rendering.
+     * null for disable range rendering.
      */
-    abstract val rangeRelative: Cuboid6
+    abstract val rangeRelative: Cuboid6?
 
     override fun onFirstTick() {
         super.onFirstTick()

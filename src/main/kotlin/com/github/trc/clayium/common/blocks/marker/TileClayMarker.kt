@@ -20,6 +20,8 @@ abstract class TileClayMarker : TileEntity() {
     var rangeRelative: Cuboid6? = null
         private set
 
+    val markerPoses = mutableListOf<BlockPos>()
+
     @SideOnly(Side.CLIENT)
     var rangeRenderMode = RangeRenderMode.DISABLED
 
@@ -40,6 +42,8 @@ abstract class TileClayMarker : TileEntity() {
         }
         this.rangeRelative = constructRange(markerPoses)
             .subtract(pos)
+        this.markerPoses.clear()
+        this.markerPoses.addAll(markerPoses)
     }
 
     /**
