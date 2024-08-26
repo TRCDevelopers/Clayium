@@ -12,6 +12,9 @@ enum class ClayMarkerType(
     ALL_HEIGHT(ClayTiers.CLAYIUM),
     ;
 
+    @Suppress("usePropertyAccessSyntax")
+    val lowerName = getName()
+
     override fun getName(): String {
         return name.lowercase()
     }

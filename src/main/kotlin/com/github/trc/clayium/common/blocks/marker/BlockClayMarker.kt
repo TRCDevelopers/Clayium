@@ -1,10 +1,11 @@
 package com.github.trc.clayium.common.blocks.marker
 
-import com.github.trc.clayium.api.block.ITieredBlock
 import com.github.trc.clayium.api.block.VariantBlock
 import com.github.trc.clayium.common.util.ToolClasses
+import com.github.trc.clayium.common.util.UtilLocale
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
@@ -14,9 +15,11 @@ import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 @Suppress("OVERRIDE_DEPRECATION")
-class BlockClayMarker : VariantBlock<ClayMarkerType>(Material.GROUND), ITieredBlock {
+class BlockClayMarker : VariantBlock<ClayMarkerType>(Material.GROUND) {
     init {
         setHardness(0.5f)
         setResistance(5.0f)
@@ -27,9 +30,6 @@ class BlockClayMarker : VariantBlock<ClayMarkerType>(Material.GROUND), ITieredBl
         val d = 0.1875
         AxisAlignedBB(0.5 - d, 0.0, 0.5 - d, 0.5 + d, 0.5, 0.5 + d)
     }
-
-    override fun getTier(stack: ItemStack) = getEnum(stack).tier
-    override fun getTier(world: IBlockAccess, pos: BlockPos) = getEnum(world.getBlockState(pos)).tier
 
     override fun hasTileEntity(state: IBlockState) = true
     override fun createTileEntity(world: World, state: IBlockState): TileEntity {
@@ -53,4 +53,11 @@ class BlockClayMarker : VariantBlock<ClayMarkerType>(Material.GROUND), ITieredBl
     override fun causesSuffocation(state: IBlockState) = false
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = aabb
+
+    @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        super.addInformation(stack, worldIn, tooltip, flagIn)
+        UtilLocale.formatTooltips(tooltip, "${super.translationKey}.tooltip")
+        UtilLocale.formatTooltips(tooltip, "${super.translationKey}.${getEnum(stack).lowerName}.tooltip")
+    }
 }

@@ -535,23 +535,20 @@ tile.clayium.blockVacuumContainer.name=虚空コンテナ
 tile.clayium.blockVacuumContainer.tooltip.line1=搬入されたアイテムを消去する
 tile.clayium.blockAutoTrader.name=自動取引装置
 
-tile.clayium.blockClayMarker.name=粘土マーカー
-tile.clayium.blockClayMarker.tooltip.line1=範囲機械の使用に必要
-tile.clayium.blockClayOpenPitMarker.name=粘土露天堀マーカー
-tile.clayium.blockClayOpenPitMarker.tooltip.line1=範囲機械の使用に必要
-tile.clayium.blockClayOpenPitMarker.tooltip.line2=__DETAIL__
-tile.clayium.blockClayOpenPitMarker.tooltip.line3=指定領域の下面が自動的に
-tile.clayium.blockClayOpenPitMarker.tooltip.line4=Y = 1 まで拡張される。
-tile.clayium.blockClayGroundLevelingMarker.name=粘土整地マーカー
-tile.clayium.blockClayGroundLevelingMarker.tooltip.line1=Used for area machines.
-tile.clayium.blockClayGroundLevelingMarker.tooltip.line2=__DETAIL__
-tile.clayium.blockClayGroundLevelingMarker.tooltip.line3=指定領域の上面が自動的に
-tile.clayium.blockClayGroundLevelingMarker.tooltip.line4=Y = 255 まで拡張される。
-tile.clayium.blockClayPrismMarker.name=粘土角柱マーカー
-tile.clayium.blockClayPrismMarker.tooltip.line1=Used for area machines.
-tile.clayium.blockClayPrismMarker.tooltip.line2=__DETAIL__
-tile.clayium.blockClayPrismMarker.tooltip.line3=指定領域の上下面が自動的に
-tile.clayium.blockClayPrismMarker.tooltip.line4=Y = 1 ～ 255 まで拡張される。
+tile.clayium.clay_marker.tooltip1=範囲機械の使用に必要
+tile.clayium.clay_marker.no_extend=粘土マーカー
+tile.clayium.clay_marker.extend_to_ground=粘土露天堀マーカー
+tile.clayium.clay_marker.extend_to_ground.tooltip1=__DETAIL__
+tile.clayium.clay_marker.extend_to_ground.tooltip2=指定領域の下面が自動的に
+tile.clayium.clay_marker.extend_to_ground.tooltip3=Y = 1 まで拡張される。
+tile.clayium.clay_marker.extend_to_sky=粘土整地マーカー
+tile.clayium.clay_marker.extend_to_sky.tooltip1=__DETAIL__
+tile.clayium.clay_marker.extend_to_sky.tooltip2=指定領域の上面が自動的に
+tile.clayium.clay_marker.extend_to_sky.tooltip3=Y = 255 まで拡張される。
+tile.clayium.clay_marker.all_height=粘土角柱マーカー
+tile.clayium.clay_marker.all_height.tooltip1=__DETAIL__
+tile.clayium.clay_marker.all_height.tooltip2=指定領域の上下面が自動的に
+tile.clayium.clay_marker.all_height.tooltip3=Y = 1 ～ 255 まで拡張される。
 
 gui.clayium.range_visualization_mode.disabled=範囲表示: 無効
 gui.clayium.range_visualization_mode.enabled=範囲表示: 有効
