@@ -2,6 +2,7 @@ package com.github.trc.clayium.common.metatileentities
 
 import codechicken.lib.vec.Cuboid6
 import com.github.trc.clayium.api.metatileentity.AbstractMinerMetaTileEntity
+import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.metatileentity.trait.ClayMarkerHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
@@ -17,6 +18,8 @@ class AreaMinerMetaTileEntity(
     override val faceTexture: ResourceLocation = clayiumId("blocks/area_miner")
 
     private val clayMarkerHandler = ClayMarkerHandler(this)
+    @Suppress("unused")
+    val ioHandler = AutoIoHandler.Exporter(this)
 
     override fun getNextBlockPos(): BlockPos? {
         return this.pos!!.offset(this.frontFacing)
