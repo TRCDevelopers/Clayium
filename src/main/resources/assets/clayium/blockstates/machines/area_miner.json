@@ -1,0 +1,19 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "face": "clayium:blocks/area_miner"
+    },
+    "model": "clayium:machine"
+  },
+  "variants": {
+    "tier": {
+      "zk60a": {
+        "textures": {
+          "base": "clayium:blocks/zk60a_hull"
+        },
+        "model": "clayium:machine"
+      }
+    }
+  }
+}
