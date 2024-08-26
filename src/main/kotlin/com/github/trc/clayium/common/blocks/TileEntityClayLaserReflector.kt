@@ -66,6 +66,14 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
         super.invalidate()
     }
 
+    //todo fix
+    // 無限再帰する可能性のある実装
+    // 置かれたときは置かれた方のtargetがnullだから無限再帰しないだけ
+    // なので2つの向かい合うリフレクタにレーザを照射し、
+    // その間にブロックを置いてレーザーを遮断すると無限再帰する。
+    // +
+    // そもそも向かい合って設置されたとき、ageが3までしか伸びない。
+    // 毎tick laserChangedを呼ぶのがよさそう？
     override fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?) {
         if (world.getBlockState(pos).block !== ClayiumBlocks.LASER_REFLECTOR) return
         if (laser == null) {
