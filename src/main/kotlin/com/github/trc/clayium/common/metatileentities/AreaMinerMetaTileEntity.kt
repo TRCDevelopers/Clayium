@@ -4,6 +4,7 @@ import codechicken.lib.vec.Cuboid6
 import com.github.trc.clayium.api.metatileentity.AbstractMinerMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.metatileentity.trait.ClayMarkerHandler
+import com.github.trc.clayium.api.util.Cuboid6BlockPosIterator
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.util.ResourceLocation
@@ -21,8 +22,21 @@ class AreaMinerMetaTileEntity(
     @Suppress("unused")
     val ioHandler = AutoIoHandler.Exporter(this)
 
+    private val posIter: Iterator<BlockPos>? by lazy {
+        val range = clayMarkerHandler.markedRangeAbsolute?.copy() ?: return@lazy null
+        Cuboid6BlockPosIterator(range)
+    }
+
     override fun getNextBlockPos(): BlockPos? {
-        return this.pos!!.offset(this.frontFacing)
+        val iterator = posIter ?: return null
+        val world = world ?: return null
+        while (iterator.hasNext()) {
+            val pos = iterator.next()
+            if (!world.isAirBlock(pos)) {
+                return pos
+            }
+        }
+        return null
     }
 
     // clayMarkerHandler.markedRangeAbsolute is absolute, so we need to convert it to relative.

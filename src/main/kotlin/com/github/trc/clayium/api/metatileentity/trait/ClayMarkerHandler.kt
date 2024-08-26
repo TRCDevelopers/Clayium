@@ -16,6 +16,8 @@ class ClayMarkerHandler(
 
     /**
      * available after onPlacement.
+     * null if no neighbor marker.
+     * once set, never change (on the serve side).
      */
     var markedRangeAbsolute: Cuboid6? = null
         private set
