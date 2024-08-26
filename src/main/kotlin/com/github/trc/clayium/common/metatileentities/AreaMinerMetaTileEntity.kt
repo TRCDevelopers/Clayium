@@ -10,13 +10,12 @@ import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 
-//todo
 class AreaMinerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier
-) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, "area_miner") {
+) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, "ranged_miner") {
 
-    override val faceTexture: ResourceLocation = clayiumId("blocks/area_miner")
+    override val faceTexture: ResourceLocation = clayiumId("blocks/miner")
 
     private val clayMarkerHandler = ClayMarkerHandler(this)
     @Suppress("unused")

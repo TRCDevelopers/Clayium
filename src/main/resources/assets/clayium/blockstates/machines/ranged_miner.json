@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "face": "clayium:blocks/area_miner"
+      "face": "clayium:blocks/miner"
     },
     "model": "clayium:machine"
   },

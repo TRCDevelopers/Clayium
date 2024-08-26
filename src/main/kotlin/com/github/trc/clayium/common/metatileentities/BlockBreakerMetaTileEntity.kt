@@ -18,7 +18,7 @@ class BlockBreakerMetaTileEntity(
     tier: ITier
 ) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, "block_breaker") {
 
-    override val faceTexture: ResourceLocation = clayiumId("blocks/area_miner")
+    override val faceTexture: ResourceLocation = clayiumId("blocks/miner")
 
     @Suppress("unused")
     val ioHandler = AutoIoHandler.Exporter(this)
