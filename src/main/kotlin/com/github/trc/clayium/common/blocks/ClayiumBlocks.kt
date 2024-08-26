@@ -14,6 +14,7 @@ import com.github.trc.clayium.common.blocks.claytree.BlockClayLeaves
 import com.github.trc.clayium.common.blocks.claytree.BlockClayLog
 import com.github.trc.clayium.common.blocks.claytree.BlockClaySapling
 import com.github.trc.clayium.common.blocks.clayworktable.BlockClayWorkTable
+import com.github.trc.clayium.common.blocks.marker.BlockClayMarker
 import com.github.trc.clayium.common.blocks.material.BlockCompressedClay
 import com.github.trc.clayium.common.blocks.ores.BlockClayOre
 import com.github.trc.clayium.common.blocks.ores.BlockDenseClayOre
@@ -63,6 +64,8 @@ object ClayiumBlocks {
 
     val OVERCLOCKER = createBlock("overclocker", BlockOverclocker())
     val ENERGY_STORAGE_UPGRADE = createBlock("energy_storage_upgrade", BlockEnergyStorageUpgrade())
+
+    val CLAY_MARKER = createBlock("clay_marker", BlockClayMarker())
 
     /* ---------------------------------- */
 

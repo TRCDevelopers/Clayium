@@ -77,7 +77,7 @@ abstract class AbstractMinerMetaTileEntity(
     /**
      * Used for rendering.
      */
-    abstract val range: Cuboid6
+    abstract val rangeRelative: Cuboid6
 
     override fun onFirstTick() {
         super.onFirstTick()
@@ -219,8 +219,8 @@ abstract class AbstractMinerMetaTileEntity(
     override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
         val source = Cuboid6() //todo
         when (rangeRenderMode) {
-            RangeRenderMode.ENABLED -> AreaMarkerRenderer.render(source, range, x, y, z, false)
-            RangeRenderMode.ENABLED_XRAY -> AreaMarkerRenderer.render(source, range, x, y, z, true)
+            RangeRenderMode.ENABLED -> AreaMarkerRenderer.render(source, rangeRelative, x, y, z, false)
+            RangeRenderMode.ENABLED_XRAY -> AreaMarkerRenderer.render(source, rangeRelative, x, y, z, true)
             else -> {}
         }
     }

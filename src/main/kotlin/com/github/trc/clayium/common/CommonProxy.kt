@@ -20,6 +20,7 @@ import com.github.trc.clayium.common.blocks.TileEntityClayLaserReflector
 import com.github.trc.clayium.common.blocks.TileEntityCreativeEnergySource
 import com.github.trc.clayium.common.blocks.claycraftingtable.TileClayCraftingTable
 import com.github.trc.clayium.common.blocks.clayworktable.TileClayWorkTable
+import com.github.trc.clayium.common.blocks.marker.TileClayMarker
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
@@ -147,6 +148,8 @@ open class CommonProxy {
         registry.register(createItemBlock(ClayiumBlocks.OVERCLOCKER, ::ItemBlockTiered))
         registry.register(createItemBlock(ClayiumBlocks.ENERGY_STORAGE_UPGRADE, ::ItemBlockTiered))
 
+        registry.register(createItemBlock(ClayiumBlocks.CLAY_MARKER, ::ItemBlock))
+
         registry.register(ItemBlock(ClayiumBlocks.LASER_REFLECTOR).apply {
             registryName = ClayiumBlocks.LASER_REFLECTOR.registryName
             translationKey = ClayiumBlocks.LASER_REFLECTOR.translationKey
@@ -180,5 +183,7 @@ open class CommonProxy {
         GameRegistry.registerTileEntity(MetaTileEntityHolder::class.java, clayiumId("metaTileEntityHolder"))
         GameRegistry.registerTileEntity(BlockQuartzCrucible.QuartzCrucibleTileEntity::class.java, clayiumId("quartzCrucibleTileEntity"))
         GameRegistry.registerTileEntity(TileClayCraftingTable::class.java, clayiumId("clayCraftingTable"))
+
+        GameRegistry.registerTileEntity(TileClayMarker.NoExtend::class.java, clayiumId("clayMarkerNoExtent"))
     }
 }

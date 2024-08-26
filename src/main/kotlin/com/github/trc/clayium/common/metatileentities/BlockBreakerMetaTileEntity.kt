@@ -21,7 +21,7 @@ class BlockBreakerMetaTileEntity(
 
     private val backingRange = Cuboid6()
     private val backingBlockPos = BlockPos.MutableBlockPos()
-    override val range: Cuboid6 get() {
+    override val rangeRelative: Cuboid6 get() {
         backingBlockPos.setPos(BlockPos.ORIGIN)
         backingBlockPos.move(this.frontFacing.opposite)
         return backingRange.set(backingBlockPos, backingBlockPos.add(1, 1, 1))

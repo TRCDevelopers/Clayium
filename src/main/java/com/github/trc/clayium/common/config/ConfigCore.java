@@ -7,9 +7,9 @@ import net.minecraftforge.common.config.Config;
 @Config(modid = CValues.MOD_ID, name = CValues.MOD_ID + "/core")
 public class ConfigCore {
 
-    public static SubCategoryRendering rendering = new SubCategoryRendering();
-    public static SubCategoryMisc misc = new SubCategoryMisc();
+    public static SubCategoryRendering rendering = new SubCategoryRendering(); //todo move to separate file
     public static SubCategoryWorldGen worldGen = new SubCategoryWorldGen();
+    public static SubCategoryMisc misc = new SubCategoryMisc();
 
     public static class SubCategoryRendering {
         private SubCategoryRendering() {}
@@ -20,6 +20,24 @@ public class ConfigCore {
         })
         @Config.RangeInt(min = 1, max = 32)
         public int laserQuality = 8;
+    }
+
+
+    public static class SubCategoryWorldGen {
+        private SubCategoryWorldGen() {}
+
+        public int clayOreVeinMaxY = 88;
+        public int clayOreVeinMinY = 24;
+        public int clayOreVeinNumber = 8;
+        public int clayOreVeinSize = 24;
+
+        public int denseClayOreVeinSize = 10;
+        public int largeDenseClayOreVeinNumber = 2;
+        public int largeDenseClayOreVeinSize = 6;
+        public int largeDenseClayOreVeinMinY = 10;
+        public int largeDenseClayOreVeinMaxY = 16;
+
+        public boolean generateDenseClayOreVein = true;
     }
 
     public static class SubCategoryMisc {
@@ -44,22 +62,8 @@ public class ConfigCore {
         })
         @Config.RangeInt(min = 1, max = 1000)
         public int panMaxSearchDistance = 500;
-    }
 
-    public static class SubCategoryWorldGen {
-        private SubCategoryWorldGen() {}
-
-        public int clayOreVeinMaxY = 88;
-        public int clayOreVeinMinY = 24;
-        public int clayOreVeinNumber = 8;
-        public int clayOreVeinSize = 24;
-
-        public int denseClayOreVeinSize = 10;
-        public int largeDenseClayOreVeinNumber = 2;
-        public int largeDenseClayOreVeinSize = 6;
-        public int largeDenseClayOreVeinMinY = 10;
-        public int largeDenseClayOreVeinMaxY = 16;
-
-        public boolean generateDenseClayOreVein = true;
+        @Config.RangeInt(min = 1, max = 512)
+        public int clayMarkerMaxRange = 64;
     }
 }
