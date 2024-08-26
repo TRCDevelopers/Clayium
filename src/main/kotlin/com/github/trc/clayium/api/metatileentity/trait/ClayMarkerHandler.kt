@@ -17,11 +17,11 @@ class ClayMarkerHandler(
     /**
      * available after onPlacement.
      */
-    var markedRangeAbs: Cuboid6? = null
+    var markedRangeAbsolute: Cuboid6? = null
         private set
 
     override fun onPlacement() {
-        this.markedRangeAbs = this.getRangeFromNeighborMarker()
+        this.markedRangeAbsolute = this.getRangeFromNeighborMarker()
         writeMarkedRange()
     }
 
@@ -32,7 +32,7 @@ class ClayMarkerHandler(
 
     private fun writeMarkedRange() {
         writeCustomData(UPDATE_AREA_RANGE) {
-            val range = markedRangeAbs
+            val range = markedRangeAbsolute
             if (range == null) {
                 writeBoolean(false)
             } else {
@@ -44,7 +44,7 @@ class ClayMarkerHandler(
 
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
         if (discriminator == UPDATE_AREA_RANGE) {
-            markedRangeAbs = if (buf.readBoolean()) {
+            markedRangeAbsolute = if (buf.readBoolean()) {
                 Cuboid6(buf.readCompoundTag())
             } else {
                 null
@@ -74,7 +74,7 @@ class ClayMarkerHandler(
 
     override fun serializeNBT(): NBTTagCompound {
         val data = super.serializeNBT()
-        val range = this.markedRangeAbs
+        val range = this.markedRangeAbsolute
         if (range != null) {
             data.setTag("markedRange", range.writeToNBT(NBTTagCompound()))
         }
@@ -84,7 +84,7 @@ class ClayMarkerHandler(
     override fun deserializeNBT(data: NBTTagCompound) {
         super.deserializeNBT(data)
         if (data.hasKey("markedRange")) {
-            this.markedRangeAbs = Cuboid6(data.getCompoundTag("markedRange"))
+            this.markedRangeAbsolute = Cuboid6(data.getCompoundTag("markedRange"))
         }
     }
 }

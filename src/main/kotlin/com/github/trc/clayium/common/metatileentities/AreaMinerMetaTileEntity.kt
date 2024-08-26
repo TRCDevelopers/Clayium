@@ -22,8 +22,13 @@ class AreaMinerMetaTileEntity(
         return this.pos!!.offset(this.frontFacing)
     }
 
+    // clayMarkerHandler.markedRangeAbsolute is absolute, so we need to convert it to relative.
+    // However, creating a new instance every time is costly, so we use backingRange.
+    private val backingRange = Cuboid6(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
     override val rangeRelative: Cuboid6?
-        get() = clayMarkerHandler.markedRangeAbs
+        get() {
+            return clayMarkerHandler.markedRangeAbsolute?.let { backingRange.set(it).subtract(pos) }
+        }
 
     override fun createMetaTileEntity() = AreaMinerMetaTileEntity(metaTileEntityId, tier)
 }
