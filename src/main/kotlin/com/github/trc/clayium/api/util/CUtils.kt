@@ -64,6 +64,12 @@ fun IKey.asWidgetResizing(): ResizingTextWidget {
     return ResizingTextWidget(this)
 }
 
+inline fun <reified E : Enum<E>> E.next(): E {
+    val values = enumValues<E>()
+    val ordinal = (ordinal + 1) % values.size
+    return values[ordinal]
+}
+
 fun clayiumId(path: String): ResourceLocation {
     return ResourceLocation(CValues.MOD_ID, path)
 }
