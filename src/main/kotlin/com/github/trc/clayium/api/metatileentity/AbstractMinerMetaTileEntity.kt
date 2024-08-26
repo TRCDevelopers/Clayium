@@ -205,11 +205,7 @@ abstract class AbstractMinerMetaTileEntity(
     @SideOnly(Side.CLIENT)
     override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
         val source = Cuboid6() //todo
-        when (rangeRenderMode) {
-            RangeRenderMode.ENABLED -> AreaMarkerRenderer.render(source, rangeRelative, x, y, z, false)
-            RangeRenderMode.ENABLED_XRAY -> AreaMarkerRenderer.render(source, rangeRelative, x, y, z, true)
-            else -> {}
-        }
+        AreaMarkerRenderer.render(source, rangeRelative, x, y, z, rangeRenderMode)
     }
 
     companion object {

@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 object ClayMarkerTESR : TileEntitySpecialRenderer<TileClayMarker>() {
     override fun render(te: TileClayMarker, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
         val range = te.rangeRelative ?: return
-        AreaMarkerRenderer.render(Cuboid6(), range, x, y, z, true)
+        AreaMarkerRenderer.render(Cuboid6(), range, x, y, z, te.rangeRenderMode)
     }
 
     override fun isGlobalRenderer(te: TileClayMarker) = true

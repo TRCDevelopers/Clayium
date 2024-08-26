@@ -1,11 +1,15 @@
 package com.github.trc.clayium.common.blocks.marker
 
 import codechicken.lib.vec.Cuboid6
+import com.github.trc.clayium.api.util.next
+import com.github.trc.clayium.client.renderer.AreaMarkerRenderer.RangeRenderMode
 import com.github.trc.clayium.common.config.ConfigCore
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 abstract class TileClayMarker : TileEntity() {
 
@@ -16,7 +20,11 @@ abstract class TileClayMarker : TileEntity() {
     var rangeRelative: Cuboid6? = null
         private set
 
+    @SideOnly(Side.CLIENT)
+    var rangeRenderMode = RangeRenderMode.DISABLED
+
     fun onRightClick() {
+        rangeRenderMode = rangeRenderMode.next()
         val mutPos = BlockPos.MutableBlockPos()
         val markerPoses = mutableListOf<BlockPos>()
         markerPoses.add(pos)
