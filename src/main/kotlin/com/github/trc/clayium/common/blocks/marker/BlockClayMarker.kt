@@ -3,6 +3,7 @@ package com.github.trc.clayium.common.blocks.marker
 import com.github.trc.clayium.api.block.VariantBlock
 import com.github.trc.clayium.common.util.ToolClasses
 import com.github.trc.clayium.common.util.UtilLocale
+import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.util.ITooltipFlag
@@ -24,6 +25,7 @@ class BlockClayMarker : VariantBlock<ClayMarkerType>(Material.GROUND) {
         setHardness(0.5f)
         setResistance(5.0f)
         setHarvestLevel(ToolClasses.SHOVEL, 0)
+        setSoundType(SoundType.GROUND)
     }
 
     override fun hasTileEntity(state: IBlockState) = true
