@@ -26,11 +26,6 @@ class BlockClayMarker : VariantBlock<ClayMarkerType>(Material.GROUND) {
         setHarvestLevel(ToolClasses.SHOVEL, 0)
     }
 
-    private val aabb: AxisAlignedBB = run {
-        val d = 0.1875
-        AxisAlignedBB(0.5 - d, 0.0, 0.5 - d, 0.5 + d, 0.5, 0.5 + d)
-    }
-
     override fun hasTileEntity(state: IBlockState) = true
     override fun createTileEntity(world: World, state: IBlockState): TileEntity {
         return when (getEnum(state)) {
@@ -52,12 +47,19 @@ class BlockClayMarker : VariantBlock<ClayMarkerType>(Material.GROUND) {
     override fun isOpaqueCube(state: IBlockState) = false
     override fun causesSuffocation(state: IBlockState) = false
 
-    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = aabb
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = CLAY_MARKER_AABB
 
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
         UtilLocale.formatTooltips(tooltip, "${super.translationKey}.tooltip")
         UtilLocale.formatTooltips(tooltip, "${super.translationKey}.${getEnum(stack).lowerName}.tooltip")
+    }
+
+    companion object {
+        val CLAY_MARKER_AABB: AxisAlignedBB = run {
+            val d = 0.1875
+            AxisAlignedBB(0.5 - d, 0.5 - d, 0.5 - d, 0.5 + d, 0.5 + d, 0.5 + d)
+        }
     }
 }
