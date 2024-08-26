@@ -204,8 +204,7 @@ abstract class AbstractMinerMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
-        val source = Cuboid6() //todo
-        AreaMarkerRenderer.render(source, rangeRelative, x, y, z, rangeRenderMode)
+        AreaMarkerRenderer.render(Cuboid6.full, rangeRelative, x, y, z, rangeRenderMode)
     }
 
     companion object {
