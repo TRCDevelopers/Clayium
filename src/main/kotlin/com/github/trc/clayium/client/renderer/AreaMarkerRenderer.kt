@@ -20,4 +20,8 @@ object AreaMarkerRenderer {
         CRenderUtils.disableTranslucent()
         GlStateManager.popMatrix()
     }
+
+    enum class RangeRenderMode {
+        DISABLED, ENABLED, ENABLED_XRAY
+    }
 }
