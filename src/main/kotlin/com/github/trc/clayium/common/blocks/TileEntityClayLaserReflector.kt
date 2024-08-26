@@ -67,6 +67,7 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
     }
 
     override fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?) {
+        if (world.getBlockState(pos).block !== ClayiumBlocks.LASER_REFLECTOR) return
         if (laser == null) {
             this.receivedLasers.remove(irradiatedSide)
         } else {
