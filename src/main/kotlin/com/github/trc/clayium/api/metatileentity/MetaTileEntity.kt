@@ -522,6 +522,7 @@ abstract class MetaTileEntity(
     open fun onPlacement() {
         if (!isRemote) EnumFacing.entries.forEach(this::refreshConnection)
         overclockHandler.onNeighborBlockChange()
+        mteTraits.values.forEach(MTETrait::onPlacement)
     }
 
     open fun onRemoval() {
