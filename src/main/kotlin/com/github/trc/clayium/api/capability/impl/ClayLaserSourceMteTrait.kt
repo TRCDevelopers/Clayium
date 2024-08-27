@@ -14,7 +14,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 
-class ClayLaserSource(
+class ClayLaserSourceMteTrait(
     metaTileEntity: MetaTileEntity,
     private val laserRed: Int = 0,
     private val laserGreen: Int = 0,

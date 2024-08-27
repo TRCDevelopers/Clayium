@@ -6,7 +6,7 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
-import com.github.trc.clayium.api.capability.impl.ClayLaserSource
+import com.github.trc.clayium.api.capability.impl.ClayLaserSourceMteTrait
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.common.config.ConfigCore
@@ -50,7 +50,7 @@ class ClayLaserMetaTileEntity(
         }.toLong()
     )
 
-    val laserManager = ClayLaserSource(this, laserRed, laserGreen, laserBlue)
+    val laserManager = ClayLaserSourceMteTrait(this, laserRed, laserGreen, laserBlue)
     private var canActivateByRedstone = false
 
     override val renderBoundingBox by lazy {
