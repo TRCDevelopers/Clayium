@@ -5,10 +5,7 @@ import net.minecraft.util.EnumFacing
 
 interface IClayLaserAcceptor {
     /**
-     * Called when the side is irradiated with a laser or when there is a change in the irradiated laser.
-     *
-     * **Note:** Can be called after the block has been destroyed.
-     *
+     * Called every tick when the laser is irradiating this block.
      * @param irradiatedSide the side that is irradiated by the laser
      * @param laser if null, it means the laser irradiation has stopped.
      */

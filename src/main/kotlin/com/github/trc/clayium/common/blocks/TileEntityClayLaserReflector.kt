@@ -51,6 +51,11 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
 
     override fun update() {
         if (world.isRemote) return
+        if (isActive) {
+            laserTarget?.takeIfValid()
+                ?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.laser.direction.opposite)
+                ?.laserChanged(this.laser.direction.opposite, this.laser)
+        }
         val (laserLength, laserTarget) = updateLengthAndTarget(world, pos, laserTarget) {
             notifyWorld()
         }
@@ -59,23 +64,14 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
     }
 
     override fun invalidate() {
+        super.invalidate()
         val laserDirection = this.laser.direction
         this.laserTarget.takeIfValid()
             ?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, laserDirection.opposite)
             ?.laserChanged(laserDirection.opposite, null)
-        super.invalidate()
     }
 
-    //todo fix
-    // 無限再帰する可能性のある実装
-    // 置かれたときは置かれた方のtargetがnullだから無限再帰しないだけ
-    // なので2つの向かい合うリフレクタにレーザを照射し、
-    // その間にブロックを置いてレーザーを遮断すると無限再帰する。
-    // +
-    // そもそも向かい合って設置されたとき、ageが3までしか伸びない。
-    // 毎tick laserChangedを呼ぶのがよさそう？
     override fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?) {
-        if (world.getBlockState(pos).block !== ClayiumBlocks.LASER_REFLECTOR) return
         if (laser == null) {
             this.receivedLasers.remove(irradiatedSide)
         } else {
@@ -85,9 +81,6 @@ class TileEntityClayLaserReflector : TileEntity(), ITickable, IClayLaserSource, 
         val mergedLaserDirection = state.getValue(BlockClayLaserReflector.FACING)
         this.laser = mergeLasers(this.receivedLasers.values, mergedLaserDirection)
         this.isActive = this.receivedLasers.isNotEmpty()
-        laserTarget?.takeIfValid()
-            ?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.laser.direction.opposite)
-            ?.laserChanged(this.laser.direction.opposite, this.laser)
         notifyWorld()
     }
 
