@@ -25,6 +25,6 @@ object MetaTileEntityRenderDispatcher : TileEntitySpecialRenderer<MetaTileEntity
     }
 
     override fun isGlobalRenderer(te: MetaTileEntityHolder): Boolean {
-        return te.metaTileEntity?.getCapability(ClayiumTileCapabilities.CLAY_LASER_SOURCE, null) != null
+        return te.metaTileEntity?.useGlobalRenderer == true
     }
 }

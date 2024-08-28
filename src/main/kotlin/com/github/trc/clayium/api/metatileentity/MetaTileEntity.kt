@@ -630,6 +630,8 @@ abstract class MetaTileEntity(
      */
     @SideOnly(Side.CLIENT)
     open fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {}
+    @SideOnly(Side.CLIENT)
+    open val useGlobalRenderer = false
 
     protected fun largeSlot(slot: ModularSlot) = ParentWidget()
                 .size(26, 26)

@@ -79,6 +79,7 @@ class ClayLaserMetaTileEntity(
             }
     }
 
+    override val useGlobalRenderer: Boolean = true
     @SideOnly(Side.CLIENT)
     override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
     @SideOnly(Side.CLIENT)
