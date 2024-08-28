@@ -60,6 +60,18 @@ class ClayLaserSourceMteTrait(
         delegate.stopIrradiation()
     }
 
+    override fun writeInitialSyncData(buf: PacketBuffer) {
+        super.writeInitialSyncData(buf)
+        buf.writeBoolean(isIrradiating)
+        buf.writeVarInt(length)
+    }
+
+    override fun receiveInitialSyncData(buf: PacketBuffer) {
+        super.receiveInitialSyncData(buf)
+        isIrradiating = buf.readBoolean()
+        length = buf.readVarInt()
+    }
+
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
         when (discriminator) {
             UPDATE_LASER_LENGTH -> length = buf.readInt()

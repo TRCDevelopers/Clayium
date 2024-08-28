@@ -13,7 +13,6 @@ import com.github.trc.clayium.common.config.ConfigCore
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraft.tileentity.TileEntityBeacon
-import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
@@ -52,16 +51,6 @@ class ClayLaserMetaTileEntity(
 
     override val renderBoundingBox = TileEntityBeacon.INFINITE_EXTENT_AABB
 
-    override fun onNeighborChanged(facing: EnumFacing) {
-        super.onNeighborChanged(facing)
-        refreshRedstone()
-    }
-
-    override fun neighborChanged() {
-        super.neighborChanged()
-        refreshRedstone()
-    }
-
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayLaserMetaTileEntity(metaTileEntityId, tier, laserRed, laserGreen, laserBlue)
     }
@@ -98,6 +87,7 @@ class ClayLaserMetaTileEntity(
     override fun update() {
         super.update()
         if (isRemote) return
+        refreshRedstone()
         if (canActivateByRedstone) {
             this.laserManager.isIrradiating = clayEnergyHolder.drawEnergy(energyCost, simulate = false)
         } else {
