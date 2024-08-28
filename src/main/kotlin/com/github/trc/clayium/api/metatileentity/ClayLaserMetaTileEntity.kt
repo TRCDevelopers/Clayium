@@ -9,10 +9,12 @@ import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ClayLaserSourceMteTrait
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.config.ConfigCore
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraft.tileentity.TileEntityBeacon
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
@@ -49,19 +51,22 @@ class ClayLaserMetaTileEntity(
     val laserManager = ClayLaserSourceMteTrait(this, laserRed, laserGreen, laserBlue)
     private var canActivateByRedstone = false
 
+    @SideOnly(Side.CLIENT)
     override val renderBoundingBox = TileEntityBeacon.INFINITE_EXTENT_AABB
 
-    override fun createMetaTileEntity(): MetaTileEntity {
-        return ClayLaserMetaTileEntity(metaTileEntityId, tier, laserRed, laserGreen, laserBlue)
+    override fun isFacingValid(facing: EnumFacing): Boolean {
+        return true
     }
 
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(
-            item,
-            meta,
-            ModelResourceLocation("${metaTileEntityId.namespace}:clay_laser", "tier=${tier.numeric}")
-        )
+    override fun update() {
+        super.update()
+        if (isRemote) return
+        refreshRedstone()
+        if (canActivateByRedstone) {
+            this.laserManager.isIrradiating = clayEnergyHolder.drawEnergy(energyCost, simulate = false)
+        } else {
+            this.laserManager.isIrradiating = false
+        }
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
@@ -74,7 +79,9 @@ class ClayLaserMetaTileEntity(
             }
     }
 
+    @SideOnly(Side.CLIENT)
     override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
+    @SideOnly(Side.CLIENT)
     override fun shouldRenderInPass(pass: Int) = (pass == 1)
 
     private fun refreshRedstone() {
@@ -84,14 +91,13 @@ class ClayLaserMetaTileEntity(
         canActivateByRedstone = world.isBlockPowered(pos) == ConfigCore.misc.invertClayLaserRsCondition
     }
 
-    override fun update() {
-        super.update()
-        if (isRemote) return
-        refreshRedstone()
-        if (canActivateByRedstone) {
-            this.laserManager.isIrradiating = clayEnergyHolder.drawEnergy(energyCost, simulate = false)
-        } else {
-            this.laserManager.isIrradiating = false
-        }
+    override fun createMetaTileEntity(): MetaTileEntity {
+        return ClayLaserMetaTileEntity(metaTileEntityId, tier, laserRed, laserGreen, laserBlue)
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun registerItemModel(item: Item, meta: Int) {
+        ModelLoader.setCustomModelResourceLocation(item, meta,
+            ModelResourceLocation(clayiumId("clay_laser"), "tier=${tier.numeric}"))
     }
 }

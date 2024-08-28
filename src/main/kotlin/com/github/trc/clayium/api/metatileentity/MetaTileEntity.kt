@@ -589,11 +589,14 @@ abstract class MetaTileEntity(
         return tab === CreativeTabs.SEARCH || tab === Clayium.creativeTab
     }
 
+    @SideOnly(Side.CLIENT)
     open fun shouldRenderInPass(pass: Int) = (pass == 0)
+    @SideOnly(Side.CLIENT)
     open fun getMaxRenderDistanceSquared(): Double = 4096.0
     /**
      * null for use TileEntity defaults.
      */
+    @SideOnly(Side.CLIENT)
     open val renderBoundingBox: AxisAlignedBB? = null
 
     @SideOnly(Side.CLIENT)
