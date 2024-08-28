@@ -12,16 +12,14 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.common.config.ConfigCore
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
+import net.minecraft.tileentity.TileEntityBeacon
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraft.util.math.AxisAlignedBB
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
-import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.pow
 
 class ClayLaserMetaTileEntity(
@@ -35,7 +33,6 @@ class ClayLaserMetaTileEntity(
     validInputModesLists[0], validOutputModesLists[0],
     "machine.${CValues.MOD_ID}.clay_laser",
 ) {
-
     override val faceTexture = ResourceLocation(CValues.MOD_ID, "blocks/clay_laser")
 
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
@@ -53,34 +50,7 @@ class ClayLaserMetaTileEntity(
     val laserManager = ClayLaserSourceMteTrait(this, laserRed, laserGreen, laserBlue)
     private var canActivateByRedstone = false
 
-    override val renderBoundingBox by lazy {
-        val laser = laserManager.laser
-        val pos = holder?.pos ?: return@lazy null
-        val x = pos.x.toDouble()
-        val y = pos.y.toDouble()
-        val z = pos.z.toDouble()
-
-        val direction = laser.direction
-        val xOffset = direction.xOffset.toDouble()
-        val yOffset = direction.yOffset.toDouble()
-        val zOffset = direction.zOffset.toDouble()
-
-        val l = laserManager.laserLength.toDouble()
-
-        val maxX = max(x, x + xOffset * l) + 1.0
-        val minX = min(x, x + xOffset * l)
-        val maxY = max(y, y + yOffset * l) + 1.0
-        val minY = min(y, y + yOffset * l)
-        val maxZ = max(z, z + zOffset * l) + 1.0
-        val minZ = min(z, z + zOffset * l)
-
-        AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ)
-    }
-
-    override fun onPlacement() {
-        super.onPlacement()
-        laserManager.updateDirection(this.frontFacing)
-    }
+    override val renderBoundingBox = TileEntityBeacon.INFINITE_EXTENT_AABB
 
     override fun onNeighborChanged(facing: EnumFacing) {
         super.onNeighborChanged(facing)
@@ -107,12 +77,12 @@ class ClayLaserMetaTileEntity(
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("clay_laser_tier$tier", 176, 32 + 94)
-            .child(mainColumn {
+            .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
                     .child(clayEnergyHolder.createCeTextWidget(syncManager)
                         .bottom(12).left(0))
                 )
-            })
+            }
     }
 
     override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
@@ -129,9 +99,9 @@ class ClayLaserMetaTileEntity(
         super.update()
         if (isRemote) return
         if (canActivateByRedstone) {
-            laserManager.isActive = clayEnergyHolder.drawEnergy(energyCost, simulate = false)
+            this.laserManager.isIrradiating = clayEnergyHolder.drawEnergy(energyCost, simulate = false)
         } else {
-            laserManager.isActive = false
+            this.laserManager.isIrradiating = false
         }
     }
 }

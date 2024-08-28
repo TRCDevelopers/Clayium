@@ -65,5 +65,8 @@ public class ConfigCore {
 
         @Config.RangeInt(min = 1, max = 512)
         public int clayMarkerMaxRange = 64;
+
+        @Config.RangeInt(min = 1, max = 64)
+        public int maxClayLaserLength = 32;
     }
 }

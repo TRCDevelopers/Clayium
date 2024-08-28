@@ -30,8 +30,8 @@ import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
-import com.github.trc.clayium.api.metatileentity.interfaces.IMarkDirty
 import com.github.trc.clayium.api.metatileentity.interfaces.ISyncedTileEntity
+import com.github.trc.clayium.api.metatileentity.interfaces.IWorldObject
 import com.github.trc.clayium.api.metatileentity.trait.OverclockHandler
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
@@ -85,13 +85,13 @@ abstract class MetaTileEntity(
      * used in item/block name and gui title
      */
     val translationKey: String,
-) : ISyncedTileEntity, IMarkDirty, IGuiHolder<PosGuiData>, IPipeConnectable {
+) : ISyncedTileEntity, IWorldObject, IGuiHolder<PosGuiData>, IPipeConnectable {
 
     val forgeRarity = tier.rarity
 
     var holder: MetaTileEntityHolder? = null
-    val world: World? get() = holder?.world
-    val pos: BlockPos? get() = holder?.pos
+    override val world: World? get() = holder?.world
+    override val pos: BlockPos? get() = holder?.pos
     val isInvalid get() = holder?.isInvalid ?: true
     val isRemote get() = world?.isRemote ?: true
 

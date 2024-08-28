@@ -2,7 +2,6 @@ package com.github.trc.clayium.client.renderer
 
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.blocks.BlockClayLaserReflector
 import com.github.trc.clayium.common.blocks.TileEntityClayLaserReflector
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
@@ -20,7 +19,7 @@ object ClayLaserReflectorRenderer : TileEntitySpecialRenderer<TileEntityClayLase
         GlStateManager.enableDepth()
         GlStateManager.depthMask(false)
         run {
-            val reflectorFacing = world.getBlockState(reflector.pos).getValue(BlockClayLaserReflector.FACING)
+            val direction = reflector.direction
             val tessellator = Tessellator.getInstance()
             val buf = tessellator.buffer
             this.bindTexture(clayiumId("textures/blocks/laserreflector.png"))
@@ -29,7 +28,7 @@ object ClayLaserReflectorRenderer : TileEntitySpecialRenderer<TileEntityClayLase
             GlStateManager.color(1f, 1f, 1f ,1f)
 
             GlStateManager.translate(0.5, 0.5, 0.5)
-            when (reflectorFacing) {
+            when (direction) {
                 EnumFacing.DOWN -> GlStateManager.rotate(180.0f, 1.0f, 0.0f, 0.0f)
                 EnumFacing.UP -> {}
                 EnumFacing.NORTH -> GlStateManager.rotate(-90.0f, 1.0f, 0.0f, 0.0f)
@@ -70,10 +69,10 @@ object ClayLaserReflectorRenderer : TileEntitySpecialRenderer<TileEntityClayLase
         GlStateManager.enableDepth()
         GlStateManager.popMatrix()
 
-        if (!reflector.isActive) return
         val laserSource = reflector.getCapability(ClayiumTileCapabilities.CLAY_LASER_SOURCE, null) ?: return
+        if (laserSource.irradiatingLaser == null) return
 
-        ClayLaserRenderer.renderLaser(laserSource, x, y, z, this::bindTexture)
+        ClayLaserRenderer.renderLaser(laserSource.irradiatingLaser!!, laserSource.direction, laserSource.length, x, y, z, this::bindTexture)
     }
 
     override fun isGlobalRenderer(te: TileEntityClayLaserReflector): Boolean {

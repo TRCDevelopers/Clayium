@@ -12,9 +12,9 @@ object MetaTileEntityRenderDispatcher : TileEntitySpecialRenderer<MetaTileEntity
         if (holder.blockType !is BlockMachine) return
         val metaTileEntity = holder.metaTileEntity ?: return
         metaTileEntity.renderMetaTileEntity(x, y, z, partialTicks)
-        val clayLaserManager = metaTileEntity.getCapability(ClayiumTileCapabilities.CLAY_LASER_SOURCE, null)
-        if (clayLaserManager?.isActive == true) {
-            ClayLaserRenderer.renderLaser(clayLaserManager, x, y, z, this::bindTexture)
+        val laserSource = metaTileEntity.getCapability(ClayiumTileCapabilities.CLAY_LASER_SOURCE, null)
+        if (laserSource?.irradiatingLaser != null) {
+            ClayLaserRenderer.renderLaser(laserSource.irradiatingLaser!!, laserSource.direction, laserSource.length, x, y, z, this::bindTexture)
         }
         if (metaTileEntity is ISynchronizedInterface) {
             InterfaceRenderer.renderHighlight(holder, metaTileEntity, x, y, z, partialTicks)
