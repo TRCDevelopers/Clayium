@@ -26,8 +26,9 @@ including PAN, except for those listed below.
 - World Interactive Machines
   - Activators
   - Area Replacer
-  - ~~Block Breaker~~ (Done, will be included in the next alpha)
-  - Area Miners
+  - ~~Block Breaker~~ (Done)
+  - ~~Ranged Miner~~ (Done)
+  - Advanced Area Miner
   - Chunk Loader
   - Item Collectors
 - Configs (ProgressionRate, HardcoreXXX, etc.)
