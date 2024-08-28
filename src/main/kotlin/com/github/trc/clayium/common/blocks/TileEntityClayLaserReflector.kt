@@ -16,6 +16,8 @@ import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ITickable
 import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 
 class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLaserSource, IClayLaserAcceptor, IWorldObject {
@@ -34,8 +36,8 @@ class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLas
     private val laserManager = ClayLaserSource(this)
     private val receivedLasers = Object2ObjectOpenHashMap<EnumFacing, ClayLaser>()
 
-    override val world get() = this.getWorld()
-    override val pos get() = this.getPos()
+    override val worldObj: World? get() = world
+    override val position: BlockPos? get() = pos
 
     override val direction
         get() = world.getBlockState(pos).getValue(BlockClayLaserReflector.FACING)

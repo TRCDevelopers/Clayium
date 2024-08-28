@@ -90,10 +90,14 @@ abstract class MetaTileEntity(
     val forgeRarity = tier.rarity
 
     var holder: MetaTileEntityHolder? = null
-    override val world: World? get() = holder?.world
-    override val pos: BlockPos? get() = holder?.pos
+    val world: World? get() = holder?.world
+    val pos: BlockPos? get() = holder?.pos
     val isInvalid get() = holder?.isInvalid ?: true
     val isRemote get() = world?.isRemote ?: true
+
+    // IWorldObj
+    override val worldObj: World? get() = world
+    override val position: BlockPos? get() = pos
 
     open val faceTexture: ResourceLocation? = null
     open val requiredTextures get() = listOf(faceTexture)

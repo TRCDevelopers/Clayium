@@ -16,8 +16,8 @@ class ClayLaserSource(
     val tileEntity: IWorldObject,
 ) {
 
-    val world get() = tileEntity.world
-    val pos get() = tileEntity.pos
+    val world get() = tileEntity.worldObj
+    val pos get() = tileEntity.position
 
     private var previousTarget: TileEntityAccess? = null
 
