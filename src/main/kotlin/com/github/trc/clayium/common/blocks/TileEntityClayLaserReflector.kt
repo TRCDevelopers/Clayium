@@ -5,7 +5,7 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_LASER_LENG
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IClayLaserAcceptor
 import com.github.trc.clayium.api.capability.IClayLaserSource
-import com.github.trc.clayium.api.capability.impl.ClayLaserSource
+import com.github.trc.clayium.api.capability.impl.ClayLaserIrradiator
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.laser.readClayLaser
 import com.github.trc.clayium.api.laser.writeClayLaser
@@ -40,7 +40,7 @@ class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLas
                 }
             }
         }
-    private val laserManager = ClayLaserSource(this)
+    private val laserManager = ClayLaserIrradiator(this)
     private val receivedLasers = Object2ObjectOpenHashMap<EnumFacing, ClayLaser>()
 
     override val worldObj: World? get() = world

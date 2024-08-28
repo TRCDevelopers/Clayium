@@ -20,7 +20,7 @@ class ClayLaserSourceMteTrait(
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.LASER_CONTROLLER), IClayLaserSource {
 
     private val sampleLaser = ClayLaser(red = laserRed, green = laserGreen, blue = laserBlue)
-    private val delegate = ClayLaserSource(metaTileEntity)
+    private val delegate = ClayLaserIrradiator(metaTileEntity)
     override var length = 0
         private set(value) {
             val syncFlag = !metaTileEntity.isRemote && (field != value)

@@ -12,7 +12,7 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import java.lang.ref.WeakReference
 
-class ClayLaserSource(
+class ClayLaserIrradiator(
     val tileEntity: IWorldObject,
 ) {
 
