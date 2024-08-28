@@ -58,7 +58,8 @@ class ClayLaserSource(
     }
 
     private fun getLaserLength(direction: EnumFacing): Int {
-        val targetPos = BlockPos.MutableBlockPos()
+        val pos = this.pos ?: return 0
+        val targetPos = BlockPos.MutableBlockPos().setPos(pos)
         val maxLaserLength = ConfigCore.misc.maxClayLaserLength
         for (i in 1..maxLaserLength) {
             val targetPos = targetPos.move(direction)
