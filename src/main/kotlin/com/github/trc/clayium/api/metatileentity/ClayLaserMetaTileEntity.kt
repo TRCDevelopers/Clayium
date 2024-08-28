@@ -9,6 +9,7 @@ import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ClayLaserSourceMteTrait
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.config.ConfigCore
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -56,6 +57,11 @@ class ClayLaserMetaTileEntity(
 
     override fun isFacingValid(facing: EnumFacing): Boolean {
         return true
+    }
+
+    override fun onPlacement() {
+        this.setInput(this.frontFacing.opposite, MachineIoMode.CE)
+        super.onPlacement()
     }
 
     override fun update() {
