@@ -10,7 +10,7 @@ import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 
-class AreaMinerMetaTileEntity(
+class RangedMinerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier
 ) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, "ranged_miner") {
@@ -46,5 +46,5 @@ class AreaMinerMetaTileEntity(
             return clayMarkerHandler.markedRangeAbsolute?.let { backingRange.set(it).subtract(pos) }
         }
 
-    override fun createMetaTileEntity() = AreaMinerMetaTileEntity(metaTileEntityId, tier)
+    override fun createMetaTileEntity() = RangedMinerMetaTileEntity(metaTileEntityId, tier)
 }
