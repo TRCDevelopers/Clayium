@@ -20,6 +20,7 @@ class ClayLaserSource(
     val pos get() = tileEntity.position
 
     private var previousTarget: TileEntityAccess? = null
+    private var lastDirection = EnumFacing.NORTH
 
     private fun TileEntity.getLaserAcceptor(targetSide: EnumFacing) =
         getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, targetSide)
@@ -46,11 +47,12 @@ class ClayLaserSource(
         } else {
             this.previousTarget = TileEntityAccess(newTarget)
         }
+        this.lastDirection = direction
         return length
     }
 
-    fun stopIrradiation(direction: EnumFacing) {
-        val targetSide = direction.opposite
+    fun stopIrradiation() {
+        val targetSide = lastDirection.opposite
         this.previousTarget?.get()?.getLaserAcceptor(targetSide)
             ?.laserChanged(targetSide, null)
     }

@@ -48,7 +48,7 @@ class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLas
         val laser = mergeLasers(this.receivedLasers.values)
         this.irradiatingLaser = laser
         if (laser == null) {
-            this.laserManager.stopIrradiation(direction)
+            this.laserManager.stopIrradiation()
         } else {
             this.laserManager.irradiateLaser(this.direction, laser)
         }
@@ -60,7 +60,7 @@ class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLas
 
     override fun invalidate() {
         super.invalidate()
-        this.laserManager.stopIrradiation(direction)
+        this.laserManager.stopIrradiation()
     }
 
     override fun laserChanged(irradiatedSide: EnumFacing, laser: ClayLaser?) {

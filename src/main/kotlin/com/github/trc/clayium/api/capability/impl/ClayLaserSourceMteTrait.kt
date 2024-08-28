@@ -49,12 +49,12 @@ class ClayLaserSourceMteTrait(
         if (isIrradiating) {
             length = delegate.irradiateLaser(metaTileEntity.frontFacing, sampleLaser)
         } else {
-            delegate.stopIrradiation(metaTileEntity.frontFacing)
+            delegate.stopIrradiation()
         }
     }
 
     override fun onRemoval() {
-        delegate.stopIrradiation(metaTileEntity.frontFacing)
+        delegate.stopIrradiation()
     }
 
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
