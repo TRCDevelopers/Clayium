@@ -21,13 +21,13 @@ fun PacketBuffer.readClayLaser(): ClayLaser {
 }
 
 data class ClayLaser(
-    override val red: Int,
-    override val green: Int,
-    override val blue: Int,
-    override val age: Int = 0,
-) : IClayLaser {
+    val red: Int,
+    val green: Int,
+    val blue: Int,
+    val age: Int = 0,
+) {
 
-    override val energy: Double = calcLaserEnergyPerColor(blue, bases[0], maxEnergies[0]) *
+    val energy: Double = calcLaserEnergyPerColor(blue, bases[0], maxEnergies[0]) *
                                        calcLaserEnergyPerColor(green, bases[1], maxEnergies[1]) *
                                        calcLaserEnergyPerColor(red, bases[2], maxEnergies[2]) - 1
 

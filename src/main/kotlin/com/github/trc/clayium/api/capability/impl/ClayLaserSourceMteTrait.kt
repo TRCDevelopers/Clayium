@@ -5,7 +5,6 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_LASER_ACTI
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_LASER_LENGTH
 import com.github.trc.clayium.api.capability.IClayLaserSource
 import com.github.trc.clayium.api.laser.ClayLaser
-import com.github.trc.clayium.api.laser.IClayLaser
 import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import net.minecraft.network.PacketBuffer
@@ -40,7 +39,7 @@ class ClayLaserSourceMteTrait(
             }
         }
 
-    override val irradiatingLaser: IClayLaser?
+    override val irradiatingLaser: ClayLaser?
         get() = if (isIrradiating) sampleLaser else null
 
     override val direction get() = metaTileEntity.frontFacing

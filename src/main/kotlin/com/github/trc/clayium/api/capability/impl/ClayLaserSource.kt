@@ -1,7 +1,7 @@
 package com.github.trc.clayium.api.capability.impl
 
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
-import com.github.trc.clayium.api.laser.IClayLaser
+import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.interfaces.IWorldObject
 import com.github.trc.clayium.api.util.TileEntityAccess
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
@@ -27,7 +27,7 @@ class ClayLaserSource(
     /**
      * returns laser length.
      */
-    fun irradiateLaser(direction: EnumFacing, laser: IClayLaser): Int {
+    fun irradiateLaser(direction: EnumFacing, laser: ClayLaser): Int {
         val world = this.world ?: return 0
         val pos = this.pos ?: return 0
         val length = getLaserLength(direction)

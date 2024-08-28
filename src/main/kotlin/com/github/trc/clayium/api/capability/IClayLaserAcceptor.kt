@@ -1,6 +1,6 @@
 package com.github.trc.clayium.api.capability
 
-import com.github.trc.clayium.api.laser.IClayLaser
+import com.github.trc.clayium.api.laser.ClayLaser
 import net.minecraft.util.EnumFacing
 
 interface IClayLaserAcceptor {
@@ -9,5 +9,5 @@ interface IClayLaserAcceptor {
      * @param irradiatedSide the side that is irradiated by the laser
      * @param laser if null, it means the laser irradiation has stopped.
      */
-    fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?)
+    fun laserChanged(irradiatedSide: EnumFacing, laser: ClayLaser?)
 }

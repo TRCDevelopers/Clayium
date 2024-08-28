@@ -7,7 +7,6 @@ import com.github.trc.clayium.api.capability.IClayLaserAcceptor
 import com.github.trc.clayium.api.capability.IClayLaserSource
 import com.github.trc.clayium.api.capability.impl.ClayLaserSource
 import com.github.trc.clayium.api.laser.ClayLaser
-import com.github.trc.clayium.api.laser.IClayLaser
 import com.github.trc.clayium.api.laser.readClayLaser
 import com.github.trc.clayium.api.laser.writeClayLaser
 import com.github.trc.clayium.api.metatileentity.SyncedTileEntityBase
@@ -33,7 +32,7 @@ class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLas
             }
         }
     private val laserManager = ClayLaserSource(this)
-    private val receivedLasers = Object2ObjectOpenHashMap<EnumFacing, IClayLaser>()
+    private val receivedLasers = Object2ObjectOpenHashMap<EnumFacing, ClayLaser>()
 
     override val world get() = this.getWorld()
     override val pos get() = this.getPos()
@@ -62,7 +61,7 @@ class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLas
         this.laserManager.stopIrradiation(direction)
     }
 
-    override fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?) {
+    override fun laserChanged(irradiatedSide: EnumFacing, laser: ClayLaser?) {
         if (laser == null) {
             this.receivedLasers.remove(irradiatedSide)
         } else {
@@ -139,7 +138,7 @@ class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLas
     private companion object {
         const val MAX_LASER_AGE = 10
 
-        private fun mergeLasers(lasers: Collection<IClayLaser>): ClayLaser? {
+        private fun mergeLasers(lasers: Collection<ClayLaser>): ClayLaser? {
             if (lasers.isEmpty()) return null
             val maxAge = lasers.maxOf { it.age }
             return if (maxAge >= MAX_LASER_AGE) {

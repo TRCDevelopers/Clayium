@@ -7,7 +7,7 @@ import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IClayLaserAcceptor
 import com.github.trc.clayium.api.capability.IConfigurationTool
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
-import com.github.trc.clayium.api.laser.IClayLaser
+import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
@@ -27,7 +27,7 @@ class LaserProxyMetaTileEntity(
     tier: ITier,
 ) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "machine.${CValues.MOD_ID}.laser_proxy"), IClayLaserAcceptor {
 
-    private var laser: IClayLaser? = null
+    private var laser: ClayLaser? = null
     override val faceTexture: ResourceLocation = clayiumId("blocks/laserinterface")
 
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
@@ -67,7 +67,7 @@ class LaserProxyMetaTileEntity(
         throw UnsupportedOperationException()
     }
 
-    override fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?) {
+    override fun laserChanged(irradiatedSide: EnumFacing, laser: ClayLaser?) {
         if (irradiatedSide == this.frontFacing) {
             this.laser = laser
             this.target?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)

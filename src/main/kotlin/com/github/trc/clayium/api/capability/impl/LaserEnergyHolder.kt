@@ -8,7 +8,7 @@ import com.github.trc.clayium.api.LaserEnergy
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IClayLaserAcceptor
-import com.github.trc.clayium.api.laser.IClayLaser
+import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.asWidgetResizing
@@ -22,7 +22,7 @@ class LaserEnergyHolder(
 
     var storedPower = LaserEnergy.ZERO
         private set
-    private var receivedLasers: Array<IClayLaser?> = arrayOfNulls(6)
+    private var receivedLasers: Array<ClayLaser?> = arrayOfNulls(6)
 
     override fun update() {
         if (metaTileEntity.isRemote) return
@@ -76,7 +76,7 @@ class LaserEnergyHolder(
         storedPower = LaserEnergy(data.getDouble("laserPower"))
     }
 
-    override fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?) {
+    override fun laserChanged(irradiatedSide: EnumFacing, laser: ClayLaser?) {
         this.receivedLasers[irradiatedSide.index] = laser
     }
 

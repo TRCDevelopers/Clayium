@@ -1,6 +1,6 @@
 package com.github.trc.clayium.client.renderer
 
-import com.github.trc.clayium.api.laser.IClayLaser
+import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.config.ConfigCore
 import net.minecraft.client.renderer.GlStateManager
@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11
 
 object ClayLaserRenderer {
     fun renderLaser(
-        laser: IClayLaser, direction: EnumFacing, length: Int, x: Double, y: Double, z: Double,
+        laser: ClayLaser, direction: EnumFacing, length: Int, x: Double, y: Double, z: Double,
         bindTexture: (ResourceLocation) -> Unit,
     ) {
         val rawLaserRed = laser.red
