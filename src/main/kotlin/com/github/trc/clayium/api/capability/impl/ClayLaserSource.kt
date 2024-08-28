@@ -3,7 +3,6 @@ package com.github.trc.clayium.api.capability.impl
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.interfaces.IWorldObject
-import com.github.trc.clayium.api.util.TileEntityAccess
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.config.ConfigCore
 import net.minecraft.block.material.Material
@@ -11,6 +10,7 @@ import net.minecraft.init.Blocks
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
+import java.lang.ref.WeakReference
 
 class ClayLaserSource(
     val tileEntity: IWorldObject,
@@ -19,7 +19,7 @@ class ClayLaserSource(
     val world get() = tileEntity.worldObj
     val pos get() = tileEntity.position
 
-    private var previousTarget: TileEntityAccess? = null
+    private var previousTarget: WeakReference<TileEntity>? = null
     private var lastDirection = EnumFacing.NORTH
 
     private fun TileEntity.getLaserAcceptor(targetSide: EnumFacing) =
@@ -31,6 +31,7 @@ class ClayLaserSource(
     fun irradiateLaser(direction: EnumFacing, laser: ClayLaser): Int {
         val world = this.world ?: return 0
         val pos = this.pos ?: return 0
+        if (world.isRemote) return 0
         val length = getLaserLength(direction)
         val targetPos = pos.offset(direction, length)
         val targetSide = direction.opposite
@@ -40,12 +41,11 @@ class ClayLaserSource(
         if (newTarget != previousTarget) {
             newTarget?.getLaserAcceptor(targetSide)?.laserChanged(targetSide, laser)
             previousTarget?.getLaserAcceptor(targetSide)?.laserChanged(targetSide, null)
+            this.previousTarget = newTarget?.let { WeakReference(it) }
         }
         if (newTarget == null) {
             // no tile entity target so irradiate the block
             irradiateLaserBlock(laser.energy, targetPos)
-        } else {
-            this.previousTarget = TileEntityAccess(newTarget)
         }
         this.lastDirection = direction
         return length

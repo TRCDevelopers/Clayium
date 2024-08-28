@@ -14,6 +14,7 @@ import java.lang.ref.WeakReference
  *
  * if you get non-null from the [getIfLoaded] method, it also ensures the pos is loaded.
  */
+//todo use this in ProxyMetaTileEntities instead of holding the TileEntity directly
 class TileEntityAccess(
     val world: World,
     val pos: BlockPos,
