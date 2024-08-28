@@ -38,7 +38,9 @@ class ClayLaserSource(
 
         val newTarget = world.getTileEntity(targetPos)
         val previousTarget = this.previousTarget?.get()
-        if (newTarget != previousTarget) {
+        if (newTarget === previousTarget) {
+            newTarget?.getLaserAcceptor(targetSide)?.acceptLaser(targetSide, laser)
+        } else {
             newTarget?.getLaserAcceptor(targetSide)?.acceptLaser(targetSide, laser)
             previousTarget?.getLaserAcceptor(targetSide)?.acceptLaser(targetSide, null)
             this.previousTarget = newTarget?.let { WeakReference(it) }

@@ -23,6 +23,13 @@ import net.minecraftforge.common.capabilities.Capability
 class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLaserSource, IClayLaserAcceptor, IWorldObject {
 
     override var irradiatingLaser: ClayLaser? = null
+        private set(value) {
+            val syncFlag = !world.isRemote && (value != field)
+            field = value
+            if (syncFlag) {
+                writeLaser(value)
+            }
+        }
     override var length: Int = 0
         private set(value) {
             val syncFlag = !world.isRemote && (value != field)
@@ -44,17 +51,12 @@ class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLas
 
     override fun update() {
         if (world.isRemote) return
-        val lastLaser = this.irradiatingLaser
         val laser = mergeLasers(this.receivedLasers.values)
         this.irradiatingLaser = laser
         if (laser == null) {
             this.laserManager.stopIrradiation()
         } else {
             this.length = this.laserManager.irradiateLaser(this.direction, laser)
-        }
-        if (lastLaser != laser) {
-            this.markDirty()
-            writeLaser(laser)
         }
     }
 
