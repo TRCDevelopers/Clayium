@@ -3,11 +3,14 @@ package com.github.trc.clayium.api.capability.impl
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_LASER_ACTIVATION
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_LASER_LENGTH
+import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IClayLaserSource
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import net.minecraft.network.PacketBuffer
+import net.minecraft.util.EnumFacing
+import net.minecraftforge.common.capabilities.Capability
 
 class ClayLaserSourceMteTrait(
     metaTileEntity: MetaTileEntity,
@@ -62,5 +65,9 @@ class ClayLaserSourceMteTrait(
             UPDATE_LASER_LENGTH -> length = buf.readInt()
             UPDATE_LASER_ACTIVATION -> isIrradiating = buf.readBoolean()
         }
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        return if (capability === ClayiumTileCapabilities.CLAY_LASER_SOURCE) capability.cast(this) else null
     }
 }
