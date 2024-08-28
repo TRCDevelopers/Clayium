@@ -50,7 +50,7 @@ class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLas
         if (laser == null) {
             this.laserManager.stopIrradiation()
         } else {
-            this.laserManager.irradiateLaser(this.direction, laser)
+            this.length = this.laserManager.irradiateLaser(this.direction, laser)
         }
         if (lastLaser != laser) {
             this.markDirty()
