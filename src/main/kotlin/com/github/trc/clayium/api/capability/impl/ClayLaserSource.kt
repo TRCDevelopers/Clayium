@@ -39,8 +39,8 @@ class ClayLaserSource(
         val newTarget = world.getTileEntity(targetPos)
         val previousTarget = this.previousTarget?.get()
         if (newTarget != previousTarget) {
-            newTarget?.getLaserAcceptor(targetSide)?.laserChanged(targetSide, laser)
-            previousTarget?.getLaserAcceptor(targetSide)?.laserChanged(targetSide, null)
+            newTarget?.getLaserAcceptor(targetSide)?.acceptLaser(targetSide, laser)
+            previousTarget?.getLaserAcceptor(targetSide)?.acceptLaser(targetSide, null)
             this.previousTarget = newTarget?.let { WeakReference(it) }
         }
         if (newTarget == null) {
@@ -54,7 +54,7 @@ class ClayLaserSource(
     fun stopIrradiation() {
         val targetSide = lastDirection.opposite
         this.previousTarget?.get()?.getLaserAcceptor(targetSide)
-            ?.laserChanged(targetSide, null)
+            ?.acceptLaser(targetSide, null)
     }
 
     private fun getLaserLength(direction: EnumFacing): Int {

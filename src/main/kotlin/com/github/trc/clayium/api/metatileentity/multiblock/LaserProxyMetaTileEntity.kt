@@ -40,14 +40,14 @@ class LaserProxyMetaTileEntity(
         super.onLink(target)
         if (this.laser != null) {
             target.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
-                ?.laserChanged(this.frontFacing.opposite, this.laser)
+                ?.acceptLaser(this.frontFacing.opposite, this.laser)
         }
     }
 
     override fun onUnlink() {
         super.onUnlink()
         this.target?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
-            ?.laserChanged(this.frontFacing.opposite, null)
+            ?.acceptLaser(this.frontFacing.opposite, null)
     }
 
     override fun canLink(target: MetaTileEntity): Boolean {
@@ -67,11 +67,11 @@ class LaserProxyMetaTileEntity(
         throw UnsupportedOperationException()
     }
 
-    override fun laserChanged(irradiatedSide: EnumFacing, laser: ClayLaser?) {
+    override fun acceptLaser(irradiatedSide: EnumFacing, laser: ClayLaser?) {
         if (irradiatedSide == this.frontFacing) {
             this.laser = laser
             this.target?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
-                ?.laserChanged(this.frontFacing.opposite, laser)
+                ?.acceptLaser(this.frontFacing.opposite, laser)
         }
     }
 

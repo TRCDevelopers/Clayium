@@ -63,7 +63,7 @@ class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLas
         this.laserManager.stopIrradiation()
     }
 
-    override fun laserChanged(irradiatedSide: EnumFacing, laser: ClayLaser?) {
+    override fun acceptLaser(irradiatedSide: EnumFacing, laser: ClayLaser?) {
         if (laser == null) {
             this.receivedLasers.remove(irradiatedSide)
         } else {

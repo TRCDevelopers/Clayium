@@ -76,7 +76,7 @@ class LaserEnergyHolder(
         storedPower = LaserEnergy(data.getDouble("laserPower"))
     }
 
-    override fun laserChanged(irradiatedSide: EnumFacing, laser: ClayLaser?) {
+    override fun acceptLaser(irradiatedSide: EnumFacing, laser: ClayLaser?) {
         this.receivedLasers[irradiatedSide.index] = laser
     }
 

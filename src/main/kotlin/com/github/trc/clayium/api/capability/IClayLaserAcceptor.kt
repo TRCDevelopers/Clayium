@@ -9,5 +9,5 @@ interface IClayLaserAcceptor {
      * @param irradiatedSide the side that is irradiated by the laser
      * @param laser if null, it means the laser irradiation has stopped.
      */
-    fun laserChanged(irradiatedSide: EnumFacing, laser: ClayLaser?)
+    fun acceptLaser(irradiatedSide: EnumFacing, laser: ClayLaser?)
 }

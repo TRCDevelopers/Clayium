@@ -93,7 +93,7 @@ class ClayReactorMetaTileEntity(
                 .alignX(Alignment.Center.x).bottom(12))
     }
 
-    override fun laserChanged(irradiatedSide: EnumFacing, laser: ClayLaser?) {
+    override fun acceptLaser(irradiatedSide: EnumFacing, laser: ClayLaser?) {
         this.laser = laser
     }
 
