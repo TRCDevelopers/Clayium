@@ -1,25 +1,35 @@
 package com.github.trc.clayium.api.laser
 
-import net.minecraft.util.EnumFacing
+import net.minecraft.network.PacketBuffer
 import kotlin.math.ln
 import kotlin.math.max
 import kotlin.math.pow
 
-data class ClayLaser(
-    override val direction: EnumFacing,
-    override val red: Int,
-    override val green: Int,
-    override val blue: Int,
-    override val age: Int = 0,
-) : IClayLaser {
+fun PacketBuffer.writeClayLaser(laser: ClayLaser) {
+    writeVarInt(laser.red)
+    writeVarInt(laser.green)
+    writeVarInt(laser.blue)
+    writeVarInt(laser.age)
+}
 
-    override val energy: Double = calcLaserEnergyPerColor(blue, bases[0], maxEnergies[0]) *
+fun PacketBuffer.readClayLaser(): ClayLaser {
+    val red = readVarInt()
+    val green = readVarInt()
+    val blue = readVarInt()
+    val age = readVarInt()
+    return ClayLaser(red, green, blue, age)
+}
+
+data class ClayLaser(
+    val red: Int,
+    val green: Int,
+    val blue: Int,
+    val age: Int = 0,
+) {
+
+    val energy: Double = calcLaserEnergyPerColor(blue, bases[0], maxEnergies[0]) *
                                        calcLaserEnergyPerColor(green, bases[1], maxEnergies[1]) *
                                        calcLaserEnergyPerColor(red, bases[2], maxEnergies[2]) - 1
-
-    fun changeDirection(direction: EnumFacing): ClayLaser {
-        return ClayLaser(direction, red, green, blue)
-    }
 
     companion object {
         private val bases = doubleArrayOf(2.5, 1.8, 1.5)
@@ -37,13 +47,6 @@ data class ClayLaser(
 
             val E_i = m_i.pow(ai) * ((1 + r * n_i * C_i.pow(nd)) / (1 + r * C_i.pow(nd)))
             return max(1.0, E_i)
-        }
-
-        fun fromInt(color: Int, direction: EnumFacing): ClayLaser {
-            val red = color shr 16 and 0xFF
-            val green = color shr 8 and 0xFF
-            val blue = color and 0xFF
-            return ClayLaser(direction, red, green, blue)
         }
     }
 }

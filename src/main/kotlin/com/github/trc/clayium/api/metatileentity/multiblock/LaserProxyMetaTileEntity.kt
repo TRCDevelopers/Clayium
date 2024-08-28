@@ -7,7 +7,7 @@ import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IClayLaserAcceptor
 import com.github.trc.clayium.api.capability.IConfigurationTool
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
-import com.github.trc.clayium.api.laser.IClayLaser
+import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
@@ -27,7 +27,7 @@ class LaserProxyMetaTileEntity(
     tier: ITier,
 ) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "machine.${CValues.MOD_ID}.laser_proxy"), IClayLaserAcceptor {
 
-    private var laser: IClayLaser? = null
+    private var laser: ClayLaser? = null
     override val faceTexture: ResourceLocation = clayiumId("blocks/laserinterface")
 
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
@@ -40,14 +40,14 @@ class LaserProxyMetaTileEntity(
         super.onLink(target)
         if (this.laser != null) {
             target.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
-                ?.laserChanged(this.frontFacing.opposite, this.laser)
+                ?.acceptLaser(this.frontFacing.opposite, this.laser)
         }
     }
 
     override fun onUnlink() {
         super.onUnlink()
         this.target?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
-            ?.laserChanged(this.frontFacing.opposite, null)
+            ?.acceptLaser(this.frontFacing.opposite, null)
     }
 
     override fun canLink(target: MetaTileEntity): Boolean {
@@ -67,19 +67,18 @@ class LaserProxyMetaTileEntity(
         throw UnsupportedOperationException()
     }
 
-    override fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?) {
+    override fun acceptLaser(irradiatedSide: EnumFacing, laser: ClayLaser?) {
         if (irradiatedSide == this.frontFacing) {
             this.laser = laser
             this.target?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
-                ?.laserChanged(this.frontFacing.opposite, laser)
+                ?.acceptLaser(this.frontFacing.opposite, laser)
         }
     }
 
     override fun onToolClick(toolType: IConfigurationTool.ToolType, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
         super.onToolClick(toolType, player, hand, clickedSide, hitX, hitY, hitZ)
-        if (laser?.direction != this.frontFacing.opposite) {
-            this.laser = null
-        }
+        //todo onFrontFacing set
+        this.laser = null
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {

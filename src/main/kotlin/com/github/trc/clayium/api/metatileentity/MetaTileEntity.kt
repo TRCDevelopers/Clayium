@@ -30,8 +30,8 @@ import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
-import com.github.trc.clayium.api.metatileentity.interfaces.IMarkDirty
 import com.github.trc.clayium.api.metatileentity.interfaces.ISyncedTileEntity
+import com.github.trc.clayium.api.metatileentity.interfaces.IWorldObject
 import com.github.trc.clayium.api.metatileentity.trait.OverclockHandler
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
@@ -85,7 +85,7 @@ abstract class MetaTileEntity(
      * used in item/block name and gui title
      */
     val translationKey: String,
-) : ISyncedTileEntity, IMarkDirty, IGuiHolder<PosGuiData>, IPipeConnectable {
+) : ISyncedTileEntity, IWorldObject, IGuiHolder<PosGuiData>, IPipeConnectable {
 
     val forgeRarity = tier.rarity
 
@@ -94,6 +94,10 @@ abstract class MetaTileEntity(
     val pos: BlockPos? get() = holder?.pos
     val isInvalid get() = holder?.isInvalid ?: true
     val isRemote get() = world?.isRemote ?: true
+
+    // IWorldObj
+    override val worldObj: World? get() = world
+    override val position: BlockPos? get() = pos
 
     open val faceTexture: ResourceLocation? = null
     open val requiredTextures get() = listOf(faceTexture)
@@ -585,11 +589,14 @@ abstract class MetaTileEntity(
         return tab === CreativeTabs.SEARCH || tab === Clayium.creativeTab
     }
 
+    @SideOnly(Side.CLIENT)
     open fun shouldRenderInPass(pass: Int) = (pass == 0)
+    @SideOnly(Side.CLIENT)
     open fun getMaxRenderDistanceSquared(): Double = 4096.0
     /**
      * null for use TileEntity defaults.
      */
+    @SideOnly(Side.CLIENT)
     open val renderBoundingBox: AxisAlignedBB? = null
 
     @SideOnly(Side.CLIENT)
@@ -623,6 +630,8 @@ abstract class MetaTileEntity(
      */
     @SideOnly(Side.CLIENT)
     open fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {}
+    @SideOnly(Side.CLIENT)
+    open val useGlobalRenderer = false
 
     protected fun largeSlot(slot: ModularSlot) = ParentWidget()
                 .size(26, 26)

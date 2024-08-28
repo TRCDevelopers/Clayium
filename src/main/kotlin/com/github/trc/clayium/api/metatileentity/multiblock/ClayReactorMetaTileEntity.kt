@@ -3,14 +3,13 @@ package com.github.trc.clayium.api.metatileentity.multiblock
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IClayLaserAcceptor
 import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
+import com.github.trc.clayium.api.gui.sync.ClayLaserSyncValue
 import com.github.trc.clayium.api.laser.ClayLaser
-import com.github.trc.clayium.api.laser.IClayLaser
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult
@@ -37,7 +36,7 @@ class ClayReactorMetaTileEntity(
 ), IClayLaserAcceptor {
     private val multiblockLogic = MultiblockLogic(this, ::checkStructure)
 
-    var laser: IClayLaser? = null
+    var laser: ClayLaser? = null
         private set
 
     fun getFaceInvalid() = clayiumId("blocks/reactor")
@@ -86,10 +85,7 @@ class ClayReactorMetaTileEntity(
     }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
-        syncManager.syncValue("clayLaser", SyncHandlers.intNumber(
-            { laser?.toInt() ?: -1 },
-            { this.laser = if (it == -1) null else ClayLaser.fromInt(it, EnumFacing.UP) }
-        ))
+        syncManager.syncValue("clayLaser", ClayLaserSyncValue(::laser, ::laser::set))
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic { I18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.energy?.toLong() ?: 0L)) }.asWidgetResizing()
                 .pos(102, 53))
@@ -97,7 +93,7 @@ class ClayReactorMetaTileEntity(
                 .alignX(Alignment.Center.x).bottom(12))
     }
 
-    override fun laserChanged(irradiatedSide: EnumFacing, laser: IClayLaser?) {
+    override fun acceptLaser(irradiatedSide: EnumFacing, laser: ClayLaser?) {
         this.laser = laser
     }
 

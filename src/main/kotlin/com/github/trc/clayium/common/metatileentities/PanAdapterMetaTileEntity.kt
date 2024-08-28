@@ -91,14 +91,14 @@ class PanAdapterMetaTileEntity(
         for (i in 0..<laserInventory.slots) {
             val stack = laserInventory.getStackInSlot(i)
             val laserMte = (CUtils.getMetaTileEntity(stack) as? ClayLaserMetaTileEntity)  ?: continue
-            val laser = laserMte.laserManager.laser
+            val laser = laserMte.laserManager.irradiatingLaser ?: continue
             val laserCostPerTick = laserMte.energyCost
             laserRgb[0] += (laser.red * stack.count)
             laserRgb[1] += (laser.green * stack.count)
             laserRgb[2] += (laser.blue * stack.count)
             energyCost += laserCostPerTick * stack.count
         }
-        return Pair(ClayLaser(EnumFacing.NORTH, laserRgb[0], laserRgb[1], laserRgb[2]).energy, energyCost)
+        return Pair(ClayLaser(laserRgb[0], laserRgb[1], laserRgb[2]).energy, energyCost)
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {

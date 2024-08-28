@@ -13,6 +13,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants.NBT
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
     var metaTileEntity: MetaTileEntity? = null
@@ -113,8 +115,12 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
     override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean {
         return oldState.block != newSate.block
     }
+
+    @SideOnly(Side.CLIENT)
     override fun shouldRenderInPass(pass: Int) = metaTileEntity?.shouldRenderInPass(pass) ?: super.shouldRenderInPass(pass)
     @Suppress("UsePropertyAccessSyntax") // `super.maxRenderDistanceSquared` errors with "Unresolved reference"
+    @SideOnly(Side.CLIENT)
     override fun getMaxRenderDistanceSquared() = metaTileEntity?.getMaxRenderDistanceSquared() ?: super.getMaxRenderDistanceSquared()
+    @SideOnly(Side.CLIENT)
     override fun getRenderBoundingBox() = metaTileEntity?.renderBoundingBox ?: super.getRenderBoundingBox()
 }

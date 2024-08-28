@@ -1,27 +1,24 @@
 package com.github.trc.clayium.client.renderer
 
-import com.github.trc.clayium.api.CValues
-import com.github.trc.clayium.api.capability.IClayLaserSource
+import com.github.trc.clayium.api.laser.ClayLaser
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.config.ConfigCore
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumFacing.*
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.GL11
 
 object ClayLaserRenderer {
     fun renderLaser(
-        laserSource: IClayLaserSource, x: Double, y: Double, z: Double,
+        laser: ClayLaser, direction: EnumFacing, length: Int, x: Double, y: Double, z: Double,
         bindTexture: (ResourceLocation) -> Unit,
     ) {
-        if (!laserSource.isActive) return
-        val clayLaser = laserSource.laser
-
-
-        val rawLaserRed = clayLaser.red
-        val rawLaserGreen = clayLaser.green
-        val rawLaserBlue = clayLaser.blue
+        val rawLaserRed = laser.red
+        val rawLaserGreen = laser.green
+        val rawLaserBlue = laser.blue
         val max = maxOf(rawLaserRed, rawLaserGreen, rawLaserBlue)
         if (max == 0) return
 
@@ -37,7 +34,7 @@ object ClayLaserRenderer {
             GlStateManager.color(1.0f, 1.0f, 1.0f, 0.75f)
             GlStateManager.translate(x + 0.5f, y + 0.5f, z + 0.5f)
 
-            when (clayLaser.direction) {
+            when (direction) {
                 DOWN -> GlStateManager.rotate(180.0f, 1.0f, 0.0f, 0.0f)
                 UP -> GlStateManager.rotate(0.0f, 1.0f, 0.0f, 0.0f)
                 NORTH -> GlStateManager.rotate(-90.0f, 1.0f, 0.0f, 0.0f)
@@ -51,9 +48,9 @@ object ClayLaserRenderer {
 
             GlStateManager.scale(scale, 1.0f, scale)
             GlStateManager.translate(0.0f, -scale / 6.0f, 0.0f)
-            GlStateManager.scale(1.0f, laserSource.laserLength + scale / 3.0f, 1.0f)
+            GlStateManager.scale(1.0f, length + scale / 3.0f, 1.0f)
 
-            bindTexture(ResourceLocation(CValues.MOD_ID, "textures/blocks/laser.png"))
+            bindTexture(clayiumId("textures/blocks/laser.png"))
 
             val tessellator = Tessellator.getInstance()
             val bufferBuilder = tessellator.buffer
