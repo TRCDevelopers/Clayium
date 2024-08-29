@@ -122,5 +122,5 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
     @SideOnly(Side.CLIENT)
     override fun getMaxRenderDistanceSquared() = metaTileEntity?.getMaxRenderDistanceSquared() ?: super.getMaxRenderDistanceSquared()
     @SideOnly(Side.CLIENT)
-    override fun getRenderBoundingBox() = metaTileEntity?.renderBoundingBox ?: super.getRenderBoundingBox()
+    override fun getRenderBoundingBox() = metaTileEntity?.getRenderBoundingBox() ?: super.getRenderBoundingBox()
 }

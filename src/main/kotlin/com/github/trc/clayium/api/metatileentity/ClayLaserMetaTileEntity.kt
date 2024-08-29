@@ -52,9 +52,8 @@ class ClayLaserMetaTileEntity(
     val laserManager = ClayLaserSourceMteTrait(this, laserRed, laserGreen, laserBlue)
     private var canActivateByRedstone = false
 
-//    @field:SideOnly(Side.CLIENT)
-//    @get:SideOnly(Side.CLIENT)
-    override val renderBoundingBox = TileEntityBeacon.INFINITE_EXTENT_AABB
+    @SideOnly(Side.CLIENT)
+    override fun getRenderBoundingBox() = TileEntityBeacon.INFINITE_EXTENT_AABB
 
     override fun isFacingValid(facing: EnumFacing): Boolean {
         return true
@@ -86,7 +85,7 @@ class ClayLaserMetaTileEntity(
             }
     }
 
-    override val useGlobalRenderer: Boolean = true
+    override fun useGlobalRenderer() = true
     @SideOnly(Side.CLIENT)
     override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
     @SideOnly(Side.CLIENT)

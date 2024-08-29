@@ -37,8 +37,6 @@ object ClayiumBlocks {
     private val blocks: MutableMap<String, Block> = mutableMapOf()
     val allBlocks: Map<String, Block> get() = ImmutableMap.copyOf(blocks)
 
-    val defaultStateMapper = DefaultStateMapper()
-
     val CREATIVE_ENERGY_SOURCE = createBlock("creative_energy_source", BlockSimpleTileEntityHolder(::TileEntityCreativeEnergySource)
         .apply { setBlockUnbreakable() })
 
@@ -166,6 +164,7 @@ object ClayiumBlocks {
     @SideOnly(Side.CLIENT)
     private fun registerItemModel(block: Block) {
         val item = block.getAsItem()
+        val defaultStateMapper = DefaultStateMapper()
         when (block) {
             CLAY_TREE_SAPLING -> ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(clayiumId("clay_tree_sapling"), "inventory"))
             PAN_CABLE -> ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(clayiumId("pan_cable"), "inventory"))

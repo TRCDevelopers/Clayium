@@ -168,10 +168,11 @@ abstract class AbstractMinerMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
+
     @SideOnly(Side.CLIENT)
-    override val renderBoundingBox = TileEntityBeacon.INFINITE_EXTENT_AABB
+    override fun getRenderBoundingBox() = TileEntityBeacon.INFINITE_EXTENT_AABB
     @SideOnly(Side.CLIENT)
-    override val useGlobalRenderer: Boolean = true
+    override fun useGlobalRenderer() = true
     @SideOnly(Side.CLIENT)
     override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
         AreaMarkerRenderer.render(Cuboid6.full, rangeRelative, x, y, z, rangeRenderMode)

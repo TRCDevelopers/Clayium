@@ -597,7 +597,7 @@ abstract class MetaTileEntity(
      * null for use TileEntity defaults.
      */
     @SideOnly(Side.CLIENT)
-    open val renderBoundingBox: AxisAlignedBB? = null
+    open fun getRenderBoundingBox(): AxisAlignedBB? = null
 
     @SideOnly(Side.CLIENT)
     open fun bakeQuads(getter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {}
@@ -631,7 +631,7 @@ abstract class MetaTileEntity(
     @SideOnly(Side.CLIENT)
     open fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {}
     @SideOnly(Side.CLIENT)
-    open val useGlobalRenderer = false
+    open fun useGlobalRenderer() = false
 
     protected fun largeSlot(slot: ModularSlot) = ParentWidget()
                 .size(26, 26)
