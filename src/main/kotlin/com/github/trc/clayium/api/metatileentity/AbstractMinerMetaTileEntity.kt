@@ -121,10 +121,9 @@ abstract class AbstractMinerMetaTileEntity(
     }
 
     protected fun getAccelerationRate(): Double {
+        // actual $$r = 1 + 4 * log10(energy / 1000 + 1)$$
         val energy = laserEnergyHolder.storedPower.energy
-        val a = energy / 1000.0 + 1
-        val b = ln(10.0)
-        return (1 + a / b)
+        return 1 + 4 * log10(energy / 1000 + 1)
     }
 
     private fun getRequiredProgress(blockHardness: Float): Double {
