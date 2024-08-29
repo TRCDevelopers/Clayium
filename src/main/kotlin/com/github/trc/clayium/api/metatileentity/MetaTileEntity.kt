@@ -43,6 +43,7 @@ import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.items.filter.FilterType
+import com.github.trc.clayium.common.util.BothSideI18n
 import com.github.trc.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import net.minecraft.block.state.IBlockState
@@ -568,12 +569,11 @@ abstract class MetaTileEntity(
         }
     }
 
-    @SideOnly(Side.CLIENT)
     open fun getItemStackDisplayName(): String {
-        return if (I18n.hasKey("${this.translationKey}.${tier.lowerName}")) {
-            I18n.format("${this.translationKey}.${tier.lowerName}")
+        return if (BothSideI18n.hasKey("${this.translationKey}.${tier.lowerName}")) {
+            BothSideI18n.format("${this.translationKey}.${tier.lowerName}")
         } else {
-            I18n.format(this.translationKey, I18n.format(this.tier.prefixTranslationKey))
+            BothSideI18n.format(this.translationKey, BothSideI18n.format(this.tier.prefixTranslationKey))
         }
     }
 
