@@ -640,22 +640,12 @@ abstract class MetaTileEntity(
                     .slot(slot)
                     .background(IDrawable.EMPTY))
 
-    /**
-     * ```
-     * ModularPanel.defaultPanel(translationKey)
-     *     .child(mainColumn {
-     *          .child(buildMainParentWidget()
-     *              .child(....)
-     *          )
-     *     })
-     * ```
-     */
-    abstract override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel
-
-    @Deprecated("use ModularPanel.columnWithPlayerInv instead")
-    protected inline fun mainColumn(builder: (Column.() -> Column)) = Column().margin(7).sizeRel(1f)
-        .builder()
-        .child(SlotGroupWidget.playerInventory(0))
+    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+        return ModularPanel.defaultPanel(translationKey)
+            .columnWithPlayerInv {
+                child(buildMainParentWidget(syncManager))
+            }
+    }
 
     protected inline fun ModularPanel.columnWithPlayerInv(builder: (Column.() -> Column)) = this.child(
         Column().margin(7).sizeRel(1f)

@@ -5,6 +5,7 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
@@ -120,7 +121,7 @@ abstract class AbstractItemGeneratorMetaTileEntity(
         val matrixStr = (0..<inventoryRowSize).map { columnStr }
 
         return ModularPanel.defaultPanel("simple_item_generator", 176, 18 + inventoryRowSize * 18 + 94 + 2)
-            .child(mainColumn {
+            .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
                     .child(SlotGroupWidget.builder()
                         .matrix(*matrixStr.toTypedArray())
@@ -131,6 +132,10 @@ abstract class AbstractItemGeneratorMetaTileEntity(
                             )
                         }.build().align(Alignment.Center))
                 )
-            })
+            }
+    }
+
+    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+        return super.buildMainParentWidget(syncManager)
     }
 }

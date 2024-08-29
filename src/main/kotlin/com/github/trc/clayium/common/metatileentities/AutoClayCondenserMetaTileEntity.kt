@@ -90,7 +90,7 @@ class AutoClayCondenserMetaTileEntity(
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.registerSlotGroup("compressor_inventory", 4)
         return ModularPanel.defaultPanel("auto_clay_condenser", 176, 190)
-            .child(mainColumn {
+            .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
                     .child(SlotGroupWidget.builder()
                     .matrix("IIII", "IIII", "IIII", "IIII")
@@ -105,7 +105,7 @@ class AutoClayCondenserMetaTileEntity(
                         .align(Alignment.TopRight)
                         .background(ClayGuiTextures.CLAY_SLOT))
                     )
-            })
+            }
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {

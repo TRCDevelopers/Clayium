@@ -1,12 +1,11 @@
 package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.factory.PosGuiData
-import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.NumberFormat
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.CValues
@@ -229,22 +228,18 @@ class StorageContainerMetaTileEntity(
         ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(this.metaTileEntityId, "inventory"))
     }
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        return ModularPanel.defaultPanel("storage_container")
-            .child(mainColumn {
-                child(buildMainParentWidget(syncManager)
-                    .child(IKey.dynamic { "$itemsStored / $maxStoredItems" }.asWidget()
-                        .widthRel(0.5f).align(Alignment.BottomRight))
-                    .child(Column().widthRel(0.6f).height(26)
-                        .child(largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
-                            .align(Alignment.CenterLeft))
-                        .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).accessibility(/* canPut = */ false, /* canTake = */ true))
-                            .align(Alignment.CenterRight))
-                        .align(Alignment.Center))
-                    .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0))
-                        .right(10).top(15))
-                )
-            })
+    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+        return super.buildMainParentWidget(syncManager)
+            .child(IKey.dynamic { "$itemsStored / $maxStoredItems" }.asWidget()
+                .widthRel(0.5f).align(Alignment.BottomRight))
+            .child(Column().widthRel(0.6f).height(26)
+                .child(largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
+                    .align(Alignment.CenterLeft))
+                .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).accessibility(/* canPut = */ false, /* canTake = */ true))
+                    .align(Alignment.CenterRight))
+                .align(Alignment.Center))
+            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0))
+                .right(10).top(15))
     }
 
     @SideOnly(Side.CLIENT)

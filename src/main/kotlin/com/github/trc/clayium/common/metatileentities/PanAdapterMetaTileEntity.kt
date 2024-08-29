@@ -213,7 +213,7 @@ class PanAdapterMetaTileEntity(
                 .child(resultSlots.align(Alignment.TopRight))
         }
         return ModularPanel.defaultPanel("pan_adapter", 176, 196)
-            .child(mainColumn {
+            .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
                     .child(PagedWidget().margin(0, 9).widthRel(1f).height(16*4)
                         .controller(tabController)
@@ -229,7 +229,7 @@ class PanAdapterMetaTileEntity(
                         .bottom(10)
                     )
                 )
-            })
+            }
     }
 
     @SideOnly(Side.CLIENT)
