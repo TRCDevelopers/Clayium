@@ -67,6 +67,9 @@ public class ConfigCore {
         public int clayMarkerMaxRange = 64;
 
         @Config.RangeInt(min = 1, max = 64)
+        public int rangedMinerMaxBlocksPerTick = 10;
+
+        @Config.RangeInt(min = 1, max = 64)
         public int maxClayLaserLength = 32;
     }
 }
