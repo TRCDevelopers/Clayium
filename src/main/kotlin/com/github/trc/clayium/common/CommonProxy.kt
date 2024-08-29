@@ -12,9 +12,9 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.client.renderer.LaserReflectorItemStackRenderer
 import com.github.trc.clayium.common.blocks.BlockQuartzCrucible
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
+import com.github.trc.clayium.common.blocks.ItemBlockClayLaserReflector
 import com.github.trc.clayium.common.blocks.ItemBlockEnergizedClay
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
 import com.github.trc.clayium.common.blocks.TileEntityClayLaserReflector
@@ -151,11 +151,7 @@ open class CommonProxy {
 
         registry.register(createItemBlock(ClayiumBlocks.CLAY_MARKER, ::VariantItemBlock))
 
-        registry.register(ItemBlock(ClayiumBlocks.LASER_REFLECTOR).apply {
-            registryName = ClayiumBlocks.LASER_REFLECTOR.registryName
-            translationKey = ClayiumBlocks.LASER_REFLECTOR.translationKey
-            tileEntityItemStackRenderer = LaserReflectorItemStackRenderer
-        })
+        registry.register(createItemBlock(ClayiumBlocks.LASER_REFLECTOR, ::ItemBlockClayLaserReflector))
 
         for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) {
             registry.register(createItemBlock(block) { ItemBlockEnergizedClay(it, OrePrefix.block) })
