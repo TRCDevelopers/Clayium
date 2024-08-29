@@ -26,7 +26,9 @@ class CMaterial(
     val upperCamel = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, materialId.path)
     val translationKey = "${materialId.namespace}.material.${materialId.path}"
 
-    @SideOnly(Side.CLIENT) val localizedName = I18n.format(translationKey)
+    val localizedName
+        @SideOnly(Side.CLIENT)
+        get() = I18n.format(translationKey)
 
     override fun compareTo(other: CMaterial): Int {
         return metaItemSubId.compareTo(other.metaItemSubId)

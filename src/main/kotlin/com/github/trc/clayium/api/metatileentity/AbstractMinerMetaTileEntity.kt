@@ -25,6 +25,7 @@ import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer.RangeRenderMode
+import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -60,7 +61,6 @@ abstract class AbstractMinerMetaTileEntity(
     protected var progress = 0.0
     private var workingEnabled = true
 
-    @SideOnly(Side.CLIENT)
     private var rangeRenderMode = RangeRenderMode.DISABLED
 
     /**
@@ -71,6 +71,7 @@ abstract class AbstractMinerMetaTileEntity(
 
     override fun update() {
         super.update()
+        Clayium.LOGGER.info("workingEnabled")
         if (isRemote || !workingEnabled) return
         mineBlocks()
     }
