@@ -145,7 +145,7 @@ class BlockMachine : Block(Material.IRON) {
     }
 
     override fun getDrops(drops: NonNullList<ItemStack>, world: IBlockAccess, pos: BlockPos, state: IBlockState, fortune: Int) {
-        val metaTileEntity = beingBrokenMetaTileEntity.get()
+        val metaTileEntity: MetaTileEntity = world.getMetaTileEntity(pos) ?: beingBrokenMetaTileEntity.get()
         val stack = metaTileEntity.getStackForm()
         val data = NBTTagCompound().apply { metaTileEntity.writeItemStackNbt(this) }
         if (!data.isEmpty) stack.tagCompound = data
