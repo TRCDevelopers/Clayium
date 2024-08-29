@@ -58,7 +58,7 @@ abstract class AbstractMinerMetaTileEntity(
     override val importItems = EmptyItemStackHandler
     override val exportItems = itemInventory
 
-    private val laserEnergyHolder: LaserEnergyHolder = LaserEnergyHolder(this)
+    protected val laserEnergyHolder: LaserEnergyHolder = LaserEnergyHolder(this)
 
     protected var progress = 0.0
     private var currentTargetPos: BlockPos? = null

@@ -101,7 +101,7 @@ abstract class AutoIoHandler(
     class EcImporter(
         metaTileEntity: MetaTileEntity,
         private val energizedClayItemHandler: IItemHandler = metaTileEntity.importItems,
-    ) : Importer(metaTileEntity, false, traitName = "${ClayiumDataCodecs.AUTO_IO_HANDLER}.${ClayiumDataCodecs.ENERGY_HOLDER}") {
+    ) : Importer(metaTileEntity, false, traitName = "${ClayiumDataCodecs.AUTO_IO_HANDLER}.${ClayiumDataCodecs.CLAY_ENERGY_HOLDER}") {
         override fun isImporting(side: EnumFacing): Boolean {
             return metaTileEntity.getInput(side) == MachineIoMode.CE
         }
