@@ -8,8 +8,6 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 
 abstract class TileClayMarker : TileEntity() {
 
@@ -22,9 +20,9 @@ abstract class TileClayMarker : TileEntity() {
 
     val markerPoses = mutableListOf<BlockPos>()
 
-    @SideOnly(Side.CLIENT)
     var rangeRenderMode = RangeRenderMode.DISABLED
 
+    //todo remove logic from client
     fun onRightClick() {
         rangeRenderMode = rangeRenderMode.next()
         val mutPos = BlockPos.MutableBlockPos()
