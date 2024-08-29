@@ -21,7 +21,7 @@ class RangedMinerMetaTileEntity(
     @Suppress("unused")
     val ioHandler = AutoIoHandler.Exporter(this)
 
-    private val posIter: Iterator<BlockPos>? by lazy {
+    private val posIter: Iterator<BlockPos.MutableBlockPos>? by lazy {
         val range = clayMarkerHandler.markedRangeAbsolute?.copy() ?: return@lazy null
         Cuboid6BlockPosIterator(range)
     }
@@ -32,7 +32,7 @@ class RangedMinerMetaTileEntity(
         while (iterator.hasNext()) {
             val pos = iterator.next()
             if (!world.isAirBlock(pos)) {
-                return pos
+                return pos.toImmutable()
             }
         }
         return null

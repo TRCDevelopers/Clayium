@@ -5,11 +5,12 @@ import net.minecraft.util.math.BlockPos
 
 /**
  * An iterator that iterates over all block positions within a Cuboid6 in a top-down order.
- * uses [BlockPos.MutableBlockPos] internally.
+ *
+ * **Uses MutableBlockPos. If you want to store the returned BlockPos for an extended period of time, call `.toImmutable()`.**
  */
 class Cuboid6BlockPosIterator(
     cuboid6: Cuboid6,
-) : Iterator<BlockPos> {
+) : Iterator<BlockPos.MutableBlockPos> {
 
     // x -> z -> y order
     private val xRange = cuboid6.min.x.toInt()..<cuboid6.max.x.toInt()
@@ -30,7 +31,7 @@ class Cuboid6BlockPosIterator(
         return yIter.hasNext() || xIter.hasNext() || zIter.hasNext()
     }
 
-    override fun next(): BlockPos {
+    override fun next(): BlockPos.MutableBlockPos {
         return if (xIter.hasNext()) {
             lastX = xIter.nextInt()
             backingPos.setPos(lastX, lastY, lastZ)
