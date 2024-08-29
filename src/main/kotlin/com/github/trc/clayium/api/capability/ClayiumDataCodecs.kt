@@ -35,7 +35,8 @@ object ClayiumDataCodecs {
 
     const val AUTO_IO_HANDLER = "autoIoHandler"
     const val RECIPE_LOGIC = "recipeLogic"
-    const val ENERGY_HOLDER = "energyHolder"
+    const val CLAY_ENERGY_HOLDER = "clayEnergyHolder"
+    const val LASER_ENERGY_HOLDER = "laserEnergyHolder"
     const val LASER_CONTROLLER = "laserController"
     const val RESONANCE_LISTENER = "resonanceListener"
     const val OVERCLOCK_HANDLER = "overclockHandler"

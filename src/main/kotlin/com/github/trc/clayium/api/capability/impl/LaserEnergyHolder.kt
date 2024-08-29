@@ -18,7 +18,7 @@ import net.minecraftforge.common.capabilities.Capability
 
 class LaserEnergyHolder(
     metaTileEntity: MetaTileEntity,
-) : MTETrait(metaTileEntity, ClayiumDataCodecs.ENERGY_HOLDER), IClayLaserAcceptor {
+) : MTETrait(metaTileEntity, ClayiumDataCodecs.LASER_ENERGY_HOLDER), IClayLaserAcceptor {
 
     var storedPower = LaserEnergy.ZERO
         private set
@@ -50,8 +50,8 @@ class LaserEnergyHolder(
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        if (capability == ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR) {
-            return ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR.cast(this)
+        if (capability === ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR) {
+            return capability.cast(this)
         }
         return super.getCapability(capability, facing)
     }

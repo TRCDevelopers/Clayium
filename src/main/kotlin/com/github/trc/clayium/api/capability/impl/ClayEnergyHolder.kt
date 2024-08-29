@@ -1,5 +1,6 @@
 package com.github.trc.clayium.api.capability.impl
 
+import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
@@ -15,6 +16,7 @@ import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.asWidgetResizing
+import net.minecraft.client.gui.GuiScreen
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
@@ -22,7 +24,7 @@ import net.minecraftforge.common.capabilities.Capability
 
 class ClayEnergyHolder(
     metaTileEntity: MetaTileEntity,
-) : MTETrait(metaTileEntity, ClayiumDataCodecs.ENERGY_HOLDER), IClayEnergyHolder {
+) : MTETrait(metaTileEntity, ClayiumDataCodecs.CLAY_ENERGY_HOLDER), IClayEnergyHolder {
 
     override val energizedClayItemHandler = object : ClayiumItemStackHandler(metaTileEntity, 1) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
@@ -78,6 +80,8 @@ class ClayEnergyHolder(
         return ItemSlot()
             .slot(SyncHandlers.itemSlot(energizedClayItemHandler, 0)
                 .accessibility(false, false))
+            .setEnabledIf { GuiScreen.isShiftKeyDown() }
+            .background(IDrawable.EMPTY)
     }
 
     fun createCeTextWidget(syncManager: GuiSyncManager): TextWidget {
