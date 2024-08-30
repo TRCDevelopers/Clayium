@@ -79,8 +79,12 @@ class MultiTrackBufferMetaTileEntity(
     val autoIoHandler: AutoIoHandler = MultiTrackIoHandler()
 
     override fun createMetaTileEntity(): MetaTileEntity {
-        validInputModes
         return MultiTrackBufferMetaTileEntity(this.metaTileEntityId, this.tier)
+    }
+
+    override fun onPlacement() {
+        this.setInput(frontFacing.opposite, M_ALL)
+        super.onPlacement()
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
@@ -98,12 +102,12 @@ class MultiTrackBufferMetaTileEntity(
 
     private fun getItemHandler(mode: MachineIoMode, facing: EnumFacing): IItemHandler? {
         return when (mode) {
-            MachineIoMode.M_1 -> createFilteredItemHandler(getTrackWithFilter(0), facing)
-            MachineIoMode.M_2 -> createFilteredItemHandler(getTrackWithFilter(1), facing)
-            MachineIoMode.M_3 -> createFilteredItemHandler(getTrackWithFilter(2), facing)
-            MachineIoMode.M_4 -> createFilteredItemHandler(getTrackWithFilter(3), facing)
-            MachineIoMode.M_5 -> createFilteredItemHandler(getTrackWithFilter(4), facing)
-            MachineIoMode.M_6 -> createFilteredItemHandler(getTrackWithFilter(5), facing)
+            M_1 -> createFilteredItemHandler(getTrackWithFilter(0), facing)
+            M_2 -> createFilteredItemHandler(getTrackWithFilter(1), facing)
+            M_3 -> createFilteredItemHandler(getTrackWithFilter(2), facing)
+            M_4 -> createFilteredItemHandler(getTrackWithFilter(3), facing)
+            M_5 -> createFilteredItemHandler(getTrackWithFilter(4), facing)
+            M_6 -> createFilteredItemHandler(getTrackWithFilter(5), facing)
             else -> createFilteredItemHandler(itemInventory, facing)
         }
     }
