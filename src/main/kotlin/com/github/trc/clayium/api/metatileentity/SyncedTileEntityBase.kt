@@ -8,11 +8,13 @@ import net.minecraft.network.NetworkManager
 import net.minecraft.network.PacketBuffer
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.tileentity.TileEntity
+import net.minecraftforge.common.util.Constants
 
 abstract class SyncedTileEntityBase : TileEntity(), ISyncedTileEntity {
     private val updates = PacketDataList()
 
     override fun writeCustomData(discriminator: Int, dataWriter: PacketBuffer.() -> Unit) {
+        if (world.isRemote) return
         val buf = Unpooled.buffer()
         dataWriter(PacketBuffer(buf))
         updates.add(discriminator, buf.array().copyOf(buf.writerIndex()))
@@ -26,10 +28,13 @@ abstract class SyncedTileEntityBase : TileEntity(), ISyncedTileEntity {
     }
 
     override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
-        val nbt = pkt.nbtCompound.getCompoundTag("d")
-        for (discriminator in nbt.keySet) {
-            val data = nbt.getByteArray(discriminator)
-            receiveCustomData(discriminator.toInt(), PacketBuffer(Unpooled.wrappedBuffer(data)))
+        val discToDataPairsTagList = pkt.nbtCompound.getTagList("d", Constants.NBT.TAG_COMPOUND)
+        for (entryNbtBase in discToDataPairsTagList) {
+            val entry = entryNbtBase as NBTTagCompound
+            for (discriminator in entry.keySet) {
+                val data = entry.getByteArray(discriminator)
+                receiveCustomData(discriminator.toInt(), PacketBuffer(Unpooled.wrappedBuffer(data)))
+            }
         }
     }
 
