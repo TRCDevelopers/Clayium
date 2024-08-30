@@ -71,13 +71,13 @@ object MachineBlockRecipeLoader {
                     'P', UnificationEntry(OrePrefix.largePlate, CMaterials.clay),
                     'G', UnificationEntry(OrePrefix.gear, CMaterials.clay))
                 CLAY -> RecipeUtils.addSmeltingRecipe(hull.getItem(DEFAULT), hull.getItem(CLAY))
-                DENSE_CLAY ->
+                DENSE_CLAY, SIMPLE ->
                     RecipeUtils.addShapedRecipe("machine_hull_${tier.lowerName}", hull.getItem(tier),
                         "PPP", "PCP", "PPP",
                         'C', circuits[i],
                         'P', UnificationEntry(OrePrefix.largePlate, mainHullMaterials[i])
                     )
-                SIMPLE, BASIC, PRECISION, CLAY_STEEL, CLAYIUM,
+                BASIC, PRECISION, CLAY_STEEL, CLAYIUM,
                 ULTIMATE, ANTIMATTER, PURE_ANTIMATTER, OEC, OPA ->
                     RecipeUtils.addShapedRecipe("machine_hull_${tier.lowerName}", hull.getItem(tier),
                         "PEP", "PCP", "PPP",
