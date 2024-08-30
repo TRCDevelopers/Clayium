@@ -24,4 +24,8 @@ class SimpleItemFilter(
         this.stacks = CUtils.readItems("stacks", nbt)
         this.whitelist = nbt.getBoolean("whitelist")
     }
+
+    override fun toString(): String {
+        return "SimpleItemFilter(stacks=$stacks, whitelist=$whitelist)"
+    }
 }

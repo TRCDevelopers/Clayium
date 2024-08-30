@@ -11,7 +11,6 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.ItemCapabilityProvider
 import com.cleanroommc.modularui.utils.ItemStackItemHandler
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
-import com.cleanroommc.modularui.value.sync.IntSyncValue
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.CycleButtonWidget
@@ -50,20 +49,21 @@ class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
             (0..<FILTER_SIZE_Y).map { column }.toTypedArray()
         }
 
-        val isWhiteListSyncHandler = IntSyncValue(
+        val isWhiteListSyncHandler = SyncHandlers.bool(
             {
                 val tag = data.usedItemStack.tagCompound
-                if (tag == null || !tag.hasKey("isWhiteList", Constants.NBT.TAG_INT)) {
-                    1
+                if (tag == null || !tag.hasKey("isWhiteList", Constants.NBT.TAG_BYTE)) {
+                    true
                 } else {
-                    tag.getInteger("isWhiteList")
+                    tag.getBoolean("isWhiteList")
                 }
             },
             { value ->
                 val tag = stack.tagCompound ?: NBTTagCompound()
-                tag.setInteger("isWhiteList", value)
+                tag.setBoolean("isWhiteList", value)
                 stack.tagCompound = tag
-            })
+            }
+        )
 
         return ModularPanel.defaultPanel("simple_item_filter")
             .child(Column().margin(7)
@@ -77,7 +77,7 @@ class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
                         .align(Alignment.CenterRight)
                         .value(isWhiteListSyncHandler)
                         .overlay(DynamicDrawable {
-                            if (isWhiteListSyncHandler.value == 1) {
+                            if (isWhiteListSyncHandler.value) {
                                 GuiTextures.FILTER
                             } else {
                                 GuiTextures.CLOSE
@@ -121,19 +121,21 @@ class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
                 stacksMutableList.add(handlerStack.copy())
             }
         }
-        val isWhiteList = (stack.tagCompound?.getInteger("isWhiteList") == 1)
+        val tag = stack.tagCompound?.takeIf { it.hasKey("isWhiteList", Constants.NBT.TAG_BYTE) }
+        val isWhiteList = if (tag == null) true else tag.getBoolean("isWhiteList")
         return SimpleItemFilter(stacksMutableList, isWhiteList)
     }
 
     override fun initCapabilities(stack: ItemStack, nbt: NBTTagCompound?): ICapabilityProvider? {
         return object : ItemCapabilityProvider {
             override fun <T> getCapability(capability: Capability<T>): T? {
-                if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-                    return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(ItemStackItemHandler(stack, FILTER_SIZE_X * FILTER_SIZE_Y))
-                } else if (capability === ClayiumCapabilities.ITEM_FILTER) {
-                    return ClayiumCapabilities.ITEM_FILTER.cast(createFilter(stack))
+                return when {
+                    capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+                        -> capability.cast(ItemStackItemHandler(stack, FILTER_SIZE_X * FILTER_SIZE_Y))
+                    capability === ClayiumCapabilities.ITEM_FILTER
+                        -> capability.cast(createFilter(stack))
+                    else -> null
                 }
-                return null
             }
         }
     }
