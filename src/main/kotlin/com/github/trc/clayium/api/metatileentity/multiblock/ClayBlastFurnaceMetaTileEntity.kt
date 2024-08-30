@@ -3,7 +3,6 @@ package com.github.trc.clayium.api.metatileentity.multiblock
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
@@ -13,21 +12,13 @@ import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.Stru
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.client.model.ModelLoader
 import kotlin.let
 
 class ClayBlastFurnaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : WorkableMetaTileEntity(
-    metaTileEntityId, tier,
-    validInputModesLists[CRecipes.CLAY_BLAST_FURNACE.maxInputs], validOutputModesLists[CRecipes.CLAY_BLAST_FURNACE.maxOutputs],
-    "machine.${CValues.MOD_ID}.clay_blast_furnace",
-    CRecipes.CLAY_BLAST_FURNACE,
-) {
+) : WorkableMetaTileEntity(metaTileEntityId, tier, CRecipes.CLAY_BLAST_FURNACE,) {
     private val multiblockLogic = MultiblockLogic(this, ::checkStructure)
 
     //todo: fix these code duplication?
@@ -76,11 +67,5 @@ class ClayBlastFurnaceMetaTileEntity(
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayBlastFurnaceMetaTileEntity(metaTileEntityId, tier)
-    }
-
-    override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta,
-            ModelResourceLocation(clayiumId("clay_blast_furnace"), "tier=${tier.numeric}")
-        )
     }
 }

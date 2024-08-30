@@ -1,20 +1,14 @@
 package com.github.trc.clayium.common.metatileentities
 
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.metatileentity.AbstractItemGeneratorMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.block.material.Material
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.init.Blocks
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.client.model.ModelLoader
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 
 class CobblestoneGeneratorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -22,7 +16,7 @@ class CobblestoneGeneratorMetaTileEntity(
 ) : AbstractItemGeneratorMetaTileEntity(
     metaTileEntityId, tier,
     validInputModes = onlyNoneList, validOutputModes = validOutputModesLists[1],
-    "machine.${CValues.MOD_ID}.cobblestone_generator",
+    "cobblestone_generator",
 ) {
 
     override val faceTexture = clayiumId("blocks/cobblestone_generator")
@@ -55,10 +49,5 @@ class CobblestoneGeneratorMetaTileEntity(
             if (hasWaterNeighbor && hasLavaNeighbor) return true
         }
         return false
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("cobblestone_generator"), "tier=${tier.lowerName}"))
     }
 }

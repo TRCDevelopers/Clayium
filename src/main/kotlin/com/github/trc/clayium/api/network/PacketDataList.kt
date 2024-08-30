@@ -1,6 +1,7 @@
 package com.github.trc.clayium.api.network
 
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.nbt.NBTTagList
 
 class PacketDataList {
     private var discriminators = IntArray(4)
@@ -19,14 +20,16 @@ class PacketDataList {
         size++
     }
 
-    fun dumpToNbt(): NBTTagCompound {
-        val compound = NBTTagCompound()
+    fun dumpToNbt(): NBTTagList {
+        val listTag = NBTTagList()
         for (i in 0..<this.size) {
-            compound.setByteArray(this.discriminators[i].toString(), this.data[i])
+            val entry = NBTTagCompound()
+            entry.setByteArray(this.discriminators[i].toString(), this.data[i])
+            listTag.appendTag(entry)
         }
         this.size = 0
         this.data.clear()
         this.discriminators.fill(0)
-        return compound
+        return listTag
     }
 }

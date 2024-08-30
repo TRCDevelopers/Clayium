@@ -28,11 +28,11 @@ abstract class AbstractItemGeneratorMetaTileEntity(
     tier: ITier,
     validInputModes: List<MachineIoMode> = onlyNoneList,
     validOutputModes: List<MachineIoMode> = validOutputModesLists[1],
-    translationKey: String,
+    name: String,
 ) : MetaTileEntity(
     metaTileEntityId, tier,
     validInputModes, validOutputModes,
-    translationKey,
+    name,
 ) {
 
     open val inventoryRowSize = when (tier.numeric) {

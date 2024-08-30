@@ -8,19 +8,19 @@
   },
   "variants": {
     "tier": {
-      "9": {
+      "ultimate": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier9"
         },
         "model": "clayium:machine"
       },
-      "10": {
+      "antimatter": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier10"
         },
         "model": "clayium:machine"
       },
-      "11": {
+      "pure_antimatter": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier11"
         },

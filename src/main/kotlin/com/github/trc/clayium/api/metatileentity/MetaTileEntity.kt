@@ -38,7 +38,6 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.MachineIoMode.*
 import com.github.trc.clayium.api.util.asWidgetResizing
-import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.gui.ClayGuiTextures
@@ -83,12 +82,17 @@ abstract class MetaTileEntity(
     open val validInputModes: List<MachineIoMode>,
     open val validOutputModes: List<MachineIoMode>,
     /**
-     * used in item/block name and gui title
+     * simple name for this machine, like "bending_machine" or "ranged_miner".
+     * used for translation key and item model registration.
+     * translation key will be "machine.${metaTileEntityId.namespace}.name".
+     * for a translating logic, see [getItemStackDisplayName].
+     * item model location will be ("${metaTileEntityId.namespace}:machines/${name}", "tier={tier.lowerName}").
      */
-    val translationKey: String,
+    private val name: String,
 ) : ISyncedTileEntity, IWorldObject, IGuiHolder<PosGuiData>, IPipeConnectable {
 
     val forgeRarity = tier.rarity
+    val translationKey = "machine.${metaTileEntityId.namespace}.$name"
 
     var holder: MetaTileEntityHolder? = null
     val world: World? get() = holder?.world
@@ -131,10 +135,12 @@ abstract class MetaTileEntity(
     open val hasFrontFacing = true
     var frontFacing = EnumFacing.NORTH
         set(value) {
-            val syncFlag = !(isRemote || field == value)
-            if (isFacingValid(value)) field = value
-            markDirty()
-            if (syncFlag) writeCustomData(UPDATE_FRONT_FACING) { writeByte(value.index) }
+            if (isFacingValid(value)) {
+                val syncFlag = !(isRemote || field == value)
+                field = value
+                markDirty()
+                if (syncFlag) writeCustomData(UPDATE_FRONT_FACING) { writeByte(value.index) }
+            }
         }
 
     private var timer = 0L
@@ -150,18 +156,10 @@ abstract class MetaTileEntity(
     val overclock: Double get() = overclockHandler.rawOcFactor
 
     @SideOnly(Side.CLIENT)
-    abstract fun registerItemModel(item: Item, meta: Int)
-    @Deprecated("move machine status to machines/ subdirectory")
-    @SideOnly(Side.CLIENT)
-    fun registerItemModelDefault(item: Item, meta: Int, name: String) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId(name), "tier=${tier.lowerName}"))
-    }
-    @SideOnly(Side.CLIENT)
-    fun registerItemModelDefaultNew(item: Item, meta: Int, name: String) {
+    open fun registerItemModel(item: Item, meta: Int) {
         ModelLoader.setCustomModelResourceLocation(item, meta,
-            ModelResourceLocation(clayiumId("machines/$name"), "tier=${tier.lowerName}"))
+            ModelResourceLocation(ResourceLocation(metaTileEntityId.namespace, "machines/$name"), "tier=${tier.lowerName}"))
     }
-
 
     fun addMetaTileEntityTrait(trait: MTETrait) {
         mteTraits[trait.name] = trait
@@ -674,14 +672,6 @@ abstract class MetaTileEntity(
         val onlyNoneList = listOf(NONE)
         val energyAndNone = listOf(NONE, CE)
         val bufferValidInputModes = listOf(NONE, ALL)
-
-        val mBufferValidIoModes = listOf(
-            listOf(NONE, M_ALL, M_1, M_2),
-            listOf(NONE, M_ALL, M_1, M_2, M_3),
-            listOf(NONE, M_ALL, M_1, M_2, M_3, M_4),
-            listOf(NONE, M_ALL, M_1, M_2, M_3, M_4, M_5),
-            listOf(NONE, M_ALL, M_1, M_2, M_3, M_4, M_5, M_6)
-        )
 
         val validInputModesLists = listOf(
             listOf(NONE, CE),

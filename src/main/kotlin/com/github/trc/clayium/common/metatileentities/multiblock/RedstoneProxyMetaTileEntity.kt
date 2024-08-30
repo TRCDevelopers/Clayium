@@ -14,21 +14,16 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.ProxyMetaTileEntityBase
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.I18n
-import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.client.model.ModelLoader
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 
 class RedstoneProxyMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "machine.${CValues.MOD_ID}.redstone_proxy") {
+) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "redstone_proxy") {
 
-    override val faceTexture: ResourceLocation = clayiumId("blocks/redstoneinterface")
+    override val faceTexture: ResourceLocation = clayiumId("blocks/redstone_proxy")
     override val useFaceForAllSides: Boolean = true
 
     private var mode = Mode.NONE
@@ -87,11 +82,6 @@ class RedstoneProxyMetaTileEntity(
                 )
             )
             .bindPlayerInventory()
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("redstone_proxy"), "tier=${tier.lowerName}"))
     }
 
     override fun canOpenGui(): Boolean {

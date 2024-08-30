@@ -10,7 +10,6 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widget.Widget
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
@@ -33,19 +32,15 @@ import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.registry.CaReactorRecipeRegistry
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import net.minecraft.client.resources.I18n
-import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 import kotlin.math.pow
 
 class CaReactorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1],
-    "machine.${CValues.MOD_ID}.ca_reactor", caReactorRegistry) {
+) : WorkableMetaTileEntity(metaTileEntityId, tier, caReactorRegistry) {
 
     @Suppress("Unused") private val ioHandler = AutoIoHandler.Combined(this)
     private val multiblockLogic = MultiblockLogic(this, ::checkStructure)
@@ -183,11 +178,6 @@ class CaReactorMetaTileEntity(
     }
 
     override fun createMetaTileEntity() = CaReactorMetaTileEntity(metaTileEntityId, tier)
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        registerItemModelDefault(item, meta, "ca_reactor")
-    }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         syncManager.syncValue("caReactorEfficiency", SyncHandlers.doubleNumber(::efficiency, ::efficiency::set))

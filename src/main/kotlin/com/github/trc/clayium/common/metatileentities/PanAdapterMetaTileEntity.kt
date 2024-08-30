@@ -17,7 +17,6 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Grid
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
@@ -40,7 +39,6 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
@@ -55,8 +53,7 @@ import java.util.function.Function
 class PanAdapterMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList,
-    "machine.${CValues.MOD_ID}.pan_adapter.${tier.lowerName}"), IPanAdapter {
+) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "pan_adapter"), IPanAdapter {
 
     override val requiredTextures get() = listOf(clayiumId("blocks/pan_adapter"))
 
@@ -230,11 +227,6 @@ class PanAdapterMetaTileEntity(
                     )
                 )
             }
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        registerItemModelDefault(item, meta, "pan_adapter")
     }
 
     @SideOnly(Side.CLIENT)

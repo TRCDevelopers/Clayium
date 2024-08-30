@@ -10,14 +10,10 @@ import com.github.trc.clayium.api.capability.impl.ClayLaserSourceMteTrait
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
-import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.config.ConfigCore
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.item.Item
 import net.minecraft.tileentity.TileEntityBeacon
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.IItemHandler
@@ -30,11 +26,7 @@ class ClayLaserMetaTileEntity(
     private val laserRed: Int = 0,
     private val laserGreen: Int = 0,
     private val laserBlue: Int = 0,
-) : MetaTileEntity(
-    metaTileEntityId, tier,
-    validInputModesLists[0], validOutputModesLists[0],
-    "machine.${CValues.MOD_ID}.clay_laser",
-) {
+) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[0], validOutputModesLists[0], "clay_laser",) {
     override val faceTexture = ResourceLocation(CValues.MOD_ID, "blocks/clay_laser")
 
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
@@ -100,11 +92,5 @@ class ClayLaserMetaTileEntity(
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayLaserMetaTileEntity(metaTileEntityId, tier, laserRed, laserGreen, laserBlue)
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta,
-            ModelResourceLocation(clayiumId("clay_laser"), "tier=${tier.numeric}"))
     }
 }

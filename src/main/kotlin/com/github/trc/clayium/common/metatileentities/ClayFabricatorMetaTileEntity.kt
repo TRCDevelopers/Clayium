@@ -6,7 +6,6 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.AbstractWorkable
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
@@ -25,12 +24,9 @@ import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
 import com.github.trc.clayium.common.util.TransferUtils
 import net.minecraft.init.Blocks
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 import kotlin.math.pow
 
 class ClayFabricatorMetaTileEntity(
@@ -38,7 +34,7 @@ class ClayFabricatorMetaTileEntity(
     tier: ITier,
     private val maxClayCompressionLevel: Int,
     private val craftTimeLogic: (compressionLevel: Int, stackCount: Int) -> Long
-) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1], "machine.${CValues.MOD_ID}.clay_fabricator") {
+) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1], name = "clay_fabricator") {
     override val faceTexture = clayiumId("blocks/clay_fabricator")
 
     override val importItems = NotifiableItemStackHandler(this, 1, this, isExport = false)
@@ -61,11 +57,6 @@ class ClayFabricatorMetaTileEntity(
             .child(slotsAndProgressBar.align(Alignment.Center))
             .child(IKey.dynamic { workable.currentCe.format() }.asWidgetResizing()
                 .left(0).bottom(10))
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        registerItemModelDefault(item, meta, "clay_fabricator")
     }
 
     override fun createMetaTileEntity() = ClayFabricatorMetaTileEntity(metaTileEntityId, tier, maxClayCompressionLevel, craftTimeLogic)

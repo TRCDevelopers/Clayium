@@ -13,12 +13,11 @@ class SimpleMachineMetaTileEntity(
     tier: ITier,
     validInputModes: List<MachineIoMode>,
     validOutputModes: List<MachineIoMode>,
-    translationKey: String,
     override val faceTexture: ResourceLocation,
     recipeRegistry: RecipeRegistry<*>,
     // saved for createMetaTileEntity()
     private val workableProvider: (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> AbstractRecipeLogic = ::RecipeLogicEnergy,
-) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey, recipeRegistry) {
+) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, recipeRegistry) {
 
     constructor(
         metaTileEntityId: ResourceLocation,
@@ -28,7 +27,6 @@ class SimpleMachineMetaTileEntity(
     ) : this(
         metaTileEntityId, tier,
         validInputModesLists[recipeRegistry.maxInputs], validOutputModesLists[recipeRegistry.maxOutputs],
-        translationKey = "machine.${metaTileEntityId.namespace}.${recipeRegistry.category.categoryName}",
         faceTexture = ResourceLocation(metaTileEntityId.namespace, "blocks/${recipeRegistry.category.categoryName}"),
         recipeRegistry, workableProvider
     )
@@ -36,6 +34,6 @@ class SimpleMachineMetaTileEntity(
     override val workable = workableProvider(this, recipeRegistry, clayEnergyHolder)
 
     override fun createMetaTileEntity(): MetaTileEntity {
-        return SimpleMachineMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey, faceTexture, recipeRegistry, workableProvider)
+        return SimpleMachineMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, faceTexture, recipeRegistry, workableProvider)
     }
 }

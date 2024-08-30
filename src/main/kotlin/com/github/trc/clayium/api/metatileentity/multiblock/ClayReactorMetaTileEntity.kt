@@ -4,7 +4,6 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IClayLaserAcceptor
 import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
@@ -28,12 +27,7 @@ import net.minecraftforge.common.capabilities.Capability
 class ClayReactorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-): WorkableMetaTileEntity(
-    metaTileEntityId, tier,
-    validInputModesLists[2], validOutputModesLists[2],
-    "machine.${CValues.MOD_ID}.clay_reactor",
-    CRecipes.CLAY_REACTOR
-), IClayLaserAcceptor {
+): WorkableMetaTileEntity(metaTileEntityId, tier, CRecipes.CLAY_REACTOR), IClayLaserAcceptor {
     private val multiblockLogic = MultiblockLogic(this, ::checkStructure)
 
     var laser: ClayLaser? = null

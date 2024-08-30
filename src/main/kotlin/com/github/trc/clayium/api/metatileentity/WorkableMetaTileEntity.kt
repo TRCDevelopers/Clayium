@@ -19,29 +19,22 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.client.model.ModelLoader
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 
 abstract class WorkableMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     validInputModes: List<MachineIoMode>,
     validOutputModes: List<MachineIoMode>,
-    translationKey: String,
     val recipeRegistry: RecipeRegistry<*>,
     val inputSize: Int = recipeRegistry.maxInputs,
     val outputSize: Int = recipeRegistry.maxOutputs,
-) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, translationKey) {
+) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, recipeRegistry.category.categoryName) {
 
     constructor(metaTileEntityId: ResourceLocation, tier: ITier, recipeRegistry: RecipeRegistry<*>)
-            : this(metaTileEntityId, tier, validInputModesLists[recipeRegistry.maxInputs], validOutputModesLists[recipeRegistry.maxOutputs],
-        "machine.${metaTileEntityId.namespace}.${recipeRegistry.category.categoryName}", recipeRegistry)
+            : this(metaTileEntityId, tier, validInputModesLists[recipeRegistry.maxInputs], validOutputModesLists[recipeRegistry.maxOutputs], recipeRegistry)
 
     override val importItems = NotifiableItemStackHandler(this, inputSize, this, false)
     override val exportItems = NotifiableItemStackHandler(this, outputSize, this, true)
@@ -50,11 +43,6 @@ abstract class WorkableMetaTileEntity(
 
     val clayEnergyHolder = ClayEnergyHolder(this)
     abstract val workable: AbstractRecipeLogic
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation("${recipeRegistry.category.modid}:${recipeRegistry.category.categoryName}", "tier=${tier.numeric}"))
-    }
 
     override fun onPlacement() {
         this.setInput(EnumFacing.UP, MachineIoMode.ALL)

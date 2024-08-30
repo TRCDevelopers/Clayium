@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.layout.Column
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.BlockMachine
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER_ITEM
@@ -56,7 +55,7 @@ class StorageContainerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     isUpgraded: Boolean,
-) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, validOutputModesLists[1], "machine.${CValues.MOD_ID}.storage_container") {
+) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, validOutputModesLists[1], "storage_container") {
 
     override val faceTexture = clayiumId("blocks/storage_container")
     override val requiredTextures get() = listOf(

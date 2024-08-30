@@ -13,7 +13,6 @@ import com.cleanroommc.modularui.widget.scroll.VerticalScrollData
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Grid
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_PAN_DUPLICATION_ENTRIES
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
@@ -44,16 +43,13 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.init.Blocks
-import net.minecraft.item.Item
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
-import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -63,8 +59,7 @@ import kotlin.math.min
 class PanCoreMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList,
-    "machine.${CValues.MOD_ID}.pan_core"), IPan {
+) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "pan_core"), IPan {
     override val importItems = EmptyItemStackHandler
     override val exportItems = EmptyItemStackHandler
     override val itemInventory = EmptyItemStackHandler
@@ -232,11 +227,6 @@ class PanCoreMetaTileEntity(
             return capability.cast(IPanCable.INSTANCE)
         }
         return super.getCapability(capability, facing)
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("pan_core"), "tier=${tier.lowerName}"))
     }
 
     @SideOnly(Side.CLIENT)
