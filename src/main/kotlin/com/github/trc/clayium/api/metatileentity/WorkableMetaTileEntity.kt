@@ -1,8 +1,5 @@
 package com.github.trc.clayium.api.metatileentity
 
-import com.cleanroommc.modularui.api.drawable.IDrawable
-import com.cleanroommc.modularui.factory.PosGuiData
-import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
@@ -11,7 +8,6 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
@@ -23,7 +19,6 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
-import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -73,11 +68,10 @@ abstract class WorkableMetaTileEntity(
         clearInventory(itemBuffer, clayEnergyHolder.energizedClayItemHandler)
     }
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         val slotsAndProgressBar = Row()
             .widthRel(0.7f).height(26)
             .align(Alignment.Center)
-            .top(30)
             .child(workable.getProgressBar(syncManager).align(Alignment.Center))
 
         if (importItems.slots == 1) {
@@ -117,28 +111,18 @@ abstract class WorkableMetaTileEntity(
             )
         }
 
-        return ModularPanel.defaultPanel(this.metaTileEntityId.toString())
-            .child(Column().margin(7).sizeRel(1f)
-                .child(buildMainParentWidget(syncManager)
-                    .child(slotsAndProgressBar.align(Alignment.Center))
-                    .childIf(this.tier.numeric < 3, ButtonWidget()
-                        .size(16, 16).align(Alignment.BottomCenter)
-                        .overlay(ClayGuiTextures.CE_BUTTON)
-                        .hoverOverlay(ClayGuiTextures.CE_BUTTON_HOVERED)
-                        .syncHandler(InteractionSyncHandler().setOnMousePressed { clayEnergyHolder.addEnergy(ClayEnergy(1)) })
-                    )
-                )
-                .child(SlotGroupWidget.playerInventory(0))
-            )
-    }
-
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
+            .child(slotsAndProgressBar.align(Alignment.Center))
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .bottom(12).left(0))
             .child(clayEnergyHolder.createSlotWidget()
-                .align(Alignment.BottomRight)
-                .setEnabledIf { GuiScreen.isShiftKeyDown() }
-                .background(IDrawable.EMPTY))
+                .align(Alignment.BottomRight))
+            .childIf(tier.numeric < 3, ButtonWidget()
+                .size(16, 16).align(Alignment.BottomCenter)
+                .overlay(ClayGuiTextures.CE_BUTTON)
+                .hoverOverlay(ClayGuiTextures.CE_BUTTON_HOVERED)
+                .syncHandler(InteractionSyncHandler().setOnMousePressed {
+                    clayEnergyHolder.addEnergy(ClayEnergy(1))
+                }))
     }
 }

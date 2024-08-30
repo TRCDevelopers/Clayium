@@ -1,12 +1,11 @@
 package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.factory.PosGuiData
-import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.NumberFormat
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.github.trc.clayium.api.CValues
@@ -59,22 +58,17 @@ class ResonatingCollectorMetaTileEntity(
         ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("resonating_collector"), "tier=${tier.lowerName}"))
     }
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        syncManager.registerSlotGroup("machine_inventory", 3)
-        return ModularPanel.defaultPanel("resonating_collector")
-            .child(mainColumn {
-                child(buildMainParentWidget(syncManager)
-                    .child(IKey.dynamic {
-                        I18n.format("gui.${CValues.MOD_ID}.resonance", NumberFormat.formatWithMaxDigits(resonanceManager.resonance))
-                    }.asWidget()
-                        .align(Alignment.BottomRight))
-                    .child(SlotGroupWidget.builder()
-                        .matrix("III", "III", "III")
-                        .key('I') { i ->
-                            ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, i)
-                                .slotGroup("machine_inventory"))
-                        }.build().align(Alignment.Center))
-                )
-            })
+    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+        return super.buildMainParentWidget(syncManager)
+            .child(IKey.dynamic {
+                I18n.format("gui.${CValues.MOD_ID}.resonance", NumberFormat.formatWithMaxDigits(resonanceManager.resonance))
+            }.asWidget()
+                .align(Alignment.BottomRight))
+            .child(SlotGroupWidget.builder()
+                .matrix("III", "III", "III")
+                .key('I') { i ->
+                    ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, i)
+                        .slotGroup("machine_inventory"))
+                }.build().align(Alignment.Center))
     }
 }

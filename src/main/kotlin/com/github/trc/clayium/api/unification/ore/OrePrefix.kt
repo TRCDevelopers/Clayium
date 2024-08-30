@@ -5,10 +5,8 @@ import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CMaterialFlags
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.CPropertyKey
+import com.github.trc.clayium.common.util.BothSideI18n
 import com.google.common.base.CaseFormat
-import net.minecraft.client.resources.I18n
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.function.Predicate
 
 class OrePrefix(
@@ -37,11 +35,12 @@ class OrePrefix(
         return ignoredMaterials.contains(material)
     }
 
-    @SideOnly(Side.CLIENT)
     fun getLocalizedName(material: CMaterial): String {
         val specialKey = "${material.translationKey}.${this.snake}"
-        if (I18n.hasKey(specialKey)) return I18n.format(specialKey)
-        return I18n.format("${CValues.MOD_ID}.ore_prefix.${snake}", material.localizedName)
+        if (BothSideI18n.hasKey(specialKey)) {
+            return BothSideI18n.format(specialKey)
+        }
+        return BothSideI18n.format("${CValues.MOD_ID}.ore_prefix.${snake}", BothSideI18n.format(material.translationKey))
     }
 
     override fun toString(): String {

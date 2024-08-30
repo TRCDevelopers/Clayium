@@ -1,11 +1,9 @@
 package com.github.trc.clayium.common.metatileentities
 
-import com.cleanroommc.modularui.api.drawable.IDrawable
-import com.cleanroommc.modularui.factory.PosGuiData
-import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
@@ -16,7 +14,6 @@ import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import net.minecraft.client.gui.GuiScreen
 import net.minecraft.util.ResourceLocation
 
 class ChemicalMetalSeparatorMetaTileEntity(
@@ -30,7 +27,7 @@ class ChemicalMetalSeparatorMetaTileEntity(
     override val exportItems = NotifiableItemStackHandler(this, 116, this, isExport = true)
     override val workable = RecipeLogicEnergy(this, recipeRegistry, clayEnergyHolder)
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         val slotsAndProgressBar = Row()
             .widthRel(0.8f).height(18 * 4)
             .align(Alignment.Center)
@@ -48,18 +45,12 @@ class ChemicalMetalSeparatorMetaTileEntity(
                 .align(Alignment.CenterRight)
             )
 
-        return ModularPanel.defaultPanel("chemical_metal_separator", 176, 190)
-            .child(mainColumn {
-                child(buildMainParentWidget(syncManager)
-                    .child(slotsAndProgressBar)
-                    .child(clayEnergyHolder.createSlotWidget()
-                        .align(Alignment.BottomRight)
-                        .setEnabledIf { GuiScreen.isShiftKeyDown() }
-                        .background(IDrawable.EMPTY))
-                    .child(clayEnergyHolder.createCeTextWidget(syncManager)
-                        .bottom(12).left(0))
-                )
-            })
+        return super.buildMainParentWidget(syncManager)
+            .child(slotsAndProgressBar)
+            .child(clayEnergyHolder.createSlotWidget()
+                .align(Alignment.BottomRight))
+            .child(clayEnergyHolder.createCeTextWidget(syncManager)
+                .bottom(12).left(0))
     }
 
     override fun createMetaTileEntity() = ChemicalMetalSeparatorMetaTileEntity(metaTileEntityId, tier)

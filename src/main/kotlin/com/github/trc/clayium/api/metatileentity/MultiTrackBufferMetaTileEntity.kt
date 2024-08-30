@@ -128,7 +128,7 @@ class MultiTrackBufferMetaTileEntity(
                 it.size(max(176, trackInvSize * 18 + 4 + 18 + /* margin*/ 12), 18 + trackRow * 18 + 94 + 2)
                 it.align(Alignment.Center)
             }
-            .child(mainColumn {
+            .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
                     .child(Column().width(trackInvSize * 18 + 4 + 18).height(trackRow * 18)
                         .align(Alignment.Center)
@@ -151,7 +151,7 @@ class MultiTrackBufferMetaTileEntity(
                         }
                     )
                 )
-            })
+            }
     }
 
     override fun writeToNBT(data: NBTTagCompound) {

@@ -1,10 +1,9 @@
 package com.github.trc.clayium.common.metatileentities
 
-import com.cleanroommc.modularui.factory.PosGuiData
-import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
@@ -100,32 +99,28 @@ class PanDuplicatorMetaTileEntity(
         return PanDuplicatorMetaTileEntity(metaTileEntityId, tier, duplicatorRank)
     }
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        return ModularPanel.defaultPanel("pan_duplicator")
-            .child(mainColumn {
-                child(buildMainParentWidget(syncManager)
-                    .child(clayEnergyHolder.createCeTextWidget(syncManager)
-                        .bottom(12).left(0))
-                    .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
-                        .child(SlotGroupWidget.builder()
-                            .row("AD")
-                            .key('A', ItemSlot().slot(SyncHandlers.itemSlot(antimatterSlot, 0).singletonSlotGroup())
-                                .background(ClayGuiTextures.IMPORT_1_SLOT))
-                            .key('D', ItemSlot().slot(SyncHandlers.itemSlot(duplicationTargetSlot, 0).singletonSlotGroup())
-                                .background(ClayGuiTextures.IMPORT_2_SLOT))
-                            .build()
-                            .align(Alignment.CenterLeft)
-                        )
-                        .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).singletonSlotGroup().accessibility(false, true))
-                            .align(Alignment.CenterRight))
-                        .child(ProgressWidget()
-                            .progress(0.0)
-                            .size(22, 17).align(Alignment.Center)
-                            .texture(ClayGuiTextures.PROGRESS_BAR, 22)
-                        )
-                    )
+    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+        return super.buildMainParentWidget(syncManager)
+            .child(clayEnergyHolder.createCeTextWidget(syncManager)
+                .bottom(12).left(0))
+            .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
+                .child(SlotGroupWidget.builder()
+                    .row("AD")
+                    .key('A', ItemSlot().slot(SyncHandlers.itemSlot(antimatterSlot, 0).singletonSlotGroup())
+                        .background(ClayGuiTextures.IMPORT_1_SLOT))
+                    .key('D', ItemSlot().slot(SyncHandlers.itemSlot(duplicationTargetSlot, 0).singletonSlotGroup())
+                        .background(ClayGuiTextures.IMPORT_2_SLOT))
+                    .build()
+                    .align(Alignment.CenterLeft)
                 )
-            })
+                .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).singletonSlotGroup().accessibility(false, true))
+                    .align(Alignment.CenterRight))
+                .child(ProgressWidget()
+                    .progress(0.0)
+                    .size(22, 17).align(Alignment.Center)
+                    .texture(ClayGuiTextures.PROGRESS_BAR, 22)
+                )
+            )
     }
 
     override fun setNetwork(network: IPan) {

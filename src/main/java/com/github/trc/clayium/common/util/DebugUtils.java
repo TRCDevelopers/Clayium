@@ -3,11 +3,14 @@ package com.github.trc.clayium.common.util;
 import com.github.trc.clayium.api.CValues;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class DebugUtils {
     @SuppressWarnings("unused")
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public static void onTooltip(ItemTooltipEvent e) {
         if (!CValues.INSTANCE.isDeobf()) return;
         if (e.getItemStack().isEmpty()) {

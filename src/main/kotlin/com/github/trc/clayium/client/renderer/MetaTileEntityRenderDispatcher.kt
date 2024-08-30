@@ -25,6 +25,6 @@ object MetaTileEntityRenderDispatcher : TileEntitySpecialRenderer<MetaTileEntity
     }
 
     override fun isGlobalRenderer(te: MetaTileEntityHolder): Boolean {
-        return te.metaTileEntity?.useGlobalRenderer == true
+        return te.metaTileEntity?.useGlobalRenderer() == true
     }
 }

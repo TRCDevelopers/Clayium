@@ -1,6 +1,7 @@
 package com.github.trc.clayium.api.metatileentity
 
 import codechicken.lib.vec.Cuboid6
+import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
@@ -30,7 +31,6 @@ import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
-import net.minecraft.client.resources.I18n
 import net.minecraft.item.Item
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntityBeacon
@@ -60,7 +60,6 @@ abstract class AbstractMinerMetaTileEntity(
     protected var progress = 0.0
     private var workingEnabled = true
 
-    @SideOnly(Side.CLIENT)
     private var rangeRenderMode = RangeRenderMode.DISABLED
 
     /**
@@ -118,9 +117,9 @@ abstract class AbstractMinerMetaTileEntity(
             .hoverBackground(ClayGuiTextures.DISPLAY_RANGE_HOVERED)
             .length(3)
             .value(EnumValue.Dynamic(RangeRenderMode::class.java, ::rangeRenderMode, ::rangeRenderMode::set))
-            .tooltip(0) { it.addLine(I18n.format("gui.clayium.range_visualization_mode.disabled")) }
-            .tooltip(1) { it.addLine(I18n.format("gui.clayium.range_visualization_mode.enabled")) }
-            .tooltip(2) { it.addLine(I18n.format("gui.clayium.range_visualization_mode.enabled_xray")) }
+            .tooltip(0) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.disabled")) }
+            .tooltip(1) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled")) }
+            .tooltip(2) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled_xray")) }
         val resetButton = ButtonWidget()
             .background(ClayGuiTextures.RESET)
             .hoverBackground(ClayGuiTextures.RESET_HOVERED)
@@ -167,10 +166,11 @@ abstract class AbstractMinerMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
+
     @SideOnly(Side.CLIENT)
-    override val renderBoundingBox = TileEntityBeacon.INFINITE_EXTENT_AABB
+    override fun getRenderBoundingBox() = TileEntityBeacon.INFINITE_EXTENT_AABB
     @SideOnly(Side.CLIENT)
-    override val useGlobalRenderer: Boolean = true
+    override fun useGlobalRenderer() = true
     @SideOnly(Side.CLIENT)
     override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
         AreaMarkerRenderer.render(Cuboid6.full, rangeRelative, x, y, z, rangeRenderMode)

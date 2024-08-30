@@ -567,17 +567,17 @@ tile.clayium.blockVacuumContainer.name=Void Container
 tile.clayium.blockVacuumContainer.tooltip.line1=Deletes any item entering it.
 tile.clayium.blockAutoTrader.name=Auto Trader
 
-tile.clayium.clay_marker.no_extend=Clay Marker
 tile.clayium.clay_marker.tooltip1=Used for area machines.
-tile.clayium.clay_marker.extend_to_ground=Clay Marker [Open-pit]
+tile.clayium.clay_marker.no_extend.name=Clay Marker
+tile.clayium.clay_marker.extend_to_ground.name=Clay Marker [Open-pit]
 tile.clayium.clay_marker.extend_to_ground.tooltip1=__DETAIL__
 tile.clayium.clay_marker.extend_to_ground.tooltip2=Its designated area will be
 tile.clayium.clay_marker.extend_to_ground.tooltip3=automatically expanded to Y = 1.
-tile.clayium.clay_marker.extend_to_sky=Clay Marker [Ground-Leveling]
+tile.clayium.clay_marker.extend_to_sky.name=Clay Marker [Ground-Leveling]
 tile.clayium.clay_marker.extend_to_sky.tooltip1=__DETAIL__
 tile.clayium.clay_marker.extend_to_sky.tooltip2=Its designated area will be
 tile.clayium.clay_marker.extend_to_sky.tooltip3=automatically expanded to Y = 255.
-tile.clayium.clay_marker.all_height=Clay Marker [Prism]
+tile.clayium.clay_marker.all_height.name=Clay Marker [Prism]
 tile.clayium.clay_marker.all_height.tooltip1=__DETAIL__
 tile.clayium.clay_marker.all_height.tooltip2=Its designated area will be
 tile.clayium.clay_marker.all_height.tooltip3=automatically expanded to Y = 1~255.

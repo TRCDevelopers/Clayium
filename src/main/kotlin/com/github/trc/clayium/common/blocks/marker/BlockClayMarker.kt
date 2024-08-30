@@ -30,7 +30,10 @@ class BlockClayMarker : VariantBlock<ClayMarkerType>(Material.GROUND) {
 
     override fun hasTileEntity(state: IBlockState) = true
     override fun createTileEntity(world: World, state: IBlockState): TileEntity {
-        return when (getEnum(state)) {
+        // when use getEnum(state) directly in when, it will throw
+        // java.lang.NoClassDefFoundError: com/github/trc/clayium/common/blocks/marker/BlockClayMarker$WhenMappings
+        val type: ClayMarkerType = getEnum(state)
+        return when (type) {
             ClayMarkerType.NO_EXTEND -> TileClayMarker.NoExtend()
             ClayMarkerType.EXTEND_TO_GROUND -> TileClayMarker.ExtendToGround()
             ClayMarkerType.EXTEND_TO_SKY -> TileClayMarker.ExtendToSky()

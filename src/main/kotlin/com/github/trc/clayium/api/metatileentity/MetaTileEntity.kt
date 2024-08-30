@@ -43,6 +43,7 @@ import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.items.filter.FilterType
+import com.github.trc.clayium.common.util.BothSideI18n
 import com.github.trc.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import net.minecraft.block.state.IBlockState
@@ -568,12 +569,11 @@ abstract class MetaTileEntity(
         }
     }
 
-    @SideOnly(Side.CLIENT)
     open fun getItemStackDisplayName(): String {
-        return if (I18n.hasKey("${this.translationKey}.${tier.lowerName}")) {
-            I18n.format("${this.translationKey}.${tier.lowerName}")
+        return if (BothSideI18n.hasKey("${this.translationKey}.${tier.lowerName}")) {
+            BothSideI18n.format("${this.translationKey}.${tier.lowerName}")
         } else {
-            I18n.format(this.translationKey, I18n.format(this.tier.prefixTranslationKey))
+            BothSideI18n.format(this.translationKey, BothSideI18n.format(this.tier.prefixTranslationKey))
         }
     }
 
@@ -597,7 +597,7 @@ abstract class MetaTileEntity(
      * null for use TileEntity defaults.
      */
     @SideOnly(Side.CLIENT)
-    open val renderBoundingBox: AxisAlignedBB? = null
+    open fun getRenderBoundingBox(): AxisAlignedBB? = null
 
     @SideOnly(Side.CLIENT)
     open fun bakeQuads(getter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {}
@@ -631,7 +631,7 @@ abstract class MetaTileEntity(
     @SideOnly(Side.CLIENT)
     open fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {}
     @SideOnly(Side.CLIENT)
-    open val useGlobalRenderer = false
+    open fun useGlobalRenderer() = false
 
     protected fun largeSlot(slot: ModularSlot) = ParentWidget()
                 .size(26, 26)
@@ -640,22 +640,12 @@ abstract class MetaTileEntity(
                     .slot(slot)
                     .background(IDrawable.EMPTY))
 
-    /**
-     * ```
-     * ModularPanel.defaultPanel(translationKey)
-     *     .child(mainColumn {
-     *          .child(buildMainParentWidget()
-     *              .child(....)
-     *          )
-     *     })
-     * ```
-     */
-    abstract override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel
-
-    @Deprecated("use ModularPanel.columnWithPlayerInv instead")
-    protected inline fun mainColumn(builder: (Column.() -> Column)) = Column().margin(7).sizeRel(1f)
-        .builder()
-        .child(SlotGroupWidget.playerInventory(0))
+    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+        return ModularPanel.defaultPanel(translationKey)
+            .columnWithPlayerInv {
+                child(buildMainParentWidget(syncManager))
+            }
+    }
 
     protected inline fun ModularPanel.columnWithPlayerInv(builder: (Column.() -> Column)) = this.child(
         Column().margin(7).sizeRel(1f)
