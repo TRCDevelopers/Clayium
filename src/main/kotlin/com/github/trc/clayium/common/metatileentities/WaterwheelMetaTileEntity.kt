@@ -9,7 +9,6 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
@@ -20,20 +19,14 @@ import com.github.trc.clayium.common.config.ConfigCore
 import net.minecraft.block.BlockLiquid
 import net.minecraft.client.resources.I18n
 import net.minecraft.init.Blocks
-import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 import kotlin.math.pow
 
 class WaterwheelMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(
-    metaTileEntityId, tier, onlyNoneList, onlyNoneList,
-    "machine.${CValues.MOD_ID}.waterwheel",
-) {
+) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "waterwheel",) {
     override val faceTexture = clayiumId("blocks/waterwheel")
     override val importItems = EmptyItemStackHandler
     override val exportItems = EmptyItemStackHandler
@@ -111,11 +104,6 @@ class WaterwheelMetaTileEntity(
             }
         }
         return waterFlows
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        registerItemModelDefault(item, meta, "waterwheel")
     }
 
     companion object {

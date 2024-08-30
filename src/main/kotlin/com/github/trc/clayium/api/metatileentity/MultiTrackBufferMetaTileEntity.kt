@@ -10,7 +10,6 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
@@ -19,15 +18,19 @@ import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
-import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.MachineIoMode.M_1
+import com.github.trc.clayium.api.util.MachineIoMode.M_2
+import com.github.trc.clayium.api.util.MachineIoMode.M_3
+import com.github.trc.clayium.api.util.MachineIoMode.M_4
+import com.github.trc.clayium.api.util.MachineIoMode.M_5
+import com.github.trc.clayium.api.util.MachineIoMode.M_6
+import com.github.trc.clayium.api.util.MachineIoMode.M_ALL
+import com.github.trc.clayium.api.util.MachineIoMode.NONE
 import com.github.trc.clayium.common.gui.ClayGuiTextures
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
@@ -41,17 +44,11 @@ class MultiTrackBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier,
-    validInputModes = emptyList(), validOutputModes = emptyList(), "machine.${CValues.MOD_ID}.multi_track_buffer") {
+    validInputModes = mBufferValidIoModes[getTrackRows(tier.numeric)-2], validOutputModes = mBufferValidIoModes[getTrackRows(tier.numeric)-2],
+    "multi_track_buffer") {
 
     override val hasFrontFacing: Boolean = true
-    val trackRow = when (tier.numeric) {
-        in 4..8 -> tier.numeric - 2
-        in 9..13 -> 6
-        else -> 2
-    }
-
-    override val validInputModes: List<MachineIoMode> = mBufferValidIoModes[trackRow-2]
-    override val validOutputModes: List<MachineIoMode> = mBufferValidIoModes[trackRow-2]
+    val trackRow = getTrackRows(tier.numeric)
 
     val trackInvSize = when (tier.numeric) {
         4 -> 1
@@ -84,10 +81,6 @@ class MultiTrackBufferMetaTileEntity(
     override fun createMetaTileEntity(): MetaTileEntity {
         validInputModes
         return MultiTrackBufferMetaTileEntity(this.metaTileEntityId, this.tier)
-    }
-
-    override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("clay_multi_track_buffer"), "tier=${tier.numeric}"))
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
@@ -218,6 +211,22 @@ class MultiTrackBufferMetaTileEntity(
                 remain = transferItemStack(from = fromHandler, to = toHandler, amount = remain)
             }
             return remain
+        }
+    }
+
+    companion object {
+        val mBufferValidIoModes = listOf(
+            listOf(NONE, M_ALL, M_1, M_2),
+            listOf(NONE, M_ALL, M_1, M_2, M_3),
+            listOf(NONE, M_ALL, M_1, M_2, M_3, M_4),
+            listOf(NONE, M_ALL, M_1, M_2, M_3, M_4, M_5),
+            listOf(NONE, M_ALL, M_1, M_2, M_3, M_4, M_5, M_6)
+        )
+
+        fun getTrackRows(tier: Int) = when (tier) {
+            in 4..8 -> tier - 2
+            in 9..13 -> 6
+            else -> 2
         }
     }
 }

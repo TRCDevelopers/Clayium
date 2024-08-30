@@ -3,7 +3,6 @@ package com.github.trc.clayium.api.metatileentity
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
@@ -13,25 +12,20 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.Item
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.client.model.ModelLoader
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
 class ClayInterfaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "machine.${CValues.MOD_ID}.proxy") {
+) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "clay_interface") {
 
-    override val faceTexture = clayiumId("blocks/interface")
+    override val faceTexture = clayiumId("blocks/clay_interface")
     override val useFaceForAllSides = true
 
     override var importItems: IItemHandlerModifiable = EmptyItemStackHandler
@@ -63,11 +57,6 @@ class ClayInterfaceMetaTileEntity(
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayInterfaceMetaTileEntity(metaTileEntityId, tier)
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("interface"), "tier=${tier.numeric}"))
     }
 
     override fun onLink(target: MetaTileEntity) {

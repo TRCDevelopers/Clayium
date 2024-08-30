@@ -7,7 +7,6 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
@@ -24,13 +23,10 @@ import com.github.trc.clayium.api.util.canStackWith
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
 import com.github.trc.clayium.common.gui.ClayGuiTextures
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.capabilities.Capability
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import kotlin.math.min
@@ -38,8 +34,7 @@ import kotlin.math.min
 class AutoClayCondenserMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1],
-    "machine.${CValues.MOD_ID}.auto_clay_condenser") {
+) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1], name = "auto_clay_condenser") {
 
     override val faceTexture = clayiumId("blocks/auto_clay_condenser")
 
@@ -153,10 +148,5 @@ class AutoClayCondenserMetaTileEntity(
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(ItemHandlerProxy(inputSlots, outputSlots))
         }
         return super.getCapability(capability, facing)
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        registerItemModelDefault(item, meta, "auto_clay_condenser")
     }
 }

@@ -8,7 +8,7 @@
   },
   "variants": {
     "tier": {
-      "6": {
+      "precision": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier6"
         },

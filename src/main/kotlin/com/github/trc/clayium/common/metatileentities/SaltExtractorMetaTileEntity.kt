@@ -1,6 +1,5 @@
 package com.github.trc.clayium.common.metatileentities
 
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.metatileentity.AbstractItemGeneratorMetaTileEntity
@@ -11,11 +10,8 @@ import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
-import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 
 class SaltExtractorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -23,7 +19,7 @@ class SaltExtractorMetaTileEntity(
 ) : AbstractItemGeneratorMetaTileEntity(
     metaTileEntityId, tier,
     validInputModes = energyAndNone, validOutputModes = validOutputModesLists[1],
-    "machine.${CValues.MOD_ID}.salt_extractor",
+    name = "salt_extractor",
 ) {
 
     override val faceTexture = clayiumId("blocks/salt_extractor")
@@ -66,10 +62,5 @@ class SaltExtractorMetaTileEntity(
 
     override fun canProgress(): Boolean {
         return super.canProgress() && this.clayEnergyHolder.drawEnergy(energyPerProgress, simulate = false)
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        registerItemModelDefault(item, meta, "salt_extractor")
     }
 }

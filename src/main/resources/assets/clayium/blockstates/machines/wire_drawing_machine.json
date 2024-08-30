@@ -2,12 +2,48 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "face": "clayium:blocks/laserinterface"
+      "face": "clayium:blocks/wire_drawing_machine"
     },
     "model": "clayium:machine"
   },
   "variants": {
     "tier": {
+      "clay": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier1"
+        },
+        "model": "clayium:machine"
+      },
+      "dense_clay": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier2"
+        },
+        "model": "clayium:machine"
+      },
+      "simple": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier3"
+        },
+        "model": "clayium:machine"
+      },
+      "basic": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier4"
+        },
+        "model": "clayium:machine"
+      },
+      "advanced": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier5"
+        },
+        "model": "clayium:machine"
+      },
+      "precision": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier6"
+        },
+        "model": "clayium:machine"
+      },
       "clay_steel": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier7"

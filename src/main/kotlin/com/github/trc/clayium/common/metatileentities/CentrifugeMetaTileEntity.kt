@@ -9,7 +9,6 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
@@ -24,8 +23,7 @@ class CentrifugeMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     outputSize: Int,
-) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1],
-    "machine.${CValues.MOD_ID}.centrifuge", CRecipes.CENTRIFUGE, outputSize = outputSize) {
+) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1], CRecipes.CENTRIFUGE, outputSize = outputSize) {
 
     @Suppress("Unused") private val ioHandler = AutoIoHandler.Combined(this)
 

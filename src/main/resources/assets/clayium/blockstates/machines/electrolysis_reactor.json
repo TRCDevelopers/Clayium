@@ -8,25 +8,25 @@
   },
   "variants": {
     "tier": {
-      "6": {
+      "precision": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier6"
         },
         "model": "clayium:machine"
       },
-      "7": {
+      "clay_steel": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier7"
         },
         "model": "clayium:machine"
       },
-      "8": {
+      "clayium": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier8"
         },
         "model": "clayium:machine"
       },
-      "9": {
+      "ultimate": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier9"
         },

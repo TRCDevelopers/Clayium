@@ -17,19 +17,14 @@ import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.I18n
-import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.client.model.ModelLoader
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 
 class ResonatingCollectorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : AbstractItemGeneratorMetaTileEntity(metaTileEntityId, tier, translationKey = "machine.${CValues.MOD_ID}.resonating_collector") {
+) : AbstractItemGeneratorMetaTileEntity(metaTileEntityId, tier, name = "resonating_collector") {
     val resonanceManager = ResonanceManager(this, 2)
 
     override val faceTexture = clayiumId("blocks/ca_resonating_collector")
@@ -51,11 +46,6 @@ class ResonatingCollectorMetaTileEntity(
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return ResonatingCollectorMetaTileEntity(metaTileEntityId, tier)
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("resonating_collector"), "tier=${tier.lowerName}"))
     }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {

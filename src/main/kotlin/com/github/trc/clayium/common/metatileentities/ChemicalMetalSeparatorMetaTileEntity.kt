@@ -7,7 +7,6 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
@@ -19,8 +18,7 @@ import net.minecraft.util.ResourceLocation
 class ChemicalMetalSeparatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1],
-    "machine.${CValues.MOD_ID}.chemical_metal_separator", CRecipes.CHEMICAL_METAL_SEPARATOR) {
+) : WorkableMetaTileEntity(metaTileEntityId, tier, CRecipes.CHEMICAL_METAL_SEPARATOR) {
 
     override val faceTexture = clayiumId("blocks/chemical_metal_separator")
 

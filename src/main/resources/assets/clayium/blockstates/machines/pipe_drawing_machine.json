@@ -2,67 +2,85 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "face": "clayium:blocks/blastfurnace"
+      "face": "clayium:blocks/pipe_drawing_machine"
     },
     "model": "clayium:machine"
   },
   "variants": {
     "tier": {
-      "4": {
+      "clay": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier1"
+        },
+        "model": "clayium:machine"
+      },
+      "dense_clay": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier2"
+        },
+        "model": "clayium:machine"
+      },
+      "simple": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier3"
+        },
+        "model": "clayium:machine"
+      },
+      "basic": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier4"
         },
         "model": "clayium:machine"
       },
-      "5": {
+      "advanced": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier5"
         },
         "model": "clayium:machine"
       },
-      "6": {
+      "precision": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier6"
         },
         "model": "clayium:machine"
       },
-      "7": {
+      "clay_steel": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier7"
         },
         "model": "clayium:machine"
       },
-      "8": {
+      "clayium": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier8"
         },
         "model": "clayium:machine"
       },
-      "9": {
+      "ultimate": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier9"
         },
         "model": "clayium:machine"
       },
-      "10": {
+      "antimatter": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier10"
         },
         "model": "clayium:machine"
       },
-      "11": {
+      "pure_antimatter": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier11"
         },
         "model": "clayium:machine"
       },
-      "12": {
+      "oec": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier12"
         },
         "model": "clayium:machine"
       },
-      "13": {
+      "opa": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier13"
         },

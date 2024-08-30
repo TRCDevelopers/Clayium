@@ -2,21 +2,33 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "face": "clayium:blocks/inscriber"
+      "face": "clayium:blocks/assembler"
     },
     "model": "clayium:machine"
   },
   "variants": {
     "tier": {
-      "3": {
+      "simple": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier3"
         },
         "model": "clayium:machine"
       },
-      "4": {
+      "basic": {
         "textures": {
           "base": "clayium:blocks/machinehull_tier4"
+        },
+        "model": "clayium:machine"
+      },
+      "precision": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier6"
+        },
+        "model": "clayium:machine"
+      },
+      "antimatter": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier10"
         },
         "model": "clayium:machine"
       }

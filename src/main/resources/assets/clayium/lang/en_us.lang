@@ -396,10 +396,10 @@ machine.clayium.clay_blast_furnace.tooltip6=F\: Clay Blast Furnace Block
 machine.clayium.clay_blast_furnace.tooltip7=X\: Machine hulls or Interfaces
 machine.clayium.clay_blast_furnace.tooltip8=Recipe tier depends on components' tier.
 
-machine.clayium.proxy=%s Interface
-machine.clayium.proxy.tooltip1=Used for Multiblock I/O.
-machine.clayium.proxy.tooltip2=__DETAIL__
-machine.clayium.proxy.tooltip3=Requires Synchronous parts to teleport items.
+machine.clayium.clay_interface=%s Interface
+machine.clayium.clay_interface.tooltip1=Used for Multiblock I/O.
+machine.clayium.clay_interface.tooltip2=__DETAIL__
+machine.clayium.clay_interface.tooltip3=Requires Synchronous parts to teleport items.
 
 machine.clayium.redstone_proxy=%s Redstone Interface
 machine.clayium.redstone_proxy.tooltip1=Used for Multiblock RS I/O.

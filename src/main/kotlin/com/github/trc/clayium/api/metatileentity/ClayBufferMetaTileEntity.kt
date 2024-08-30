@@ -10,26 +10,18 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.api.util.clayiumId
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 
 class ClayBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(metaTileEntityId, tier,
-    validInputModes = bufferValidInputModes, validOutputModes = validOutputModesLists[1], "machine.${CValues.MOD_ID}.clay_buffer") {
+) : MetaTileEntity(metaTileEntityId, tier, validInputModes = bufferValidInputModes, validOutputModes = validOutputModesLists[1], name = "clay_buffer") {
 
     override val hasFrontFacing: Boolean = false
 
@@ -104,10 +96,5 @@ class ClayBufferMetaTileEntity(
                         .paddingBottom(1)
                         .left(6)))
             .bindPlayerInventory()
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("clay_buffer"), "tier=${tier.numeric}"))
     }
 }

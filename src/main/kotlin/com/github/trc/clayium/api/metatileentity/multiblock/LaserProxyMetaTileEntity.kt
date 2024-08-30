@@ -2,7 +2,6 @@ package com.github.trc.clayium.api.metatileentity.multiblock
 
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IClayLaserAcceptor
 import com.github.trc.clayium.api.capability.IConfigurationTool
@@ -11,13 +10,10 @@ import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
@@ -25,10 +21,10 @@ import net.minecraftforge.items.IItemHandlerModifiable
 class LaserProxyMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "machine.${CValues.MOD_ID}.laser_proxy"), IClayLaserAcceptor {
+) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "laser_proxy"), IClayLaserAcceptor {
 
     private var laser: ClayLaser? = null
-    override val faceTexture: ResourceLocation = clayiumId("blocks/laserinterface")
+    override val faceTexture: ResourceLocation = clayiumId("blocks/laser_proxy")
 
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val exportItems: IItemHandlerModifiable = EmptyItemStackHandler
@@ -56,10 +52,6 @@ class LaserProxyMetaTileEntity(
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return LaserProxyMetaTileEntity(metaTileEntityId, tier)
-    }
-
-    override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("laser_proxy"), "tier=${tier.lowerName}"))
     }
 
     override fun canOpenGui() = false

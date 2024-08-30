@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IControllable
@@ -56,8 +55,7 @@ class PanDuplicatorMetaTileEntity(
     tier: ITier,
     private val duplicatorRank: Int,
     private val machineHullTier: ITier = ClayTiers.entries[duplicatorRank + 3]
-) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[2], validOutputModesLists[1],
-    "machine.${CValues.MOD_ID}.pan_duplicator"), IPanUser
+) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[2], validOutputModesLists[1], "pan_duplicator"), IPanUser
 {
 
     override val faceTexture = clayiumId("blocks/pan_duplicator")
@@ -134,7 +132,7 @@ class PanDuplicatorMetaTileEntity(
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
         ModelLoader.setCustomModelResourceLocation(item, meta,
-            ModelResourceLocation(clayiumId("pan_duplicator"), "rank=$duplicatorRank"))
+            ModelResourceLocation(clayiumId("machines/pan_duplicator"), "rank=$duplicatorRank"))
     }
 
     @SideOnly(Side.CLIENT)

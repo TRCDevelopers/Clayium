@@ -7,7 +7,6 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
@@ -19,13 +18,8 @@ import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.recipe.builder.ClayFabricatorRecipeBuilder
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.item.Item
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.client.model.ModelLoader
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
@@ -33,8 +27,7 @@ class SolarClayFabricatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     val registry: RecipeRegistry<ClayFabricatorRecipeBuilder>
-) : MetaTileEntity(metaTileEntityId, tier,
-    validInputModes, validOutputModesLists[1], "machine.${CValues.MOD_ID}.solar_clay_fabricator.${tier.lowerName}") {
+) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModesLists[1], "solar_clay_fabricator") {
 
     override val faceTexture: ResourceLocation = clayiumId("blocks/solar")
 
@@ -56,11 +49,6 @@ class SolarClayFabricatorMetaTileEntity(
     override fun onPlacement() {
         this.frontFacing = EnumFacing.UP
         super.onPlacement()
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("solar_clay_fabricator"), "tier=${tier.lowerName}"))
     }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {

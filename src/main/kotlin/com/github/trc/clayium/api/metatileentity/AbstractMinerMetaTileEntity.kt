@@ -16,7 +16,6 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Grid
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.LaserEnergyHolder
@@ -29,14 +28,11 @@ import com.github.trc.clayium.client.renderer.AreaMarkerRenderer.RangeRenderMode
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
-import net.minecraft.item.Item
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntityBeacon
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.function.Function
@@ -46,10 +42,10 @@ import kotlin.math.log10
 abstract class AbstractMinerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-    private val machineName: String,
+    name: String,
     validInputModes: List<MachineIoMode> = validInputModesLists[0],
     validOutputModes: List<MachineIoMode> = validOutputModesLists[1],
-) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, "machine.${CValues.MOD_ID}.$machineName") {
+) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, name) {
 
     override val itemInventory = ClayiumItemStackHandler(this, INV_ROW * INV_COLUMN)
     override val importItems = EmptyItemStackHandler
@@ -89,10 +85,6 @@ abstract class AbstractMinerMetaTileEntity(
 
     protected fun getRequiredProgress(blockHardness: Float): Double {
         return REQUIRED_PROGRESS_BASE * (0.1 + blockHardness)
-    }
-
-    override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(clayiumId("machines/$machineName"), "tier=${tier.lowerName}"))
     }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
