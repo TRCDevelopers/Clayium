@@ -15,6 +15,7 @@ import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.common.config.ConfigCore
 import net.minecraft.block.BlockLiquid
 import net.minecraft.client.resources.I18n
@@ -64,6 +65,10 @@ class WaterwheelMetaTileEntity(
             val energyHolder = world?.getTileEntity(pos.offset(side))?.getCapability(ClayiumTileCapabilities.CLAY_ENERGY_HOLDER, side.opposite)
                 ?: continue
 
+            val mte = world?.getMetaTileEntity(pos.offset(side))
+            if (mte != null && mte.tier.numeric > ConfigCore.misc.waterwheelMaxTier) {
+                continue
+            }
             val energyStored = energyHolder.getEnergyStored()
             if (energyStored < maxClayEnergy) {
                 energyHolder.addEnergy(clayEnergyPerWork)
