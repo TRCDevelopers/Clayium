@@ -22,6 +22,9 @@ object CraftingRecipeLoader {
             ItemStack(ClayiumBlocks.CLAY_WORK_TABLE),
             "CC", "CC", 'C', UnificationEntry(OrePrefix.block, denseClay))
 
+        RecipeUtils.addSmeltingRecipe(UnificationEntry(OrePrefix.ingot, CMaterials.impureSilicon),
+            OreDictUnifier.get(OrePrefix.ingot, CMaterials.silicone), 0.1f)
+
         for (i in 1..<CMaterials.PURE_ANTIMATTERS.size) {
             RecipeUtils.addShapelessRecipe("pure_antimatter_decompose_$i",
                 OreDictUnifier.get(OrePrefix.gem, CMaterials.PURE_ANTIMATTERS[i - 1], 9),

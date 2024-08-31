@@ -1,6 +1,7 @@
 package com.github.trc.clayium.common.recipe
 
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.Clayium
@@ -22,6 +23,12 @@ object RecipeUtils {
             return logInvalidRecipe("Furnace recipe for $input already exists.")
         }
         recipes.addSmeltingRecipe(input, output, exp)
+    }
+
+    fun addSmeltingRecipe(input: UnificationEntry, output: ItemStack, exp: Float = 0f) {
+        for (stack in OreDictUnifier.getAll(input)) {
+            addSmeltingRecipe(stack, output, exp)
+        }
     }
 
     fun addShapedRecipe(registryName: String, result: ItemStack, vararg recipe: Any) {
