@@ -22,7 +22,6 @@ public class ConfigCore {
         public int laserQuality = 8;
     }
 
-
     public static class SubCategoryWorldGen {
         private SubCategoryWorldGen() {}
 
@@ -56,6 +55,13 @@ public class ConfigCore {
         })
         @Config.RangeInt(min = 1, max = 100)
         public int waterwheelEfficiency = 40;
+
+        @Config.RangeInt(min = 1, max = 30)
+        @Config.Comment({
+               "The maximum tier that the waterwheel can provide energy to.",
+               "It cannot provide energy to machines of a higher tier."
+        })
+        public int waterwheelMaxTier = 3;
 
         @Config.Comment({
                 "Max search distance for PAN"
