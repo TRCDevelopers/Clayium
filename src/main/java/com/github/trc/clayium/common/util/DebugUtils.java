@@ -1,6 +1,7 @@
 package com.github.trc.clayium.common.util;
 
 import com.github.trc.clayium.api.CValues;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -17,7 +18,9 @@ public class DebugUtils {
             return;
         }
 
-        int[] oreDictIds = OreDictionary.getOreIDs(e.getItemStack());
+        ItemStack stack = e.getItemStack();
+        e.getToolTip().add("Metadata: " + stack.getMetadata());
+        int[] oreDictIds = OreDictionary.getOreIDs(stack);
         if (oreDictIds.length == 0) return;
         e.getToolTip().add("OreDicts:");
         for (int id : oreDictIds) {

@@ -96,7 +96,7 @@ class ContainerClayWorkTable(
     }
 
     override fun enchantItem(playerIn: EntityPlayer, id: Int): Boolean {
-        tile.pushButton(id)
+        tile.pushButton(playerIn, id)
         return true
     }
 }

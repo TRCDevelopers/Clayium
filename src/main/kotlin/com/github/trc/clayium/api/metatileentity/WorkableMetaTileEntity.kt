@@ -80,8 +80,11 @@ abstract class WorkableMetaTileEntity(
                     .align(Alignment.CenterLeft))
         }
         if (exportItems.slots == 1) {
-            slotsAndProgressBar.child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).singletonSlotGroup())
-                .align(Alignment.CenterRight))
+            slotsAndProgressBar.child(
+                largeSlot(SyncHandlers.itemSlot(exportItems, 0)
+                    .singletonSlotGroup()
+                    .accessibility(false, true)
+                ).align(Alignment.CenterRight))
         } else if (exportItems.slots == 2) {
             syncManager.registerSlotGroup("output_inv", 1)
             slotsAndProgressBar.child(
