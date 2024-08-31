@@ -16,12 +16,16 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Grid
+import com.github.trc.clayium.api.capability.ClayiumCapabilities
+import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.LaserEnergyHolder
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.getCapability
+import com.github.trc.clayium.api.util.hasCapability
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer.RangeRenderMode
@@ -50,6 +54,9 @@ abstract class AbstractMinerMetaTileEntity(
     override val itemInventory = ClayiumItemStackHandler(this, INV_ROW * INV_COLUMN)
     override val importItems = EmptyItemStackHandler
     override val exportItems = itemInventory
+    protected val filterSlot = ClayiumItemStackHandler(this, 1)
+    protected val filter: IItemFilter?
+        get() = filterSlot.getStackInSlot(0).getCapability(ClayiumCapabilities.ITEM_FILTER)
 
     protected val laserEnergyHolder: LaserEnergyHolder = LaserEnergyHolder(this)
 
@@ -131,6 +138,11 @@ abstract class AbstractMinerMetaTileEntity(
             .child(laserEnergyHolder.createLpTextWidget(syncManager)
                 .alignX(Alignment.Center.x).bottom(12)
             )
+            .child(ItemSlot().slot(SyncHandlers.itemSlot(filterSlot, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) })
+                .background(ClayGuiTextures.FILTER_SLOT)
+                .top(12).right(24)
+                .tooltipBuilder { it.addLine(IKey.lang("gui.clayium.miner.filter")) }
+            )
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
@@ -143,11 +155,13 @@ abstract class AbstractMinerMetaTileEntity(
     override fun writeToNBT(data: NBTTagCompound) {
         super.writeToNBT(data)
         data.setBoolean("workingEnabled", workingEnabled)
+        data.setTag("filterSlot", filterSlot.serializeNBT())
     }
 
     override fun readFromNBT(data: NBTTagCompound) {
         super.readFromNBT(data)
         workingEnabled = data.getBoolean("workingEnabled")
+        filterSlot.deserializeNBT(data.getCompoundTag("filterSlot"))
     }
 
     @SideOnly(Side.CLIENT)

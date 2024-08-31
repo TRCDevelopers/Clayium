@@ -585,6 +585,7 @@ tile.clayium.clay_marker.all_height.tooltip3=automatically expanded to Y = 1~255
 gui.clayium.range_visualization_mode.disabled=Range Display: Disabled
 gui.clayium.range_visualization_mode.enabled=Range Display: Enabled
 gui.clayium.range_visualization_mode.enabled_xray=Range Display: Enabled (X-Ray)
+gui.clayium.miner.filter=Filter
 machine.clayium.block_breaker=Block Breaker
 machine.clayium.ranged_collector=Ranged Item Collector
 machine.clayium.ranged_miner=Ranged Miner

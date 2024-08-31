@@ -13,6 +13,7 @@ import com.github.trc.clayium.api.metatileentity.trait.ClayMarkerHandler
 import com.github.trc.clayium.api.util.Cuboid6BlockPosIterator
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.toItemStack
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.util.TransferUtils
 import net.minecraft.item.ItemStack
@@ -63,7 +64,10 @@ class RangedMinerMetaTileEntity(
             val targetPos = this.currentTargetPos ?: return
             val state = world.getBlockState(targetPos)
             val hardness = state.getBlockHardness(world, targetPos)
-            if (hardness == CValues.HARDNESS_UNBREAKABLE) {
+
+            val filter = this.filter
+            val filterMatches = filter == null || filter.test(state.toItemStack())
+            if (!filterMatches || hardness == CValues.HARDNESS_UNBREAKABLE) {
                 this.currentTargetPos = getNextBlockPos()
                 continue
             }
