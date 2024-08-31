@@ -13,6 +13,7 @@ import com.github.trc.clayium.common.recipe.chanced.ChancedOutput
 import com.github.trc.clayium.common.recipe.chanced.ChancedOutputList
 import com.github.trc.clayium.common.recipe.chanced.IChancedOutputLogic
 import com.github.trc.clayium.common.recipe.ingredient.CItemRecipeInput
+import com.github.trc.clayium.common.recipe.ingredient.CMultiOreRecipeInput
 import com.github.trc.clayium.common.recipe.ingredient.COreRecipeInput
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
@@ -66,6 +67,10 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun input(block: Block, amount: Int = 1) = input(ItemStack(block, amount))
     fun input(oreDict: String, amount: Int = 1) = inputs(COreRecipeInput(oreDict, amount))
     open fun input(orePrefix: OrePrefix, material: CMaterial, amount: Int = 1) = inputs(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
+    fun input(prefixes: Array<OrePrefix>, material: CMaterial, amount: Int = 1): R {
+        val entries = prefixes.map { UnificationEntry(it, material) }.toTypedArray()
+        return inputs(CMultiOreRecipeInput(amount, *entries))
+    }
 
     private fun outputs(vararg stacks: ItemStack): R {
         outputs.addAll(stacks)

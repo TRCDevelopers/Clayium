@@ -9,6 +9,7 @@ object CRecipeLoader {
         CraftingRecipeLoader.registerRecipes()
         MaterialRecipeHandler.registerRecipes()
 
+        AlloySmelterRecipeLoader.registerRecipes()
         AssemblerRecipeLoader.registerRecipes()
         BendingMachineLoader.registerRecipes()
         CaCondenserRecipeLoader.registerRecipes()
