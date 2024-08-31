@@ -2,6 +2,7 @@ package com.github.trc.clayium.common.blocks.clayworktable
 
 import com.github.trc.clayium.common.recipe.CWTRecipes
 import com.github.trc.clayium.common.recipe.ClayWorkTableRecipe
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
@@ -50,7 +51,7 @@ class TileClayWorkTable : TileEntity() {
             ?: throw IllegalArgumentException("Invalid button id."))
     }
 
-    fun pushButton(id: Int) {
+    fun pushButton(clicker: EntityPlayer, id: Int) {
         val input = itemHandler.getStackInSlot(0)
         val method: ClayWorkTableMethod = ClayWorkTableMethod.fromId(id)
             ?: throw IllegalArgumentException("Invalid button id.")
@@ -62,7 +63,7 @@ class TileClayWorkTable : TileEntity() {
             craftingProgress = 0
         }
         craftingProgress++
-        currentTool.attemptDamageItem(1, world.rand, null)
+        currentTool.damageItem(1, clicker)
         if (craftingProgress >= requiredProgress) {
             itemHandler.extractItem(0, recipe.input.amount, false)
             completeRecipe(recipe)
