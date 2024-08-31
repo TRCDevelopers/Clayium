@@ -363,10 +363,10 @@ machine.clayium.clay_blast_furnace.tooltip6=F: 粘土高炉ブロック
 machine.clayium.clay_blast_furnace.tooltip7=X: マシン筐体か各種インターフェース
 machine.clayium.clay_blast_furnace.tooltip8=構成要素の Tier により参照されるレシピの Tier が決定される
 
-machine.clayium.proxy=%sインターフェース
-machine.clayium.proxy.tooltip1=マルチブロック装置の搬入出口に使用
-machine.clayium.proxy.tooltip2=__DETAIL__
-machine.clayium.proxy.tooltip3=アイテムのテレポートにはシンクロパーツが必要
+machine.clayium.clay_interface=%sインターフェース
+machine.clayium.clay_interface.tooltip1=マルチブロック装置の搬入出口に使用
+machine.clayium.clay_interface.tooltip2=__DETAIL__
+machine.clayium.clay_interface.tooltip3=アイテムのテレポートにはシンクロパーツが必要
 
 machine.clayium.redstone_proxy=OPA 赤石インターフェース
 machine.clayium.redstone_proxy.tooltip1=マルチブロック装置の赤石入出力に使用
@@ -425,10 +425,7 @@ tile.clayium.overclocker.opa=OPA オーバークロッカー
 tile.clayium.overclocker.tooltip1=隣接する装置を加速する
 tile.clayium.overclocker.factor=加速度 : x%1$4.3g
 
-tile.clayium.energy_storage_upgrade.antimatter=反物質エネルギーストレージアップグレード
-tile.clayium.energy_storage_upgrade.pure_antimatter=純反物質エネルギーストレージアップグレード
-tile.clayium.energy_storage_upgrade.oec=OEC エネルギーストレージアップグレード
-tile.clayium.energy_storage_upgrade.opa=OPA エネルギーストレージアップグレード
+tile.clayium.energy_storage_upgrade=%sエネルギーストレージアップグレード
 tile.clayium.energy_storage_upgrade.antimatter.tooltip1=隣接する機械が保持できる
 tile.clayium.energy_storage_upgrade.antimatter.tooltip2=エネルギー粘土の数を 1 上昇させる
 tile.clayium.energy_storage_upgrade.pure_antimatter.tooltip1=隣接する機械が保持できる
