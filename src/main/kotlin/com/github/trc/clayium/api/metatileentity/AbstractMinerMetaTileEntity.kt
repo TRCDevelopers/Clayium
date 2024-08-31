@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.BoolValue
 import com.cleanroommc.modularui.value.EnumValue
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
@@ -79,6 +80,12 @@ abstract class AbstractMinerMetaTileEntity(
 
     abstract fun mineBlocks()
 
+    /**
+     * called on the server when the reset button in the gui is pressed.
+     * this is intended to reset the iteration state.
+     */
+    protected open fun resetButtonPressed() = true
+
     protected open fun addProgress() {
         progress += PROGRESS_PER_TICK_BASE * getAccelerationRate()
         laserEnergyHolder.drawAll()
@@ -120,6 +127,8 @@ abstract class AbstractMinerMetaTileEntity(
             .tooltip(1) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled")) }
             .tooltip(2) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled_xray")) }
         val resetButton = ButtonWidget()
+            .syncHandler(InteractionSyncHandler()
+                .setOnMousePressed { if (!it.isClient) resetButtonPressed() })
             .background(ClayGuiTextures.RESET)
             .hoverBackground(ClayGuiTextures.RESET_HOVERED)
 

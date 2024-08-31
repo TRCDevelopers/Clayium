@@ -35,7 +35,7 @@ class RangedMinerMetaTileEntity(
 
     private var currentTargetPos: BlockPos? = null
 
-    private val posIter: Iterator<BlockPos.MutableBlockPos>? by lazy {
+    private val posIter: Cuboid6BlockPosIterator? by lazy {
         val range = clayMarkerHandler.markedRangeAbsolute?.copy() ?: return@lazy null
         Cuboid6BlockPosIterator(range)
     }
@@ -87,6 +87,11 @@ class RangedMinerMetaTileEntity(
                 progress = 0.0
             }
         }
+    }
+
+    override fun resetButtonPressed(): Boolean {
+        this.posIter?.restart()
+        return true
     }
 
     override fun addProgress() {
