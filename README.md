@@ -16,7 +16,7 @@ Features have been ported up to tier 13 Clay Fabricator Mk3,
 including PAN, except for those listed below.
 
 ## WIP Features
-- Alloy Smelter
+- ~~Alloy Smelter~~ (Done)
 - Auto Crafter
 - Auto Trader
 - CE-RF Converter

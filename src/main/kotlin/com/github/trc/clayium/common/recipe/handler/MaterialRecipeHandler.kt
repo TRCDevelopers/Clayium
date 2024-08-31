@@ -196,7 +196,7 @@ object MaterialRecipeHandler {
                     val pow = compressedInto.tier?.numeric?.minus(4)?.coerceAtLeast(0) ?: 0
                     CEt(ClayEnergy.milli((10.0).pow(pow).toLong()))
                     duration(4)
-                    tier(4)
+                    tier(3)
                 }
             }
         }
