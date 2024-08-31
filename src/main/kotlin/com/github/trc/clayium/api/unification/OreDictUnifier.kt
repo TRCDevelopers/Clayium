@@ -28,4 +28,16 @@ object OreDictUnifier {
     fun get(orePrefix: OrePrefix, material: CMaterial, stackSize: Int = 1): ItemStack {
         return get(UnificationEntry(orePrefix, material).toString(), stackSize)
     }
+
+    fun getAll(oreDict: String, stackSize: Int = 1): List<ItemStack> {
+        return OreDictionary.getOres(oreDict).map { it.copyWithSize(stackSize) }
+    }
+
+    fun getAll(orePrefix: OrePrefix, material: CMaterial, stackSize: Int = 1): List<ItemStack> {
+        return getAll(UnificationEntry(orePrefix, material).toString(), stackSize)
+    }
+
+    fun getAll(oreDict: UnificationEntry, stackSize: Int = 1): List<ItemStack> {
+        return getAll(oreDict.toString(), stackSize)
+    }
 }
