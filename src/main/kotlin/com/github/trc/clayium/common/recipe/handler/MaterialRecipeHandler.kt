@@ -4,6 +4,7 @@ import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
@@ -14,6 +15,12 @@ import kotlin.math.pow
 
 object MaterialRecipeHandler {
     fun registerRecipes() {
+        // special energy/t for these blocks
+        // no dust for compressedClay
+        val specialBlockToDustHandling = setOf(
+            CMaterials.clay, CMaterials.denseClay, CMaterials.industrialClay, CMaterials.advancedIndustrialClay
+        )
+
         for (material in ClayiumApi.materialRegistry) {
             if (material.hasOre(OrePrefix.ingot)) {
                 if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.ingot, material)
@@ -34,7 +41,14 @@ object MaterialRecipeHandler {
             }
 
             if (material.hasOre(OrePrefix.block)) {
-                handleBlock(material)
+                if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.block, material)
+                if (material.hasProperty(CPropertyKey.CLAY)) {
+                    val prop = material.getProperty(CPropertyKey.CLAY)
+                    if (prop.compressedInto != null) addClayBlockRecipe(material, prop.compressedInto)
+                }
+                if (material !in specialBlockToDustHandling) {
+                    tryAddGrindingRecipe(OrePrefix.block, material)
+                }
             }
 
             if (material.hasOre(OrePrefix.plate)) { tryAddGrindingRecipe(OrePrefix.plate, material) }
@@ -109,15 +123,6 @@ object MaterialRecipeHandler {
         }
     }
 
-    private fun handleBlock(material: CMaterial) {
-        if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.block, material)
-        if (material.hasProperty(CPropertyKey.CLAY)) {
-            val prop = material.getProperty(CPropertyKey.CLAY)
-            if (prop.compressedInto != null) addClayBlockRecipe(material, prop.compressedInto)
-        }
-        tryAddGrindingRecipe(OrePrefix.block, material)
-    }
-
     /**
      * Adds plate and largePlate recipe for [material].
      * Assumes that [material] has a plate property.
@@ -185,7 +190,7 @@ object MaterialRecipeHandler {
                 }
             } else {
                 // generate recipes for energy clay blocks
-                CRecipes.CONDENSER.register {
+                CRecipes.ENERGETIC_CLAY_CONDENSER.register {
                     input(OrePrefix.block, material, 9)
                     output(OrePrefix.block, compressedInto)
                     val pow = compressedInto.tier?.numeric?.minus(4)?.coerceAtLeast(0) ?: 0

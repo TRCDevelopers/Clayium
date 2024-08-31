@@ -48,5 +48,14 @@ object GrinderRecipeLoader {
             .output(Blocks.GRAVEL, 64)
             .tier(2).CEt(ClayEnergy.micro(10)).duration(10)
             .buildAndRegister()
+
+        // clay block grinding
+        for ((i, m) in listOf(CMaterials.clay, CMaterials.denseClay, CMaterials.industrialClay, CMaterials.advancedIndustrialClay).withIndex()) {
+            registry.builder()
+                .input(OrePrefix.block, m)
+                .output(OrePrefix.dust, m)
+                .tier(0).defaultCEt().duration(4 * (i + 1))
+                .buildAndRegister()
+        }
     }
 }
