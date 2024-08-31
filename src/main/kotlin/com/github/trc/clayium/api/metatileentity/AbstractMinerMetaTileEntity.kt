@@ -138,7 +138,7 @@ abstract class AbstractMinerMetaTileEntity(
             .child(laserEnergyHolder.createLpTextWidget(syncManager)
                 .alignX(Alignment.Center.x).bottom(12)
             )
-            .child(ItemSlot().slot(SyncHandlers.itemSlot(filterSlot, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) })
+            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) })
                 .background(ClayGuiTextures.FILTER_SLOT)
                 .top(12).right(24)
                 .tooltipBuilder { it.addLine(IKey.lang("gui.clayium.miner.filter")) }
