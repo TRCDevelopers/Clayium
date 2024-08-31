@@ -415,6 +415,22 @@ object MachineBlockRecipeLoader {
                 .tier(10).CEt(ClayEnergy(10.0.pow((i + 9.0)).toLong())).duration(60)
                 .buildAndRegister()
         }
+
+        /* Block Breaker */
+        CRecipes.ASSEMBLER.builder()
+            .input(MACHINE_HULL.getItem(AZ91D))
+            .input(MetaItemClayParts.PrecisionCircuit)
+            .output(MetaTileEntities.BLOCK_BREAKER)
+            .tier(6).CEt(ClayEnergy.milli(100)).duration(60)
+            .buildAndRegister()
+
+        /* Ranged Miner */
+        CRecipes.ASSEMBLER.builder()
+            .input(MACHINE_HULL.getItem(ZK60A))
+            .input(MetaItemClayParts.ClayCore, 64)
+            .output(MetaTileEntities.RANGED_MINER)
+            .tier(6).CEt(ClayEnergy.of(10)).duration(6000)
+            .buildAndRegister()
     }
 
     /**
