@@ -7,6 +7,7 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
@@ -24,6 +25,7 @@ import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.capabilities.Capability
@@ -87,19 +89,22 @@ class AutoClayCondenserMetaTileEntity(
         return ModularPanel.defaultPanel("auto_clay_condenser", 176, 190)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
-                    .child(SlotGroupWidget.builder()
-                    .matrix("IIII", "IIII", "IIII", "IIII")
-                    .key('I') {
-                        ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, it)
-                            .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null }
-                            .slotGroup("compressor_inventory"))
-                    }
-                    .build().align(Alignment.Center))
-                    .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(maxCompressedClay, 0)
-                        .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null })
-                        .align(Alignment.TopRight)
-                        .background(ClayGuiTextures.CLAY_SLOT))
+                    .child(Row().widthRel(1f).height(18 * 4)
+                        .align(Alignment.Center)
+                        .child(SlotGroupWidget.builder()
+                            .matrix("IIII", "IIII", "IIII", "IIII")
+                            .key('I') {
+                                ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, it)
+                                    .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null }
+                                    .slotGroup("compressor_inventory"))
+                            }
+                            .build().align(Alignment.Center))
+                        .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(maxCompressedClay, 0)
+                            .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null })
+                            .align(Alignment.TopRight)
+                            .background(ClayGuiTextures.CLAY_SLOT))
                     )
+                )
             }
     }
 
@@ -148,5 +153,15 @@ class AutoClayCondenserMetaTileEntity(
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(ItemHandlerProxy(inputSlots, outputSlots))
         }
         return super.getCapability(capability, facing)
+    }
+
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        data.setTag("maxCompressedClay", maxCompressedClay.serializeNBT())
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        maxCompressedClay.deserializeNBT(data.getCompoundTag("maxCompressedClay"))
     }
 }
