@@ -71,7 +71,7 @@ class RangedMinerMetaTileEntity(
                 this.currentTargetPos = getNextBlockPos()
                 continue
             }
-            val requiredProgress = getRequiredProgress(hardness)
+            val requiredProgress = getRequiredProgress(state, world, targetPos)
 
             if (progress < requiredProgress) return // cannot mine
             progress -= requiredProgress

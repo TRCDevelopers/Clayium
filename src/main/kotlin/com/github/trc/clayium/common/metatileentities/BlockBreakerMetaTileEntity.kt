@@ -49,7 +49,7 @@ class BlockBreakerMetaTileEntity(
             return
         }
 
-        val requiredProgress = getRequiredProgress(hardness)
+        val requiredProgress = getRequiredProgress(state, world, targetPos)
         if (progress < requiredProgress) {
             addProgress()
         }

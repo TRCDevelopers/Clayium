@@ -31,6 +31,7 @@ import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer.RangeRenderMode
 import com.github.trc.clayium.common.gui.ClayGuiTextures
+import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
@@ -38,6 +39,8 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntityBeacon
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.function.Function
@@ -97,8 +100,9 @@ abstract class AbstractMinerMetaTileEntity(
         return 1 + 4 * log10(energy / 1000 + 1)
     }
 
-    protected fun getRequiredProgress(blockHardness: Float): Double {
-        return REQUIRED_PROGRESS_BASE * (0.1 + blockHardness)
+    protected fun getRequiredProgress(state: IBlockState, world: World, pos: BlockPos): Double {
+        val hardness = if (state.material.isLiquid) 1f else state.getBlockHardness(world, pos)
+        return REQUIRED_PROGRESS_BASE * (0.1 + hardness)
     }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
