@@ -550,6 +550,7 @@ tile.clayium.clay_marker.all_height.tooltip3=Y = 1 ～ 255 まで拡張される
 gui.clayium.range_visualization_mode.disabled=範囲表示: 無効
 gui.clayium.range_visualization_mode.enabled=範囲表示: 有効
 gui.clayium.range_visualization_mode.enabled_xray=範囲表示: 有効 (X-Ray)
+gui.clayium.miner.filter=フィルター
 machine.clayium.block_breaker=採掘機
 machine.clayium.ranged_collector=範囲収集機
 machine.clayium.ranged_miner=範囲採掘機

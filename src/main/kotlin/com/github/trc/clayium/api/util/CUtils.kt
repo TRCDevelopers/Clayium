@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
@@ -36,6 +37,14 @@ fun ItemStack.canStackWith(other: ItemStack): Boolean {
     return (this.isEmpty || other.isEmpty) || (isItemEqual(other)
             && (!item.isDamageable || itemDamage == other.itemDamage)
             && ItemStack.areItemStackTagsEqual(this, other))
+}
+
+fun <T> ItemStack.getCapability(capability: Capability<T>): T? {
+    return getCapability(capability, null)
+}
+
+fun <T> ItemStack.hasCapability(capability: Capability<T>): Boolean {
+    return hasCapability(capability, null)
 }
 
 fun IItemHandler.toList(): List<ItemStack> {
@@ -73,7 +82,6 @@ inline fun <reified E : Enum<E>> E.next(): E {
 fun clayiumId(path: String): ResourceLocation {
     return ResourceLocation(CValues.MOD_ID, path)
 }
-
 
 object CUtils {
 

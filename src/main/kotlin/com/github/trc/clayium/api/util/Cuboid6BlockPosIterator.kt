@@ -51,4 +51,13 @@ class Cuboid6BlockPosIterator(
             throw NoSuchElementException()
         }
     }
+
+    fun restart() {
+        xIter = xRange.iterator()
+        zIter = zRange.iterator()
+        yIter = yRange.iterator()
+        lastX = xIter.next()
+        lastZ = zIter.next()
+        lastY = yIter.next()
+    }
 }

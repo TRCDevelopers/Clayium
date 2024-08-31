@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.BoolValue
 import com.cleanroommc.modularui.value.EnumValue
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
@@ -16,16 +17,21 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Grid
+import com.github.trc.clayium.api.capability.ClayiumCapabilities
+import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.LaserEnergyHolder
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.getCapability
+import com.github.trc.clayium.api.util.hasCapability
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer.RangeRenderMode
 import com.github.trc.clayium.common.gui.ClayGuiTextures
+import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
@@ -33,6 +39,8 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntityBeacon
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.function.Function
@@ -50,6 +58,9 @@ abstract class AbstractMinerMetaTileEntity(
     override val itemInventory = ClayiumItemStackHandler(this, INV_ROW * INV_COLUMN)
     override val importItems = EmptyItemStackHandler
     override val exportItems = itemInventory
+    protected val filterSlot = ClayiumItemStackHandler(this, 1)
+    protected val filter: IItemFilter?
+        get() = filterSlot.getStackInSlot(0).getCapability(ClayiumCapabilities.ITEM_FILTER)
 
     protected val laserEnergyHolder: LaserEnergyHolder = LaserEnergyHolder(this)
 
@@ -72,6 +83,12 @@ abstract class AbstractMinerMetaTileEntity(
 
     abstract fun mineBlocks()
 
+    /**
+     * called on the server when the reset button in the gui is pressed.
+     * this is intended to reset the iteration state.
+     */
+    protected open fun resetButtonPressed() = true
+
     protected open fun addProgress() {
         progress += PROGRESS_PER_TICK_BASE * getAccelerationRate()
         laserEnergyHolder.drawAll()
@@ -83,8 +100,9 @@ abstract class AbstractMinerMetaTileEntity(
         return 1 + 4 * log10(energy / 1000 + 1)
     }
 
-    protected fun getRequiredProgress(blockHardness: Float): Double {
-        return REQUIRED_PROGRESS_BASE * (0.1 + blockHardness)
+    protected fun getRequiredProgress(state: IBlockState, world: World, pos: BlockPos): Double {
+        val hardness = if (state.material.isLiquid) 1f else state.getBlockHardness(world, pos)
+        return REQUIRED_PROGRESS_BASE * (0.1 + hardness)
     }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
@@ -113,6 +131,8 @@ abstract class AbstractMinerMetaTileEntity(
             .tooltip(1) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled")) }
             .tooltip(2) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled_xray")) }
         val resetButton = ButtonWidget()
+            .syncHandler(InteractionSyncHandler()
+                .setOnMousePressed { if (!it.isClient) resetButtonPressed() })
             .background(ClayGuiTextures.RESET)
             .hoverBackground(ClayGuiTextures.RESET_HOVERED)
 
@@ -131,6 +151,11 @@ abstract class AbstractMinerMetaTileEntity(
             .child(laserEnergyHolder.createLpTextWidget(syncManager)
                 .alignX(Alignment.Center.x).bottom(12)
             )
+            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) })
+                .background(ClayGuiTextures.FILTER_SLOT)
+                .top(12).right(24)
+                .tooltipBuilder { it.addLine(IKey.lang("gui.clayium.miner.filter")) }
+            )
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
@@ -143,11 +168,13 @@ abstract class AbstractMinerMetaTileEntity(
     override fun writeToNBT(data: NBTTagCompound) {
         super.writeToNBT(data)
         data.setBoolean("workingEnabled", workingEnabled)
+        data.setTag("filterSlot", filterSlot.serializeNBT())
     }
 
     override fun readFromNBT(data: NBTTagCompound) {
         super.readFromNBT(data)
         workingEnabled = data.getBoolean("workingEnabled")
+        filterSlot.deserializeNBT(data.getCompoundTag("filterSlot"))
     }
 
     @SideOnly(Side.CLIENT)

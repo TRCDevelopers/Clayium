@@ -13,6 +13,7 @@ import com.github.trc.clayium.api.metatileentity.trait.ClayMarkerHandler
 import com.github.trc.clayium.api.util.Cuboid6BlockPosIterator
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.toItemStack
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.util.TransferUtils
 import net.minecraft.item.ItemStack
@@ -34,7 +35,7 @@ class RangedMinerMetaTileEntity(
 
     private var currentTargetPos: BlockPos? = null
 
-    private val posIter: Iterator<BlockPos.MutableBlockPos>? by lazy {
+    private val posIter: Cuboid6BlockPosIterator? by lazy {
         val range = clayMarkerHandler.markedRangeAbsolute?.copy() ?: return@lazy null
         Cuboid6BlockPosIterator(range)
     }
@@ -63,11 +64,14 @@ class RangedMinerMetaTileEntity(
             val targetPos = this.currentTargetPos ?: return
             val state = world.getBlockState(targetPos)
             val hardness = state.getBlockHardness(world, targetPos)
-            if (hardness == CValues.HARDNESS_UNBREAKABLE) {
+
+            val filter = this.filter
+            val filterMatches = filter == null || filter.test(state.toItemStack())
+            if (!filterMatches || hardness == CValues.HARDNESS_UNBREAKABLE) {
                 this.currentTargetPos = getNextBlockPos()
                 continue
             }
-            val requiredProgress = getRequiredProgress(hardness)
+            val requiredProgress = getRequiredProgress(state, world, targetPos)
 
             if (progress < requiredProgress) return // cannot mine
             progress -= requiredProgress
@@ -83,6 +87,11 @@ class RangedMinerMetaTileEntity(
                 progress = 0.0
             }
         }
+    }
+
+    override fun resetButtonPressed(): Boolean {
+        this.posIter?.restart()
+        return true
     }
 
     override fun addProgress() {
