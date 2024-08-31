@@ -383,7 +383,7 @@ machine.clayium.clay_fabricator.ultimate.tooltip5=the clay block's tier and stac
 machine.clayium.clay_fabricator.opa=Clay Fabricator Mk III
 machine.clayium.clay_fabricator.opa.tooltip1=Duplicates clay instantly.
 
-tile.clayium.blockPrecisionAlloySmelter.name=Alloy Smelter
+machine.clayium.alloy_smelter=Alloy Smelter
 
 machine.clayium.chemical_metal_separator=Chemical Metal Separator
 machine.clayium.clay_blast_furnace=Clay Blast Furnace

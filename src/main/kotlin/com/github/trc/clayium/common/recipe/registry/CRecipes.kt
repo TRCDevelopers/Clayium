@@ -37,7 +37,7 @@ object CRecipes {
     // 2 -> 1 recipes
     val ASSEMBLER = addRegistry("assembler", SimpleRecipeBuilder(), 2, 1)
     val INSCRIBER = addRegistry("inscriber", SimpleRecipeBuilder(), 2, 1)
-    val ALLOY_SMELTER = addRegistry("allot_smelter", SimpleRecipeBuilder(), 2, 1)
+    val ALLOY_SMELTER = addRegistry("alloy_smelter", SimpleRecipeBuilder(), 2, 1)
     val CA_INJECTOR = addRegistry("ca_injector", SimpleRecipeBuilder(), 2, 1) //todo special registry or builder?
 
     // others

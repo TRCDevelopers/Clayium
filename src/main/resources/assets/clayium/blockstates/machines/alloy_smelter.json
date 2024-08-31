@@ -1,0 +1,19 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "face": "clayium:blocks/alloy_smelter"
+    },
+    "model": "clayium:machine"
+  },
+  "variants": {
+    "tier": {
+      "precision": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier6"
+        },
+        "model": "clayium:machine"
+      }
+    }
+  }
+}
