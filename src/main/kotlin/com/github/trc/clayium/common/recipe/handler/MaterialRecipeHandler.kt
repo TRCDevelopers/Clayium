@@ -185,7 +185,7 @@ object MaterialRecipeHandler {
                 }
             } else {
                 // generate recipes for energy clay blocks
-                CRecipes.CONDENSER.register {
+                CRecipes.ENERGETIC_CLAY_CONDENSER.register {
                     input(OrePrefix.block, material, 9)
                     output(OrePrefix.block, compressedInto)
                     val pow = compressedInto.tier?.numeric?.minus(4)?.coerceAtLeast(0) ?: 0
