@@ -4,7 +4,6 @@ import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
-import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
@@ -15,12 +14,6 @@ import kotlin.math.pow
 
 object MaterialRecipeHandler {
     fun registerRecipes() {
-        // special energy/t for these blocks
-        // no dust for compressedClay
-        val specialBlockToDustHandling = setOf(
-            CMaterials.clay, CMaterials.denseClay, CMaterials.industrialClay, CMaterials.advancedIndustrialClay
-        )
-
         for (material in ClayiumApi.materialRegistry) {
             if (material.hasOre(OrePrefix.ingot)) {
                 if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.ingot, material)
@@ -46,9 +39,8 @@ object MaterialRecipeHandler {
                     val prop = material.getProperty(CPropertyKey.CLAY)
                     if (prop.compressedInto != null) addClayBlockRecipe(material, prop.compressedInto)
                 }
-                if (material !in specialBlockToDustHandling) {
-                    tryAddGrindingRecipe(OrePrefix.block, material)
-                }
+                // todo: how to handle output amount of block -> dust?
+//                    tryAddGrindingRecipe(OrePrefix.block, material)
             }
 
             if (material.hasOre(OrePrefix.plate)) { tryAddGrindingRecipe(OrePrefix.plate, material) }

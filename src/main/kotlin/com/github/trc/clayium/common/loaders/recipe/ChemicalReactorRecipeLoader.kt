@@ -44,6 +44,7 @@ object ChemicalReactorRecipeLoader {
             .output(OrePrefix.dust, CMaterials.impureSilicon)
             .output(OrePrefix.dust, CMaterials.aluminum)
             .CEt(ClayEnergy.milli(10)).duration(30).tier(5)
+            .buildAndRegister()
 
         registry.builder()
             .input(OrePrefix.dust, CMaterials.salt)
