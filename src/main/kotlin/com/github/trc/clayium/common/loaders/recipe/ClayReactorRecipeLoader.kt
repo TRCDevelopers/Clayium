@@ -132,7 +132,7 @@ object ClayReactorRecipeLoader {
 
         registry.builder()
             .input(OrePrefix.dust, CMaterials.impureGlowStone)
-            .output(Items.REDSTONE)
+            .output(Items.GLOWSTONE_DUST)
             .tier(7).CEtFactor(0.1).duration(2000)
             .buildAndRegister()
 
