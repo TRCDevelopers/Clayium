@@ -16,7 +16,7 @@ class CMaterial(
     val materialId: ResourceLocation,
     val properties: CMaterialProperties,
     override val blockAmount: Int,
-    val tier: ITier? = null,
+    override val tier: ITier? = null,
     val colors: IntArray? = null,
     private val flags: Set<CMaterialFlag> = emptySet(),
 ) : Comparable<CMaterial>, IMaterial {

@@ -19,12 +19,10 @@ object MaterialRecipeHandler {
             GrinderRecipeLoader.handleOre(material)
             if (material.hasOre(OrePrefix.ingot)) {
                 if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.ingot, material)
-                tryAddGrindingRecipe(OrePrefix.ingot, material)
             }
 
             if (material.hasOre(OrePrefix.gem)) {
                 if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.gem, material)
-                tryAddGrindingRecipe(OrePrefix.gem, material)
             }
 
             if (material.hasOre(OrePrefix.dust)) {
@@ -41,12 +39,7 @@ object MaterialRecipeHandler {
                     val prop = material.getProperty(CPropertyKey.CLAY)
                     if (prop.compressedInto != null) addClayBlockRecipe(material, prop.compressedInto)
                 }
-                // todo: how to handle output amount of block -> dust?
-//                    tryAddGrindingRecipe(OrePrefix.block, material)
             }
-
-            if (material.hasOre(OrePrefix.plate)) { tryAddGrindingRecipe(OrePrefix.plate, material) }
-            if (material.hasOre(OrePrefix.largePlate)) { tryAddGrindingRecipe(OrePrefix.largePlate, material, 4) }
         }
     }
 

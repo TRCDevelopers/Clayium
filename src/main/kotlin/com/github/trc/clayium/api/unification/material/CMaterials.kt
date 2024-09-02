@@ -133,7 +133,7 @@ object CMaterials {
         ingot()
     }
     val iron = CMaterial.create(49, clayiumId("iron")) {
-        colors(0xD8D8D8, 0x353535, 0xFFFFFF)
+        tier(8).colors(0xD8D8D8, 0x353535, 0xFFFFFF)
         dust()
         impureDust(0xD8D8D8, 0x78783C, 0xDCDCDC)
     }
