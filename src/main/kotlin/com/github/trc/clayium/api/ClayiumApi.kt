@@ -8,6 +8,7 @@ import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.registry.CMarkerMaterialRegistry
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.registry.CRegistry
+import com.github.trc.clayium.api.util.registry.MaterialRegistry
 import net.minecraft.util.ResourceLocation
 
 object ClayiumApi {
@@ -15,7 +16,7 @@ object ClayiumApi {
     val ITEM_BLOCK_MACHINE: ItemBlockMachine = ItemBlockMachine(BLOCK_MACHINE).apply { setRegistryName(clayiumId("machine")) }
 
     val MTE_REGISTRY = CRegistry<ResourceLocation, MetaTileEntity>(Short.MAX_VALUE.toInt())
-    val materialRegistry = CRegistry<ResourceLocation, CMaterial>(Short.MAX_VALUE.toInt())
+    val materialRegistry = MaterialRegistry<CMaterial>(Short.MAX_VALUE.toInt())
     val markerMaterials = CMarkerMaterialRegistry()
 
     val PAN_RECIPE_FACTORIES = mutableListOf<IPanRecipeFactory>()
