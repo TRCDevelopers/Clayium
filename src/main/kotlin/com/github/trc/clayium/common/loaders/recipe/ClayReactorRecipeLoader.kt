@@ -45,7 +45,7 @@ object ClayReactorRecipeLoader {
 
         registry.builder()
             .input(OrePrefix.dust, CMaterials.advancedIndustrialClay)
-            .input(OrePrefix.ingot, CMaterials.impureUltimateAlloy)
+            .input(OrePrefix.ingot, CMaterials.ultimateCompound)
             .output(OrePrefix.ingot, CMaterials.ultimateAlloy)
             .tier(8).CEtFactor(10.0).duration(1_000_000_000)
             .buildAndRegister()

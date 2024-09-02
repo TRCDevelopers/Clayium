@@ -549,7 +549,7 @@ object CMaterials {
         plate(ClayEnergy.milli(1), 20, tier = 4)
         claySmelting(0.2, 6, 400)
     }
-    val impureUltimateAlloy = CMaterial.create(1003, clayiumId("impure_ultimate")) {
+    val ultimateCompound = CMaterial.create(1003, clayiumId("ultimate_compound")) {
         tier(8).colors(0x55CD55, 0xF5FFFF, 0xF5A0FF)
         ingot()
     }
