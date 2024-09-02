@@ -60,7 +60,6 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
-import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
@@ -322,6 +321,7 @@ abstract class MetaTileEntity(
                 FIRST ->  createFilteredItemHandler(RangedItemHandlerProxy(importItems, availableSlot = 0), facing)
                 SECOND -> createFilteredItemHandler(RangedItemHandlerProxy(importItems, availableSlot = 1), facing)
                 ALL -> createFilteredItemHandler(importItems, facing)
+                CE -> this.getCapability(ClayiumTileCapabilities.CLAY_ENERGY_HOLDER, facing)?.energizedClayItemHandler
                 else -> null
             }
             val outputSlots = when (outputModes[i]) {
@@ -536,10 +536,6 @@ abstract class MetaTileEntity(
             writeVarInt(side.index)
             writeVarInt(-1)
         }
-    }
-
-    protected fun canConnectTo(neighbor: TileEntity, side: EnumFacing): Boolean {
-        return neighbor.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite)
     }
 
     open fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {

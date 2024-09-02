@@ -35,8 +35,8 @@ abstract class AutoIoHandler(
         }
     }
 
-    protected open fun isImporting(side: EnumFacing): Boolean = metaTileEntity.getInput(side).allowAutoIo
-    protected open fun isExporting(side: EnumFacing): Boolean = metaTileEntity.getOutput(side).allowAutoIo
+    protected open fun isImporting(side: EnumFacing): Boolean = metaTileEntity.getInput(side) != MachineIoMode.NONE
+    protected open fun isExporting(side: EnumFacing): Boolean = metaTileEntity.getOutput(side) != MachineIoMode.NONE
 
     protected open fun getImportItems(side: EnumFacing): IItemHandler? = metaTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)
     protected open fun getExportItems(side: EnumFacing): IItemHandler? = metaTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)
@@ -98,6 +98,11 @@ abstract class AutoIoHandler(
         }
     }
 
+    /**
+     * this exists to separate limits (coolTime and amountPerAction) from the normal importer.
+     * even if the normal importer is working at full speed (and cannot import energized clay because of its limit),
+     * Energized Clay should be imported.
+     */
     class EcImporter(
         metaTileEntity: MetaTileEntity,
         private val energizedClayItemHandler: IItemHandler = metaTileEntity.importItems,
