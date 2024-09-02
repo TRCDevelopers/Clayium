@@ -22,7 +22,6 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
     }
 
     private val _recipes = mutableListOf<Recipe>()
-    val recipesList: List<Recipe> = _recipes
 
     fun builder(): R {
         return builderSample.copy()
@@ -36,9 +35,7 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
 
     //todo use hash table?
     fun findRecipe(machineTier: Int, inputsIn: List<ItemStack>): Recipe? {
-        return _recipes.filter { it.matches(inputsIn, machineTier) }
-            .sortedWith(TIER_DURATION_CE_REVERSED)
-            .firstOrNull()
+        return _recipes.firstOrNull { it.matches(inputsIn, machineTier) }
     }
 
     fun addRecipe(recipe: Recipe) {
