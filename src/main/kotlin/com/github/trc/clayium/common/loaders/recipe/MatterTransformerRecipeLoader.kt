@@ -1,8 +1,10 @@
 package com.github.trc.clayium.common.loaders.recipe
 
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.unification.material.CMarkerMaterials
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.api.util.VBlocks
 import com.github.trc.clayium.api.util.VItems
 import com.github.trc.clayium.common.recipe.registry.CRecipes
@@ -147,6 +149,14 @@ object MatterTransformerRecipeLoader {
             .buildAndRegister()
 
         registerMaterialTransformations()
+
+        if (Mods.AE2.isModLoaded) {
+            registry.builder()
+                .input(Items.QUARTZ)
+                .output(OrePrefix.crystal, CMarkerMaterials.certusQuartz)
+                .tier(10).defaultCEt().duration(60)
+                .buildAndRegister()
+        }
     }
 
     private fun getLeaveStack(type: BlockPlanks.EnumType): ItemStack {

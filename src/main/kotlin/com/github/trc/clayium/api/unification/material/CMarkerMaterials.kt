@@ -11,5 +11,6 @@ object CMarkerMaterials {
     val pulsatingIron = CMarkerMaterial("PulsatingIron")
     val vibrantAlloy = CMarkerMaterial("VibrantAlloy")
     val soularium = CMarkerMaterial("Soularium")
+
     fun init() {}
 }
