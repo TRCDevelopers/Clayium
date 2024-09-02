@@ -8,6 +8,6 @@ data class UnificationEntry(
     val material: CMaterial,
 ) {
     override fun toString(): String {
-        return "${orePrefix.camel}${material.upperCamel}"
+        return "${orePrefix.camel}${material.upperCamelName}"
     }
 }

@@ -18,9 +18,9 @@ class CMaterial(
     val tier: ITier? = null,
     val colors: IntArray? = null,
     private val flags: Set<CMaterialFlag> = emptySet(),
-) : Comparable<CMaterial> {
+) : Comparable<CMaterial>, IMaterial {
 
-    val upperCamel = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, materialId.path)
+    override val upperCamelName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, materialId.path)
     val translationKey = "${materialId.namespace}.material.${materialId.path}"
 
     override fun compareTo(other: CMaterial): Int {
