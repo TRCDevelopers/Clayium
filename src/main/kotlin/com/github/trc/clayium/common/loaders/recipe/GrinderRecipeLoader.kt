@@ -1,7 +1,9 @@
 package com.github.trc.clayium.common.loaders.recipe
 
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
+import com.github.trc.clayium.api.unification.material.IMaterial
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
@@ -55,6 +57,24 @@ object GrinderRecipeLoader {
                 .input(OrePrefix.block, m)
                 .output(OrePrefix.dust, m)
                 .tier(0).defaultCEt().duration(4 * (i + 1))
+                .buildAndRegister()
+        }
+    }
+
+    fun handleOre(material: IMaterial) {
+        if (OreDictUnifier.exists(OrePrefix.block, material)) {
+            // skip if it's a clay block. (energy, duration) of these is special
+            if (material === CMaterials.clay || material === CMaterials.denseClay || material === CMaterials.industrialClay || material === CMaterials.advancedIndustrialClay) {
+                return
+            }
+            // skip if not dust
+            if (!OreDictUnifier.exists(OrePrefix.dust, material)) {
+                return
+            }
+            CRecipes.GRINDER.builder()
+                .input(OrePrefix.block, material)
+                .output(OrePrefix.dust, material, material.blockAmount)
+                .tier(5).CEt(ClayEnergy.micro(2500)).duration(80 * material.blockAmount)
                 .buildAndRegister()
         }
     }

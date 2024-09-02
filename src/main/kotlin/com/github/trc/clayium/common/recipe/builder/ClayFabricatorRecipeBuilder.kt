@@ -49,7 +49,7 @@ class ClayFabricatorRecipeBuilder : RecipeBuilder<ClayFabricatorRecipeBuilder> {
         recipeRegistry.addRecipe(recipe)
     }
 
-    override fun input(orePrefix: OrePrefix, material: CMaterial, amount: Int): ClayFabricatorRecipeBuilder {
+    fun clayInput(orePrefix: OrePrefix, material: CMaterial, amount: Int = 1): ClayFabricatorRecipeBuilder {
         super.input(orePrefix, material, amount)
         val clay = material.getPropOrNull(CPropertyKey.CLAY)
         if (clay != null && clay.compressedInto != null) {

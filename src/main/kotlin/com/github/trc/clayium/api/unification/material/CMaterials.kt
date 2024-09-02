@@ -490,6 +490,7 @@ object CMaterials {
     }
     val quartz = CMaterial.create(514, clayiumId("quartz")) {
         dust()
+        blockAmount(4)
     }
     val salt = CMaterial.create(515, clayiumId("salt")) {
         tier(4)

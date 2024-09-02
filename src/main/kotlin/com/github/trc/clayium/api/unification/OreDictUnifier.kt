@@ -40,4 +40,8 @@ object OreDictUnifier {
     fun getAll(oreDict: UnificationEntry, stackSize: Int = 1): List<ItemStack> {
         return getAll(oreDict.toString(), stackSize)
     }
+
+    fun exists(orePrefix: OrePrefix, material: IMaterial): Boolean {
+        return !get(orePrefix, material).isEmpty
+    }
 }

@@ -84,11 +84,13 @@ class CMaterial(
 
         /**
          * Adds a clay block to this material.
+         * automatically set blockAmount to 1.
          * @param compressedInto If specified, the compress/condense and inverse recipe will be generated.
          * @param energy The energy of this clay. If null, the clay will not be energized (i.e. it can't be used as machine fuel).
          */
         fun clay(compressionLevel: Int, compressedInto: CMaterial? = null, energy: ClayEnergy? = null): Builder {
             properties.setProperty(CPropertyKey.CLAY, Clay(compressionLevel, compressedInto, energy))
+            blockAmount(1)
             return this
         }
 

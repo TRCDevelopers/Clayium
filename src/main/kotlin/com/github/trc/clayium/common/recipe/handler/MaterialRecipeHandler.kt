@@ -7,6 +7,7 @@ import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
+import com.github.trc.clayium.common.loaders.recipe.GrinderRecipeLoader
 import com.github.trc.clayium.common.recipe.RecipeUtils
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import net.minecraftforge.fml.common.registry.GameRegistry
@@ -15,6 +16,7 @@ import kotlin.math.pow
 object MaterialRecipeHandler {
     fun registerRecipes() {
         for (material in ClayiumApi.materialRegistry) {
+            GrinderRecipeLoader.handleOre(material)
             if (material.hasOre(OrePrefix.ingot)) {
                 if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.ingot, material)
                 tryAddGrindingRecipe(OrePrefix.ingot, material)
