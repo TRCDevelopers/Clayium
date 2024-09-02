@@ -15,6 +15,7 @@ class CMaterial(
      */
     val materialId: ResourceLocation,
     val properties: CMaterialProperties,
+    override val blockAmount: Int,
     val tier: ITier? = null,
     val colors: IntArray? = null,
     private val flags: Set<CMaterialFlag> = emptySet(),
@@ -44,6 +45,7 @@ class CMaterial(
         private var tier: ITier? = null
         private var colors: IntArray? = null
         private var flags: MutableSet<CMaterialFlag> = mutableSetOf()
+        private var blockAmount = 9
 
         fun tier(tier: Int) = apply { this.tier = ClayTiers.entries[tier] }
         fun tier(tier: ITier) = apply { this.tier = tier }
@@ -55,6 +57,8 @@ class CMaterial(
             this.colors = colors
             return this
         }
+
+        fun blockAmount(amount: Int) = apply { blockAmount = amount }
 
         fun ingot() = apply { properties.setProperty(CPropertyKey.INGOT, MaterialProperty.Ingot) }
         fun dust() = apply { properties.setProperty(CPropertyKey.DUST, MaterialProperty.Dust) }
@@ -127,7 +131,7 @@ class CMaterial(
 
         fun build(): CMaterial{
             val flags = if (this.flags.isEmpty()) emptySet() else this.flags
-            val material = CMaterial(metaItemSubId, metaItemId, properties, tier, colors, flags)
+            val material = CMaterial(metaItemSubId, metaItemId, properties, blockAmount, tier, colors, flags)
             ClayiumApi.materialRegistry.register(metaItemSubId, metaItemId, material)
             return material
         }
