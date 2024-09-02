@@ -8,7 +8,7 @@ import com.github.trc.clayium.api.ClayiumApi
  */
 data class CMarkerMaterial(
     override val upperCamelName: String,
-    override val blockAmount: Int
+    override val blockAmount: Int = 9
 ) : IMaterial {
     init {
         require(upperCamelName.isNotBlank()) { "upperCamelName must not be blank" }

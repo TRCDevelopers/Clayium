@@ -13,7 +13,7 @@ object BendingMachineLoader {
                 .input(OrePrefix.cylinder, m)
                 .output(OrePrefix.blade, m, 2)
                 .tier(0).CEt(ClayEnergy.micro(10))
-                .duration(4 * i)
+                .duration(4 * (i + 1))
                 .buildAndRegister()
         }
     }

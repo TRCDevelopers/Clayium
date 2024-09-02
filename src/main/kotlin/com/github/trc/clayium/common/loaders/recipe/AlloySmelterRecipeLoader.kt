@@ -1,9 +1,12 @@
 package com.github.trc.clayium.common.loaders.recipe
 
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.unification.material.CMarkerMaterials
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.common.recipe.registry.CRecipes
+import net.minecraft.init.Items
 
 object AlloySmelterRecipeLoader {
     fun registerRecipes() {
@@ -55,6 +58,28 @@ object AlloySmelterRecipeLoader {
             .output(OrePrefix.ingot, CMaterials.zk60a, 20)
             .tier(6).CEt(ClayEnergy.of(3)).duration(500)
             .buildAndRegister()
+        if (Mods.EnderIO.isModLoaded) {
+            /* Redstone Alloy */
+            registry.builder()
+                .input(Items.REDSTONE)
+                .input(OrePrefix.item, CMaterials.silicon)
+                .output(OrePrefix.ingot, CMarkerMaterials.redstoneAlloy)
+                .tier(6).defaultCEt().duration(100)
+                .buildAndRegister()
+            /* Conductive Iron */
+            registry.builder()
+                .input(Items.REDSTONE)
+                .input(OrePrefix.ingot, CMaterials.iron)
+                .output(OrePrefix.ingot, CMarkerMaterials.conductiveIron)
+                .tier(6).defaultCEt().duration(100)
+                .buildAndRegister()
+            registry.builder()
+                .input(Items.REDSTONE)
+                .input(OrePrefix.dust, CMaterials.iron)
+                .output(OrePrefix.ingot, CMarkerMaterials.conductiveIron)
+                .tier(6).defaultCEt().duration(100)
+                .buildAndRegister()
+        }
     }
 
     private fun simpleAlloy() = CRecipes.ALLOY_SMELTER.builder()
