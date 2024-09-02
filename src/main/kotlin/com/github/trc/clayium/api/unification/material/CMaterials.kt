@@ -550,9 +550,6 @@ object CMaterials {
     }
     //endregion
 
-    // don't use builder so it is not registered
-    val DUMMY = CMaterial(0, clayiumId("dummy"), CMaterialProperties())
-
     val PURE_ANTIMATTERS = listOf(pureAntimatter, pureAntimatter1, pureAntimatter2, pureAntimatter3,
         pureAntimatter4, pureAntimatter5, pureAntimatter6, pureAntimatter7, octuplePureAntimatter)
 
