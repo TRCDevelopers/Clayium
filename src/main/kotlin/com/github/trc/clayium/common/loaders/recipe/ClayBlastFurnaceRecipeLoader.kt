@@ -1,10 +1,13 @@
 package com.github.trc.clayium.common.loaders.recipe
 
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.unification.material.CMarkerMaterials
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.recipe.registry.CRecipes
+import net.minecraft.init.Blocks
 import net.minecraft.init.Items
 
 object ClayBlastFurnaceRecipeLoader {
@@ -52,5 +55,72 @@ object ClayBlastFurnaceRecipeLoader {
             .output(OrePrefix.ingot, CMaterials.steel)
             .tier(6).CEt(ClayEnergy.milli(100)).duration(500)
             .buildAndRegister()
+        if (Mods.EnderIO.isModLoaded) {
+            /* Electrical Steel */
+            registry.builder()
+                .input(OrePrefix.ingot, CMaterials.steel)
+                .input(OrePrefix.item, CMaterials.silicon)
+                .output(OrePrefix.ingot, CMarkerMaterials.electricalSteel)
+                .tier(7).defaultCEt().duration(500)
+                .buildAndRegister()
+            registry.builder()
+                .input(OrePrefix.dust, CMaterials.steel)
+                .input(OrePrefix.item, CMaterials.silicon)
+                .output(OrePrefix.ingot, CMarkerMaterials.electricalSteel)
+                .tier(7).defaultCEt().duration(500)
+                .buildAndRegister()
+            /* Dark Steel */
+            registry.builder()
+                .input(OrePrefix.ingot, CMaterials.steel)
+                .input(Blocks.OBSIDIAN)
+                .output(OrePrefix.ingot, CMarkerMaterials.darkSteel)
+                .tier(7).defaultCEt().duration(500)
+                .buildAndRegister()
+            registry.builder()
+                .input(OrePrefix.dust, CMaterials.steel)
+                .input(Blocks.OBSIDIAN)
+                .output(OrePrefix.ingot, CMarkerMaterials.darkSteel)
+                .tier(7).defaultCEt().duration(500)
+                .buildAndRegister()
+            /* Pulsating Iron */
+            registry.builder()
+                .input(OrePrefix.ingot, CMaterials.iron)
+                .input(Items.ENDER_PEARL)
+                .output(OrePrefix.ingot, CMarkerMaterials.pulsatingIron)
+                .tier(6).defaultCEt().duration(500)
+                .buildAndRegister()
+            registry.builder()
+                .input(OrePrefix.dust, CMaterials.iron)
+                .input(Items.ENDER_PEARL)
+                .output(OrePrefix.ingot, CMarkerMaterials.pulsatingIron)
+                .tier(6).defaultCEt().duration(500)
+                .buildAndRegister()
+            /* Vibrant Alloy */
+            registry.builder()
+                .input(OrePrefix.ingot, CMarkerMaterials.energeticAlloy)
+                .input(Items.ENDER_PEARL)
+                .output(OrePrefix.ingot, CMarkerMaterials.vibrantAlloy)
+                .tier(6).defaultCEt().duration(500)
+                .buildAndRegister()
+            registry.builder()
+                .input(OrePrefix.dust, CMarkerMaterials.energeticAlloy)
+                .input(Items.ENDER_PEARL)
+                .output(OrePrefix.ingot, CMarkerMaterials.vibrantAlloy)
+                .tier(6).defaultCEt().duration(500)
+                .buildAndRegister()
+            /* Soularium Ingot */
+            registry.builder()
+                .input(OrePrefix.ingot, CMaterials.gold)
+                .input(Blocks.SOUL_SAND)
+                .output(OrePrefix.ingot, CMarkerMaterials.soularium)
+                .tier(6).defaultCEt().duration(500)
+                .buildAndRegister()
+            registry.builder()
+                .input(OrePrefix.dust, CMaterials.gold)
+                .input(Blocks.SOUL_SAND)
+                .output(OrePrefix.ingot, CMarkerMaterials.soularium)
+                .tier(6).defaultCEt().duration(500)
+                .buildAndRegister()
+        }
     }
 }
