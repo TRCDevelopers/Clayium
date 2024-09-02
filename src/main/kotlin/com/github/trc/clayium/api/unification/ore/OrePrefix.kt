@@ -91,10 +91,6 @@ class OrePrefix(
 
         fun init() {
             block.ignore(CMaterials.clay)
-
-            ingot.ignore(CMaterials.iron)
-
-            dust.ignore(CMaterials.iron)
         }
     }
 }

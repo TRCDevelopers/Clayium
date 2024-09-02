@@ -112,7 +112,10 @@ object CMaterials {
     val gadolinium = CMaterial.create(37, clayiumId("gadolinium")) {}
     val gallium = CMaterial.create(38, clayiumId("gallium")) {}
     val germanium = CMaterial.create(39, clayiumId("germanium")) {}
-    val gold = CMaterial.create(40, clayiumId("gold")) {}
+    val gold = CMaterial.create(40, clayiumId("gold")) {
+        colors(0xFFFF0A, 0x3C3C00, 0xFFFFFF)
+        dust()
+    }
     val hafnium = CMaterial.create(41, clayiumId("hafnium")) {
         tier(7).colors(0xF0D2AA, 0x191919, 0xFFFFFF)
         ingot().dust()
@@ -130,7 +133,8 @@ object CMaterials {
         ingot()
     }
     val iron = CMaterial.create(49, clayiumId("iron")) {
-        ingot().dust()
+        colors(0xD8D8D8, 0x353535, 0xFFFFFF)
+        dust()
         impureDust(0xD8D8D8, 0x78783C, 0xDCDCDC)
     }
     val krypton = CMaterial.create(50, clayiumId("krypton")) {}
