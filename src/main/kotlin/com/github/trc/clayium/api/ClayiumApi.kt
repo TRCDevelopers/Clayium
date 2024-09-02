@@ -4,8 +4,8 @@ import com.github.trc.clayium.api.block.BlockMachine
 import com.github.trc.clayium.api.block.ItemBlockMachine
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.pan.IPanRecipeFactory
+import com.github.trc.clayium.api.unification.material.CMarkerMaterial
 import com.github.trc.clayium.api.unification.material.CMaterial
-import com.github.trc.clayium.api.unification.material.marker.CMarkerMaterial
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.registry.CRegistry
 import net.minecraft.util.ResourceLocation
