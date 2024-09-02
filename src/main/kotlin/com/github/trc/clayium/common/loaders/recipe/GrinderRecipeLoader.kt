@@ -72,7 +72,7 @@ object GrinderRecipeLoader {
             handleBlockGrinding(material)
         }
 
-        listOf(OrePrefix.ingot, OrePrefix.gem, OrePrefix.plate).forEach { prefix ->
+        listOf(OrePrefix.ingot, OrePrefix.gem, OrePrefix.plate, OrePrefix.crystal).forEach { prefix ->
             if (OreDictUnifier.exists(prefix, material)) {
                 addDefaultGrindingRecipe(prefix, material)
             }

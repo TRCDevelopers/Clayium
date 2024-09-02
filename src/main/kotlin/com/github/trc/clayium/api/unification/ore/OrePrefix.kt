@@ -23,8 +23,8 @@ class OrePrefix(
 
     //todo: move to somewhere else?
     fun canGenerateItem(material: CMaterial): Boolean {
-        return !this.isIgnored(material) && (itemGenerationLogic == null
-                || itemGenerationLogic.test(material))
+        return !this.isIgnored(material) && (itemGenerationLogic != null
+                && itemGenerationLogic.test(material))
     }
 
     fun ignore(material: CMaterial) {
@@ -61,6 +61,8 @@ class OrePrefix(
         val ingot = OrePrefix("ingot", hasIngotProperty)
         val dust = OrePrefix("dust", hasDustProperty)
         val gem = OrePrefix("gem", hasMatterProperty)
+        val crystal = OrePrefix("crystal")
+
         val plate = OrePrefix("plate", hasPlateProperty)
         val largePlate = OrePrefix("largePlate", hasPlateProperty)
 
