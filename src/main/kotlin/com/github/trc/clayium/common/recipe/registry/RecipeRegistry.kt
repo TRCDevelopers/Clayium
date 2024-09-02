@@ -34,8 +34,11 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
         builder.buildAndRegister()
     }
 
+    //todo use hash table?
     fun findRecipe(machineTier: Int, inputsIn: List<ItemStack>): Recipe? {
-        return _recipes.find { it.matches(inputsIn, machineTier) }
+        return _recipes.filter { it.matches(inputsIn, machineTier) }
+            .sortedWith(TIER_DURATION_CE_REVERSED)
+            .firstOrNull()
     }
 
     fun addRecipe(recipe: Recipe) {
