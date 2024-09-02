@@ -17,6 +17,8 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
     constructor(translationKey: String, builderSample: R, maxInputs: Int, maxOutputs: Int) :
             this(RecipeCategory.create(CValues.MOD_ID, translationKey), builderSample, maxInputs, maxOutputs)
 
+    val translationKey = category.translationKey
+
     init {
         builderSample.setRegistry(this)
     }

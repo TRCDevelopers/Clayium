@@ -38,11 +38,11 @@
  * For more details, see https://docs.gradle.org/8.4/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 dependencies {
-    runtimeOnly('io.github.chaosunity.forgelin:Forgelin-Continuous:2.0.10.0') {
-        transitive = false
-    }
+    runtimeOnly('io.github.chaosunity.forgelin:Forgelin-Continuous:2.0.10.0') {transitive = false}
+
     api("com.cleanroommc:modularui:2.4.3")
     api("codechicken:codechickenlib:3.2.3.358")
+    api("com.cleanroommc:groovyscript:1.1.3") { transitive = false }
 
     testImplementation("io.kotest:kotest-runner-junit5:5.8.1")
     testImplementation("io.mockk:mockk:1.13.10")
