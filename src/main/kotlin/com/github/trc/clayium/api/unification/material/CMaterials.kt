@@ -112,7 +112,10 @@ object CMaterials {
     val gadolinium = CMaterial.create(37, clayiumId("gadolinium")) {}
     val gallium = CMaterial.create(38, clayiumId("gallium")) {}
     val germanium = CMaterial.create(39, clayiumId("germanium")) {}
-    val gold = CMaterial.create(40, clayiumId("gold")) {}
+    val gold = CMaterial.create(40, clayiumId("gold")) {
+        colors(0xFFFF0A, 0x3C3C00, 0xFFFFFF)
+        dust()
+    }
     val hafnium = CMaterial.create(41, clayiumId("hafnium")) {
         tier(7).colors(0xF0D2AA, 0x191919, 0xFFFFFF)
         ingot().dust()
@@ -130,7 +133,8 @@ object CMaterials {
         ingot()
     }
     val iron = CMaterial.create(49, clayiumId("iron")) {
-        ingot().dust()
+        tier(8).colors(0xD8D8D8, 0x353535, 0xFFFFFF)
+        dust()
         impureDust(0xD8D8D8, 0x78783C, 0xDCDCDC)
     }
     val krypton = CMaterial.create(50, clayiumId("krypton")) {}
@@ -490,6 +494,7 @@ object CMaterials {
     }
     val quartz = CMaterial.create(514, clayiumId("quartz")) {
         dust()
+        blockAmount(4)
     }
     val salt = CMaterial.create(515, clayiumId("salt")) {
         tier(4)
@@ -544,14 +549,11 @@ object CMaterials {
         plate(ClayEnergy.milli(1), 20, tier = 4)
         claySmelting(0.2, 6, 400)
     }
-    val impureUltimateAlloy = CMaterial.create(1003, clayiumId("impure_ultimate")) {
+    val ultimateCompound = CMaterial.create(1003, clayiumId("ultimate_compound")) {
         tier(8).colors(0x55CD55, 0xF5FFFF, 0xF5A0FF)
         ingot()
     }
     //endregion
-
-    // don't use builder so it is not registered
-    val DUMMY = CMaterial(0, clayiumId("dummy"), CMaterialProperties())
 
     val PURE_ANTIMATTERS = listOf(pureAntimatter, pureAntimatter1, pureAntimatter2, pureAntimatter3,
         pureAntimatter4, pureAntimatter5, pureAntimatter6, pureAntimatter7, octuplePureAntimatter)
@@ -635,5 +637,7 @@ object CMaterials {
         //endregion
     }
 
-    fun init() {}
+    fun init() {
+        CMarkerMaterials.init()
+    }
 }

@@ -3,6 +3,7 @@ package com.github.trc.clayium.common.loaders.recipe
 import com.github.trc.clayium.common.recipe.handler.MaterialRecipeHandler
 
 object CRecipeLoader {
+    //todo refactoring
     fun load() {
         ClayWorkTableRecipeLoader.registerRecipes()
 

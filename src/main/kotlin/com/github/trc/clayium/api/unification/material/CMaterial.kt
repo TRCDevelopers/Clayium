@@ -15,12 +15,13 @@ class CMaterial(
      */
     val materialId: ResourceLocation,
     val properties: CMaterialProperties,
-    val tier: ITier? = null,
+    override val blockAmount: Int,
+    override val tier: ITier? = null,
     val colors: IntArray? = null,
     private val flags: Set<CMaterialFlag> = emptySet(),
-) : Comparable<CMaterial> {
+) : Comparable<CMaterial>, IMaterial {
 
-    val upperCamel = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, materialId.path)
+    override val upperCamelName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, materialId.path)
     val translationKey = "${materialId.namespace}.material.${materialId.path}"
 
     override fun compareTo(other: CMaterial): Int {
@@ -44,6 +45,7 @@ class CMaterial(
         private var tier: ITier? = null
         private var colors: IntArray? = null
         private var flags: MutableSet<CMaterialFlag> = mutableSetOf()
+        private var blockAmount = 9
 
         fun tier(tier: Int) = apply { this.tier = ClayTiers.entries[tier] }
         fun tier(tier: ITier) = apply { this.tier = tier }
@@ -55,6 +57,8 @@ class CMaterial(
             this.colors = colors
             return this
         }
+
+        fun blockAmount(amount: Int) = apply { blockAmount = amount }
 
         fun ingot() = apply { properties.setProperty(CPropertyKey.INGOT, MaterialProperty.Ingot) }
         fun dust() = apply { properties.setProperty(CPropertyKey.DUST, MaterialProperty.Dust) }
@@ -80,11 +84,13 @@ class CMaterial(
 
         /**
          * Adds a clay block to this material.
+         * automatically set blockAmount to 1.
          * @param compressedInto If specified, the compress/condense and inverse recipe will be generated.
          * @param energy The energy of this clay. If null, the clay will not be energized (i.e. it can't be used as machine fuel).
          */
         fun clay(compressionLevel: Int, compressedInto: CMaterial? = null, energy: ClayEnergy? = null): Builder {
             properties.setProperty(CPropertyKey.CLAY, Clay(compressionLevel, compressedInto, energy))
+            blockAmount(1)
             return this
         }
 
@@ -127,7 +133,7 @@ class CMaterial(
 
         fun build(): CMaterial{
             val flags = if (this.flags.isEmpty()) emptySet() else this.flags
-            val material = CMaterial(metaItemSubId, metaItemId, properties, tier, colors, flags)
+            val material = CMaterial(metaItemSubId, metaItemId, properties, blockAmount, tier, colors, flags)
             ClayiumApi.materialRegistry.register(metaItemSubId, metaItemId, material)
             return material
         }

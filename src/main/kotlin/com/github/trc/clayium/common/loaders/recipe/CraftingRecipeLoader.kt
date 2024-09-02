@@ -25,6 +25,13 @@ object CraftingRecipeLoader {
         RecipeUtils.addSmeltingRecipe(UnificationEntry(OrePrefix.ingot, CMaterials.impureSilicon),
             OreDictUnifier.get(OrePrefix.ingot, CMaterials.silicone), 0.1f)
 
+        RecipeUtils.addShapelessRecipe("ultimate_compound_ingot", OreDictUnifier.get(OrePrefix.ingot, CMaterials.ultimateCompound, 9),
+            OreDictUnifier.get(OrePrefix.ingot, CMaterials.strontium),
+            OreDictUnifier.get(OrePrefix.ingot, CMaterials.barium),
+            OreDictUnifier.get(OrePrefix.ingot, CMaterials.calcium),
+            OreDictUnifier.get(OrePrefix.ingot, CMaterials.clayium),
+            *Array(5) { OreDictUnifier.get(OrePrefix.ingot, CMaterials.aluminum) })
+
         for (i in 1..<CMaterials.PURE_ANTIMATTERS.size) {
             RecipeUtils.addShapelessRecipe("pure_antimatter_decompose_$i",
                 OreDictUnifier.get(OrePrefix.gem, CMaterials.PURE_ANTIMATTERS[i - 1], 9),

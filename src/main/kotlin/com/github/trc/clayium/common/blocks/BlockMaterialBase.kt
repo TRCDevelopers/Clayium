@@ -1,7 +1,6 @@
 package com.github.trc.clayium.common.blocks
 
 import com.github.trc.clayium.api.unification.material.CMaterial
-import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.api.util.toItemStack
 import com.github.trc.clayium.client.model.MaterialStateMapper
@@ -31,7 +30,7 @@ abstract class BlockMaterialBase(
         return defaultState.withProperty(getMaterialProperty(), material).toItemStack(count)
     }
 
-    fun getCMaterial(meta: Int) = mapping[meta] ?: CMaterials.DUMMY
+    fun getCMaterial(meta: Int) = mapping[meta] ?: mapping.values.first()
     fun getCMaterial(stack: ItemStack) = getCMaterial(stack.metadata)
     fun getCMaterial(state: IBlockState) = state.getValue(getMaterialProperty())
 

@@ -1,6 +1,6 @@
 package com.github.trc.clayium.api.unification
 
-import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.material.IMaterial
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.api.util.copyWithSize
@@ -13,7 +13,7 @@ object OreDictUnifier {
         OreDictionary.registerOre(oreDict, stack)
     }
 
-    fun registerOre(stack: ItemStack, orePrefix: OrePrefix, material: CMaterial) {
+    fun registerOre(stack: ItemStack, orePrefix: OrePrefix, material: IMaterial) {
         registerOre(stack, UnificationEntry(orePrefix, material).toString())
     }
 
@@ -25,7 +25,7 @@ object OreDictUnifier {
         return stack
     }
 
-    fun get(orePrefix: OrePrefix, material: CMaterial, stackSize: Int = 1): ItemStack {
+    fun get(orePrefix: OrePrefix, material: IMaterial, stackSize: Int = 1): ItemStack {
         return get(UnificationEntry(orePrefix, material).toString(), stackSize)
     }
 
@@ -33,11 +33,15 @@ object OreDictUnifier {
         return OreDictionary.getOres(oreDict).map { it.copyWithSize(stackSize) }
     }
 
-    fun getAll(orePrefix: OrePrefix, material: CMaterial, stackSize: Int = 1): List<ItemStack> {
+    fun getAll(orePrefix: OrePrefix, material: IMaterial, stackSize: Int = 1): List<ItemStack> {
         return getAll(UnificationEntry(orePrefix, material).toString(), stackSize)
     }
 
     fun getAll(oreDict: UnificationEntry, stackSize: Int = 1): List<ItemStack> {
         return getAll(oreDict.toString(), stackSize)
+    }
+
+    fun exists(orePrefix: OrePrefix, material: IMaterial): Boolean {
+        return !get(orePrefix, material).isEmpty
     }
 }

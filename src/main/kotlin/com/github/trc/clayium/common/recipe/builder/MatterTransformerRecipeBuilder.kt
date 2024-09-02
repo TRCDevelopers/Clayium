@@ -4,6 +4,9 @@ import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
+import net.minecraft.block.Block
+import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
 
 class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuilder> {
 
@@ -11,6 +14,8 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
 
     constructor() : super()
     constructor(another: MatterTransformerRecipeBuilder) : super(another)
+
+    private val chains = mutableListOf<Any>()
 
     override fun copy() = MatterTransformerRecipeBuilder(this)
         .also { it.defaultPrefix = this.defaultPrefix }
@@ -58,4 +63,31 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
 
     fun chain(orePrefix: OrePrefix, material: CMaterial) = chain(UnificationEntry(orePrefix, material).toString())
     fun chain(material: CMaterial) = chain(defaultPrefix!!, material)
+
+    fun chain(block: Block): MatterTransformerRecipeBuilder {
+        this.buildAndRegister()
+        val newBuilder = this.recipeRegistry.builder()
+            .tier(this.tier).CEt(this.cePerTick).duration(this.duration)
+            .input(this.outputs[0])
+            .output(block)
+        return newBuilder
+    }
+
+    fun chain(item: Item): MatterTransformerRecipeBuilder {
+        this.buildAndRegister()
+        val newBuilder = this.recipeRegistry.builder()
+            .tier(this.tier).CEt(this.cePerTick).duration(this.duration)
+            .input(this.outputs[0])
+            .output(item)
+        return newBuilder
+    }
+
+    fun chain(stack: ItemStack): MatterTransformerRecipeBuilder {
+        this.buildAndRegister()
+        val newBuilder = this.recipeRegistry.builder()
+            .tier(this.tier).CEt(this.cePerTick).duration(this.duration)
+            .input(this.outputs[0])
+            .output(stack)
+        return newBuilder
+    }
 }
