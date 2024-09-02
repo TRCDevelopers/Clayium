@@ -322,6 +322,7 @@ abstract class MetaTileEntity(
                 FIRST ->  createFilteredItemHandler(RangedItemHandlerProxy(importItems, availableSlot = 0), facing)
                 SECOND -> createFilteredItemHandler(RangedItemHandlerProxy(importItems, availableSlot = 1), facing)
                 ALL -> createFilteredItemHandler(importItems, facing)
+                CE -> this.getCapability(ClayiumTileCapabilities.CLAY_ENERGY_HOLDER, facing)?.energizedClayItemHandler
                 else -> null
             }
             val outputSlots = when (outputModes[i]) {
