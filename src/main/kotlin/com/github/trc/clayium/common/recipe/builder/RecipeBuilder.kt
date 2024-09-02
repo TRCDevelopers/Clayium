@@ -1,5 +1,6 @@
 package com.github.trc.clayium.common.recipe.builder
 
+import com.cleanroommc.groovyscript.api.IIngredient
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.unification.OreDictUnifier
@@ -22,7 +23,7 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import kotlin.math.pow
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "FunctionName")
 abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     protected val inputs: MutableList<CRecipeInput>,
     protected val outputs: MutableList<ItemStack>,
@@ -111,7 +112,6 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
         return this as R
     }
 
-    @Suppress("FunctionName")
     fun CEt(cePerTick: ClayEnergy): R {
         this.cePerTick = cePerTick
         return this as R
@@ -135,17 +135,14 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
      * | 12 | 100k |
      * | 13 | 1M |
      */
-    @Suppress("FunctionName")
     fun CEt(tier: Int = this.tier): R {
         return this.CEt(1.0, tier)
     }
 
-    @Suppress("FunctionName")
     fun CEtFactor(factor: Double): R {
         return this.CEt(factor, this.tier)
     }
 
-    @Suppress("FunctionName")
     fun CEt(factor: Double, tier: Int): R{
         return this.CEt(ClayEnergy((factor * 100.0 * 10.0.pow(tier - 4.0)).toLong().coerceAtLeast(1)))
     }
@@ -158,6 +155,13 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun defaultCEt(): R {
         return this.CEt(tier = this.tier)
     }
+
+    /* Grs */
+    fun input(input: IIngredient) = this.inputs(CItemRecipeInput(input.matchingStacks.toList(), input.amount))
+    fun output(output: IIngredient) = this.output(output.matchingStacks.first())
+    fun CEt(cePerTick: Long) = this.CEt(ClayEnergy.of(cePerTick))
+    fun CEtMilli(cePerTick: Long) = this.CEt(ClayEnergy.milli(cePerTick))
+    fun CEtMicro(cePerTick: Long) = this.CEt(ClayEnergy.micro(cePerTick))
 
     open fun buildAndRegister() {
         setDefaults()

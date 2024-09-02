@@ -23,7 +23,6 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
     val grsVirtualizedRegistry = RecipeRegistryGrsAdapter(this)
 
     init {
-        println("Registering recipe registry: $categoryName")
         builderSample.setRegistry(this)
     }
 
