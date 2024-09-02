@@ -26,6 +26,8 @@ import com.github.trc.clayium.api.capability.IConfigurationTool
 import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.*
 import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.api.capability.IPipeConnectable
+import com.github.trc.clayium.api.capability.IPipeConnectionLogic
+import com.github.trc.clayium.api.capability.PipeConnectionMode
 import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
@@ -99,6 +101,8 @@ abstract class MetaTileEntity(
     val pos: BlockPos? get() = holder?.pos
     val isInvalid get() = holder?.isInvalid ?: true
     val isRemote get() = world?.isRemote ?: true
+
+    override val pipeConnectionLogic: IPipeConnectionLogic = IPipeConnectionLogic.Machine
 
     // IWorldObj
     override val worldObj: World? get() = world
@@ -309,7 +313,7 @@ abstract class MetaTileEntity(
 
     open fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         if (capability === ClayiumTileCapabilities.PIPE_CONNECTABLE) {
-            return ClayiumTileCapabilities.PIPE_CONNECTABLE.cast(this)
+            return capability.cast(this)
         }
         if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (facing == null) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemInventory)
@@ -415,8 +419,8 @@ abstract class MetaTileEntity(
         }
     }
 
-    override fun getInput(side: EnumFacing) = _inputModes[side.index]
-    override fun getOutput(side: EnumFacing) = _outputModes[side.index]
+    fun getInput(side: EnumFacing) = _inputModes[side.index]
+    fun getOutput(side: EnumFacing) = _outputModes[side.index]
 
     fun isInputModeValid(mode: MachineIoMode) = mode in validInputModes
     fun isOutputModeValid(mode: MachineIoMode) = mode in validOutputModes
@@ -478,13 +482,18 @@ abstract class MetaTileEntity(
         if (neighborTileEntity == null) {
             _connectionsCache[i] = false
         } else {
-            val iPipeConnectable = neighborTileEntity.getCapability(ClayiumTileCapabilities.PIPE_CONNECTABLE, side.opposite)
-            if (iPipeConnectable == null) {
-                _connectionsCache[i] = this.canConnectTo(neighborTileEntity, side)
+            val neighborConnectable = neighborTileEntity.getCapability(ClayiumTileCapabilities.PIPE_CONNECTABLE, side.opposite)
+            if (neighborConnectable == null) {
+                // neighbor has no specific implementation for this logic. default to hasItemHandler.
+                _connectionsCache[i] = neighborTileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite)
             } else {
-                _connectionsCache[i] = this.canConnectTo(iPipeConnectable, side)
-                        || iPipeConnectable.canConnectTo(this, side.opposite)
+                val thisMode = getPipeConnectionMode(side)
+                val neighborMode = neighborConnectable.getPipeConnectionMode(side.opposite)
+                val neighborConnectionLogic = neighborConnectable.pipeConnectionLogic
+                _connectionsCache[i] = (pipeConnectionLogic.canConnect(thisMode = thisMode, neighborMode = neighborMode)
+                        || neighborConnectionLogic.canConnect(thisMode = neighborMode, neighborMode = thisMode))
             }
+
         }
         if (previous != _connectionsCache[i]) {
             writeCustomData(UPDATE_CONNECTIONS) {
@@ -492,6 +501,25 @@ abstract class MetaTileEntity(
                 writeBoolean(_connectionsCache[i])
             }
         }
+    }
+
+    override fun getPipeConnectionMode(side: EnumFacing): PipeConnectionMode {
+        val input = when (getInput(side)) {
+            NONE -> false
+            FIRST, SECOND, ALL, CE,
+            M_ALL, M_1, M_2, M_3, M_4, M_5, M_6 -> true
+        }
+
+        val output = when (getOutput(side)) {
+            NONE -> false
+            FIRST, SECOND, ALL, CE,
+            M_ALL, M_1, M_2, M_3, M_4, M_5, M_6 -> true
+        }
+
+        return if (input && output) PipeConnectionMode.BOTH
+        else if (input) PipeConnectionMode.INPUT
+        else if (output) PipeConnectionMode.OUTPUT
+        else PipeConnectionMode.NONE
     }
 
     fun setFilter(side: EnumFacing, filter: IItemFilter, type: FilterType) {

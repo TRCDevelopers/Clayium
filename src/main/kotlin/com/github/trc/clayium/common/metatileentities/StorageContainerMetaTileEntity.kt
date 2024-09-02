@@ -14,6 +14,7 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER_ITE
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_ITEMS_STORED
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_MAX_ITEMS_STORED
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_STORED_ITEMSTACK
+import com.github.trc.clayium.api.capability.IPipeConnectionLogic
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
@@ -64,6 +65,8 @@ class StorageContainerMetaTileEntity(
         clayiumId("blocks/storage_container_top_composed"), clayiumId("blocks/storage_container_top_upgraded"),
         clayiumId("blocks/storage_container_upgraded_base")
     )
+
+    override val pipeConnectionLogic: IPipeConnectionLogic = IPipeConnectionLogic.ItemPipe
 
     override val itemInventory: IItemHandler = StorageContainerItemHandler()
     override val exportItems: IItemHandlerModifiable = StorageContainerExportItems()
@@ -137,9 +140,6 @@ class StorageContainerMetaTileEntity(
         }
         return super.getCapability(capability, facing)
     }
-
-    override fun canImportFrom(side: EnumFacing) = true
-    override fun canExportTo(side: EnumFacing) = true
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return StorageContainerMetaTileEntity(this.metaTileEntityId, this.tier, maxStoredItems == UPGRADED_MAX_AMOUNT)

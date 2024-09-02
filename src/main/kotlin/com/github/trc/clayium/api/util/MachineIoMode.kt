@@ -1,6 +1,5 @@
 package com.github.trc.clayium.api.util
 
-import com.google.common.collect.ImmutableList
 import net.minecraft.util.IStringSerializable
 import kotlin.text.lowercase
 
@@ -31,17 +30,5 @@ enum class MachineIoMode(
         fun byId(id: Int): MachineIoMode {
             return entries[id]
         }
-
-        val defaultStateList: ImmutableList<MachineIoMode> = ImmutableList.of(NONE, NONE, NONE, NONE, NONE, NONE)
-    }
-
-    object Input {
-        val BUFFER = listOf(NONE, ALL)
-        val SINGLE = listOf(NONE, ALL, CE)
-    }
-
-    object Output {
-        val BUFFER = listOf(NONE, ALL)
-        val SINGLE = listOf(NONE, ALL)
     }
 }

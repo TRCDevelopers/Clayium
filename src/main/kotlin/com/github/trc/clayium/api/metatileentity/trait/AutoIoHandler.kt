@@ -29,7 +29,7 @@ abstract class AutoIoHandler(
         super.update()
         if (metaTileEntity.isRemote) return
 
-        if (++ticked <= coolTime) {
+        if (++ticked >= coolTime) {
             transferItems()
             ticked = 0
         }
