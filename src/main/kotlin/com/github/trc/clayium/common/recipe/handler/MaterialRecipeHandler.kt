@@ -7,6 +7,7 @@ import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
+import com.github.trc.clayium.common.loaders.recipe.CondenserRecipeLoader
 import com.github.trc.clayium.common.loaders.recipe.GrinderRecipeLoader
 import com.github.trc.clayium.common.recipe.RecipeUtils
 import com.github.trc.clayium.common.recipe.registry.CRecipes
@@ -17,6 +18,7 @@ object MaterialRecipeHandler {
     fun registerRecipes() {
         for (material in ClayiumApi.materialRegistry) {
             GrinderRecipeLoader.handleOre(material)
+            CondenserRecipeLoader.handleOre(material)
             if (material.hasOre(OrePrefix.ingot)) {
                 if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.ingot, material)
             }
@@ -41,6 +43,11 @@ object MaterialRecipeHandler {
                 }
             }
         }
+
+        for (markerMaterial in ClayiumApi.markerMaterials) {
+            GrinderRecipeLoader.handleOre(markerMaterial)
+            CondenserRecipeLoader.handleOre(markerMaterial)
+        }
     }
 
     private fun CMaterial.hasOre(orePrefix: OrePrefix): Boolean {
@@ -49,20 +56,6 @@ object MaterialRecipeHandler {
 
     private fun handleDust(dustPrefix: OrePrefix, material: CMaterial) {
         val tier = material.tier?.numeric ?: 0
-        fun addDustCondenseRecipe(outputPrefix: OrePrefix) {
-            if (OreDictUnifier.get(outputPrefix, material).isEmpty) return
-            CRecipes.CONDENSER.register {
-                input(dustPrefix, material)
-                output(outputPrefix, material)
-                CEt(if (tier < 10) ClayEnergy.micro(10) else ClayEnergy.micro(250))
-                duration(if (tier < 10) 5 else 80)
-                tier(if (tier < 10) 0 else 10)
-            }
-        }
-
-        addDustCondenseRecipe(OrePrefix.block)
-        addDustCondenseRecipe(OrePrefix.gem)
-
         if (material.hasProperty(CPropertyKey.INGOT)) {
             if (material.hasProperty(CPropertyKey.BLAST_SMELTING)) {
                 val prop = material.getProperty(CPropertyKey.BLAST_SMELTING)

@@ -42,6 +42,7 @@ import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
+import net.minecraftforge.fml.common.eventhandler.EventPriority
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.network.NetworkRegistry
 import net.minecraftforge.fml.common.registry.GameRegistry
@@ -82,6 +83,10 @@ open class CommonProxy {
     @SubscribeEvent
     fun registerRecipes(event: RegistryEvent.Register<IRecipe>) {
         OreDictionaryLoader.loadOreDictionaries()
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    fun registerRecipesLate(event: RegistryEvent.Register<IRecipe>) {
         CRecipeLoader.load()
     }
 

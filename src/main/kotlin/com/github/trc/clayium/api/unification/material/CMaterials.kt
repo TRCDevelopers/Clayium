@@ -637,5 +637,7 @@ object CMaterials {
         //endregion
     }
 
-    fun init() {}
+    fun init() {
+        CMarkerMaterials.init()
+    }
 }
