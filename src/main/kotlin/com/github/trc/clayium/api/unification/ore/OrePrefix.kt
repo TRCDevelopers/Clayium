@@ -62,6 +62,7 @@ class OrePrefix(
         val dust = OrePrefix("dust", hasDustProperty)
         val gem = OrePrefix("gem", hasMatterProperty)
         val crystal = OrePrefix("crystal")
+        val item = OrePrefix("item")
 
         val plate = OrePrefix("plate", hasPlateProperty)
         val largePlate = OrePrefix("largePlate", hasPlateProperty)
