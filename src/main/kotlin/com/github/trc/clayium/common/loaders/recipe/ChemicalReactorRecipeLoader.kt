@@ -3,6 +3,7 @@ package com.github.trc.clayium.common.loaders.recipe
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 
 object ChemicalReactorRecipeLoader {
@@ -37,7 +38,12 @@ object ChemicalReactorRecipeLoader {
             .CEt(ClayEnergy.milli(10)).duration(120).tier(0)
             .buildAndRegister()
 
-        // energized clay dust -> impure red/glowstone
+        registry.builder()
+            .input(MetaItemClayParts.EnergizedClayDust)
+            .output(OrePrefix.dust, CMaterials.impureRedstone)
+            .output(OrePrefix.dust, CMaterials.impureGlowStone)
+            .tier(5).CEt(ClayEnergy.milli(10)).duration(10)
+            .buildAndRegister()
 
         registry.builder()
             .input(OrePrefix.dust, CMaterials.denseClay)
