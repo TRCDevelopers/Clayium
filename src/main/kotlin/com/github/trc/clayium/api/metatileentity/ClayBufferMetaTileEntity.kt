@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
+import com.github.trc.clayium.api.capability.IPipeConnectionLogic
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
@@ -24,6 +25,8 @@ class ClayBufferMetaTileEntity(
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModes = bufferValidInputModes, validOutputModes = validOutputModesLists[1], name = "clay_buffer") {
 
     override val hasFrontFacing: Boolean = false
+
+    override val pipeConnectionLogic = IPipeConnectionLogic.ItemPipe
 
     val inventoryRowSize = when (tier.numeric) {
         in 4..7 -> tier.numeric - 3
@@ -40,7 +43,7 @@ class ClayBufferMetaTileEntity(
     override val itemInventory = ClayiumItemStackHandler(this, inventoryRowSize * inventoryColumnSize)
     override val importItems = itemInventory
     override val exportItems = itemInventory
-    val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this, isBuffer = true)
+    private val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this, isBuffer = true)
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayBufferMetaTileEntity(this.metaTileEntityId, this.tier)
@@ -56,9 +59,6 @@ class ClayBufferMetaTileEntity(
     override fun isFacingValid(facing: EnumFacing): Boolean {
         return true
     }
-
-    override fun canImportFrom(side: EnumFacing) = true
-    override fun canExportTo(side: EnumFacing) = true
 
     override fun onPlacement() {
         this.toggleInput(this.frontFacing.opposite)

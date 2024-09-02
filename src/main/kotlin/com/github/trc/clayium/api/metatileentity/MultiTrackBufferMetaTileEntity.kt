@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
+import com.github.trc.clayium.api.capability.IPipeConnectionLogic
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
@@ -48,6 +49,8 @@ class MultiTrackBufferMetaTileEntity(
     "multi_track_buffer") {
 
     override val hasFrontFacing: Boolean = true
+    override val pipeConnectionLogic: IPipeConnectionLogic = IPipeConnectionLogic.ItemPipe
+
     val trackRow = getTrackRows(tier.numeric)
 
     val trackInvSize = when (tier.numeric) {
@@ -113,9 +116,6 @@ class MultiTrackBufferMetaTileEntity(
     }
 
     private fun getTrackWithFilter(track: Int): IItemHandler = FilteredItemHandler(tracks[track], slotFilters[track])
-
-    override fun canImportFrom(side: EnumFacing) = true
-    override fun canExportTo(side: EnumFacing) = true
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         (0..<trackRow).forEach { syncManager.registerSlotGroup("mt_buffer_inv_${it}", 1) }
