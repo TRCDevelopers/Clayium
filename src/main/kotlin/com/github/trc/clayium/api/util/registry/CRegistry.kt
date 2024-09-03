@@ -2,7 +2,7 @@ package com.github.trc.clayium.api.util.registry
 
 import net.minecraft.util.registry.RegistryNamespaced
 
-class CRegistry<K, V>(
+open class CRegistry<K, V>(
     /**
      * exclusive
      */

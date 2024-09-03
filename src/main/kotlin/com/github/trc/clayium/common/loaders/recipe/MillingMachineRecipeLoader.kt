@@ -13,13 +13,13 @@ object MillingMachineRecipeLoader {
         registry.builder()
             .input(OrePrefix.plate, CMaterials.denseClay)
             .output(MetaItemClayParts.ClayCircuitBoard)
-            .tier(0).CEt().duration(32)
+            .tier(0).CEtByTier(0).duration(32)
             .buildAndRegister()
 
         registry.builder()
             .input(OrePrefix.plate, CMaterials.industrialClay)
             .output(MetaItemClayParts.ClayCircuitBoard)
-            .tier(0).CEt().duration(1)
+            .tier(0).CEtByTier(0).duration(1)
             .buildAndRegister()
 
         registry.builder()
