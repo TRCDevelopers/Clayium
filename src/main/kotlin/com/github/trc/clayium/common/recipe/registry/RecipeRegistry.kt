@@ -52,6 +52,10 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
             .onFailure { Clayium.LOGGER.error("Failed to add recipe: $recipe") }
     }
 
+    fun removeRecipe(recipe: Recipe): Boolean {
+        return _recipes.remove(recipe)
+    }
+
     private fun validateRecipe(recipe: Recipe): Result<Recipe> {
         if (recipe.inputs.isEmpty()) {
             Clayium.LOGGER.error("invalid recipe: Input is empty.")
