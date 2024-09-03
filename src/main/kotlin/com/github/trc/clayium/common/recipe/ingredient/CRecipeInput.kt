@@ -1,6 +1,7 @@
 package com.github.trc.clayium.common.recipe.ingredient
 
 import com.github.trc.clayium.api.unification.stack.ItemAndMeta
+import com.github.trc.clayium.common.Clayium
 import net.minecraft.item.ItemStack
 
 abstract class CRecipeInput {
@@ -11,8 +12,15 @@ abstract class CRecipeInput {
     abstract fun testItemStackAndAmount(stack: ItemStack): Boolean
     abstract fun testIgnoringAmount(item: ItemAndMeta): Boolean
 
-    fun validate(stacks: List<ItemStack>) {
-        require(stacks.isNotEmpty()) { "Stacks must not be empty" }
-        require(stacks.all { it.count == amount }) { "All stacks must have the same amount" }
+    fun isValid(): Boolean {
+        if (stacks.isEmpty()) {
+            Clayium.LOGGER.error("Stacks must not be empty")
+            return false
+        }
+        if (!stacks.all { it.count == amount }) {
+            Clayium.LOGGER.error("All stacks must have the same amount")
+            return false
+        }
+        return true
     }
 }

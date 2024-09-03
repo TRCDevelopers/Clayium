@@ -10,10 +10,6 @@ class CItemRecipeInput(
 
     constructor(stack: ItemStack, amount: Int): this(listOf(stack), amount)
 
-    init {
-        validate(stacks)
-    }
-
     override fun testItemStackAndAmount(stack: ItemStack): Boolean {
         return stacks.any {
             ItemStack.areItemsEqual(it, stack)
@@ -26,5 +22,9 @@ class CItemRecipeInput(
         return stacks.any {
             item.item == it.item && (item.meta == it.metadata || it.metadata == 32767)
         }
+    }
+
+    override fun toString(): String {
+        return "CItemRecipeInput($stacks)"
     }
 }
