@@ -1,6 +1,7 @@
 package com.github.trc.clayium.common.recipe.registry
 
 import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.RecipeCategory
@@ -21,7 +22,8 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
 
     val categoryName = category.categoryName
 
-    val grsVirtualizedRegistry = RecipeRegistryGrsAdapter(this)
+    val grsVirtualizedRegistry: RecipeRegistryGrsAdapter?
+        = if (Mods.GroovyScript.isModLoaded) RecipeRegistryGrsAdapter(this) else null
 
     init {
         builderSample.setRegistry(this)
@@ -52,13 +54,13 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
             }
             .onFailure { Clayium.LOGGER.error("Failed to add recipe: $recipe") }
         if (GroovyScriptModule.isCurrentlyRunning()) {
-            grsVirtualizedRegistry.addScripted(recipe)
+            grsVirtualizedRegistry?.addScripted(recipe)
         }
     }
 
     fun removeRecipe(recipe: Recipe): Boolean {
         if (GroovyScriptModule.isCurrentlyRunning()) {
-            grsVirtualizedRegistry.addBackup(recipe)
+            grsVirtualizedRegistry?.addBackup(recipe)
         }
         return _recipes.remove(recipe)
     }
