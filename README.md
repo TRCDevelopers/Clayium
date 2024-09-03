@@ -1,7 +1,7 @@
 # Clayium Unofficial
 An **unofficial** 1.12.2 port of Clayium.
 The original version was made by deb_rk,
-and published on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/clayium) under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+and published on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/clayium) under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/).
 
 This mod is currently in alpha stage and may contain critical bugs including game crashes.
 Check [here](https://github.com/TRCDevelopers/Clayium/releases) for the latest release.
@@ -16,7 +16,6 @@ Features have been ported up to tier 13 Clay Fabricator Mk3,
 including PAN, except for those listed below.
 
 ## WIP Features
-- ~~Alloy Smelter~~ (Done)
 - Auto Crafter
 - Auto Trader
 - CE-RF Converter
@@ -30,6 +29,7 @@ including PAN, except for those listed below.
 - Filters other than black/white list
 - Fluid related features
 - Metal Chests
+- Upgrading machines with CA Injector
 - Void Container
 - World Interactive Machines
   - Activators
@@ -47,13 +47,17 @@ including PAN, except for those listed below.
 The code is licensed under the [LGPL-3.0](https://www.gnu.org/licenses/lgpl-3.0.html.en#license-text).
 
 ### Assets
-Assets are created by deb_rk, and are licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+Assets are created by deb_rk, and are licensed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/).
 
 ## Credits
-Many parts of the code such as [`MetaTileEntity`](src/main/kotlin/com/github/trc/clayium/api/metatileentity/MetaTileEntity.kt),
-[`Unification API`](src/main/kotlin/com/github/trc/clayium/api/unification),
-are copied and modified from [GTCEu](https://github.com/GregTechCEu/GregTech), 
-which is licensed under the [LGPL-3.0](https://www.gnu.org/licenses/lgpl-3.0.html.en) license.
 
-Buildscripts we used can be found [here](https://github.com/GregTechCEu/Buildscripts).
-It is [MIT licensed](https://github.com/GregTechCEu/Buildscripts/blob/master/LICENSE).
+Clayium Unofficial would not have been possible without the following OSS:
+
+|                                   Name                                   |                                      License                                      |
+|:------------------------------------------------------------------------:|:---------------------------------------------------------------------------------:|
+|     [Clayium](https://www.curseforge.com/minecraft/mc-mods/clayium)      |             [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/)             |
+|     [CodeChickenLib](https://github.com/TheCBProject/CodeChickenLib)     |  [LGPL-2.1](https://github.com/TheCBProject/CodeChickenLib/blob/master/LICENSE)   |
+| [Forgelin Continuous](https://github.com/ChAoSUnItY/Forgelin-Continuous) | [LGPL-3.0](https://github.com/ChAoSUnItY/Forgelin-Continuous/blob/master/LICENSE) |
+|    [GTCEu Buildscripts](https://github.com/GregTechCEu/Buildscripts)     |      [MIT](https://github.com/GregTechCEu/Buildscripts/blob/master/LICENSE)       |
+|          [GregTechCEu](https://github.com/GregTechCEu/GregTech)          |      [LGPL-3.0](https://github.com/GregTechCEu/GregTech/blob/master/LICENSE)      |
+|          [ModularUI](https://github.com/CleanroomMC/ModularUI)           |     [LGPL-3.0](https://github.com/CleanroomMC/ModularUI/blob/master/LICENSE)      |
