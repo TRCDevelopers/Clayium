@@ -56,8 +56,8 @@ Clayium Unofficial would not have been possible without the following OSS:
 |                                   Name                                   |                                      License                                      |
 |:------------------------------------------------------------------------:|:---------------------------------------------------------------------------------:|
 |     [Clayium](https://www.curseforge.com/minecraft/mc-mods/clayium)      |             [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/)             |
-|          [GregTechCEu](https://github.com/GregTechCEu/GregTech)          |      [LGPL-3.0](https://github.com/GregTechCEu/GregTech/blob/master/LICENSE)      |
-|    [GTCEu Buildscripts](https://github.com/GregTechCEu/Buildscripts)     |      [MIT](https://github.com/GregTechCEu/Buildscripts/blob/master/LICENSE)       |
-|          [ModularUI](https://github.com/CleanroomMC/ModularUI)           |     [LGPL-3.0](https://github.com/CleanroomMC/ModularUI/blob/master/LICENSE)      |
 |     [CodeChickenLib](https://github.com/TheCBProject/CodeChickenLib)     |  [LGPL-2.1](https://github.com/TheCBProject/CodeChickenLib/blob/master/LICENSE)   |
 | [Forgelin Continuous](https://github.com/ChAoSUnItY/Forgelin-Continuous) | [LGPL-3.0](https://github.com/ChAoSUnItY/Forgelin-Continuous/blob/master/LICENSE) |
+|    [GTCEu Buildscripts](https://github.com/GregTechCEu/Buildscripts)     |      [MIT](https://github.com/GregTechCEu/Buildscripts/blob/master/LICENSE)       |
+|          [GregTechCEu](https://github.com/GregTechCEu/GregTech)          |      [LGPL-3.0](https://github.com/GregTechCEu/GregTech/blob/master/LICENSE)      |
+|          [ModularUI](https://github.com/CleanroomMC/ModularUI)           |     [LGPL-3.0](https://github.com/CleanroomMC/ModularUI/blob/master/LICENSE)      |
