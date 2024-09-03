@@ -7,6 +7,7 @@ import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.IMaterial
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
+import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trc.clayium.common.recipe.Recipe
@@ -21,6 +22,7 @@ import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraftforge.fml.common.Optional
 import kotlin.math.pow
 
 @Suppress("UNCHECKED_CAST", "FunctionName")
@@ -112,6 +114,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
         return this as R
     }
 
+    @JvmName("CEtRaw")
     fun CEt(cePerTick: ClayEnergy): R {
         this.cePerTick = cePerTick
         return this as R
@@ -135,7 +138,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
      * | 12 | 100k |
      * | 13 | 1M |
      */
-    fun CEt(tier: Int = this.tier): R {
+    fun CEtByTier(tier: Int = this.tier): R {
         return this.CEt(1.0, tier)
     }
 
@@ -153,15 +156,18 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     }
 
     fun defaultCEt(): R {
-        return this.CEt(tier = this.tier)
+        return this.CEtByTier(tier = this.tier)
     }
 
     /* Grs */
+    @Optional.Method(modid = Mods.Names.GROOVY_SCRIPT)
     fun input(input: IIngredient) = this.inputs(CItemRecipeInput(input.matchingStacks.toList(), input.amount))
-    fun output(output: IIngredient) = this.output(output.matchingStacks.first())
+    @Optional.Method(modid = Mods.Names.GROOVY_SCRIPT)
+    fun output(output: IIngredient) = this.output(output.matchingStacks.firstOrNull() ?: ItemStack.EMPTY)
+    // not optional for java interop
     fun CEt(cePerTick: Long) = this.CEt(ClayEnergy.of(cePerTick))
-    fun CEtMilli(cePerTick: Long) = this.CEt(ClayEnergy.milli(cePerTick))
-    fun CEtMicro(cePerTick: Long) = this.CEt(ClayEnergy.micro(cePerTick))
+    fun CEtMilli(cePerTick: Int) = this.CEt(ClayEnergy.milli(cePerTick.toLong()))
+    fun CEtMicro(cePerTick: Int) = this.CEt(ClayEnergy.micro(cePerTick.toLong()))
 
     open fun buildAndRegister() {
         setDefaults()
