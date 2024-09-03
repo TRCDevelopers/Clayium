@@ -66,6 +66,10 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
     }
 
     private fun validateRecipe(recipe: Recipe): Result<Recipe> {
+        if (!recipe.inputs.all { it.isValid() }) {
+            Clayium.LOGGER.error("invalid recipe: Input is invalid.")
+            return Result.failure(IllegalArgumentException())
+        }
         if (recipe.inputs.isEmpty()) {
             Clayium.LOGGER.error("invalid recipe: Input is empty.")
             return Result.failure(IllegalArgumentException())

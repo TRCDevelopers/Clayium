@@ -17,7 +17,6 @@ class CMultiOreRecipeInput(
         val oreStacks = oreIds.map {
             OreDictionary.getOres(OreDictionary.getOreName(it)).map { it.copyWithSize(amount) }
         }.flatten()
-        validate(oreStacks)
         oreStacks
     }
 

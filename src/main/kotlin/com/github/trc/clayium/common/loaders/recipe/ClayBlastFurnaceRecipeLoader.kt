@@ -103,7 +103,7 @@ object ClayBlastFurnaceRecipeLoader {
                 .tier(6).defaultCEt().duration(500)
                 .buildAndRegister()
             registry.builder()
-                .input(OrePrefix.dust, CMarkerMaterials.energeticAlloy)
+                .input(OrePrefix.ingot, CMarkerMaterials.energeticAlloy)
                 .input(Items.ENDER_PEARL)
                 .output(OrePrefix.ingot, CMarkerMaterials.vibrantAlloy)
                 .tier(6).defaultCEt().duration(500)

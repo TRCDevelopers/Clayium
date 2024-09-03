@@ -19,7 +19,6 @@ class COreRecipeInput(
         val oreStacks = OreDictionary.getOres(OreDictionary.getOreName(oreId)).map {
             it.copy().apply { count = amount }
         }
-        validate(oreStacks)
         oreStacks
     }
 
@@ -36,5 +35,7 @@ class COreRecipeInput(
         }
     }
 
-    override fun toString() = OreDictionary.getOreName(oreId)
+    override fun toString(): String {
+        return "${OreDictionary.getOreName(oreId)}($stacks)"
+    }
 }
