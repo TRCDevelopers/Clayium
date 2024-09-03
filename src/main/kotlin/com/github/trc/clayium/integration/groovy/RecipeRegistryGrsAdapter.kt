@@ -13,7 +13,8 @@ class RecipeRegistryGrsAdapter(
     val backingRegistry: RecipeRegistry<*>,
 ) : VirtualizedRegistry<Recipe>(Alias.generateOf(backingRegistry.categoryName, CaseFormat.LOWER_UNDERSCORE)) {
     override fun onReload() {
-        //todo
+        removeScripted().forEach(backingRegistry::removeRecipe)
+        restoreFromBackup().forEach(backingRegistry::addRecipe)
     }
 
     fun recipeBuilder(): RecipeBuilder<*> {

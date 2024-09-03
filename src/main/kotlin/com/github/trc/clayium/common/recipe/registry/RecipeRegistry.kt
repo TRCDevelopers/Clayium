@@ -5,6 +5,7 @@ import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.RecipeCategory
 import com.github.trc.clayium.common.recipe.builder.RecipeBuilder
+import com.github.trc.clayium.integration.groovy.GroovyScriptModule
 import com.github.trc.clayium.integration.groovy.RecipeRegistryGrsAdapter
 import net.minecraft.item.ItemStack
 
@@ -50,9 +51,15 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
                 _recipes.sortWith(TIER_DURATION_CE_REVERSED)
             }
             .onFailure { Clayium.LOGGER.error("Failed to add recipe: $recipe") }
+        if (GroovyScriptModule.isCurrentlyRunning()) {
+            grsVirtualizedRegistry.addScripted(recipe)
+        }
     }
 
     fun removeRecipe(recipe: Recipe): Boolean {
+        if (GroovyScriptModule.isCurrentlyRunning()) {
+            grsVirtualizedRegistry.addBackup(recipe)
+        }
         return _recipes.remove(recipe)
     }
 

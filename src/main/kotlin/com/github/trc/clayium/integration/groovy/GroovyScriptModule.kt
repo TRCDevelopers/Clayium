@@ -1,5 +1,6 @@
 package com.github.trc.clayium.integration.groovy
 
+import com.cleanroommc.groovyscript.GroovyScript
 import com.cleanroommc.groovyscript.api.GroovyPlugin
 import com.cleanroommc.groovyscript.compat.mods.GroovyContainer
 import com.github.trc.clayium.api.CValues
@@ -27,6 +28,13 @@ class GroovyScriptModule : GroovyPlugin {
     override fun onCompatLoaded(container: GroovyContainer<*>) {
         CRecipes.ALL_REGISTRIES.values.forEach { r ->
             container.addProperty(r.grsVirtualizedRegistry)
+        }
+    }
+
+    companion object {
+        fun isCurrentlyRunning(): Boolean {
+            return Mods.GroovyScript.isModLoaded
+                    && GroovyScript.getSandbox().isRunning
         }
     }
 }
