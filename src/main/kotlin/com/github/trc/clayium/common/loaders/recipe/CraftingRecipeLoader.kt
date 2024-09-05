@@ -92,9 +92,9 @@ object CraftingRecipeLoader {
         RecipeUtils.addShapedRecipe("clay_circuit",
             MetaItemClayParts.ClayCircuit.getStackForm(),
             "SGS", "RBR", "SGS",
-            'S', UnificationEntry(OrePrefix.stick, clay),
-            'G', UnificationEntry(OrePrefix.gear, clay),
-            'R', UnificationEntry(OrePrefix.ring, clay),
+            'S', UnificationEntry(OrePrefix.stick, denseClay),
+            'G', UnificationEntry(OrePrefix.gear, denseClay),
+            'R', UnificationEntry(OrePrefix.ring, denseClay),
             'B', MetaItemClayParts.ClayCircuitBoard)
         RecipeUtils.addShapedRecipe("simple_circuit",
             MetaItemClayParts.SimpleCircuit.getStackForm(),
