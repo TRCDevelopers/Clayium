@@ -90,7 +90,7 @@ object AssemblerRecipeLoader {
             .input(MetaItemClayParts.PrecisionCircuit)
             .input(MetaItemClayParts.EnergizedClayDust, 32)
             .output(MetaItemClayParts.IntegratedCircuit)
-            .tier(0).CEt(ClayEnergy.milli(100)).duration(1200)
+            .tier(6).CEt(ClayEnergy.milli(100)).duration(1200)
             .buildAndRegister()
         registry.builder()
             .input(MetaItemClayParts.IntegratedCircuit)
