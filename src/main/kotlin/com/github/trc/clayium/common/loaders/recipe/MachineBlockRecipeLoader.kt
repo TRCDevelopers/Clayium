@@ -125,6 +125,14 @@ object MachineBlockRecipeLoader {
         }
         //endregion
 
+        /* Alloy Smelter */
+        CRecipes.ASSEMBLER.builder()
+            .input(MetaTileEntities.SMELTER[2])
+            .input(MetaItemClayParts.PrecisionCircuit)
+            .output(MetaTileEntities.ALLOY_SMELTER)
+            .tier(4).CEt(ClayEnergy.milli(100)).duration(40)
+            .buildAndRegister()
+
         /* Automatic Clay Condenser */
         for ((i, tier) in listOf(ADVANCED, CLAY_STEEL).withIndex())  {
             CRecipes.ASSEMBLER.builder()
