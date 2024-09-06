@@ -15,12 +15,8 @@ import net.minecraft.world.World
 
 object MetaTileEntityGuiFactory : AbstractUIFactory<PosGuiData>("${CValues.MOD_ID}:metatileentity") {
 
-    fun open(player: EntityPlayer, pos: BlockPos) {
-        val data = PosGuiData(player, pos.x, pos.y, pos.z)
-        GuiManager.open(this, data, player as EntityPlayerMP)
-    }
-
-    fun open(player: EntityPlayer, pos: BlockPos, world: World) {
+    @JvmOverloads
+    fun open(player: EntityPlayer, pos: BlockPos, world: World = player.world) {
         val data = WorldPosGuiData(player, pos, world)
         GuiManager.open(this, data, player as EntityPlayerMP)
     }

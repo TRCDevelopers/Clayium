@@ -9,12 +9,12 @@ import net.minecraft.world.World
 class WorldPosGuiData(
     player: EntityPlayer,
     x: Int, y: Int, z: Int,
-    val world: World,
+    val worldObj: World, //fix name collision with super.getWorld()
 ) : PosGuiData(player, x, y, z) {
 
     constructor(player: EntityPlayer, pos: BlockPos, world: World) : this(player, pos.x, pos.y, pos.z, world)
 
     override fun getTileEntity(): TileEntity? {
-        return world.getTileEntity(blockPos)
+        return worldObj.getTileEntity(blockPos)
     }
 }
