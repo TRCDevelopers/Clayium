@@ -1,7 +1,6 @@
 package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
@@ -10,8 +9,11 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
+import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
+import com.github.trc.clayium.api.gui.data.WorldPosGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
@@ -76,10 +78,10 @@ class WaterwheelMetaTileEntity(
         }
     }
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: WorldPosGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.syncValue("waterCount", SyncHandlers.intNumber({ waterCount }, { waterCount = it }))
         syncManager.syncValue("progress", SyncHandlers.intNumber({ progress }, { progress = it }))
-        return ModularPanel.defaultPanel("waterwheel", 176, 126)
+        return ModularPanel.defaultPanel("waterwheel", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT - 50)
             .child(Column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()

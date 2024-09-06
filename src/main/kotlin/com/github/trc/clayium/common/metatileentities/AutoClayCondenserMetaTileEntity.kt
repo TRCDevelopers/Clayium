@@ -1,6 +1,5 @@
 package com.github.trc.clayium.common.metatileentities
 
-import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
@@ -8,10 +7,13 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
+import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
+import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
+import com.github.trc.clayium.api.gui.data.WorldPosGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.unification.OreDictUnifier
@@ -84,9 +86,9 @@ class AutoClayCondenserMetaTileEntity(
         }
     }
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: WorldPosGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.registerSlotGroup("compressor_inventory", 4)
-        return ModularPanel.defaultPanel("auto_clay_condenser", 176, 190)
+        return ModularPanel.defaultPanel("auto_clay_condenser", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 20)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
                     .child(Row().widthRel(1f).height(18 * 4)

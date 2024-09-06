@@ -3,7 +3,6 @@ package com.github.trc.clayium.api.metatileentity
 import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
@@ -32,6 +31,7 @@ import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
+import com.github.trc.clayium.api.gui.data.WorldPosGuiData
 import com.github.trc.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import com.github.trc.clayium.api.metatileentity.interfaces.IWorldObject
 import com.github.trc.clayium.api.metatileentity.trait.OverclockHandler
@@ -90,7 +90,7 @@ abstract class MetaTileEntity(
      * item model location will be ("${metaTileEntityId.namespace}:machines/${name}", "tier={tier.lowerName}").
      */
     private val name: String,
-) : ISyncedTileEntity, IWorldObject, IGuiHolder<PosGuiData>, IPipeConnectable {
+) : ISyncedTileEntity, IWorldObject, IGuiHolder<WorldPosGuiData>, IPipeConnectable {
 
     val forgeRarity = tier.rarity
     val translationKey = "machine.${metaTileEntityId.namespace}.$name"
@@ -662,7 +662,7 @@ abstract class MetaTileEntity(
                     .slot(slot)
                     .background(IDrawable.EMPTY))
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: WorldPosGuiData, syncManager: GuiSyncManager): ModularPanel {
         return ModularPanel.defaultPanel(translationKey)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager))

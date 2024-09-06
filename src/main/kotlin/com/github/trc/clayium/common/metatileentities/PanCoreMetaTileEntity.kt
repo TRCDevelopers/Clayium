@@ -3,7 +3,6 @@ package com.github.trc.clayium.common.metatileentities
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.drawable.Rectangle
-import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.Color
@@ -14,9 +13,12 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Grid
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
+import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_PAN_DUPLICATION_ENTRIES
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
+import com.github.trc.clayium.api.gui.data.WorldPosGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.pan.IPan
 import com.github.trc.clayium.api.pan.IPanCable
@@ -241,7 +243,7 @@ class PanCoreMetaTileEntity(
         quads.add(panCoreQuads[side.index])
     }
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: WorldPosGuiData, syncManager: GuiSyncManager): ModularPanel {
         if (!isRemote) {
             refreshNetworkAndThenEntries()
         }
@@ -263,7 +265,7 @@ class PanCoreMetaTileEntity(
         }
         val panDisplayMargin = 4
         val panDisplayWidth = 16 * 9 + 0
-        return ModularPanel.defaultPanel("pan_core", 176, 236)
+        return ModularPanel.defaultPanel("pan_core", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 50)
             .child(Column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
