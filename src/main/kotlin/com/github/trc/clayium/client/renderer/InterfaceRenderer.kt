@@ -2,7 +2,7 @@ package com.github.trc.clayium.client.renderer
 
 import com.github.trc.clayium.api.capability.ISynchronizedInterface
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
-import com.github.trc.clayium.api.util.getMetaTileEntity
+import net.minecraft.block.Block
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
@@ -15,23 +15,23 @@ import org.lwjgl.opengl.GL11
 import kotlin.math.sin
 
 object InterfaceRenderer {
+
+    val OVERLAY_AABB = Block.FULL_BLOCK_AABB.grow(0.001)
+
     fun renderHighlight(
         tileEntity: MetaTileEntityHolder, syncInterface: ISynchronizedInterface, x: Double, y: Double, z: Double,
         partialTicks: Float,
     ) {
         val targetPos = syncInterface.targetPos
-        val targetDimension = syncInterface.targetDimensionId
-        if (targetPos == null || targetDimension == -1) return
+        val targetDimensionId = syncInterface.targetDimensionId
+        if (targetPos == null) return
+        val targetDimensionType = DimensionManager.getProviderType(targetDimensionId)
         val mc = Minecraft.getMinecraft()
         val isBlockSelected = mc.objectMouseOver.blockPos == tileEntity.pos
         if (!isBlockSelected) return
 
-        val targetWorld = DimensionManager.getWorld(targetDimension)
-        val targetMetaTileEntity = targetWorld.getMetaTileEntity(targetPos)
-        if (targetMetaTileEntity == null) return
-
-        val tickTime = (targetMetaTileEntity.world?.totalWorldTime ?: 0) + partialTicks
-        val metaTileEntityStack = targetMetaTileEntity.getStackForm()
+        val tickTime = (mc.world.totalWorldTime) + partialTicks
+        val metaTileEntityStack = syncInterface.targetItemStack
 
         GlStateManager.disableLighting()
         GlStateManager.enableBlend()
@@ -61,13 +61,13 @@ object InterfaceRenderer {
                 GlStateManager.translate(0f, 0.275f, 0f)
                 GlStateManager.scale(0.25f, 0.25f, 0.25f)
             @Suppress("UsePropertyAccessSyntax") // .getName() instead of .name for lower-case
-            renderString("${targetPos.x}, ${targetPos.y}, ${targetPos.z}; ${targetWorld.provider.dimensionType.getName()}")
+            renderString("${targetPos.x}, ${targetPos.y}, ${targetPos.z}; ${targetDimensionType.getName()}")
             GlStateManager.popMatrix()
         }
         GlStateManager.popMatrix()
         GlStateManager.pushMatrix()
         run {
-            if (targetDimension == tileEntity.world?.provider?.dimension) {
+            if (targetDimensionId == tileEntity.world.provider.dimension) {
                 val offsetPos = targetPos.subtract(tileEntity.pos)
 
                 val tessellator = Tessellator.getInstance()
@@ -90,7 +90,7 @@ object InterfaceRenderer {
                 tessellator.draw()
                 GlStateManager.translate(offsetPos.x.toDouble(), offsetPos.y.toDouble(), offsetPos.z.toDouble())
                 // render full block box
-                val aabb = targetWorld.getBlockState(targetPos).getBoundingBox(targetWorld, targetPos).grow(0.001)
+                val aabb = OVERLAY_AABB
                 bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_NORMAL)
                 bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.minZ).normal(0.0F, 0.0F, -1.0F).endVertex()
                 bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.minZ).normal(0.0F, 0.0F, -1.0F).endVertex()

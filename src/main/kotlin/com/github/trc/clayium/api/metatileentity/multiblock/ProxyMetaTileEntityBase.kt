@@ -47,14 +47,14 @@ abstract class ProxyMetaTileEntityBase(
         }
         protected set(value) {
             field = value
-            if (value != null) {
-                this.targetPos = value.pos
-                this.targetDimensionId = value.world?.provider?.dimension ?: -1
-                writeTargetData(value)
-            } else {
+            if (value == null) {
                 this.targetPos = null
                 this.targetDimensionId = -1
                 writeTargetRemoved()
+            } else {
+                this.targetPos = value.pos
+                this.targetDimensionId = value.world?.provider?.dimension ?: -1
+                writeTargetData(value)
             }
         }
 
@@ -62,6 +62,7 @@ abstract class ProxyMetaTileEntityBase(
         private set
     final override var targetDimensionId: Int = -1
         private set
+    final override var targetItemStack: ItemStack = ItemStack.EMPTY
 
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val exportItems: IItemHandlerModifiable = EmptyItemStackHandler
@@ -90,7 +91,7 @@ abstract class ProxyMetaTileEntityBase(
 
     override fun onFirstTick() {
         super.onFirstTick()
-        if (this.targetPos != null && this.targetDimensionId != -1) {
+        if (this.targetPos != null) {
             val world = DimensionManager.getWorld(this.targetDimensionId) ?: return
             val metaTileEntity = world.getMetaTileEntity(this.targetPos) ?: return
             if (canLink(metaTileEntity)) {
@@ -157,6 +158,7 @@ abstract class ProxyMetaTileEntityBase(
             writeBoolean(true)
             writeBlockPos(pos)
             writeVarInt(world.provider.dimension)
+            writeItemStack(target.getStackForm())
         }
     }
 
@@ -173,9 +175,11 @@ abstract class ProxyMetaTileEntityBase(
                 if (hasPos) {
                     this.targetPos = buf.readBlockPos()
                     this.targetDimensionId = buf.readVarInt()
+                    this.targetItemStack = buf.readItemStack()
                 } else {
                     this.targetPos = null
                     this.targetDimensionId = -1
+                    this.targetItemStack = ItemStack.EMPTY
                 }
                 return
             }
