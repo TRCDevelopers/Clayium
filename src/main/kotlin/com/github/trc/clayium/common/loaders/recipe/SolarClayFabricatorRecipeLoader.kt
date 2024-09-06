@@ -23,5 +23,10 @@ object SolarClayFabricatorRecipeLoader {
         clays.add(CMaterials.compressedEnergeticClay4)
 
         for (clay in clays) CRecipes.SOLAR_3.register { clayInput(block, clay).tier(7) }
+        CRecipes.SOLAR_3.builder()
+            .input(OrePrefix.ingot, CMaterials.lithium)
+            .output(OrePrefix.block, CMaterials.compressedEnergeticClay4)
+            .tier(7).duration(16699)
+            .buildAndRegister()
     }
 }
