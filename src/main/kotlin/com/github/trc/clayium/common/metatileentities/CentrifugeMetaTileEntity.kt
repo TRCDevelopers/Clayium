@@ -1,7 +1,6 @@
 package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
@@ -10,7 +9,9 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
+import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
+import com.github.trc.clayium.api.gui.data.WorldPosGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
@@ -35,8 +36,8 @@ class CentrifugeMetaTileEntity(
         .setDurationMultiplier(ConfigTierBalance.crafting::getCraftTimeMultiplier)
         .setEnergyConsumingMultiplier(ConfigTierBalance.crafting::getConsumingEnergyMultiplier)
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
-        return ModularPanel.defaultPanel(this.metaTileEntityId.toString(), 176, 104 + ((outputSize + 1) * 9 + 46))
+    override fun buildUI(data: WorldPosGuiData, syncManager: GuiSyncManager): ModularPanel {
+        return ModularPanel.defaultPanel(this.metaTileEntityId.toString(), GUI_DEFAULT_WIDTH, 104 + ((outputSize + 1) * 9 + 46))
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager))
             }

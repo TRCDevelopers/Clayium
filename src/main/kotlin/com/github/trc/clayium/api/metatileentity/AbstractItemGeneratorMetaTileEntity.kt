@@ -1,6 +1,5 @@
 package com.github.trc.clayium.api.metatileentity
 
-import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
@@ -8,8 +7,10 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
+import com.github.trc.clayium.api.gui.data.WorldPosGuiData
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
@@ -115,12 +116,12 @@ abstract class AbstractItemGeneratorMetaTileEntity(
      */
     open fun canProgress(): Boolean = true
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: WorldPosGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.registerSlotGroup("machine_inventory", inventoryRowSize)
         val columnStr = "I".repeat(inventoryColumnSize)
         val matrixStr = (0..<inventoryRowSize).map { columnStr }
 
-        return ModularPanel.defaultPanel("simple_item_generator", 176, 18 + inventoryRowSize * 18 + 94 + 2)
+        return ModularPanel.defaultPanel("simple_item_generator", GUI_DEFAULT_WIDTH, 18 + inventoryRowSize * 18 + 94 + 2)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
                     .child(SlotGroupWidget.builder()

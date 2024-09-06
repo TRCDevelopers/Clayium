@@ -1,12 +1,12 @@
 package com.github.trc.clayium.api.metatileentity
 
-import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
+import com.github.trc.clayium.api.gui.data.WorldPosGuiData
 import com.github.trc.clayium.api.metatileentity.multiblock.ProxyMetaTileEntityBase
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
@@ -105,7 +105,7 @@ class ClayInterfaceMetaTileEntity(
         }
     }
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: WorldPosGuiData, syncManager: GuiSyncManager): ModularPanel {
         throw UnsupportedOperationException("no direct gui for clay interfaces")
     }
 }

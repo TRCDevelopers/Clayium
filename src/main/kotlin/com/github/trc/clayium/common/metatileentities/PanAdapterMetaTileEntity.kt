@@ -4,7 +4,6 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.DynamicDrawable
 import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.drawable.ItemDrawable
-import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
@@ -19,9 +18,12 @@ import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.ClayiumApi
+import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
+import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.ListeningItemStackHandler
+import com.github.trc.clayium.api.gui.data.WorldPosGuiData
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.ClayLaserMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
@@ -178,7 +180,7 @@ class PanAdapterMetaTileEntity(
         this.refreshEntries()
     }
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: WorldPosGuiData, syncManager: GuiSyncManager): ModularPanel {
         val tabController = PagedWidget.Controller()
         val buttons = Grid.mapToMatrix(2, resultInventories) { index, handler ->
             ParentWidget().size(16)
@@ -209,7 +211,7 @@ class PanAdapterMetaTileEntity(
                 .child(slots.left(32 + 8))
                 .child(resultSlots.align(Alignment.TopRight))
         }
-        return ModularPanel.defaultPanel("pan_adapter", 176, 196)
+        return ModularPanel.defaultPanel("pan_adapter", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 20)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
                     .child(PagedWidget().margin(0, 9).widthRel(1f).height(16*4)
