@@ -9,12 +9,18 @@ import net.minecraft.world.World
 class WorldPosGuiData(
     player: EntityPlayer,
     x: Int, y: Int, z: Int,
-    val worldObj: World, //fix name collision with super.getWorld()
+    // declaring as private to prevent generation of getter
+    // so we can avoid a JVM name conflict with the getter in the superclass
+    private val world: World,
 ) : PosGuiData(player, x, y, z) {
 
     constructor(player: EntityPlayer, pos: BlockPos, world: World) : this(player, pos.x, pos.y, pos.z, world)
 
+    override fun getWorld(): World {
+        return this.world
+    }
+
     override fun getTileEntity(): TileEntity? {
-        return worldObj.getTileEntity(blockPos)
+        return this.world.getTileEntity(blockPos)
     }
 }

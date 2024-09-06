@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import net.minecraftforge.common.DimensionManager
 
 object MetaTileEntityGuiFactory : AbstractUIFactory<PosGuiData>("${CValues.MOD_ID}:metatileentity") {
 
@@ -27,12 +28,18 @@ object MetaTileEntityGuiFactory : AbstractUIFactory<PosGuiData>("${CValues.MOD_I
     }
 
     override fun writeGuiData(guiData: PosGuiData, buffer: PacketBuffer) {
-        buffer.writeVarInt(guiData.x)
-        buffer.writeVarInt(guiData.y)
-        buffer.writeVarInt(guiData.z)
+        val data = guiData as WorldPosGuiData
+        buffer.writeVarInt(data.x)
+        buffer.writeVarInt(data.y)
+        buffer.writeVarInt(data.z)
+        buffer.writeVarInt(data.world.provider.dimension)
     }
 
     override fun readGuiData(player: EntityPlayer, buffer: PacketBuffer): PosGuiData {
-        return PosGuiData(player, buffer.readVarInt(), buffer.readVarInt(), buffer.readVarInt())
+        val x = buffer.readVarInt()
+        val y = buffer.readVarInt()
+        val z = buffer.readVarInt()
+        val world = DimensionManager.getWorld(buffer.readVarInt())
+        return WorldPosGuiData(player, BlockPos(x, y, z), world)
     }
 }
