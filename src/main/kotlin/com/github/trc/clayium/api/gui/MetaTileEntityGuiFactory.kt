@@ -5,16 +5,19 @@ import com.cleanroommc.modularui.factory.AbstractUIFactory
 import com.cleanroommc.modularui.factory.GuiManager
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.gui.data.WorldPosGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 
 object MetaTileEntityGuiFactory : AbstractUIFactory<PosGuiData>("${CValues.MOD_ID}:metatileentity") {
 
-    fun open(player: EntityPlayer, pos: BlockPos) {
-        val data = PosGuiData(player, pos.x, pos.y, pos.z)
+    @JvmOverloads
+    fun open(player: EntityPlayer, pos: BlockPos, world: World = player.world) {
+        val data = WorldPosGuiData(player, pos, world)
         GuiManager.open(this, data, player as EntityPlayerMP)
     }
 

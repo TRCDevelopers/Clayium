@@ -70,6 +70,7 @@ class ItemSynchronizer : Item() {
     }
 
     private fun createPosTooltip(pos: BlockPos, dimensionId: Int): String {
-        return "(${DimensionManager.getWorld(dimensionId).provider.dimensionType.name} : ${pos.x}, ${pos.y}, ${pos.z})"
+        @Suppress("UsePropertyAccessSyntax") // .getName() instead of .name for lower-case
+        return "(${DimensionManager.getProviderType(dimensionId).getName()} : ${pos.x}, ${pos.y}, ${pos.z})"
     }
 }

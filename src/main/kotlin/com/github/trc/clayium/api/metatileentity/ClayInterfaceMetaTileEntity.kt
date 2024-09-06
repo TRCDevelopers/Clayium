@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
+import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trc.clayium.api.metatileentity.multiblock.ProxyMetaTileEntityBase
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
@@ -96,8 +97,11 @@ class ClayInterfaceMetaTileEntity(
             }
         }
         val mimicTarget = this.target
+        //todo: MetaTileEntityGuiFactoryがplayerのworldを参照するので、修正
         if (mimicTarget?.canOpenGui() == true) {
-            mimicTarget.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
+            val targetPos = mimicTarget.pos ?: return
+            val targetWorld = mimicTarget.world ?: return
+            MetaTileEntityGuiFactory.open(player, targetPos, targetWorld)
         }
     }
 
