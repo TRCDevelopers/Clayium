@@ -15,7 +15,7 @@ import com.github.trc.clayium.api.capability.IPipeConnectionLogic
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
-import com.github.trc.clayium.api.gui.data.WorldPosGuiData
+import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
@@ -118,7 +118,7 @@ class MultiTrackBufferMetaTileEntity(
 
     private fun getTrackWithFilter(track: Int): IItemHandler = FilteredItemHandler(tracks[track], slotFilters[track])
 
-    override fun buildUI(data: WorldPosGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         (0..<trackRow).forEach { syncManager.registerSlotGroup("mt_buffer_inv_${it}", 1) }
         val slotsRowString = "I".repeat(trackInvSize)
         return ModularPanel("multi_track_buffer")

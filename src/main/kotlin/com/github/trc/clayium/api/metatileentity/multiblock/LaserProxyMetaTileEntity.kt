@@ -5,7 +5,7 @@ import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IClayLaserAcceptor
 import com.github.trc.clayium.api.capability.IConfigurationTool
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
-import com.github.trc.clayium.api.gui.data.WorldPosGuiData
+import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
@@ -55,7 +55,7 @@ class LaserProxyMetaTileEntity(
     }
 
     override fun canOpenGui() = false
-    override fun buildUI(data: WorldPosGuiData, syncManager: GuiSyncManager): Nothing {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): Nothing {
         throw UnsupportedOperationException()
     }
 

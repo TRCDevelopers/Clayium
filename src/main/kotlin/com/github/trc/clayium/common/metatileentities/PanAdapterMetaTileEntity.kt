@@ -23,7 +23,7 @@ import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.ListeningItemStackHandler
-import com.github.trc.clayium.api.gui.data.WorldPosGuiData
+import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.ClayLaserMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
@@ -180,7 +180,7 @@ class PanAdapterMetaTileEntity(
         this.refreshEntries()
     }
 
-    override fun buildUI(data: WorldPosGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         val tabController = PagedWidget.Controller()
         val buttons = Grid.mapToMatrix(2, resultInventories) { index, handler ->
             ParentWidget().size(16)

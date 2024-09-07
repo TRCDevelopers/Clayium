@@ -23,7 +23,7 @@ import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.LaserEnergyHolder
-import com.github.trc.clayium.api.gui.data.WorldPosGuiData
+import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
@@ -160,7 +160,7 @@ abstract class AbstractMinerMetaTileEntity(
             )
     }
 
-    override fun buildUI(data: WorldPosGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("breaker", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 20)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager))

@@ -12,7 +12,7 @@ import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.IPipeConnectionLogic
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
-import com.github.trc.clayium.api.gui.data.WorldPosGuiData
+import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import net.minecraft.util.EnumFacing
@@ -66,7 +66,7 @@ class ClayBufferMetaTileEntity(
         super.onPlacement()
     }
 
-    override fun buildUI(data: WorldPosGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.registerSlotGroup("buffer_inv", inventoryRowSize)
         val columnStr = "I".repeat(inventoryColumnSize)
         val matrixStr = (0..<inventoryRowSize).map { columnStr }
