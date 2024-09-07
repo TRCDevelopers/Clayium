@@ -31,7 +31,7 @@ import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
-import com.github.trc.clayium.api.gui.data.WorldPosGuiData
+import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import com.github.trc.clayium.api.metatileentity.interfaces.IWorldObject
 import com.github.trc.clayium.api.metatileentity.trait.OverclockHandler
@@ -90,7 +90,7 @@ abstract class MetaTileEntity(
      * item model location will be ("${metaTileEntityId.namespace}:machines/${name}", "tier={tier.lowerName}").
      */
     private val name: String,
-) : ISyncedTileEntity, IWorldObject, IGuiHolder<WorldPosGuiData>, IPipeConnectable {
+) : ISyncedTileEntity, IWorldObject, IGuiHolder<MetaTileEntityGuiData>, IPipeConnectable {
 
     val forgeRarity = tier.rarity
     val translationKey = "machine.${metaTileEntityId.namespace}.$name"
@@ -662,7 +662,7 @@ abstract class MetaTileEntity(
                     .slot(slot)
                     .background(IDrawable.EMPTY))
 
-    override fun buildUI(data: WorldPosGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         return ModularPanel.defaultPanel(translationKey)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager))
