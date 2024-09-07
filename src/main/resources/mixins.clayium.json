@@ -1,0 +1,12 @@
+{
+  "package": "com.github.trc.clayium.mixins",
+  "refmap": "mixins.clayium.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "modularui.FixDupeWithPhantomSlotMixin"
+  ],
+  "client": [],
+  "server": []
+}
