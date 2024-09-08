@@ -256,18 +256,22 @@ class StorageContainerMetaTileEntity(
                     -> ModelTextures.createQuad(it, getter.apply(clayiumId("blocks/storage_container_upgraded_base")))
             }
         }
-        topQuad = ModelTextures.createQuad(EnumFacing.UP, getter.apply(clayiumId("blocks/storage_container_top_composed")))
+        upQuad = ModelTextures.createQuad(EnumFacing.UP, getter.apply(clayiumId("blocks/storage_container_top_composed")))
+        downQuad = ModelTextures.createQuad(EnumFacing.DOWN, getter.apply(clayiumId("blocks/storage_container_top_composed")))
     }
 
     @SideOnly(Side.CLIENT)
     override fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
         if (state == null || side == null) return
-        if (this.maxStoredItems == UPGRADED_MAX_AMOUNT) {
+        val isUpgraded = this.maxStoredItems == UPGRADED_MAX_AMOUNT
+        if (isUpgraded) {
             quads.add(sideQuadsUpgraded[side.index])
         } else {
-            when {
-                side.axis.isHorizontal -> sideQuads[side]?.let(quads::add)
-                side == EnumFacing.UP -> quads.add(topQuad)
+            when (side) {
+                EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST
+                    -> sideQuads[side]?.let(quads::add)
+                EnumFacing.UP -> quads.add(upQuad)
+                EnumFacing.DOWN -> quads.add(downQuad)
             }
         }
     }
@@ -396,6 +400,8 @@ class StorageContainerMetaTileEntity(
         @SideOnly(Side.CLIENT)
         private lateinit var sideQuadsUpgraded: List<BakedQuad>
         @SideOnly(Side.CLIENT)
-        private lateinit var topQuad: BakedQuad
+        private lateinit var upQuad: BakedQuad
+        @SideOnly(Side.CLIENT)
+        private lateinit var downQuad: BakedQuad
     }
 }
