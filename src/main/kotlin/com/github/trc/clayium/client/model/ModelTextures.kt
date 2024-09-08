@@ -48,11 +48,11 @@ object ModelTextures {
     private lateinit var filterQuads: List<BakedQuad>
 
     val faceBakery = FaceBakery()
-    fun createQuad(side: EnumFacing, texture: TextureAtlasSprite): BakedQuad {
+    fun createQuad(side: EnumFacing, texture: TextureAtlasSprite, uv: FloatArray = floatArrayOf(0f, 0f, 16f, 16f)): BakedQuad {
         return faceBakery.makeBakedQuad(
             Vector3f(0f, 0f, 0f),
             Vector3f(16f, 16f, 16f),
-            BlockPartFace(null, 0, "", BlockFaceUV(floatArrayOf(0f, 0f, 16f, 16f), 0)),
+            BlockPartFace(null, 0, "", BlockFaceUV(uv, 0)),
             texture,
             side, ModelRotation.X0_Y0,
             null, true, true,
