@@ -34,7 +34,6 @@ import org.lwjgl.util.vector.Vector3f
 object ModelTextures {
 
     var isInitialized = false
-        private set
 
     lateinit var MISSING: TextureAtlasSprite
         private set
@@ -68,11 +67,14 @@ object ModelTextures {
         this.HULL_TEXTURES = ClayTiers.entries.associate {
             it.prefixTranslationKey to getter.apply(it.hullLocation)
         }
+
         this.HULL_QUADS = ClayTiers.entries.associate { tier ->
             tier.prefixTranslationKey to (EnumFacing.VALUES.associateWith { side ->
                 createQuad(side, getHullTexture(tier))
             })
         }
+
+        _faceQuads.clear()
         for (metaTileEntity in ClayiumApi.MTE_REGISTRY) {
             metaTileEntity.bakeQuads(getter, faceBakery)
             metaTileEntity.requiredTextures.filterNotNull().forEach { faceTexture ->
@@ -83,6 +85,7 @@ object ModelTextures {
                 }
             }
         }
+
         this.inputModeQuads = MachineIoMode.entries.associateWith { ioMode ->
             val textureName = when (ioMode) {
                 NONE -> return@associateWith null
@@ -101,6 +104,7 @@ object ModelTextures {
             val atlasSprite = getter.apply(clayiumId("blocks/$textureName"))
             EnumFacing.entries.map { side -> createQuad(side, atlasSprite) }
         }
+
         outputModeQuads = MachineIoMode.entries.associateWith { ioMode ->
             val textureName = when (ioMode) {
                 NONE -> return@associateWith null
@@ -119,6 +123,7 @@ object ModelTextures {
             val atlasSprite = getter.apply(clayiumId("blocks/$textureName"))
             EnumFacing.entries.map { side -> createQuad(side, atlasSprite) }
         }
+
         val filterSprite = getter.apply(clayiumId("blocks/filter"))
         filterQuads = EnumFacing.entries.map { createQuad(it, filterSprite) }
     }

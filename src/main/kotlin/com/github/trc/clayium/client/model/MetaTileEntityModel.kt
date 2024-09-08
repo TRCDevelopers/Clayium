@@ -74,7 +74,7 @@ class MetaTileEntityModel(
         return if (isPipe) {
             MetaTileEntityPipeBakedModel()
         } else {
-            MetaTileEntityBakedModel(bakedTextureGetter)
+            MetaTileEntityBakedModel()
         }
     }
 }
