@@ -1,7 +1,6 @@
 package com.github.trc.clayium.client.model
 
 import com.github.trc.clayium.api.CValues
-import com.github.trc.clayium.common.Clayium
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.IResourceManager
 import net.minecraft.util.ResourceLocation
@@ -11,7 +10,7 @@ import net.minecraftforge.client.model.ModelLoaderRegistry
 
 object MetaTileEntityModelLoader : ICustomModelLoader {
     override fun onResourceManagerReload(resourceManager: IResourceManager) {
-        // no-op
+        ModelTextures.isInitialized = false
     }
 
     override fun accepts(modelLocation: ResourceLocation): Boolean {
@@ -24,7 +23,6 @@ object MetaTileEntityModelLoader : ICustomModelLoader {
     }
 
     override fun loadModel(modelLocation: ResourceLocation): IModel {
-        Clayium.LOGGER.info("Loading model for $modelLocation")
         if (modelLocation !is ModelResourceLocation) return ModelLoaderRegistry.getMissingModel()
 
         val isPipe = modelLocation.variant.split("=").last().toBooleanStrict()

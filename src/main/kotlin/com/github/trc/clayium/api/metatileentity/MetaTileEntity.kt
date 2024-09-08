@@ -621,6 +621,9 @@ abstract class MetaTileEntity(
     @SideOnly(Side.CLIENT)
     open fun getRenderBoundingBox(): AxisAlignedBB? = null
 
+    /**
+     * also called on model reload.
+     */
     @SideOnly(Side.CLIENT)
     open fun bakeQuads(getter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {}
 
