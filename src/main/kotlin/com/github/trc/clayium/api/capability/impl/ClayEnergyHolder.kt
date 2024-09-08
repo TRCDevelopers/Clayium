@@ -17,41 +17,45 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.asWidgetResizing
 import net.minecraft.client.gui.GuiScreen
-import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.capabilities.Capability
 
 class ClayEnergyHolder(
     metaTileEntity: MetaTileEntity,
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.CLAY_ENERGY_HOLDER), IClayEnergyHolder {
 
-    override val energizedClayItemHandler = object : ClayiumItemStackHandler(metaTileEntity, 1) {
-        override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
-            return stack.hasCapability(ClayiumCapabilities.ENERGIZED_CLAY, null)
+    private val backingEcSlotHandler = object : ClayiumItemStackHandler(metaTileEntity, 1) {
+        override fun getSlotLimit(slot: Int): Int {
+            return ceSlotStackLimit
         }
-
-        override fun getStackLimit(slot: Int, stack: ItemStack): Int {
-            val world = metaTileEntity.world ?: return 1
-            val pos = metaTileEntity.pos ?: return 1
-            var limit = 1
-            for (side in EnumFacing.entries) {
-                val state = world.getBlockState(pos.offset(side))
-                val block = state.block
-                if (block is IEnergyStorageUpgradeBlock) {
-                    limit += block.getExtraStackLimit(world, pos.offset(side))
-                }
-            }
-            return limit
-        }
+    }
+    override val energizedClayItemHandler = FilteredItemHandlerModifiable(backingEcSlotHandler) {
+        it.hasCapability(ClayiumCapabilities.ENERGIZED_CLAY, null)
     }
 
     private val energizedClayImporter = AutoIoHandler.EcImporter(metaTileEntity, energizedClayItemHandler)
 
     private var clayEnergy: ClayEnergy = ClayEnergy.ZERO
+    private var ceSlotStackLimit = 1
 
     override fun update() {
         energizedClayImporter.update()
+        if (metaTileEntity.isRemote || metaTileEntity.offsetTimer % 20 != 0L) return
+        val world = metaTileEntity.world ?: return
+        val pos = metaTileEntity.pos ?: return
+        val mutPos = BlockPos.MutableBlockPos(pos)
+        var limit = 1
+        for (side in EnumFacing.entries) {
+            mutPos.setPos(pos).move(side)
+            val state = world.getBlockState(mutPos)
+            val block = state.block
+            if (block is IEnergyStorageUpgradeBlock) {
+                limit += block.getExtraStackLimit(world, mutPos)
+            }
+        }
+        this.ceSlotStackLimit = limit
     }
 
     override fun getEnergyStored(): ClayEnergy {
