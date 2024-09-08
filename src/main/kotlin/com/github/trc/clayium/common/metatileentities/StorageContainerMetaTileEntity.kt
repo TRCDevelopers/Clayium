@@ -257,7 +257,8 @@ class StorageContainerMetaTileEntity(
             }
         }
         upQuad = ModelTextures.createQuad(EnumFacing.UP, getter.apply(clayiumId("blocks/storage_container_top_composed")))
-        downQuad = ModelTextures.createQuad(EnumFacing.DOWN, getter.apply(clayiumId("blocks/storage_container_top_composed")))
+        downQuad = ModelTextures.createQuad(EnumFacing.DOWN, getter.apply(clayiumId("blocks/storage_container_top_composed")),
+            uv = floatArrayOf(16f, 16f, 0f, 0f))
     }
 
     @SideOnly(Side.CLIENT)
