@@ -19,6 +19,7 @@ import com.github.trc.clayium.api.util.asWidgetResizing
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.capabilities.Capability
 
 class ClayEnergyHolder(
@@ -44,12 +45,14 @@ class ClayEnergyHolder(
         if (metaTileEntity.isRemote || metaTileEntity.offsetTimer % 20 != 0L) return
         val world = metaTileEntity.world ?: return
         val pos = metaTileEntity.pos ?: return
+        val mutPos = BlockPos.MutableBlockPos(pos)
         var limit = 1
         for (side in EnumFacing.entries) {
-            val state = world.getBlockState(pos.offset(side))
+            mutPos.setPos(pos).move(side)
+            val state = world.getBlockState(mutPos)
             val block = state.block
             if (block is IEnergyStorageUpgradeBlock) {
-                limit += block.getExtraStackLimit(world, pos.offset(side))
+                limit += block.getExtraStackLimit(world, mutPos)
             }
         }
         this.ceSlotStackLimit = limit
