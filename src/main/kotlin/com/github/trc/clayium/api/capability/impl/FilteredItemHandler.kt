@@ -4,7 +4,7 @@ import com.github.trc.clayium.api.capability.IItemFilter
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandler
 
-class FilteredItemHandler(
+open class FilteredItemHandler(
     private val delegate: IItemHandler,
     private val filter: (ItemStack) -> Boolean,
 ) : IItemHandler by delegate {
