@@ -13,6 +13,7 @@ import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
+import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
@@ -35,6 +36,10 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import kotlin.math.min
 
+private const val ROWS = 4
+private const val COLS = 5
+private const val EXPOSED_INV_SIZE = (ROWS - 1) * COLS
+
 class AutoClayCondenserMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
@@ -42,12 +47,12 @@ class AutoClayCondenserMetaTileEntity(
 
     override val faceTexture = clayiumId("blocks/auto_clay_condenser")
 
-    override val itemInventory = object : NotifiableItemStackHandler(this, 16, this, isExport = false) {
+    override val itemInventory = object : NotifiableItemStackHandler(this, ROWS * COLS, this, isExport = false) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
             return getMaterial(stack)?.getPropOrNull(CPropertyKey.CLAY) != null
         }
     }
-    override val importItems = itemInventory
+    override val importItems = RangedItemHandlerProxy(itemInventory, 0..EXPOSED_INV_SIZE)
     override val exportItems = itemInventory
     @Suppress("Unused") private val ioHandler = AutoIoHandler.Combined(this)
 
@@ -61,40 +66,25 @@ class AutoClayCondenserMetaTileEntity(
         super.update()
         if (isRemote) return
         if (!hasNotifiedInputs) return
-        sortInv()
         // compress clays
-        val maxCompress = getMaterial(maxCompressedClay.getStackInSlot(0))?.tier?.numeric ?: Int.MAX_VALUE
-        for (i in 0..<itemInventory.slots) {
-            val stack = itemInventory.getStackInSlot(i)
-            if (stack.isEmpty) break // inventory is sorted
-
-            val m = getMaterial(stack) ?: continue
-            if ((m.tier?.numeric ?: Int.MAX_VALUE) >= maxCompress) continue
-
-            val clay = m.getPropOrNull(CPropertyKey.CLAY) ?: continue
-            val compressedClay = clay.compressedInto ?: continue
-            // slow down the process for lower tier
-            val compressedAmount = if (this.tier.numeric >= 7) { stack.count / 9 } else { min(stack.count / 9, 1) }
-            if (compressedAmount > 0) {
-                val remain = ItemHandlerHelper.insertItem(itemInventory,
-                    OreDictUnifier.get(OrePrefix.block, compressedClay, compressedAmount), true)
-                if (!remain.isEmpty) break
-                ItemHandlerHelper.insertItem(itemInventory,
-                    OreDictUnifier.get(OrePrefix.block, compressedClay, compressedAmount), false)
-                itemInventory.extractItem(i, compressedAmount * 9, false)
-            }
+        if (this.tier.numeric >= 7) {
+            compressClayMk2()
+        } else {
+            compressClayMk1()
         }
+        sortInv()
     }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.registerSlotGroup("compressor_inventory", 4)
+        val matrix = (0..<ROWS).map { "I".repeat(COLS) }.toTypedArray()
         return ModularPanel.defaultPanel("auto_clay_condenser", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 20)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
                     .child(Row().widthRel(1f).height(18 * 4)
                         .align(Alignment.Center)
                         .child(SlotGroupWidget.builder()
-                            .matrix("IIII", "IIII", "IIII", "IIII")
+                            .matrix(*matrix)
                             .key('I') {
                                 ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, it)
                                     .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null }
@@ -133,6 +123,70 @@ class AutoClayCondenserMetaTileEntity(
                 itemInventory.extractItem(i, amountExtracted, false)
                 itemInventory.insertItem(j, remainSorting.splitStack(amountExtracted), false)
                 if (remainSorting.isEmpty) break
+            }
+        }
+        val stacks = mutableListOf<ItemStack>()
+        for (i in 0..<itemInventory.slots) {
+            val stack = itemInventory.extractItem(i, Int.MAX_VALUE, false)
+            if (stack.isEmpty) break
+            stacks.add(stack)
+        }
+        stacks.sortBy { getMaterial(it)?.tier?.numeric }
+        for ((i, s) in stacks.withIndex()) {
+            itemInventory.insertItem(i, s, false)
+        }
+    }
+
+    private fun compressClayMk1() {
+        // no space
+        if (!itemInventory.getStackInSlot(ROWS * COLS - 1).isEmpty) return
+        val maxCompress = getMaterial(maxCompressedClay.getStackInSlot(0))?.tier?.numeric ?: Int.MAX_VALUE
+        for (i in (itemInventory.slots - 2) downTo 0) {
+            val stack = itemInventory.getStackInSlot(i)
+            if (stack.count < 9) continue
+            val m = getMaterial(stack)
+            val clay = m?.getPropOrNull(CPropertyKey.CLAY)
+            val compressed = clay?.compressedInto
+            if (m == null || m.tier == null || m.tier.numeric >= maxCompress || clay == null || compressed == null)
+                continue
+            val compressedStack = OreDictUnifier.get(OrePrefix.block, compressed, stackSize = 1)
+            itemInventory.extractItem(i, 9, false)
+            ItemHandlerHelper.insertItem(itemInventory, compressedStack, false)
+            break
+        }
+    }
+
+    private fun compressClayMk2() {
+        val maxCompress = getMaterial(maxCompressedClay.getStackInSlot(0))?.tier?.numeric ?: Int.MAX_VALUE
+        val storedItems = (0..<itemInventory.slots).map { itemInventory.extractItem(it, Int.MAX_VALUE, false) }
+        for (stack in storedItems) {
+            if (stack.isEmpty) continue
+            val m = getMaterial(stack)
+            val clay = m?.getPropOrNull(CPropertyKey.CLAY)
+            val compressed = clay?.compressedInto
+            if (m == null || m.tier == null || m.tier.numeric >= maxCompress || clay == null || compressed == null) {
+                ItemHandlerHelper.insertItem(itemInventory, stack, false)
+                continue
+            }
+
+            val compressedAmount = stack.count / 9
+            if (compressedAmount <= 0) {
+                ItemHandlerHelper.insertItem(itemInventory, stack, false)
+                continue
+            }
+
+            val compressedStack = OreDictUnifier.get(OrePrefix.block, compressed, compressedAmount)
+            val remain0 = ItemHandlerHelper.insertItem(itemInventory, compressedStack, true)
+            // simulate is set to true above,
+            // so grow(64) to virtually reproduce the (simulate = false) situation
+            val stack1 = stack.copy().apply { shrink(compressedAmount * 9); grow(64) }
+            val remain1 = ItemHandlerHelper.insertItem(itemInventory, stack1, true)
+            if (remain0.isEmpty && remain1.isEmpty) {
+                ItemHandlerHelper.insertItem(itemInventory, compressedStack, false)
+                stack.shrink(compressedAmount * 9)
+                ItemHandlerHelper.insertItem(itemInventory, stack, false)
+            } else {
+                ItemHandlerHelper.insertItem(itemInventory, stack, false)
             }
         }
     }
