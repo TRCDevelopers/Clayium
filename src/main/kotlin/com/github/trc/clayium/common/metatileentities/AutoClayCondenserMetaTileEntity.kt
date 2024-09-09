@@ -13,6 +13,7 @@ import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
+import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
@@ -35,6 +36,10 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import kotlin.math.min
 
+private const val ROWS = 4
+private const val COLS = 5
+private const val EXPOSED_INV_SIZE = (ROWS - 1) * COLS
+
 class AutoClayCondenserMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
@@ -42,12 +47,12 @@ class AutoClayCondenserMetaTileEntity(
 
     override val faceTexture = clayiumId("blocks/auto_clay_condenser")
 
-    override val itemInventory = object : NotifiableItemStackHandler(this, 16, this, isExport = false) {
+    override val itemInventory = object : NotifiableItemStackHandler(this, ROWS * COLS, this, isExport = false) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
             return getMaterial(stack)?.getPropOrNull(CPropertyKey.CLAY) != null
         }
     }
-    override val importItems = itemInventory
+    override val importItems = RangedItemHandlerProxy(itemInventory, 0..<EXPOSED_INV_SIZE)
     override val exportItems = itemInventory
     @Suppress("Unused") private val ioHandler = AutoIoHandler.Combined(this)
 
@@ -100,13 +105,14 @@ class AutoClayCondenserMetaTileEntity(
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.registerSlotGroup("compressor_inventory", 4)
+        val matrix = (0..<ROWS).map { "I".repeat(COLS) }.toTypedArray()
         return ModularPanel.defaultPanel("auto_clay_condenser", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 20)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
                     .child(Row().widthRel(1f).height(18 * 4)
                         .align(Alignment.Center)
                         .child(SlotGroupWidget.builder()
-                            .matrix("IIII", "IIII", "IIII", "IIII")
+                            .matrix(*matrix)
                             .key('I') {
                                 ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, it)
                                     .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null }
