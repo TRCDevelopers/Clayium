@@ -213,7 +213,7 @@ object MachineBlockRecipeLoader {
             input(MetaItemClayParts.SimpleCircuit)
         }
         registerMachineRecipeHull(MetaTileEntities.SOLAR_CLAY_FABRICATOR) {
-            input(OrePrefix.plate, CMaterials.silicon, 16)
+            input(OrePrefix.plate, CMaterials.silicon, if (it == 0) 8 else 16)
         }
         /* Clay (MultiTrack) Buffers */
         for (i in 0..9) {
@@ -490,8 +490,8 @@ object MachineBlockRecipeLoader {
         }
     }
 
-    private fun registerMachineRecipeHull(metaTileEntities: List<MetaTileEntity>, inputProvider: RecipeBuilder<*>.() -> RecipeBuilder<*>) {
-        for (mte in metaTileEntities) {
+    private fun registerMachineRecipeHull(metaTileEntities: List<MetaTileEntity>, inputProvider: RecipeBuilder<*>.(index: Int) -> RecipeBuilder<*>) {
+        for ((i, mte) in metaTileEntities.withIndex()) {
             if (mte.tier !is ClayTiers) {
                 Clayium.LOGGER.warn("MetaTileEntity ${mte.metaTileEntityId}'s tier is not a instance of ClayTiers. Cannot register recipe.")
                 continue
@@ -500,7 +500,7 @@ object MachineBlockRecipeLoader {
                 .input(MACHINE_HULL.getItem(mte.tier))
                 .output(mte.getStackForm())
                 .tier(4).CEtFactor(1.0).duration(60)
-                .inputProvider()
+                .inputProvider(i)
                 .buildAndRegister()
         }
     }
