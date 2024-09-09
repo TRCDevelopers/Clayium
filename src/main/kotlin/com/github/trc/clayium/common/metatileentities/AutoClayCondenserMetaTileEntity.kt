@@ -64,24 +64,36 @@ class AutoClayCondenserMetaTileEntity(
         sortInv()
         // compress clays
         val maxCompress = getMaterial(maxCompressedClay.getStackInSlot(0))?.tier?.numeric ?: Int.MAX_VALUE
-        for (i in 0..<itemInventory.slots) {
-            val stack = itemInventory.getStackInSlot(i)
-            if (stack.isEmpty) break // inventory is sorted
+        val storedItems = (0..<itemInventory.slots).map { itemInventory.extractItem(it, Int.MAX_VALUE, false) }
+        for (stack in storedItems) {
+            if (stack.isEmpty) continue
+            val m = getMaterial(stack)
+            val clay = m?.getPropOrNull(CPropertyKey.CLAY)
+            val compressed = clay?.compressedInto
+            if (m == null || m.tier == null || m.tier.numeric >= maxCompress || clay == null || compressed == null) {
+                ItemHandlerHelper.insertItem(itemInventory, stack, false)
+                continue
+            }
 
-            val m = getMaterial(stack) ?: continue
-            if ((m.tier?.numeric ?: Int.MAX_VALUE) >= maxCompress) continue
-
-            val clay = m.getPropOrNull(CPropertyKey.CLAY) ?: continue
-            val compressedClay = clay.compressedInto ?: continue
             // slow down the process for lower tier
             val compressedAmount = if (this.tier.numeric >= 7) { stack.count / 9 } else { min(stack.count / 9, 1) }
-            if (compressedAmount > 0) {
-                val remain = ItemHandlerHelper.insertItem(itemInventory,
-                    OreDictUnifier.get(OrePrefix.block, compressedClay, compressedAmount), true)
-                if (!remain.isEmpty) break
-                ItemHandlerHelper.insertItem(itemInventory,
-                    OreDictUnifier.get(OrePrefix.block, compressedClay, compressedAmount), false)
-                itemInventory.extractItem(i, compressedAmount * 9, false)
+            if (compressedAmount <= 0) {
+                ItemHandlerHelper.insertItem(itemInventory, stack, false)
+                continue
+            }
+
+            val compressedStack = OreDictUnifier.get(OrePrefix.block, compressed, compressedAmount)
+            val remain0 = ItemHandlerHelper.insertItem(itemInventory, compressedStack, true)
+            // simulate is set to true above,
+            // so grow(64) to virtually reproduce the (simulate = false) situation
+            val stack1 = stack.copy().apply { shrink(compressedAmount * 9); grow(64) }
+            val remain1 = ItemHandlerHelper.insertItem(itemInventory, stack1, true)
+            if (remain0.isEmpty && remain1.isEmpty) {
+                ItemHandlerHelper.insertItem(itemInventory, compressedStack, false)
+                stack.shrink(compressedAmount * 9)
+                ItemHandlerHelper.insertItem(itemInventory, stack, false)
+            } else {
+                ItemHandlerHelper.insertItem(itemInventory, stack, false)
             }
         }
     }
