@@ -46,7 +46,7 @@ class EnergyConverterMetaTileEntity(
     override val importItems = EmptyItemStackHandler
     override val exportItems = EmptyItemStackHandler
     override val itemInventory = EmptyItemStackHandler
-    private val ceHolder = ClayEnergyHolder(this)
+    private val clayEnergyHolder = ClayEnergyHolder(this)
 
     private val feStorage = EnergyStorageSerializable(ConfigFeGen.feStorageSize[tier.numeric - 4])
     private val exposedFeStorage = EnergyStorageExportOnly(feStorage)
@@ -61,7 +61,7 @@ class EnergyConverterMetaTileEntity(
         if (isRemote) return
 
         if (feStorage.receiveEnergy(fePerTick, true) == fePerTick
-            && ceHolder.drawEnergy(cePerTick, false)) {
+            && clayEnergyHolder.drawEnergy(cePerTick, false)) {
             feStorage.receiveEnergy(fePerTick, false)
         }
         //todo: control output allowed sides
@@ -85,9 +85,9 @@ class EnergyConverterMetaTileEntity(
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         syncManager.syncValue("feStorage", SyncHandlers.intNumber(feStorage::getEnergyStored, feStorage::setEnergy))
         return super.buildMainParentWidget(syncManager)
-            .child(ceHolder.createSlotWidget()
+            .child(clayEnergyHolder.createSlotWidget()
                 .align(Alignment.BottomRight))
-            .child(ceHolder.createCeTextWidget(syncManager)
+            .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .left(0).bottom(10))
             .child(Column().widthRel(1f).height(8 * 3 + 3 * 2 + 10).align(Alignment.Center)
                 .child(IKey.dynamic { I18n.format("gui.clayium.energy_converter.storage", feStorage.energyStored, feStorage.maxEnergyStored) }
@@ -108,6 +108,11 @@ class EnergyConverterMetaTileEntity(
             return capability.cast(exposedFeStorage)
         }
         return super.getCapability(capability, facing)
+    }
+
+    override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
+        super.clearMachineInventory(itemBuffer)
+        clearInventory(itemBuffer, clayEnergyHolder.energizedClayItemHandler)
     }
 
     @SideOnly(Side.CLIENT)
