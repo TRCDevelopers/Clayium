@@ -17,6 +17,10 @@ import net.minecraft.client.resources.I18n
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
+import kotlin.math.floor
+import kotlin.math.ln
+import kotlin.math.max
+import kotlin.math.pow
 
 class MultiblockLogic(
     metaTileEntity: MetaTileEntity,
@@ -54,7 +58,8 @@ class MultiblockLogic(
                     this.multiblockParts.addAll(result.parts)
                     this.multiblockParts.forEach { it.addToMultiblock(metaTileEntity) }
                     val tierNums = listOf(result.tiers.map { it.numeric }, result.parts.map { it.tier.numeric }).flatten()
-                    this.recipeLogicTier = if (tierNums.isEmpty()) 0 else tierNums.average().toInt()
+                        .toIntArray()
+                    this.recipeLogicTier = calculateStructureTier(tierNums)
                     writeStructureValidity(true)
                 }
             }
@@ -86,6 +91,13 @@ class MultiblockLogic(
             controllerPos.y + relRight.yOffset * right + relUp.yOffset * up + relBackwards.yOffset * backwards,
             controllerPos.z + relRight.zOffset * right + relUp.zOffset * up + relBackwards.zOffset * backwards,
         )
+    }
+
+    private fun calculateStructureTier(partTiers: IntArray): Int {
+        var a = 0.0
+        for (tier in partTiers) { a += 2.0.pow(16 - tier) }
+        a /= partTiers.size
+        return max(floor(16.0 - floor(ln(a) / ln(2.0) + 0.5)), 0.0).toInt()
     }
 
     override fun writeInitialSyncData(buf: PacketBuffer) {
