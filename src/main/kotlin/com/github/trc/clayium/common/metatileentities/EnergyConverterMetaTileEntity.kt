@@ -11,11 +11,17 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.config.ConfigFeGen
+import net.minecraft.client.resources.I18n
+import net.minecraft.client.util.ITooltipFlag
+import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.energy.CapabilityEnergy
 import net.minecraftforge.energy.EnergyStorage
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 class EnergyConverterMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -72,5 +78,12 @@ class EnergyConverterMetaTileEntity(
             return capability.cast(exposedFeStorage)
         }
         return super.getCapability(capability, facing)
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        super.addInformation(stack, worldIn, tooltip, flagIn)
+        tooltip.add(I18n.format("machine.clayium.energy_converter.tooltip.rate", cePerTick.format(), fePerTick))
+        tooltip.add(I18n.format("machine.clayium.energy_converter.tooltip.output", fePerTick))
     }
 }

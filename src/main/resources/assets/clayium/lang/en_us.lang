@@ -636,28 +636,19 @@ tile.clayium.blockAdvancedFluidTransferMachine.tooltip.line1=Fills or empties li
 
 tile.clayium.creative_energy_source.name=Creative CE Source
 
-tile.clayium.blockBasicRFGenerator.name=CE-RF Converter
-tile.clayium.blockAdvancedRFGenerator.name=Advanced CE-RF Converter
-tile.clayium.blockPrecisionRFGenerator.name=Precision CE-RF Converter
-tile.clayium.blockClaySteelRFGenerator.name=Clay Steel CE-RF Converter
-tile.clayium.blockClayiumRFGenerator.name=Clayium CE-RF Converter
-tile.clayium.blockUltimateRFGenerator.name=Ultimate CE-RF Converter
-tile.clayium.blockAntimatterRFGenerator.name=Antimatter CE-RF Converter
-tile.clayium.blockPureAntimatterRFGenerator.name=Pure Antimatter CE-RF Converter
-tile.clayium.blockOECRFGenerator.name=OEC CE-RF Converter
-tile.clayium.blockOPARFGenerator.name=OPA CE-RF Converter
-gui.clayium.RFGenerator.storage=%1$sRF/%2$sRF
-gui.clayium.RFGenerator.convertRate=%1$sCE/t -> %2$sRF/t
-gui.clayium.RFGenerator.output=Output\: %1$sRF/t
-gui.clayium.RFGenerator.overclock=Overclock\: x%1$s
-gui.clayium.RFGenerator.overclockExponent=OC\: %1$s ^ %2$s = %3$s
-tooltip.clayium.RFGenerator.line1=Converts CE to RF.
-tooltip.clayium.RFGenerator.line2=__DETAIL__
-tooltip.clayium.RFGenerator.line3=Power emission will stop when a redstone signal is applied.
-tooltip.clayium.RFGenerator.line4=Overclocker increases output RF/t.
-tooltip.clayium.RFGenerator.line5=Edit clayium.cfg to enable recipes for Converters.
-tooltip.clayium.RFGenerator.convertRate=%1$sCE/t -> %2$sRF/t
-tooltip.clayium.RFGenerator.output=Output\: %1$sRF/t
+machine.clayium.energy_converter=%s CE-FE Converter
+gui.clayium.FEGenerator.storage=%1$sFE/%2$sFE
+gui.clayium.FEGenerator.convertRate=%1$sCE/t -> %2$sFE/t
+gui.clayium.FEGenerator.output=Output\: %1$sFE/t
+gui.clayium.FEGenerator.overclock=Overclock\: x%1$s
+gui.clayium.FEGenerator.overclockExponent=OC\: %1$s ^ %2$s = %3$s
+machine.clayium.energy_converter.tooltip1=Converts CE to FE.
+machine.clayium.energy_converter.tooltip2=__DETAIL__
+machine.clayium.energy_converter.tooltip3=Power emission will stop when a redstone signal is applied.
+machine.clayium.energy_converter.tooltip4=Overclocker increases output FE/t.
+machine.clayium.energy_converter.tooltip5=Edit clayium.cfg to enable recipes for Converters.
+machine.clayium.energy_converter.tooltip.rate=%1$s/t -> %2$sFE/t
+machine.clayium.energy_converter.tooltip.output=Output\: %1$sFE/t
 
 tile.clayium.blockMetalChest.Silicon.name=Silicon Chest
 tile.clayium.blockMetalChest.Aluminium.name=Aluminium Chest
