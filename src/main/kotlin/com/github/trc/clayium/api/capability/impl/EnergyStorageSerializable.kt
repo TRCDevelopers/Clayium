@@ -3,6 +3,8 @@ package com.github.trc.clayium.api.capability.impl
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.common.util.INBTSerializable
 import net.minecraftforge.energy.EnergyStorage
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 class EnergyStorageSerializable @JvmOverloads constructor(
     capacity: Int,
@@ -26,6 +28,7 @@ class EnergyStorageSerializable @JvmOverloads constructor(
     /**
      * should only be used for syncing (e.g. GUI)
      */
+    @SideOnly(Side.CLIENT)
     fun setEnergy(energy: Int) {
         this.energy = energy
     }
