@@ -11,8 +11,7 @@ class EnergyStorageSerializable @JvmOverloads constructor(
     energy: Int = 0,
 ) : EnergyStorage(capacity, maxReceive, maxExtract, energy), INBTSerializable<NBTTagCompound> {
     @JvmOverloads
-    constructor(capacity: Int, maxTransfer: Int = capacity)
-            : this(capacity, maxTransfer, maxTransfer)
+    constructor(capacity: Int, maxTransfer: Int = capacity) : this(capacity, maxTransfer, maxTransfer)
 
     override fun serializeNBT(): NBTTagCompound {
         val data = NBTTagCompound()
@@ -22,5 +21,12 @@ class EnergyStorageSerializable @JvmOverloads constructor(
 
     override fun deserializeNBT(nbt: NBTTagCompound) {
         this.energy = nbt.getInteger("energy")
+    }
+
+    /**
+     * should only be used for syncing (e.g. GUI)
+     */
+    fun setEnergy(energy: Int) {
+        this.energy = energy
     }
 }

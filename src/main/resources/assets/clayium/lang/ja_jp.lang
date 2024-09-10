@@ -602,11 +602,11 @@ tile.clayium.creative_energy_source.name=クリエイティブ用粘土エネル
 
 machine.clayium.energy_converter=%s CE-FE コンバーター
 machine.clayium.energy_converter.basic=CE-FE コンバーター
-gui.clayium.FEGenerator.storage=%1$sFE/%2$sFE
-gui.clayium.FEGenerator.convertRate=%1$sCE/t -> %2$sFE/t
-gui.clayium.FEGenerator.output=出力: %1$sFE/t
-gui.clayium.FEGenerator.overclock=オーバークロック: x%1$s
-gui.clayium.FEGenerator.overclockExponent=OC: %1$s ^ %2$s = %3$s
+gui.clayium.energy_converter.storage=%1$sFE/%2$sFE
+gui.clayium.energy_converter.rate=%1$s/t -> %2$sFE/t
+gui.clayium.energy_converter.output=出力: %1$sFE/t
+gui.clayium.energy_converter.overclock=オーバークロック: x%1$s
+gui.clayium.energy_converter.overclockExponent=OC: %1$s ^ %2$s = %3$s
 machine.clayium.energy_converter.tooltip1=CE を FE に変換する
 machine.clayium.energy_converter.tooltip2=__DETAIL__
 machine.clayium.energy_converter.tooltip3=赤石信号によりエネルギー出力を止められる

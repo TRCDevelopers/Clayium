@@ -637,11 +637,11 @@ tile.clayium.blockAdvancedFluidTransferMachine.tooltip.line1=Fills or empties li
 tile.clayium.creative_energy_source.name=Creative CE Source
 
 machine.clayium.energy_converter=%s CE-FE Converter
-gui.clayium.FEGenerator.storage=%1$sFE/%2$sFE
-gui.clayium.FEGenerator.convertRate=%1$sCE/t -> %2$sFE/t
-gui.clayium.FEGenerator.output=Output\: %1$sFE/t
-gui.clayium.FEGenerator.overclock=Overclock\: x%1$s
-gui.clayium.FEGenerator.overclockExponent=OC\: %1$s ^ %2$s = %3$s
+gui.clayium.energy_converter.storage=%1$sFE/%2$sFE
+gui.clayium.energy_converter.rate=%1$s/t -> %2$sFE/t
+gui.clayium.energy_converter.output=Output\: %1$sFE/t
+gui.clayium.energy_converter.overclock=Overclock\: x%1$s
+gui.clayium.energy_converter.overclockExponent=OC\: %1$s ^ %2$s = %3$s
 machine.clayium.energy_converter.tooltip1=Converts CE to FE.
 machine.clayium.energy_converter.tooltip2=__DETAIL__
 machine.clayium.energy_converter.tooltip3=Power emission will stop when a redstone signal is applied.

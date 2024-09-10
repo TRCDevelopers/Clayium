@@ -1,8 +1,11 @@
 package com.github.trc.clayium.common.metatileentities
 
+import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
+import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
@@ -63,11 +66,20 @@ class EnergyConverterMetaTileEntity(
     }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+        syncManager.syncValue("feStorage", SyncHandlers.intNumber(feStorage::getEnergyStored, feStorage::setEnergy))
         return super.buildMainParentWidget(syncManager)
             .child(ceHolder.createSlotWidget()
                 .align(Alignment.BottomRight))
             .child(ceHolder.createCeTextWidget(syncManager)
                 .left(0).bottom(10))
+            .child(Column().widthRel(1f).height(8 * 5).align(Alignment.Center)
+                .child(IKey.dynamic { I18n.format("gui.clayium.energy_converter.storage", feStorage.energyStored, feStorage.maxEnergyStored) }
+                    .asWidget().widthRel(1f))
+                .child(IKey.dynamic { I18n.format("gui.clayium.energy_converter.rate", cePerTick.format(), fePerTick) }
+                    .asWidget().widthRel(1f).margin(0, 3))
+                .child(IKey.dynamic { I18n.format("gui.clayium.energy_converter.output", fePerTick) }
+                    .asWidget().widthRel(1f))
+            )
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
