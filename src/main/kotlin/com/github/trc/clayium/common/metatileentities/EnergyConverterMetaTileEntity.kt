@@ -52,7 +52,9 @@ class EnergyConverterMetaTileEntity(
     override fun update() {
         super.update()
         if (isRemote) return
-        if (ceHolder.drawEnergy(cePerTick, false)) {
+
+        if (feStorage.receiveEnergy(fePerTick, true) == fePerTick
+            && ceHolder.drawEnergy(cePerTick, false)) {
             feStorage.receiveEnergy(fePerTick, false)
         }
         for (side in EnumFacing.entries) {
