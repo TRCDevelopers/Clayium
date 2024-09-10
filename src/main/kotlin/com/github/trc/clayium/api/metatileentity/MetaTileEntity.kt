@@ -171,6 +171,7 @@ abstract class MetaTileEntity(
 
     override fun markDirty() { holder?.markDirty() }
 
+    @MustBeInvokedByOverriders
     open fun update() {
         if (timer == 0L) {
             onFirstTick()
