@@ -49,9 +49,12 @@ class EnergyConverterMetaTileEntity(
     private val ceHolder = ClayEnergyHolder(this)
 
     private val feStorage = EnergyStorageSerializable(ConfigFeGen.feStorageSize[tier.numeric - 4])
-    private val fePerTick = ConfigFeGen.fePerTick[tier.numeric - 4]
-    private val cePerTick: ClayEnergy = ClayEnergy.of(1) * ConfigFeGen.cePerTick[tier.numeric - 4]
     private val exposedFeStorage = EnergyStorageExportOnly(feStorage)
+
+    private val rawFePerTick = ConfigFeGen.fePerTick[tier.numeric - 4]
+    private val fePerTick: Int get() = (rawFePerTick * overclock).toInt()
+    private val rawCePerTick: ClayEnergy = ClayEnergy.of(1) * ConfigFeGen.cePerTick[tier.numeric - 4]
+    private val cePerTick: ClayEnergy get() = (rawCePerTick * overclock)
 
     override fun update() {
         super.update()
