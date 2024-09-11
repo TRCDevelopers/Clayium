@@ -27,6 +27,7 @@ object SimpleCapabilityManager {
         registerCapabilityWithNoDefault(IClayLaserSource::class.java)
         registerCapabilityWithNoDefault(IClayLaserAcceptor::class.java)
         registerCapabilityWithNoDefault(IControllable::class.java)
+        registerCapabilityWithNoDefault(AbstractWorkable::class.java)
         registerCapabilityWithNoDefault(AbstractRecipeLogic::class.java)
         registerCapabilityWithNoDefault(IPipeConnectable::class.java)
 
