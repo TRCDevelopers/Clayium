@@ -529,9 +529,9 @@ tile.clayium.clay_tree_leaves.name=粘土樹の葉
 
 tile.clayium.blockClayChunkLoader.name=3x3 チャンクローダー
 machine.clayium.storage_container=ストレージコンテナ
-tile.clayium.blockVacuumContainer.name=虚空コンテナ
-tile.clayium.blockVacuumContainer.tooltip.line1=搬入されたアイテムを消去する
-tile.clayium.blockAutoTrader.name=自動取引装置
+machine.clayium.void_container=虚空コンテナ
+machine.clayium.void_container.tooltip1=搬入されたアイテムを消去する
+machine.clayium.blockAutoTrader.name=自動取引装置
 
 tile.clayium.clay_marker.tooltip1=範囲機械の使用に必要
 tile.clayium.clay_marker.no_extend.name=粘土マーカー

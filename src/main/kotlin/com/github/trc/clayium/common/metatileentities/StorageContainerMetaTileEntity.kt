@@ -27,6 +27,7 @@ import com.github.trc.clayium.common.util.transferTo
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms
@@ -290,18 +291,26 @@ class StorageContainerMetaTileEntity(
         run {
             GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5)
 
+            GlStateManager.pushMatrix()
+            when (this.frontFacing) {
+                EnumFacing.NORTH -> {}
+                EnumFacing.WEST -> GlStateManager.rotate(90f, 0f, 1f, 0f)
+                EnumFacing.EAST -> GlStateManager.rotate(270f, 0f, 1f, 0f)
+                else -> GlStateManager.rotate(180f, 0f, 1f, 0f)
+            }
+            GlStateManager.translate(0.0, 0.125, -0.51)
+            GlStateManager.scale(0.5f, 0.5f, 0.5f)
+            RenderHelper.enableStandardItemLighting()
+            mc.renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED)
+            RenderHelper.disableStandardItemLighting()
+            GlStateManager.popMatrix()
+
             when (this.frontFacing) {
                 EnumFacing.NORTH -> GlStateManager.rotate(180f, 0f, 1f, 0f)
                 EnumFacing.WEST -> GlStateManager.rotate(270f, 0f, 1f, 0f)
                 EnumFacing.EAST -> GlStateManager.rotate(90f, 0f, 1f, 0f)
                 else -> {}
             }
-
-            GlStateManager.pushMatrix()
-            GlStateManager.translate(0.0, 0.125, 0.51)
-            GlStateManager.scale(0.5f, 0.5f, 0.5f)
-            mc.renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED)
-            GlStateManager.popMatrix()
 
             GlStateManager.pushMatrix()
             val amountText: String = NumberFormat.formatWithMaxDigits(itemsStored.toDouble(), 3)
@@ -313,7 +322,6 @@ class StorageContainerMetaTileEntity(
             GlStateManager.popMatrix()
         }
         GlStateManager.popMatrix()
-
     }
 
     private fun ItemStack.canActuallyStack(stack: ItemStack): Boolean {

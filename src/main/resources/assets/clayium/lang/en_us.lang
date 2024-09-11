@@ -565,9 +565,9 @@ tile.clayium.clay_tree_leaves.name=Clay Tree Leaves
 
 tile.clayium.blockClayChunkLoader.name=3x3 Chunk Loader
 machine.clayium.storage_container=Storage Container
-tile.clayium.blockVacuumContainer.name=Void Container
-tile.clayium.blockVacuumContainer.tooltip.line1=Deletes any item entering it.
-tile.clayium.blockAutoTrader.name=Auto Trader
+machine.clayium.void_container=Void Container
+machine.clayium.void_container.tooltip1=Deletes any item entering it.
+machine.clayium.blockAutoTrader.name=Auto Trader
 
 tile.clayium.clay_marker.tooltip1=Used for area machines.
 tile.clayium.clay_marker.no_extend.name=Clay Marker
