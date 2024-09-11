@@ -12,6 +12,7 @@ import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.blocks.BlockCaReactorCoil
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.blocks.ClayiumBlocks.MACHINE_HULL
+import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trc.clayium.common.metatileentities.MetaTileEntities
@@ -20,6 +21,7 @@ import com.github.trc.clayium.common.recipe.builder.RecipeBuilder
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.google.common.primitives.Longs.min
 import net.minecraft.item.ItemStack
+import kotlin.math.max
 import kotlin.math.pow
 
 object MachineBlockRecipeLoader {
@@ -422,6 +424,20 @@ object MachineBlockRecipeLoader {
                 .output(MetaTileEntities.PAN_ADAPTER[i])
                 .tier(10).CEt(ClayEnergy(10.0.pow((i + 9.0)).toLong())).duration(60)
                 .buildAndRegister()
+        }
+
+        /* CE-FE Converter */
+        if (ConfigCore.feGen.enableFeGenerators) {
+            for (t in 4..13) {
+                val i = t - 4
+                CRecipes.ASSEMBLER.builder()
+                    .input(MACHINE_HULL.getItem(ClayTiers.entries[t]))
+                    .input(MetaTileEntities.REDSTONE_PROXY[max(0, t - 5)])
+                    .output(MetaTileEntities.ENERGY_CONVERTER[i])
+                    .tier(4).duration(120)
+                    .CEt(ClayEnergy.of(1) * ConfigCore.feGen.cePerTick[i])
+                    .buildAndRegister()
+            }
         }
 
         /* Block Breaker */

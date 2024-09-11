@@ -600,28 +600,20 @@ tile.clayium.blockAdvancedFluidTransferMachine.tooltip.line1=液体容器から�
 
 tile.clayium.creative_energy_source.name=クリエイティブ用粘土エネルギー源
 
-tile.clayium.blockBasicRFGenerator.name=CE-RF コンバーター
-tile.clayium.blockAdvancedRFGenerator.name=発展 CE-RF コンバーター
-tile.clayium.blockPrecisionRFGenerator.name=精密 CE-RF コンバーター
-tile.clayium.blockClaySteelRFGenerator.name=粘土鋼 CE-RF コンバーター
-tile.clayium.blockClayiumRFGenerator.name=クレイウム CE-RF コンバーター
-tile.clayium.blockUltimateRFGenerator.name=究極 CE-RF コンバーター
-tile.clayium.blockAntimatterRFGenerator.name=反物質 CE-RF コンバーター
-tile.clayium.blockPureAntimatterRFGenerator.name=純反物質 CE-RF コンバーター
-tile.clayium.blockOECRFGenerator.name=OEC CE-RF コンバーター
-tile.clayium.blockOPARFGenerator.name=OPA CE-RF コンバーター
-gui.clayium.RFGenerator.storage=%1$sRF/%2$sRF
-gui.clayium.RFGenerator.convertRate=%1$sCE/t -> %2$sRF/t
-gui.clayium.RFGenerator.output=出力: %1$sRF/t
-gui.clayium.RFGenerator.overclock=オーバークロック: x%1$s
-gui.clayium.RFGenerator.overclockExponent=OC: %1$s ^ %2$s = %3$s
-tooltip.clayium.RFGenerator.line1=CE を RF に変換する
-tooltip.clayium.RFGenerator.line2=__DETAIL__
-tooltip.clayium.RFGenerator.line3=赤石信号によりエネルギー出力を止められる
-tooltip.clayium.RFGenerator.line4=オーバークロッカーにより出力 RF/t を増大できる
-tooltip.clayium.RFGenerator.line5=コンフィグでこれを作成するレシピが有効化できる
-tooltip.clayium.RFGenerator.convertRate=%1$sCE/t -> %2$sRF/t
-tooltip.clayium.RFGenerator.output=出力: %1$sRF/t
+machine.clayium.energy_converter=%s CE-FE コンバーター
+machine.clayium.energy_converter.basic=CE-FE コンバーター
+gui.clayium.energy_converter.storage=%1$sFE/%2$sFE
+gui.clayium.energy_converter.rate=%1$s/t -> %2$sFE/t
+gui.clayium.energy_converter.output=出力: %1$sFE/t
+gui.clayium.energy_converter.overclock=オーバークロック: x%1$s
+gui.clayium.energy_converter.overclockExponent=OC: %1$s ^ %2$s = %3$s
+machine.clayium.energy_converter.tooltip1=CE を FE に変換する
+machine.clayium.energy_converter.tooltip2=__DETAIL__
+machine.clayium.energy_converter.tooltip3=赤石信号によりエネルギー出力を止められる
+machine.clayium.energy_converter.tooltip4=オーバークロッカーにより出力 FE/t を増大できる
+machine.clayium.energy_converter.tooltip5=コンフィグでこれを作成するレシピが有効化できる
+machine.clayium.energy_converter.tooltip.rate=%1$s/t -> %2$sFE/t
+machine.clayium.energy_converter.tooltip.output=出力: %1$sFE/t
 
 tooltip.clayium.MetalChest.capacity1=容量: %1$d x %2$d = %3$d スロット
 tooltip.clayium.MetalChest.capacity2=容量: %1$d x %2$d x %3$d = %4$d スロット
@@ -786,4 +778,3 @@ item.clayium.antimatter_seed.name=反物質の種
 
 item.clayium.energized_clay_dust.name=活性化粘土粉
 item.clayium.excited_clay_dust.name=励起粘土粉
-

@@ -1,0 +1,73 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "overlay": "clayium:blocks/energy_converter_overlay"
+    },
+    "model": "clayium:overlay"
+  },
+  "variants": {
+    "tier": {
+      "basic": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier4"
+        },
+        "model": "clayium:overlay"
+      },
+      "advanced": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier5"
+        },
+        "model": "clayium:overlay"
+      },
+      "precision": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier6"
+        },
+        "model": "clayium:overlay"
+      },
+      "clay_steel": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier7"
+        },
+        "model": "clayium:overlay"
+      },
+      "clayium": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier8"
+        },
+        "model": "clayium:overlay"
+      },
+      "ultimate": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier9"
+        },
+        "model": "clayium:overlay"
+      },
+      "antimatter": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier10"
+        },
+        "model": "clayium:overlay"
+      },
+      "pure_antimatter": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier11"
+        },
+        "model": "clayium:overlay"
+      },
+      "oec": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier12"
+        },
+        "model": "clayium:overlay"
+      },
+      "opa": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier13"
+        },
+        "model": "clayium:overlay"
+      }
+    }
+  }
+}

@@ -220,8 +220,12 @@ object MetaTileEntities {
         PanAdapterMetaTileEntity(clayiumId("pan_adapter.${it.lowerName}"), it)
     }
 
-    val PAN_DUPLICATOR = (1..10).map { //+10
-        registerMetaTileEntity(810 + it, PanDuplicatorMetaTileEntity(clayiumId("pan_duplicator.${it}"), ClayTiers.PURE_ANTIMATTER, it))
+    val PAN_DUPLICATOR = (1..10).mapIndexed { i, rank -> //+10
+        registerMetaTileEntity(810 + i, PanDuplicatorMetaTileEntity(clayiumId("pan_duplicator.${rank}"), ClayTiers.PURE_ANTIMATTER, rank))
+    }
+
+    val ENERGY_CONVERTER = registerMetaTileEntities(820, (4..13)) { // +10
+        EnergyConverterMetaTileEntity(clayiumId("energy_converter.${it.lowerName}"), it)
     }
 
     /* Builder Machines 1001-1100 */
