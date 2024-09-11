@@ -18,7 +18,7 @@ import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.config.ConfigFeGen
+import com.github.trc.clayium.common.config.ConfigCore
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemStack
@@ -48,12 +48,12 @@ class EnergyConverterMetaTileEntity(
     override val itemInventory = EmptyItemStackHandler
     private val clayEnergyHolder = ClayEnergyHolder(this)
 
-    private val feStorage = EnergyStorageSerializable(ConfigFeGen.feStorageSize[tier.numeric - 4])
+    private val feStorage = EnergyStorageSerializable(ConfigCore.feGen.feStorageSize[tier.numeric - 4])
     private val exposedFeStorage = EnergyStorageExportOnly(feStorage)
 
-    private val rawFePerTick = ConfigFeGen.fePerTick[tier.numeric - 4]
+    private val rawFePerTick = ConfigCore.feGen.fePerTick[tier.numeric - 4]
     private val fePerTick: Int get() = (rawFePerTick * overclock).toInt()
-    private val rawCePerTick: ClayEnergy = ClayEnergy.of(1) * ConfigFeGen.cePerTick[tier.numeric - 4]
+    private val rawCePerTick: ClayEnergy = ClayEnergy.of(1) * ConfigCore.feGen.cePerTick[tier.numeric - 4]
     private val cePerTick: ClayEnergy get() = (rawCePerTick * overclock)
 
     override fun update() {

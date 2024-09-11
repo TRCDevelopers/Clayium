@@ -12,7 +12,7 @@ import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.blocks.BlockCaReactorCoil
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.blocks.ClayiumBlocks.MACHINE_HULL
-import com.github.trc.clayium.common.config.ConfigFeGen
+import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trc.clayium.common.metatileentities.MetaTileEntities
@@ -427,7 +427,7 @@ object MachineBlockRecipeLoader {
         }
 
         /* CE-FE Converter */
-        if (ConfigFeGen.enableFeGenerators) {
+        if (ConfigCore.feGen.enableFeGenerators) {
             for (t in 4..13) {
                 val i = t - 4
                 CRecipes.ASSEMBLER.builder()
@@ -435,7 +435,7 @@ object MachineBlockRecipeLoader {
                     .input(MetaTileEntities.REDSTONE_PROXY[max(0, t - 5)])
                     .output(MetaTileEntities.ENERGY_CONVERTER[i])
                     .tier(4).duration(120)
-                    .CEt(ClayEnergy.of(1) * ConfigFeGen.cePerTick[i])
+                    .CEt(ClayEnergy.of(1) * ConfigCore.feGen.cePerTick[i])
                     .buildAndRegister()
             }
         }
