@@ -26,7 +26,8 @@ abstract class AbstractRecipeLogic(
     protected val inputInventory = metaTileEntity.importItems
 
     protected var previousRecipe: Recipe? = null
-    protected var recipeCEt = ClayEnergy.ZERO
+    var recipeCEt = ClayEnergy.ZERO
+        protected set
 
     /**
      * Draw energy from the energy container.

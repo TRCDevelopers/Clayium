@@ -3,6 +3,9 @@ package com.github.trc.clayium.api
 import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler
 
+// todo replace CValues.MOD_ID to this
+const val MOD_ID = "clayium"
+
 const val GUI_DEFAULT_WIDTH = 176
 const val GUI_DEFAULT_HEIGHT = 166
 
