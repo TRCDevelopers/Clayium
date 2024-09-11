@@ -5,6 +5,8 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
+import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER_ITEM
+import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.VoidingItemHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
@@ -23,6 +25,8 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
@@ -30,7 +34,6 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
-import net.minecraftforge.items.ItemStackHandler
 import java.util.function.Function
 
 class VoidContainerMetaTileEntity(
@@ -46,8 +49,18 @@ class VoidContainerMetaTileEntity(
     override val itemInventory = importItems
 
     private val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
-    private val filterSlot = ItemStackHandler(1)
+    private val filterSlot =  ClayiumItemStackHandler(this, 1)
     private val filterStack get() = filterSlot.getStackInSlot(0)
+
+    private var lastFilterStack: ItemStack = ItemStack.EMPTY
+    override fun update() {
+        super.update()
+        if (isRemote || offsetTimer % 100 != 0L) return
+        if (filterStack.isEmpty && lastFilterStack.isEmpty
+            || ItemHandlerHelper.canItemStacksStack(lastFilterStack, filterStack)) return
+        lastFilterStack = filterStack.copy()
+        writeCustomData(UPDATE_FILTER_ITEM) { writeItemStack(filterStack) }
+    }
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return VoidContainerMetaTileEntity(metaTileEntityId, tier)
@@ -60,6 +73,34 @@ class VoidContainerMetaTileEntity(
                 .align(Alignment.Center))
             .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0))
                 .right(10).top(15))
+    }
+
+    override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
+        if (discriminator == UPDATE_FILTER_ITEM) {
+            filterSlot.setStackInSlot(0, buf.readItemStack())
+        } else {
+            super.receiveCustomData(discriminator, buf)
+        }
+    }
+
+    override fun writeInitialSyncData(buf: PacketBuffer) {
+        super.writeInitialSyncData(buf)
+        buf.writeItemStack(filterStack)
+    }
+
+    override fun receiveInitialSyncData(buf: PacketBuffer) {
+        super.receiveInitialSyncData(buf)
+        filterSlot.setStackInSlot(0, buf.readItemStack())
+    }
+
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        data.setTag("filterSlot", filterSlot.serializeNBT())
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        filterSlot.deserializeNBT(data.getCompoundTag("filterSlot"))
     }
 
     @SideOnly(Side.CLIENT)
