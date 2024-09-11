@@ -109,6 +109,8 @@ class PanDuplicatorMetaTileEntity(
         return super.buildMainParentWidget(syncManager)
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .bottom(12).left(0))
+            .child(clayEnergyHolder.createSlotWidget()
+                .align(Alignment.BottomRight))
             .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
                 .child(SlotGroupWidget.builder()
                     .row("AD")
