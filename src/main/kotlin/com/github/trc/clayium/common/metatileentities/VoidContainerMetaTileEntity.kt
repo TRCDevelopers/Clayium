@@ -29,7 +29,8 @@ class VoidContainerMetaTileEntity(
     tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, onlyNoneList, "void_container")  {
     override val requiredTextures: List<ResourceLocation?>
-        get() = listOf(clayiumId("blocks/void_container_overlay"))
+        get() = listOf(clayiumId("blocks/void_container"), clayiumId("blocks/void_container_side"), clayiumId("blocks/void_container_top"))
+    override val faceTexture = clayiumId("blocks/void_container")
 
     override val importItems: IItemHandlerModifiable = VoidContainerItemHandler()
     override val exportItems = EmptyItemStackHandler
@@ -53,14 +54,20 @@ class VoidContainerMetaTileEntity(
     }
 
     override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
-        val sprite = getter.apply(clayiumId("blocks/void_container_overlay"))
-        voidContainerQuads = EnumFacing.entries.map { ModelTextures.createQuad(it, sprite) }
+        val sprite = getter.apply(clayiumId("blocks/void_container_side"))
+        voidContainerSide = EnumFacing.HORIZONTALS.map { ModelTextures.createQuad(it, sprite) }
+        voidContainerTop = ModelTextures.createQuad(EnumFacing.UP, getter.apply(clayiumId("blocks/void_container_top")))
+        voidContainerBottom = ModelTextures.createQuad(EnumFacing.DOWN, getter.apply(clayiumId("blocks/void_container_top")))
     }
 
     override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
         super.overlayQuads(quads, state, side, rand)
-        if (state == null || side == null) return
-        quads.add(voidContainerQuads[side.index])
+        if (state == null || side == null || side == this.frontFacing) return
+        when (side) {
+            EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST -> quads.add(voidContainerSide[side.horizontalIndex])
+            EnumFacing.UP -> quads.add(voidContainerTop)
+            EnumFacing.DOWN -> quads.add(voidContainerBottom)
+        }
     }
 
     private inner class VoidContainerItemHandler : VoidingItemHandler() {
@@ -73,6 +80,8 @@ class VoidContainerMetaTileEntity(
     }
 
     companion object {
-        private lateinit var voidContainerQuads: List<BakedQuad>
+        private lateinit var voidContainerSide: List<BakedQuad>
+        private lateinit var voidContainerTop: BakedQuad
+        private lateinit var voidContainerBottom: BakedQuad
     }
 }
