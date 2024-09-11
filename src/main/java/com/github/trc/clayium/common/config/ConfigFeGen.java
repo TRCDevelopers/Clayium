@@ -5,9 +5,9 @@ import net.minecraftforge.common.config.Config;
 import static com.github.trc.clayium.api.CValues.MOD_ID;
 
 @Config(modid = MOD_ID, name = MOD_ID + "/fe_generator")
-@Config.LangKey("config." + MOD_ID + ".fe_gen.ce_per_tick")
 public class ConfigFeGen {
 
+    @Config.RequiresMcRestart
     public static boolean enableFeGenerators = false;
 
     @Config.Comment({
