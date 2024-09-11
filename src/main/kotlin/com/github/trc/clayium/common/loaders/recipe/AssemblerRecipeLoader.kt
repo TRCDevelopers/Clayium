@@ -1,6 +1,7 @@
 package com.github.trc.clayium.common.loaders.recipe
 
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.unification.material.CMarkerMaterials
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
@@ -105,6 +106,14 @@ object AssemblerRecipeLoader {
             .tier(6).duration(432_000)
             .buildAndRegister()
         //endregion
+
+        /* Pan Cable */
+        registry.builder()
+            .input(OrePrefix.gem, CMaterials.pureAntimatter, 3)
+            .input(OrePrefix.block, CMarkerMaterials.glass, 2)
+            .output(ClayiumBlocks.PAN_CABLE, 12)
+            .tier(10).CEt(ClayEnergy.of(1000)).duration(2)
+            .buildAndRegister()
 
         registry.builder()
             .input(Blocks.STONEBRICK)
