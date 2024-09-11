@@ -1,10 +1,16 @@
-# Clayium Unofficial
+<h1 align="center">Clayium Unofficial</h1>
+<h1 align="center">
+  <img alt="Modrinth Game Versions" src="https://img.shields.io/modrinth/game-versions/m5ogv9xL?style=for-the-badge">
+  <br>
+  <a href="https://www.curseforge.com/minecraft/mc-mods/clayium-unofficial"><img alt="CurseForge" src="https://cf.way2muchnoise.eu/1096085.svg?badge_style=for_the_badge"></a>
+  <a href="https://modrinth.com/mod/clayium-unofficial"><img alt="Modrinth Downloads" src="https://img.shields.io/modrinth/dt/m5ogv9xL?style=for-the-badge&logo=modrinth&logoColor=1c1c1c&label=%20&labelColor=5ca424&color=2d2d2d"></a>
+</h1>
+
 An **unofficial** 1.12.2 port of Clayium.
 The original version was made by deb_rk,
 and published on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/clayium) under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/).
 
 This mod is currently in alpha stage and may contain critical bugs including game crashes.
-Check [here](https://github.com/TRCDevelopers/Clayium/releases) for the latest release.
 
 ## Required Mods
 - [ModularUI](https://github.com/CleanroomMC/ModularUI) (currently incompatible with `v2.5.0-rc1`, please use `v2.4.3` instead)
@@ -18,7 +24,6 @@ including PAN, except for those listed below.
 ## WIP Features
 - Auto Crafter
 - Auto Trader
-- CE-RF Converter
 - Clay Crafting Board
 - Clay Gadgets
 - Clay Guns
@@ -34,8 +39,6 @@ including PAN, except for those listed below.
 - World Interactive Machines
   - Activators
   - Area Replacer
-  - ~~Block Breaker~~ (Done)
-  - ~~Ranged Miner~~ (Done)
   - Advanced Area Miner
   - Chunk Loader
   - Item Collectors
@@ -44,7 +47,7 @@ including PAN, except for those listed below.
 
 ## License
 ### Code
-The code is licensed under the [LGPL-3.0](https://www.gnu.org/licenses/lgpl-3.0.html.en#license-text).
+The code is licensed under the [LGPL-3.0](https://github.com/TRCDevelopers/Clayium/blob/develop/LICENSE).
 
 ### Assets
 Assets are created by deb_rk, and are licensed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/).
