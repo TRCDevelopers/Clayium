@@ -38,6 +38,7 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
     operator fun times(value: Long) = ClayEnergy(energy * value)
     operator fun times(value: Double) = ClayEnergy((energy * value).toLong())
     operator fun div(value: Int) = ClayEnergy(energy / value)
+    operator fun div(value: Double) = ClayEnergy((energy.toDouble() / value).toLong())
     override operator fun compareTo(other: ClayEnergy) = energy.compareTo(other.energy)
 
     companion object {

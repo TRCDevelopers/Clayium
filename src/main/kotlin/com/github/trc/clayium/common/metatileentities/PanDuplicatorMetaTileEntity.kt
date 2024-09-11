@@ -24,6 +24,7 @@ import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.ItemAndMeta
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
@@ -80,6 +81,13 @@ class PanDuplicatorMetaTileEntity(
         recipeLogic.update()
     }
 
+    override fun onPlacement() {
+        this.setInput(EnumFacing.UP, MachineIoMode.ALL)
+        this.setInput(this.frontFacing.opposite, MachineIoMode.CE)
+        this.setOutput(EnumFacing.DOWN, MachineIoMode.ALL)
+        super.onPlacement()
+    }
+
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         return when {
             capability === ClayiumTileCapabilities.PAN_CABLE -> capability.cast(IPanCable.INSTANCE)
@@ -101,6 +109,8 @@ class PanDuplicatorMetaTileEntity(
         return super.buildMainParentWidget(syncManager)
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .bottom(12).left(0))
+            .child(clayEnergyHolder.createSlotWidget()
+                .align(Alignment.BottomRight))
             .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
                 .child(SlotGroupWidget.builder()
                     .row("AD")

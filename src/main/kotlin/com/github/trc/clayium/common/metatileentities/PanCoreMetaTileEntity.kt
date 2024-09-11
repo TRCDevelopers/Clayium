@@ -41,6 +41,7 @@ import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
+import com.github.trc.clayium.common.recipe.registry.CRecipes
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -323,6 +324,18 @@ class PanCoreMetaTileEntity(
                     )
                 }
             }
+            // impure dusts from Chemical Metal Separator
+            for (recipe in CRecipes.CHEMICAL_METAL_SEPARATOR.getAllRecipes()) {
+                if (recipe.chancedOutputs == null) continue
+                val totalWeight: Double = recipe.chancedOutputs.map { it.chance }.sum().toDouble()
+                val baseCeCost = recipe.cePerTick * recipe.duration
+                for (chanced in recipe.chancedOutputs) {
+                    val rate = chanced.chance.toDouble() / totalWeight
+                    // rarer -> higher CE cost
+                    put(ItemAndMeta(chanced.result), PanDuplicationEntry(baseCeCost / rate))
+                }
+            }
+            put(ItemAndMeta(OrePrefix.dust, CMaterials.salt), PanDuplicationEntry(ClayEnergy.milli(5), true))
             put(ItemAndMeta(OrePrefix.gem, CMaterials.antimatter), PanDuplicationEntry(ClayEnergy.of(1), false))
         }.toMap() }
 
