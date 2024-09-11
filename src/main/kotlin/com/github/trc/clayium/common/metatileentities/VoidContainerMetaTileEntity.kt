@@ -13,8 +13,12 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.model.ModelTextures
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.Minecraft
+import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.item.Item
@@ -75,6 +79,32 @@ class VoidContainerMetaTileEntity(
             EnumFacing.UP -> quads.add(voidContainerTop)
             EnumFacing.DOWN -> quads.add(voidContainerBottom)
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
+        val stack = filterStack
+        if (stack.isEmpty) return
+
+        val mc = Minecraft.getMinecraft()
+        GlStateManager.pushMatrix()
+        run {
+            GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5)
+
+            when (this.frontFacing) {
+                EnumFacing.NORTH -> {}
+                EnumFacing.WEST -> GlStateManager.rotate(90f, 0f, 1f, 0f)
+                EnumFacing.EAST -> GlStateManager.rotate(270f, 0f, 1f, 0f)
+                else -> GlStateManager.rotate(180f, 0f, 1f, 0f)
+            }
+
+            GlStateManager.translate(0.0, 0.125, -0.51)
+            GlStateManager.scale(0.5f, 0.5f, 0.5f)
+            RenderHelper.enableStandardItemLighting()
+            mc.renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED)
+            RenderHelper.disableStandardItemLighting()
+        }
+        GlStateManager.popMatrix()
     }
 
     @SideOnly(Side.CLIENT)
