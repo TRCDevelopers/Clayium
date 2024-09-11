@@ -3,9 +3,13 @@ package com.github.trc.clayium.common.recipe.chanced
 class ChancedOutputList<RESULT>(
     val chancedOutputs: List<IChancedOutput<RESULT>>,
     val chancedLogic: IChancedOutputLogic,
-) {
+) : Iterable<IChancedOutput<RESULT>> {
     fun roll(): List<RESULT> {
         return chancedLogic.roll(chancedOutputs)
+    }
+
+    override fun iterator(): Iterator<IChancedOutput<RESULT>> {
+        return chancedOutputs.iterator()
     }
 
     companion object {
