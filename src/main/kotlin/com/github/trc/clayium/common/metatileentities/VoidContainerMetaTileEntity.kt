@@ -10,16 +10,27 @@ import com.github.trc.clayium.api.capability.impl.VoidingItemHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.client.model.ModelTextures
+import net.minecraft.block.state.IBlockState
+import net.minecraft.client.renderer.block.model.BakedQuad
+import net.minecraft.client.renderer.block.model.FaceBakery
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.item.ItemStack
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.ItemStackHandler
+import java.util.function.Function
 
 class VoidContainerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, onlyNoneList, "void_container")  {
+    override val requiredTextures: List<ResourceLocation?>
+        get() = listOf(clayiumId("blocks/void_container_overlay"))
+
     override val importItems: IItemHandlerModifiable = VoidContainerItemHandler()
     override val exportItems = EmptyItemStackHandler
     override val itemInventory = importItems
@@ -41,6 +52,17 @@ class VoidContainerMetaTileEntity(
                 .right(10).top(15))
     }
 
+    override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
+        val sprite = getter.apply(clayiumId("blocks/void_container_overlay"))
+        voidContainerQuads = EnumFacing.entries.map { ModelTextures.createQuad(it, sprite) }
+    }
+
+    override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+        super.overlayQuads(quads, state, side, rand)
+        if (state == null || side == null) return
+        quads.add(voidContainerQuads[side.index])
+    }
+
     private inner class VoidContainerItemHandler : VoidingItemHandler() {
         override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
             if (filterStack.isEmpty || ItemHandlerHelper.canItemStacksStack(stack, filterStack)) {
@@ -48,5 +70,9 @@ class VoidContainerMetaTileEntity(
             }
             return stack
         }
+    }
+
+    companion object {
+        private lateinit var voidContainerQuads: List<BakedQuad>
     }
 }
