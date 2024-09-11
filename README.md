@@ -35,7 +35,6 @@ including PAN, except for those listed below.
 - Fluid related features
 - Metal Chests
 - Upgrading machines with CA Injector
-- Void Container
 - World Interactive Machines
   - Activators
   - Area Replacer
