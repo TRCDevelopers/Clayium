@@ -24,6 +24,7 @@ import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.ItemAndMeta
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
@@ -78,6 +79,13 @@ class PanDuplicatorMetaTileEntity(
     override fun update() {
         super.update()
         recipeLogic.update()
+    }
+
+    override fun onPlacement() {
+        this.setInput(EnumFacing.UP, MachineIoMode.ALL)
+        this.setInput(this.frontFacing.opposite, MachineIoMode.CE)
+        this.setOutput(EnumFacing.DOWN, MachineIoMode.ALL)
+        super.onPlacement()
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
