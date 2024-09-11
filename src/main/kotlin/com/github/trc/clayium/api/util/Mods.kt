@@ -11,6 +11,7 @@ enum class Mods(
     GroovyScript(Names.GROOVY_SCRIPT),
     JustEnoughItems(Names.JUST_ENOUGH_ITEMS),
     ModularUI(Names.MODULAR_UI),
+    TheOneProbe(Names.THE_ONE_PROBE)
     ;
 
     val isModLoaded by lazy { Loader.isModLoaded(this.modId) }
@@ -21,5 +22,6 @@ enum class Mods(
         const val GROOVY_SCRIPT = "groovyscript"
         const val JUST_ENOUGH_ITEMS = "jei"
         const val MODULAR_UI = "modularui"
+        const val THE_ONE_PROBE = "theoneprobe"
     }
 }

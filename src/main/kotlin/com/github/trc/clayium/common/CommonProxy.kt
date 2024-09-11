@@ -33,6 +33,7 @@ import com.github.trc.clayium.common.pan.factories.CraftingTablePanRecipeFactory
 import com.github.trc.clayium.common.pan.factories.FurnacePanRecipeFactory
 import com.github.trc.clayium.common.util.DebugUtils
 import com.github.trc.clayium.common.worldgen.ClayOreGenerator
+import com.github.trc.clayium.integration.CModIntegration
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
@@ -74,6 +75,7 @@ open class CommonProxy {
     }
 
     open fun init(event: FMLInitializationEvent) {
+        CModIntegration.init(event)
     }
 
     open fun postInit(event: FMLPostInitializationEvent) {
