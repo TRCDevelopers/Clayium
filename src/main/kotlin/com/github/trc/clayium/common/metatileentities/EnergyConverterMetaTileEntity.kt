@@ -17,6 +17,7 @@ import com.github.trc.clayium.api.capability.impl.EnergyStorageSerializable
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.config.ConfigCore
 import net.minecraft.client.resources.I18n
@@ -73,6 +74,11 @@ class EnergyConverterMetaTileEntity(
                 feStorage.extractEnergy(actualTransfer, false)
             }
         }
+    }
+
+    override fun onPlacement() {
+        this.setInput(this.frontFacing.opposite, MachineIoMode.CE)
+        super.onPlacement()
     }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
