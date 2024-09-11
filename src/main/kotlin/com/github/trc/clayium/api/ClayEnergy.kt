@@ -18,14 +18,18 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
 
     //todo: minimum digits?
     fun format(): String {
-        if (energy == 0L) return "0CE"
+        return "${formatWithoutUnit()}CE"
+    }
+
+    fun formatWithoutUnit(): String {
+        if (energy == 0L) return "0"
         val digits = abs(energy).toString().length
         val microCe = energy.toDouble() * 10.0
         val unitIndex = digits / 3
         val displayValue = String.format("%.3f", microCe / 10.0.pow(unitIndex * 3))
             .replace(matchesExcessZero, "")
             .replace(matchesExcessDecimalPoint, "")
-        return "$displayValue${units[unitIndex]}CE"
+        return "$displayValue${units[unitIndex]}"
     }
 
     override fun toString(): String {
