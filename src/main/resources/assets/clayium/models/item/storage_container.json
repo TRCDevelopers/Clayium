@@ -1,3 +1,9 @@
 {
-  "parent":"clayium:block/storage_container"
+  "parent":"clayium:block/storage_container",
+  "textures":{
+    "base": "clayium:blocks/az91d_hull",
+    "face": "clayium:blocks/storage_container",
+    "side": "clayium:blocks/storage_container_side",
+    "top": "clayium:blocks/storage_container_top"
+  }
 }

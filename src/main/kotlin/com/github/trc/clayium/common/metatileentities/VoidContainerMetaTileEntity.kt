@@ -15,10 +15,15 @@ import com.github.trc.clayium.client.model.ModelTextures
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.ItemStackHandler
@@ -53,13 +58,15 @@ class VoidContainerMetaTileEntity(
                 .right(10).top(15))
     }
 
+    @SideOnly(Side.CLIENT)
     override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
         val sprite = getter.apply(clayiumId("blocks/void_container_side"))
         voidContainerSide = EnumFacing.HORIZONTALS.map { ModelTextures.createQuad(it, sprite) }
         voidContainerTop = ModelTextures.createQuad(EnumFacing.UP, getter.apply(clayiumId("blocks/void_container_top")))
-        voidContainerBottom = ModelTextures.createQuad(EnumFacing.DOWN, getter.apply(clayiumId("blocks/void_container_top")))
+        voidContainerBottom = ModelTextures.createQuad(EnumFacing.DOWN, getter.apply(clayiumId("blocks/void_container_top")), uv = floatArrayOf(16f, 16f, 0f, 0f))
     }
 
+    @SideOnly(Side.CLIENT)
     override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
         super.overlayQuads(quads, state, side, rand)
         if (state == null || side == null || side == this.frontFacing) return
@@ -68,6 +75,11 @@ class VoidContainerMetaTileEntity(
             EnumFacing.UP -> quads.add(voidContainerTop)
             EnumFacing.DOWN -> quads.add(voidContainerBottom)
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun registerItemModel(item: Item, meta: Int) {
+        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(this.metaTileEntityId, "inventory"))
     }
 
     private inner class VoidContainerItemHandler : VoidingItemHandler() {
