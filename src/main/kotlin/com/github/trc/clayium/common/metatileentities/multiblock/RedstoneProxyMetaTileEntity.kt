@@ -29,7 +29,17 @@ class RedstoneProxyMetaTileEntity(
     override val useFaceForAllSides: Boolean = true
 
     private var mode = Mode.NONE
+        set(value) {
+            val notifyFlag = field != value
+            field = value
+            if (notifyFlag) { notifyNeighbors() }
+        }
     private var power: Int = 0
+        set(value) {
+            val notifyFlag = field != value
+            field = value
+            if (notifyFlag) { notifyNeighbors() }
+        }
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return RedstoneProxyMetaTileEntity(metaTileEntityId, tier)
@@ -45,12 +55,12 @@ class RedstoneProxyMetaTileEntity(
             Mode.EMIT_IF_IDLE -> power = if (controllable.isWorking) 0 else 15
             Mode.EMIT_IF_WORKING -> power = if (controllable.isWorking) 15 else 0
             Mode.DO_WORK_IF_POWERED -> {
-                val pos = pos
-                controllable.isWorkingEnabled = pos != null && world.isBlockPowered(pos)
+                val pos = pos ?: return
+                controllable.isWorkingEnabled = world.isBlockPowered(pos)
             }
             Mode.DO_WORK_IF_NOT_POWERED -> {
-                val pos = pos
-                controllable.isWorkingEnabled = !(pos != null && world.isBlockPowered(pos))
+                val pos = pos ?: return
+                controllable.isWorkingEnabled = !world.isBlockPowered(pos)
             }
         }
     }

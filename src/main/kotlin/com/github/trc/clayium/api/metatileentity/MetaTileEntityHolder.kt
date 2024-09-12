@@ -112,6 +112,10 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
         world?.markBlockRangeForRenderUpdate(pos, pos)
     }
 
+    fun notifyNeighbors() {
+        world?.notifyNeighborsOfStateChange(pos, blockType, true)
+    }
+
     override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean {
         return oldState.block != newSate.block
     }

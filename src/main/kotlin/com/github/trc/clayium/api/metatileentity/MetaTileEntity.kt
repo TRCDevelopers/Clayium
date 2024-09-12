@@ -577,6 +577,7 @@ abstract class MetaTileEntity(
 
     fun getNeighbor(side: EnumFacing) = holder?.getNeighbor(side)
     fun scheduleRenderUpdate() = holder?.scheduleRenderUpdate()
+    fun notifyNeighbors() = holder?.notifyNeighbors()
 
     /**
      * @return null if the neighbor is not loaded.
