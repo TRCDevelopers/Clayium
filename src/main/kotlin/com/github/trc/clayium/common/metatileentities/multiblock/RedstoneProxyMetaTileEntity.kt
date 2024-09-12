@@ -17,6 +17,7 @@ import com.github.trc.clayium.api.metatileentity.multiblock.ProxyMetaTileEntityB
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.client.resources.I18n
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 
@@ -32,7 +33,10 @@ class RedstoneProxyMetaTileEntity(
         set(value) {
             val notifyFlag = field != value
             field = value
-            if (notifyFlag) { notifyNeighbors() }
+            if (notifyFlag) {
+                notifyNeighbors()
+                markDirty()
+            }
         }
     private var power: Int = 0
         set(value) {
@@ -100,6 +104,16 @@ class RedstoneProxyMetaTileEntity(
 
     override fun canOpenGui(): Boolean {
         return true
+    }
+
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        data.setInteger("rs_mode", mode.ordinal)
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        mode = Mode.entries[data.getInteger("rs_mode")]
     }
 
     private enum class Mode(
