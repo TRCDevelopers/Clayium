@@ -408,6 +408,11 @@ machine.clayium.redstone_proxy.tooltip1=Used for Multiblock RS I/O.
 machine.clayium.redstone_proxy.tooltip2=__DETAIL__
 machine.clayium.redstone_proxy.tooltip3=Synchronizer is used to apply an RSInterface
 machine.clayium.redstone_proxy.tooltip4=to a non-multiblock machine.
+gui.clayium.redstone_proxy.none=None
+gui.clayium.redstone_proxy.emit_if_idle=Emit if idle
+gui.clayium.redstone_proxy.emit_if_working=Emit if working
+gui.clayium.redstone_proxy.do_work_if_powered=Do work if powered
+gui.clayium.redstone_proxy.do_work_if_not_powered=Do work if not powered
 
 machine.clayium.electrolysis_reactor=%s Electrolysis Reactor
 
