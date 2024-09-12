@@ -13,10 +13,10 @@ import org.jetbrains.annotations.Nullable;
  * but {@link ClayLaser} can be null.
  * so we have to use Java.
  */
-public class ClayLaserAdapter implements IByteBufAdapter<@Nullable ClayLaser> {
-    public static final ClayLaserAdapter INSTANCE = new ClayLaserAdapter();
+public class ClayLaserByteBufAdapter implements IByteBufAdapter<@Nullable ClayLaser> {
+    public static final ClayLaserByteBufAdapter INSTANCE = new ClayLaserByteBufAdapter();
 
-    private ClayLaserAdapter() {}
+    private ClayLaserByteBufAdapter() {}
 
     private final IEquals<@Nullable ClayLaser> equalsDelegate = IEquals.wrapNullSafe((ClayLaser::equals));
 
