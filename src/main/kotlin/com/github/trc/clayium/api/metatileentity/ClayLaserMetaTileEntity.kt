@@ -70,7 +70,7 @@ class ClayLaserMetaTileEntity(
     }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
-        return ModularPanel.defaultPanel("clay_laser_tier$tier", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT - 50)
+        return ModularPanel.defaultPanel("clay_laser_tier$tier", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT - 40)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
                     .child(clayEnergyHolder.createCeTextWidget(syncManager)
