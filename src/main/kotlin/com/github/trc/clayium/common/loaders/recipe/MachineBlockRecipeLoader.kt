@@ -245,7 +245,7 @@ object MachineBlockRecipeLoader {
         /* Redstone Proxy */
         for (metaTileEntity in MetaTileEntities.REDSTONE_PROXY) {
             CRecipes.ASSEMBLER.builder()
-                .input(MetaTileEntities.REDSTONE_PROXY[metaTileEntity.tier.numeric - 5])
+                .input(MetaTileEntities.CLAY_INTERFACE[metaTileEntity.tier.numeric - 5])
                 .input(MetaItemClayParts.EnergizedClayDust, 16)
                 .output(metaTileEntity.getStackForm())
                 .tier(4).CEt(ClayEnergy(10.0.pow(metaTileEntity.tier.numeric - 3).toLong())).duration(40)
