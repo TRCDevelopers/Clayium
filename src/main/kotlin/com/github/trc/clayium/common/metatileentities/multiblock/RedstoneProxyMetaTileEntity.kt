@@ -55,10 +55,12 @@ class RedstoneProxyMetaTileEntity(
             Mode.EMIT_IF_IDLE -> power = if (controllable.isWorking) 0 else 15
             Mode.EMIT_IF_WORKING -> power = if (controllable.isWorking) 15 else 0
             Mode.DO_WORK_IF_POWERED -> {
+                power = 0
                 val pos = pos ?: return
                 controllable.isWorkingEnabled = world.isBlockPowered(pos)
             }
             Mode.DO_WORK_IF_NOT_POWERED -> {
+                power = 0
                 val pos = pos ?: return
                 controllable.isWorkingEnabled = !world.isBlockPowered(pos)
             }
