@@ -5,11 +5,11 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.IntSyncValue
+import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.CycleButtonWidget
-import com.cleanroommc.modularui.widgets.layout.Column
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
@@ -84,22 +84,18 @@ class RedstoneProxyMetaTileEntity(
     }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
-        return ModularPanel.defaultPanel("redstone_proxy.$tier", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT - 50)
-            .child(Column().size(172, 32)
-                .align(Alignment.TopCenter)
-                .child(CycleButtonWidget()
-                    .align(Alignment.Center).widthRel(0.5f).height(20)
-                    .length(5)
-                    .value(IntSyncValue({ mode.ordinal }, { mode = Mode.entries[it] }))
-                    .overlay(IKey.dynamic { I18n.format(mode.translationKey) })
-                    .addTooltip(0, "None")
-                    .addTooltip(1, "Emit if idle")
-                    .addTooltip(2, "Emit if working")
-                    .addTooltip(3, "Do work if powered")
-                    .addTooltip(4, "Do work if not powered")
-                )
+        return ModularPanel.defaultPanel("redstone_proxy.$tier", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT - 20)
+            .columnWithPlayerInv { child(buildMainParentWidget(syncManager)) }
+    }
+
+    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+        return super.buildMainParentWidget(syncManager)
+            .child(CycleButtonWidget()
+                .align(Alignment.Center).widthRel(0.7f).height(24)
+                .length(Mode.entries.size)
+                .value(IntSyncValue({ mode.ordinal }, { mode = Mode.entries[it] }))
+                .overlay(IKey.dynamic { I18n.format(mode.translationKey) })
             )
-            .bindPlayerInventory()
     }
 
     override fun canOpenGui(): Boolean {
@@ -119,11 +115,11 @@ class RedstoneProxyMetaTileEntity(
     private enum class Mode(
         val translationKey: String,
     ) {
-        NONE("gui.${CValues.MOD_ID}.redstone_proxy.none"),
-        EMIT_IF_IDLE("gui.${CValues.MOD_ID}.redstone_proxy.emit_if_idle"),
-        EMIT_IF_WORKING("gui.${CValues.MOD_ID}.redstone_proxy.emit_if_working"),
-        DO_WORK_IF_POWERED("gui.${CValues.MOD_ID}.redstone_proxy.do_work_if_powered"),
-        DO_WORK_IF_NOT_POWERED("gui.${CValues.MOD_ID}.redstone_proxy.do_work_if_not_powered"),
+        NONE("gui.$MOD_ID.redstone_proxy.none"),
+        EMIT_IF_IDLE("gui.$MOD_ID.redstone_proxy.emit_if_idle"),
+        EMIT_IF_WORKING("gui.$MOD_ID.redstone_proxy.emit_if_working"),
+        DO_WORK_IF_POWERED("gui.$MOD_ID.redstone_proxy.do_work_if_powered"),
+        DO_WORK_IF_NOT_POWERED("gui.$MOD_ID.redstone_proxy.do_work_if_not_powered"),
         ;
     }
 }

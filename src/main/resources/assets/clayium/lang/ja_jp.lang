@@ -369,11 +369,16 @@ machine.clayium.clay_interface.tooltip1=マルチブロック装置の搬入出�
 machine.clayium.clay_interface.tooltip2=__DETAIL__
 machine.clayium.clay_interface.tooltip3=アイテムのテレポートにはシンクロパーツが必要
 
-machine.clayium.redstone_proxy=OPA 赤石インターフェース
+machine.clayium.redstone_proxy=%s赤石インターフェース
 machine.clayium.redstone_proxy.tooltip1=マルチブロック装置の赤石入出力に使用
 machine.clayium.redstone_proxy.tooltip2=__DETAIL__
 machine.clayium.redstone_proxy.tooltip3=マルチブロック装置でなくても、これと
 machine.clayium.redstone_proxy.tooltip4=シンクロナイザーを用いれば赤石入出力が利用可能
+gui.clayium.redstone_proxy.none=無効
+gui.clayium.redstone_proxy.emit_if_idle=出力: 非稼働時
+gui.clayium.redstone_proxy.emit_if_working=出力: 稼働時
+gui.clayium.redstone_proxy.do_work_if_powered=制御: 赤石入力時稼働
+gui.clayium.redstone_proxy.do_work_if_not_powered=制御: 赤石入力時非稼働
 
 machine.clayium.electrolysis_reactor=%s電気精錬機
 
