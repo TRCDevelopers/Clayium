@@ -32,6 +32,7 @@ class ItemClayConfigTool(
         return typeWhenSneak != null
     }
 
+    //todo use capability
     override fun onItemUseFirst(player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, hand: EnumHand): EnumActionResult {
         val typeToSend = (if (player.isSneaking) typeWhenSneak else type)
             ?: return EnumActionResult.PASS
