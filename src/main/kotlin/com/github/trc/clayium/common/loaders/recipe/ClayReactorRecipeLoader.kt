@@ -145,12 +145,6 @@ object ClayReactorRecipeLoader {
             .tier(7).CEt(ClayEnergy.of(1)).duration(100)
             .buildAndRegister()
 
-        registry.builder()
-            .input(OrePrefix.gem, CMaterials.antimatter)
-            .output(OrePrefix.gem, CMaterials.pureAntimatter)
-            .tier(10).CEt(ClayEnergy.of(100)).duration(300)
-            .buildAndRegister()
-
         /* Overclocker */
         registry.builder()
             .input(ClayiumBlocks.MACHINE_HULL.getItem(ClayTiers.ANTIMATTER))

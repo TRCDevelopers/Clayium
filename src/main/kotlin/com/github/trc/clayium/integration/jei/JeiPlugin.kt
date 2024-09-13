@@ -2,6 +2,9 @@ package com.github.trc.clayium.integration.jei
 
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
+import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.unification.material.CMaterials
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.metatileentities.SolarClayFabricatorMetaTileEntity
 import com.github.trc.clayium.common.recipe.CWTRecipes
@@ -80,6 +83,7 @@ class JeiPlugin : IModPlugin {
         modRegistry.addIngredientInfo(listOf(ItemStack(ClayiumBlocks.CLAY_TREE_SAPLING), ItemStack(ClayiumBlocks.CLAY_TREE_LOG), ItemStack(ClayiumBlocks.CLAY_TREE_LEAVES)),
             VanillaTypes.ITEM, "recipe.clayium.clay_tree.description")
         modRegistry.addIngredientInfo(ItemStack(ClayiumBlocks.QUARTZ_CRUCIBLE), VanillaTypes.ITEM, "recipe.clayium.quartz_crucible.description")
+        modRegistry.addIngredientInfo(OreDictUnifier.get(OrePrefix.gem, CMaterials.pureAntimatter), VanillaTypes.ITEM, "recipe.clayium.pure_antimatter.description")
     }
 
     companion object {
