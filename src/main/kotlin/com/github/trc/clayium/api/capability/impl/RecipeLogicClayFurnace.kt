@@ -34,25 +34,26 @@ class RecipeLogicClayFurnace(
         return longArrayOf(multipliedRecipeCEt.energy, multipliedRecipeTime)
     }
 
-    override fun prepareRecipe(recipe: Recipe) {
+    override fun prepareRecipe(recipe: Recipe): Boolean {
         val multipliedRecipeCEt = ClayEnergy(
             (recipe.cePerTick.energy.toDouble() * ConfigTierBalance.crafting.smelterConsumingEnergyMultiplier[metaTileEntity.tier.numeric - 4]).toLong()
         )
         val multipliedRecipeTime = (
             recipe.duration * ConfigTierBalance.crafting.smelterCraftTimeMultiplier[metaTileEntity.tier.numeric - 4]
         ).toLong()
-        if (!this.drawEnergy(multipliedRecipeCEt, simulate = true)) return
+        if (!this.drawEnergy(multipliedRecipeCEt, simulate = true)) return false
         val outputs = recipe.copyOutputs()
         if (!TransferUtils.insertToHandler(metaTileEntity.exportItems, outputs, true)) {
             this.outputsFull = true
-            return
+            return false
         }
-        if (!recipe.matches(true, inputInventory, getTier())) return
+        if (!recipe.matches(true, inputInventory, getTier())) return false
         this.itemOutputs = outputs
         this.recipeCEt = multipliedRecipeCEt
         this.requiredProgress = multipliedRecipeTime
         this.currentProgress = 1
         this.previousRecipe = recipe
+        return true
     }
 
     private fun prepareVanillaFurnaceRecipe(smeltingResult: ItemStack) {
