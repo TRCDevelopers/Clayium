@@ -244,6 +244,8 @@ recipe.clayium.SolarClayFabricator.description=上面が空から見える位置
 recipe.clayium.clay_tree=粘土樹
 recipe.clayium.clay_tree.description=粘土樹はリチウムの良い入手源であるが、地上世界には生成されない。粘土樹の苗木は、地面に植えられたバニラの苗木に粘土レーザーを照射することで得られる。レーザーのエネルギー値は 1000 以上でなければならない。
 
+recipe.clayium.pure_antimatter.description=純反物質は、CA反応炉で反物質を加工することで入手できる。
+
 tile.clayium.clay_ore.name=粘土鉱石
 tile.clayium.dense_clay_ore.name=高密度粘土鉱石
 tile.clayium.large_dense_clay_ore.name=高密度粘土鉱石大

@@ -256,6 +256,8 @@ recipe.clayium.SolarClayFabricator.description=Requires an unobstructed view of 
 recipe.clayium.clay_tree=Clay Tree
 recipe.clayium.clay_tree.description=A Clay Tree is a good source of Lithium, but it isn't generated in the Overworld. A sapling of Clay Tree is obtained by irradiating a vanilla sapling, planted on the ground, with Clay Laser. The energy value of Clay Laser must be higher than 1000.
 
+recipe.clayium.pure_antimatter.description=Pure antimatter can be obtained by processing antimatter in a CA Reactor.
+
 tile.clayium.clay_ore.name=Clay Ore
 tile.clayium.dense_clay_ore.name=Dense Clay Ore
 tile.clayium.large_dense_clay_ore.name=Large Dense Clay Ore
