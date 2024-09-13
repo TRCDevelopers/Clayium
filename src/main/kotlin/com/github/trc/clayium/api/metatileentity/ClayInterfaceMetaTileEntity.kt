@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
@@ -97,7 +98,6 @@ class ClayInterfaceMetaTileEntity(
             }
         }
         val mimicTarget = this.target
-        //todo: MetaTileEntityGuiFactoryがplayerのworldを参照するので、修正
         if (mimicTarget?.canOpenGui() == true) {
             val targetPos = mimicTarget.pos ?: return
             val targetWorld = mimicTarget.world ?: return
@@ -107,5 +107,12 @@ class ClayInterfaceMetaTileEntity(
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         throw UnsupportedOperationException("no direct gui for clay interfaces")
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === ClayiumTileCapabilities.CLAY_ENERGY_HOLDER && target != null) {
+            return target?.getCapability(capability, facing)
+        }
+        return super.getCapability(capability, facing)
     }
 }
