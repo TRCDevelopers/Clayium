@@ -96,6 +96,7 @@ abstract class AbstractRecipeLogic(
         val data = super.serializeNBT()
         CUtils.writeItems(itemOutputs, "itemOutputs", data)
         data.setLong("recipeCEt", recipeCEt.energy)
+        data.setBoolean("isWorking", isWorking)
         return data
     }
 
@@ -103,6 +104,7 @@ abstract class AbstractRecipeLogic(
         super.deserializeNBT(data)
         itemOutputs = CUtils.readItems("itemOutputs", data)
         recipeCEt = ClayEnergy(data.getLong("recipeCEt"))
+        isWorking = data.getBoolean("isWorking")
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
