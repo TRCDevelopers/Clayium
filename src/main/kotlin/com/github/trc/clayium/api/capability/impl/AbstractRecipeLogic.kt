@@ -25,6 +25,8 @@ abstract class AbstractRecipeLogic(
 
     protected val inputInventory = metaTileEntity.importItems
 
+    override var isWorking: Boolean = false
+
     protected var previousRecipe: Recipe? = null
     var recipeCEt = ClayEnergy.ZERO
         protected set
@@ -57,25 +59,27 @@ abstract class AbstractRecipeLogic(
 
         if (currentRecipe == null) {
             invalidInputsForRecipes = true
+            this.isWorking = false
             return
         }
-        prepareRecipe(currentRecipe)
+        this.isWorking = prepareRecipe(currentRecipe)
     }
 
-    protected open fun prepareRecipe(recipe: Recipe) {
-        if (!this.drawEnergy(recipe.cePerTick, simulate = true)) return
+    protected open fun prepareRecipe(recipe: Recipe): Boolean {
+        if (!this.drawEnergy(recipe.cePerTick, simulate = true)) return false
         val outputs = recipe.copyOutputs().take(metaTileEntity.exportItems.slots)
         if (!TransferUtils.insertToHandler(metaTileEntity.exportItems, outputs, true)) {
             this.outputsFull = true
-            return
+            return false
         }
-        if (!recipe.matches(true, inputInventory, getTier())) return
+        if (!recipe.matches(true, inputInventory, getTier())) return false
         val (cePerTick, duration) = applyOverclock(recipe.cePerTick, recipe.duration, ocHandler.compensatedFactor)
         this.itemOutputs = outputs
         this.recipeCEt = ClayEnergy(cePerTick)
         this.requiredProgress = duration
         this.currentProgress = 1
         this.previousRecipe = recipe
+        return true
     }
 
     /**

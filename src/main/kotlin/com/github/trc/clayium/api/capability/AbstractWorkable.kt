@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 
+//todo cleanup
 abstract class AbstractWorkable(
     metaTileEntity: MetaTileEntity,
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.RECIPE_LOGIC), IControllable {
@@ -27,7 +28,16 @@ abstract class AbstractWorkable(
     protected var invalidInputsForRecipes = false
     protected var outputsFull = false
 
-    override val isWorking: Boolean get() = currentProgress != 0L
+    /**
+     * always false for 1 tick recipe. so it isn't used for Redstone Interface.
+     */
+    private val isProcessingRecipe: Boolean get() = currentProgress != 0L
+
+    /**
+     * used for Redstone Interfaces.
+     * should be overridden if the machine has 1 tick recipe.
+     */
+    override val isWorking: Boolean get() = isProcessingRecipe
     override var isWorkingEnabled: Boolean = true
     private var canProgress = false
 
@@ -58,10 +68,10 @@ abstract class AbstractWorkable(
         // if you updateProgress then searchRecipe, it practically increases recipe duration by 1 tick.
         // this is because when the (recipe output > half of the max stack size),
         // next recipe output cannot fit in the output slot and thus will not match.
-        if (!isWorking && shouldSearchForRecipe()) {
+        if (!isProcessingRecipe && shouldSearchForRecipe()) {
             trySearchNewRecipe()
         }
-        if (isWorking) {
+        if (isProcessingRecipe) {
             updateWorkingProgress()
         }
     }
