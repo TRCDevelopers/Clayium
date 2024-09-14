@@ -18,6 +18,7 @@ import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.material.Clay
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
@@ -26,6 +27,7 @@ import com.github.trc.clayium.common.util.TransferUtils
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import kotlin.math.pow
 
@@ -34,7 +36,7 @@ class ClayFabricatorMetaTileEntity(
     tier: ITier,
     private val maxClayCompressionLevel: Int,
     private val craftTimeLogic: (compressionLevel: Int, stackCount: Int) -> Long
-) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1], name = "clay_fabricator") {
+) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, validOutputModesLists[1], name = "clay_fabricator") {
     override val faceTexture = clayiumId("blocks/clay_fabricator")
 
     override val importItems = NotifiableItemStackHandler(this, 1, this, isExport = false)
@@ -43,6 +45,12 @@ class ClayFabricatorMetaTileEntity(
     val autoIoHandler = AutoIoHandler.Combined(this)
 
     private val workable = ClayFabricatorRecipeLogic()
+
+    override fun onPlacement() {
+        this.setInput(EnumFacing.UP, MachineIoMode.ALL)
+        this.setOutput(EnumFacing.DOWN, MachineIoMode.ALL)
+        super.onPlacement()
+    }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         syncManager.syncValue("clay_energy", SyncHandlers.longNumber({ workable.currentCe.energy }, { workable.currentCe = ClayEnergy(it) }))
