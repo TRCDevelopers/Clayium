@@ -1,6 +1,7 @@
 package com.github.trc.clayium.api.metatileentity
 
 import codechicken.lib.vec.Cuboid6
+import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
@@ -80,7 +81,7 @@ abstract class AbstractMinerMetaTileEntity(
 
     private var rangeRenderMode = RangeRenderMode.DISABLED
 
-    private var currentPos: BlockPos? = null
+    protected var currentPos: BlockPos? = null
 
     /**
      * used for rendering.
@@ -103,7 +104,6 @@ abstract class AbstractMinerMetaTileEntity(
         if (!TransferUtils.insertToHandler(itemInventory, drops, true)) return false
         TransferUtils.insertToHandler(itemInventory, drops, false)
         world.destroyBlock(pos, false)
-        this.currentPos = getNextBlockPos()
         return true
     }
 
@@ -136,6 +136,7 @@ abstract class AbstractMinerMetaTileEntity(
             val mined = mine(world, pos, state)
             if (mined) {
                 progress -= requiredProgress
+                this.currentPos = getNextBlockPos()
             } else {
                 break
             }
@@ -192,6 +193,7 @@ abstract class AbstractMinerMetaTileEntity(
             .tooltip(0) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.disabled")) }
             .tooltip(1) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled")) }
             .tooltip(2) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled_xray")) }
+            .textureGetter { IDrawable.EMPTY }
         val resetButton = ButtonWidget()
             .syncHandler(InteractionSyncHandler()
                 .setOnMousePressed { if (!it.isClient) resetButtonPressed() })

@@ -16,10 +16,11 @@ import com.github.trc.clayium.common.config.ConfigCore
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 
-class RangedMinerMetaTileEntity(
+open class RangedMinerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
-    tier: ITier
-) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, "ranged_miner") {
+    tier: ITier,
+    machineName: String = "ranged_miner",
+) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, machineName) {
 
     override val faceTexture: ResourceLocation = clayiumId("blocks/miner")
 
