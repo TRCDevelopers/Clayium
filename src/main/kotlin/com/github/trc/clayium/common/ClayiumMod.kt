@@ -13,8 +13,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 
 @Mod(
     modid = CValues.MOD_ID,
@@ -28,10 +26,7 @@ import org.apache.logging.log4j.Logger
             "after:jei@[4.15.0,);" + "after:groovyscript@[1.1.3,);" +
             "after:enderio;" + "after:theoneprobe;"
 )
-object Clayium {
-
-    @JvmField
-    val LOGGER: Logger = LogManager.getLogger(CValues.MOD_ID)
+object ClayiumMod {
 
     @SidedProxy(clientSide = "com.github.trc.clayium.client.ClientProxy", serverSide = "com.github.trc.clayium.common.CommonProxy")
     lateinit var proxy: CommonProxy

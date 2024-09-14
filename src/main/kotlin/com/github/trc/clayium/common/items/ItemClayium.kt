@@ -2,7 +2,7 @@ package com.github.trc.clayium.common.items
 
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.common.ClayiumMod
 import net.minecraft.item.Item
 
 /**
@@ -10,7 +10,7 @@ import net.minecraft.item.Item
  */
 open class ItemClayium(name: String) : Item() {
     init {
-        this.creativeTab = Clayium.creativeTab
+        this.creativeTab = ClayiumMod.creativeTab
         this.registryName = clayiumId(name)
         this.translationKey = "${CValues.MOD_ID}.$name"
     }

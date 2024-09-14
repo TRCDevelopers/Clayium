@@ -3,8 +3,8 @@ package com.github.trc.clayium.common.recipe
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
+import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.FurnaceRecipes
@@ -82,6 +82,6 @@ object RecipeUtils {
     }
 
     fun logInvalidRecipe(msg: String) {
-        Clayium.LOGGER.warn("Invalid Recipe Found.", IllegalArgumentException(msg))
+        CLog.warn("Invalid Recipe Found.", IllegalArgumentException(msg))
     }
 }

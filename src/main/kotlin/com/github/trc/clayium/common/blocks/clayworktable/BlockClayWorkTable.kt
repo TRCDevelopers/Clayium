@@ -2,7 +2,7 @@ package com.github.trc.clayium.common.blocks.clayworktable
 
 import com.github.trc.clayium.api.block.ITieredBlock
 import com.github.trc.clayium.api.util.ClayTiers
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.GuiHandler
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
@@ -36,7 +36,7 @@ class BlockClayWorkTable : Block(Material.ROCK), ITieredBlock {
         hitX: Float, hitY: Float, hitZ: Float
     ): Boolean {
         if (worldIn.isRemote) return true
-        playerIn.openGui(Clayium, GuiHandler.CLAY_WORK_TABLE, worldIn, pos.x, pos.y, pos.z)
+        playerIn.openGui(ClayiumMod, GuiHandler.CLAY_WORK_TABLE, worldIn, pos.x, pos.y, pos.z)
         return true
     }
 

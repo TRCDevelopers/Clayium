@@ -570,7 +570,7 @@ tile.clayium.clay_tree_sapling.name=Clay Tree Sapling
 tile.clayium.clay_tree_log.name=Clay Tree Log
 tile.clayium.clay_tree_leaves.name=Clay Tree Leaves
 
-tile.clayium.blockClayChunkLoader.name=3x3 Chunk Loader
+tile.clayium.chunk_loader.name=3x3 Chunk Loader
 machine.clayium.storage_container=Storage Container
 machine.clayium.void_container=Void Container
 machine.clayium.void_container.tooltip1=Deletes any item entering it.

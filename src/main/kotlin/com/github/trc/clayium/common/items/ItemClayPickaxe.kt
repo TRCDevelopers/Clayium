@@ -1,6 +1,6 @@
 package com.github.trc.clayium.common.items
 
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.blocks.ores.IClayOreBlock
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.resources.I18n
@@ -18,7 +18,7 @@ class ItemClayPickaxe : ItemPickaxe(ToolMaterial.STONE) {
     private val efficiencyOnClayOre = 32.0f
 
     init {
-        creativeTab = Clayium.creativeTab
+        creativeTab = ClayiumMod.creativeTab
         maxDamage = 500
     }
 

@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.blocks.material
 
 import com.github.trc.clayium.api.unification.material.CMaterial
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.blocks.BlockMaterialBase
 import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
 import net.minecraft.block.SoundType
@@ -15,7 +15,7 @@ abstract class BlockCompressedClay(
         setHardness(0.6f)
 
         setTranslationKey("compressed_clay")
-        setCreativeTab(Clayium.creativeTab)
+        setCreativeTab(ClayiumMod.creativeTab)
     }
 
     companion object {

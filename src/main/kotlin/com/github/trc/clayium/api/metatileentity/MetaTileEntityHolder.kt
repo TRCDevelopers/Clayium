@@ -2,7 +2,7 @@ package com.github.trc.clayium.api.metatileentity
 
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.INITIALIZE_MTE
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.api.util.CLog
 import net.minecraft.block.state.IBlockState
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
@@ -54,7 +54,7 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
                 val newMte = sampleMte.createMetaTileEntity()
                 newMte.readFromNBT(compound.getCompoundTag("metaTileEntityData"))
                 metaTileEntity = newMte
-            } ?: Clayium.LOGGER.error("Failed to load MetaTileEntity with invalid id: $mteId")
+            } ?: CLog.error("Failed to load MetaTileEntity with invalid id: $mteId")
         }
     }
 

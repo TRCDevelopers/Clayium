@@ -1,0 +1,12 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": [{
+      "textures": {
+        "overlay": "clayium:blocks/chunk_loader",
+        "base": "clayium:blocks/zk60a_hull"
+      },
+      "model": "clayium:overlay"
+    }]
+  }
+}

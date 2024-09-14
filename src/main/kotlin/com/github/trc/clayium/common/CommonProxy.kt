@@ -19,6 +19,7 @@ import com.github.trc.clayium.common.blocks.ItemBlockEnergizedClay
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
 import com.github.trc.clayium.common.blocks.TileEntityClayLaserReflector
 import com.github.trc.clayium.common.blocks.TileEntityCreativeEnergySource
+import com.github.trc.clayium.common.blocks.chunkloader.ChunkLoaderTileEntity
 import com.github.trc.clayium.common.blocks.claycraftingtable.TileClayCraftingTable
 import com.github.trc.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trc.clayium.common.blocks.marker.TileClayMarker
@@ -34,10 +35,12 @@ import com.github.trc.clayium.common.pan.factories.FurnacePanRecipeFactory
 import com.github.trc.clayium.common.util.DebugUtils
 import com.github.trc.clayium.common.worldgen.ClayOreGenerator
 import com.github.trc.clayium.integration.CModIntegration
+import com.github.trc.clayium.network.ClayChunkLoaderCallback
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.crafting.IRecipe
+import net.minecraftforge.common.ForgeChunkManager
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
@@ -52,14 +55,14 @@ import net.minecraftforge.registries.IForgeRegistry
 open class CommonProxy {
 
     open fun preInit(event: FMLPreInitializationEvent) {
-        MinecraftForge.EVENT_BUS.register(Clayium.proxy)
+        MinecraftForge.EVENT_BUS.register(ClayiumMod.proxy)
         if (CValues.isDeobf) {
             MinecraftForge.EVENT_BUS.register(DebugUtils::class.java)
         }
 
         this.registerTileEntities()
         GameRegistry.registerWorldGenerator(ClayOreGenerator, 0)
-        NetworkRegistry.INSTANCE.registerGuiHandler(Clayium, GuiHandler)
+        NetworkRegistry.INSTANCE.registerGuiHandler(ClayiumMod, GuiHandler)
 
         MetaTileEntities.init()
         CMaterials.init()
@@ -72,6 +75,8 @@ open class CommonProxy {
         ClayiumApi.PAN_RECIPE_FACTORIES.add(CPanRecipeFactory)
         ClayiumApi.PAN_RECIPE_FACTORIES.add(CraftingTablePanRecipeFactory)
         ClayiumApi.PAN_RECIPE_FACTORIES.add(FurnacePanRecipeFactory)
+
+        ForgeChunkManager.setForcedChunkLoadingCallback(ClayiumMod, ClayChunkLoaderCallback)
     }
 
     open fun init(event: FMLInitializationEvent) {
@@ -158,6 +163,8 @@ open class CommonProxy {
 
         registry.register(createItemBlock(ClayiumBlocks.CLAY_MARKER, ::VariantItemBlock))
 
+        registry.register(createItemBlock(ClayiumBlocks.CHUNK_LOADER, ItemBlockTiered<*>::noSubTypes))
+
         registry.register(createItemBlock(ClayiumBlocks.LASER_REFLECTOR, ::ItemBlockClayLaserReflector))
 
         for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) {
@@ -192,5 +199,7 @@ open class CommonProxy {
         GameRegistry.registerTileEntity(TileClayMarker.ExtendToGround::class.java, clayiumId("clayMarkerExtendToGround"))
         GameRegistry.registerTileEntity(TileClayMarker.ExtendToSky::class.java, clayiumId("clayMarkerExtendToSky"))
         GameRegistry.registerTileEntity(TileClayMarker.AllHeight::class.java, clayiumId("clayMarkerAllHeight"))
+
+        GameRegistry.registerTileEntity(ChunkLoaderTileEntity::class.java, clayiumId("chunkLoader"))
     }
 }

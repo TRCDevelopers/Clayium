@@ -6,9 +6,9 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
+import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ClayTiers.*
-import com.github.trc.clayium.common.Clayium
 import com.github.trc.clayium.common.blocks.BlockCaReactorCoil
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.blocks.ClayiumBlocks.MACHINE_HULL
@@ -509,7 +509,7 @@ object MachineBlockRecipeLoader {
     private fun registerMachineRecipeHull(metaTileEntities: List<MetaTileEntity>, inputProvider: RecipeBuilder<*>.(index: Int) -> RecipeBuilder<*>) {
         for ((i, mte) in metaTileEntities.withIndex()) {
             if (mte.tier !is ClayTiers) {
-                Clayium.LOGGER.warn("MetaTileEntity ${mte.metaTileEntityId}'s tier is not a instance of ClayTiers. Cannot register recipe.")
+                CLog.warn("MetaTileEntity ${mte.metaTileEntityId}'s tier is not a instance of ClayTiers. Cannot register recipe.")
                 continue
             }
             CRecipes.ASSEMBLER.builder()
