@@ -39,7 +39,6 @@ including PAN, except for those listed below.
   - Activators
   - Area Replacer
   - Advanced Area Miner
-  - Chunk Loader
   - Item Collectors
 - Configs (ProgressionRate, HardcoreXXX, etc.)
 - Other Mod Integrations
