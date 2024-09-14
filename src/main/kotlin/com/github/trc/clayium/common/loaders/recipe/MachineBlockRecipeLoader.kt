@@ -455,6 +455,13 @@ object MachineBlockRecipeLoader {
             .output(MetaTileEntities.RANGED_MINER)
             .tier(6).CEt(ClayEnergy.of(10)).duration(6000)
             .buildAndRegister()
+
+        /* Chunk Loader */
+        RecipeUtils.addShapedRecipe("chunk_loader", ItemStack(ClayiumBlocks.CHUNK_LOADER),
+            "cCc", "CHC", "cCc",
+            'c', MetaItemClayParts.AdvancedCircuit,
+            'C', MetaItemClayParts.PrecisionCircuit,
+            'H', MACHINE_HULL.getItem(ZK60A))
     }
 
     /**
