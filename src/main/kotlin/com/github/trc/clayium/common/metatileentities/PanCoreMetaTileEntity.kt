@@ -33,11 +33,11 @@ import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.ItemAndMeta
 import com.github.trc.clayium.api.unification.stack.readItemAndMeta
 import com.github.trc.clayium.api.unification.stack.writeItemAndMeta
+import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.writeClayEnergy
 import com.github.trc.clayium.client.model.ModelTextures
-import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
@@ -154,7 +154,7 @@ class PanCoreMetaTileEntity(
         while (duplicatablesQueue.isNotEmpty()) {
             val parent: ItemAndMeta = duplicatablesQueue.removeFirst()
             if (parent in walked) {
-                ClayiumMod.LOGGER.warn("Tried to walk a node that has already been walked: $parent")
+                CLog.warn("Tried to walk a node that has already been walked: $parent")
                 continue
             }
             walked.add(parent)

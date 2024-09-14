@@ -7,8 +7,8 @@ import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.IMaterial
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
+import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.Mods
-import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.chanced.ChancedOutput
@@ -55,7 +55,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     private fun inputs(vararg inputsIn: CRecipeInput): R {
         inputsIn.forEach { input ->
             if (input.amount <= 0) {
-                ClayiumMod.LOGGER.error("input amount must be greater than 0")
+                CLog.error("input amount must be greater than 0")
                 return@forEach
             }
             inputs.add(input)

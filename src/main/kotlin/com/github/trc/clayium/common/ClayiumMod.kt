@@ -13,8 +13,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 
 @Mod(
     modid = CValues.MOD_ID,
@@ -29,11 +27,6 @@ import org.apache.logging.log4j.Logger
             "after:enderio;" + "after:theoneprobe;"
 )
 object ClayiumMod {
-
-    //todo remove
-    @JvmField
-    @Deprecated("use CLog instead", ReplaceWith("CLog"))
-    val LOGGER: Logger = LogManager.getLogger(CValues.MOD_ID)
 
     @SidedProxy(clientSide = "com.github.trc.clayium.client.ClientProxy", serverSide = "com.github.trc.clayium.common.CommonProxy")
     lateinit var proxy: CommonProxy

@@ -2,9 +2,9 @@ package com.github.trc.clayium.api.unification.material
 
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.ClayiumApi
+import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.common.ClayiumMod
 import com.google.common.base.CaseFormat
 import net.minecraft.util.ResourceLocation
 
@@ -51,7 +51,7 @@ class CMaterial(
         fun tier(tier: ITier) = apply { this.tier = tier }
         fun colors(vararg colors: Int): Builder {
             if (colors.isEmpty()) {
-                ClayiumMod.LOGGER.warn("Material.Builder#colors is called, but provided array is empty. Ignoring.")
+                CLog.warn("Material.Builder#colors is called, but provided array is empty. Ignoring.")
                 return this
             }
             this.colors = colors

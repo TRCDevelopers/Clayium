@@ -35,6 +35,7 @@ import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import com.github.trc.clayium.api.metatileentity.interfaces.IWorldObject
 import com.github.trc.clayium.api.metatileentity.trait.OverclockHandler
+import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
@@ -253,7 +254,7 @@ abstract class MetaTileEntity(
         for (i in 0..<numberOfTraits) {
             val id = buf.readVarInt()
             traitByNetworkId[id]?.receiveInitialSyncData(buf)
-                ?: ClayiumMod.LOGGER.error("Could not find MTETrait with id $id at $pos during initial sync")
+                ?: CLog.error("Could not find MTETrait with id $id at $pos during initial sync")
         }
     }
 
@@ -295,7 +296,7 @@ abstract class MetaTileEntity(
                 val traitNetworkId = buf.readVarInt()
                 val trait = traitByNetworkId[traitNetworkId]
                     ?: run {
-                        ClayiumMod.LOGGER.error("Could not find MTETrait with id $traitNetworkId at $pos")
+                        CLog.error("Could not find MTETrait with id $traitNetworkId at $pos")
                         return
                     }
                 trait.receiveCustomData(buf.readVarInt(), buf)
