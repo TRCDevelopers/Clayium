@@ -9,6 +9,7 @@ import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.common.ClayiumMod
+import com.github.trc.clayium.common.blocks.chunkloader.ChunkLoaderBlock
 import com.github.trc.clayium.common.blocks.claycraftingtable.BlockClayCraftingBoard
 import com.github.trc.clayium.common.blocks.claytree.BlockClayLeaves
 import com.github.trc.clayium.common.blocks.claytree.BlockClayLog
@@ -64,6 +65,8 @@ object ClayiumBlocks {
     val ENERGY_STORAGE_UPGRADE = createBlock("energy_storage_upgrade", BlockEnergyStorageUpgrade())
 
     val CLAY_MARKER = createBlock("clay_marker", BlockClayMarker())
+
+    val CHUNK_LOADER = createBlock("chunk_loader", ChunkLoaderBlock())
 
     /* ---------------------------------- */
 

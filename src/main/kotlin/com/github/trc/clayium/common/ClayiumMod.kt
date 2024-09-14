@@ -30,7 +30,9 @@ import org.apache.logging.log4j.Logger
 )
 object ClayiumMod {
 
+    //todo remove
     @JvmField
+    @Deprecated("use CLog instead", ReplaceWith("CLog"))
     val LOGGER: Logger = LogManager.getLogger(CValues.MOD_ID)
 
     @SidedProxy(clientSide = "com.github.trc.clayium.client.ClientProxy", serverSide = "com.github.trc.clayium.common.CommonProxy")
