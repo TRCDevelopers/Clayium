@@ -9,9 +9,8 @@ object CMaterials {
     /** 1 - 150 */
     //region Element Materials
     val actinium = CMaterial.create(1, clayiumId("actinium")) {
-        tier(7).colors(0x8E1777, 0x323200, 0xFFFFFF)
+        tier(7).colors(0xF5F5F5, 0x0000EB, 0xFFFFFF)
         ingot().dust()
-        impureDust(0x8E1777, 0x78783C, 0xDCDCDC)
     }
     val aluminum = CMaterial.create(2, clayiumId("aluminum")) {
         tier(6)
