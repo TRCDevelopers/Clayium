@@ -1,6 +1,6 @@
 package com.github.trc.clayium.common.items
 
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.blocks.ores.IClayOreBlock
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
@@ -17,7 +17,7 @@ class ItemClayShovel : ItemSpade(ToolMaterial.WOOD) {
     private val efficiencyOnClayBlocks = 32.0f
 
     init {
-        creativeTab = Clayium.creativeTab
+        creativeTab = ClayiumMod.creativeTab
         maxDamage = 500
     }
 

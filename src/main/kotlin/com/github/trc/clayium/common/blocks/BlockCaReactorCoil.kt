@@ -4,7 +4,7 @@ import com.github.trc.clayium.api.block.ITieredBlock
 import com.github.trc.clayium.api.block.VariantBlock
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.common.ClayiumMod
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraft.item.ItemStack
@@ -14,7 +14,7 @@ import net.minecraft.world.IBlockAccess
 
 class BlockCaReactorCoil : VariantBlock<BlockCaReactorCoil.BlockType>(Material.IRON), ITieredBlock {
     init {
-        creativeTab = Clayium.creativeTab
+        creativeTab = ClayiumMod.creativeTab
         setHardness(2.0f)
         setResistance(5.0f)
         setHarvestLevel("pickaxe", 0)

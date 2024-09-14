@@ -8,7 +8,7 @@ import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.blocks.claycraftingtable.BlockClayCraftingBoard
 import com.github.trc.clayium.common.blocks.claytree.BlockClayLeaves
 import com.github.trc.clayium.common.blocks.claytree.BlockClayLog
@@ -90,7 +90,7 @@ object ClayiumBlocks {
 
     private fun <T: Block> createBlock(key: String, block: T): T {
         return block.apply {
-            setCreativeTab(Clayium.creativeTab)
+            setCreativeTab(ClayiumMod.creativeTab)
             setRegistryName(clayiumId(key))
             setTranslationKey("${CValues.MOD_ID}.$key")
             blocks[key] = this

@@ -41,7 +41,7 @@ import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.MachineIoMode.*
 import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.client.model.ModelTextures
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.items.filter.FilterType
 import com.github.trc.clayium.common.util.BothSideI18n
@@ -253,7 +253,7 @@ abstract class MetaTileEntity(
         for (i in 0..<numberOfTraits) {
             val id = buf.readVarInt()
             traitByNetworkId[id]?.receiveInitialSyncData(buf)
-                ?: Clayium.LOGGER.error("Could not find MTETrait with id $id at $pos during initial sync")
+                ?: ClayiumMod.LOGGER.error("Could not find MTETrait with id $id at $pos during initial sync")
         }
     }
 
@@ -295,7 +295,7 @@ abstract class MetaTileEntity(
                 val traitNetworkId = buf.readVarInt()
                 val trait = traitByNetworkId[traitNetworkId]
                     ?: run {
-                        Clayium.LOGGER.error("Could not find MTETrait with id $traitNetworkId at $pos")
+                        ClayiumMod.LOGGER.error("Could not find MTETrait with id $traitNetworkId at $pos")
                         return
                     }
                 trait.receiveCustomData(buf.readVarInt(), buf)
@@ -610,7 +610,7 @@ abstract class MetaTileEntity(
     }
 
     open fun isInCreativeTab(tab: CreativeTabs): Boolean {
-        return tab === CreativeTabs.SEARCH || tab === Clayium.creativeTab
+        return tab === CreativeTabs.SEARCH || tab === ClayiumMod.creativeTab
     }
 
     @SideOnly(Side.CLIENT)

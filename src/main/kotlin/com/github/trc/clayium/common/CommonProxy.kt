@@ -52,14 +52,14 @@ import net.minecraftforge.registries.IForgeRegistry
 open class CommonProxy {
 
     open fun preInit(event: FMLPreInitializationEvent) {
-        MinecraftForge.EVENT_BUS.register(Clayium.proxy)
+        MinecraftForge.EVENT_BUS.register(ClayiumMod.proxy)
         if (CValues.isDeobf) {
             MinecraftForge.EVENT_BUS.register(DebugUtils::class.java)
         }
 
         this.registerTileEntities()
         GameRegistry.registerWorldGenerator(ClayOreGenerator, 0)
-        NetworkRegistry.INSTANCE.registerGuiHandler(Clayium, GuiHandler)
+        NetworkRegistry.INSTANCE.registerGuiHandler(ClayiumMod, GuiHandler)
 
         MetaTileEntities.init()
         CMaterials.init()

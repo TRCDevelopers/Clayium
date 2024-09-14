@@ -28,7 +28,7 @@ import org.apache.logging.log4j.Logger
             "after:jei@[4.15.0,);" + "after:groovyscript@[1.1.3,);" +
             "after:enderio;" + "after:theoneprobe;"
 )
-object Clayium {
+object ClayiumMod {
 
     @JvmField
     val LOGGER: Logger = LogManager.getLogger(CValues.MOD_ID)

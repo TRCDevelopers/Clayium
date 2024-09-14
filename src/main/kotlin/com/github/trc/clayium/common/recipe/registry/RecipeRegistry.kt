@@ -2,7 +2,7 @@ package com.github.trc.clayium.common.recipe.registry
 
 import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.util.Mods
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.RecipeCategory
 import com.github.trc.clayium.common.recipe.builder.RecipeBuilder
@@ -52,7 +52,7 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
                 _recipes.add(recipe)
                 _recipes.sortWith(TIER_DURATION_CE_REVERSED)
             }
-            .onFailure { Clayium.LOGGER.error("Failed to add recipe: $recipe") }
+            .onFailure { ClayiumMod.LOGGER.error("Failed to add recipe: $recipe") }
         if (GroovyScriptModule.isCurrentlyRunning()) {
             grsVirtualizedRegistry?.addScripted(recipe)
         }
@@ -67,27 +67,27 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
 
     private fun validateRecipe(recipe: Recipe): Result<Recipe> {
         if (!recipe.inputs.all { it.isValid() }) {
-            Clayium.LOGGER.error("invalid recipe: Input is invalid.")
+            ClayiumMod.LOGGER.error("invalid recipe: Input is invalid.")
             return Result.failure(IllegalArgumentException())
         }
         if (recipe.inputs.isEmpty()) {
-            Clayium.LOGGER.error("invalid recipe: Input is empty.")
+            ClayiumMod.LOGGER.error("invalid recipe: Input is empty.")
             return Result.failure(IllegalArgumentException())
         }
         if (recipe.inputs.any { input -> input.stacks.any { stack -> stack.isEmpty } }) {
-            Clayium.LOGGER.error("invalid recipe: Input has an empty ItemStack.")
+            ClayiumMod.LOGGER.error("invalid recipe: Input has an empty ItemStack.")
             return Result.failure(IllegalArgumentException())
         }
         if (recipe.outputs.any { it.isEmpty }) {
-            Clayium.LOGGER.error("invalid recipe: Output has an empty ItemStack.")
+            ClayiumMod.LOGGER.error("invalid recipe: Output has an empty ItemStack.")
             return Result.failure(IllegalArgumentException())
         }
         if (recipe.recipeTier < 0) {
-            Clayium.LOGGER.info("invalid recipe: Tier is less than 0.")
+            ClayiumMod.LOGGER.info("invalid recipe: Tier is less than 0.")
             return Result.failure(IllegalArgumentException())
         }
         if (recipe.duration <= 0) {
-            Clayium.LOGGER.info("invalid recipe: Duration is less than or equal to 0.")
+            ClayiumMod.LOGGER.info("invalid recipe: Duration is less than or equal to 0.")
             return Result.failure(IllegalArgumentException())
         }
         return Result.success(recipe)

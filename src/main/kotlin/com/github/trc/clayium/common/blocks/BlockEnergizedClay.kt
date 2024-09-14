@@ -2,7 +2,7 @@ package com.github.trc.clayium.common.blocks
 
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.unification.material.CMaterial
-import com.github.trc.clayium.common.Clayium
+import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
 import net.minecraft.block.SoundType
 import net.minecraft.client.util.ITooltipFlag
@@ -21,7 +21,7 @@ abstract class BlockEnergizedClay(
         setHardness(0.6f)
 
         setTranslationKey("energized_clay")
-        setCreativeTab(Clayium.creativeTab)
+        setCreativeTab(ClayiumMod.creativeTab)
     }
 
     @SideOnly(Side.CLIENT)
