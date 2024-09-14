@@ -10,6 +10,7 @@ import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
+import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
@@ -44,4 +45,6 @@ class ChunkLoaderBlock : Block(Material.IRON), ITieredBlock {
 
     override fun getTier(stack: ItemStack): ITier = ClayTiers.PRECISION
     override fun getTier(world: IBlockAccess, pos: BlockPos): ITier = ClayTiers.PRECISION
+
+    override fun getRenderLayer() = BlockRenderLayer.CUTOUT_MIPPED
 }
