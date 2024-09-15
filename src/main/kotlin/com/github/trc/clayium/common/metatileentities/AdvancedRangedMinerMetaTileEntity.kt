@@ -13,6 +13,7 @@ import com.github.trc.clayium.api.util.getCapability
 import com.github.trc.clayium.api.util.hasCapability
 import com.github.trc.clayium.api.util.toItemStack
 import com.github.trc.clayium.common.gui.ClayGuiTextures
+import com.github.trc.clayium.common.reflect.BlockReflect
 import com.github.trc.clayium.common.util.TransferUtils
 import net.minecraft.block.state.IBlockState
 import net.minecraft.item.ItemStack
@@ -41,7 +42,7 @@ class AdvancedRangedMinerMetaTileEntity(
             && world is WorldServer
             && state.block.canSilkHarvest(world, pos, state, FakePlayerFactory.getMinecraft(world)))
         {
-            //todo how to get silk touch drops?
+            drops.add(BlockReflect.getSilkTouchDrop(state.block, state))
         } else {
             val fortune = if (fortuneFilter != null && fortuneFilter.test(state.toItemStack())) 3 else 0
             state.block.getDrops(drops, world, pos, state, fortune)
