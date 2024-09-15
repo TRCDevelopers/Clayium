@@ -598,11 +598,8 @@ gui.clayium.miner.filter=Filter
 machine.clayium.block_breaker=Block Breaker
 machine.clayium.ranged_collector=Ranged Item Collector
 machine.clayium.ranged_miner=Ranged Miner
-machine.clayium.blockAdvancedAreaMiner.name=Advanced Area Miner
-machine.clayium.blockAreaReplacer.name=Area Replacer
-gui.clayium.AreaMiner.harvest=Harvest
-gui.clayium.AreaMiner.fortune=Fortune
-gui.clayium.AreaMiner.silktouch=Silktouch
+machine.clayium.advanced_ranged_miner=Advanced Ranged Miner
+machine.clayium.ranged_replacer=Area Replacer
 
 tile.clayium.blockActivator.name=Activator
 tile.clayium.blockActivator.tooltip.line1=Automatic right-clicker.

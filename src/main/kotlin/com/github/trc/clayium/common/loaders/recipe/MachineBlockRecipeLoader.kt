@@ -456,6 +456,14 @@ object MachineBlockRecipeLoader {
             .tier(6).CEt(ClayEnergy.of(10)).duration(6000)
             .buildAndRegister()
 
+        /* Advanced Ranged Miner */
+        CRecipes.ASSEMBLER.builder()
+            .input(MetaTileEntities.RANGED_MINER)
+            .input(MetaItemClayParts.ClayBrain, 64)
+            .tier(6).CEt(ClayEnergy.of(100)).duration(6000)
+            .output(MetaTileEntities.ADV_RANGED_MINER)
+            .buildAndRegister()
+
         /* Chunk Loader */
         RecipeUtils.addShapedRecipe("chunk_loader", ItemStack(ClayiumBlocks.CHUNK_LOADER),
             "cCc", "CHC", "cCc",

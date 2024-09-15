@@ -38,7 +38,6 @@ including PAN, except for those listed below.
 - World Interactive Machines
   - Activators
   - Area Replacer
-  - Advanced Area Miner
   - Item Collectors
 - Configs (ProgressionRate, HardcoreXXX, etc.)
 - Other Mod Integrations
@@ -62,3 +61,4 @@ Clayium Unofficial would not have been possible without the following OSS:
 |    [GTCEu Buildscripts](https://github.com/GregTechCEu/Buildscripts)     |      [MIT](https://github.com/GregTechCEu/Buildscripts/blob/master/LICENSE)       |
 |          [GregTechCEu](https://github.com/GregTechCEu/GregTech)          |      [LGPL-3.0](https://github.com/GregTechCEu/GregTech/blob/master/LICENSE)      |
 |          [ModularUI](https://github.com/CleanroomMC/ModularUI)           |     [LGPL-3.0](https://github.com/CleanroomMC/ModularUI/blob/master/LICENSE)      |
+|        [RFTools](https://github.com/McJtyMods/RFTools/tree/1.12)         |         [MIT](https://github.com/McJtyMods/RFTools/blob/1.12/LICENSE.md)          |
