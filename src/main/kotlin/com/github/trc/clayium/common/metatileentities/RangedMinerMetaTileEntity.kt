@@ -11,8 +11,10 @@ import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.metatileentity.trait.ClayMarkerHandler
 import com.github.trc.clayium.api.util.Cuboid6BlockPosIterator
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.config.ConfigCore
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 
@@ -63,6 +65,11 @@ open class RangedMinerMetaTileEntity(
                 .left(0).bottom(12))
             .child(clayEnergyHolder.createSlotWidget()
                 .align(Alignment.BottomRight))
+    }
+
+    override fun onPlacement() {
+        this.setInput(EnumFacing.UP, MachineIoMode.CE)
+        super.onPlacement()
     }
 
     // clayMarkerHandler.markedRangeAbsolute is absolute, so we need to convert it to relative.

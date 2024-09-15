@@ -229,6 +229,17 @@ abstract class AbstractMinerMetaTileEntity(
             }
     }
 
+    override fun onPlacement() {
+        if (this.frontFacing.axis.isHorizontal) {
+            this.setOutput(this.frontFacing.rotateY(), MachineIoMode.ALL)
+            this.setOutput(this.frontFacing.rotateYCCW(), MachineIoMode.ALL)
+        } else {
+            this.setOutput(EnumFacing.NORTH, MachineIoMode.ALL)
+            this.setOutput(EnumFacing.SOUTH, MachineIoMode.ALL)
+        }
+        super.onPlacement()
+    }
+
     override fun writeToNBT(data: NBTTagCompound) {
         super.writeToNBT(data)
         data.setBoolean("workingEnabled", workingEnabled)

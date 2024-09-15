@@ -42,6 +42,10 @@ class BlockBreakerMetaTileEntity(
         return this.pos?.offset(this.frontFacing.opposite)
     }
 
+    override fun isFacingValid(facing: EnumFacing): Boolean {
+        return true
+    }
+
     override fun createMetaTileEntity(): MetaTileEntity {
         return BlockBreakerMetaTileEntity(metaTileEntityId, tier)
     }
