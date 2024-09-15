@@ -4,12 +4,11 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.NumberFormat
-import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters
-import com.cleanroommc.modularui.value.sync.GenericListSyncHandler
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widget.Widget
+import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
@@ -35,6 +34,8 @@ import net.minecraft.client.resources.I18n
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.text.ITextComponent
+import net.minecraft.util.text.TextComponentTranslation
 import kotlin.math.pow
 
 class CaReactorMetaTileEntity(
@@ -54,7 +55,6 @@ class CaReactorMetaTileEntity(
     override val exportItems = NotifiableItemStackHandler(this, 1, this, isExport = true)
     override val itemInventory = ItemHandlerProxy(importItems, exportItems)
 
-
     private var avgHullRank = 0
     private var hullCount = 0
     private var efficiency = 0.0
@@ -64,7 +64,7 @@ class CaReactorMetaTileEntity(
      * if the structure is invalid, the reason should be stored here.
      * null if the structure is valid.
      */
-    private var errorMsg: Pair<String, Array<String>?>? = null
+    private var errorMsg: ITextComponent? = null
 
     private val supportedHullTierRange = when (tier.numeric) {
         10 -> 1..2
@@ -86,7 +86,7 @@ class CaReactorMetaTileEntity(
             if (world.getBlockState(pos.offset(it)).block is BlockCaReactorCoil) pos.offset(it) else null
         }
         if (firstCoilPos == null) {
-            errorMsg = Pair("message.clayium.ca_reactor.no_near_coil", null)
+            errorMsg = TextComponentTranslation("message.clayium.ca_reactor.no_near_coil")
             return Invalid
         }
         val parts = mutableListOf<IMultiblockPart>()
@@ -98,9 +98,9 @@ class CaReactorMetaTileEntity(
         // Coil is surrounded by coils or hulls or MBPart and count the hulls
         // Interfaces and coil blocks of a lower tier than the core block cannot be used.
         val hullsWalked = mutableSetOf<BlockPos>()
-        for (pos in coilsWalked) {
+        for (coilPos in coilsWalked) {
             for (side in EnumFacing.entries) {
-                val pos = pos.offset(side)
+                val pos = coilPos.offset(side)
                 if (hullsWalked.contains(pos)) continue
                 hullsWalked.add(pos)
                 val metaTileEntity = world.getMetaTileEntity(pos)
@@ -108,7 +108,7 @@ class CaReactorMetaTileEntity(
                 when {
                     metaTileEntity is IMultiblockPart -> {
                         if (metaTileEntity.tier.numeric < this.tier.numeric) {
-                            errorMsg = Pair("message.clayium.ca_reactor.insufficient_tier_interface", arrayOf(pos.toString()))
+                            errorMsg = TextComponentTranslation("message.clayium.ca_reactor.insufficient_tier_interface", pos)
                             return Invalid
                         }
                         parts.add(metaTileEntity)
@@ -117,18 +117,21 @@ class CaReactorMetaTileEntity(
                     block is BlockCaReactorHull -> {
                         val hullRank = block.getCaRank(world, pos)
                         if (hullRank !in supportedHullTierRange) {
-                            errorMsg = Pair("message.clayium.ca_reactor.too_high_tier_hull", arrayOf(pos.toString()))
+                            errorMsg = TextComponentTranslation("message.clayium.ca_reactor.too_high_tier_hull", pos)
                             return Invalid
                         }
                         hullRanks.add(hullRank)
                     }
                     block is BlockCaReactorCoil -> {
                         if (block.getTier(world, pos).numeric < this.tier.numeric) {
-                            errorMsg = Pair("message.clayium.ca_reactor.insufficient_tier_coil", arrayOf(pos.toString()))
+                            errorMsg = TextComponentTranslation("message.clayium.ca_reactor.insufficient_tier_coil", pos)
                             return Invalid
                         }
                     }
-                    else -> return Invalid
+                    else -> {
+                        errorMsg = TextComponentTranslation("message.clayium.ca_reactor.invalid_coil", coilPos)
+                        return Invalid
+                    }
                 }
             }
         }
@@ -147,7 +150,7 @@ class CaReactorMetaTileEntity(
     private fun searchAndValidateAdjacentCoil(coilPos: BlockPos, walked: MutableSet<BlockPos>): Boolean {
         if (walked.contains(coilPos)) return true
         if (walked.size > MAX_COILS) {
-            errorMsg = Pair("message.clayium.ca_reactor.too_many_coils", arrayOf(MAX_COILS.toString()))
+            errorMsg = TextComponentTranslation("message.clayium.ca_reactor.too_many_coils", MAX_COILS)
             return false
         }
         walked.add(coilPos)
@@ -171,7 +174,7 @@ class CaReactorMetaTileEntity(
                 valid = valid && searchAndValidateAdjacentCoil(neighborCoilPos, walked)
             }
         } else {
-            errorMsg = Pair("message.clayium.ca_reactor.invalid_coil", arrayOf(coilPos.toString()))
+            errorMsg = TextComponentTranslation("message.clayium.ca_reactor.invalid_coil", coilPos)
             valid = false
         }
         return valid
@@ -183,39 +186,22 @@ class CaReactorMetaTileEntity(
         syncManager.syncValue("caReactorEfficiency", SyncHandlers.doubleNumber(::efficiency, ::efficiency::set))
         syncManager.syncValue("caReactorAvgHullRank", SyncHandlers.intNumber(::avgHullRank, ::avgHullRank::set))
         syncManager.syncValue("caReactorHullCount", SyncHandlers.intNumber(::hullCount, ::hullCount::set))
-        syncManager.syncValue("caReactorErrorMsg", SyncHandlers.string({ errorMsg?.first }, { errorMsg = Pair(it, errorMsg?.second) }))
-        syncManager.syncValue("caReactorErrorMsgArgs", GenericListSyncHandler(
-            { errorMsg?.second?.toList() ?: emptyList() },
-            {
-                errorMsg = if (errorMsg != null) {
-                    Pair(errorMsg!!.first, it.toTypedArray())
-                } else {
-                    null
-                }
-            },
-            ByteBufAdapters.STRING)
-        )
-
-        val errorMsgDrawable = IKey.dynamic {
-            val msg = errorMsg
-            if (msg != null) {
-                I18n.format(msg.first, *msg.second ?: emptyArray())
-            } else {
-                I18n.format("message.clayium.ca_reactor.valid")
-            }
-        }
 
         return super.buildMainParentWidget(syncManager)
-            .child(Widget().height(12).widthRel(0.3f)
+            .child(ButtonWidget().height(12).widthRel(0.45f)
                 .background(GuiTextures.BUTTON_CLEAN)
-                .overlay(
-                    IKey.dynamic {
-                if (multiblockLogic.structureFormed)
-                    I18n.format("gui.clayium.ca_reactor.constructed")
-                else
-                    I18n.format("gui.clayium.ca_reactor.invalid") }.color(IKey.TEXT_COLOR))
+                .overlay(IKey.dynamic {
+                    if (multiblockLogic.structureFormed)
+                        I18n.format("gui.clayium.ca_reactor.constructed")
+                    else
+                        I18n.format("gui.clayium.ca_reactor.invalid")
+                })
                 .align(Alignment.BottomRight)
-                .tooltip { it.addLine(errorMsgDrawable) }
+                .syncHandler(InteractionSyncHandler().setOnMousePressed { mouseData ->
+                    if (multiblockLogic.structureFormed || mouseData.isClient) return@setOnMousePressed
+                    val err = errorMsg ?: return@setOnMousePressed
+                    syncManager.player.sendMessage(err)
+                })
             )
             .child(IKey.dynamic { I18n.format("gui.clayium.ca_reactor.efficiency", NumberFormat.formatWithMaxDigits(efficiency)) }
                 .asWidgetResizing().alignment(Alignment.CenterRight).alignX(Alignment.BottomRight.x).bottom(14)
