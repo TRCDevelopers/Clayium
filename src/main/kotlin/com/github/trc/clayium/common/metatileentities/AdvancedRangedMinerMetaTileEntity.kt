@@ -17,6 +17,7 @@ import com.github.trc.clayium.common.reflect.BlockReflect
 import com.github.trc.clayium.common.util.TransferUtils
 import net.minecraft.block.state.IBlockState
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.NonNullList
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
@@ -68,4 +69,14 @@ class AdvancedRangedMinerMetaTileEntity(
     }
 
     override fun createMetaTileEntity() = AdvancedRangedMinerMetaTileEntity(metaTileEntityId, tier)
+
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        data.setTag("extraFilters", extraFilters.serializeNBT())
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        extraFilters.deserializeNBT(data.getCompoundTag("extraFilters"))
+    }
 }
