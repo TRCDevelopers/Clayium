@@ -562,11 +562,8 @@ gui.clayium.miner.filter=フィルター
 machine.clayium.block_breaker=採掘機
 machine.clayium.ranged_collector=範囲収集機
 machine.clayium.ranged_miner=範囲採掘機
-machine.clayium.blockAdvancedAreaMiner.name=発展型範囲採掘機
-machine.clayium.blockAreaReplacer.name=範囲置換機
-gui.clayium.AreaMiner.harvest=採掘
-gui.clayium.AreaMiner.fortune=幸運
-gui.clayium.AreaMiner.silktouch=シルクタッチ
+machine.clayium.advanced_ranged_miner=発展型範囲採掘機
+machine.clayium.ranged_replacer=範囲置換機
 
 tile.clayium.blockActivator.name=代行機
 tile.clayium.blockActivator.tooltip.line1=右クリックを代行
