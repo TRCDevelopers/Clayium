@@ -38,7 +38,6 @@ including PAN, except for those listed below.
 - World Interactive Machines
   - Activators
   - Area Replacer
-  - Advanced Area Miner
   - Item Collectors
 - Configs (ProgressionRate, HardcoreXXX, etc.)
 - Other Mod Integrations
