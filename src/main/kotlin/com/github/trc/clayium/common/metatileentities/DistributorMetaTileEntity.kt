@@ -49,11 +49,6 @@ class DistributorMetaTileEntity(
     @Suppress("unused")
     private val ioHandler = DistributorIoHandler()
 
-    override fun update() {
-        super.update()
-        val inv = groups[groupIndex]
-    }
-
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         val height = GUI_DEFAULT_HEIGHT - 50 + (18*2 * groupY + 2 * (groupY - 1))
         return ModularPanel.defaultPanel(translationKey, GUI_DEFAULT_WIDTH, height)
@@ -113,7 +108,7 @@ class DistributorMetaTileEntity(
             set(value) {
                 field = value
                 if (field >= groups.size) field = 0
-                this.oneLapBehind = value == exportPtr
+                this.oneLapBehind = (field == exportPtr)
             }
         private var exportPtr = 0
             set(value) {
