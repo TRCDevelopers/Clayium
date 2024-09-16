@@ -14,6 +14,7 @@ import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -43,6 +44,16 @@ class DistributorMetaTileEntity(
     override val importItems = itemInventory
     override val exportItems = itemInventory
 
+    private var groupIndex = 0
+
+    @Suppress("unused")
+    private val ioHandler = DistributorIoHandler()
+
+    override fun update() {
+        super.update()
+        val inv = groups[groupIndex]
+    }
+
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         val height = GUI_DEFAULT_HEIGHT - 50 + (18*2 * groupY + 2 * (groupY - 1))
         return ModularPanel.defaultPanel(translationKey, GUI_DEFAULT_WIDTH, height)
@@ -60,7 +71,6 @@ class DistributorMetaTileEntity(
                     ItemSlot().slot(SyncHandlers.itemSlot(handler, j).slotGroup("group$i"))
                 }
                 .build()
-                .debugName("group$i")
             group
         }
         val slotGroupRows = groups.windowed(this.groupX, this.groupX).map { slotGroupList ->
@@ -91,5 +101,55 @@ class DistributorMetaTileEntity(
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return DistributorMetaTileEntity(this.metaTileEntityId, this.tier)
+    }
+
+    /**
+     * imported or exported -> pointer++
+     * if the exportation is one lap behind, stop importing
+     */
+    private inner class DistributorIoHandler : AutoIoHandler.Combined(this@DistributorMetaTileEntity, isBuffer = true) {
+        private var oneLapBehind = false
+        private var importPtr = 0
+            set(value) {
+                field = value
+                if (field >= groups.size) field = 0
+                this.oneLapBehind = value == exportPtr
+            }
+        private var exportPtr = 0
+            set(value) {
+                field = value
+                if (field >= groups.size) field = 0
+                this.oneLapBehind = false
+            }
+
+        override fun importFromNeighbors() {
+            if (oneLapBehind) return
+            var remainingImport = amountPerAction
+            val importItems = groups[importPtr]
+            for (side in EnumFacing.entries) {
+                if (!(remainingImport > 0 && isImporting(side))) continue
+                remainingImport = transferItemStack(
+                    from = metaTileEntity.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                    to = importItems,
+                    amount = remainingImport,
+                )
+            }
+            if (remainingImport != amountPerAction) importPtr++
+        }
+
+        override fun exportToNeighbors() {
+            var remainingExport = amountPerAction
+            val exportItems = groups[exportPtr]
+            for (side in EnumFacing.entries) {
+                if (remainingExport > 0 && isExporting(side)) {
+                    remainingExport = transferItemStack(
+                        from = exportItems,
+                        to = metaTileEntity.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                        amount = remainingExport,
+                    )
+                }
+            }
+            if (remainingExport != amountPerAction) exportPtr++
+        }
     }
 }
