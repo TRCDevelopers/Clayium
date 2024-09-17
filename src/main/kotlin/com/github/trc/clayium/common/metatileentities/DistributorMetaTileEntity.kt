@@ -17,6 +17,8 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.copyWithSize
+import com.github.trc.clayium.api.util.enumMapNotNull
+import com.github.trc.clayium.api.util.next
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.capabilities.Capability
@@ -118,6 +120,7 @@ class DistributorMetaTileEntity(
                 if (field >= groups.size) field = 0
                 this.oneLapBehind = false
             }
+        private var lastDirection = EnumFacing.DOWN
 
         override fun importFromNeighbors() {
             if (oneLapBehind) return
@@ -137,29 +140,66 @@ class DistributorMetaTileEntity(
         override fun exportToNeighbors() {
             var remainingExport = amountPerAction
             val exportItems = groups[exportPtr]
-            val neighbors = EnumFacing.entries.mapNotNull { side ->
+            val neighbors = EnumFacing.entries.enumMapNotNull { side ->
+                if (!isExporting(side)) return@enumMapNotNull null
                 getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite)
             }
+            @Suppress("UsePropertyAccessSyntax") //synthetic properties
+            if (neighbors.isEmpty()) return
             for (i in 0..<exportItems.slots) {
                 val exported = exportItems.extractItem(i, remainingExport, true)
+                if (exported.isEmpty) continue
+
                 val countPerNeighbor = exported.count / neighbors.size
                 val toInsert = exported.copyWithSize(countPerNeighbor)
                 var notInserted = 0
-                for (neighbor in neighbors) {
-                    val remain = ItemHandlerHelper.insertItem(neighbor, toInsert, false)
-                    val inserted = toInsert.count - remain.count
-                    exportItems.extractItem(i, inserted, false)
-                    remainingExport -= inserted
-                    notInserted += remain.count
+                if (countPerNeighbor != 0) {
+                    for ((side, neighbor) in neighbors) {
+                        val remain = ItemHandlerHelper.insertItem(neighbor, toInsert, false)
+                        val inserted = toInsert.count - remain.count
+                        exportItems.extractItem(i, inserted, false)
+                        remainingExport -= inserted
+                        notInserted += remain.count
+                        if (!remain.isEmpty) {
+                            neighbors.remove(side)
+                        }
+                    }
                 }
 
-                notInserted += exported.count % neighbors.size
-                var allNeighborsFull = false
-                val toInsertCount1 = toInsert.copyWithSize(1)
-                while (notInserted > 0 && !allNeighborsFull) {
-                    for (neighbor in neighbors) {
-                        val remain = ItemHandlerHelper.insertItem(neighbor, toInsertCount1, false)
+
+                @Suppress("UsePropertyAccessSyntax") //synthetic properties
+                if (neighbors.isEmpty()) continue
+
+                val iter = generateSequence(lastDirection.next()) { current ->
+                    @Suppress("UsePropertyAccessSyntax") //synthetic properties
+                    if (neighbors.isEmpty()) {
+                        return@generateSequence null
                     }
+                    else {
+                        for (i in 0..<6) {
+                            val next = current.next()
+                            if (neighbors.containsKey(next)) {
+                                return@generateSequence next
+                            }
+                        }
+                        return@generateSequence null
+                    }
+                }.iterator()
+
+                notInserted += exported.count % neighbors.size
+                val toInsertCount1 = exported.copyWithSize(1)
+                while (remainingExport > 0 && notInserted > 0 && iter.hasNext()) {
+                    val side = iter.next()
+                    lastDirection = side
+                    val handler = neighbors[side] ?: continue
+                    val remain = ItemHandlerHelper.insertItem(handler, toInsertCount1, false)
+                    if (!remain.isEmpty) {
+                        neighbors.remove(side)
+                        continue
+                    }
+                    exportItems.extractItem(i, 1, false)
+                    notInserted--
+                    remainingExport--
                 }
             }
             if (remainingExport != amountPerAction) exportPtr++
