@@ -5,8 +5,14 @@ import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.common.blocks.BlockCaReactorCoil
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
+import com.github.trc.clayium.common.metatileentities.CaInjectorMetaTileEntity
+import com.github.trc.clayium.common.metatileentities.MetaTileEntities
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import net.minecraft.item.ItemStack
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.sumOf
+import kotlin.collections.windowed
 
 object CaInjectorRecipeLoader {
     fun registerRecipes() {
@@ -63,5 +69,22 @@ object CaInjectorRecipeLoader {
             .output(ClayiumBlocks.ENERGY_STORAGE_UPGRADE.getItem(BlockCaReactorCoil.BlockType.OPA))
             .tier(13).CEtFactor(2.0).duration(4000)
             .buildAndRegister()
+
+        for (mteList in MetaTileEntities.mteLists) {
+            for ((prev, next) in mteList.windowed(2)) {
+                val recipeTier = next.tier.numeric
+                val prevTier = prev.tier.numeric
+                // offset 2 (tier 1->2 to tier 12->13)
+                val antimatterAmount = ((prevTier + 1)..recipeTier).sumOf { CaInjectorMetaTileEntity.ANTIMATTER_AMOUNTS[it - 2] }
+                        .coerceAtMost(64)
+                CRecipes.CA_INJECTOR.builder()
+                    .input(prev)
+                    .input(OrePrefix.gem, CMaterials.antimatter, antimatterAmount)
+                    .output(next)
+                    .tier(recipeTier).duration(CaInjectorMetaTileEntity.DURATION)
+                    .CEtFactor(CaInjectorMetaTileEntity.CE_FACTOR)
+                    .buildAndRegister()
+            }
+        }
     }
 }

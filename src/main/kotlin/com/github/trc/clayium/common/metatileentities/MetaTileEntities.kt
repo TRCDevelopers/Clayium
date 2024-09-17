@@ -19,18 +19,18 @@ import com.github.trc.clayium.common.config.ConfigTierBalance
 import com.github.trc.clayium.common.metatileentities.multiblock.CaReactorMetaTileEntity
 import com.github.trc.clayium.common.metatileentities.multiblock.RedstoneProxyMetaTileEntity
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import it.unimi.dsi.fastutil.ints.Int2ObjectAVLTreeMap
-import it.unimi.dsi.fastutil.ints.IntArrayList
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 @Suppress("unused")
 object MetaTileEntities {
 
+    private val _mteLists = mutableListOf<List<MetaTileEntity>>()
     /**
-     * Used in CA Injector
+     * for [com.github.trc.clayium.common.loaders.recipe.CaInjectorRecipeLoader] only
+     * doesn't include all MetaTileEntity lists
      */
-    val ID_TO_MTEs = Int2ObjectAVLTreeMap<MutableList<MetaTileEntity>>()
+    val mteLists: List<List<MetaTileEntity>> get() = _mteLists
 
     /* Logistics 1-200 */
     val CLAY_BUFFER = registerMetaTileEntities(1, (4..13)) { //+10
@@ -157,15 +157,15 @@ object MetaTileEntities {
     }
 
     /* Multiblock Machines & Proxies 600-700 */
-    val CLAY_INTERFACE = registerMetaTileEntities(600, (5..13)) { //+9
+    val CLAY_INTERFACE = registerMetaTileEntities(600, (5..13), caInjector = false) { //+9
         ClayInterfaceMetaTileEntity(clayiumId("clay_interface.${it.lowerName}"), it)
     }
 
-    val REDSTONE_PROXY = registerMetaTileEntities(609, (5..13)) { //+9
+    val REDSTONE_PROXY = registerMetaTileEntities(609, (5..13), caInjector = false) { //+9
         RedstoneProxyMetaTileEntity(clayiumId("redstone_proxy.${it.lowerName}"), it)
     }
 
-    val LASER_PROXY = registerMetaTileEntities(618, (7..13)) { //+7
+    val LASER_PROXY = registerMetaTileEntities(618, (7..13), caInjector = false) { //+7
         LaserProxyMetaTileEntity(clayiumId("laser_proxy.${it.lowerName}"), it)
     }
 
@@ -196,7 +196,7 @@ object MetaTileEntities {
         }
     }
 
-    val CLAY_FABRICATOR = registerMetaTileEntities(706, intArrayOf(8, 9, 13)) {
+    val CLAY_FABRICATOR = registerMetaTileEntities(706, intArrayOf(8, 9, 13), caInjector = false) {
         when (it) {
             ClayTiers.CLAYIUM ->
                 ClayFabricatorMetaTileEntity(clayiumId("clay_fabricator.${it.lowerName}"), it, 11, ClayFabricatorMetaTileEntity::mk1)
@@ -245,24 +245,24 @@ object MetaTileEntities {
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)
      * @param provider tier -> MetaTileEntity
      */
-    fun <T : MetaTileEntity> registerMetaTileEntities(startId: Int, tiers: IntRange, provider: (ITier) -> T): List<T> {
-        return registerMetaTileEntities(startId, tiers.toList().toIntArray(), provider)
+    fun <T : MetaTileEntity> registerMetaTileEntities(startId: Int, tiers: IntRange, caInjector: Boolean = true, provider: (ITier) -> T): List<T> {
+        return registerMetaTileEntities(startId, tiers.toList().toIntArray(), caInjector, provider)
     }
 
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)
      * @param provider tier -> MetaTileEntity
      */
-    fun <T : MetaTileEntity> registerMetaTileEntities(startId: Int, tiers: IntArray, provider: (ClayTiers) -> T): List<T> {
-        val intIds = IntArrayList()
+    fun <T : MetaTileEntity> registerMetaTileEntities(startId: Int, tiers: IntArray, caInjector: Boolean = true, provider: (ClayTiers) -> T): List<T> {
         val mteList =  tiers.mapIndexed { i, tierNumeric ->
             val id = startId + i
-            intIds.add(id)
             val iTier = ClayTiers.entries[tierNumeric]
             val metaTileEntity = provider(iTier)
             registerMetaTileEntity(id, metaTileEntity)
         }
-        intIds.forEach { id -> ID_TO_MTEs.computeIfAbsent(id) { mutableListOf() }.addAll(mteList) }
+        if (caInjector) {
+            _mteLists.add(mteList)
+        }
         return mteList
     }
 
