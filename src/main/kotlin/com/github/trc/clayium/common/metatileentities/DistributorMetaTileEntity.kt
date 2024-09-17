@@ -19,6 +19,7 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.copyWithSize
 import com.github.trc.clayium.api.util.enumMapNotNull
 import com.github.trc.clayium.api.util.next
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.capabilities.Capability
@@ -122,6 +123,23 @@ class DistributorMetaTileEntity(
             }
         private var lastDirection = EnumFacing.DOWN
 
+        override fun serializeNBT(): NBTTagCompound {
+            return super.serializeNBT().apply {
+                setInteger("importPtr", importPtr)
+                setInteger("exportPtr", exportPtr)
+                setBoolean("oneLapBehind", oneLapBehind)
+                setInteger("lastDirection", lastDirection.index)
+            }
+        }
+
+        override fun deserializeNBT(data: NBTTagCompound) {
+            super.deserializeNBT(data)
+            importPtr = data.getInteger("importPtr")
+            exportPtr = data.getInteger("exportPtr")
+            oneLapBehind = data.getBoolean("oneLapBehind")
+            lastDirection = EnumFacing.byIndex(data.getInteger("lastDirection"))
+        }
+
         override fun importFromNeighbors() {
             if (oneLapBehind) return
             var remainingImport = amountPerAction
@@ -165,7 +183,6 @@ class DistributorMetaTileEntity(
                         }
                     }
                 }
-
 
                 @Suppress("UsePropertyAccessSyntax") //synthetic properties
                 if (neighbors.isEmpty()) continue
