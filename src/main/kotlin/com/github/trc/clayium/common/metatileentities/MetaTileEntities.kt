@@ -229,7 +229,7 @@ object MetaTileEntities {
         registerMetaTileEntity(810 + i, PanDuplicatorMetaTileEntity(clayiumId("pan_duplicator.${rank}"), ClayTiers.PURE_ANTIMATTER, rank))
     }
 
-    val ENERGY_CONVERTER = registerMetaTileEntities(820, (4..13)) { // +10
+    val ENERGY_CONVERTER = registerMetaTileEntities(820, (4..13), caInjector = false) { // +10
         EnergyConverterMetaTileEntity(clayiumId("energy_converter.${it.lowerName}"), it)
     }
 

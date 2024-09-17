@@ -70,6 +70,9 @@ object CaInjectorRecipeLoader {
             .tier(13).CEtFactor(2.0).duration(4000)
             .buildAndRegister()
 
+        val duration = CaInjectorMetaTileEntity.DURATION
+        val ceFactor = CaInjectorMetaTileEntity.CE_FACTOR
+
         for (mteList in MetaTileEntities.mteLists) {
             for ((prev, next) in mteList.windowed(2)) {
                 val recipeTier = next.tier.numeric
@@ -81,10 +84,28 @@ object CaInjectorRecipeLoader {
                     .input(prev)
                     .input(OrePrefix.gem, CMaterials.antimatter, antimatterAmount)
                     .output(next)
-                    .tier(recipeTier).duration(CaInjectorMetaTileEntity.DURATION)
-                    .CEtFactor(CaInjectorMetaTileEntity.CE_FACTOR)
+                    .tier(recipeTier).duration(duration)
+                    .CEtFactor(ceFactor)
                     .buildAndRegister()
             }
         }
+
+        // special cases //
+        /* Solar -> Clay Fabricator Mk1, CF Mk1 -> CF Mk2. no Mk2->Mk3 Recipe */
+        registry.builder()
+            .input(MetaTileEntities.SOLAR_CLAY_FABRICATOR[2])
+            .input(OrePrefix.gem, CMaterials.antimatter, 8)
+            .output(MetaTileEntities.CLAY_FABRICATOR[0])
+            .tier(8).duration(duration)
+            .CEtFactor(ceFactor)
+            .buildAndRegister()
+
+        registry.builder()
+            .input(MetaTileEntities.CLAY_FABRICATOR[0])
+            .input(OrePrefix.gem, CMaterials.antimatter, 10)
+            .output(MetaTileEntities.CLAY_FABRICATOR[1])
+            .tier(9).duration(duration)
+            .CEtFactor(ceFactor)
+            .buildAndRegister()
     }
 }
