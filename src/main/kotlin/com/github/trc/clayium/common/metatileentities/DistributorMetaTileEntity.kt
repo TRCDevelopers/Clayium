@@ -26,6 +26,7 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
+import java.util.EnumMap
 import kotlin.math.min
 
 class DistributorMetaTileEntity(
@@ -158,16 +159,20 @@ class DistributorMetaTileEntity(
         override fun exportToNeighbors() {
             var remainingExport = amountPerAction
             val exportItems = groups[exportPtr]
-            val neighbors = EnumFacing.entries.enumMapNotNull { side ->
+            val neighborMap = EnumFacing.entries.enumMapNotNull { side ->
                 if (!isExporting(side)) return@enumMapNotNull null
                 getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite)
             }
             @Suppress("UsePropertyAccessSyntax") //synthetic properties
-            if (neighbors.isEmpty()) return
-            for (i in 0..<exportItems.slots) {
-                val exported = exportItems.extractItem(i, remainingExport, true)
+            if (neighborMap.isEmpty()) return
+            for (exportSlot in 0..<exportItems.slots) {
+                // create a copy, so we can safely remove elements from this copied map
+                // if a neighbor inventory is full, we remove it from the map
+                val neighbors = EnumMap(neighborMap)
+                val exported = exportItems.extractItem(exportSlot, remainingExport, true)
                 if (exported.isEmpty) continue
 
+                // try bulk insert first
                 val countPerNeighbor = exported.count / neighbors.size
                 val toInsert = exported.copyWithSize(countPerNeighbor)
                 var notInserted = 0
@@ -175,7 +180,7 @@ class DistributorMetaTileEntity(
                     for ((side, neighbor) in neighbors) {
                         val remain = ItemHandlerHelper.insertItem(neighbor, toInsert, false)
                         val inserted = toInsert.count - remain.count
-                        exportItems.extractItem(i, inserted, false)
+                        exportItems.extractItem(exportSlot, inserted, false)
                         remainingExport -= inserted
                         notInserted += remain.count
                         if (!remain.isEmpty) {
@@ -187,7 +192,8 @@ class DistributorMetaTileEntity(
                 @Suppress("UsePropertyAccessSyntax") //synthetic properties
                 if (neighbors.isEmpty()) continue
 
-                val iter = generateSequence(lastDirection.next()) { current ->
+                // one by one insertion
+                val nextNeighbor = generateSequence(lastDirection.next()) { current ->
                     @Suppress("UsePropertyAccessSyntax") //synthetic properties
                     if (neighbors.isEmpty()) {
                         return@generateSequence null
@@ -195,9 +201,7 @@ class DistributorMetaTileEntity(
                     else {
                         for (i in 0..<6) {
                             val next = current.next()
-                            if (neighbors.containsKey(next)) {
-                                return@generateSequence next
-                            }
+                            if (neighbors.containsKey(next)) return@generateSequence next
                         }
                         return@generateSequence null
                     }
@@ -205,8 +209,8 @@ class DistributorMetaTileEntity(
 
                 notInserted += exported.count % neighbors.size
                 val toInsertCount1 = exported.copyWithSize(1)
-                while (remainingExport > 0 && notInserted > 0 && iter.hasNext()) {
-                    val side = iter.next()
+                while (remainingExport > 0 && notInserted > 0 && nextNeighbor.hasNext()) {
+                    val side = nextNeighbor.next()
                     lastDirection = side
                     val handler = neighbors[side] ?: continue
                     val remain = ItemHandlerHelper.insertItem(handler, toInsertCount1, false)
@@ -214,7 +218,7 @@ class DistributorMetaTileEntity(
                         neighbors.remove(side)
                         continue
                     }
-                    exportItems.extractItem(i, 1, false)
+                    exportItems.extractItem(exportSlot, 1, false)
                     notInserted--
                     remainingExport--
                 }
