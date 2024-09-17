@@ -16,6 +16,7 @@ import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.copyWithSize
 import com.github.trc.clayium.api.util.enumMapNotNull
 import com.github.trc.clayium.api.util.next
@@ -54,6 +55,17 @@ class DistributorMetaTileEntity(
 
     @Suppress("unused")
     private val ioHandler = DistributorIoHandler()
+
+    override fun onPlacement() {
+        for (side in EnumFacing.entries) {
+            if (side == this.frontFacing.opposite) {
+                this.setInput(side, MachineIoMode.ALL)
+            } else {
+                this.setOutput(side, MachineIoMode.ALL)
+            }
+        }
+        super.onPlacement()
+    }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         val height = GUI_DEFAULT_HEIGHT - 50 + (18*2 * groupY + 2 * (groupY - 1))
