@@ -45,6 +45,10 @@ object MetaTileEntities {
     val STORAGE_CONTAINER_UPGRADED = registerMetaTileEntity(102, StorageContainerMetaTileEntity(clayiumId("storage_container_upgraded"), ClayTiers.AZ91D, true))
     val VOID_CONTAINER = registerMetaTileEntity(103, VoidContainerMetaTileEntity(clayiumId("void_container"), ClayTiers.AZ91D))
 
+    val DISTRIBUTOR = registerMetaTileEntities(104, (7..9)) { //+3
+        DistributorMetaTileEntity(clayiumId("distributor.${it.lowerName}"), it)
+    }
+
     /* Singleblock Item Processing Machines 201-500 */
     val ALLOY_SMELTER = registerMetaTileEntity(201, SimpleMachineMetaTileEntity(clayiumId("alloy_smelter"), ClayTiers.PRECISION, CRecipes.ALLOY_SMELTER))
 

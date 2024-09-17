@@ -309,6 +309,18 @@ object MachineBlockRecipeLoader {
         RecipeUtils.addShapelessRecipe("upgrade_storage_container", MetaTileEntities.STORAGE_CONTAINER_UPGRADED.getStackForm(),
             MetaTileEntities.STORAGE_CONTAINER, MetaItemClayParts.ClayCore)
 
+        /* Distributor */
+        for (i in 0..<3) {
+            val buffer = MetaTileEntities.CLAY_BUFFER[i + 3]
+            val hull = MACHINE_HULL.getItem(ClayTiers.entries[i + 7])
+            assembler.builder()
+                .input(buffer)
+                .input(hull)
+                .output(MetaTileEntities.DISTRIBUTOR[i])
+                .tier(6).CEt(ClayEnergy.of(1 * 10.0.pow(i).toLong())).duration(120)
+                .buildAndRegister()
+        }
+
         /* Clay Blast Furnace */
         assembler.builder()
             .input(MetaTileEntities.SMELTER[2])

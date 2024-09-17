@@ -21,6 +21,9 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
+import java.util.EnumMap
+import kotlin.enums.EnumEntries
+import kotlin.enums.enumEntries
 
 fun IBlockAccess?.getMetaTileEntity(pos: BlockPos?): MetaTileEntity? {
     if (this == null || pos == null) return null
@@ -73,10 +76,28 @@ fun IKey.asWidgetResizing(): ResizingTextWidget {
     return ResizingTextWidget(this)
 }
 
+inline fun <reified K : Enum<K>, V, T : EnumEntries<K>> T.enumMap(mapper: (K) -> V): EnumMap<K, V> {
+    val map = EnumMap<K, V>(K::class.java)
+    for (key in this) {
+        map[key] = mapper(key)
+    }
+    return map
+}
+
+inline fun <reified K : Enum<K>, V, T : EnumEntries<K>> T.enumMapNotNull(mapper: (K) -> V?): EnumMap<K, V> {
+    val map = EnumMap<K, V>(K::class.java)
+    for (key in this) {
+        val value = mapper(key)
+        if (value != null) {
+            map[key] = value
+        }
+    }
+    return map
+}
+
 inline fun <reified E : Enum<E>> E.next(): E {
-    val values = enumValues<E>()
-    val ordinal = (ordinal + 1) % values.size
-    return values[ordinal]
+    val values = enumEntries<E>()
+    return values[(ordinal + 1) % values.size]
 }
 
 fun clayiumId(path: String): ResourceLocation {

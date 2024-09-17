@@ -418,10 +418,8 @@ gui.clayium.redstone_proxy.do_work_if_not_powered=Do work if not powered
 
 machine.clayium.electrolysis_reactor=%s Electrolysis Reactor
 
-tile.clayium.blockClaySteelDistributor.name=Item Distributor
-tile.clayium.blockClayiumDistributor.name=Clayium Distributor
-tile.clayium.blockUltimateDistributor.name=Ultimate Distributor
-tooltip.clayium.Distributor.line1=Distributes items that pass through itself equally.
+machine.clayium.distributor=%s Distributor
+machine.clayium.distributor.tooltip1=Distributes items that pass through itself equally.
 
 machine.clayium.laser_proxy=%s Laser Interface
 machine.clayium.laser_proxy.tooltip1=Used for Clay Reactor.
