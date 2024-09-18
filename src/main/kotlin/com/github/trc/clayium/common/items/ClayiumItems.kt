@@ -26,6 +26,8 @@ object ClayiumItems {
     val CLAY_PICKAXE = createItem("clay_pickaxe", ItemClayPickaxe())
     val CLAY_SHOVEL = createItem("clay_shovel", ItemClayShovel())
 
+    val CLAY_STEEL_PICKAXE = createItem("clay_steel_pickaxe", ItemClaySteelTool())
+
     val simpleItemFilter = createItem("simple_item_filter", ItemSimpleItemFilter())
 
     fun registerOreDicts() {
