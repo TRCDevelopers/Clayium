@@ -7,6 +7,7 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.util.TransferUtils
@@ -144,6 +145,7 @@ abstract class AbstractWorkable(
         val data = super.serializeNBT()
         data.setLong("currentProgress", currentProgress)
         data.setLong("requiredProgress", requiredProgress)
+        CUtils.writeItems(itemOutputs, "itemOutputs", data)
         return data
     }
 
@@ -151,6 +153,7 @@ abstract class AbstractWorkable(
         super.deserializeNBT(data)
         currentProgress = data.getLong("currentProgress")
         requiredProgress = data.getLong("requiredProgress")
+        itemOutputs = CUtils.readItems("itemOutputs", data)
     }
 
     fun getProgressBar(syncManager: GuiSyncManager): ProgressWidget {
