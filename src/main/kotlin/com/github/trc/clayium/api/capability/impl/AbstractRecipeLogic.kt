@@ -4,7 +4,6 @@ import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.AbstractWorkable
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
@@ -94,7 +93,6 @@ abstract class AbstractRecipeLogic(
 
     override fun serializeNBT(): NBTTagCompound {
         val data = super.serializeNBT()
-        CUtils.writeItems(itemOutputs, "itemOutputs", data)
         data.setLong("recipeCEt", recipeCEt.energy)
         data.setBoolean("isWorking", isWorking)
         return data
@@ -102,7 +100,6 @@ abstract class AbstractRecipeLogic(
 
     override fun deserializeNBT(data: NBTTagCompound) {
         super.deserializeNBT(data)
-        itemOutputs = CUtils.readItems("itemOutputs", data)
         recipeCEt = ClayEnergy(data.getLong("recipeCEt"))
         isWorking = data.getBoolean("isWorking")
     }
