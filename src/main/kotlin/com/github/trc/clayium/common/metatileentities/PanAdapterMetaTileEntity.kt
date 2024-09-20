@@ -211,7 +211,7 @@ class PanAdapterMetaTileEntity(
                 .child(slots.left(32 + 8))
                 .child(resultSlots.align(Alignment.TopRight))
         }
-        return ModularPanel.defaultPanel("pan_adapter", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 20)
+        return ModularPanel.defaultPanel("pan_adapter", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 32)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
                     .child(PagedWidget().margin(0, 9).widthRel(1f).height(16*4)
@@ -239,6 +239,7 @@ class PanAdapterMetaTileEntity(
         }
     }
 
+    @SideOnly(Side.CLIENT)
     override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
         if (state == null || side == null) return
         quads.add(adapterQuads[side.index])
