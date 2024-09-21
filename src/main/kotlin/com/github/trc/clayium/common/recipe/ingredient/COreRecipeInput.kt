@@ -11,7 +11,7 @@ class COreRecipeInput(
     val oreId: Int,
     override val amount: Int,
     isConsumable: Boolean = true,
-) : CRecipeInput() {
+) : CRecipeInput(isConsumable) {
 
     constructor(oreDict: String, amount: Int = 1, isConsumable: Boolean = true) : this(OreDictionary.getOreID(oreDict), amount, isConsumable)
     constructor(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1, isConsumable: Boolean = true) : this(UnificationEntry(orePrefix, material).toString(), amount, isConsumable)

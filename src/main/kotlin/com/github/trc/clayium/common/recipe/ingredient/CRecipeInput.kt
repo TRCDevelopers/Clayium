@@ -8,7 +8,8 @@ abstract class CRecipeInput(val isConsumable: Boolean = true) {
 
     abstract val stacks: List<ItemStack>
     abstract val amount: Int
-    val consumeAmount: Int = if (isConsumable) amount else 0
+    // $amount is abstract so it must be lazy
+    val consumeAmount: Int by lazy { if (isConsumable) amount else 0 }
 
     abstract fun testItemStackAndAmount(stack: ItemStack): Boolean
     abstract fun testIgnoringAmount(item: ItemAndMeta): Boolean
