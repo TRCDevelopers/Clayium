@@ -4,9 +4,9 @@ import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.AbstractWorkable
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.recipe.IRecipeProvider
 import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.common.recipe.Recipe
-import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
 import com.github.trc.clayium.common.util.TransferUtils
 import com.github.trc.clayium.integration.jei.JeiPlugin
 import net.minecraft.nbt.NBTTagCompound
@@ -19,7 +19,7 @@ import kotlin.math.pow
  */
 abstract class AbstractRecipeLogic(
     metaTileEntity: MetaTileEntity,
-    val recipeRegistry: RecipeRegistry<*>,
+    val recipeProvider: IRecipeProvider,
 ) : AbstractWorkable(metaTileEntity) {
 
     protected val inputInventory = metaTileEntity.importItems
@@ -40,7 +40,10 @@ abstract class AbstractRecipeLogic(
     protected abstract fun drawEnergy(ce: ClayEnergy, simulate: Boolean = false): Boolean
 
     override fun showRecipesInJei() {
-        JeiPlugin.jeiRuntime.recipesGui.showCategories(listOf(this.recipeRegistry.category.uniqueId))
+        val categories = recipeProvider.jeiCategories
+        if (categories.isNotEmpty()) {
+            JeiPlugin.jeiRuntime.recipesGui.showCategories(categories)
+        }
     }
 
     final override fun updateWorkingProgress() {
@@ -53,7 +56,7 @@ abstract class AbstractRecipeLogic(
         currentRecipe = if (previousRecipe?.matches(false, inputInventory, getTier()) == true) {
             previousRecipe
         } else {
-            recipeRegistry.findRecipe(getTier(), inputInventory.toList())
+            recipeProvider.searchRecipe(getTier(), inputInventory.toList())
         }
 
         if (currentRecipe == null) {

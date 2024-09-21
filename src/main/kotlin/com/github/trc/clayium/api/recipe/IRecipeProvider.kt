@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack
  * Recipe search logic for [com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic].
  */
 interface IRecipeProvider {
+    val jeiCategories get() = listOfNotNull(jeiCategory)
     /**
      * null for disable JEI page for this logic.
      */

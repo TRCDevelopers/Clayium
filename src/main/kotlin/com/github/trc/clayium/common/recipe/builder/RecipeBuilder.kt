@@ -52,7 +52,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
         return this as R
     }
 
-    private fun inputs(vararg inputsIn: CRecipeInput): R {
+    fun inputs(vararg inputsIn: CRecipeInput): R {
         inputsIn.forEach { input ->
             if (input.amount <= 0) {
                 CLog.error("input amount must be greater than 0")
@@ -75,7 +75,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
         return inputs(CMultiOreRecipeInput(amount, *entries))
     }
 
-    private fun outputs(vararg stacks: ItemStack): R {
+    fun outputs(vararg stacks: ItemStack): R {
         outputs.addAll(stacks)
         return this as R
     }
@@ -170,6 +170,10 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun CEtMicro(cePerTick: Int) = this.CEt(ClayEnergy.micro(cePerTick.toLong()))
 
     open fun buildAndRegister() {
+        recipeRegistry.addRecipe(build())
+    }
+
+    open fun build(): Recipe {
         setDefaults()
 
         val chancedOutputList = if (chancedOutputLogic != null) {
@@ -178,9 +182,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
             null
         }
 
-        val recipe = Recipe(inputs, outputs, chancedOutputList,
-            duration, cePerTick, tier)
-        recipeRegistry.addRecipe(recipe)
+        return Recipe(inputs, outputs, chancedOutputList, duration, cePerTick, tier)
     }
 
     protected fun setDefaults() {

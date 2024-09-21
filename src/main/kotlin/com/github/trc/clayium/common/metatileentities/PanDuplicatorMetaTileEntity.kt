@@ -10,15 +10,16 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
-import com.github.trc.clayium.api.capability.IControllable
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
+import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.pan.IPan
 import com.github.trc.clayium.api.pan.IPanCable
 import com.github.trc.clayium.api.pan.IPanUser
+import com.github.trc.clayium.api.recipe.IRecipeProvider
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.ItemAndMeta
@@ -28,6 +29,8 @@ import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
+import com.github.trc.clayium.common.recipe.Recipe
+import com.github.trc.clayium.common.recipe.builder.SimpleRecipeBuilder
 import com.github.trc.clayium.common.recipe.ingredient.COreRecipeInput
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -48,7 +51,6 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
 import java.util.function.Function
-import kotlin.math.min
 import kotlin.math.pow
 
 class PanDuplicatorMetaTileEntity(
@@ -72,7 +74,7 @@ class PanDuplicatorMetaTileEntity(
 
     @Suppress("unused") private val ioHandler = AutoIoHandler.Combined(this)
     private val clayEnergyHolder = ClayEnergyHolder(this)
-    private val recipeLogic = DuplicatorRecipeLogic()
+    private val recipeLogic = RecipeLogicEnergy(this, PanRecipeProvider(), clayEnergyHolder)
 
     private var pan: IPan? = null
 
@@ -167,69 +169,21 @@ class PanDuplicatorMetaTileEntity(
         if (side != this.frontFacing) quads.add(panCasingQuads[side.index])
     }
 
-    private inner class DuplicatorRecipeLogic : IControllable {
-
-        override var isWorkingEnabled = true
-        override val isWorking
-            get() = isWorkingEnabled && targetItem != null
-
-        private var energyRequired = ClayEnergy.ZERO
-        private var currentEnergy = ClayEnergy.ZERO
-        private var targetItem: ItemAndMeta? = null
-
-        private var outputFullLastTime = false
-        private var inputInvalidLastTime = false
-
-        fun update() {
-            if (isRemote || !isWorkingEnabled) return
-            if (targetItem != null) {
-                updateProgress()
-            }
-            if (targetItem == null && shouldSearchForDuplication()) {
-                val duplicationEntry = trySearchDuplicationEntry()
-                if (duplicationEntry != null) {
-                    targetItem = duplicationEntry.first
-                    energyRequired = duplicationEntry.second
-                    antimatterSlot.extractItem(0, 1, false)
-                    updateProgress()
-                }
-            }
-        }
-
-        fun updateProgress() {
-            if (currentEnergy >= energyRequired) {
-                exportItems.insertItem(0, targetItem!!.asStack(), false)
-                currentEnergy = ClayEnergy.ZERO
-                energyRequired = ClayEnergy.ZERO
-                targetItem = null
-            } else {
-                val maxConsume = ceConsumption.energy
-                val energyRequiredLeft = energyRequired.energy - currentEnergy.energy
-                val consume = ClayEnergy(min(maxConsume, energyRequiredLeft))
-                if (clayEnergyHolder.drawEnergy(consume, false)) {
-                    currentEnergy += consume
-                }
-            }
-        }
-
-        private fun shouldSearchForDuplication(): Boolean {
-            if ((inputInvalidLastTime && !hasNotifiedInputs)
-                || outputFullLastTime && !hasNotifiedOutputs) return false
-
-            inputInvalidLastTime = false
-            hasNotifiedInputs = false
-            outputFullLastTime = false
-            hasNotifiedOutputs = false
-            return true
-        }
-
-        fun trySearchDuplicationEntry(): Pair<ItemAndMeta, ClayEnergy>? {
+    private inner class PanRecipeProvider : IRecipeProvider {
+        override val jeiCategory = null
+        override fun searchRecipe(machineTier: Int, inputs: List<ItemStack>): Recipe? {
             if (!antimatterInput.testItemStackAndAmount(antimatterSlot.getStackInSlot(0))) return null
             val targetStack = duplicationTargetSlot.getStackInSlot(0)
             if (targetStack.isEmpty) return null
-            val input = ItemAndMeta(duplicationTargetSlot.getStackInSlot(0))
-            val energy = pan?.getDuplicationEntries()[input] ?: return null
-            return input to energy
+            val dupTarget = duplicationTargetSlot.getStackInSlot(0)
+            val energy = pan?.getDuplicationEntries()[ItemAndMeta(dupTarget)] ?: return null
+            val duration = (energy.energy / ceConsumption.energy).toLong()
+            return SimpleRecipeBuilder()
+                .inputs(antimatterInput)
+                .input(dupTarget)
+                .output(dupTarget)
+                .tier(0).CEt(ceConsumption).duration(duration)
+                .build()
         }
     }
 
