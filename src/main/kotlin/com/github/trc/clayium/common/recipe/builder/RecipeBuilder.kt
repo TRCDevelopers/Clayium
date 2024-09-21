@@ -75,6 +75,14 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
         return inputs(CMultiOreRecipeInput(amount, *entries))
     }
 
+    fun notConsumable(stack: ItemStack) = inputs(CItemRecipeInput(stack, stack.count, isConsumable = false))
+    fun notConsumable(item: Item, amount: Int = 1) = notConsumable(ItemStack(item, amount))
+    fun notConsumable(metaItem: MetaItemClayium.MetaValueItem, amount: Int = 1) = notConsumable(metaItem.getStackForm(amount))
+    fun notConsumable(metaTileEntity: MetaTileEntity, amount: Int = 1) = notConsumable(metaTileEntity.getStackForm(amount))
+    fun notConsumable(block: Block, amount: Int = 1) = notConsumable(ItemStack(block, amount))
+    fun notConsumable(oreDict: String, amount: Int = 1) = inputs(COreRecipeInput(oreDict, amount, isConsumable = false))
+    fun notConsumable(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1) = notConsumable(UnificationEntry(orePrefix, material).toString(), amount)
+
     fun outputs(vararg stacks: ItemStack): R {
         outputs.addAll(stacks)
         return this as R

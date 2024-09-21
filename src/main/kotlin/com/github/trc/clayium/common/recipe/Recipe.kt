@@ -53,7 +53,7 @@ data class Recipe(
                 }
                 isMatched = ingredient.testItemStackAndAmount(itemStack)
                 if (!isMatched) continue
-                amountsToConsume[i] = ingredient.amount
+                amountsToConsume[i] = ingredient.consumeAmount
                 break
             }
             // one of the ingredients is not matched

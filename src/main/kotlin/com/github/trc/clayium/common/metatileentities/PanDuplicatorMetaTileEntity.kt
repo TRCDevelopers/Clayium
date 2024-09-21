@@ -180,7 +180,7 @@ class PanDuplicatorMetaTileEntity(
             val duration = (energy.energy / ceConsumption.energy).toLong()
             return SimpleRecipeBuilder()
                 .inputs(antimatterInput)
-                .input(dupTarget)
+                .notConsumable(dupTarget)
                 .output(dupTarget)
                 .tier(0).CEt(ceConsumption).duration(duration)
                 .build()

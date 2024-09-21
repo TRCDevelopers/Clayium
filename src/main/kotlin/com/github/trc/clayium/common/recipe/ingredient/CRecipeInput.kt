@@ -4,10 +4,11 @@ import com.github.trc.clayium.api.unification.stack.ItemAndMeta
 import com.github.trc.clayium.api.util.CLog
 import net.minecraft.item.ItemStack
 
-abstract class CRecipeInput {
+abstract class CRecipeInput(val isConsumable: Boolean = true) {
 
     abstract val stacks: List<ItemStack>
     abstract val amount: Int
+    val consumeAmount: Int = if (isConsumable) amount else 0
 
     abstract fun testItemStackAndAmount(stack: ItemStack): Boolean
     abstract fun testIgnoringAmount(item: ItemAndMeta): Boolean
