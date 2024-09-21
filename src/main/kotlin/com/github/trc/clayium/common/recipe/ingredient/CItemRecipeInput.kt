@@ -9,7 +9,7 @@ class CItemRecipeInput(
     isConsumable: Boolean = true,
 ): CRecipeInput(isConsumable) {
 
-    constructor(stack: ItemStack, amount: Int, isConsumable: Boolean): this(listOf(stack), amount, isConsumable)
+    constructor(stack: ItemStack, amount: Int, isConsumable: Boolean = true): this(listOf(stack), amount, isConsumable)
 
     override fun testItemStackAndAmount(stack: ItemStack): Boolean {
         return stacks.any {

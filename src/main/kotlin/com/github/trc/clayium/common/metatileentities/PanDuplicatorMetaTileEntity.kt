@@ -52,6 +52,7 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
 import java.util.function.Function
+import kotlin.math.max
 import kotlin.math.pow
 
 class PanDuplicatorMetaTileEntity(
@@ -67,7 +68,7 @@ class PanDuplicatorMetaTileEntity(
     private val ceConsumption = ClayEnergy(10_000 * 10.0.pow(duplicatorRank - 1).toLong())
 
     private val antimatterSlot = NotifiableItemStackHandler(this, 1, this, isExport = false)
-    private val duplicationTargetSlot = NotifiableItemStackHandler(this, 1, this, isExport = true)
+    private val duplicationTargetSlot = NotifiableItemStackHandler(this, 1, this, isExport = false)
 
     override val importItems = CombinedInvWrapper(antimatterSlot, duplicationTargetSlot)
     override val exportItems = NotifiableItemStackHandler(this, 1, this, isExport = true)
@@ -178,7 +179,7 @@ class PanDuplicatorMetaTileEntity(
             if (targetStack.isEmpty) return null
             val dupTarget = duplicationTargetSlot.getStackInSlot(0).copyWithSize(1)
             val energy = pan?.getDuplicationEntries()[ItemAndMeta(dupTarget)] ?: return null
-            val duration = (energy.energy / ceConsumption.energy).toLong()
+            val duration = max(1, (energy.energy / ceConsumption.energy).toLong())
             return SimpleRecipeBuilder()
                 .inputs(antimatterInput)
                 .notConsumable(dupTarget)
