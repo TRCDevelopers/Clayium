@@ -2,11 +2,11 @@ package com.github.trc.clayium.api.capability.impl
 
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
+import com.github.trc.clayium.api.recipe.IRecipeProvider
 
 open class RecipeLogicEnergy(
     metaTileEntity: MetaTileEntity,
-    recipeRegistry: RecipeRegistry<*>,
+    recipeRegistry: IRecipeProvider,
     private val energyHolder: ClayEnergyHolder,
 ) : AbstractRecipeLogic(metaTileEntity, recipeRegistry) {
     private var durationMultiplier = 1.0

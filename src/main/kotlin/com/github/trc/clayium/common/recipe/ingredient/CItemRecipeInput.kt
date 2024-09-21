@@ -6,9 +6,10 @@ import net.minecraft.item.ItemStack
 class CItemRecipeInput(
     override val stacks: List<ItemStack>,
     override val amount: Int,
-): CRecipeInput() {
+    isConsumable: Boolean = true,
+): CRecipeInput(isConsumable) {
 
-    constructor(stack: ItemStack, amount: Int): this(listOf(stack), amount)
+    constructor(stack: ItemStack, amount: Int, isConsumable: Boolean = true): this(listOf(stack), amount, isConsumable)
 
     override fun testItemStackAndAmount(stack: ItemStack): Boolean {
         return stacks.any {

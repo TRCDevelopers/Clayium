@@ -1,6 +1,7 @@
 package com.github.trc.clayium.common.recipe.registry
 
 import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.recipe.IRecipeProvider
 import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.common.recipe.Recipe
@@ -15,12 +16,13 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
     private val builderSample: R,
     val maxInputs: Int,
     val maxOutputs: Int,
-) {
+) : IRecipeProvider {
 
     constructor(translationKey: String, builderSample: R, maxInputs: Int, maxOutputs: Int) :
             this(RecipeCategory.create(CValues.MOD_ID, translationKey), builderSample, maxInputs, maxOutputs)
 
     val categoryName = category.categoryName
+    override val jeiCategory = category.uniqueId
 
     val grsVirtualizedRegistry: RecipeRegistryGrsAdapter?
         = if (Mods.GroovyScript.isModLoaded) RecipeRegistryGrsAdapter(this) else null
@@ -44,6 +46,10 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
     //todo use hash table?
     fun findRecipe(machineTier: Int, inputsIn: List<ItemStack>): Recipe? {
         return _recipes.firstOrNull { it.matches(inputsIn, machineTier) }
+    }
+
+    override fun searchRecipe(machineTier: Int, inputs: List<ItemStack>): Recipe? {
+        return findRecipe(machineTier, inputs)
     }
 
     fun addRecipe(recipe: Recipe) {
