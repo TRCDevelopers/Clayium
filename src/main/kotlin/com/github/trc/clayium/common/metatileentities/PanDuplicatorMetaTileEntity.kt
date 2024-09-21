@@ -27,6 +27,7 @@ import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.copyWithSize
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.Recipe
@@ -175,7 +176,7 @@ class PanDuplicatorMetaTileEntity(
             if (!antimatterInput.testItemStackAndAmount(antimatterSlot.getStackInSlot(0))) return null
             val targetStack = duplicationTargetSlot.getStackInSlot(0)
             if (targetStack.isEmpty) return null
-            val dupTarget = duplicationTargetSlot.getStackInSlot(0)
+            val dupTarget = duplicationTargetSlot.getStackInSlot(0).copyWithSize(1)
             val energy = pan?.getDuplicationEntries()[ItemAndMeta(dupTarget)] ?: return null
             val duration = (energy.energy / ceConsumption.energy).toLong()
             return SimpleRecipeBuilder()
