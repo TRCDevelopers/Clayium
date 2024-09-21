@@ -80,11 +80,6 @@ class PanDuplicatorMetaTileEntity(
 
     private var pan: IPan? = null
 
-    override fun update() {
-        super.update()
-        recipeLogic.update()
-    }
-
     override fun onPlacement() {
         this.setInput(EnumFacing.UP, MachineIoMode.ALL)
         this.setInput(this.frontFacing.opposite, MachineIoMode.CE)
