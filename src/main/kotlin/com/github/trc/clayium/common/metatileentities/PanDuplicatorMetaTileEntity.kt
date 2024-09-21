@@ -60,8 +60,7 @@ class PanDuplicatorMetaTileEntity(
     tier: ITier,
     private val duplicatorRank: Int,
     private val machineHullTier: ITier = ClayTiers.entries[duplicatorRank + 3]
-) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[2], validOutputModesLists[1], "pan_duplicator"), IPanUser
-{
+) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[2], validOutputModesLists[1], "pan_duplicator"), IPanUser {
 
     override val faceTexture = clayiumId("blocks/pan_duplicator")
 
