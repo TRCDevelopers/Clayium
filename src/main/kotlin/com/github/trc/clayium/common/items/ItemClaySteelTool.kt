@@ -4,6 +4,7 @@ import com.github.trc.clayium.api.HARDNESS_UNBREAKABLE
 import com.github.trc.clayium.api.util.next
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.items.ItemClaySteelTool.Mode.*
+import it.unimi.dsi.fastutil.ints.IntArrayList
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
@@ -76,6 +77,20 @@ class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
         } else {
             val poses = getPoses(player, targetPos, 2)
                 .filter { rangeBlock == world.getBlockState(it) }
+            if (!world.isRemote) {
+                val stack = player.getHeldItem(hand)
+                if (!stack.hasTagCompound()) stack.tagCompound = NBTTagCompound()
+                val arr = IntArray(poses.size * 2)
+                poses.forEachIndexed { i, abs ->
+                    val pos = abs.subtract(targetPos)
+                    val long = pos.toLong()
+                    val high = (long shr 32).toInt()
+                    val low = (long and 0xFFFFFFFF).toInt()
+                    arr[i * 2] = high
+                    arr[i * 2 + 1] = low
+                }
+                stack.tagCompound!!.setIntArray("poses", arr)
+            }
             return if (poses.isEmpty()) EnumActionResult.FAIL else EnumActionResult.SUCCESS
         }
     }
@@ -92,10 +107,24 @@ class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
                 }
             }
             CUSTOM -> {
-                for (pos in getPoses(entityLiving, pos, 2)) {
-                    if (worldIn.getBlockState(pos).getBlockHardness(worldIn, pos) == HARDNESS_UNBREAKABLE) continue
-                    worldIn.destroyBlock(pos, true)
-                    stack.damageItem(1, entityLiving)
+                val tag = stack.tagCompound
+                if (tag == null) {
+                    for (pos in getPoses(entityLiving, pos, 2)) {
+                        if (worldIn.getBlockState(pos).getBlockHardness(worldIn, pos) == HARDNESS_UNBREAKABLE) continue
+                        worldIn.destroyBlock(pos, true)
+                        stack.damageItem(1, entityLiving)
+                    }
+                } else {
+                    val poses = tag.getIntArray("poses")
+                    val lst = IntArrayList(poses)
+                    for ((high, low) in lst.chunked(2)) {
+                        val long = (high.toLong() shl 32) or (low.toLong() and 0xFFFFFFFF)
+                        val rel = BlockPos.fromLong(long)
+                        val pos = pos.add(rel)
+                        if (worldIn.getBlockState(pos).getBlockHardness(worldIn, pos) == HARDNESS_UNBREAKABLE) continue
+                        worldIn.destroyBlock(pos, true)
+                        stack.damageItem(1, entityLiving)
+                    }
                 }
             }
         }
