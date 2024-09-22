@@ -1,7 +1,6 @@
 package com.github.trc.clayium.common.items
 
 import com.github.trc.clayium.api.util.next
-import com.github.trc.clayium.common.util.ToolClasses
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
@@ -19,9 +18,12 @@ import net.minecraft.util.text.TextComponentString
 import net.minecraft.world.World
 import net.minecraftforge.common.util.Constants
 
+private const val SPEED_MULTIPLIER = 6
+
 class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack?> {
+        if (playerIn.isSneaking) return ActionResult.newResult(EnumActionResult.PASS, playerIn.getHeldItem(handIn))
         if (worldIn.isRemote) return ActionResult.newResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
 
         val stack = playerIn.getHeldItem(handIn)
@@ -68,13 +70,12 @@ class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
             val pos2 = pos.offset(facing.rotateAround(EnumFacing.Axis.X), -1).offset(facing.rotateAround(EnumFacing.Axis.Z), -1)
             BlockPos.getAllInBox(pos1, pos2)
         }
-        poses.forEach {
-            val block = worldIn.getBlockState(it).block
-            if (block.isToolEffective(ToolClasses.PICKAXE, worldIn.getBlockState(it))) {
-                worldIn.destroyBlock(it, true)
-            }
-        }
+        poses.forEach { worldIn.destroyBlock(it, true) }
         return true
+    }
+
+    override fun getDestroySpeed(stack: ItemStack, state: IBlockState): Float {
+        return super.getDestroySpeed(stack, state) * SPEED_MULTIPLIER
     }
 
     private fun getNextMode(stack: ItemStack): Mode? {
