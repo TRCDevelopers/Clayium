@@ -4,11 +4,15 @@ import com.github.trc.clayium.api.HARDNESS_UNBREAKABLE
 import com.github.trc.clayium.api.util.next
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.items.ItemClaySteelTool.Mode.*
+import com.github.trc.clayium.common.reflect.BlockReflect
 import it.unimi.dsi.fastutil.ints.IntArrayList
+import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
+import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
+import net.minecraft.init.Enchantments
 import net.minecraft.item.ItemPickaxe
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -99,36 +103,39 @@ class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
 
     override fun onBlockDestroyed(stack: ItemStack, worldIn: World, state: IBlockState, pos: BlockPos, entityLiving: EntityLivingBase): Boolean {
         if (worldIn.isRemote) return true
-        when (getMode(stack)) {
-            null, SINGLE -> super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving)
-            RANGED -> {
-                for (pos in getPoses(entityLiving, pos, 1)) {
-                    if (worldIn.getBlockState(pos).getBlockHardness(worldIn, pos) == HARDNESS_UNBREAKABLE) continue
-                    worldIn.destroyBlock(pos, true)
-                    stack.damageItem(1, entityLiving)
-                }
-            }
+        val poses = when (getMode(stack)) {
+            null, SINGLE -> { return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving) }
+            RANGED -> getPoses(entityLiving, pos, 1)
             CUSTOM -> {
                 val tag = stack.tagCompound
                 if (tag == null) {
-                    for (pos in getPoses(entityLiving, pos, 2)) {
-                        if (worldIn.getBlockState(pos).getBlockHardness(worldIn, pos) == HARDNESS_UNBREAKABLE) continue
-                        worldIn.destroyBlock(pos, true)
-                        stack.damageItem(1, entityLiving)
-                    }
+                    getPoses(entityLiving, pos, 2)
                 } else {
                     val poses = tag.getIntArray("poses")
                     val lst = IntArrayList(poses)
-                    for ((high, low) in lst.chunked(2)) {
+                    lst.chunked(2).map { (high, low) ->
                         val long = (high.toLong() shl 32) or (low.toLong() and 0xFFFFFFFF)
                         val rel = BlockPos.fromLong(long)
-                        val pos = pos.add(rel)
-                        if (worldIn.getBlockState(pos).getBlockHardness(worldIn, pos) == HARDNESS_UNBREAKABLE) continue
-                        worldIn.destroyBlock(pos, true)
-                        stack.damageItem(1, entityLiving)
+                        pos.add(rel)
                     }
                 }
             }
+        }
+        for (harvesting in poses) {
+            if (harvesting == pos) continue
+            val state = worldIn.getBlockState(harvesting)
+            if (state.getBlockHardness(worldIn, harvesting) == HARDNESS_UNBREAKABLE) continue
+            if (entityLiving is EntityPlayer
+                && state.block.canSilkHarvest(worldIn, harvesting, state, entityLiving)
+                && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0)
+            {
+                val drop = BlockReflect.getSilkTouchDrop(state.block, state)
+                if (!drop.isEmpty) Block.spawnAsEntity(worldIn, harvesting, drop)
+                worldIn.destroyBlock(harvesting, false)
+            } else {
+                worldIn.destroyBlock(harvesting, true)
+            }
+            stack.damageItem(1, entityLiving)
         }
         return true
     }
@@ -199,7 +206,7 @@ class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
                     val relHardness = world.getBlockState(pos).getPlayerRelativeBlockHardness(e.entityPlayer, world, pos) * 30f
                     hardness += if (relHardness == 0.0f) Float.POSITIVE_INFINITY else 1.0f / relHardness
                 }
-                e.newSpeed = if (hardness == 0f) 0f else 1f / hardness
+                e.newSpeed = if (hardness == 0f) Float.POSITIVE_INFINITY else 1f / hardness
                 firstCall = true
             }
         }
