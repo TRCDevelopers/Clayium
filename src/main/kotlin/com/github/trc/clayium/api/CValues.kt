@@ -10,6 +10,8 @@ const val MOD_NAME = "Clayium"
 const val GUI_DEFAULT_WIDTH = 176
 const val GUI_DEFAULT_HEIGHT = 166
 
+const val HARDNESS_UNBREAKABLE = -1.0f
+
 object CValues {
     const val MOD_ID = "clayium"
     const val MOD_NAME = "Clayium"
