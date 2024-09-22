@@ -22,6 +22,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.world.World
 import net.minecraftforge.common.util.Constants
+import net.minecraftforge.event.entity.player.PlayerEvent
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.registry.ForgeRegistries
 
 private const val SPEED_MULTIPLIER = 6
@@ -160,5 +162,46 @@ class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
         SINGLE,
         RANGED,
         CUSTOM,
+    }
+
+    companion object {
+        private var firstCall = true
+        @SubscribeEvent
+        fun onBreakSpeed(e: PlayerEvent.BreakSpeed) {
+            val stack = e.entityPlayer.getHeldItem(EnumHand.MAIN_HAND)
+            val world = e.entityPlayer.world
+            val item = stack.item
+            if (item !is ItemClaySteelTool) return
+            if (!stack.hasTagCompound()) return
+            val tag = stack.tagCompound!!
+            val mode = Mode.entries[tag.getInteger("mode")]
+            if (firstCall) {
+                firstCall = false
+                val poses = when (mode) {
+                    SINGLE -> listOf(e.pos)
+                    RANGED -> item.getPoses(e.entityPlayer, e.pos, 1)
+                    CUSTOM -> {
+                        val posesArr = tag.getIntArray("poses")
+                        if (posesArr.isEmpty()) {
+                            item.getPoses(e.entityPlayer, e.pos, 2)
+                        } else {
+                            val lst = IntArrayList(posesArr)
+                            lst.chunked(2).map { (high, low) ->
+                                val long = (high.toLong() shl 32) or (low.toLong() and 0xFFFFFFFF)
+                                val rel = BlockPos.fromLong(long)
+                                e.pos.add(rel)
+                            }
+                        }
+                    }
+                }
+                var hardness = 0f
+                for (pos in poses) {
+                    val relHardness = world.getBlockState(pos).getPlayerRelativeBlockHardness(e.entityPlayer, world, pos) * 30f
+                    hardness += if (relHardness == 0.0f) Float.POSITIVE_INFINITY else 1.0f / relHardness
+                }
+                e.newSpeed = if (hardness == 0f) 0f else 1f / hardness
+                firstCall = true
+            }
+        }
     }
 }
