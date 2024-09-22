@@ -2,6 +2,7 @@ package com.github.trc.clayium.common.items
 
 import com.github.trc.clayium.api.HARDNESS_UNBREAKABLE
 import com.github.trc.clayium.api.util.next
+import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.items.ItemClaySteelTool.Mode.*
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
@@ -14,15 +15,32 @@ import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
+import net.minecraft.util.ResourceLocation
 import net.minecraft.util.SoundCategory
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.world.World
 import net.minecraftforge.common.util.Constants
+import net.minecraftforge.fml.common.registry.ForgeRegistries
 
 private const val SPEED_MULTIPLIER = 6
 
 class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
+
+    private val rangeBlock: IBlockState = run {
+        if (ConfigCore.misc.claySteelToolBlock.isEmpty()) return@run Blocks.CLAY.defaultState
+
+        val blockAndMeta = ConfigCore.misc.claySteelToolBlock.split(";")
+        if (blockAndMeta.size == 1) {
+            ForgeRegistries.BLOCKS.getValue(ResourceLocation(blockAndMeta[0]))?.defaultState
+                ?: Blocks.CLAY.defaultState
+        } else {
+            val block = ForgeRegistries.BLOCKS.getValue(ResourceLocation(blockAndMeta[0]))
+            val meta = blockAndMeta[1].toIntOrNull()
+            @Suppress("DEPRECATION")
+            if (block != null && meta != null) block.getStateFromMeta(meta) else Blocks.CLAY.defaultState
+        }
+    }
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack?> {
         if (playerIn.isSneaking) return ActionResult.newResult(EnumActionResult.PASS, playerIn.getHeldItem(handIn))
@@ -45,20 +63,21 @@ class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
             val oldState = world.getBlockState(targetPos)
             val block = oldState.block
             val pos = if (block.isReplaceable(world, targetPos)) targetPos else targetPos.offset(facing)
-            val clayStack = ItemStack(Blocks.CLAY)
-            val clayBlock = Blocks.CLAY
-            val clayState = clayBlock.defaultState
-            if (!(player.canPlayerEdit(pos, facing, clayStack) && world.mayPlace(Blocks.CLAY, pos, false, facing, player))){
+            val blockStack = ItemStack(rangeBlock.block, 1, rangeBlock.block.getMetaFromState(rangeBlock))
+            if (!(player.canPlayerEdit(pos, facing, blockStack) && world.mayPlace(Blocks.CLAY, pos, false, facing, player))){
                 return EnumActionResult.FAIL
             }
 
-            if (world.setBlockState(pos, clayState, Constants.BlockFlags.DEFAULT_AND_RERENDER)) {
-                val soundType = clayBlock.getSoundType(clayState, world, pos, player)
+            if (world.setBlockState(pos, rangeBlock, Constants.BlockFlags.DEFAULT_AND_RERENDER)) {
+                val soundType = rangeBlock.block.getSoundType(rangeBlock, world, pos, player)
                 world.playSound(player, pos, soundType.placeSound, SoundCategory.BLOCKS, (soundType.volume + 1f) / 2f, soundType.pitch * 0.8f)
             }
             return EnumActionResult.SUCCESS
+        } else {
+            val poses = getPoses(player, targetPos, 2)
+                .filter { rangeBlock == world.getBlockState(it) }
+            return if (poses.isEmpty()) EnumActionResult.FAIL else EnumActionResult.SUCCESS
         }
-        return EnumActionResult.PASS
     }
 
     override fun onBlockDestroyed(stack: ItemStack, worldIn: World, state: IBlockState, pos: BlockPos, entityLiving: EntityLivingBase): Boolean {
