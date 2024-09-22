@@ -7,6 +7,7 @@ import com.github.trc.clayium.common.items.ItemClaySteelTool.Mode.*
 import com.github.trc.clayium.common.reflect.BlockReflect
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import net.minecraft.block.Block
+import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.EntityLivingBase
@@ -202,7 +203,9 @@ class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
                 }
                 var hardness = 0f
                 for (pos in poses) {
-                    val relHardness = world.getBlockState(pos).getPlayerRelativeBlockHardness(e.entityPlayer, world, pos) * 30f
+                    val state = world.getBlockState(pos)
+                    if (state.material == Material.AIR) continue
+                    val relHardness = state.getPlayerRelativeBlockHardness(e.entityPlayer, world, pos) * 30f
                     hardness += if (relHardness == 0.0f) Float.POSITIVE_INFINITY else 1.0f / relHardness
                 }
                 e.newSpeed = if (hardness == 0f) Float.POSITIVE_INFINITY else 1f / hardness
