@@ -5,10 +5,12 @@ import com.github.trc.clayium.api.util.next
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.items.ItemClaySteelTool.Mode.*
 import com.github.trc.clayium.common.reflect.BlockReflect
+import com.github.trc.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
@@ -163,6 +165,11 @@ class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
         if (i < 0 || i >= Mode.entries.size) return Mode.SINGLE
 
         return Mode.entries[i]
+    }
+
+    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        val regName = this.registryName ?: return
+        UtilLocale.formatTooltips(tooltip, "item.${regName.namespace}.${regName.path}.tooltip")
     }
 
     enum class Mode {
