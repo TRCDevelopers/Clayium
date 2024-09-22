@@ -107,11 +107,10 @@ class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
             null, SINGLE -> { return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving) }
             RANGED -> getPoses(entityLiving, pos, 1)
             CUSTOM -> {
-                val tag = stack.tagCompound
-                if (tag == null) {
+                val poses = stack.tagCompound?.getIntArray("poses")
+                if (poses == null || poses.isEmpty()) {
                     getPoses(entityLiving, pos, 2)
                 } else {
-                    val poses = tag.getIntArray("poses")
                     val lst = IntArrayList(poses)
                     lst.chunked(2).map { (high, low) ->
                         val long = (high.toLong() shl 32) or (low.toLong() and 0xFFFFFFFF)
