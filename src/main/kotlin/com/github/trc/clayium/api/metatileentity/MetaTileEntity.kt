@@ -13,6 +13,7 @@ import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.BlockMachine.Companion.IS_PIPE
+import com.github.trc.clayium.api.block.ItemBlockMachine
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_CONNECTIONS
@@ -48,6 +49,7 @@ import com.github.trc.clayium.common.items.filter.FilterType
 import com.github.trc.clayium.common.util.BothSideI18n
 import com.github.trc.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
+import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -56,6 +58,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -183,6 +186,28 @@ abstract class MetaTileEntity(
 
     open fun onFirstTick() {
         mteTraits.values.forEach(MTETrait::onFirstTick)
+    }
+
+    open fun canBeReplacedTo(stack: ItemStack, placer: EntityLivingBase): Boolean {
+        val item = stack.item
+        if (item !is ItemBlockMachine) return false
+        val metaTileEntity = CUtils.getMetaTileEntity(stack) ?: return false
+        // shouldn't be replaced if the same MTE.
+        if (metaTileEntity.metaTileEntityId == this.metaTileEntityId) return false
+        val thisClass = this::class
+        val thatClass = metaTileEntity::class
+        return thisClass == thatClass
+    }
+
+    open fun replaceTo(world: World, pos: BlockPos, metaTileEntity: MetaTileEntity) {
+        if (world.isRemote) return
+        if (!(world == this.world && pos == this.pos)) return
+        val data = NBTTagCompound()
+        this.writeToNBT(data)
+        metaTileEntity.readFromNBT(data)
+
+        this.holder?.metaTileEntity = metaTileEntity
+        Block.spawnAsEntity(world, pos, this.getStackForm())
     }
 
     open fun writeToNBT(data: NBTTagCompound) {
