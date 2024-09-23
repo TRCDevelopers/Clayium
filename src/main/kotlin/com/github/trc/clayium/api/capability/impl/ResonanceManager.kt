@@ -1,12 +1,13 @@
 package com.github.trc.clayium.api.capability.impl
 
+import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.github.trc.clayium.api.block.IResonatingBlock
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_RESONANCE
 import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import net.minecraft.network.PacketBuffer
-import kotlin.math.min
 
 class ResonanceManager(
     metaTileEntity: MetaTileEntity,
@@ -15,8 +16,8 @@ class ResonanceManager(
 
     var resonance = 1.0
         private set(value) {
-            val v = min(value, Long.MAX_VALUE.toDouble())
-            val syncFlag = (metaTileEntity.world?.isRemote == false) && (field != v)
+            val v = value.coerceAtMost(Long.MAX_VALUE.toDouble())
+            val syncFlag = (!metaTileEntity.isRemote) && (field != v)
             field = v
             if (syncFlag) {
                 writeCustomData(UPDATE_RESONANCE) {
@@ -26,7 +27,7 @@ class ResonanceManager(
         }
 
     override fun update() {
-        if (metaTileEntity.offsetTimer % 20L == 0L) {
+        if (!metaTileEntity.isRemote && metaTileEntity.offsetTimer % 20L == 0L) {
             updateResonance()
         }
     }
@@ -53,5 +54,9 @@ class ResonanceManager(
         if (discriminator == UPDATE_RESONANCE) {
             resonance = buf.readDouble()
         }
+    }
+
+    fun sync(syncManager: GuiSyncManager) {
+        syncManager.syncValue("resonance", SyncHandlers.doubleNumber(::resonance, ::resonance::set))
     }
 }

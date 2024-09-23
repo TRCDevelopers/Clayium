@@ -16,6 +16,7 @@ import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.client.resources.I18n
 import net.minecraft.util.EnumFacing
@@ -29,13 +30,13 @@ class ResonatingCollectorMetaTileEntity(
 
     override val faceTexture = clayiumId("blocks/ca_resonating_collector")
 
-    // these are used in super class to create itemHandler, so they have custom getter
+    // these are used in superclass to create itemHandler, so they have a custom getter
     override val inventoryColumnSize get() = 3
     override val inventoryRowSize get() = 3
 
     override val progressPerItem = 10_000
     override val progressPerTick: Int
-        get() = (resonanceManager.resonance - 1.0).toInt()
+        get() = (resonanceManager.resonance - 1.0).coerceAtMost(Int.MAX_VALUE.toDouble()).toInt()
     override val generatingItem by lazy { OreDictUnifier.get(OrePrefix.gem, CMaterials.antimatter) }
 
     override fun isTerrainValid() = true
@@ -49,10 +50,11 @@ class ResonatingCollectorMetaTileEntity(
     }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+        resonanceManager.sync(syncManager)
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic {
                 I18n.format("gui.${CValues.MOD_ID}.resonance", NumberFormat.formatWithMaxDigits(resonanceManager.resonance))
-            }.asWidget()
+            }.asWidgetResizing()
                 .align(Alignment.BottomRight))
             .child(SlotGroupWidget.builder()
                 .matrix("III", "III", "III")
