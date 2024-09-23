@@ -4,7 +4,6 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
@@ -92,11 +91,9 @@ abstract class AbstractItemGeneratorMetaTileEntity(
             while (generatingItemAmount > 0) {
                 val amount = min(generatingItemAmount, 64)
                 items.add(generatingItem.copy().apply { count = amount })
-                generatingItemAmount -= 64
+                generatingItemAmount -= amount
             }
-            if (TransferUtils.insertToHandler(itemInventory, items, simulate = true)) {
-                TransferUtils.insertToHandler(itemInventory, items, simulate = false)
-            } else {
+            if (!TransferUtils.insertToHandler(itemInventory, items, simulate = false)) {
                 outputFull = true
             }
             progress %= progressPerItem
@@ -134,9 +131,5 @@ abstract class AbstractItemGeneratorMetaTileEntity(
                         }.build().align(Alignment.Center))
                 )
             }
-    }
-
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
-        return super.buildMainParentWidget(syncManager)
     }
 }
