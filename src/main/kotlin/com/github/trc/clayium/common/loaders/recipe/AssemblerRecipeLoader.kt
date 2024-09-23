@@ -5,6 +5,7 @@ import com.github.trc.clayium.api.unification.material.CMarkerMaterials
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
+import com.github.trc.clayium.common.blocks.marker.ClayMarkerType
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.recipe.registry.CRecipes
@@ -132,6 +133,32 @@ object AssemblerRecipeLoader {
             .input(Items.STRING, 4)
             .output(Items.NAME_TAG)
             .tier(10).CEt(ClayEnergy.of(1000)).duration(600)
+            .buildAndRegister()
+
+        /* Clay Markers */
+        registry.builder()
+            .input(Blocks.CLAY)
+            .input(MetaItemClayParts.PrecisionCircuit)
+            .output(ClayiumBlocks.CLAY_MARKER.getItem(ClayMarkerType.NO_EXTEND))
+            .tier(6).CEt(ClayEnergy.of(1)).duration(480)
+            .buildAndRegister()
+        registry.builder()
+            .input(OrePrefix.block, CMaterials.denseClay)
+            .input(MetaItemClayParts.ClayCore)
+            .output(ClayiumBlocks.CLAY_MARKER.getItem(ClayMarkerType.EXTEND_TO_GROUND))
+            .tier(6).CEt(ClayEnergy.of(10)).duration(480)
+            .buildAndRegister()
+        registry.builder()
+            .input(OrePrefix.block, CMaterials.compressedClay)
+            .input(MetaItemClayParts.ClayCore)
+            .output(ClayiumBlocks.CLAY_MARKER.getItem(ClayMarkerType.EXTEND_TO_SKY))
+            .tier(6).CEt(ClayEnergy.of(10)).duration(480)
+            .buildAndRegister()
+        registry.builder()
+            .input(ClayiumBlocks.CLAY_MARKER.getItem(ClayMarkerType.EXTEND_TO_GROUND))
+            .input(ClayiumBlocks.CLAY_MARKER.getItem(ClayMarkerType.EXTEND_TO_SKY))
+            .output(ClayiumBlocks.CLAY_MARKER.getItem(ClayMarkerType.ALL_HEIGHT))
+            .tier(6).CEt(ClayEnergy.of(10)).duration(480)
             .buildAndRegister()
     }
 }
