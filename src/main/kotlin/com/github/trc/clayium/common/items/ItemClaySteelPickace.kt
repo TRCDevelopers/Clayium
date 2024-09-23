@@ -3,7 +3,7 @@ package com.github.trc.clayium.common.items
 import com.github.trc.clayium.api.HARDNESS_UNBREAKABLE
 import com.github.trc.clayium.api.util.next
 import com.github.trc.clayium.common.config.ConfigCore
-import com.github.trc.clayium.common.items.ItemClaySteelTool.Mode.*
+import com.github.trc.clayium.common.items.ItemClaySteelPickace.Mode.*
 import com.github.trc.clayium.common.reflect.BlockReflect
 import com.github.trc.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.ints.IntArrayList
@@ -35,7 +35,28 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries
 
 private const val SPEED_MULTIPLIER = 6
 
-class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
+private fun List<BlockPos>.toIntArray(mapper: ((BlockPos) -> BlockPos)? = null): IntArray {
+    val arr = IntArray(this.size * 2)
+    for ((i, pos) in this.withIndex()) {
+        val long = if (mapper != null) mapper(pos).toLong() else pos.toLong()
+        val high = (long shr 32).toInt()
+        val low = (long and 0xFFFFFFFF).toInt()
+        arr[i * 2] = high
+        arr[i * 2 + 1] = low
+    }
+    return arr
+}
+
+private fun IntArray.toBlockPosList(mapper: ((BlockPos) -> BlockPos)? = null): List<BlockPos> {
+    val lst = IntArrayList(this)
+    return lst.chunked(2).map { (high, low) ->
+        val long = (high.toLong() shl 32) or (low.toLong() and 0xFFFFFFFF)
+        val pos = BlockPos.fromLong(long)
+        if (mapper != null) mapper(pos) else pos
+    }
+}
+
+class ItemClaySteelPickace : ItemPickaxe(ToolMaterial.DIAMOND) {
 
     private val rangeBlock: IBlockState = run {
         if (ConfigCore.misc.claySteelToolBlock.isEmpty()) return@run Blocks.CLAY.defaultState
@@ -59,7 +80,7 @@ class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
         val stack = playerIn.getHeldItem(handIn)
         val mode = getMode(stack)
         if (mode == null) {
-            stack.tagCompound = NBTTagCompound().apply { setInteger("mode", Mode.SINGLE.ordinal) }
+            stack.tagCompound = NBTTagCompound().apply { setInteger("mode", SINGLE.ordinal) }
         } else {
             val next = mode.next()
             stack.tagCompound!!.setInteger("mode", next.ordinal)
@@ -89,15 +110,7 @@ class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
             if (!world.isRemote) {
                 val stack = player.getHeldItem(hand)
                 if (!stack.hasTagCompound()) stack.tagCompound = NBTTagCompound()
-                val arr = IntArray(poses.size * 2)
-                poses.forEachIndexed { i, abs ->
-                    val pos = abs.subtract(targetPos)
-                    val long = pos.toLong()
-                    val high = (long shr 32).toInt()
-                    val low = (long and 0xFFFFFFFF).toInt()
-                    arr[i * 2] = high
-                    arr[i * 2 + 1] = low
-                }
+                val arr = poses.toIntArray { it.subtract(targetPos) }
                 stack.tagCompound!!.setIntArray("poses", arr)
             }
             return if (poses.isEmpty()) EnumActionResult.FAIL else EnumActionResult.SUCCESS
@@ -110,17 +123,9 @@ class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
             null, SINGLE -> { return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving) }
             RANGED -> getPoses(entityLiving, pos, 1)
             CUSTOM -> {
-                val poses = stack.tagCompound?.getIntArray("poses")
-                if (poses == null || poses.isEmpty()) {
-                    getPoses(entityLiving, pos, 2)
-                } else {
-                    val lst = IntArrayList(poses)
-                    lst.chunked(2).map { (high, low) ->
-                        val long = (high.toLong() shl 32) or (low.toLong() and 0xFFFFFFFF)
-                        val rel = BlockPos.fromLong(long)
-                        pos.add(rel)
-                    }
-                }
+                stack.tagCompound?.getIntArray("poses")?.takeUnless { it.isEmpty() }
+                    ?.toBlockPosList { pos.add(it) }
+                    ?: getPoses(entityLiving, pos, 2)
             }
         }
         for (harvesting in poses) {
@@ -182,42 +187,35 @@ class ItemClaySteelTool : ItemPickaxe(ToolMaterial.DIAMOND) {
         private var firstCall = true
         @SubscribeEvent
         fun onBreakSpeed(e: PlayerEvent.BreakSpeed) {
+            // state.getPlayerRelativeBlockHardness fires this event
+            if (!firstCall) return
+            firstCall = false
+
             val stack = e.entityPlayer.getHeldItem(EnumHand.MAIN_HAND)
             val world = e.entityPlayer.world
             val item = stack.item
-            if (item !is ItemClaySteelTool) return
+            if (item !is ItemClaySteelPickace) return
             if (!stack.hasTagCompound()) return
             val tag = stack.tagCompound!!
             val mode = Mode.entries[tag.getInteger("mode")]
-            if (firstCall) {
-                firstCall = false
-                val poses = when (mode) {
-                    SINGLE -> listOf(e.pos)
-                    RANGED -> item.getPoses(e.entityPlayer, e.pos, 1)
-                    CUSTOM -> {
-                        val posesArr = tag.getIntArray("poses")
-                        if (posesArr.isEmpty()) {
-                            item.getPoses(e.entityPlayer, e.pos, 2)
-                        } else {
-                            val lst = IntArrayList(posesArr)
-                            lst.chunked(2).map { (high, low) ->
-                                val long = (high.toLong() shl 32) or (low.toLong() and 0xFFFFFFFF)
-                                val rel = BlockPos.fromLong(long)
-                                e.pos.add(rel)
-                            }
-                        }
-                    }
+            val poses = when (mode) {
+                SINGLE -> return
+                RANGED -> item.getPoses(e.entityPlayer, e.pos, 1)
+                CUSTOM -> {
+                    stack.tagCompound?.getIntArray("poses")?.takeUnless { it.isEmpty() }
+                        ?.toBlockPosList { e.pos.add(it) }
+                        ?: item.getPoses(e.entityPlayer, e.pos, 2)
                 }
-                var hardness = 0f
-                for (pos in poses) {
-                    val state = world.getBlockState(pos)
-                    if (state.material == Material.AIR) continue
-                    val relHardness = state.getPlayerRelativeBlockHardness(e.entityPlayer, world, pos) * 30f
-                    hardness += if (relHardness == 0.0f) Float.POSITIVE_INFINITY else 1.0f / relHardness
-                }
-                e.newSpeed = if (hardness == 0f) Float.POSITIVE_INFINITY else 1f / hardness
-                firstCall = true
             }
+            var hardness = 0f
+            for (pos in poses) {
+                val state = world.getBlockState(pos)
+                if (state.material == Material.AIR) continue
+                val relHardness = state.getPlayerRelativeBlockHardness(e.entityPlayer, world, pos) * 30f
+                hardness += if (relHardness == 0.0f) Float.POSITIVE_INFINITY else 1.0f / relHardness
+            }
+            e.newSpeed = if (hardness == 0f) Float.POSITIVE_INFINITY else 1f / hardness
+            firstCall = true
         }
     }
 }

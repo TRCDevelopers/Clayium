@@ -25,6 +25,8 @@ import java.util.EnumMap
 import kotlin.enums.EnumEntries
 import kotlin.enums.enumEntries
 
+// todo move extension functions to (api | common).extensions?
+// 完全なUtil系メソッド(Clayiumが一切関係ない関数)をapiにいれるのは...
 fun IBlockAccess?.getMetaTileEntity(pos: BlockPos?): MetaTileEntity? {
     if (this == null || pos == null) return null
     return (this.getTileEntity(pos) as? MetaTileEntityHolder)?.metaTileEntity
