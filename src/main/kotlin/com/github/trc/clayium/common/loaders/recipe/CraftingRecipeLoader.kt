@@ -55,6 +55,12 @@ object CraftingRecipeLoader {
         RecipeUtils.addSmeltingRecipe(MetaItemClayParts.RawClaySlicer.getStackForm(), ItemStack(ClayiumItems.CLAY_SLICER))
         RecipeUtils.addSmeltingRecipe(MetaItemClayParts.RawClaySpatula.getStackForm(), ItemStack(ClayiumItems.CLAY_SPATULA))
 
+        RecipeUtils.addShapedRecipe("clay_wrench", ItemStack(ClayiumItems.CLAY_WRENCH),
+            "B B", " C ", " S ",
+            'B', UnificationEntry(OrePrefix.blade, denseClay),
+            'C', UnificationEntry(OrePrefix.spindle, denseClay),
+            'S', UnificationEntry(OrePrefix.stick, denseClay))
+
         RecipeUtils.addShapedRecipe("clay_shovel", ItemStack(ClayiumItems.CLAY_SHOVEL),
             "H", "I", "I",
             'H', UnificationEntry(OrePrefix.plate, clay),
@@ -63,11 +69,10 @@ object CraftingRecipeLoader {
             "HHH", " I ", " I ",
             'H', UnificationEntry(OrePrefix.plate, denseClay),
             'I', UnificationEntry(OrePrefix.stick, denseClay))
-        RecipeUtils.addShapedRecipe("clay_wrench", ItemStack(ClayiumItems.CLAY_WRENCH),
-            "B B", " C ", " S ",
-            'B', UnificationEntry(OrePrefix.blade, denseClay),
-            'C', UnificationEntry(OrePrefix.spindle, denseClay),
-            'S', UnificationEntry(OrePrefix.stick, denseClay))
+        RecipeUtils.addShapedRecipe("clay_steel_pickaxe", ItemStack(ClayiumItems.CLAY_STEEL_PICKAXE),
+            "HHH", " I ", " I ",
+            'H', UnificationEntry(OrePrefix.ingot, CMaterials.claySteel),
+            'I', UnificationEntry(OrePrefix.stick, denseClay))
     }
 
     private fun registerClayPartsRecipes() {
