@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "clayium:items/claypickaxe"
+    "layer0": "clayium:items/clay_steel_pickaxe"
   }
 }

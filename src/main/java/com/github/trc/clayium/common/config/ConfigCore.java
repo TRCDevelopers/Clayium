@@ -104,6 +104,15 @@ public class ConfigCore {
         @Config.Comment("Default: 32")
         @Config.RangeInt(min = 1, max = 64)
         public int maxClayLaserLength = 32;
+
+        @Config.RequiresMcRestart
+        @Config.Comment({
+                "The block used for specifying the range of the clay steel tools.",
+                "Format: 'modid:name;meta?'",
+                "meta is default to 0. fallback to minecraft:clay.",
+                "Default: minecraft:clay"
+        })
+        public String claySteelToolBlock = "minecraft:clay";
     }
 
     public static class FeGen {
