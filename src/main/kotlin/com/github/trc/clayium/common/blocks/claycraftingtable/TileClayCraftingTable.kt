@@ -16,7 +16,6 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.metatileentity.interfaces.IMarkDirty
@@ -55,7 +54,7 @@ class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
             .child(Column().margin(7).sizeRel(1f)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.lang("tile.$MOD_ID.clay_crafting_board.name").asWidget().align(Alignment.TopLeft))
-                    .child(IKey.lang(CValues.INV_TRANS_KEY).asWidget().align(Alignment.BottomLeft))
+                    .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
                     .child(Row().widthRel(0.7f).height(18 * 3).align(Alignment.Center)
                         .child(SlotGroupWidget.builder()
                             .matrix("III", "III", "III")

@@ -1,7 +1,6 @@
 package com.github.trc.clayium.common
 
 import com.cleanroommc.modularui.factory.GuiManager
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.ItemBlockDamaged
 import com.github.trc.clayium.api.block.ItemBlockTiered
@@ -11,6 +10,7 @@ import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.BlockQuartzCrucible
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
@@ -58,7 +58,7 @@ open class CommonProxy {
     open fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(ClayiumMod.proxy)
         MinecraftForge.EVENT_BUS.register(ItemClaySteelPickace)
-        if (CValues.isDeobf) {
+        if (CUtils.isDeobfEnvironment) {
             MinecraftForge.EVENT_BUS.register(DebugUtils::class.java)
         }
 

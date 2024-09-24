@@ -1,6 +1,6 @@
 package com.github.trc.clayium.common.util;
 
-import com.github.trc.clayium.api.CValues;
+import com.github.trc.clayium.api.util.CUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -13,7 +13,7 @@ public class DebugUtils {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void onTooltip(ItemTooltipEvent e) {
-        if (!CValues.INSTANCE.isDeobf()) return;
+        if (!CUtils.INSTANCE.isDeobfEnvironment()) return;
         if (e.getItemStack().isEmpty()) {
             return;
         }

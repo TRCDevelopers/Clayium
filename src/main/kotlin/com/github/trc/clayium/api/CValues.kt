@@ -1,20 +1,18 @@
+@file:JvmName("CValues")
 /*
  * some code is copied from `gregtech.api.GTValues`.
  */
 
 package com.github.trc.clayium.api
 
-import net.minecraftforge.fml.common.FMLCommonHandler
-import net.minecraftforge.fml.relauncher.FMLLaunchHandler
-
 // todo replace MOD_ID to this
 const val MOD_ID = "clayium"
 const val MOD_NAME = "Clayium"
 
-const val GUI_DEFAULT_WIDTH = 176
-const val GUI_DEFAULT_HEIGHT = 166
+const val GUI_DEFAULT_WIDTH: Int = 176
+const val GUI_DEFAULT_HEIGHT: Int = 166
 
-const val HARDNESS_UNBREAKABLE = -1.0f
+const val HARDNESS_UNBREAKABLE: Float = -1.0f
 
 /**
  * This is worth exactly one normal Item.
@@ -29,14 +27,3 @@ const val HARDNESS_UNBREAKABLE = -1.0f
  * Copied from `gregtech.api.GTValues`
  */
 const val M: Long = 3628800L
-
-object CValues {
-    const val MOD_NAME = "Clayium"
-    const val INV_TRANS_KEY = "container.inventory"
-
-    const val MIN_WORLD_BUILD_HEIGHT = 0
-    const val MAX_WORLD_BUILD_HEIGHT = 255
-
-    val isClient by lazy { FMLCommonHandler.instance().side.isClient }
-    val isDeobf by lazy { FMLLaunchHandler.isDeobfuscatedEnvironment() }
-}

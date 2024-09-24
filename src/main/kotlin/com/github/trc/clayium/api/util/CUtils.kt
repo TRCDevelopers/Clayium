@@ -19,6 +19,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
+import net.minecraftforge.fml.common.FMLCommonHandler
+import net.minecraftforge.fml.relauncher.FMLLaunchHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import java.util.EnumMap
@@ -170,4 +172,7 @@ object CUtils {
             null
         }
     }
+
+    val isClientSide by lazy { FMLCommonHandler.instance().side.isClient }
+    val isDeobfEnvironment by lazy { FMLLaunchHandler.isDeobfuscatedEnvironment() }
 }

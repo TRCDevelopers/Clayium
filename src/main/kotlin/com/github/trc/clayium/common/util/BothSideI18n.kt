@@ -1,6 +1,6 @@
 package com.github.trc.clayium.common.util
 
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.util.CUtils
 
 /**
  * Please use it only in places where it is also called from the server.
@@ -12,7 +12,7 @@ import com.github.trc.clayium.api.CValues
 @Suppress("DEPRECATION")
 object BothSideI18n {
     fun format(key: String, vararg args: Any): String {
-        return if (CValues.isClient) {
+        return if (CUtils.isClientSide) {
             net.minecraft.client.resources.I18n.format(key, *args)
         } else {
             net.minecraft.util.text.translation.I18n.translateToLocalFormatted(key, *args)
@@ -20,7 +20,7 @@ object BothSideI18n {
     }
 
     fun hasKey(key: String): Boolean {
-        return if (CValues.isClient) {
+        return if (CUtils.isClientSide) {
             net.minecraft.client.resources.I18n.hasKey(key)
         } else {
             net.minecraft.util.text.translation.I18n.canTranslate(key)
