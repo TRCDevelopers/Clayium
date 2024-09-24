@@ -3,6 +3,13 @@ package com.github.trc.clayium.api.capability.impl
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.recipe.IRecipeProvider
+import mcjty.theoneprobe.api.IProbeHitData
+import mcjty.theoneprobe.api.IProbeInfo
+import mcjty.theoneprobe.api.ProbeMode
+import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.util.text.TextFormatting
+import net.minecraft.world.World
 
 open class RecipeLogicEnergy(
     metaTileEntity: MetaTileEntity,
@@ -37,5 +44,12 @@ open class RecipeLogicEnergy(
     fun setEnergyConsumingMultiplier(provider: (tier: Int) -> Double): RecipeLogicEnergy {
         energyConsumingMultiplier = provider(this.getTier())
         return this
+    }
+
+    override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
+        super.addProbeInfo(mode, probeInfo, player, world, state, hitData)
+        if (this.isWorking) {
+            probeInfo.text("Using ${TextFormatting.RED}${recipeCEt.formatWithoutUnit()}${TextFormatting.WHITE} CE/t")
+        }
     }
 }
