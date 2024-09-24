@@ -1,20 +1,23 @@
 package com.github.trc.clayium.api.unification.ore
 
 import com.github.trc.clayium.api.MOD_ID
+import com.github.trc.clayium.api.unification.material.CMarkerMaterials
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CMaterialFlags
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.CPropertyKey
+import com.github.trc.clayium.api.unification.material.IMaterial
 import com.github.trc.clayium.api.unification.material.MaterialAmount
 import com.github.trc.clayium.common.util.BothSideI18n
 import com.google.common.base.CaseFormat
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap
 import java.util.function.Predicate
 
 private val Long.M get() = MaterialAmount.of(this)
 
 class OrePrefix(
     val camel: String,
-    val materialAmount: MaterialAmount,
+    private val _materialAmount: MaterialAmount,
     val itemGenerationLogic: Predicate<CMaterial>? = null,
 ) {
     init {
@@ -24,6 +27,20 @@ class OrePrefix(
     val snake = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, camel)
 
     private val ignoredMaterials = mutableSetOf<CMaterial>()
+    private val modifiedAmounts = Object2LongOpenHashMap<IMaterial>().apply { defaultReturnValue(-1) }
+
+    fun getMaterialAmount(material: IMaterial): MaterialAmount {
+        val modified = modifiedAmounts.getLong(material)
+        return if (modified != -1L) {
+            MaterialAmount.createRaw(modified)
+        } else {
+            _materialAmount
+        }
+    }
+
+    fun modifyAmount(material: IMaterial, amount: MaterialAmount) {
+        modifiedAmounts.put(material, amount.raw)
+    }
 
     //todo: move to somewhere else?
     fun canGenerateItem(material: CMaterial): Boolean {
@@ -98,6 +115,23 @@ class OrePrefix(
 
         fun init() {
             block.ignore(CMaterials.clay)
+
+            block.modifyAmount(CMaterials.clay, 1.M)
+            block.modifyAmount(CMaterials.denseClay, 1.M)
+            block.modifyAmount(CMaterials.compressedClay, 1.M)
+            block.modifyAmount(CMaterials.industrialClay, 1.M)
+            block.modifyAmount(CMaterials.advancedIndustrialClay, 1.M)
+            block.modifyAmount(CMaterials.compressedEnergeticClay, 1.M)
+            block.modifyAmount(CMaterials.compressedEnergeticClay2, 1.M)
+            block.modifyAmount(CMaterials.compressedEnergeticClay3, 1.M)
+            block.modifyAmount(CMaterials.compressedEnergeticClay4, 1.M)
+            block.modifyAmount(CMaterials.compressedEnergeticClay5, 1.M)
+            block.modifyAmount(CMaterials.compressedEnergeticClay6, 1.M)
+            block.modifyAmount(CMaterials.compressedEnergeticClay7, 1.M)
+            block.modifyAmount(CMaterials.octupleEnergyClay, 1.M)
+
+            block.modifyAmount(CMarkerMaterials.certusQuartz, 4.M)
+            block.modifyAmount(CMarkerMaterials.fluix, 4.M)
         }
     }
 }

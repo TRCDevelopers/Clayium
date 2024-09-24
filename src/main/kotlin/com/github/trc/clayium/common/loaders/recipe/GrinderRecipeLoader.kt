@@ -4,6 +4,7 @@ import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.IMaterial
+import com.github.trc.clayium.api.unification.material.MaterialAmount
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
@@ -68,32 +69,30 @@ object GrinderRecipeLoader {
         if (!OreDictUnifier.exists(OrePrefix.dust, material)) {
             return
         }
-        if (OreDictUnifier.exists(OrePrefix.block, material)) {
-            handleBlockGrinding(material)
-        }
-
-        listOf(OrePrefix.ingot, OrePrefix.gem, OrePrefix.plate, OrePrefix.crystal).forEach { prefix ->
-            if (OreDictUnifier.exists(prefix, material)) {
+        for (prefix in OrePrefix.metaItemPrefixes) {
+            if (!OreDictUnifier.exists(prefix, material)) continue
+            if (prefix == OrePrefix.block) {
+                handleBlockGrinding(material)
+            } else {
                 addDefaultGrindingRecipe(prefix, material)
             }
-        }
-
-        if (OreDictUnifier.exists(OrePrefix.largePlate, material)) {
-            addDefaultGrindingRecipe(OrePrefix.largePlate, material, 4)
         }
     }
 
     private fun handleBlockGrinding(material: IMaterial) {
-        // skip if it's a clay block. (energy, duration) of these is special
+        // skip if it's a clay block. (energy, duration) of these are special
         if (material === CMaterials.clay || material === CMaterials.denseClay || material === CMaterials.industrialClay || material === CMaterials.advancedIndustrialClay) {
             return
         }
-        addDefaultGrindingRecipe(OrePrefix.block, material, material.blockAmount)
+        addDefaultGrindingRecipe(OrePrefix.block, material)
     }
 
-    private fun addDefaultGrindingRecipe(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1) {
+    private fun addDefaultGrindingRecipe(orePrefix: OrePrefix, material: IMaterial) {
         val tier = min(material.tier?.numeric ?: Int.MAX_VALUE, 5)
         val clayEnergy = ClayEnergy.micro(20 * 10.0.pow(min(tier / 2, 2)).toLong())
+        val mAmount = orePrefix.getMaterialAmount(material)
+        if (mAmount == MaterialAmount.NONE) return
+        val amount = mAmount.dustAmount.toInt()
         CRecipes.GRINDER.builder()
             .input(orePrefix, material)
             .output(OrePrefix.dust, material, amount)
