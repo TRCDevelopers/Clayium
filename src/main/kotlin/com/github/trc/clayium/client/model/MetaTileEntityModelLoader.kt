@@ -1,6 +1,6 @@
 package com.github.trc.clayium.client.model
 
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_ID
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.IResourceManager
 import net.minecraft.util.ResourceLocation
@@ -14,7 +14,7 @@ object MetaTileEntityModelLoader : ICustomModelLoader {
     }
 
     override fun accepts(modelLocation: ResourceLocation): Boolean {
-        if (!(modelLocation.namespace == CValues.MOD_ID
+        if (!(modelLocation.namespace == MOD_ID
                     && modelLocation is ModelResourceLocation)) {
             return false
         }

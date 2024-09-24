@@ -1,6 +1,6 @@
 package com.github.trc.clayium.common.items.metaitem
 
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.ore.OrePrefix
@@ -100,7 +100,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         val meta: Short,
         val name: String,
     ) {
-        val translationKey = "item.${CValues.MOD_ID}.$name"
+        val translationKey = "item.$MOD_ID.$name"
         val behaviors = mutableListOf<IItemBehavior>()
         var colorHandler: IItemColorHandler? = null
         var rarity: IRarity = EnumRarity.COMMON

@@ -17,9 +17,9 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Grid
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
+import com.github.trc.clayium.api.HARDNESS_UNBREAKABLE
 import com.github.trc.clayium.api.LaserEnergy
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
@@ -125,7 +125,7 @@ abstract class AbstractMinerMetaTileEntity(
                 continue
             }
             val blockHardness = state.getBlockHardness(world, pos)
-            if (blockHardness == CValues.HARDNESS_UNBREAKABLE) {
+            if (blockHardness == HARDNESS_UNBREAKABLE) {
                 this.currentPos = getNextBlockPos()
                 continue
             }

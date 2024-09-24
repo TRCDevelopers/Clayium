@@ -2,7 +2,7 @@ package com.github.trc.clayium.common.config;
 
 import net.minecraftforge.common.config.Config;
 
-import static com.github.trc.clayium.api.CValues.MOD_ID;
+import static com.github.trc.clayium.api.CValuesKt.MOD_ID;
 
 @Config.LangKey("clayium.config.core")
 @Config(modid = MOD_ID, name = MOD_ID + "/" + MOD_ID)

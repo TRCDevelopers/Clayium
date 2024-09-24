@@ -1,6 +1,6 @@
 package com.github.trc.clayium.client.model
 
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -20,7 +20,7 @@ object LaserReflectorModelLoader : ICustomModelLoader {
     override fun onResourceManagerReload(resourceManager: IResourceManager) {}
 
     override fun accepts(modelLocation: ResourceLocation): Boolean {
-        return modelLocation.namespace == CValues.MOD_ID && "laser_reflector" in modelLocation.path
+        return modelLocation.namespace == MOD_ID && "laser_reflector" in modelLocation.path
     }
 
     override fun loadModel(modelLocation: ResourceLocation): IModel {

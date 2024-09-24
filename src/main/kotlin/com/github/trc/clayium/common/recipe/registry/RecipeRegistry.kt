@@ -1,6 +1,6 @@
 package com.github.trc.clayium.common.recipe.registry
 
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.recipe.IRecipeProvider
 import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.Mods
@@ -19,7 +19,7 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
 ) : IRecipeProvider {
 
     constructor(translationKey: String, builderSample: R, maxInputs: Int, maxOutputs: Int) :
-            this(RecipeCategory.create(CValues.MOD_ID, translationKey), builderSample, maxInputs, maxOutputs)
+            this(RecipeCategory.create(MOD_ID, translationKey), builderSample, maxInputs, maxOutputs)
 
     val categoryName = category.categoryName
     override val jeiCategory = category.uniqueId

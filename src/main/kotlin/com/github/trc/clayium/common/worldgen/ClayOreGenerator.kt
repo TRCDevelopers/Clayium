@@ -1,6 +1,6 @@
 package com.github.trc.clayium.common.worldgen
 
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.common.config.ConfigCore.worldGen
 import net.minecraft.block.Block
 import net.minecraft.util.math.BlockPos
@@ -33,7 +33,7 @@ object ClayOreGenerator : IWorldGenerator {
     @Suppress("unused")
     @SubscribeEvent
     fun onConfigChanged(e: ConfigChangedEvent.OnConfigChangedEvent) {
-        if (e.modID != CValues.MOD_ID) return
+        if (e.modID != MOD_ID) return
 
         clayOreGenerator = WorldGenMinable(CLAY_ORE.defaultState, worldGen.clayOreVeinSize)
         denseClayOreGenerator = WorldGenMinable(DENSE_CLAY_ORE.defaultState, worldGen.denseClayOreVeinSize)

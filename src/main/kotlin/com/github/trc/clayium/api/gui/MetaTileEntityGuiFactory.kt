@@ -3,7 +3,7 @@ package com.github.trc.clayium.api.gui
 import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.factory.AbstractUIFactory
 import com.cleanroommc.modularui.factory.GuiManager
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import net.minecraft.entity.player.EntityPlayer
@@ -12,7 +12,7 @@ import net.minecraft.network.PacketBuffer
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
-object MetaTileEntityGuiFactory : AbstractUIFactory<MetaTileEntityGuiData>("${CValues.MOD_ID}:metatileentity") {
+object MetaTileEntityGuiFactory : AbstractUIFactory<MetaTileEntityGuiData>("$MOD_ID:metatileentity") {
 
     fun <T> open(player: EntityPlayer, metaTileEntity: T) where T: MetaTileEntity {
         val data = MetaTileEntityGuiData.WorldAndPos(player, metaTileEntity.world ?: return, metaTileEntity.pos ?: return)

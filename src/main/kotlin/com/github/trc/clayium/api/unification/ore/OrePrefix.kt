@@ -1,6 +1,6 @@
 package com.github.trc.clayium.api.unification.ore
 
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CMaterialFlags
 import com.github.trc.clayium.api.unification.material.CMaterials
@@ -40,7 +40,7 @@ class OrePrefix(
         if (BothSideI18n.hasKey(specialKey)) {
             return BothSideI18n.format(specialKey)
         }
-        return BothSideI18n.format("${CValues.MOD_ID}.ore_prefix.${snake}", BothSideI18n.format(material.translationKey))
+        return BothSideI18n.format("${MOD_ID}.ore_prefix.${snake}", BothSideI18n.format(material.translationKey))
     }
 
     override fun toString(): String {

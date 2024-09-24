@@ -1,10 +1,10 @@
 package com.github.trc.clayium.common.recipe
 
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_ID
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 
 class RecipeCategory private constructor(
-    val modid: String = CValues.MOD_ID,
+    val modid: String = MOD_ID,
     val categoryName: String,
 ) {
     val uniqueId = createUID(modid, categoryName)

@@ -1,8 +1,8 @@
 package com.github.trc.clayium.api.util
 
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.block.ItemBlockMachine
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
@@ -103,7 +103,7 @@ inline fun <reified E : Enum<E>> E.next(): E {
 }
 
 fun clayiumId(path: String): ResourceLocation {
-    return ResourceLocation(CValues.MOD_ID, path)
+    return ResourceLocation(MOD_ID, path)
 }
 
 object CUtils {

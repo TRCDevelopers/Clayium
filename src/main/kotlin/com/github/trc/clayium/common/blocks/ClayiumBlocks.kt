@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.blocks
 
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CPropertyKey
@@ -95,7 +95,7 @@ object ClayiumBlocks {
         return block.apply {
             setCreativeTab(ClayiumMod.creativeTab)
             setRegistryName(clayiumId(key))
-            setTranslationKey("${CValues.MOD_ID}.$key")
+            setTranslationKey("${MOD_ID}.$key")
             blocks[key] = this
         }
     }

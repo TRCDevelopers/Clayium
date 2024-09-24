@@ -2,10 +2,10 @@ package com.github.trc.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ClayLaserSourceMteTrait
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
@@ -29,7 +29,7 @@ class ClayLaserMetaTileEntity(
     private val laserGreen: Int = 0,
     private val laserBlue: Int = 0,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[0], validOutputModesLists[0], "clay_laser",) {
-    override val faceTexture = ResourceLocation(CValues.MOD_ID, "blocks/clay_laser")
+    override val faceTexture = ResourceLocation(MOD_ID, "blocks/clay_laser")
 
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val exportItems: IItemHandlerModifiable = EmptyItemStackHandler
