@@ -5,12 +5,16 @@ import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CMaterialFlags
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.CPropertyKey
+import com.github.trc.clayium.api.unification.material.MaterialAmount
 import com.github.trc.clayium.common.util.BothSideI18n
 import com.google.common.base.CaseFormat
 import java.util.function.Predicate
 
+private val Long.M get() = MaterialAmount.of(this)
+
 class OrePrefix(
     val camel: String,
+    val materialAmount: MaterialAmount,
     val itemGenerationLogic: Predicate<CMaterial>? = null,
 ) {
     init {
@@ -58,18 +62,18 @@ class OrePrefix(
         private val hasImpureDustProperty = Predicate<CMaterial> { it.hasProperty(CPropertyKey.Companion.IMPURE_DUST) }
         private val hasClayPartsFlag = Predicate<CMaterial> { it.hasFlag(CMaterialFlags.GENERATE_CLAY_PARTS) }
 
-        val ingot = OrePrefix("ingot", hasIngotProperty)
-        val dust = OrePrefix("dust", hasDustProperty)
-        val gem = OrePrefix("gem", hasMatterProperty)
-        val crystal = OrePrefix("crystal")
-        val item = OrePrefix("item")
+        val ingot = OrePrefix("ingot", 1.M, hasIngotProperty)
+        val dust = OrePrefix("dust", 1.M, hasDustProperty)
+        val gem = OrePrefix("gem", 1.M, hasMatterProperty)
+        val crystal = OrePrefix("crystal", 1.M)
+        val item = OrePrefix("item", 1.M)
 
-        val plate = OrePrefix("plate", hasPlateProperty)
-        val largePlate = OrePrefix("largePlate", hasPlateProperty)
+        val plate = OrePrefix("plate", 1.M, hasPlateProperty)
+        val largePlate = OrePrefix("largePlate", 4.M, hasPlateProperty)
 
-        val impureDust = OrePrefix("impureDust", hasImpureDustProperty)
+        val impureDust = OrePrefix("impureDust", 1.M, hasImpureDustProperty)
 
-        val block = OrePrefix("block")
+        val block = OrePrefix("block", 9.M)
 
         val bearing = OrePrefix("bearing", hasClayPartsFlag)
         val blade = OrePrefix("blade", hasClayPartsFlag)
