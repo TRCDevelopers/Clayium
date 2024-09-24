@@ -102,7 +102,8 @@ class SolarClayFabricatorMetaTileEntity(
         override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
             super.addProbeInfo(mode, probeInfo, player, world, state, hitData)
             if (this.isWorking) {
-                probeInfo.text("Generating ${TextFormatting.GREEN}${recipeCEt.formatWithoutUnit()}${TextFormatting.WHITE} CE/t")
+                val cet = recipeCEt * overclockHandler.accelerationFactor
+                probeInfo.text("Generating ${TextFormatting.GREEN}${cet.formatWithoutUnit()}${TextFormatting.WHITE} CE/t")
             }
         }
     }

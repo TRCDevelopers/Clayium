@@ -154,7 +154,8 @@ class ClayFabricatorMetaTileEntity(
         override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
             super.addProbeInfo(mode, probeInfo, player, world, state, hitData)
             if (isWorking) {
-                probeInfo.text("Generating ${TextFormatting.GREEN}${cePerTick.formatWithoutUnit()}${TextFormatting.WHITE} CE/t")
+                val cet = cePerTick * overclockHandler.accelerationFactor
+                probeInfo.text("Generating ${TextFormatting.GREEN}${cet.formatWithoutUnit()}${TextFormatting.WHITE} CE/t")
             }
         }
     }

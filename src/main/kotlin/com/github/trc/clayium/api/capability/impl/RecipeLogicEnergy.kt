@@ -49,7 +49,8 @@ open class RecipeLogicEnergy(
     override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
         super.addProbeInfo(mode, probeInfo, player, world, state, hitData)
         if (this.isWorking) {
-            probeInfo.text("Using ${TextFormatting.RED}${recipeCEt.formatWithoutUnit()}${TextFormatting.WHITE} CE/t")
+            val cet = recipeCEt * ocHandler.accelerationFactor
+            probeInfo.text("Using ${TextFormatting.RED}${cet.formatWithoutUnit()}${TextFormatting.WHITE} CE/t")
         }
     }
 }
