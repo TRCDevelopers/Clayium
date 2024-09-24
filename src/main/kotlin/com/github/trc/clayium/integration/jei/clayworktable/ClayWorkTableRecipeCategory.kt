@@ -1,6 +1,6 @@
 package com.github.trc.clayium.integration.jei.clayworktable
 
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_NAME
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import mezz.jei.api.IGuiHelper
@@ -29,7 +29,7 @@ class ClayWorkTableRecipeCategory(
     }
 
     override fun getModName(): String {
-        return CValues.MOD_NAME
+        return MOD_NAME
     }
 
     override fun getBackground(): IDrawable {
