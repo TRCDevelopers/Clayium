@@ -5,6 +5,8 @@
 
 package com.github.trc.clayium.api
 
+import net.minecraftforge.oredict.OreDictionary
+
 // todo replace MOD_ID to this
 const val MOD_ID = "clayium"
 const val MOD_NAME = "Clayium"
@@ -27,3 +29,5 @@ const val HARDNESS_UNBREAKABLE: Float = -1.0f
  * Copied from `gregtech.api.GTValues`
  */
 const val M: Long = 3628800L
+
+const val W: Int = OreDictionary.WILDCARD_VALUE
