@@ -8,6 +8,7 @@ import com.github.trc.clayium.api.block.VariantItemBlock
 import com.github.trc.clayium.api.capability.SimpleCapabilityManager
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.CUtils
@@ -69,6 +70,7 @@ open class CommonProxy {
         MetaTileEntities.init()
         CMaterials.init()
         OrePrefix.init()
+        OreDictUnifier.initialize()
 
         GuiManager.registerFactory(MetaTileEntityGuiFactory)
 

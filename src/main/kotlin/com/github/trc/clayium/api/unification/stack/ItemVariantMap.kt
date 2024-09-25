@@ -46,6 +46,14 @@ interface MutableItemVariantMap<E> : ItemVariantMap<E> {
 
     fun put(meta: Short, value: E?): E? = set(meta, value)
     fun put(stack: ItemStack, value: E?): E? = put(stack.itemDamage.toShort(), value)
+
+    fun computeIfAbsent(meta: Short, supplier: () -> E): E {
+        val current = get(meta)
+        if (current != null) return current
+        val value = supplier()
+        if (value != null) put(meta, value)
+        return value
+    }
 }
 
 object EmptyItemVariantMap : ItemVariantMap<Nothing> {
