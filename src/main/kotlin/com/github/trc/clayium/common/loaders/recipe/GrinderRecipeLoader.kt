@@ -10,8 +10,10 @@ import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import net.minecraft.init.Blocks
+import kotlin.math.floor
 import kotlin.math.min
 import kotlin.math.pow
+import kotlin.math.sqrt
 
 object GrinderRecipeLoader {
     fun registerRecipes() {
@@ -92,11 +94,12 @@ object GrinderRecipeLoader {
         val clayEnergy = ClayEnergy.micro(20 * 10.0.pow(min(tier / 2, 2)).toLong())
         val mAmount = orePrefix.getMaterialAmount(material)
         if (mAmount == MaterialAmount.NONE) return
+        val durationModifier = floor(sqrt(mAmount.dustAmount.toDouble())).toInt()
         val amount = mAmount.dustAmount.toInt()
         CRecipes.GRINDER.builder()
             .input(orePrefix, material)
             .output(OrePrefix.dust, material, amount)
-            .tier(tier).CEt(clayEnergy).duration(80 * amount)
+            .tier(tier).CEt(clayEnergy).duration(80 * durationModifier)
             .buildAndRegister()
     }
 }
