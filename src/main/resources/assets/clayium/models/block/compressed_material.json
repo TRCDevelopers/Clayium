@@ -4,7 +4,7 @@
     "base": "clayium:blocks/metalblock_base",
     "light": "clayium:blocks/metalblock_light",
     "dark": "clayium:blocks/metalblock_dark",
-    "particle": "#light"
+    "particle": "clayium:blocks/metalblock_base"
   },
   "elements": [
     {
