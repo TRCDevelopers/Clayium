@@ -4,9 +4,9 @@ import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.util.BlockMaterial
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
-import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.blocks.BlockMaterialBase
 import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
+import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import net.minecraft.block.SoundType
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 abstract class BlockCompressed(mapping: Map<Int, CMaterial>) : BlockMaterialBase(BlockMaterial.IRON, mapping) {
 
     init {
-        setCreativeTab(ClayiumMod.creativeTab)
+        setCreativeTab(ClayiumCTabs.decorations)
     }
 
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
