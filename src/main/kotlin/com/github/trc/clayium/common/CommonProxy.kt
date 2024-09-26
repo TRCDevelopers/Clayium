@@ -115,10 +115,13 @@ open class CommonProxy {
         for (block in ClayiumBlocks.COMPRESSED_BLOCKS) registry.register(block)
     }
 
+    //todo move to ClayiumBlocks/Items
     @Suppress("unused")
     @SubscribeEvent
     fun registerItems(event: RegistryEvent.Register<Item>) {
         val registry = event.registry
+
+        ClayiumBlocks.registerItemBlocks(event)
 
         //todo: move to somewhere else
         registry.register(MetaItemClayParts)
@@ -180,8 +183,6 @@ open class CommonProxy {
         for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) {
             registry.register(createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.block) })
         }
-        for (block in ClayiumBlocks.COMPRESSED_BLOCKS)
-            registry.register(createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.block) })
 
         registry.register(ClayiumApi.ITEM_BLOCK_MACHINE)
     }

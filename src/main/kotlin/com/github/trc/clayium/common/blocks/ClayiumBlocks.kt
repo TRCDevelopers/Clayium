@@ -30,6 +30,8 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper
 import net.minecraft.client.renderer.block.statemap.IStateMapper
 import net.minecraft.client.renderer.block.statemap.StateMap
+import net.minecraft.item.Item
+import net.minecraft.item.ItemBlock
 import net.minecraftforge.client.event.ColorHandlerEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
@@ -82,6 +84,7 @@ object ClayiumBlocks {
     /* ---------------------------------- */
 
     private val stateMapperCache = mutableMapOf<Block, IStateMapper>()
+    private val COMPRESSED_ITEM_BLOCKS = mutableListOf<ItemBlockMaterial>()
 
     init {
         createMaterialBlock(
@@ -107,7 +110,22 @@ object ClayiumBlocks {
         }
     }
 
+    private fun <T: Block, I: ItemBlock> createItemBlock(block: T, producer: (T) -> I): I {
+        return producer(block).apply {
+            registryName = block.registryName ?: throw IllegalArgumentException("Block ${block.translationKey} has no registry name")
+        }
+    }
+
     fun registerBlocks(event: RegistryEvent.Register<Block>) { blocks.values.forEach(event.registry::register) }
+
+    fun registerItemBlocks(event: RegistryEvent.Register<Item>) {
+        val registry = event.registry
+        for (block in COMPRESSED_BLOCKS) {
+            val ib = createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.block) }
+            registry.register(ib)
+            COMPRESSED_ITEM_BLOCKS.add(ib)
+        }
+    }
 
     fun registerOreDictionaries() {
         for ((m, b) in energizedClay) {
@@ -207,14 +225,19 @@ object ClayiumBlocks {
     fun registerBlockColors(e: ColorHandlerEvent.Block) {
         val blockColors = e.blockColors
         for (block in COMPRESSED_BLOCKS) {
-            blockColors.registerBlockColorHandler({state, _, _, i ->
-                block.getCMaterial(state).colors?.get(i) ?: 0xFFFFFF
+            blockColors.registerBlockColorHandler({ state, _, _, i ->
+                block.getCMaterial(state).colors?.get(i) ?: 0
             }, block)
         }
     }
 
     @SideOnly(Side.CLIENT)
     fun registerItemColors(e: ColorHandlerEvent.Item) {
-
+        val itemColors = e.itemColors
+        for (item in COMPRESSED_ITEM_BLOCKS) {
+            itemColors.registerItemColorHandler({ stack, i ->
+                item.blockMaterial.getCMaterial(stack.itemDamage).colors?.get(i) ?: 0
+            }, item)
+        }
     }
 }

@@ -12,8 +12,11 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.block.statemap.StateMapperBase
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.ItemStack
+import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.NonNullList
 import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 abstract class BlockCompressed(mapping: Map<Int, CMaterial>) : BlockMaterialBase(BlockMaterial.IRON, mapping) {
 
@@ -25,6 +28,10 @@ abstract class BlockCompressed(mapping: Map<Int, CMaterial>) : BlockMaterialBase
         super.getSubBlocks(itemIn, items)
     }
 
+    @SideOnly(Side.CLIENT)
+    override fun getRenderLayer() = BlockRenderLayer.TRANSLUCENT
+
+    @SideOnly(Side.CLIENT)
     override fun registerModels() {
         val loc = ModelResourceLocation(clayiumId("material/compressed_material"), "variant=basic")
         ModelLoader.setCustomStateMapper(this,
