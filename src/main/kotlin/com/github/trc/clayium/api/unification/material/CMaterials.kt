@@ -1,7 +1,6 @@
 package com.github.trc.clayium.api.unification.material
 
 import com.github.trc.clayium.api.ClayEnergy
-import com.github.trc.clayium.api.unification.material.CMaterialFlags.COMPRESSED_BLOCK
 import com.github.trc.clayium.api.util.clayiumId
 
 @Suppress("unused")
@@ -460,7 +459,6 @@ object CMaterials {
         ingot().dust()
         plate(ClayEnergy.milli(1), 120, tier = 4)
         blastSmelting(2.0, 7, 1000)
-        flags(COMPRESSED_BLOCK)
     }
     val coal = CMaterial.create(506, clayiumId("coal")) {
         colors(0x141414, 0x191919, 0x323250)
@@ -523,7 +521,6 @@ object CMaterials {
         ingot().dust()
         plate(ClayEnergy.milli(1), 180, tier = 4)
         blastSmelting(4.0, 8, 2000)
-        flags(COMPRESSED_BLOCK)
     }
     val zinc_aluminum = CMaterial.create(520, clayiumId("zinc_aluminum")) {
         tier(6).colors(0xF0BEDC, 0xA00000, 0xFFFFFF)

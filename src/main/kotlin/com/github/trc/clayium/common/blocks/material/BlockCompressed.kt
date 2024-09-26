@@ -7,13 +7,17 @@ import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.blocks.BlockMaterialBase
 import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
+import net.minecraft.block.SoundType
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.block.statemap.StateMapperBase
 import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.entity.Entity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.NonNullList
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -40,6 +44,11 @@ abstract class BlockCompressed(mapping: Map<Int, CMaterial>) : BlockMaterialBase
         for (state in blockState.validStates) {
             ModelLoader.setCustomModelResourceLocation(this.getAsItem(), this.getMetaFromState(state), loc)
         }
+    }
+
+    override fun getSoundType(state: IBlockState, world: World, pos: BlockPos, entity: Entity?): SoundType {
+        //todo: different sound for different materials?
+        return SoundType.METAL
     }
 
     companion object {

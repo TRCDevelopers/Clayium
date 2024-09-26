@@ -4,7 +4,6 @@ import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
-import com.github.trc.clayium.api.unification.material.CMaterialFlags
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.clayiumId
@@ -97,7 +96,7 @@ object ClayiumBlocks {
             this::createEnergizedClayBlock)
         createMaterialBlock(
             { !OrePrefix.block.isIgnored(it)
-                && (it.hasFlag(CMaterialFlags.COMPRESSED_BLOCK) || it.hasProperty(CPropertyKey.INGOT)) },
+                && (it.hasProperty(CPropertyKey.INGOT)) },
             this::createCompressedBock)
     }
 
