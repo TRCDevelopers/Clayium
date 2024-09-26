@@ -112,6 +112,7 @@ open class CommonProxy {
 
         for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) registry.register(block)
         for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) registry.register(block)
+        for (block in ClayiumBlocks.COMPRESSED_BLOCKS) registry.register(block)
     }
 
     @Suppress("unused")
@@ -179,6 +180,8 @@ open class CommonProxy {
         for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) {
             registry.register(createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.block) })
         }
+        for (block in ClayiumBlocks.COMPRESSED_BLOCKS)
+            registry.register(createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.block) })
 
         registry.register(ClayiumApi.ITEM_BLOCK_MACHINE)
     }

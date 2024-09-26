@@ -5,6 +5,7 @@ import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.IClayEnergyProvider
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.common.blocks.material.BlockEnergizedClay
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.common.capabilities.Capability

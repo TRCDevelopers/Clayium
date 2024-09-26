@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.github.trc.clayium.api.capability.impl.InfiniteItemStackHandler
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.util.toItemStack
+import com.github.trc.clayium.common.blocks.material.BlockEnergizedClay
 import net.minecraft.block.state.IBlockState
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing

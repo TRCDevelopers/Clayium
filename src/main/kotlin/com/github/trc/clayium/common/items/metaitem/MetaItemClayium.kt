@@ -10,7 +10,6 @@ import com.github.trc.clayium.common.items.ItemClayium
 import com.github.trc.clayium.common.items.metaitem.component.*
 import com.github.trc.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.shorts.Short2ObjectAVLTreeMap
-import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
@@ -19,6 +18,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.NonNullList
 import net.minecraft.world.World
+import net.minecraftforge.client.event.ColorHandlerEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.IRarity
 import net.minecraftforge.common.capabilities.ICapabilityProvider
@@ -48,8 +48,8 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
     private fun getItem(stack: ItemStack) = getItem(stack.itemDamage.toShort())
 
     @SideOnly(Side.CLIENT)
-    fun registerColorHandler() {
-        Minecraft.getMinecraft().itemColors.registerItemColorHandler({ stack, tintIndex ->
+    fun registerColorHandler(e: ColorHandlerEvent.Item) {
+        e.itemColors.registerItemColorHandler({ stack, tintIndex ->
             getItem(stack.itemDamage.toShort())?.colorHandler?.getColor(stack, tintIndex) ?: 0xFFFFFF
         }, this)
     }
@@ -161,9 +161,9 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         }
 
         @SideOnly(Side.CLIENT)
-        fun registerColors() {
+        fun registerColors(e: ColorHandlerEvent.Item) {
             for (item in META_ITEMS) {
-                item.registerColorHandler()
+                item.registerColorHandler(e)
             }
         }
     }

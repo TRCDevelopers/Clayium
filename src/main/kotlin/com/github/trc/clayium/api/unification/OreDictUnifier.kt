@@ -1,5 +1,6 @@
 package com.github.trc.clayium.api.unification
 
+import com.github.trc.clayium.api.W
 import com.github.trc.clayium.api.unification.material.IMaterial
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.MultiItemVariantMap
@@ -39,6 +40,22 @@ object OreDictUnifier {
         val names = variantMap.computeIfAbsent(meta.toShort()) { mutableSetOf() }
         names.add(oreName)
         //todo
+    }
+
+    fun getOreNames(stack: ItemStack): Set<String> {
+        val item = stack.item
+        val meta = stack.itemDamage
+        val variantMap = item2OreNames[item]
+            ?: return emptySet()
+        val names = variantMap[meta.toShort()]
+        if (meta == W) {
+            return names ?: emptySet()
+        }
+
+        val wildcardNames = variantMap[W.toShort()]
+            ?: emptySet()
+
+        return names?.union(wildcardNames) ?: wildcardNames
     }
 
     fun registerOre(stack: ItemStack, oreDict: String) {

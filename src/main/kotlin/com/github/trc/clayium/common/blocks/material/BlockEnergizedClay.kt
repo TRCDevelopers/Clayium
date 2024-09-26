@@ -1,10 +1,12 @@
-package com.github.trc.clayium.common.blocks
+package com.github.trc.clayium.common.blocks.material
 
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.common.ClayiumMod
+import com.github.trc.clayium.common.blocks.BlockMaterialBase
 import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
 import net.minecraft.block.SoundType
+import net.minecraft.block.material.Material
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
@@ -13,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 
 abstract class BlockEnergizedClay(
     mapping: Map<Int, CMaterial>,
-) : BlockMaterialBase(net.minecraft.block.material.Material.GROUND, mapping) {
+) : BlockMaterialBase(Material.GROUND, mapping) {
 
     init {
         setSoundType(SoundType.GROUND)

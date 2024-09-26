@@ -4,6 +4,7 @@ import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.material.CMaterialFlags
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.clayiumId
@@ -16,10 +17,11 @@ import com.github.trc.clayium.common.blocks.claytree.BlockClayLog
 import com.github.trc.clayium.common.blocks.claytree.BlockClaySapling
 import com.github.trc.clayium.common.blocks.clayworktable.BlockClayWorkTable
 import com.github.trc.clayium.common.blocks.marker.BlockClayMarker
+import com.github.trc.clayium.common.blocks.material.BlockCompressed
 import com.github.trc.clayium.common.blocks.material.BlockCompressedClay
+import com.github.trc.clayium.common.blocks.material.BlockEnergizedClay
 import com.github.trc.clayium.common.blocks.ores.BlockClayOre
 import com.github.trc.clayium.common.blocks.ores.BlockDenseClayOre
-import com.google.common.collect.ImmutableMap
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import net.minecraft.block.Block
 import net.minecraft.block.BlockLeaves
@@ -28,6 +30,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper
 import net.minecraft.client.renderer.block.statemap.IStateMapper
 import net.minecraft.client.renderer.block.statemap.StateMap
+import net.minecraftforge.client.event.ColorHandlerEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.relauncher.Side
@@ -36,7 +39,6 @@ import net.minecraftforge.fml.relauncher.SideOnly
 object ClayiumBlocks {
 
     private val blocks: MutableMap<String, Block> = mutableMapOf()
-    val allBlocks: Map<String, Block> get() = ImmutableMap.copyOf(blocks)
 
     val CREATIVE_ENERGY_SOURCE = createBlock("creative_energy_source", BlockSimpleTileEntityHolder(::TileEntityCreativeEnergySource)
         .apply { setBlockUnbreakable() })
@@ -72,6 +74,7 @@ object ClayiumBlocks {
 
     val COMPRESSED_CLAY_BLOCKS = mutableListOf<BlockCompressedClay>()
     val ENERGIZED_CLAY_BLOCKS = mutableListOf<BlockEnergizedClay>()
+    val COMPRESSED_BLOCKS = mutableListOf<BlockCompressed>()
 
     private val compressedClay = mutableMapOf<CMaterial, BlockCompressedClay>()
     private val energizedClay = mutableMapOf<CMaterial, BlockEnergizedClay>()
@@ -89,6 +92,10 @@ object ClayiumBlocks {
             { !OrePrefix.block.isIgnored(it)
                 && it.getPropOrNull(CPropertyKey.CLAY)?.energy != null },
             this::createEnergizedClayBlock)
+        createMaterialBlock(
+            { !OrePrefix.block.isIgnored(it)
+                && (it.hasFlag(CMaterialFlags.COMPRESSED_BLOCK) || it.hasProperty(CPropertyKey.INGOT)) },
+            this::createCompressedBock)
     }
 
     private fun <T: Block> createBlock(key: String, block: T): T {
@@ -130,7 +137,7 @@ object ClayiumBlocks {
     }
 
     fun createEnergizedClayBlock(metaMaterialMap: Map<Int, CMaterial>, index: Int) {
-        val block = BlockEnergizedClay.create(metaMaterialMap)
+        val block = BlockEnergizedClay.Companion.create(metaMaterialMap)
         block.registryName = clayiumId("energized_clay_$index")
         ENERGIZED_CLAY_BLOCKS.add(block)
         metaMaterialMap.values.forEach { energizedClay[it] = block }
@@ -141,6 +148,12 @@ object ClayiumBlocks {
         block.registryName = clayiumId("compressed_clay_$index")
         COMPRESSED_CLAY_BLOCKS.add(block)
         metaMaterialMap.values.forEach { compressedClay[it] = block }
+    }
+
+    fun createCompressedBock(metaMaterialMap: Map<Int, CMaterial>, index: Int) {
+        val block = BlockCompressed.create(metaMaterialMap)
+        block.registryName = clayiumId("compressed_block_$index")
+        COMPRESSED_BLOCKS.add(block)
     }
 
     @SideOnly(Side.CLIENT)
@@ -160,6 +173,7 @@ object ClayiumBlocks {
         blocks.values.forEach(::registerItemModel)
         for (block in ENERGIZED_CLAY_BLOCKS) block.registerModels()
         for (block in COMPRESSED_CLAY_BLOCKS) block.registerModels()
+        for (block in COMPRESSED_BLOCKS) block.registerModels()
 
         stateMapperCache.clear()
     }
@@ -187,5 +201,20 @@ object ClayiumBlocks {
                 }
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    fun registerBlockColors(e: ColorHandlerEvent.Block) {
+        val blockColors = e.blockColors
+        for (block in COMPRESSED_BLOCKS) {
+            blockColors.registerBlockColorHandler({state, _, _, i ->
+                block.getCMaterial(state).colors?.get(i) ?: 0xFFFFFF
+            }, block)
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    fun registerItemColors(e: ColorHandlerEvent.Item) {
+
     }
 }
