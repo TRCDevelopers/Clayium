@@ -24,6 +24,7 @@ import com.github.trc.clayium.common.blocks.material.BlockCompressedClay
 import com.github.trc.clayium.common.blocks.material.BlockEnergizedClay
 import com.github.trc.clayium.common.blocks.ores.BlockClayOre
 import com.github.trc.clayium.common.blocks.ores.BlockDenseClayOre
+import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import net.minecraft.block.Block
 import net.minecraft.block.BlockLeaves
@@ -32,6 +33,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper
 import net.minecraft.client.renderer.block.statemap.IStateMapper
 import net.minecraft.client.renderer.block.statemap.StateMap
+import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
@@ -76,7 +78,7 @@ object ClayiumBlocks {
     val CHUNK_LOADER = createBlock("chunk_loader", ChunkLoaderBlock())
 
     /* Deco Blocks */
-    val COLORED_SILICONE = createBlock("colored_silicone", ColoredSiliconeBlock())
+    val COLORED_SILICONE = createBlock("colored_silicone", ColoredSiliconeBlock(), ClayiumCTabs.decorations)
 
     /* ---------------------------------- */
 
@@ -108,9 +110,9 @@ object ClayiumBlocks {
             this::createCompressedBock)
     }
 
-    private fun <T: Block> createBlock(key: String, block: T): T {
+    private fun <T: Block> createBlock(key: String, block: T, tab: CreativeTabs = ClayiumMod.creativeTab): T {
         return block.apply {
-            setCreativeTab(ClayiumMod.creativeTab)
+            setCreativeTab(tab)
             setRegistryName(clayiumId(key))
             setTranslationKey("${MOD_ID}.$key")
             blocks[key] = this
