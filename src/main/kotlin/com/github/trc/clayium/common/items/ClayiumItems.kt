@@ -1,6 +1,6 @@
 package com.github.trc.clayium.common.items
 
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.IConfigurationTool
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.ClayiumMod
@@ -40,7 +40,7 @@ object ClayiumItems {
         return item.apply {
             setCreativeTab(ClayiumMod.creativeTab)
             setRegistryName(clayiumId(name))
-            setTranslationKey("${CValues.MOD_ID}.$name")
+            setTranslationKey("${MOD_ID}.$name")
         }
     }
 }

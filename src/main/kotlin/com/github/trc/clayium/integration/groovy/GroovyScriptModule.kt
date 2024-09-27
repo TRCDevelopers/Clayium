@@ -3,7 +3,8 @@ package com.github.trc.clayium.integration.groovy
 import com.cleanroommc.groovyscript.GroovyScript
 import com.cleanroommc.groovyscript.api.GroovyPlugin
 import com.cleanroommc.groovyscript.compat.mods.GroovyContainer
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_ID
+import com.github.trc.clayium.api.MOD_NAME
 import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import net.minecraftforge.fml.common.Optional
@@ -16,12 +17,12 @@ import net.minecraftforge.fml.common.Optional
 class GroovyScriptModule : GroovyPlugin {
     @Optional.Method(modid = Mods.Names.GROOVY_SCRIPT)
     override fun getModId(): String {
-        return CValues.MOD_ID
+        return MOD_ID
     }
 
     @Optional.Method(modid = Mods.Names.GROOVY_SCRIPT)
     override fun getContainerName(): String {
-        return CValues.MOD_NAME
+        return MOD_NAME
     }
 
     @Optional.Method(modid = Mods.Names.GROOVY_SCRIPT)

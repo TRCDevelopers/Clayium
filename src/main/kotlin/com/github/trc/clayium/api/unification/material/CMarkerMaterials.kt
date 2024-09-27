@@ -1,8 +1,8 @@
 package com.github.trc.clayium.api.unification.material
 
 object CMarkerMaterials {
-    val certusQuartz = CMarkerMaterial("CertusQuartz", blockAmount = 4)
-    val fluix = CMarkerMaterial("Fluix", blockAmount = 4)
+    val certusQuartz = CMarkerMaterial("CertusQuartz")
+    val fluix = CMarkerMaterial("Fluix")
     val redstoneAlloy = CMarkerMaterial("RedstoneAlloy")
     val conductiveIron = CMarkerMaterial("ConductiveIron")
     val energeticAlloy = CMarkerMaterial("EnergeticAlloy")

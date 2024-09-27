@@ -1,8 +1,8 @@
 package com.github.trc.clayium.api.util
 
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.block.ItemBlockMachine
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
@@ -19,11 +19,15 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
+import net.minecraftforge.fml.common.FMLCommonHandler
+import net.minecraftforge.fml.relauncher.FMLLaunchHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import java.util.EnumMap
 import kotlin.enums.EnumEntries
 import kotlin.enums.enumEntries
+
+typealias BlockMaterial = net.minecraft.block.material.Material
 
 // todo move extension functions to (api | common).extensions?
 // 完全なUtil系メソッド(Clayiumが一切関係ない関数)をapiにいれるのは...
@@ -103,7 +107,7 @@ inline fun <reified E : Enum<E>> E.next(): E {
 }
 
 fun clayiumId(path: String): ResourceLocation {
-    return ResourceLocation(CValues.MOD_ID, path)
+    return ResourceLocation(MOD_ID, path)
 }
 
 object CUtils {
@@ -170,4 +174,7 @@ object CUtils {
             null
         }
     }
+
+    val isClientSide by lazy { FMLCommonHandler.instance().side.isClient }
+    val isDeobfEnvironment by lazy { FMLLaunchHandler.isDeobfuscatedEnvironment() }
 }

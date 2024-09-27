@@ -1,0 +1,8 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "variant": {
+      "basic": { "model": "clayium:compressed_material" }
+    }
+  }
+}

@@ -1,7 +1,8 @@
 package com.github.trc.clayium.common
 
 import com.github.trc.clayium.CTags
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_ID
+import com.github.trc.clayium.api.MOD_NAME
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
@@ -15,8 +16,8 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 @Mod(
-    modid = CValues.MOD_ID,
-    name = CValues.MOD_NAME,
+    modid = MOD_ID,
+    name = MOD_NAME,
     version = CTags.VERSION,
     modLanguageAdapter = "io.github.chaosunity.forgelin.KotlinAdapter",
     dependencies = "required:forge@[14.23.5.2847,);" +
@@ -31,7 +32,7 @@ object ClayiumMod {
     @SidedProxy(clientSide = "com.github.trc.clayium.client.ClientProxy", serverSide = "com.github.trc.clayium.common.CommonProxy")
     lateinit var proxy: CommonProxy
 
-    val creativeTab: CreativeTabs = object : CreativeTabs(getNextID(), CValues.MOD_ID) {
+    val creativeTab: CreativeTabs = object : CreativeTabs(getNextID(), MOD_ID) {
         @SideOnly(Side.CLIENT)
         override fun createIcon(): ItemStack {
             return ItemStack(Items.CLAY_BALL)

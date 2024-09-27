@@ -4,7 +4,7 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.TextWidget
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_STRUCTURE_VALIDITY
 import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
@@ -25,7 +25,7 @@ import kotlin.math.pow
 class MultiblockLogic(
     metaTileEntity: MetaTileEntity,
     private val checkStructure: (MultiblockLogic) -> StructureValidationResult,
-) : MTETrait(metaTileEntity, "${CValues.MOD_ID}.structure_validator") {
+) : MTETrait(metaTileEntity, "${MOD_ID}.structure_validator") {
 
     var structureFormed = false
         private set

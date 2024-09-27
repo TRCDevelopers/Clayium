@@ -1,0 +1,47 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "base": "clayium:blocks/metalblock_base",
+    "light": "clayium:blocks/metalblock_light",
+    "dark": "clayium:blocks/metalblock_dark",
+    "particle": "clayium:blocks/metalblock_base"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "down": {"texture": "#base", "uv": [0, 0, 16, 16], "tintindex": 0},
+        "up": {"texture": "#base", "uv": [0, 0, 16, 16], "tintindex": 0},
+        "north": {"texture": "#base", "uv": [0, 0, 16, 16], "tintindex": 0},
+        "south": {"texture": "#base", "uv": [0, 0, 16, 16], "tintindex": 0},
+        "west": {"texture": "#base", "uv": [0, 0, 16, 16], "tintindex": 0},
+        "east": {"texture": "#base", "uv": [0, 0, 16, 16], "tintindex": 0}
+      }
+    },
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "down": {"texture": "#dark", "uv": [0, 0, 16, 16], "tintindex": 1},
+        "up": {"texture": "#dark", "uv": [0, 0, 16, 16], "tintindex": 1},
+        "north": {"texture": "#dark", "uv": [0, 0, 16, 16], "tintindex": 1},
+        "south": {"texture": "#dark", "uv": [0, 0, 16, 16], "tintindex": 1},
+        "west": {"texture": "#dark", "uv": [0, 0, 16, 16], "tintindex": 1},
+        "east": {"texture": "#dark", "uv": [0, 0, 16, 16], "tintindex": 1}
+      }
+    },
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "down": {"texture": "#light", "uv": [0, 0, 16, 16], "tintindex": 2},
+        "up": {"texture": "#light", "uv": [0, 0, 16, 16], "tintindex": 2},
+        "north": {"texture": "#light", "uv": [0, 0, 16, 16], "tintindex": 2},
+        "south": {"texture": "#light", "uv": [0, 0, 16, 16], "tintindex": 2},
+        "west": {"texture": "#light", "uv": [0, 0, 16, 16], "tintindex": 2},
+        "east": {"texture": "#light", "uv": [0, 0, 16, 16], "tintindex": 2}
+      }
+    }
+  ]
+}

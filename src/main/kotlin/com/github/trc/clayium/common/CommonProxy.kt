@@ -1,7 +1,6 @@
 package com.github.trc.clayium.common
 
 import com.cleanroommc.modularui.factory.GuiManager
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.ItemBlockDamaged
 import com.github.trc.clayium.api.block.ItemBlockTiered
@@ -9,8 +8,10 @@ import com.github.trc.clayium.api.block.VariantItemBlock
 import com.github.trc.clayium.api.capability.SimpleCapabilityManager
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.BlockQuartzCrucible
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
@@ -58,7 +59,7 @@ open class CommonProxy {
     open fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(ClayiumMod.proxy)
         MinecraftForge.EVENT_BUS.register(ItemClaySteelPickace)
-        if (CValues.isDeobf) {
+        if (CUtils.isDeobfEnvironment) {
             MinecraftForge.EVENT_BUS.register(DebugUtils::class.java)
         }
 
@@ -69,6 +70,7 @@ open class CommonProxy {
         MetaTileEntities.init()
         CMaterials.init()
         OrePrefix.init()
+        OreDictUnifier.initialize()
 
         GuiManager.registerFactory(MetaTileEntityGuiFactory)
 
@@ -110,12 +112,16 @@ open class CommonProxy {
 
         for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) registry.register(block)
         for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) registry.register(block)
+        for (block in ClayiumBlocks.COMPRESSED_BLOCKS) registry.register(block)
     }
 
+    //todo move to ClayiumBlocks/Items
     @Suppress("unused")
     @SubscribeEvent
     fun registerItems(event: RegistryEvent.Register<Item>) {
         val registry = event.registry
+
+        ClayiumBlocks.registerItemBlocks(event)
 
         //todo: move to somewhere else
         registry.register(MetaItemClayParts)

@@ -8,7 +8,7 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.impl.ResonanceManager
 import com.github.trc.clayium.api.metatileentity.AbstractItemGeneratorMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
@@ -53,7 +53,7 @@ class ResonatingCollectorMetaTileEntity(
         resonanceManager.sync(syncManager)
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic {
-                I18n.format("gui.${CValues.MOD_ID}.resonance", NumberFormat.formatWithMaxDigits(resonanceManager.resonance))
+                I18n.format("gui.$MOD_ID.resonance", NumberFormat.formatWithMaxDigits(resonanceManager.resonance))
             }.asWidgetResizing()
                 .align(Alignment.BottomRight))
             .child(SlotGroupWidget.builder()

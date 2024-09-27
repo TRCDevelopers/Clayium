@@ -1,9 +1,12 @@
 package com.github.trc.clayium.common.blocks
 
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayiumApi
+import com.github.trc.clayium.api.MOD_ID
+import com.github.trc.clayium.api.W
+import com.github.trc.clayium.api.block.VariantItemBlock
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.clayiumId
@@ -16,10 +19,11 @@ import com.github.trc.clayium.common.blocks.claytree.BlockClayLog
 import com.github.trc.clayium.common.blocks.claytree.BlockClaySapling
 import com.github.trc.clayium.common.blocks.clayworktable.BlockClayWorkTable
 import com.github.trc.clayium.common.blocks.marker.BlockClayMarker
+import com.github.trc.clayium.common.blocks.material.BlockCompressed
 import com.github.trc.clayium.common.blocks.material.BlockCompressedClay
+import com.github.trc.clayium.common.blocks.material.BlockEnergizedClay
 import com.github.trc.clayium.common.blocks.ores.BlockClayOre
 import com.github.trc.clayium.common.blocks.ores.BlockDenseClayOre
-import com.google.common.collect.ImmutableMap
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import net.minecraft.block.Block
 import net.minecraft.block.BlockLeaves
@@ -28,6 +32,10 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper
 import net.minecraft.client.renderer.block.statemap.IStateMapper
 import net.minecraft.client.renderer.block.statemap.StateMap
+import net.minecraft.item.Item
+import net.minecraft.item.ItemBlock
+import net.minecraft.item.ItemStack
+import net.minecraftforge.client.event.ColorHandlerEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.relauncher.Side
@@ -36,7 +44,6 @@ import net.minecraftforge.fml.relauncher.SideOnly
 object ClayiumBlocks {
 
     private val blocks: MutableMap<String, Block> = mutableMapOf()
-    val allBlocks: Map<String, Block> get() = ImmutableMap.copyOf(blocks)
 
     val CREATIVE_ENERGY_SOURCE = createBlock("creative_energy_source", BlockSimpleTileEntityHolder(::TileEntityCreativeEnergySource)
         .apply { setBlockUnbreakable() })
@@ -68,17 +75,23 @@ object ClayiumBlocks {
 
     val CHUNK_LOADER = createBlock("chunk_loader", ChunkLoaderBlock())
 
+    /* Deco Blocks */
+    val COLORED_SILICONE = createBlock("colored_silicone", ColoredSiliconeBlock())
+
     /* ---------------------------------- */
 
     val COMPRESSED_CLAY_BLOCKS = mutableListOf<BlockCompressedClay>()
     val ENERGIZED_CLAY_BLOCKS = mutableListOf<BlockEnergizedClay>()
+    val COMPRESSED_BLOCKS = mutableListOf<BlockCompressed>()
 
     private val compressedClay = mutableMapOf<CMaterial, BlockCompressedClay>()
     private val energizedClay = mutableMapOf<CMaterial, BlockEnergizedClay>()
+    private val compressedBlocks = mutableMapOf<CMaterial, BlockCompressed>()
 
     /* ---------------------------------- */
 
     private val stateMapperCache = mutableMapOf<Block, IStateMapper>()
+    private val COMPRESSED_ITEM_BLOCKS = mutableListOf<ItemBlockMaterial>()
 
     init {
         createMaterialBlock(
@@ -89,26 +102,51 @@ object ClayiumBlocks {
             { !OrePrefix.block.isIgnored(it)
                 && it.getPropOrNull(CPropertyKey.CLAY)?.energy != null },
             this::createEnergizedClayBlock)
+        createMaterialBlock(
+            { !OrePrefix.block.isIgnored(it)
+                && (it.hasProperty(CPropertyKey.INGOT) || it.hasProperty(CPropertyKey.MATTER)) },
+            this::createCompressedBock)
     }
 
     private fun <T: Block> createBlock(key: String, block: T): T {
         return block.apply {
             setCreativeTab(ClayiumMod.creativeTab)
             setRegistryName(clayiumId(key))
-            setTranslationKey("${CValues.MOD_ID}.$key")
+            setTranslationKey("${MOD_ID}.$key")
             blocks[key] = this
+        }
+    }
+
+    private fun <T: Block, I: ItemBlock> createItemBlock(block: T, producer: (T) -> I): I {
+        return producer(block).apply {
+            registryName = block.registryName ?: throw IllegalArgumentException("Block ${block.translationKey} has no registry name")
         }
     }
 
     fun registerBlocks(event: RegistryEvent.Register<Block>) { blocks.values.forEach(event.registry::register) }
 
+    fun registerItemBlocks(event: RegistryEvent.Register<Item>) {
+        val registry = event.registry
+        for (block in COMPRESSED_BLOCKS) {
+            val ib = createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.block) }
+            registry.register(ib)
+            COMPRESSED_ITEM_BLOCKS.add(ib)
+        }
+
+        registry.register(createItemBlock(COLORED_SILICONE, ::VariantItemBlock))
+    }
+
     fun registerOreDictionaries() {
+        OreDictUnifier.registerOre(ItemStack(COLORED_SILICONE, 1, W), OrePrefix.block, CMaterials.silicone)
         for ((m, b) in energizedClay) {
             val stack = b.getItemStack(m)
             OreDictUnifier.registerOre(stack, OrePrefix.block, m)
         }
-
         for ((m, b) in compressedClay) {
+            val stack = b.getItemStack(m)
+            OreDictUnifier.registerOre(stack, OrePrefix.block, m)
+        }
+        for ((m, b) in compressedBlocks) {
             val stack = b.getItemStack(m)
             OreDictUnifier.registerOre(stack, OrePrefix.block, m)
         }
@@ -130,7 +168,7 @@ object ClayiumBlocks {
     }
 
     fun createEnergizedClayBlock(metaMaterialMap: Map<Int, CMaterial>, index: Int) {
-        val block = BlockEnergizedClay.create(metaMaterialMap)
+        val block = BlockEnergizedClay.Companion.create(metaMaterialMap)
         block.registryName = clayiumId("energized_clay_$index")
         ENERGIZED_CLAY_BLOCKS.add(block)
         metaMaterialMap.values.forEach { energizedClay[it] = block }
@@ -143,10 +181,18 @@ object ClayiumBlocks {
         metaMaterialMap.values.forEach { compressedClay[it] = block }
     }
 
+    fun createCompressedBock(metaMaterialMap: Map<Int, CMaterial>, index: Int) {
+        val block = BlockCompressed.create(metaMaterialMap)
+        block.registryName = clayiumId("compressed_block_$index")
+        COMPRESSED_BLOCKS.add(block)
+        metaMaterialMap.values.forEach { compressedBlocks[it] = block }
+    }
+
     @SideOnly(Side.CLIENT)
     fun registerStateMappers() {
         setStateMapper(CLAY_TREE_LEAVES, StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build())
         setStateMapper(CLAY_TREE_SAPLING, StateMap.Builder().ignore(BlockSapling.STAGE).build())
+        setStateMapper(COLORED_SILICONE, StateMap.Builder().ignore(COLORED_SILICONE.variantProperty).build())
     }
 
     @SideOnly(Side.CLIENT)
@@ -160,6 +206,7 @@ object ClayiumBlocks {
         blocks.values.forEach(::registerItemModel)
         for (block in ENERGIZED_CLAY_BLOCKS) block.registerModels()
         for (block in COMPRESSED_CLAY_BLOCKS) block.registerModels()
+        for (block in COMPRESSED_BLOCKS) block.registerModels()
 
         stateMapperCache.clear()
     }
@@ -187,5 +234,31 @@ object ClayiumBlocks {
                 }
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    fun registerBlockColors(e: ColorHandlerEvent.Block) {
+        val blockColors = e.blockColors
+        for (block in COMPRESSED_BLOCKS) {
+            blockColors.registerBlockColorHandler({ state, _, _, i ->
+                block.getCMaterial(state).colors?.get(i) ?: 0
+            }, block)
+        }
+        blockColors.registerBlockColorHandler({ state, _, _, _ ->
+            COLORED_SILICONE.getEnum(state).colorValue
+        }, COLORED_SILICONE)
+    }
+
+    @SideOnly(Side.CLIENT)
+    fun registerItemColors(e: ColorHandlerEvent.Item) {
+        val itemColors = e.itemColors
+        for (item in COMPRESSED_ITEM_BLOCKS) {
+            itemColors.registerItemColorHandler({ stack, i ->
+                item.blockMaterial.getCMaterial(stack.itemDamage).colors?.get(i) ?: 0
+            }, item)
+        }
+        itemColors.registerItemColorHandler({ stack, _ ->
+            COLORED_SILICONE.getEnum(stack).colorValue
+        }, COLORED_SILICONE)
     }
 }

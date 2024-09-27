@@ -48,11 +48,12 @@ object CondenserRecipeLoader {
     private fun addDustCondenseRecipe(material: IMaterial) {
         val tier = min(material.tier?.numeric ?: Int.MAX_VALUE, 4)
         val clayEnergy = ClayEnergy.micro(20 * 10.0.pow(min(tier / 2, 2)).toLong())
+        val amount = OrePrefix.block.getMaterialAmount(material).dustAmount
         if (OreDictUnifier.exists(OrePrefix.block, material)) {
             CRecipes.CONDENSER.builder()
-                .input(OrePrefix.dust, material, material.blockAmount)
+                .input(OrePrefix.dust, material, amount)
                 .output(OrePrefix.block, material)
-                .tier(tier).CEt(clayEnergy).duration(5 * material.blockAmount)
+                .tier(tier).CEt(clayEnergy).duration(5 * amount)
                 .buildAndRegister()
         }
 

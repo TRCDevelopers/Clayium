@@ -1,6 +1,6 @@
 package com.github.trc.clayium.integration.jei.basic
 
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_NAME
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.recipe.RecipeCategory
 import mezz.jei.api.IGuiHelper
@@ -36,12 +36,13 @@ class ClayiumRecipeCategory(
     }
 
     override fun getTitle(): String {
-        // pass an empty string to non-prefixed machine name
+        //todo replace with recipe.clayium.$machinename verison
+        // pass an empty string to a non-prefixed machine name
         return I18n.format(clayiumCategory.translationKey, "")
     }
 
     override fun getModName(): String {
-        return CValues.MOD_NAME
+        return MOD_NAME
     }
 
     override fun getBackground(): IDrawable {

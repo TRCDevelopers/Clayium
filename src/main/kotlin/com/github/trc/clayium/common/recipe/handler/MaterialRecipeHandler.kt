@@ -5,6 +5,7 @@ import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CPropertyKey
+import com.github.trc.clayium.api.unification.material.MaterialAmount
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.common.loaders.recipe.CondenserRecipeLoader
@@ -36,7 +37,9 @@ object MaterialRecipeHandler {
             }
 
             if (material.hasOre(OrePrefix.block)) {
-                if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.block, material)
+                if (material.hasProperty(CPropertyKey.PLATE) && OrePrefix.block.getMaterialAmount(material) == MaterialAmount.of(1)) {
+                    addPlateRecipe(OrePrefix.block, material)
+                }
                 if (material.hasProperty(CPropertyKey.CLAY)) {
                     val prop = material.getProperty(CPropertyKey.CLAY)
                     if (prop.compressedInto != null) addClayBlockRecipe(material, prop.compressedInto)
@@ -55,7 +58,6 @@ object MaterialRecipeHandler {
     }
 
     private fun handleDust(dustPrefix: OrePrefix, material: CMaterial) {
-        val tier = material.tier?.numeric ?: 0
         if (material.hasProperty(CPropertyKey.INGOT)) {
             if (material.hasProperty(CPropertyKey.BLAST_SMELTING)) {
                 val prop = material.getProperty(CPropertyKey.BLAST_SMELTING)
@@ -123,17 +125,6 @@ object MaterialRecipeHandler {
             CEt(plateProperty.cePerTick * 2)
             duration(plateProperty.requiredTick * 2)
             tier(plateProperty.tier)
-        }
-    }
-
-    private fun tryAddGrindingRecipe(inputPrefix: OrePrefix, material: CMaterial, outputAmount: Int = 1) {
-        if (OreDictUnifier.get(OrePrefix.dust, material).isEmpty) return
-        CRecipes.GRINDER.register {
-            input(inputPrefix, material)
-            output(OrePrefix.dust, material, outputAmount)
-            CEt(ClayEnergy.micro(250))
-            duration(4)
-            tier(0)
         }
     }
 

@@ -1,6 +1,6 @@
 package com.github.trc.clayium.common.blocks
 
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.block.IResonatingBlock
 import com.github.trc.clayium.api.block.ITieredBlock
 import com.github.trc.clayium.api.block.VariantBlock
@@ -31,7 +31,7 @@ class BlockResonator : VariantBlock<BlockCaReactorCoil.BlockType>(Material.IRON)
 
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        tooltip.add(I18n.format("gui.${CValues.MOD_ID}.resonance", RESONANCE[stack.metadata]))
+        tooltip.add(I18n.format("gui.${MOD_ID}.resonance", RESONANCE[stack.metadata]))
     }
 
     companion object {

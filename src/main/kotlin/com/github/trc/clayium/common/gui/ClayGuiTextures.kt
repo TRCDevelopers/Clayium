@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.gui
 
 import com.cleanroommc.modularui.drawable.UITexture
-import com.github.trc.clayium.api.CValues
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.api.util.clayiumId
 
@@ -92,11 +92,11 @@ object ClayGuiTextures {
     //endregion
 
     private fun slotTexture() = UITexture.builder()
-        .location(CValues.MOD_ID, "gui/slot")
+        .location(MOD_ID, "gui/slot")
         .imageSize(256, 256)
 
     private fun button(u: Int, v: Int) = UITexture.builder()
-        .location(CValues.MOD_ID, "gui/button")
+        .location(MOD_ID, "gui/button")
         .imageSize(256, 256)
         .uv(u, v, 16, 16)
         .build()

@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.loaders.recipe
 
-import com.github.trc.clayium.api.CValues
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
@@ -340,7 +340,7 @@ object MachineBlockRecipeLoader {
         val wheels = listOf(UnificationEntry(OrePrefix.wheel, CMaterials.clay), UnificationEntry(OrePrefix.wheel, CMaterials.denseClay))
         for ((i, e) in wheelHulls.zip(wheels).withIndex()) {
             val (block, item) = e
-            RecipeUtils.addShapelessRecipe("${CValues.MOD_ID}.waterwheel_$i",
+            RecipeUtils.addShapelessRecipe("$MOD_ID.waterwheel_$i",
                 MetaTileEntities.WATERWHEEL[i].getStackForm(), block, item)
         }
         /* Chemical Metal Separator */
