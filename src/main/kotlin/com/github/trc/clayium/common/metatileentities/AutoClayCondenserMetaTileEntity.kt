@@ -149,7 +149,7 @@ class AutoClayCondenserMetaTileEntity(
             val compressed = clay?.compressedInto
             if (m == null || m.tier == null || m.tier.numeric >= maxCompress || clay == null || compressed == null)
                 continue
-            val compressedStack = OreDictUnifier.get(OrePrefix.block, compressed, stackSize = 1)
+            val compressedStack = OreDictUnifier.get(OrePrefix.block, compressed, amount = 1)
             itemInventory.extractItem(i, 9, false)
             ItemHandlerHelper.insertItem(itemInventory, compressedStack, false)
             break

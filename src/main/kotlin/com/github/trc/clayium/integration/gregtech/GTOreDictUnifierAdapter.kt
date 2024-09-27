@@ -4,7 +4,7 @@ import com.github.trc.clayium.api.util.copyWithSize
 import com.github.trc.clayium.common.unification.IOreDictUnifier
 import net.minecraft.item.ItemStack
 
-class GTOreDictUnifierAdapter : IOreDictUnifier {
+object GTOreDictUnifierAdapter : IOreDictUnifier {
     override fun registerOre(stack: ItemStack, oreDict: String) {
         gregtech.api.unification.OreDictUnifier.registerOre(stack, oreDict)
     }
@@ -18,7 +18,7 @@ class GTOreDictUnifierAdapter : IOreDictUnifier {
             .copyWithSize(amount)
     }
 
-    override fun getAll(oreDict: String, amount: Int) {
-        gregtech.api.unification.OreDictUnifier.getAllWithOreDictionaryName(oreDict)
+    override fun getAll(oreDict: String, amount: Int): List<ItemStack> {
+        return gregtech.api.unification.OreDictUnifier.getAllWithOreDictionaryName(oreDict)
     }
 }

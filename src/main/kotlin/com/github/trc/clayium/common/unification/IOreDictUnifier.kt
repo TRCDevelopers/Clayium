@@ -14,10 +14,10 @@ interface IOreDictUnifier {
     fun get(oreDict: String, amount: Int = 1): ItemStack
     fun get(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1) = get(UnificationEntry(orePrefix, material).toString(), amount)
 
-    fun getAll(oreDict: String, amount: Int = 1)
+    fun getAll(oreDict: String, amount: Int = 1): List<ItemStack>
     fun getAll(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1) = getAll(UnificationEntry(orePrefix, material), amount)
     fun getAll(oreDict: UnificationEntry, amount: Int = 1) = getAll(oreDict.toString(), amount)
 
-    fun exists(oreDict: String): Boolean = get(oreDict).isEmpty
-    fun exists(orePrefix: OrePrefix, material: IMaterial): Boolean = get(orePrefix, material).isEmpty
+    fun exists(oreDict: String): Boolean = !get(oreDict).isEmpty
+    fun exists(orePrefix: OrePrefix, material: IMaterial): Boolean = exists(UnificationEntry(orePrefix, material).toString())
 }
