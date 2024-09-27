@@ -12,6 +12,7 @@ import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.recipe.RecipeUtils
 import net.minecraft.init.Items
+import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
 
 object CraftingRecipeLoader {
@@ -39,6 +40,23 @@ object CraftingRecipeLoader {
                 OreDictUnifier.get(OrePrefix.gem, CMaterials.PURE_ANTIMATTERS[i]))
         }
 
+        RecipeUtils.addShapedRecipe("silicone_compress", ItemStack(ClayiumBlocks.COLORED_SILICONE),
+            "III", "III", "III",
+            'I', OreDictUnifier.get(OrePrefix.ingot, CMaterials.silicone)
+        )
+        RecipeUtils.addShapelessRecipe("silicone_decompress", OreDictUnifier.get(OrePrefix.ingot, CMaterials.silicone, 9),
+            OreDictUnifier.get(OrePrefix.block, CMaterials.silicone)
+        )
+
+        for (color in EnumDyeColor.entries) {
+            val dye = ItemStack(Items.DYE, 1, color.dyeDamage)
+            RecipeUtils.addShapedRecipe("silicone_coloring_${color.name}", ClayiumBlocks.COLORED_SILICONE.getItem(color, 8),
+                "III", "IDI", "III",
+                'I', UnificationEntry(OrePrefix.block, CMaterials.silicone),
+                'D', dye
+            )
+        }
+
         for (material in ClayiumApi.materialRegistry) {
             if (!OrePrefix.block.isIgnored(material) && OreDictUnifier.exists(OrePrefix.block, material)) {
                 val orePrefix = if (OreDictUnifier.exists(OrePrefix.ingot, material))
@@ -48,8 +66,8 @@ object CraftingRecipeLoader {
                 else
                     continue
                 RecipeUtils.addShapedRecipe("${material.materialId}_compress",
-                    OreDictUnifier.get(OrePrefix.block, material), "III", "III", "III", 'I',
-                    UnificationEntry(orePrefix, material))
+                    OreDictUnifier.get(OrePrefix.block, material), "III", "III", "III",
+                    'I', UnificationEntry(orePrefix, material))
 
                 RecipeUtils.addShapelessRecipe("${material.materialId}_decompress",
                     OreDictUnifier.get(orePrefix, material, 9), UnificationEntry(OrePrefix.block, material))

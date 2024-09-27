@@ -2,8 +2,11 @@ package com.github.trc.clayium.common.blocks
 
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.MOD_ID
+import com.github.trc.clayium.api.W
+import com.github.trc.clayium.api.block.VariantItemBlock
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.clayiumId
@@ -31,6 +34,7 @@ import net.minecraft.client.renderer.block.statemap.IStateMapper
 import net.minecraft.client.renderer.block.statemap.StateMap
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
+import net.minecraft.item.ItemStack
 import net.minecraftforge.client.event.ColorHandlerEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
@@ -70,6 +74,9 @@ object ClayiumBlocks {
     val CLAY_MARKER = createBlock("clay_marker", BlockClayMarker())
 
     val CHUNK_LOADER = createBlock("chunk_loader", ChunkLoaderBlock())
+
+    /* Deco Blocks */
+    val COLORED_SILICONE = createBlock("colored_silicone", ColoredSiliconeBlock())
 
     /* ---------------------------------- */
 
@@ -125,9 +132,12 @@ object ClayiumBlocks {
             registry.register(ib)
             COMPRESSED_ITEM_BLOCKS.add(ib)
         }
+
+        registry.register(createItemBlock(COLORED_SILICONE, ::VariantItemBlock))
     }
 
     fun registerOreDictionaries() {
+        OreDictUnifier.registerOre(ItemStack(COLORED_SILICONE, 1, W), OrePrefix.block, CMaterials.silicone)
         for ((m, b) in energizedClay) {
             val stack = b.getItemStack(m)
             OreDictUnifier.registerOre(stack, OrePrefix.block, m)
@@ -182,6 +192,7 @@ object ClayiumBlocks {
     fun registerStateMappers() {
         setStateMapper(CLAY_TREE_LEAVES, StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build())
         setStateMapper(CLAY_TREE_SAPLING, StateMap.Builder().ignore(BlockSapling.STAGE).build())
+        setStateMapper(COLORED_SILICONE, StateMap.Builder().ignore(COLORED_SILICONE.variantProperty).build())
     }
 
     @SideOnly(Side.CLIENT)
@@ -233,6 +244,9 @@ object ClayiumBlocks {
                 block.getCMaterial(state).colors?.get(i) ?: 0
             }, block)
         }
+        blockColors.registerBlockColorHandler({ state, _, _, _ ->
+            COLORED_SILICONE.getEnum(state).colorValue
+        }, COLORED_SILICONE)
     }
 
     @SideOnly(Side.CLIENT)
@@ -243,5 +257,8 @@ object ClayiumBlocks {
                 item.blockMaterial.getCMaterial(stack.itemDamage).colors?.get(i) ?: 0
             }, item)
         }
+        itemColors.registerItemColorHandler({ stack, _ ->
+            COLORED_SILICONE.getEnum(stack).colorValue
+        }, COLORED_SILICONE)
     }
 }

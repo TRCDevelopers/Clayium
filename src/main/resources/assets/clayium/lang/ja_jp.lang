@@ -603,6 +603,24 @@ tile.clayium.blockAdvancedFluidTransferMachine.tooltip.line1=液体容器から�
 
 tile.clayium.creative_energy_source.name=クリエイティブ用粘土エネルギー源
 
+tile.clayium.colored_silicone.white.name=白色シリコーンブロック
+tile.clayium.colored_silicone.orange.name=橙色シリコーンブロック
+tile.clayium.colored_silicone.magenta.name=赤紫色シリコーンブロック
+tile.clayium.colored_silicone.light_blue.name=空色シリコーンブロック
+tile.clayium.colored_silicone.yellow.name=黄色シリコーンブロック
+tile.clayium.colored_silicone.lime.name=黄緑色シリコーンブロック
+tile.clayium.colored_silicone.pink.name=桃色シリコーンブロック
+tile.clayium.colored_silicone.gray.name=灰色シリコーンブロック
+tile.clayium.colored_silicone.silver.name=薄灰色シリコーンブロック
+tile.clayium.colored_silicone.cyan.name=青緑色シリコーンブロック
+tile.clayium.colored_silicone.purple.name=紫色シリコーンブロック
+tile.clayium.colored_silicone.blue.name=青色シリコーンブロック
+tile.clayium.colored_silicone.brown.name=茶色シリコーンブロック
+tile.clayium.colored_silicone.green.name=緑色シリコーンブロック
+tile.clayium.colored_silicone.red.name=赤色シリコーンブロック
+tile.clayium.colored_silicone.black.name=黒色シリコーンブロック
+
+
 machine.clayium.energy_converter=%s CE-FE コンバーター
 machine.clayium.energy_converter.basic=CE-FE コンバーター
 gui.clayium.energy_converter.storage=%1$sFE/%2$sFE

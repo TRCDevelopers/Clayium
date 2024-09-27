@@ -124,6 +124,8 @@ class OrePrefix(
                 block.ignore(it)
             }
 
+            // silicone has 16 colored deco blocks, so disable auto-gen
+            block.ignore(CMaterials.silicone)
 
             block.modifyAmount(CMarkerMaterials.certusQuartz, 4.M)
             block.modifyAmount(CMarkerMaterials.fluix, 4.M)

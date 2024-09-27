@@ -16,7 +16,8 @@ open class VariantBlock<E>(
     material: Material,
 ) : Block(material) where E : Enum<E>, E : IStringSerializable {
 
-    protected lateinit var variantProperty : PropertyEnum<E>
+    lateinit var variantProperty : PropertyEnum<E>
+        protected set
     protected lateinit var values : Array<E>
 
     init {

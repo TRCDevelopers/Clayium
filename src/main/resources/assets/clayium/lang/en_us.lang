@@ -639,6 +639,23 @@ tile.clayium.blockAdvancedFluidTransferMachine.tooltip.line1=Fills or empties li
 
 tile.clayium.creative_energy_source.name=Creative CE Source
 
+tile.clayium.colored_silicone.white.name=White Silicone Block
+tile.clayium.colored_silicone.orange.name=Orange Silicone Block
+tile.clayium.colored_silicone.magenta.name=Magenta Silicone Block
+tile.clayium.colored_silicone.light_blue.name=Light Blue Silicone Block
+tile.clayium.colored_silicone.yellow.name=Yellow Silicone Block
+tile.clayium.colored_silicone.lime.name=Lime Silicone Block
+tile.clayium.colored_silicone.pink.name=Pink Silicone Block
+tile.clayium.colored_silicone.gray.name=Gray Silicone Block
+tile.clayium.colored_silicone.silver.name=Light Gray Silicone Block
+tile.clayium.colored_silicone.cyan.name=Cyan Silicone Block
+tile.clayium.colored_silicone.purple.name=Purple Silicone Block
+tile.clayium.colored_silicone.blue.name=Blue Silicone Block
+tile.clayium.colored_silicone.brown.name=Brown Silicone Block
+tile.clayium.colored_silicone.green.name=Green Silicone Block
+tile.clayium.colored_silicone.red.name=Red Silicone Block
+tile.clayium.colored_silicone.black.name=Black Silicone Block
+
 machine.clayium.energy_converter=%s CE-FE Converter
 gui.clayium.energy_converter.storage=%1$sFE/%2$sFE
 gui.clayium.energy_converter.rate=%1$s/t -> %2$sFE/t
