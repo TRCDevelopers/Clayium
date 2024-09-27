@@ -58,7 +58,6 @@ object MaterialRecipeHandler {
     }
 
     private fun handleDust(dustPrefix: OrePrefix, material: CMaterial) {
-        val tier = material.tier?.numeric ?: 0
         if (material.hasProperty(CPropertyKey.INGOT)) {
             if (material.hasProperty(CPropertyKey.BLAST_SMELTING)) {
                 val prop = material.getProperty(CPropertyKey.BLAST_SMELTING)
@@ -126,17 +125,6 @@ object MaterialRecipeHandler {
             CEt(plateProperty.cePerTick * 2)
             duration(plateProperty.requiredTick * 2)
             tier(plateProperty.tier)
-        }
-    }
-
-    private fun tryAddGrindingRecipe(inputPrefix: OrePrefix, material: CMaterial, outputAmount: Int = 1) {
-        if (OreDictUnifier.get(OrePrefix.dust, material).isEmpty) return
-        CRecipes.GRINDER.register {
-            input(inputPrefix, material)
-            output(OrePrefix.dust, material, outputAmount)
-            CEt(ClayEnergy.micro(250))
-            duration(4)
-            tier(0)
         }
     }
 
