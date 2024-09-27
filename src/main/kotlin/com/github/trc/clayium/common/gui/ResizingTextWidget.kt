@@ -10,7 +10,6 @@ class ResizingTextWidget(key: IKey) : TextWidget(key) {
         val resizer = this.resizer()
         resizer.setWidthResized(false)
         resizer.setHeightResized(false)
-        resizer.setPosResized(false, false)
         resizer.resize(this)
 
         super.draw(context, widgetTheme)

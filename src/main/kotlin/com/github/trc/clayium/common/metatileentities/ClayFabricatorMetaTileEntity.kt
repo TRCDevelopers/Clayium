@@ -24,11 +24,18 @@ import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
 import com.github.trc.clayium.common.util.TransferUtils
+import mcjty.theoneprobe.api.IProbeHitData
+import mcjty.theoneprobe.api.IProbeInfo
+import mcjty.theoneprobe.api.ProbeMode
+import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.text.TextFormatting
+import net.minecraft.world.World
 import kotlin.math.pow
 
 class ClayFabricatorMetaTileEntity(
@@ -142,6 +149,14 @@ class ClayFabricatorMetaTileEntity(
             super.deserializeNBT(data)
             currentCe = ClayEnergy(data.getLong("currentCe"))
             cePerTick = ClayEnergy(data.getLong("cePerTick"))
+        }
+
+        override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
+            super.addProbeInfo(mode, probeInfo, player, world, state, hitData)
+            if (isWorking) {
+                val cet = cePerTick * overclockHandler.accelerationFactor
+                probeInfo.text("Generating ${TextFormatting.GREEN}${cet.formatWithoutUnit()}${TextFormatting.WHITE} CE/t")
+            }
         }
     }
 
