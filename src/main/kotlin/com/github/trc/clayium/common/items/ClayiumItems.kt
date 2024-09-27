@@ -26,7 +26,7 @@ object ClayiumItems {
     val CLAY_PICKAXE = createItem("clay_pickaxe", ItemClayPickaxe())
     val CLAY_SHOVEL = createItem("clay_shovel", ItemClayShovel())
 
-    val CLAY_STEEL_PICKAXE = createItem("clay_steel_pickaxe", ItemClaySteelPickace())
+    val CLAY_STEEL_PICKAXE = createItem("clay_steel_pickaxe", ItemClaySteelPickaxe())
 
     val simpleItemFilter = createItem("simple_item_filter", ItemSimpleItemFilter())
 

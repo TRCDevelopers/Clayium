@@ -3,7 +3,7 @@ package com.github.trc.clayium.common.items
 import com.github.trc.clayium.api.HARDNESS_UNBREAKABLE
 import com.github.trc.clayium.api.util.next
 import com.github.trc.clayium.common.config.ConfigCore
-import com.github.trc.clayium.common.items.ItemClaySteelPickace.Mode.*
+import com.github.trc.clayium.common.items.ItemClaySteelPickaxe.Mode.*
 import com.github.trc.clayium.common.reflect.BlockReflect
 import com.github.trc.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.ints.IntArrayList
@@ -56,7 +56,7 @@ private fun IntArray.toBlockPosList(mapper: ((BlockPos) -> BlockPos)? = null): L
     }
 }
 
-class ItemClaySteelPickace : ItemPickaxe(ToolMaterial.DIAMOND) {
+class ItemClaySteelPickaxe : ItemPickaxe(ToolMaterial.DIAMOND) {
 
     private val rangeBlock: IBlockState = run {
         if (ConfigCore.misc.claySteelToolBlock.isEmpty()) return@run Blocks.CLAY.defaultState
@@ -194,7 +194,7 @@ class ItemClaySteelPickace : ItemPickaxe(ToolMaterial.DIAMOND) {
             val stack = e.entityPlayer.getHeldItem(EnumHand.MAIN_HAND)
             val world = e.entityPlayer.world
             val item = stack.item
-            if (item !is ItemClaySteelPickace) return
+            if (item !is ItemClaySteelPickaxe) return
             if (!stack.hasTagCompound()) return
             val tag = stack.tagCompound!!
             val mode = Mode.entries[tag.getInteger("mode")]
