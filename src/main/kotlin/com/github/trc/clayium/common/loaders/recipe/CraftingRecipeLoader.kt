@@ -1,5 +1,6 @@
 package com.github.trc.clayium.common.loaders.recipe
 
+import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.CMaterials.clay
@@ -36,6 +37,20 @@ object CraftingRecipeLoader {
             RecipeUtils.addShapelessRecipe("pure_antimatter_decompose_$i",
                 OreDictUnifier.get(OrePrefix.gem, CMaterials.PURE_ANTIMATTERS[i - 1], 9),
                 OreDictUnifier.get(OrePrefix.gem, CMaterials.PURE_ANTIMATTERS[i]))
+        }
+
+        for (material in ClayiumApi.materialRegistry) {
+            if (!OrePrefix.block.isIgnored(material)
+                && OreDictUnifier.exists(OrePrefix.ingot, material)
+                && OreDictUnifier.exists(OrePrefix.block, material)
+            ) {
+                RecipeUtils.addShapedRecipe("${material.materialId}_compress", OreDictUnifier.get(OrePrefix.block, material),
+                    "III", "III", "III",
+                    'I', UnificationEntry(OrePrefix.ingot, material))
+
+                RecipeUtils.addShapelessRecipe("${material.materialId}_decompress", OreDictUnifier.get(OrePrefix.ingot, material, 9),
+                    UnificationEntry(OrePrefix.block, material))
+            }
         }
     }
 

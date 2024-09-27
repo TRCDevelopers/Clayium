@@ -131,10 +131,16 @@ object ClayiumBlocks {
             val stack = b.getItemStack(m)
             OreDictUnifier.registerOre(stack, OrePrefix.block, m)
         }
-
         for ((m, b) in compressedClay) {
             val stack = b.getItemStack(m)
             OreDictUnifier.registerOre(stack, OrePrefix.block, m)
+        }
+        for (block in COMPRESSED_BLOCKS) {
+            for (state in block.blockState.validStates) {
+                val material = block.getCMaterial(state)
+                val stack = block.getItemStack(material)
+                OreDictUnifier.registerOre(stack, OrePrefix.block, material)
+            }
         }
     }
 
