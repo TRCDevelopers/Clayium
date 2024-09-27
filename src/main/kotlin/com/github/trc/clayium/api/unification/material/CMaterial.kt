@@ -2,6 +2,7 @@ package com.github.trc.clayium.api.unification.material
 
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.ClayiumApi
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
@@ -15,7 +16,6 @@ class CMaterial(
      */
     val materialId: ResourceLocation,
     val properties: CMaterialProperties,
-    override val blockAmount: Int,
     override val tier: ITier? = null,
     val colors: IntArray? = null,
     private val flags: Set<CMaterialFlag> = emptySet(),
@@ -45,7 +45,7 @@ class CMaterial(
         private var tier: ITier? = null
         private var colors: IntArray? = null
         private var flags: MutableSet<CMaterialFlag> = mutableSetOf()
-        private var blockAmount = 9
+        private var blockAmount = -1
 
         fun tier(tier: Int) = apply { this.tier = ClayTiers.entries[tier] }
         fun tier(tier: ITier) = apply { this.tier = tier }
@@ -133,8 +133,11 @@ class CMaterial(
 
         fun build(): CMaterial{
             val flags = if (this.flags.isEmpty()) emptySet() else this.flags
-            val material = CMaterial(metaItemSubId, metaItemId, properties, blockAmount, tier, colors, flags)
+            val material = CMaterial(metaItemSubId, metaItemId, properties, tier, colors, flags)
             ClayiumApi.materialRegistry.register(metaItemSubId, metaItemId, material)
+            if (blockAmount != -1) {
+                OrePrefix.block.modifyAmount(material, MaterialAmount.of(blockAmount.toLong()))
+            }
             return material
         }
     }

@@ -5,7 +5,7 @@ import com.github.trc.clayium.api.M
 @JvmInline
 value class MaterialAmount private constructor(val raw: Long) {
 
-    val dustAmount get() = raw / M
+    val dustAmount get() = (raw / M).toInt()
 
     companion object {
         val NONE = MaterialAmount(-1)

@@ -31,3 +31,5 @@ const val HARDNESS_UNBREAKABLE: Float = -1.0f
 const val M: Long = 3628800L
 
 const val W: Int = OreDictionary.WILDCARD_VALUE
+
+const val FALLBACK: Int = -1

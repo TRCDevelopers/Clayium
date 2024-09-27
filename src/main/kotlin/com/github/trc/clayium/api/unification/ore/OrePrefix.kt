@@ -1,5 +1,6 @@
 package com.github.trc.clayium.api.unification.ore
 
+import com.github.trc.clayium.api.FALLBACK
 import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.unification.material.CMarkerMaterials
 import com.github.trc.clayium.api.unification.material.CMaterial
@@ -27,11 +28,11 @@ class OrePrefix(
     val snake = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, camel)
 
     private val ignoredMaterials = mutableSetOf<CMaterial>()
-    private val modifiedAmounts = Object2LongOpenHashMap<IMaterial>().apply { defaultReturnValue(-1) }
+    private val modifiedAmounts = Object2LongOpenHashMap<IMaterial>().apply { defaultReturnValue(FALLBACK.toLong()) }
 
     fun getMaterialAmount(material: IMaterial): MaterialAmount {
         val modified = modifiedAmounts.getLong(material)
-        return if (modified != -1L) {
+        return if (modified != FALLBACK.toLong()) {
             MaterialAmount.createRaw(modified)
         } else {
             _materialAmount
@@ -115,14 +116,6 @@ class OrePrefix(
 
         fun init() {
             block.ignore(CMaterials.clay)
-
-            listOf(CMaterials.clay, CMaterials.denseClay, CMaterials.compressedClay, CMaterials.industrialClay,
-                CMaterials.advancedIndustrialClay, CMaterials.compressedEnergeticClay, CMaterials.compressedEnergeticClay2,
-                CMaterials.compressedEnergeticClay3, CMaterials.compressedEnergeticClay4, CMaterials.compressedEnergeticClay5,
-                CMaterials.compressedEnergeticClay6, CMaterials.compressedEnergeticClay7, CMaterials.octupleEnergyClay,
-            ).forEach {
-                block.modifyAmount(it, 1.M)
-            }
 
             listOf(CMaterials.pureAntimatter1, CMaterials.pureAntimatter2, CMaterials.pureAntimatter3,
                 CMaterials.pureAntimatter4, CMaterials.pureAntimatter5, CMaterials.pureAntimatter6,
