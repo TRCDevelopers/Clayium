@@ -12,6 +12,7 @@ import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.CUtils
+import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.BlockQuartzCrucible
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
@@ -34,9 +35,11 @@ import com.github.trc.clayium.common.metatileentities.MetaTileEntities
 import com.github.trc.clayium.common.pan.factories.CPanRecipeFactory
 import com.github.trc.clayium.common.pan.factories.CraftingTablePanRecipeFactory
 import com.github.trc.clayium.common.pan.factories.FurnacePanRecipeFactory
+import com.github.trc.clayium.common.unification.ClayiumOreDictUnifierImpl
 import com.github.trc.clayium.common.util.DebugUtils
 import com.github.trc.clayium.common.worldgen.ClayOreGenerator
 import com.github.trc.clayium.integration.CModIntegration
+import com.github.trc.clayium.integration.gregtech.GTOreDictUnifierAdapter
 import com.github.trc.clayium.network.ClayChunkLoaderCallback
 import net.minecraft.block.Block
 import net.minecraft.item.Item
@@ -70,7 +73,6 @@ open class CommonProxy {
         MetaTileEntities.init()
         CMaterials.init()
         OrePrefix.init()
-        OreDictUnifier.initialize()
 
         GuiManager.registerFactory(MetaTileEntityGuiFactory)
 
@@ -81,6 +83,12 @@ open class CommonProxy {
         ClayiumApi.PAN_RECIPE_FACTORIES.add(FurnacePanRecipeFactory)
 
         ForgeChunkManager.setForcedChunkLoadingCallback(ClayiumMod, ClayChunkLoaderCallback)
+
+        if (Mods.GregTech.isModLoaded) {
+            OreDictUnifier.injectImpl(GTOreDictUnifierAdapter)
+        } else {
+            OreDictUnifier.injectImpl(ClayiumOreDictUnifierImpl)
+        }
     }
 
     open fun init(event: FMLInitializationEvent) {

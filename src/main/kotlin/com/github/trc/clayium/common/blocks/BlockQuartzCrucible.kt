@@ -85,7 +85,7 @@ class BlockQuartzCrucible : Block(net.minecraft.block.material.Material.GLASS), 
                     entityIn.setDead()
                 }
                 tileEntity.ingotQuantity = 0
-                spawnAsEntity(worldIn, pos, OreDictUnifier.get(OrePrefix.ingot, CMaterials.silicon, stackSize = currentLevel))
+                spawnAsEntity(worldIn, pos, OreDictUnifier.get(OrePrefix.ingot, CMaterials.silicon, amount = currentLevel))
                 worldIn.setBlockState(pos, state.withProperty(LEVEL, 0))
             }
         }

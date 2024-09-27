@@ -36,8 +36,6 @@ class ClayiumRecipeCategory(
     }
 
     override fun getTitle(): String {
-        //todo replace with recipe.clayium.$machinename verison
-        // pass an empty string to a non-prefixed machine name
         return I18n.format(clayiumCategory.translationKey, "")
     }
 
