@@ -58,6 +58,10 @@ private fun IntArray.toBlockPosList(mapper: ((BlockPos) -> BlockPos)? = null): L
 
 class ItemClaySteelPickaxe : ItemPickaxe(ToolMaterial.DIAMOND) {
 
+    init {
+        maxDamage = ConfigCore.misc.claySteelToolsDurability
+    }
+
     private val rangeBlock: IBlockState = run {
         if (ConfigCore.misc.claySteelToolBlock.isEmpty()) return@run Blocks.CLAY.defaultState
 
@@ -167,7 +171,7 @@ class ItemClaySteelPickaxe : ItemPickaxe(ToolMaterial.DIAMOND) {
     private fun getMode(stack: ItemStack): Mode? {
         if (!stack.hasTagCompound()) return null
         val i = stack.tagCompound!!.getInteger("mode")
-        if (i < 0 || i >= Mode.entries.size) return Mode.SINGLE
+        if (i < 0 || i >= Mode.entries.size) return SINGLE
 
         return Mode.entries[i]
     }
