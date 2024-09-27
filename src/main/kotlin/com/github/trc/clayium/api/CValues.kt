@@ -7,7 +7,6 @@ package com.github.trc.clayium.api
 
 import net.minecraftforge.oredict.OreDictionary
 
-// todo replace MOD_ID to this
 const val MOD_ID = "clayium"
 const val MOD_NAME = "Clayium"
 
