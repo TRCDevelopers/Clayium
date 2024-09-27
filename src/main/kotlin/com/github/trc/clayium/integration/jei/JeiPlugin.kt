@@ -5,6 +5,7 @@ import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.client.gui.GuiClayWorkTable
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.metatileentities.SolarClayFabricatorMetaTileEntity
 import com.github.trc.clayium.common.recipe.CWTRecipes
@@ -47,9 +48,11 @@ class JeiPlugin : IModPlugin {
 
     override fun register(modRegistry: IModRegistry) {
         jeiHelpers = modRegistry.jeiHelpers
+
         modRegistry.handleRecipes(ClayWorkTableRecipe::class.java, ::ClayWorkTableRecipeWrapper, ClayWorkTableRecipeCategory.UID)
         modRegistry.addRecipeCatalyst(ItemStack(ClayiumBlocks.CLAY_WORK_TABLE), ClayWorkTableRecipeCategory.UID)
         modRegistry.addRecipes(CWTRecipes.CLAY_WORK_TABLE.recipes, ClayWorkTableRecipeCategory.UID)
+        modRegistry.addRecipeClickArea(GuiClayWorkTable::class.java, 78, 29, 20, 16, ClayWorkTableRecipeCategory.UID)
 
         for (recipeRegistry in CRecipes.ALL_REGISTRIES.values) {
             val specialWrapper = recipeWrappers[recipeRegistry.category.uniqueId]
