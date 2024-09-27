@@ -79,6 +79,7 @@ object ClayiumBlocks {
 
     private val compressedClay = mutableMapOf<CMaterial, BlockCompressedClay>()
     private val energizedClay = mutableMapOf<CMaterial, BlockEnergizedClay>()
+    private val compressedBlocks = mutableMapOf<CMaterial, BlockCompressed>()
 
     /* ---------------------------------- */
 
@@ -135,12 +136,9 @@ object ClayiumBlocks {
             val stack = b.getItemStack(m)
             OreDictUnifier.registerOre(stack, OrePrefix.block, m)
         }
-        for (block in COMPRESSED_BLOCKS) {
-            for (state in block.blockState.validStates) {
-                val material = block.getCMaterial(state)
-                val stack = block.getItemStack(material)
-                OreDictUnifier.registerOre(stack, OrePrefix.block, material)
-            }
+        for ((m, b) in compressedBlocks) {
+            val stack = b.getItemStack(m)
+            OreDictUnifier.registerOre(stack, OrePrefix.block, m)
         }
     }
 
@@ -177,6 +175,7 @@ object ClayiumBlocks {
         val block = BlockCompressed.create(metaMaterialMap)
         block.registryName = clayiumId("compressed_block_$index")
         COMPRESSED_BLOCKS.add(block)
+        metaMaterialMap.values.forEach { compressedBlocks[it] = block }
     }
 
     @SideOnly(Side.CLIENT)
