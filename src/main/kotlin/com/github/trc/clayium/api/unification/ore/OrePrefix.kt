@@ -116,19 +116,21 @@ class OrePrefix(
         fun init() {
             block.ignore(CMaterials.clay)
 
-            block.modifyAmount(CMaterials.clay, 1.M)
-            block.modifyAmount(CMaterials.denseClay, 1.M)
-            block.modifyAmount(CMaterials.compressedClay, 1.M)
-            block.modifyAmount(CMaterials.industrialClay, 1.M)
-            block.modifyAmount(CMaterials.advancedIndustrialClay, 1.M)
-            block.modifyAmount(CMaterials.compressedEnergeticClay, 1.M)
-            block.modifyAmount(CMaterials.compressedEnergeticClay2, 1.M)
-            block.modifyAmount(CMaterials.compressedEnergeticClay3, 1.M)
-            block.modifyAmount(CMaterials.compressedEnergeticClay4, 1.M)
-            block.modifyAmount(CMaterials.compressedEnergeticClay5, 1.M)
-            block.modifyAmount(CMaterials.compressedEnergeticClay6, 1.M)
-            block.modifyAmount(CMaterials.compressedEnergeticClay7, 1.M)
-            block.modifyAmount(CMaterials.octupleEnergyClay, 1.M)
+            listOf(CMaterials.clay, CMaterials.denseClay, CMaterials.compressedClay, CMaterials.industrialClay,
+                CMaterials.advancedIndustrialClay, CMaterials.compressedEnergeticClay, CMaterials.compressedEnergeticClay2,
+                CMaterials.compressedEnergeticClay3, CMaterials.compressedEnergeticClay4, CMaterials.compressedEnergeticClay5,
+                CMaterials.compressedEnergeticClay6, CMaterials.compressedEnergeticClay7, CMaterials.octupleEnergyClay,
+            ).forEach {
+                block.modifyAmount(it, 1.M)
+            }
+
+            listOf(CMaterials.pureAntimatter1, CMaterials.pureAntimatter2, CMaterials.pureAntimatter3,
+                CMaterials.pureAntimatter4, CMaterials.pureAntimatter5, CMaterials.pureAntimatter6,
+                CMaterials.pureAntimatter7
+            ).forEach {
+                block.ignore(it)
+            }
+
 
             block.modifyAmount(CMarkerMaterials.certusQuartz, 4.M)
             block.modifyAmount(CMarkerMaterials.fluix, 4.M)

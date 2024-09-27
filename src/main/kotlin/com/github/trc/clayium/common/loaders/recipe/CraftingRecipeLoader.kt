@@ -40,16 +40,19 @@ object CraftingRecipeLoader {
         }
 
         for (material in ClayiumApi.materialRegistry) {
-            if (!OrePrefix.block.isIgnored(material)
-                && OreDictUnifier.exists(OrePrefix.ingot, material)
-                && OreDictUnifier.exists(OrePrefix.block, material)
-            ) {
-                RecipeUtils.addShapedRecipe("${material.materialId}_compress", OreDictUnifier.get(OrePrefix.block, material),
-                    "III", "III", "III",
-                    'I', UnificationEntry(OrePrefix.ingot, material))
+            if (!OrePrefix.block.isIgnored(material) && OreDictUnifier.exists(OrePrefix.block, material)) {
+                val orePrefix = if (OreDictUnifier.exists(OrePrefix.ingot, material))
+                    OrePrefix.ingot
+                else if (OreDictUnifier.exists(OrePrefix.gem, material))
+                    OrePrefix.gem
+                else
+                    continue
+                RecipeUtils.addShapedRecipe("${material.materialId}_compress",
+                    OreDictUnifier.get(OrePrefix.block, material), "III", "III", "III", 'I',
+                    UnificationEntry(orePrefix, material))
 
-                RecipeUtils.addShapelessRecipe("${material.materialId}_decompress", OreDictUnifier.get(OrePrefix.ingot, material, 9),
-                    UnificationEntry(OrePrefix.block, material))
+                RecipeUtils.addShapelessRecipe("${material.materialId}_decompress",
+                    OreDictUnifier.get(orePrefix, material, 9), UnificationEntry(OrePrefix.block, material))
             }
         }
     }

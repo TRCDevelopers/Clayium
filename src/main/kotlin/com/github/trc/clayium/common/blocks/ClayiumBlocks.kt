@@ -97,7 +97,7 @@ object ClayiumBlocks {
             this::createEnergizedClayBlock)
         createMaterialBlock(
             { !OrePrefix.block.isIgnored(it)
-                && (it.hasProperty(CPropertyKey.INGOT)) },
+                && (it.hasProperty(CPropertyKey.INGOT) || it.hasProperty(CPropertyKey.MATTER)) },
             this::createCompressedBock)
     }
 
