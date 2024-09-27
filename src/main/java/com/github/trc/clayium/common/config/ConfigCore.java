@@ -113,6 +113,10 @@ public class ConfigCore {
                 "Default: minecraft:clay"
         })
         public String claySteelToolBlock = "minecraft:clay";
+
+        @Config.Comment("Default: 10000")
+        @Config.RangeInt(min = 1)
+        public int claySteelToolsDurability = 10000;
     }
 
     public static class FeGen {

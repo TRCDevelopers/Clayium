@@ -25,7 +25,7 @@ import com.github.trc.clayium.common.blocks.claycraftingtable.TileClayCraftingTa
 import com.github.trc.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trc.clayium.common.blocks.marker.TileClayMarker
 import com.github.trc.clayium.common.items.ClayiumItems
-import com.github.trc.clayium.common.items.ItemClaySteelPickace
+import com.github.trc.clayium.common.items.ItemClaySteelPickaxe
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trc.clayium.common.loaders.OreDictionaryLoader
@@ -58,7 +58,7 @@ open class CommonProxy {
 
     open fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(ClayiumMod.proxy)
-        MinecraftForge.EVENT_BUS.register(ItemClaySteelPickace)
+        MinecraftForge.EVENT_BUS.register(ItemClaySteelPickaxe)
         if (CUtils.isDeobfEnvironment) {
             MinecraftForge.EVENT_BUS.register(DebugUtils::class.java)
         }
