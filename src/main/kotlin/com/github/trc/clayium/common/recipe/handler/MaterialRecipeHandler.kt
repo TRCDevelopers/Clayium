@@ -5,6 +5,7 @@ import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CPropertyKey
+import com.github.trc.clayium.api.unification.material.MaterialAmount
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.common.loaders.recipe.CondenserRecipeLoader
@@ -36,7 +37,9 @@ object MaterialRecipeHandler {
             }
 
             if (material.hasOre(OrePrefix.block)) {
-                if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.block, material)
+                if (material.hasProperty(CPropertyKey.PLATE) && OrePrefix.block.getMaterialAmount(material) == MaterialAmount.of(1)) {
+                    addPlateRecipe(OrePrefix.block, material)
+                }
                 if (material.hasProperty(CPropertyKey.CLAY)) {
                     val prop = material.getProperty(CPropertyKey.CLAY)
                     if (prop.compressedInto != null) addClayBlockRecipe(material, prop.compressedInto)
