@@ -1,0 +1,5 @@
+<root>
+    <item name='net.minecraft.client.Minecraft objectMouseOver'>
+        <annotation name='org.jetbrains.annotations.Nullable'/>
+    </item>
+</root>

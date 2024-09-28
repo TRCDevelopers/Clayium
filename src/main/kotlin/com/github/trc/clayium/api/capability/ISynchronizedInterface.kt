@@ -22,8 +22,7 @@ interface ISynchronizedInterface {
 
     /**
      * the ItemStack form of the target block.
-     * should be synced to the client since it is used for rendering.
-     * on the server side, this is not used.
+     * only used for rendering. not used on the server.
      */
     val targetItemStack: ItemStack
 

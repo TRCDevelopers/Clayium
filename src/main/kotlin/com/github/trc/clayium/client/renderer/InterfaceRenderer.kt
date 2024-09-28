@@ -27,7 +27,8 @@ object InterfaceRenderer {
         if (targetPos == null) return
         val targetDimensionType = DimensionManager.getProviderType(targetDimensionId)
         val mc = Minecraft.getMinecraft()
-        val isBlockSelected = mc.objectMouseOver.blockPos == tileEntity.pos
+        val raytraceResult = mc.objectMouseOver ?: return
+        val isBlockSelected = raytraceResult.blockPos == tileEntity.pos
         if (!isBlockSelected) return
 
         val tickTime = (mc.world.totalWorldTime) + partialTicks
@@ -42,7 +43,7 @@ object InterfaceRenderer {
         GlStateManager.pushMatrix()
         run {
             GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5)
-            when (mc.objectMouseOver.sideHit) {
+            when (raytraceResult.sideHit) {
                 EnumFacing.DOWN -> GlStateManager.translate(0f, -0.8f, 0f)
                 EnumFacing.UP -> GlStateManager.translate(0f, 0.8f, 0f)
                 EnumFacing.NORTH -> GlStateManager.translate(0f, 0f, -0.8f)
@@ -67,7 +68,7 @@ object InterfaceRenderer {
         GlStateManager.popMatrix()
         GlStateManager.pushMatrix()
         run {
-            if (targetDimensionId == tileEntity.world.provider.dimension) {
+            if (targetDimensionId == tileEntity.world?.provider?.dimension) {
                 val offsetPos = targetPos.subtract(tileEntity.pos)
 
                 val tessellator = Tessellator.getInstance()
