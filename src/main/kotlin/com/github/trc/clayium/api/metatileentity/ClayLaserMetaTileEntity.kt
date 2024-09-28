@@ -1,6 +1,7 @@
 package com.github.trc.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
@@ -75,6 +76,8 @@ class ClayLaserMetaTileEntity(
                 child(buildMainParentWidget(syncManager)
                     .child(clayEnergyHolder.createCeTextWidget(syncManager)
                         .bottom(12).left(0))
+                    .child(clayEnergyHolder.createSlotWidget()
+                        .align(Alignment.BottomRight))
                 )
             }
     }
