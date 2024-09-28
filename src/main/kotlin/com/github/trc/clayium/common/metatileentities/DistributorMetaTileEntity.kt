@@ -22,6 +22,7 @@ import com.github.trc.clayium.api.util.copyWithSize
 import com.github.trc.clayium.api.util.enumMapNotNull
 import com.github.trc.clayium.api.util.next
 import com.github.trc.clayium.client.model.ModelTextures
+import com.github.trc.clayium.common.util.CNbtUtils
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -29,6 +30,8 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.fml.relauncher.Side
@@ -133,6 +136,10 @@ class DistributorMetaTileEntity(
         super.getQuads(quads, state, side, rand)
         if (state == null || side == null || state !is IExtendedBlockState) return
         quads.add(distributorQuads[side.index])
+    }
+
+    override fun onReplace(world: World, pos: BlockPos, newMetaTileEntity: MetaTileEntity, oldMteData: NBTTagCompound) {
+        CNbtUtils.handleInvSizeDifference(world, pos, oldMteData, IMPORT_INVENTORY, newMetaTileEntity.itemInventory)
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {

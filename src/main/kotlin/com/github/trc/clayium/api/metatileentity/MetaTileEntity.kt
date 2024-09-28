@@ -13,7 +13,6 @@ import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.BlockMachine.Companion.IS_PIPE
-import com.github.trc.clayium.api.block.ItemBlockMachine
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_CONNECTIONS
@@ -58,7 +57,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -188,14 +186,11 @@ abstract class MetaTileEntity(
         mteTraits.values.forEach(MTETrait::onFirstTick)
     }
 
-    open fun canBeReplacedTo(stack: ItemStack, placer: EntityLivingBase): Boolean {
-        val item = stack.item
-        if (item !is ItemBlockMachine) return false
-        val metaTileEntity = CUtils.getMetaTileEntity(stack) ?: return false
+    open fun canBeReplacedTo(world: World, pos: BlockPos, sampleMetaTileEntity: MetaTileEntity): Boolean {
         // shouldn't be replaced if the same MTE.
-        if (metaTileEntity.metaTileEntityId == this.metaTileEntityId) return false
+        if (sampleMetaTileEntity.metaTileEntityId == this.metaTileEntityId) return false
         val thisClass = this::class
-        val thatClass = metaTileEntity::class
+        val thatClass = sampleMetaTileEntity::class
         return thisClass == thatClass
     }
 
@@ -207,10 +202,10 @@ abstract class MetaTileEntity(
         val newMetaTileEntity = holder?.setMetaTileEntityFromSample(sampleMetaTileEntity) ?: return
         newMetaTileEntity.readFromNBT(data)
         Block.spawnAsEntity(world, pos, this.getStackForm())
-        this.onReplace(world, pos, newMetaTileEntity)
+        this.onReplace(world, pos, newMetaTileEntity, data)
     }
 
-    protected open fun onReplace(world: World, pos: BlockPos, metaTileEntity: MetaTileEntity) {}
+    protected open fun onReplace(world: World, pos: BlockPos, newMetaTileEntity: MetaTileEntity, oldMteData: NBTTagCompound) {}
 
     open fun writeToNBT(data: NBTTagCompound) {
         data.setByte("frontFacing", frontFacing.index.toByte())
@@ -222,8 +217,8 @@ abstract class MetaTileEntity(
             data.setInteger("filterType$i", filterAndType.type.id)
             data.setTag("filter$i", filterAndType.filter.serializeNBT())
         }
-        CUtils.writeItems(importItems, "importInventory", data)
-        CUtils.writeItems(exportItems, "exportInventory", data)
+        CUtils.writeItems(importItems, IMPORT_INVENTORY, data)
+        CUtils.writeItems(exportItems, EXPORT_INVENTORY, data)
         for ((name, trait) in mteTraits) {
             data.setTag(name, trait.serializeNBT())
         }
@@ -729,6 +724,9 @@ abstract class MetaTileEntity(
         val onlyNoneList = listOf(NONE)
         val energyAndNone = listOf(NONE, CE)
         val bufferValidInputModes = listOf(NONE, ALL)
+
+        const val IMPORT_INVENTORY = "importInventory"
+        const val EXPORT_INVENTORY = "exportInventory"
 
         val validInputModesLists = listOf(
             listOf(NONE, CE),
