@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.BlockMachine.Companion.IS_PIPE
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
+import com.github.trc.clayium.api.capability.ClayiumDataCodecs.INITIALIZE_MTE
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_CONNECTIONS
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER
@@ -199,10 +200,18 @@ abstract class MetaTileEntity(
         if (!(world == this.world && pos == this.pos)) return
         val data = NBTTagCompound()
         this.writeToNBT(data)
-        val newMetaTileEntity = holder?.setMetaTileEntityFromSample(sampleMetaTileEntity) ?: return
+        val newMetaTileEntity = sampleMetaTileEntity.createMetaTileEntity()
         newMetaTileEntity.readFromNBT(data)
+        holder!!.metaTileEntity = newMetaTileEntity
+        holder!!.writeCustomData(INITIALIZE_MTE) {
+            writeVarInt(ClayiumApi.MTE_REGISTRY.getIdByKey(sampleMetaTileEntity.metaTileEntityId))
+            newMetaTileEntity.writeInitialSyncData(this)
+        }
+        world.neighborChanged(pos, holder!!.blockType, pos)
+        markDirty()
         Block.spawnAsEntity(world, pos, this.getStackForm())
         this.onReplace(world, pos, newMetaTileEntity, data)
+        this.scheduleRenderUpdate()
     }
 
     protected open fun onReplace(world: World, pos: BlockPos, newMetaTileEntity: MetaTileEntity, oldMteData: NBTTagCompound) {}
