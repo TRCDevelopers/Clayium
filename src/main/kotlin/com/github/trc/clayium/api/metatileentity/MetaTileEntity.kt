@@ -404,8 +404,8 @@ abstract class MetaTileEntity(
             val oldOutputs = _outputModes.toList()
             for (side in EnumFacing.HORIZONTALS) {
                 val rotatedSide = side.opposite
-                _inputModes[rotatedSide.index] = oldInputs[side.index]
-                _outputModes[rotatedSide.index] = oldOutputs[side.index]
+                setInput(rotatedSide, oldInputs[side.index])
+                setOutput(rotatedSide, oldOutputs[side.index])
             }
         } else {
             while (frontFacing != side) {
@@ -414,8 +414,8 @@ abstract class MetaTileEntity(
                 frontFacing = frontFacing.rotateY()
                 for (side in EnumFacing.HORIZONTALS) {
                     val rotatedSide = side.rotateY()
-                    _inputModes[rotatedSide.index] = oldInputs[side.index]
-                    _outputModes[rotatedSide.index] = oldOutputs[side.index]
+                    setInput(rotatedSide, oldInputs[side.index])
+                    setOutput(rotatedSide, oldOutputs[side.index])
                 }
             }
         }
