@@ -199,16 +199,18 @@ abstract class MetaTileEntity(
         return thisClass == thatClass
     }
 
-    open fun replaceTo(world: World, pos: BlockPos, metaTileEntity: MetaTileEntity) {
+    fun replaceTo(world: World, pos: BlockPos, sampleMetaTileEntity: MetaTileEntity) {
         if (world.isRemote) return
         if (!(world == this.world && pos == this.pos)) return
         val data = NBTTagCompound()
         this.writeToNBT(data)
-        metaTileEntity.readFromNBT(data)
-
-        this.holder?.metaTileEntity = metaTileEntity
+        val newMetaTileEntity = holder?.setMetaTileEntityFromSample(sampleMetaTileEntity) ?: return
+        newMetaTileEntity.readFromNBT(data)
         Block.spawnAsEntity(world, pos, this.getStackForm())
+        this.onReplace(world, pos, newMetaTileEntity)
     }
+
+    protected open fun onReplace(world: World, pos: BlockPos, metaTileEntity: MetaTileEntity) {}
 
     open fun writeToNBT(data: NBTTagCompound) {
         data.setByte("frontFacing", frontFacing.index.toByte())
