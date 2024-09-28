@@ -446,16 +446,16 @@ machine.clayium.ca_reactor.antimatter=反物質反応炉コア Mk I
 machine.clayium.ca_reactor.pure_antimatter=反物質反応炉コア Mk II
 machine.clayium.ca_reactor.oec=反物質反応炉コア Mk III
 machine.clayium.ca_reactor.opa=反物質反応炉コア Mk IV
-machine.clayium.ca_reactor.tootlip1=反物質から純反物質を精製する
-machine.clayium.ca_reactor.tootlip2=__DETAIL__
-machine.clayium.ca_reactor.tootlip3=反応炉のランク (構成要素のランクの平均) により
-machine.clayium.ca_reactor.tootlip4=精製される純反物質の圧縮回数が変化する
-machine.clayium.ca_reactor.tootlip5=[マルチブロック]
-machine.clayium.ca_reactor.tootlip6=リング状に CA 反応炉コイルを設置し、
-machine.clayium.ca_reactor.tootlip7=CA 反応炉筐体かインターフェースで囲う
-machine.clayium.ca_reactor.tootlip8=その囲いの内 1 つを反応炉コアブロックに置換する
-machine.clayium.ca_reactor.tootlip9=- CA 反応炉筐体の数は 50 個以上
-machine.clayium.ca_reactor.tootlip10=- コイルやインターフェースの Tier >= コアの Tier
+machine.clayium.ca_reactor.tooltip1=反物質から純反物質を精製する
+machine.clayium.ca_reactor.tooltip2=__DETAIL__
+machine.clayium.ca_reactor.tooltip3=反応炉のランク (構成要素のランクの平均) により
+machine.clayium.ca_reactor.tooltip4=精製される純反物質の圧縮回数が変化する
+machine.clayium.ca_reactor.tooltip5=[マルチブロック]
+machine.clayium.ca_reactor.tooltip6=リング状に CA 反応炉コイルを設置し、
+machine.clayium.ca_reactor.tooltip7=CA 反応炉筐体かインターフェースで囲う
+machine.clayium.ca_reactor.tooltip8=その囲いの内 1 つを反応炉コアブロックに置換する
+machine.clayium.ca_reactor.tooltip9=- CA 反応炉筐体の数は 50 個以上
+machine.clayium.ca_reactor.tooltip10=- コイルやインターフェースの Tier >= コアの Tier
 gui.clayium.ca_reactor.invalid=無効
 gui.clayium.ca_reactor.constructed=構築済
 gui.clayium.ca_reactor.rank_size=ランク %d サイズ %d
