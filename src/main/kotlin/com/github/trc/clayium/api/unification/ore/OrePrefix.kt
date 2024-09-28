@@ -93,6 +93,7 @@ class OrePrefix(
 
         val block = OrePrefix("block", 9.M)
 
+        //todo proper amount
         val bearing = OrePrefix("bearing", 1.M, hasClayPartsFlag)
         val blade = OrePrefix("blade", 1.M, hasClayPartsFlag)
         val cuttingHead = OrePrefix("cuttingHead", 9.M, hasClayPartsFlag)

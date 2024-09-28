@@ -11,6 +11,9 @@ import kotlin.math.min
 import kotlin.math.pow
 
 object CondenserRecipeLoader {
+
+    private var siliconeRecipeGenerated = false
+
     fun registerRecipes() {
         val registry = CRecipes.CONDENSER
 
@@ -50,6 +53,12 @@ object CondenserRecipeLoader {
         val clayEnergy = ClayEnergy.micro(20 * 10.0.pow(min(tier / 2, 2)).toLong())
         val amount = OrePrefix.block.getMaterialAmount(material).dustAmount
         if (OreDictUnifier.exists(OrePrefix.block, material)) {
+            if (material == CMaterials.silicone) {
+                // silicone block has 16 variants.
+                // only generate the recipe once.
+                if (siliconeRecipeGenerated) return
+                siliconeRecipeGenerated = true
+            }
             CRecipes.CONDENSER.builder()
                 .input(OrePrefix.dust, material, amount)
                 .output(OrePrefix.block, material)
