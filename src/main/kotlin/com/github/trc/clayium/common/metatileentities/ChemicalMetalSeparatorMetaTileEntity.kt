@@ -52,6 +52,7 @@ class ChemicalMetalSeparatorMetaTileEntity(
 
         return ModularPanel.defaultPanel(translationKey, GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 20)
             .columnWithPlayerInv {
+                @Suppress("DuplicatedCode") // Output slots layout is different from super.buildMainParentWidget
                 child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.str(getStackForm().displayName).asWidget()
                         .align(Alignment.TopLeft))
