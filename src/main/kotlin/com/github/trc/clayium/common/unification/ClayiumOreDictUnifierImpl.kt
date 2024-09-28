@@ -14,6 +14,7 @@ import net.minecraftforge.oredict.OreDictionary
 object ClayiumOreDictUnifierImpl : IOreDictUnifier {
 
     private val item2OreNames = mutableMapOf<Item, MutableItemVariantMap<MutableSet<String>>>()
+    private val oreName2Stacks = mutableMapOf<String, MutableList<ItemStack>>()
 
     init {
         OreDictionary.getOreNames().forEach { oreName ->
@@ -36,6 +37,8 @@ object ClayiumOreDictUnifierImpl : IOreDictUnifier {
         }
         val names = variantMap.computeIfAbsent(meta.toShort()) { mutableSetOf() }
         names.add(oreName)
+
+        oreName2Stacks.computeIfAbsent(oreName) { mutableListOf() }.add(stack.copyWithSize(1))
         //todo
     }
 
@@ -60,10 +63,9 @@ object ClayiumOreDictUnifierImpl : IOreDictUnifier {
     }
 
     override fun get(oreDict: String, amount: Int): ItemStack {
-        val ores = OreDictionary.getOres(oreDict)
-        if (ores.isEmpty()) return ItemStack.EMPTY
-        val stack = ores.first().copyWithSize(amount)
-        if (!stack.hasSubtypes) stack.itemDamage = 0
+        val stack =  oreName2Stacks[oreDict]?.firstOrNull()
+            ?.copyWithSize(amount) ?: return ItemStack.EMPTY
+        if (stack.metadata == W) stack.itemDamage = 0
         return stack
     }
 

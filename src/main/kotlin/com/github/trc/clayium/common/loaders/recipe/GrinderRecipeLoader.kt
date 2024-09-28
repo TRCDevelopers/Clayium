@@ -6,6 +6,21 @@ import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.IMaterial
 import com.github.trc.clayium.api.unification.material.MaterialAmount
 import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.unification.ore.OrePrefix.Companion.bearing
+import com.github.trc.clayium.api.unification.ore.OrePrefix.Companion.blade
+import com.github.trc.clayium.api.unification.ore.OrePrefix.Companion.block
+import com.github.trc.clayium.api.unification.ore.OrePrefix.Companion.crystal
+import com.github.trc.clayium.api.unification.ore.OrePrefix.Companion.cuttingHead
+import com.github.trc.clayium.api.unification.ore.OrePrefix.Companion.cylinder
+import com.github.trc.clayium.api.unification.ore.OrePrefix.Companion.disc
+import com.github.trc.clayium.api.unification.ore.OrePrefix.Companion.gear
+import com.github.trc.clayium.api.unification.ore.OrePrefix.Companion.gem
+import com.github.trc.clayium.api.unification.ore.OrePrefix.Companion.grindingHead
+import com.github.trc.clayium.api.unification.ore.OrePrefix.Companion.ingot
+import com.github.trc.clayium.api.unification.ore.OrePrefix.Companion.needle
+import com.github.trc.clayium.api.unification.ore.OrePrefix.Companion.pipe
+import com.github.trc.clayium.api.unification.ore.OrePrefix.Companion.ring
+import com.github.trc.clayium.api.unification.ore.OrePrefix.Companion.spindle
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.recipe.registry.CRecipes
@@ -59,7 +74,7 @@ object GrinderRecipeLoader {
         // clay block grinding
         for ((i, m) in listOf(CMaterials.clay, CMaterials.denseClay, CMaterials.industrialClay, CMaterials.advancedIndustrialClay).withIndex()) {
             registry.builder()
-                .input(OrePrefix.block, m)
+                .input(block, m)
                 .output(OrePrefix.dust, m)
                 .tier(0).defaultCEt().duration(4 * (i + 1))
                 .buildAndRegister()
@@ -73,10 +88,13 @@ object GrinderRecipeLoader {
         }
         for (prefix in OrePrefix.metaItemPrefixes) {
             if (!OreDictUnifier.exists(prefix, material)) continue
-            if (prefix == OrePrefix.block) {
-                handleBlockGrinding(material)
-            } else {
-                addDefaultGrindingRecipe(prefix, material)
+            when (prefix) {
+                block -> handleBlockGrinding(material)
+                ingot, gem, crystal,
+                bearing, blade, cuttingHead, cylinder, disc,
+                gear, grindingHead, needle, pipe, ring, spindle -> {
+                    addDefaultGrindingRecipe(prefix, material)
+                }
             }
         }
     }
@@ -86,7 +104,7 @@ object GrinderRecipeLoader {
         if (material === CMaterials.clay || material === CMaterials.denseClay || material === CMaterials.industrialClay || material === CMaterials.advancedIndustrialClay) {
             return
         }
-        addDefaultGrindingRecipe(OrePrefix.block, material)
+        addDefaultGrindingRecipe(block, material)
     }
 
     private fun addDefaultGrindingRecipe(orePrefix: OrePrefix, material: IMaterial) {
