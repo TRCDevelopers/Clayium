@@ -5,13 +5,14 @@ import net.minecraftforge.common.IRarity
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-interface ITier {
+interface ITier : Comparable<ITier> {
     val numeric: Int
     val lowerName: String
     val prefixTranslationKey: String
     val rarity: IRarity
 
     abstract override fun hashCode(): Int
+    override fun compareTo(other: ITier): Int = numeric.compareTo(other.numeric)
 
     companion object {
         @SideOnly(Side.CLIENT)
