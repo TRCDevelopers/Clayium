@@ -1,5 +1,6 @@
 package com.github.trc.clayium.common.util
 
+import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.common.network.CNetwork
 import com.github.trc.clayium.common.network.KeyInputPacket
 import net.minecraft.client.Minecraft
@@ -19,11 +20,17 @@ enum class KeyInput(
     ;
 
     private val mapping by lazy { WeakHashMap<EntityPlayerMP, MutBooleanPairKeyData>() }
-    private val keyBinding by lazy { keyBinding()() }
+    private lateinit var keyBinding: KeyBinding
     @SideOnly(Side.CLIENT)
     private var isKeyDown = false
     @SideOnly(Side.CLIENT)
     private var isPressed = false
+
+    init {
+        if (CUtils.isClientSide) {
+            this.keyBinding = keyBinding()()
+        }
+    }
 
     fun update(player: EntityPlayerMP, isKeyDown: Boolean, isPressed: Boolean) {
         val pair = mapping.computeIfAbsent(player) { MutBooleanPairKeyData(false, false) }
@@ -56,6 +63,7 @@ enum class KeyInput(
 
     companion object {
         @SubscribeEvent
+        @Suppress("unused")
         fun onKeyInput(e: InputEvent.KeyInputEvent) {
             var updating: MutableList<KeyInput>? = null
             for (key in KeyInput.entries) {

@@ -63,9 +63,7 @@ open class CommonProxy {
     open fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(ClayiumMod.proxy)
         MinecraftForge.EVENT_BUS.register(ItemClaySteelPickaxe)
-        if (CUtils.isDeobfEnvironment) {
-            MinecraftForge.EVENT_BUS.register(DebugUtils::class.java)
-        }
+        if (CUtils.isDeobfEnvironment) { MinecraftForge.EVENT_BUS.register(DebugUtils::class.java) }
 
         CNetwork.init()
 

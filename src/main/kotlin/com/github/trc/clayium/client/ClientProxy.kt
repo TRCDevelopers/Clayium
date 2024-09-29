@@ -45,7 +45,6 @@ class ClientProxy : CommonProxy() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileClayMarker.NoExtend::class.java, ClayMarkerTESR)
 
         ClayiumBlocks.CLAY_TREE_LEAVES.setGraphicsLevel(Minecraft.getMinecraft().gameSettings.fancyGraphics)
-
     }
 
     override fun init(event: FMLInitializationEvent) {
