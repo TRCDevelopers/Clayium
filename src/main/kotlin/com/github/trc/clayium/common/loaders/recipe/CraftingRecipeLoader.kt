@@ -7,7 +7,6 @@ import com.github.trc.clayium.api.unification.material.CMaterials.clay
 import com.github.trc.clayium.api.unification.material.CMaterials.denseClay
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
-import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
@@ -66,7 +65,6 @@ object CraftingRecipeLoader {
                     OrePrefix.gem
                 else
                     continue
-                CLog.info("Registering compress/decompress recipes for ${material.materialId}")
                 RecipeUtils.addShapedRecipe("${material.materialId}_compress",
                     OreDictUnifier.get(OrePrefix.block, material), "III", "III", "III",
                     'I', UnificationEntry(orePrefix, material))
