@@ -10,6 +10,9 @@ changelog:
     - title: Fixed
       labels:
         - "bug"
+    - title: Internal Changes
+      labels:
+          - "refactoring"
     - title: "Other Changes"
       labels:
         - "*"
