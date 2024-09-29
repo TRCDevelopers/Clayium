@@ -6,10 +6,10 @@ changelog:
   categories:
     - title: Added
       labels:
-        - "type: feature"
+        - "feature"
     - title: Fixed
       labels:
-        - "type: bug"
+        - "bug"
     - title: "Other Changes"
       labels:
         - "*"
