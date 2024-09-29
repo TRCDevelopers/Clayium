@@ -114,7 +114,7 @@ abstract class MetaTileEntity(
     open val requiredTextures get() = listOf(faceTexture)
 
     protected val mteTraits = mutableMapOf<String, MTETrait>()
-    private val traitByNetworkId = Int2ObjectOpenHashMap<MTETrait>()
+    protected val traitByNetworkId = Int2ObjectOpenHashMap<MTETrait>()
 
     abstract val importItems: IItemHandlerModifiable
     abstract val exportItems: IItemHandlerModifiable
@@ -366,6 +366,10 @@ abstract class MetaTileEntity(
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(ItemHandlerProxy(inputSlots, outputSlots))
         }
         return mteTraits.values.firstNotNullOfOrNull { it.getCapability(capability, facing) }
+    }
+
+    fun <T> hasCapability(capability: Capability<T>, facing: EnumFacing? = null): Boolean {
+        return getCapability(capability, facing) != null
     }
 
     /**

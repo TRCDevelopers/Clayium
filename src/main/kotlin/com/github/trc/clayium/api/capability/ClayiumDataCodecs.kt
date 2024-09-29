@@ -28,6 +28,7 @@ object ClayiumDataCodecs {
     val UPDATE_RESONANCE = assignId()
 
     val INTERFACE_SYNC_MIMIC_TARGET = assignId()
+    val CLAY_INTERFACE_TRAIT = assignId()
 
     val UPDATE_PAN_DUPLICATION_ENTRIES = assignId()
 

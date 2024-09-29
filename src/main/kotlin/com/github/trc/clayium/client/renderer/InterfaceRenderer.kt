@@ -22,6 +22,9 @@ object InterfaceRenderer {
         tileEntity: MetaTileEntityHolder, syncInterface: ISynchronizedInterface, x: Double, y: Double, z: Double,
         partialTicks: Float,
     ) {
+        val metaTileEntityStack = syncInterface.targetItemStack
+        if (metaTileEntityStack.isEmpty) return
+
         val targetPos = syncInterface.targetPos
         val targetDimensionId = syncInterface.targetDimensionId
         if (targetPos == null) return
@@ -32,7 +35,6 @@ object InterfaceRenderer {
         if (!isBlockSelected) return
 
         val tickTime = (mc.world.totalWorldTime) + partialTicks
-        val metaTileEntityStack = syncInterface.targetItemStack
 
         GlStateManager.disableLighting()
         GlStateManager.enableBlend()

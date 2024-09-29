@@ -1,11 +1,13 @@
 package com.github.trc.clayium.api.metatileentity.trait
 
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs
+import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.common.config.ConfigTierBalance
 import net.minecraft.util.EnumFacing
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
@@ -13,7 +15,7 @@ import kotlin.Int
 
 abstract class AutoIoHandler(
     metaTileEntity: MetaTileEntity,
-    isBuffer: Boolean = false,
+    val isBuffer: Boolean = false,
     traitName: String = ClayiumDataCodecs.AUTO_IO_HANDLER,
     tier: Int = metaTileEntity.tier.numeric,
 ) : MTETrait(metaTileEntity, traitName) {
@@ -85,6 +87,13 @@ abstract class AutoIoHandler(
             if (remainingWork <= 0) break
         }
         return remainingWork
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === ClayiumTileCapabilities.AUTO_IO_HANDLER) {
+            return capability.cast(this)
+        }
+        return super.getCapability(capability, facing)
     }
 
     open class Importer(

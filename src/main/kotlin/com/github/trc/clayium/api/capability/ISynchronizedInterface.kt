@@ -9,14 +9,13 @@ interface ISynchronizedInterface {
     val target: MetaTileEntity?
 
     /**
-     * should be synced to the client since it is used for rendering.
-     * also used for checking if this block is linked to another block.
+     * should be synced to the client because it is used for rendering target position.
      * null if no target.
      */
     val targetPos: BlockPos?
 
     /**
-     * should be synced to the client since it is used for rendering.
+     * should be synced to the client since it is used for rendering target dimension name.
      */
     val targetDimensionId: Int
 
