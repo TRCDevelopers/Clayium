@@ -1,0 +1,15 @@
+changelog:
+  exclude:
+    labels:
+      - "ignore changelog"
+
+  categories:
+    - title: Added
+      labels:
+        - "feature"
+    - title: Fixed
+      labels:
+        - "bug"
+    - title: "Other Changes"
+      labels:
+        - "*"
