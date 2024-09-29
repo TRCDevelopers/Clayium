@@ -66,9 +66,21 @@ class ClayInterfaceMetaTileEntity(
         this.importItems = target.importItems
         this.exportItems = target.exportItems
         this.itemInventory = ItemHandlerProxy(target.importItems, target.exportItems)
-        this.autoIoHandler = AutoIoHandler.Combined(this, tier = target.tier.numeric)
+        target.getCapability(ClayiumTileCapabilities.AUTO_IO_HANDLER, null)?.let { targetHandler ->
+            this.autoIoHandler = AutoIoHandler.Combined(this, targetHandler.isBuffer, target.tier.numeric)
+        }
         target.getCapability(ClayiumTileCapabilities.CLAY_ENERGY_HOLDER, null)?.let { targetEnergyHolder ->
             this.ecImporter = AutoIoHandler.EcImporter(this, targetEnergyHolder.energizedClayItemHandler)
+        }
+
+        // Disable Trait Sync. These traits not exist on the client side, and they have no data to sync.
+        val autoIoHandler = this.autoIoHandler
+        if (autoIoHandler != null) {
+            traitByNetworkId.remove(autoIoHandler.networkId)
+        }
+        val ecImporter = this.ecImporter
+        if (ecImporter != null) {
+            traitByNetworkId.remove(ecImporter.networkId)
         }
 
         this.validInputModes = target.validInputModes
