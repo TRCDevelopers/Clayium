@@ -15,8 +15,12 @@ import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.common.util.CNbtUtils
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
 
@@ -45,10 +49,6 @@ class ClayBufferMetaTileEntity(
     override val importItems = itemInventory
     override val exportItems = itemInventory
     private val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this, isBuffer = true)
-
-    override fun createMetaTileEntity(): MetaTileEntity {
-        return ClayBufferMetaTileEntity(this.metaTileEntityId, this.tier)
-    }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
@@ -94,4 +94,13 @@ class ClayBufferMetaTileEntity(
                         .left(6)))
             .bindPlayerInventory()
     }
+
+    override fun onReplace(world: World, pos: BlockPos, newMetaTileEntity: MetaTileEntity, oldMteData: NBTTagCompound) {
+        CNbtUtils.handleInvSizeDifference(world, pos, oldMteData, IMPORT_INVENTORY, newMetaTileEntity.itemInventory)
+    }
+
+    override fun createMetaTileEntity(): MetaTileEntity {
+        return ClayBufferMetaTileEntity(this.metaTileEntityId, this.tier)
+    }
+
 }

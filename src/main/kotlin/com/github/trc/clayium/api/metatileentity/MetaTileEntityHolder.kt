@@ -18,14 +18,14 @@ import net.minecraftforge.fml.relauncher.SideOnly
 
 class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
     var metaTileEntity: MetaTileEntity? = null
-        private set(sampleMetaTileEntity) {
+        set(sampleMetaTileEntity) {
             sampleMetaTileEntity?.holder = this
             field = sampleMetaTileEntity
         }
 
-    fun setMetaTileEntity(sampleMetaTileEntity: MetaTileEntity): MetaTileEntity {
+    fun setMetaTileEntityFromSample(sampleMetaTileEntity: MetaTileEntity): MetaTileEntity {
         val newMetaTileEntity = sampleMetaTileEntity.createMetaTileEntity()
-        metaTileEntity = newMetaTileEntity
+        this.metaTileEntity = newMetaTileEntity
         if (world != null && !world.isRemote) {
             writeCustomData(INITIALIZE_MTE) {
                 writeVarInt(ClayiumApi.MTE_REGISTRY.getIdByKey(sampleMetaTileEntity.metaTileEntityId))
@@ -53,7 +53,7 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
             ClayiumApi.MTE_REGISTRY.getObject(mteId)?.let { sampleMte ->
                 val newMte = sampleMte.createMetaTileEntity()
                 newMte.readFromNBT(compound.getCompoundTag("metaTileEntityData"))
-                metaTileEntity = newMte
+                this.metaTileEntity = newMte
             } ?: CLog.error("Failed to load MetaTileEntity with invalid id: $mteId")
         }
     }
@@ -82,7 +82,7 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
 
     private fun receiveMteInitializationData(buf: PacketBuffer) {
         val sampleMetaTileEntity = ClayiumApi.MTE_REGISTRY.getObjectById(buf.readVarInt()) ?: return
-        val newMetaTileEntity = this.setMetaTileEntity(sampleMetaTileEntity)
+        val newMetaTileEntity = this.setMetaTileEntityFromSample(sampleMetaTileEntity)
         newMetaTileEntity.receiveInitialSyncData(buf)
         scheduleRenderUpdate()
     }

@@ -32,6 +32,7 @@ import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trc.clayium.common.loaders.OreDictionaryLoader
 import com.github.trc.clayium.common.loaders.recipe.CRecipeLoader
 import com.github.trc.clayium.common.metatileentities.MetaTileEntities
+import com.github.trc.clayium.common.network.CNetwork
 import com.github.trc.clayium.common.pan.factories.CPanRecipeFactory
 import com.github.trc.clayium.common.pan.factories.CraftingTablePanRecipeFactory
 import com.github.trc.clayium.common.pan.factories.FurnacePanRecipeFactory
@@ -62,9 +63,9 @@ open class CommonProxy {
     open fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(ClayiumMod.proxy)
         MinecraftForge.EVENT_BUS.register(ItemClaySteelPickaxe)
-        if (CUtils.isDeobfEnvironment) {
-            MinecraftForge.EVENT_BUS.register(DebugUtils::class.java)
-        }
+        if (CUtils.isDeobfEnvironment) { MinecraftForge.EVENT_BUS.register(DebugUtils::class.java) }
+
+        CNetwork.init()
 
         this.registerTileEntities()
         GameRegistry.registerWorldGenerator(ClayOreGenerator, 0)

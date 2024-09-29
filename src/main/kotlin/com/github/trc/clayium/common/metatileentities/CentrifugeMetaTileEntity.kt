@@ -20,8 +20,12 @@ import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.config.ConfigTierBalance
 import com.github.trc.clayium.common.recipe.registry.CRecipes
+import com.github.trc.clayium.common.util.CNbtUtils
 import net.minecraft.client.resources.I18n
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 
 class CentrifugeMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -75,6 +79,10 @@ class CentrifugeMetaTileEntity(
                 .bottom(12).left(0))
             .child(clayEnergyHolder.createSlotWidget()
                 .align(Alignment.BottomRight))
+    }
+
+    override fun onReplace(world: World, pos: BlockPos, newMetaTileEntity: MetaTileEntity, oldMteData: NBTTagCompound) {
+        CNbtUtils.handleInvSizeDifference(world, pos, oldMteData, EXPORT_INVENTORY, newMetaTileEntity.exportItems)
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {

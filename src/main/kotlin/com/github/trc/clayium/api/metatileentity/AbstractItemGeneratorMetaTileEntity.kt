@@ -17,6 +17,8 @@ import com.github.trc.clayium.common.util.TransferUtils
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 import kotlin.math.min
 
 /**
@@ -131,5 +133,10 @@ abstract class AbstractItemGeneratorMetaTileEntity(
                         }.build().align(Alignment.Center))
                 )
             }
+    }
+
+    override fun canBeReplacedTo(world: World, pos: BlockPos, sampleMetaTileEntity: MetaTileEntity): Boolean {
+        if (sampleMetaTileEntity.tier < this.tier) return false
+        return super.canBeReplacedTo(world, pos, sampleMetaTileEntity)
     }
 }

@@ -41,6 +41,8 @@ import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
@@ -95,6 +97,7 @@ class StorageContainerMetaTileEntity(
             markDirty()
             if (syncFlag) writeCustomData(UPDATE_MAX_ITEMS_STORED) { writeVarInt(value) }
         }
+    val isUpgraded get() = maxStoredItems == UPGRADED_MAX_AMOUNT
 
     private var itemsStored = 0
         set(value) { field = value; markDirty() }
@@ -140,6 +143,12 @@ class StorageContainerMetaTileEntity(
             return capability.cast(createFilteredItemHandler(itemInventory, facing))
         }
         return super.getCapability(capability, facing)
+    }
+
+    override fun canBeReplacedTo(world: World, pos: BlockPos, sampleMetaTileEntity: MetaTileEntity): Boolean {
+        if (sampleMetaTileEntity !is StorageContainerMetaTileEntity) return false
+        if (this.isUpgraded && !sampleMetaTileEntity.isUpgraded) return false
+        return super.canBeReplacedTo(world, pos, sampleMetaTileEntity)
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {

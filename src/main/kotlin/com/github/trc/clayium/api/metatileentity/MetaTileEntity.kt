@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.BlockMachine.Companion.IS_PIPE
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
+import com.github.trc.clayium.api.capability.ClayiumDataCodecs.INITIALIZE_MTE
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_CONNECTIONS
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER
@@ -48,6 +49,7 @@ import com.github.trc.clayium.common.items.filter.FilterType
 import com.github.trc.clayium.common.util.BothSideI18n
 import com.github.trc.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
+import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -185,6 +187,35 @@ abstract class MetaTileEntity(
         mteTraits.values.forEach(MTETrait::onFirstTick)
     }
 
+    open fun canBeReplacedTo(world: World, pos: BlockPos, sampleMetaTileEntity: MetaTileEntity): Boolean {
+        // shouldn't be replaced if the same MTE.
+        if (sampleMetaTileEntity.metaTileEntityId == this.metaTileEntityId) return false
+        val thisClass = this::class
+        val thatClass = sampleMetaTileEntity::class
+        return thisClass == thatClass
+    }
+
+    fun replaceTo(world: World, pos: BlockPos, sampleMetaTileEntity: MetaTileEntity) {
+        if (world.isRemote) return
+        if (!(world == this.world && pos == this.pos)) return
+        val data = NBTTagCompound()
+        this.writeToNBT(data)
+        val newMetaTileEntity = sampleMetaTileEntity.createMetaTileEntity()
+        newMetaTileEntity.readFromNBT(data)
+        holder!!.metaTileEntity = newMetaTileEntity
+        holder!!.writeCustomData(INITIALIZE_MTE) {
+            writeVarInt(ClayiumApi.MTE_REGISTRY.getIdByKey(sampleMetaTileEntity.metaTileEntityId))
+            newMetaTileEntity.writeInitialSyncData(this)
+        }
+        world.neighborChanged(pos, holder!!.blockType, pos)
+        markDirty()
+        Block.spawnAsEntity(world, pos, this.getStackForm())
+        this.onReplace(world, pos, newMetaTileEntity, data)
+        this.scheduleRenderUpdate()
+    }
+
+    protected open fun onReplace(world: World, pos: BlockPos, newMetaTileEntity: MetaTileEntity, oldMteData: NBTTagCompound) {}
+
     open fun writeToNBT(data: NBTTagCompound) {
         data.setByte("frontFacing", frontFacing.index.toByte())
         data.setByteArray("inputModes", ByteArray(6) { _inputModes[it].id.toByte() })
@@ -195,8 +226,8 @@ abstract class MetaTileEntity(
             data.setInteger("filterType$i", filterAndType.type.id)
             data.setTag("filter$i", filterAndType.filter.serializeNBT())
         }
-        CUtils.writeItems(importItems, "importInventory", data)
-        CUtils.writeItems(exportItems, "exportInventory", data)
+        CUtils.writeItems(importItems, IMPORT_INVENTORY, data)
+        CUtils.writeItems(exportItems, EXPORT_INVENTORY, data)
         for ((name, trait) in mteTraits) {
             data.setTag(name, trait.serializeNBT())
         }
@@ -702,6 +733,9 @@ abstract class MetaTileEntity(
         val onlyNoneList = listOf(NONE)
         val energyAndNone = listOf(NONE, CE)
         val bufferValidInputModes = listOf(NONE, ALL)
+
+        const val IMPORT_INVENTORY = "importInventory"
+        const val EXPORT_INVENTORY = "exportInventory"
 
         val validInputModesLists = listOf(
             listOf(NONE, CE),
