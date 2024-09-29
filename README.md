@@ -27,8 +27,7 @@ including PAN, except for those listed below.
 - Clay Crafting Board
 - Clay Gadgets
 - Clay Guns
-- ClaySteel tools
-- Decoration Blocks
+- ClaySteel Shovel
 - Energetic Clay Decomposer
 - Filters other than black/white list
 - Fluid related features
@@ -44,8 +43,10 @@ including PAN, except for those listed below.
 ### Code
 The code is licensed under the [LGPL-3.0](https://github.com/TRCDevelopers/Clayium/blob/develop/LICENSE).
 
-### Assets
-Assets are created by deb_rk, and are licensed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/).
+### Textures
+The textures used are from the original Clayium mod.
+
+Clayium © deb_rk (Licensed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/))
 
 ## Credits
 
