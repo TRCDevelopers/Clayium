@@ -4,7 +4,6 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
-import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.multiblock.ProxyMetaTileEntityBase
@@ -21,6 +20,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
+import java.lang.ref.WeakReference
 
 class ClayInterfaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -30,9 +30,13 @@ class ClayInterfaceMetaTileEntity(
     override val faceTexture = clayiumId("blocks/clay_interface")
     override val useFaceForAllSides = true
 
-    override var importItems: IItemHandlerModifiable = EmptyItemStackHandler
-    override var exportItems: IItemHandlerModifiable = EmptyItemStackHandler
-    override var itemInventory: IItemHandler = EmptyItemStackHandler
+    override val importItems: IItemHandlerModifiable get() = targetImportItems.get() ?: EmptyItemStackHandler
+    override val exportItems: IItemHandlerModifiable get() = targetExportItems.get() ?: EmptyItemStackHandler
+    override val itemInventory: IItemHandler get() = targetItemInventory.get() ?: EmptyItemStackHandler
+
+    private var targetImportItems: WeakReference<IItemHandlerModifiable> = WeakReference(null)
+    private var targetExportItems: WeakReference<IItemHandlerModifiable> = WeakReference(null)
+    private var targetItemInventory: WeakReference<IItemHandler> = WeakReference(null)
 
     private var ecImporter: AutoIoHandler.EcImporter? = null
     private var autoIoHandler: AutoIoHandler? = null
@@ -63,9 +67,9 @@ class ClayInterfaceMetaTileEntity(
 
     override fun onLink(target: MetaTileEntity) {
         super.onLink(target)
-        this.importItems = target.importItems
-        this.exportItems = target.exportItems
-        this.itemInventory = ItemHandlerProxy(target.importItems, target.exportItems)
+        this.targetImportItems = WeakReference(target.importItems)
+        this.targetExportItems = WeakReference(target.exportItems)
+        this.targetItemInventory = WeakReference(target.itemInventory)
         target.getCapability(ClayiumTileCapabilities.AUTO_IO_HANDLER, null)?.let { targetHandler ->
             this.autoIoHandler = AutoIoHandler.Combined(this, targetHandler.isBuffer, target.tier.numeric)
         }
@@ -89,9 +93,9 @@ class ClayInterfaceMetaTileEntity(
 
     override fun onUnlink() {
         super.onUnlink()
-        this.importItems = EmptyItemStackHandler
-        this.exportItems = EmptyItemStackHandler
-        this.itemInventory = EmptyItemStackHandler
+        this.targetImportItems = WeakReference(null)
+        this.targetExportItems = WeakReference(null)
+        this.targetItemInventory = WeakReference(null)
         this.autoIoHandler = null
         this.ecImporter = null
 
@@ -123,7 +127,7 @@ class ClayInterfaceMetaTileEntity(
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         if (capability === ClayiumTileCapabilities.CLAY_ENERGY_HOLDER && target != null) {
-            return target?.getCapability(capability, facing)
+            return target!!.getCapability(capability, facing)
         }
         return super.getCapability(capability, facing)
     }

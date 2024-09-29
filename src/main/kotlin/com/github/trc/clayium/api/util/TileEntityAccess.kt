@@ -14,7 +14,6 @@ import java.lang.ref.WeakReference
  *
  * if you get non-null from the [getIfLoaded] method, it also ensures the pos is loaded.
  */
-//todo use this in ProxyMetaTileEntities instead of holding the TileEntity directly
 class TileEntityAccess(
     val world: World,
     val pos: BlockPos,
@@ -29,23 +28,18 @@ class TileEntityAccess(
         val thisTime = if (isTileEntityValid(prev)) {
             prev
         } else {
-            world.getTileEntity(pos)
+            val tileEntity = world.getTileEntity(pos)
+            if (tileEntity != null) weakRef = WeakReference(tileEntity)
+            tileEntity
         }
-        weakRef = WeakReference(thisTime)
         return thisTime
     }
 
     fun getIfLoaded(): TileEntity? {
-        val prev = weakRef.get()
-        val thisTime = if (!world.isBlockLoaded(pos)) {
-            null
-        } else if (isTileEntityValid(prev)) {
-            prev
-        } else {
-            world.getTileEntity(pos)
+        if (world.isBlockLoaded(pos)) {
+            return get()
         }
-        weakRef = WeakReference(thisTime)
-        return thisTime
+        return null
     }
 
     private fun isTileEntityValid(te: TileEntity?): Boolean {

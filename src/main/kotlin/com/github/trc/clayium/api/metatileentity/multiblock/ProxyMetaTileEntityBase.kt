@@ -5,7 +5,9 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.INTERFACE_SYNC_MI
 import com.github.trc.clayium.api.capability.ISynchronizedInterface
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.TileEntityAccess
 import com.github.trc.clayium.api.util.getMetaTileEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -30,31 +32,26 @@ abstract class ProxyMetaTileEntityBase(
     final override var isAttachedToMultiblock = false
         private set
 
+    private var backingTarget: TileEntityAccess? = null
+
     /**
      * only available on the server side.
      */
-    override var target: MetaTileEntity? = null
-        get() {
-            if (field?.isInvalid == true) {
-                field = null
-                return null
-            }
-            val targetPos = this.targetPos ?: return null
-            if (DimensionManager.getWorld(targetDimensionId)?.isBlockLoaded(targetPos) == true) {
-                return field
-            }
-            return null
-        }
+    override var target: MetaTileEntity?
+        get() = (backingTarget?.getIfLoaded() as? MetaTileEntityHolder)?.metaTileEntity
         protected set(value) {
-            field = value
             if (value == null) {
                 this.targetPos = null
                 this.targetDimensionId = -1
                 writeTargetRemoved()
+                backingTarget = null
             } else {
-                this.targetPos = value.pos
-                this.targetDimensionId = value.world?.provider?.dimension ?: -1
+                val world = value.world ?: return
+                val pos = value.pos ?: return
+                this.targetPos = pos
+                this.targetDimensionId = world.provider?.dimension ?: -1
                 writeTargetData(value)
+                backingTarget = TileEntityAccess(world, pos)
             }
         }
 
