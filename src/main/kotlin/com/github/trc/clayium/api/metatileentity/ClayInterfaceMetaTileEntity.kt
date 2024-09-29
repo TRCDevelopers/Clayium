@@ -65,8 +65,8 @@ class ClayInterfaceMetaTileEntity(
         return ClayInterfaceMetaTileEntity(metaTileEntityId, tier)
     }
 
-    override fun onLink(target: MetaTileEntity) {
-        super.onLink(target)
+    override fun linkTo(target: MetaTileEntity) {
+        super.linkTo(target)
         this.targetImportItems = WeakReference(target.importItems)
         this.targetExportItems = WeakReference(target.exportItems)
         this.targetItemInventory = WeakReference(target.itemInventory)
@@ -91,8 +91,8 @@ class ClayInterfaceMetaTileEntity(
         this.validOutputModes = target.validOutputModes
     }
 
-    override fun onUnlink() {
-        super.onUnlink()
+    override fun unlink() {
+        super.unlink()
         this.targetImportItems = WeakReference(null)
         this.targetExportItems = WeakReference(null)
         this.targetItemInventory = WeakReference(null)

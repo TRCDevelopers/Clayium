@@ -12,6 +12,7 @@ import com.github.trc.clayium.api.util.getMetaTileEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
+import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
@@ -32,28 +33,13 @@ abstract class ProxyMetaTileEntityBase(
     final override var isAttachedToMultiblock = false
         private set
 
-    private var backingTarget: TileEntityAccess? = null
+    private var teAccess: TileEntityAccess? = null
 
     /**
      * only available on the server side.
      */
-    override var target: MetaTileEntity?
-        get() = (backingTarget?.getIfLoaded() as? MetaTileEntityHolder)?.metaTileEntity
-        protected set(value) {
-            if (value == null) {
-                this.targetPos = null
-                this.targetDimensionId = -1
-                writeTargetRemoved()
-                backingTarget = null
-            } else {
-                val world = value.world ?: return
-                val pos = value.pos ?: return
-                this.targetPos = pos
-                this.targetDimensionId = world.provider?.dimension ?: -1
-                writeTargetData(value)
-                backingTarget = TileEntityAccess(world, pos)
-            }
-        }
+    override val target: MetaTileEntity?
+        get() = (teAccess?.getIfLoaded() as? MetaTileEntityHolder)?.metaTileEntity
 
     final override var targetPos: BlockPos? = null
         private set
@@ -73,9 +59,14 @@ abstract class ProxyMetaTileEntityBase(
 
     override fun readFromNBT(data: NBTTagCompound) {
         super.readFromNBT(data)
-        // We don't set the target here because the target may not be loaded yet. It will be set at onFirstTick.
-        this.targetPos = BlockPos.fromLong(data.getLong("targetPos"))
-        this.targetDimensionId = data.getInteger("targetDimensionId")
+        val pos = BlockPos.fromLong(data.getLong("targetPos"))
+        val dimId = data.getInteger("targetDimensionId")
+        this.targetDimensionId = dimId
+        this.targetPos = pos
+        val world = DimensionManager.getWorld(dimId) ?: return
+        this.teAccess = TileEntityAccess(world, pos, ::onNewTarget, ::unlink)
+        // don't link here, because the target may not be loaded yet.
+        // the link will be established onFirstTick.
     }
 
     override fun writeInitialSyncData(buf: PacketBuffer) {
@@ -92,8 +83,7 @@ abstract class ProxyMetaTileEntityBase(
             val world = DimensionManager.getWorld(this.targetDimensionId) ?: return
             val metaTileEntity = world.getMetaTileEntity(this.targetPos) ?: return
             if (canLink(metaTileEntity)) {
-                this.target = metaTileEntity
-                this.onLink(metaTileEntity)
+                this.linkTo(metaTileEntity)
             }
         }
     }
@@ -104,14 +94,12 @@ abstract class ProxyMetaTileEntityBase(
 
     final override fun addToMultiblock(controller: MetaTileEntity) {
         this.isAttachedToMultiblock = true
-        this.target = controller
-        this.onLink(controller)
+        this.linkTo(controller)
     }
 
     final override fun removeFromMultiblock(controller: MetaTileEntity) {
         this.isAttachedToMultiblock = false
-        this.target = null
-        this.onUnlink()
+        this.unlink()
     }
 
     /**
@@ -124,14 +112,33 @@ abstract class ProxyMetaTileEntityBase(
         val world = DimensionManager.getWorld(dimensionId) ?: return false
         val metaTileEntity = world.getMetaTileEntity(pos) ?: return false
         if (!canLink(metaTileEntity)) return false
-
-        this.target = metaTileEntity
-        this.onLink(metaTileEntity)
+        this.linkTo(metaTileEntity)
         return true
     }
 
-    open fun onLink(target: MetaTileEntity) { markDirty() }
-    open fun onUnlink() { markDirty() }
+    private fun onNewTarget(tileEntity: TileEntity) {
+        if (tileEntity !is MetaTileEntityHolder) return
+        val metaTileEntity = tileEntity.metaTileEntity ?: return
+        if (!canLink(metaTileEntity)) return
+        this.linkTo(metaTileEntity)
+    }
+
+    @MustBeInvokedByOverriders
+    open fun linkTo(target: MetaTileEntity) {
+        val world = target.world ?: return
+        val pos = target.pos ?: return
+        this.targetPos = pos
+        this.targetDimensionId = world.provider?.dimension ?: -1
+        writeTargetData(target)
+        teAccess = TileEntityAccess(world, pos, ::onNewTarget, ::unlink)
+        markDirty()
+    }
+
+    @MustBeInvokedByOverriders
+    open fun unlink() {
+        writeTargetRemoved()
+        markDirty()
+    }
 
     /**
      * called when a player attempts to establish a link using a synchronizer.
@@ -148,7 +155,7 @@ abstract class ProxyMetaTileEntityBase(
         return this.target != null
     }
 
-    protected fun writeTargetData(target: MetaTileEntity) {
+    private fun writeTargetData(target: MetaTileEntity) {
         val pos = target.pos ?: return
         val world = target.world ?: return
         writeCustomData(INTERFACE_SYNC_MIMIC_TARGET) {
@@ -159,7 +166,7 @@ abstract class ProxyMetaTileEntityBase(
         }
     }
 
-    protected fun writeTargetRemoved() {
+    private fun writeTargetRemoved() {
         writeCustomData(INTERFACE_SYNC_MIMIC_TARGET) {
             writeBoolean(false)
         }

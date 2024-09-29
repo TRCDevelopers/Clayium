@@ -32,16 +32,16 @@ class LaserProxyMetaTileEntity(
 
     override fun isFacingValid(facing: EnumFacing) = true
 
-    override fun onLink(target: MetaTileEntity) {
-        super.onLink(target)
+    override fun linkTo(target: MetaTileEntity) {
+        super.linkTo(target)
         if (this.laser != null) {
             target.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
                 ?.acceptLaser(this.frontFacing.opposite, this.laser)
         }
     }
 
-    override fun onUnlink() {
-        super.onUnlink()
+    override fun unlink() {
+        super.unlink()
         this.target?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
             ?.acceptLaser(this.frontFacing.opposite, null)
     }
