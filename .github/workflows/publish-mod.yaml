@@ -44,7 +44,7 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
-      - name: Publish to Modrinth and CurseForge
+      - name: Publish to Modrinth and CurseForge and Github
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           version-type: ${{ env.VERSION_TYPE }}
@@ -64,6 +64,8 @@ jobs:
 
           github-generate-changelog: true
           github-prerelease: false
+
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
           modrinth-id: m5ogv9xL
           modrinth-featured: true
