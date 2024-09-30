@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
             "required-after:forgelin_continuous@[2.0.0.0,);" +
             "required-after:modularui@[2.4.3,);" +
             "required-after:codechickenlib@[3.2.3,);" +
+            "required-after:mixinbooter@[9.1,);" +
             "after:jei@[4.15.0,);" + "after:groovyscript@[1.1.3,);" +
             "after:enderio;" + "after:theoneprobe;" + "after:gregtech;"
 )
