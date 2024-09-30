@@ -43,7 +43,7 @@ import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.MachineIoMode.*
 import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.client.model.ModelTextures
-import com.github.trc.clayium.common.ClayiumMod
+import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.items.filter.FilterType
 import com.github.trc.clayium.common.util.BothSideI18n
@@ -646,7 +646,7 @@ abstract class MetaTileEntity(
     }
 
     open fun isInCreativeTab(tab: CreativeTabs): Boolean {
-        return tab === CreativeTabs.SEARCH || tab === ClayiumMod.creativeTab
+        return tab === CreativeTabs.SEARCH || tab === ClayiumCTabs.main
     }
 
     @SideOnly(Side.CLIENT)

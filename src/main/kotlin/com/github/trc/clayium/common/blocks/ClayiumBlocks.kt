@@ -11,7 +11,6 @@ import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
-import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.blocks.chunkloader.ChunkLoaderBlock
 import com.github.trc.clayium.common.blocks.claycraftingtable.BlockClayCraftingBoard
 import com.github.trc.clayium.common.blocks.claytree.BlockClayLeaves
@@ -110,7 +109,7 @@ object ClayiumBlocks {
             this::createCompressedBock)
     }
 
-    private fun <T: Block> createBlock(key: String, block: T, tab: CreativeTabs = ClayiumMod.creativeTab): T {
+    private fun <T: Block> createBlock(key: String, block: T, tab: CreativeTabs = ClayiumCTabs.main): T {
         return block.apply {
             setCreativeTab(tab)
             setRegistryName(clayiumId(key))
