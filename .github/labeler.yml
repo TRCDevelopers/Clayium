@@ -4,3 +4,5 @@ bug:
   - head-branch: ['^fix', 'fix']
 refactoring:
   - head-branch: ['^refactor', 'refactor']
+"ignore changelog":
+  - head-branch: ['^ignorec', 'ignorec']
