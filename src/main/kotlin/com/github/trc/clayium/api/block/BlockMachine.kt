@@ -6,7 +6,7 @@ import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.util.getMetaTileEntity
-import com.github.trc.clayium.common.ClayiumMod
+import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -40,7 +40,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 class BlockMachine : Block(Material.IRON) {
 
     init {
-        creativeTab = ClayiumMod.creativeTab
+        creativeTab = ClayiumCTabs.main
         soundType = SoundType.METAL
         translationKey = "clayium.machine"
         setHardness(5.0f)

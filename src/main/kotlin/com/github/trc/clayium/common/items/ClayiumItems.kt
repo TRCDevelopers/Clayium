@@ -3,7 +3,7 @@ package com.github.trc.clayium.common.items
 import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.IConfigurationTool
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.ClayiumMod
+import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.items.filter.ItemSimpleItemFilter
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import net.minecraft.item.Item
@@ -38,7 +38,7 @@ object ClayiumItems {
 
     private fun <T: Item> createItem(name: String, item: T): T {
         return item.apply {
-            setCreativeTab(ClayiumMod.creativeTab)
+            setCreativeTab(ClayiumCTabs.main)
             setRegistryName(clayiumId(name))
             setTranslationKey("${MOD_ID}.$name")
         }

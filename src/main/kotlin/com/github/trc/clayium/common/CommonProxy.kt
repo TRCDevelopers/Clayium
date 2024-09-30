@@ -25,6 +25,7 @@ import com.github.trc.clayium.common.blocks.chunkloader.ChunkLoaderTileEntity
 import com.github.trc.clayium.common.blocks.claycraftingtable.TileClayCraftingTable
 import com.github.trc.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trc.clayium.common.blocks.marker.TileClayMarker
+import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.ItemClaySteelPickaxe
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
@@ -65,6 +66,7 @@ open class CommonProxy {
         MinecraftForge.EVENT_BUS.register(ItemClaySteelPickaxe)
         if (CUtils.isDeobfEnvironment) { MinecraftForge.EVENT_BUS.register(DebugUtils::class.java) }
 
+        ClayiumCTabs.init()
         CNetwork.init()
 
         this.registerTileEntities()

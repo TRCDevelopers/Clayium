@@ -3,17 +3,12 @@ package com.github.trc.clayium.common
 import com.github.trc.clayium.CTags
 import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.MOD_NAME
-import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.init.Items
-import net.minecraft.item.ItemStack
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 
 @Mod(
     modid = MOD_ID,
@@ -25,19 +20,12 @@ import net.minecraftforge.fml.relauncher.SideOnly
             "required-after:modularui@[2.4.3,);" +
             "required-after:codechickenlib@[3.2.3,);" +
             "after:jei@[4.15.0,);" + "after:groovyscript@[1.1.3,);" +
-            "after:enderio;" + "after:theoneprobe;"
+            "after:enderio;" + "after:theoneprobe;" + "after:gregtech;"
 )
 object ClayiumMod {
 
     @SidedProxy(clientSide = "com.github.trc.clayium.client.ClientProxy", serverSide = "com.github.trc.clayium.common.CommonProxy")
     lateinit var proxy: CommonProxy
-
-    val creativeTab: CreativeTabs = object : CreativeTabs(getNextID(), MOD_ID) {
-        @SideOnly(Side.CLIENT)
-        override fun createIcon(): ItemStack {
-            return ItemStack(Items.CLAY_BALL)
-        }
-    }
 
     @Mod.EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
