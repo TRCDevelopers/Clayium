@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": { "item": "clayium:clay_work_table" },
+    "title": { "translate": "advancements.clayium.clay_work_table.title" },
+    "description": { "translate": "advancements.clayium.clay_work_table.description" }
+  },
+    "parent": "clayium:root",
+  "criteria": {
+    "clay_work_table": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "item": "clayium:clay_work_table" }]
+      }
+    }
+  }
+}

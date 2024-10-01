@@ -1,0 +1,18 @@
+{
+  "display": {
+    "icon": { "item": "minecraft:clay_ball" },
+    "title": { "translate": "advancements.clayium.root.title" },
+    "description": { "translate": "advancements.clayium.root.description" },
+    "background": "minecraft:textures/blocks/clay.png",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "has_clay_ball": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "item": "minecraft:clay_ball" }]
+      }
+    }
+  }
+}

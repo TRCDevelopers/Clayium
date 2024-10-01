@@ -1,10 +1,23 @@
 #PARSE_ESCAPES
-
 # __DETAIL__ for hide details while not sneaking
 
 itemGroup.clayium=Clayium
 itemGroup.clayium.decorations=Clayium Decoration Blocks
 itemGroup.clayium.clayiumcapsule=Clayium Fluid Capsules
+
+# Advancements
+advancements.clayium.root.title=Clayium
+advancements.clayium.root.description=Welcome to Clayium!
+advancements.clayium.clay_work_table.title=Clay Work Table
+advancements.clayium.clay_work_table.description=Craft a Clay Work Table
+advancements.clayium.clay_shovel.title=Clay Shovel
+advancements.clayium.clay_shovel.description=Increased drop rate from clay ores
+advancements.clayium.clay_bending_machine.title=Clay Bending Machine
+advancements.clayium.clay_bending_machine.description=The First Machine
+advancements.clayium.clay_pickaxe.title=Clay Pickaxe
+advancements.clayium.clay_pickaxe.description=Significantly increased drop rate from clay ores
+
+# Other, todo: organize?
 
 tooltip.clayium.HoldShiftForDetails=--§fHold §lShift§r For Details§7--
 

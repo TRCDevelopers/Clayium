@@ -1,7 +1,21 @@
 #PARSE_ESCAPES
+# __DETAIL__ for hide details while not sneaking
+
 itemGroup.clayium=Clayium
 itemGroup.clayium.decorations=Clayium 装飾ブロック
 itemGroup.clayium.clayiumcapsule=Clayium 液体カプセル
+
+# Advancements
+advancements.clayium.root.title=Clayium
+advancements.clayium.root.description=Clayiumへようこそ
+advancements.clayium.clay_work_table.title=粘土作業台
+advancements.clayium.clay_work_table.description=粘土作業台を作成する
+advancements.clayium.clay_shovel.title=粘土シャベル
+advancements.clayium.clay_shovel.description=粘土鉱石からドロップする粘土の量が増える
+advancements.clayium.clay_bending_machine.title=粘土プレート作成機
+advancements.clayium.clay_bending_machine.description=最初の機械
+
+# Other, todo: organize?
 
 tooltip.clayium.HoldShiftForDetails=--§f詳細は§lShift§rキー§7--
 
