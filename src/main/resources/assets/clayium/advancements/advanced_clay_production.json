@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": { "item": "clayium:clay_parts", "data": 17, "__comment": "advanced industrial clay shard" } ,
+    "title": { "translate": "advancements.clayium.advanced_clay_production.title" },
+    "description": { "translate": "advancements.clayium.advanced_clay_production.description" }
+  },
+  "parent": "clayium:clay_milling_machine",
+  "criteria": {
+    "condenser": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"__comment": "Condenser"}, { "item": "clayium:machine", "data": 232 }]
+      }
+    },
+    "decomposer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"__comment": "Condenser"}, { "item": "clayium:machine", "data": 241 }]
+      }
+    },
+    "grinder": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"__comment": "Grinder"}, { "item": "clayium:machine", "data": 251 }]
+      }
+    }
+  }
+}

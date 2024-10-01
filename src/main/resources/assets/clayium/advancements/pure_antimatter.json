@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": { "item": "clayium:meta_gem", "data": 202 } ,
+    "title": { "translate": "advancements.clayium.pure_antimatter.title" },
+    "description": { "translate": "advancements.clayium.pure_antimatter.description" }
+  },
+  "parent": "clayium:antimatter",
+  "criteria": {
+    "pure_antimatter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "item": "clayium:meta_gem", "data": 202 }]
+      }
+    }
+  }
+}

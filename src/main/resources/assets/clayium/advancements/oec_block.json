@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": { "item": "clayium:energized_clay_8", "data": 4 } ,
+    "title": { "translate": "advancements.clayium.oec_block.title" },
+    "description": { "translate": "advancements.clayium.oec_block.description" }
+  },
+  "parent": "clayium:pure_antimatter",
+  "criteria": {
+    "aluminum": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "item": "clayium:energized_clay_8", "data": 4 }]
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": { "item": "clayium:meta_gem", "data": 210 } ,
+    "title": { "translate": "advancements.clayium.opa_gem.title" },
+    "description": { "translate": "advancements.clayium.opa_gem.description" }
+  },
+  "parent": "clayium:oec_block",
+  "criteria": {
+    "opa_gem": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "item": "clayium:meta_gem", "data": 210 }]
+      }
+    }
+  }
+}

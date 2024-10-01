@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": { "item": "clayium:meta_ingot", "data": 504 } ,
+    "title": { "translate": "advancements.clayium.clay_steel.title" },
+    "description": { "translate": "advancements.clayium.clay_steel.description" }
+  },
+  "parent": "clayium:aluminum",
+  "criteria": {
+    "clay_steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "item": "clayium:meta_ingot", "data": 504 }]
+      }
+    }
+  }
+}

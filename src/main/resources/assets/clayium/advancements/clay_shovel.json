@@ -6,7 +6,7 @@
   },
   "parent": "clayium:clay_work_table",
   "criteria": {
-    "clay_work_table": {
+    "clay_shovel": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [{ "item": "clayium:clay_shovel" }]

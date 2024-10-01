@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": { "item": "clayium:meta_gem", "data": 201 } ,
+    "title": { "translate": "advancements.clayium.antimatter.title" },
+    "description": { "translate": "advancements.clayium.antimatter.description" }
+  },
+  "parent": "clayium:ultimate_alloy",
+  "criteria": {
+    "antimatter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "item": "clayium:meta_gem", "data": 201 }]
+      }
+    }
+  }
+}

@@ -6,7 +6,7 @@
   },
   "parent": "clayium:clay_bending_machine",
   "criteria": {
-    "clay_work_table": {
+    "clay_pickaxe": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [{ "item": "clayium:clay_pickaxe" }]

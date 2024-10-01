@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": { "item": "clayium:meta_ingot", "data": 511 } ,
+    "title": { "translate": "advancements.clayium.impure_silicon.title" },
+    "description": { "translate": "advancements.clayium.impure_silicon.description" }
+  },
+  "parent": "clayium:first_eclay",
+  "criteria": {
+    "impure_silicon": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "item": "clayium:meta_ingot", "data": 511 }]
+      }
+    },
+    "silicone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "item": "clayium:meta_ingot", "data": 517 }]
+      }
+    }
+  }
+}

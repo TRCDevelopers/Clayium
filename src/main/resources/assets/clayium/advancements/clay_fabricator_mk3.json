@@ -1,0 +1,17 @@
+{
+  "display": {
+    "icon": { "item": "clayium:machine", "data": 708 } ,
+    "title": { "translate": "advancements.clayium.clay_fabricator_mk3.title" },
+    "description": { "translate": "advancements.clayium.clay_fabricator_mk3.description" },
+    "frame": "challenge"
+  },
+  "parent": "clayium:opa_gem",
+  "criteria": {
+    "clay_fabricator_mk3": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "item": "clayium:machine", "data": 708 }]
+      }
+    }
+  }
+}

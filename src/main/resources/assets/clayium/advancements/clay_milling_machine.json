@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": { "item": "clayium:machine", "data": 269 } ,
+    "title": { "translate": "advancements.clayium.clay_milling_machine.title" },
+    "description": { "translate": "advancements.clayium.clay_milling_machine.description" }
+  },
+  "parent": "clayium:clay_bending_machine",
+  "criteria": {
+    "clay_milling_machine": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "item": "clayium:machine", "data": 269 }]
+      }
+    }
+  }
+}

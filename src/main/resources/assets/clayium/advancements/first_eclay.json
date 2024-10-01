@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": { "item": "clayium:energized_clay_7", "data": 12 } ,
+    "title": { "translate": "advancements.clayium.first_eclay.title" },
+    "description": { "translate": "advancements.clayium.first_eclay.description" }
+  },
+  "parent": "clayium:advanced_clay_production",
+  "criteria": {
+    "energized_clay": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "item": "clayium:energized_clay_7", "data": 12 }]
+      }
+    }
+  }
+}

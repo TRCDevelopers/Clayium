@@ -16,6 +16,32 @@ advancements.clayium.clay_bending_machine.title=Clay Bending Machine
 advancements.clayium.clay_bending_machine.description=The First Machine
 advancements.clayium.clay_pickaxe.title=Clay Pickaxe
 advancements.clayium.clay_pickaxe.description=Significantly increased drop rate from clay ores
+advancements.clayium.clay_milling_machine.title=Clay Milling Machine
+advancements.clayium.clay_milling_machine.description=For the first circuit
+advancements.clayium.advanced_clay_production.title=Advanced Clay Production
+advancements.clayium.advanced_clay_production.description=Create Grinder, Condenser, and Decomposer
+advancements.clayium.first_eclay.title=Energized Clay
+advancements.clayium.first_eclay.description=Create The First Energetic Clay
+advancements.clayium.impure_silicon.title=Tier 5 Materials
+advancements.clayium.impure_silicon.description=Obtain a Impure Silicon and a Silicone Ingot
+advancements.clayium.aluminum.title=Tier 6 Material
+advancements.clayium.aluminum.description=Obtain an Aluminum
+advancements.clayium.clay_steel.title=Tier 7 Material
+advancements.clayium.clay_steel.description=Obtain a Clay Steel Ingot
+advancements.clayium.clayium_ingot.title=Tier 8 Material
+advancements.clayium.clayium_ingot.description=Obtain a Clayium Ingot
+advancements.clayium.ultimate_alloy.title=Tier 9 Material
+advancements.clayium.ultimate_alloy.description=Obtain an Ultimate Alloy Ingot
+advancements.clayium.antimatter.title=Tier 10 Material
+advancements.clayium.antimatter.description=Obtain an Antimatter
+advancements.clayium.pure_antimatter.title=Tier 11 Material
+advancements.clayium.pure_antimatter.description=Obtain a Pure Antimatter
+advancements.clayium.oec_block.title=Tier 12 Material
+advancements.clayium.oec_block.description=Obtain an Octuple Energy Clay
+advancements.clayium.opa_gem.title=Tier 13 Material
+advancements.clayium.opa_gem.description=Obtain an Octuple Pure Antimatter
+advancements.clayium.clay_fabricator_mk3.title=Clay Fabricator Mk III
+advancements.clayium.clay_fabricator_mk3.description=Duplicate clay instantly at max rate
 
 # Other, todo: organize?
 

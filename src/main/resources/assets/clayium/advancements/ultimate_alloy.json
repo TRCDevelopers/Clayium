@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": { "item": "clayium:meta_ingot", "data": 519 } ,
+    "title": { "translate": "advancements.clayium.ultimate_alloy.title" },
+    "description": { "translate": "advancements.clayium.ultimate_alloy.description" }
+  },
+  "parent": "clayium:clayium_ingot",
+  "criteria": {
+    "ultimate_alloy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "item": "clayium:meta_ingot", "data": 519 }]
+      }
+    }
+  }
+}

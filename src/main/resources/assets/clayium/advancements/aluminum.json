@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": { "item": "clayium:meta_ingot", "data": 2 } ,
+    "title": { "translate": "advancements.clayium.aluminum.title" },
+    "description": { "translate": "advancements.clayium.aluminum.description" }
+  },
+  "parent": "clayium:impure_silicon",
+  "criteria": {
+    "aluminum": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "item": "clayium:meta_ingot", "data": 2 }]
+      }
+    }
+  }
+}
