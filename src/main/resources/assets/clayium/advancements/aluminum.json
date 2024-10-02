@@ -7,9 +7,9 @@
   "parent": "clayium:impure_silicon",
   "criteria": {
     "aluminum": {
-      "trigger": "minecraft:inventory_changed",
+      "trigger": "clayium:inventory_changed_oredict",
       "conditions": {
-        "items": [{ "item": "clayium:meta_ingot", "data": 2 }]
+        "items": [{ "oredict": "ingotAluminum" }]
       }
     }
   }

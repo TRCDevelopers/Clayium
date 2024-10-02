@@ -175,6 +175,8 @@ object CUtils {
         }
     }
 
+    @JvmStatic
     val isClientSide by lazy { FMLCommonHandler.instance().side.isClient }
+    @JvmStatic
     val isDeobfEnvironment by lazy { FMLLaunchHandler.isDeobfuscatedEnvironment() }
 }

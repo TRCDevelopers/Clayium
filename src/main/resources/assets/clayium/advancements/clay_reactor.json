@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": { "item": "clayium:machine", "data": 626 } ,
+    "title": { "translate": "advancements.clayium.clay_reactor.title" },
+    "description": { "translate": "advancements.clayium.clay_reactor.description" }
+  },
+  "parent": "clayium:clay_steel",
+  "criteria": {
+    "clayium_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "item": "clayium:machine", "data": 626 }]
+      }
+    }
+  }
+}

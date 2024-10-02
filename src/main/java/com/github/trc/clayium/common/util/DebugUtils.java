@@ -13,7 +13,7 @@ public class DebugUtils {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void onTooltip(ItemTooltipEvent e) {
-        if (!CUtils.INSTANCE.isDeobfEnvironment()) return;
+        if (!CUtils.isDeobfEnvironment()) return;
         if (e.getItemStack().isEmpty()) {
             return;
         }

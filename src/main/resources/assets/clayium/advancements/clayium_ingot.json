@@ -4,7 +4,7 @@
     "title": { "translate": "advancements.clayium.clayium_ingot.title" },
     "description": { "translate": "advancements.clayium.clayium_ingot.description" }
   },
-  "parent": "clayium:clay_steel",
+  "parent": "clayium:clay_reactor",
   "criteria": {
     "clayium_ingot": {
       "trigger": "minecraft:inventory_changed",

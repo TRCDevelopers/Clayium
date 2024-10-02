@@ -14,6 +14,7 @@ import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.common.advancements.triggers.ModTriggers
 import com.github.trc.clayium.common.blocks.BlockQuartzCrucible
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.blocks.ItemBlockClayLaserReflector
@@ -66,6 +67,7 @@ open class CommonProxy {
         MinecraftForge.EVENT_BUS.register(ItemClaySteelPickaxe)
         if (CUtils.isDeobfEnvironment) { MinecraftForge.EVENT_BUS.register(DebugUtils::class.java) }
 
+        ModTriggers.registerTriggers()
         ClayiumCTabs.init()
         CNetwork.init()
 
