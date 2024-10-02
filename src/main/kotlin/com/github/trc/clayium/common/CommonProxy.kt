@@ -2,10 +2,12 @@ package com.github.trc.clayium.common
 
 import com.cleanroommc.modularui.factory.GuiManager
 import com.github.trc.clayium.api.ClayiumApi
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.block.ItemBlockDamaged
 import com.github.trc.clayium.api.block.ItemBlockTiered
 import com.github.trc.clayium.api.block.VariantItemBlock
 import com.github.trc.clayium.api.capability.SimpleCapabilityManager
+import com.github.trc.clayium.api.events.ClayiumMteRegistryEvent
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.unification.OreDictUnifier
@@ -73,6 +75,7 @@ open class CommonProxy {
         GameRegistry.registerWorldGenerator(ClayOreGenerator, 0)
         NetworkRegistry.INSTANCE.registerGuiHandler(ClayiumMod, GuiHandler)
 
+        MinecraftForge.EVENT_BUS.post(ClayiumMteRegistryEvent(ClayiumApi.mteManager))
         MetaTileEntities.init()
         CMaterials.init()
         OrePrefix.init()
@@ -196,6 +199,12 @@ open class CommonProxy {
         }
 
         registry.register(ClayiumApi.ITEM_BLOCK_MACHINE)
+    }
+
+    @SubscribeEvent
+    fun createMteRegistry(e: ClayiumMteRegistryEvent) {
+        println("Created registry for $MOD_ID")
+        e.mteManager.createRegistry(MOD_ID)
     }
 
     open fun registerItem(registry: IForgeRegistry<Item>, item: Item) {

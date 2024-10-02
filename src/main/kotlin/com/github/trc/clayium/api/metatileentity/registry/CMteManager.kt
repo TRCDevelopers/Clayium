@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import org.jetbrains.annotations.UnmodifiableView
 
-object CMteManager {
+class CMteManager {
     private var currentNetworkId = 0
     private val modId2Registry = Object2ObjectOpenHashMap<String, CMteRegistry>()
     private val networkIdMap = Int2ObjectOpenHashMap<CMteRegistry>()

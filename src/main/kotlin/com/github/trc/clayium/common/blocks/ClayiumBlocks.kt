@@ -124,7 +124,13 @@ object ClayiumBlocks {
         }
     }
 
-    fun registerBlocks(event: RegistryEvent.Register<Block>) { blocks.values.forEach(event.registry::register) }
+    fun registerBlocks(event: RegistryEvent.Register<Block>) {
+        blocks.values.forEach(event.registry::register)
+        ClayiumApi.mteManager.allRegistries().forEach {
+            val block = it.blockMachine
+            event.registry.register(block)
+        }
+    }
 
     fun registerItemBlocks(event: RegistryEvent.Register<Item>) {
         val registry = event.registry

@@ -2,7 +2,9 @@ package com.github.trc.clayium.api
 
 import com.github.trc.clayium.api.block.BlockMachine
 import com.github.trc.clayium.api.block.ItemBlockMachine
+import com.github.trc.clayium.api.events.ClayiumMteRegistryEvent
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.registry.CMteManager
 import com.github.trc.clayium.api.pan.IPanRecipeFactory
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.registry.CMarkerMaterialRegistry
@@ -20,4 +22,12 @@ object ClayiumApi {
     val markerMaterials = CMarkerMaterialRegistry()
 
     val PAN_RECIPE_FACTORIES = mutableListOf<IPanRecipeFactory>()
+
+    /**
+     * A Registry of MteRegistries.
+     * If you want to create new MteRegistry,
+     * listen to [ClayiumMteRegistryEvent]
+     * and register your MteRegistry using [ClayiumMteRegistryEvent.mteManager]
+     */
+    val mteManager: CMteManager = CMteManager()
 }
