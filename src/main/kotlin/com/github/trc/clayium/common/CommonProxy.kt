@@ -202,8 +202,8 @@ open class CommonProxy {
     }
 
     @SubscribeEvent
+    @Suppress("unused")
     fun createMteRegistry(e: ClayiumMteRegistryEvent) {
-        println("Created registry for $MOD_ID")
         e.mteManager.createRegistry(MOD_ID)
     }
 

@@ -134,6 +134,10 @@ object ClayiumBlocks {
 
     fun registerItemBlocks(event: RegistryEvent.Register<Item>) {
         val registry = event.registry
+        ClayiumApi.mteManager.allRegistries().forEach {
+            val itemBlock = it.itemBlockMachine
+            registry.register(itemBlock)
+        }
         for (block in COMPRESSED_BLOCKS) {
             val ib = createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.block) }
             registry.register(ib)
