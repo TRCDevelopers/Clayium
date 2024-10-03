@@ -22,6 +22,10 @@ class CMteManager {
         return modId2Registry[modId]
     }
 
+    fun getRegistry(networkId: Int): CMteRegistry {
+        return networkIdMap.get(networkId)
+    }
+
     /**
      * Creates a new MetaTileEntity registry for the given modId.
      * @throws IllegalArgumentException If a registry for the modId already exists

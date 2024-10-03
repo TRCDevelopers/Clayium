@@ -30,7 +30,7 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
         val registry = ClayiumApi.mteManager.getRegistry(mteId.namespace)
         if (world != null && !world.isRemote) {
             writeCustomData(INITIALIZE_MTE) {
-                writeString(mteId.namespace)
+                writeVarInt(registry.networkId)
                 writeVarInt(registry.getIdByKey(sampleMetaTileEntity.metaTileEntityId))
                 newMetaTileEntity.writeInitialSyncData(this)
             }
@@ -67,7 +67,7 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
             val mteId = mte.metaTileEntityId
             val registry = ClayiumApi.mteManager.getRegistry(mteId.namespace)
             buf.writeBoolean(true)
-            buf.writeString(mteId.namespace)
+            buf.writeVarInt(registry.networkId)
             buf.writeVarInt(registry.getIdByKey(mteId))
             mte.writeInitialSyncData(buf)
         } ?: buf.writeBoolean(false)
@@ -88,8 +88,7 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
     }
 
     private fun receiveMteInitializationData(buf: PacketBuffer) {
-        val modId = buf.readString(Short.MAX_VALUE.toInt())
-        val registry = ClayiumApi.mteManager.getRegistry(modId)
+        val registry = ClayiumApi.mteManager.getRegistry(buf.readVarInt())
         val sampleMetaTileEntity = registry.getObjectById(buf.readVarInt()) ?: return
         val newMetaTileEntity = this.setMetaTileEntityFromSample(sampleMetaTileEntity)
         newMetaTileEntity.receiveInitialSyncData(buf)
