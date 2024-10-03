@@ -169,7 +169,8 @@ object CUtils {
 
     fun getMetaTileEntity(stack: ItemStack): MetaTileEntity? {
         return if (stack.item is ItemBlockMachine) {
-            ClayiumApi.MTE_REGISTRY.getObjectById(stack.itemDamage)
+            ClayiumApi.mteManager.getRegistrySafe(stack.item.registryName!!.namespace)
+                ?.getObjectById(stack.itemDamage)
         } else {
             null
         }

@@ -1,5 +1,6 @@
 package com.github.trc.clayium.api.util.registry
 
+import com.github.trc.clayium.api.FALLBACK
 import net.minecraft.util.registry.RegistryNamespaced
 
 open class CRegistry<K, V>(
@@ -16,11 +17,7 @@ open class CRegistry<K, V>(
         super.register(id, key, value)
     }
 
-    override fun putObject(key: K, value: V) {
-        super.putObject(key, value)
-    }
-
     fun getIdByKey(key: K): Int {
-        return getObject(key)?.let { return getIDForObject(it) } ?: 0
+        return getObject(key)?.let { return getIDForObject(it) } ?: FALLBACK
     }
 }

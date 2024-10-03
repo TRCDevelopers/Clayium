@@ -124,10 +124,20 @@ object ClayiumBlocks {
         }
     }
 
-    fun registerBlocks(event: RegistryEvent.Register<Block>) { blocks.values.forEach(event.registry::register) }
+    fun registerBlocks(event: RegistryEvent.Register<Block>) {
+        blocks.values.forEach(event.registry::register)
+        ClayiumApi.mteManager.allRegistries().forEach {
+            val block = it.blockMachine
+            event.registry.register(block)
+        }
+    }
 
     fun registerItemBlocks(event: RegistryEvent.Register<Item>) {
         val registry = event.registry
+        ClayiumApi.mteManager.allRegistries().forEach {
+            val itemBlock = it.itemBlockMachine
+            registry.register(itemBlock)
+        }
         for (block in COMPRESSED_BLOCKS) {
             val ib = createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.block) }
             registry.register(ib)

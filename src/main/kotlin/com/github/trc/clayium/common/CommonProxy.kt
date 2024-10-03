@@ -2,10 +2,12 @@ package com.github.trc.clayium.common
 
 import com.cleanroommc.modularui.factory.GuiManager
 import com.github.trc.clayium.api.ClayiumApi
+import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.block.ItemBlockDamaged
 import com.github.trc.clayium.api.block.ItemBlockTiered
 import com.github.trc.clayium.api.block.VariantItemBlock
 import com.github.trc.clayium.api.capability.SimpleCapabilityManager
+import com.github.trc.clayium.api.events.ClayiumMteRegistryEvent
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.unification.OreDictUnifier
@@ -73,6 +75,7 @@ open class CommonProxy {
         GameRegistry.registerWorldGenerator(ClayOreGenerator, 0)
         NetworkRegistry.INSTANCE.registerGuiHandler(ClayiumMod, GuiHandler)
 
+        MinecraftForge.EVENT_BUS.post(ClayiumMteRegistryEvent(ClayiumApi.mteManager))
         MetaTileEntities.init()
         CMaterials.init()
         OrePrefix.init()
@@ -118,8 +121,6 @@ open class CommonProxy {
         val registry: IForgeRegistry<Block> = event.registry
 
         ClayiumBlocks.registerBlocks(event)
-
-        registry.register(ClayiumApi.BLOCK_MACHINE)
 
         for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) registry.register(block)
         for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) registry.register(block)
@@ -194,8 +195,12 @@ open class CommonProxy {
         for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) {
             registry.register(createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.block) })
         }
+    }
 
-        registry.register(ClayiumApi.ITEM_BLOCK_MACHINE)
+    @SubscribeEvent
+    @Suppress("unused")
+    fun createMteRegistry(e: ClayiumMteRegistryEvent) {
+        e.mteManager.createRegistry(MOD_ID)
     }
 
     open fun registerItem(registry: IForgeRegistry<Item>, item: Item) {

@@ -267,7 +267,9 @@ object MetaTileEntities {
     }
 
     fun <T : MetaTileEntity> registerMetaTileEntity(id: Int, sampleMetaTileEntity: T): T {
-        ClayiumApi.MTE_REGISTRY.register(id, sampleMetaTileEntity.metaTileEntityId, sampleMetaTileEntity)
+        val mteId = sampleMetaTileEntity.metaTileEntityId
+        val registry = ClayiumApi.mteManager.getRegistry(mteId.namespace)
+        registry.register(id, mteId, sampleMetaTileEntity)
         return sampleMetaTileEntity
     }
 
@@ -275,8 +277,10 @@ object MetaTileEntities {
 
     @SideOnly(Side.CLIENT)
     fun registerItemModels() {
-        for (metaTileEntity in ClayiumApi.MTE_REGISTRY) {
-            metaTileEntity.registerItemModel(ClayiumApi.ITEM_BLOCK_MACHINE, ClayiumApi.MTE_REGISTRY.getIDForObject(metaTileEntity))
+        for (registry in ClayiumApi.mteManager.allRegistries()) {
+            for (metaTileEntity in registry) {
+                metaTileEntity.registerItemModel(metaTileEntity.itemBlockMachine, registry.getIdByKey(metaTileEntity.metaTileEntityId))
+            }
         }
     }
 }

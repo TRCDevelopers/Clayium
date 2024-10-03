@@ -74,12 +74,15 @@ class JeiPlugin : IModPlugin {
             }
         }
 
-        for (metaTileEntity in ClayiumApi.MTE_REGISTRY) {
-            when (metaTileEntity) {
-                is WorkableMetaTileEntity ->
-                    modRegistry.addRecipeCatalyst(metaTileEntity.getStackForm(), metaTileEntity.recipeRegistry.category.uniqueId)
-                is SolarClayFabricatorMetaTileEntity ->
-                    modRegistry.addRecipeCatalyst(metaTileEntity.getStackForm(), metaTileEntity.registry.category.uniqueId)
+        for (registry in ClayiumApi.mteManager.allRegistries()) {
+            for (metaTileEntity in registry) {
+                when (metaTileEntity) {
+                    is WorkableMetaTileEntity -> modRegistry.addRecipeCatalyst(metaTileEntity.getStackForm(),
+                        metaTileEntity.recipeRegistry.category.uniqueId)
+
+                    is SolarClayFabricatorMetaTileEntity -> modRegistry.addRecipeCatalyst(metaTileEntity.getStackForm(),
+                        metaTileEntity.registry.category.uniqueId)
+                }
             }
         }
 
