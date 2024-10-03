@@ -111,7 +111,8 @@ class BlockMachine : Block(Material.IRON) {
 
     override fun onBlockPlacedBy(worldIn: World, pos: BlockPos, state: IBlockState, placer: EntityLivingBase, stack: ItemStack) {
         val holder = worldIn.getTileEntity(pos) as? MetaTileEntityHolder ?: return
-        val sampleMetaTileEntity = ClayiumApi.MTE_REGISTRY.getObjectById(stack.itemDamage) ?: return
+        val mteRegistry = ClayiumApi.mteManager.getRegistry(this.registryName!!.namespace)
+        val sampleMetaTileEntity = mteRegistry.getObjectById(stack.itemDamage) ?: return
         val newMetaTileEntity = holder.setMetaTileEntityFromSample(sampleMetaTileEntity)
         newMetaTileEntity.frontFacing = if (newMetaTileEntity.isFacingValid(EnumFacing.UP))  {
             EnumFacing.getDirectionFromEntityLiving(pos, placer)
@@ -174,7 +175,8 @@ class BlockMachine : Block(Material.IRON) {
     }
 
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
-        for (mte in ClayiumApi.MTE_REGISTRY) {
+        val registry = ClayiumApi.mteManager.getRegistry(registryName!!.namespace)
+        for (mte in registry) {
             if (mte.isInCreativeTab(itemIn)) {
                 items.add(mte.getStackForm())
             }

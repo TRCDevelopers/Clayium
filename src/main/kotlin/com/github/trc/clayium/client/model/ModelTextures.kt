@@ -75,12 +75,14 @@ object ModelTextures {
         }
 
         _faceQuads.clear()
-        for (metaTileEntity in ClayiumApi.MTE_REGISTRY) {
-            metaTileEntity.bakeQuads(getter, faceBakery)
-            metaTileEntity.requiredTextures.filterNotNull().forEach { faceTexture ->
-                _faceQuads.computeIfAbsent(faceTexture) {
-                    EnumFacing.entries.associateWith { side ->
-                        createQuad(side, getter.apply(faceTexture))
+        for (registry in ClayiumApi.mteManager.allRegistries()) {
+            for (metaTileEntity in registry) {
+                metaTileEntity.bakeQuads(getter, faceBakery)
+                metaTileEntity.requiredTextures.filterNotNull().forEach { faceTexture ->
+                    _faceQuads.computeIfAbsent(faceTexture) {
+                        EnumFacing.entries.associateWith { side ->
+                            createQuad(side, getter.apply(faceTexture))
+                        }
                     }
                 }
             }

@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.layout.Column
-import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.BlockMachine
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER_ITEM
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_ITEMS_STORED
@@ -130,7 +129,7 @@ class StorageContainerMetaTileEntity(
             if (!(world == null || pos == null)) {
                 val upgradedStorageContainerStack = MetaTileEntities.STORAGE_CONTAINER_UPGRADED.getStackForm()
                 upgradedStorageContainerStack.tagCompound = NBTTagCompound().apply { writeItemStackNbt(this) }
-                ClayiumApi.BLOCK_MACHINE.onBlockPlacedBy(world, pos, world.getBlockState(pos), player, upgradedStorageContainerStack)
+                this.blockMachine.onBlockPlacedBy(world, pos, world.getBlockState(pos), player, upgradedStorageContainerStack)
                 stack.shrink(1)
                 return
             }

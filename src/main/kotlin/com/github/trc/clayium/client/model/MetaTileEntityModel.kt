@@ -17,8 +17,10 @@ class MetaTileEntityModel(
     override fun getTextures(): Collection<ResourceLocation> {
         return mutableSetOf<ResourceLocation>().apply {
             // machine face textures
-            ClayiumApi.MTE_REGISTRY.forEach { metaTileEntity ->
-                addAll(metaTileEntity.requiredTextures.filterNotNull())
+            ClayiumApi.mteManager.allRegistries().forEach {
+                it.forEach { metaTileEntity ->
+                    addAll(metaTileEntity.requiredTextures.filterNotNull())
+                }
             }
             // Block Breaker & Item Collector Back
             add(clayiumId("blocks/miner_back"))

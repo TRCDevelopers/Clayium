@@ -13,7 +13,12 @@ class CMteManager {
      * Gets the registry for the given modId.
      * @return The registry, or null if it doesn't exist
      */
-    fun getRegistry(modId: String): CMteRegistry? {
+    fun getRegistry(modId: String): CMteRegistry {
+        return modId2Registry[modId]
+            ?: throw IllegalArgumentException("MTE registry for $modId is not found.")
+    }
+
+    fun getRegistrySafe(modId: String): CMteRegistry? {
         return modId2Registry[modId]
     }
 

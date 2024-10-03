@@ -95,6 +95,10 @@ abstract class MetaTileEntity(
     private val name: String,
 ) : ISyncedTileEntity, IWorldObject, IGuiHolder<MetaTileEntityGuiData>, IPipeConnectable {
 
+    val mteRegistry = ClayiumApi.mteManager.getRegistry(metaTileEntityId.namespace)
+    val blockMachine get() = mteRegistry.blockMachine
+    val itemBlockMachine get() = mteRegistry.itemBlockMachine
+
     val forgeRarity = tier.rarity
     val translationKey = "machine.${metaTileEntityId.namespace}.$name"
 
@@ -204,7 +208,7 @@ abstract class MetaTileEntity(
         newMetaTileEntity.readFromNBT(data)
         holder!!.metaTileEntity = newMetaTileEntity
         holder!!.writeCustomData(INITIALIZE_MTE) {
-            writeVarInt(ClayiumApi.MTE_REGISTRY.getIdByKey(sampleMetaTileEntity.metaTileEntityId))
+            writeVarInt(mteRegistry.getIdByKey(sampleMetaTileEntity.metaTileEntityId))
             newMetaTileEntity.writeInitialSyncData(this)
         }
         world.neighborChanged(pos, holder!!.blockType, pos)
@@ -594,7 +598,7 @@ abstract class MetaTileEntity(
     }
 
     fun getStackForm(amount: Int = 1): ItemStack {
-        return ItemStack(ClayiumApi.BLOCK_MACHINE, amount, ClayiumApi.MTE_REGISTRY.getIdByKey(metaTileEntityId))
+        return ItemStack(blockMachine, amount, mteRegistry.getIdByKey(metaTileEntityId))
     }
 
     open fun writeItemStackNbt(data: NBTTagCompound) {}
