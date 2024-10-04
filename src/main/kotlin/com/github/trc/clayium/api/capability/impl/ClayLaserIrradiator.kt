@@ -22,6 +22,13 @@ class ClayLaserIrradiator(
     private var previousTarget: WeakReference<TileEntity>? = null
     private var lastDirection = EnumFacing.NORTH
 
+    /**
+     * to memorize how much energy irradiated to block
+     * won't be used if target was TileEntity
+     */
+    private var previousTargetPos: BlockPos? = null
+    private var totalEnergyIrradiated: Double = 0.0
+
     private fun TileEntity.getLaserAcceptor(targetSide: EnumFacing) =
         getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, targetSide)
 
@@ -79,7 +86,12 @@ class ClayLaserIrradiator(
     private fun irradiateLaserBlock(energy: Double, targetPos: BlockPos) {
         val world = world ?: return
         val block = world.getBlockState(targetPos).block
-        val resultState = if (block === Blocks.SAPLING && energy > 10000) {
+        if (previousTargetPos != targetPos) {
+            totalEnergyIrradiated = 0.0
+            previousTargetPos = targetPos
+        }
+        totalEnergyIrradiated += energy
+        val resultState = if (block === Blocks.SAPLING && energy >= 1000 && totalEnergyIrradiated >= 300000) {
             ClayiumBlocks.CLAY_TREE_SAPLING.defaultState
         } else {
             null
