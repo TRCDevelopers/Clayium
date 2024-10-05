@@ -28,7 +28,7 @@ class ClayLaserIrradiator(
      */
     private var previousTargetPos: BlockPos? = null
     private var totalEnergyIrradiated: Double = 0.0
-    private var lastTransformation: Long = 0
+    private var transformationCt: Byte = 0
 
     private fun TileEntity.getLaserAcceptor(targetSide: EnumFacing) =
         getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, targetSide)
@@ -102,8 +102,8 @@ class ClayLaserIrradiator(
         } else {
             null
         }
-        if (lastTransformation == Instant.now().epochSecond) return
-        lastTransformation = Instant.now().epochSecond
+        if (transformationCt++ < 20) return
+        transformationCt = 0
         if (resultState == null) return
         totalEnergyIrradiated = 0.0
         world.destroyBlock(targetPos, false)
