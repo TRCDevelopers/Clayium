@@ -1,6 +1,5 @@
 package com.github.trc.clayium.common.recipe
 
-import com.google.common.math.DoubleMath
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 
