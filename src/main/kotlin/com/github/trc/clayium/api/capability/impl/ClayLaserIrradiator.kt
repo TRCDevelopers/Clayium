@@ -3,10 +3,9 @@ package com.github.trc.clayium.api.capability.impl
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.interfaces.IWorldObject
-import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.config.ConfigCore
+import com.github.trc.clayium.common.recipe.LaserRecipes
 import net.minecraft.block.material.Material
-import net.minecraft.init.Blocks
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
@@ -91,8 +90,9 @@ class ClayLaserIrradiator(
             previousTargetPos = targetPos
         }
         totalEnergyIrradiated += energy
-        val resultState = if (block === Blocks.SAPLING && energy >= 1000 && totalEnergyIrradiated >= 300000) {
-            ClayiumBlocks.CLAY_TREE_SAPLING.defaultState
+        val recipe = LaserRecipes.LASER.getRecipe(block, energy)
+        val resultState = if (recipe != null && recipe.isSufficient(totalEnergyIrradiated)) {
+            recipe.output.defaultState
         } else {
             null
         }
