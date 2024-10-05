@@ -10,6 +10,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import java.lang.ref.WeakReference
+import java.time.Instant
 
 class ClayLaserIrradiator(
     val tileEntity: IWorldObject,
@@ -27,6 +28,7 @@ class ClayLaserIrradiator(
      */
     private var previousTargetPos: BlockPos? = null
     private var totalEnergyIrradiated: Double = 0.0
+    private var lastTransformation: Long = 0
 
     private fun TileEntity.getLaserAcceptor(targetSide: EnumFacing) =
         getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, targetSide)
@@ -100,6 +102,8 @@ class ClayLaserIrradiator(
         } else {
             null
         }
+        if (lastTransformation == Instant.now().epochSecond) return
+        lastTransformation = Instant.now().epochSecond
         if (resultState == null) return
         totalEnergyIrradiated = 0.0
         world.destroyBlock(targetPos, false)
