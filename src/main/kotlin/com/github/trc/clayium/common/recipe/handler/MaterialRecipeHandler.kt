@@ -19,10 +19,7 @@ object MaterialRecipeHandler {
     fun registerRecipes() {
         for (material in ClayiumApi.materialRegistry) {
             GrinderRecipeLoader.handleOre(material)
-
-            if (material.hasProperty(CPropertyKey.CLAY) or material.hasProperty(CPropertyKey.MATTER))
-                CondenserRecipeLoader.handleOre(material)
-
+            CondenserRecipeLoader.handleOre(material)
             if (material.hasOre(OrePrefix.ingot)) {
                 if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.ingot, material)
             }
