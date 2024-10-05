@@ -89,6 +89,7 @@ class ClayLaserIrradiator(
         val block = world.getBlockState(targetPos)
         if (previousTargetPos != targetPos) {
             totalEnergyIrradiated = 0.0
+            transformationCt = 0
             previousTargetPos = targetPos
         }
         totalEnergyIrradiated += energy
