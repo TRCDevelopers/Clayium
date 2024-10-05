@@ -10,7 +10,6 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import java.lang.ref.WeakReference
-import java.time.Instant
 
 class ClayLaserIrradiator(
     val tileEntity: IWorldObject,
@@ -103,7 +102,7 @@ class ClayLaserIrradiator(
         } else {
             null
         }
-        if (transformationCt++ < 20) return
+        if (transformationCt++ < 10) return
         transformationCt = 0
         if (resultState == null) return
         totalEnergyIrradiated = 0.0
