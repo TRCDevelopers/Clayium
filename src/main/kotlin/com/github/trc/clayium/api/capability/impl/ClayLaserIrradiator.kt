@@ -101,6 +101,7 @@ class ClayLaserIrradiator(
             null
         }
         if (resultState == null) return
+        totalEnergyIrradiated = 0.0
         world.destroyBlock(targetPos, false)
         world.setBlockState(targetPos, resultState)
     }
