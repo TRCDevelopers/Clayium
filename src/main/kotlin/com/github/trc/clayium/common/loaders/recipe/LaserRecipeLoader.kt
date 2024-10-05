@@ -12,5 +12,41 @@ object LaserRecipeLoader {
             energyMin(1000.0)
             requiredEnergy(300000.0)
         }
+        LaserRecipes.LASER.register {
+            input(Blocks.SAPLING, 0)
+            output(Blocks.SAPLING, 1)
+            energyMax(1000.0)
+            requiredEnergy(300.0)
+        }
+        LaserRecipes.LASER.register {
+            input(Blocks.SAPLING, 1)
+            output(Blocks.SAPLING, 2)
+            energyMax(1000.0)
+            requiredEnergy(300.0)
+        }
+        LaserRecipes.LASER.register {
+            input(Blocks.SAPLING, 2)
+            output(Blocks.SAPLING, 3)
+            energyMax(1000.0)
+            requiredEnergy(300.0)
+        }
+        LaserRecipes.LASER.register {
+            input(Blocks.SAPLING, 3)
+            output(Blocks.SAPLING, 4)
+            energyMax(1000.0)
+            requiredEnergy(300.0)
+        }
+        LaserRecipes.LASER.register {
+            input(Blocks.SAPLING, 4)
+            output(Blocks.SAPLING, 5)
+            energyMax(1000.0)
+            requiredEnergy(300.0)
+        }
+        LaserRecipes.LASER.register {
+            input(Blocks.SAPLING, 5)
+            output(Blocks.SAPLING, 0)
+            energyMax(1000.0)
+            requiredEnergy(300.0)
+        }
     }
 }

@@ -12,13 +12,19 @@ class LaserRecipeBuilder{
     var energyMin: Double = 0.0
     var energyMax: Double? = null
     var requiredEnergy: Double = 0.0
-    fun input(block: Block): LaserRecipeBuilder {
+    var inputMeta: Int? = null
+    var outputMeta: Int? = null
+
+    fun input(block: Block) = input(block, null)
+    fun input(block: Block, meta: Int?): LaserRecipeBuilder {
         input = block
+        inputMeta = meta
         return this
     }
-
-    fun output(block: Block): LaserRecipeBuilder {
+    fun output(block: Block) = output(block, null)
+    fun output(block: Block, meta: Int?): LaserRecipeBuilder {
         output = block
+        outputMeta = meta
         return this
     }
 
@@ -45,6 +51,6 @@ class LaserRecipeBuilder{
             CLog.error("output must be set")
             output = Blocks.BARRIER
         }
-        return LaserRecipe(input!!, output!!, energyMin, energyMax, requiredEnergy)
+        return LaserRecipe(input!!, output!!, inputMeta, outputMeta, energyMin, energyMax, requiredEnergy)
     }
 }
