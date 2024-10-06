@@ -1,30 +1,36 @@
 package com.github.trc.clayium.common.recipe.builder
 
-import com.github.trc.clayium.api.util.CLog
+import com.github.trc.clayium.api.W
 import com.github.trc.clayium.common.recipe.LaserRecipe
+import com.github.trc.clayium.common.recipe.registry.LaserRecipeRegistry
 import net.minecraft.block.Block
-import net.minecraft.init.Blocks
+import net.minecraft.block.state.IBlockState
 
-class LaserRecipeBuilder{
+class LaserRecipeBuilder(
+    private val registry: LaserRecipeRegistry,
+) {
 
-    var input: Block? = null
-    var output: Block? = null
+    lateinit var input: Block
+    lateinit var output: IBlockState
     var energyMin: Double = 0.0
     var energyMax: Double = Double.MAX_VALUE
     var requiredEnergy: Double = 0.0
-    var inputMeta: Int? = null
-    var outputMeta: Int? = null
+    var inputMeta: Int = W
 
-    fun input(block: Block) = input(block, null)
-    fun input(block: Block, meta: Int?): LaserRecipeBuilder {
+    fun input(block: Block, meta: Int): LaserRecipeBuilder {
         input = block
         inputMeta = meta
         return this
     }
-    fun output(block: Block) = output(block, null)
-    fun output(block: Block, meta: Int?): LaserRecipeBuilder {
-        output = block
-        outputMeta = meta
+    fun input(block: Block) = input(block, W)
+
+    fun output(state: IBlockState): LaserRecipeBuilder {
+        output = state
+        return this
+    }
+    fun output(block: Block, meta: Int): LaserRecipeBuilder {
+        @Suppress("DEPRECATION")
+        output = block.getStateFromMeta(meta)
         return this
     }
 
@@ -42,15 +48,12 @@ class LaserRecipeBuilder{
         requiredEnergy = value
         return this
     }
-    fun build(): LaserRecipe {
-        if (input == null){
-            CLog.error("input must be set")
-            input = Blocks.BARRIER
-        }
-        if (output == null){
-            CLog.error("output must be set")
-            output = Blocks.BARRIER
-        }
-        return LaserRecipe(input!!, output!!, inputMeta, outputMeta, energyMin, energyMax, requiredEnergy)
+
+    fun buildAndRegister() {
+        val recipe = LaserRecipe(
+            inputBlock = input, inputMeta = inputMeta, outputState = output,
+            energyMin = energyMin, energyMax = energyMax, requiredEnergy = requiredEnergy
+        )
+        registry.register(recipe)
     }
 }

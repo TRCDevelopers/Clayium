@@ -1,21 +1,23 @@
 package com.github.trc.clayium.common.recipe
 
+import com.github.trc.clayium.api.W
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
-import net.minecraftforge.oredict.OreDictionary
 
 class LaserRecipe(
-    val input: Block,
-    val output: Block,
-    val inputMeta: Int?,
-    val outputMeta: Int?,
+    val inputBlock: Block,
+    val outputState: IBlockState,
+    val inputMeta: Int = W,
     val energyMin: Double,
     val energyMax: Double,
     val requiredEnergy: Double
 ) {
 
     fun matches(input: IBlockState, energy: Double): Boolean {
-        return this.input === input.block && if (this.inputMeta != null) this.inputMeta == input.block.getMetaFromState(input) else true && energyMin <= energy && energyMax >= energy
+        val sameBlock = inputBlock === input.block
+        val metaMatches = inputMeta == W || inputMeta == input.block.getMetaFromState(input)
+        val energyOk = energyMin <= energy && energyMax >= energy
+        return sameBlock && metaMatches && energyOk
     }
 
     fun isSufficient(totalEnergy: Double): Boolean {

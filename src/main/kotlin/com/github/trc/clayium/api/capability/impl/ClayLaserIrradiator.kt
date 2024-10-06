@@ -92,19 +92,11 @@ class ClayLaserIrradiator(
             previousTargetPos = targetPos
         }
         totalEnergyIrradiated += energy
-        val recipe = CRecipes.LASER.getRecipe(block, energy)
-        val resultState = if (recipe != null && recipe.isSufficient(totalEnergyIrradiated)) {
-            if (recipe.outputMeta != null) {
-                recipe.output.getStateFromMeta(recipe.outputMeta)
-            } else {
-                recipe.output.defaultState
-            }
-        } else {
-            null
-        }
+        val recipe = CRecipes.LASER.getRecipe(block, energy) ?: return
+        if (!recipe.isSufficient(totalEnergyIrradiated)) return
+        val resultState = recipe.outputState
         if (transformationCt++ < 10) return
         transformationCt = 0
-        if (resultState == null) return
         totalEnergyIrradiated = 0.0
         world.destroyBlock(targetPos, false)
         world.setBlockState(targetPos, resultState)

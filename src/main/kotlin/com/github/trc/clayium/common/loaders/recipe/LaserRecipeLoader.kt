@@ -8,7 +8,7 @@ object LaserRecipeLoader {
     fun registerRecipes() {
         CRecipes.LASER.register {
             input(Blocks.SAPLING)
-            output(ClayiumBlocks.CLAY_TREE_SAPLING)
+            output(ClayiumBlocks.CLAY_TREE_SAPLING.defaultState)
             energyMin(1000.0)
             requiredEnergy(300000.0)
         }
