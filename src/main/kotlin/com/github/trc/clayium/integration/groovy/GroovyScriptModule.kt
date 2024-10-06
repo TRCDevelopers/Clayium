@@ -30,6 +30,7 @@ class GroovyScriptModule : GroovyPlugin {
         CRecipes.ALL_REGISTRIES.values.forEach { r ->
             container.addProperty(r.grsVirtualizedRegistry)
         }
+        container.addProperty(CRecipes.LASER.grsVirtualizedRegistry)
     }
 
     companion object {

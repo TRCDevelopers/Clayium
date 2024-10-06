@@ -20,6 +20,9 @@ class LaserRecipe(
         return sameBlock && metaMatches && energyOk
     }
 
+    fun grsMatches(input: Block, meta: Int?): Boolean {
+        return this.inputBlock === input && this.inputMeta == meta
+    }
     fun isSufficient(totalEnergy: Double): Boolean {
         return requiredEnergy <= totalEnergy
     }

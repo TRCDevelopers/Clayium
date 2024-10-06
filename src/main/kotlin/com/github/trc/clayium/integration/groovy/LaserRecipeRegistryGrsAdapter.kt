@@ -1,0 +1,37 @@
+package com.github.trc.clayium.integration.groovy
+
+import com.cleanroommc.groovyscript.api.GroovyLog
+import com.cleanroommc.groovyscript.helper.Alias
+import com.cleanroommc.groovyscript.registry.VirtualizedRegistry
+import com.github.trc.clayium.common.recipe.LaserRecipe
+import com.github.trc.clayium.common.recipe.builder.LaserRecipeBuilder
+import com.github.trc.clayium.common.recipe.registry.LaserRecipeRegistry
+import com.google.common.base.CaseFormat
+import net.minecraft.block.Block
+
+class LaserRecipeRegistryGrsAdapter(
+    val backingRegistry: LaserRecipeRegistry,
+) : VirtualizedRegistry<LaserRecipe>(Alias.generateOf("laser_transformation", CaseFormat.LOWER_UNDERSCORE)) {
+    override fun onReload() {
+        removeScripted().forEach(backingRegistry::removeRecipe)
+        restoreFromBackup().forEach(backingRegistry::addRecipe)
+    }
+
+    fun recipeBuilder(): LaserRecipeBuilder {
+        return LaserRecipeBuilder(backingRegistry)
+    }
+
+    override fun getName(): String? {
+        return "laser_transformation"
+    }
+
+    fun removeRecipe(input: Block, inputMeta: Int?): Boolean {
+        return backingRegistry.getAllRecipes().filter { it.grsMatches(input, inputMeta) }
+            .map { recipe ->
+                val removed = backingRegistry.removeRecipe(recipe)
+                if (!removed) GroovyLog.msg("Failed to remove recipe $recipe")
+                removed
+            }
+            .all { it }
+    }
+}
