@@ -17,8 +17,6 @@ import java.lang.ref.WeakReference
 class TileEntityAccess(
     val world: World,
     val pos: BlockPos,
-    private val onNewTileEntityAppeared: ((TileEntity) -> Unit)? = null,
-    private val onTileEntityInvalidated: (() -> Unit)? = null,
 ) {
 
     constructor(tileEntity: TileEntity) : this(tileEntity.world, tileEntity.pos)
@@ -33,9 +31,6 @@ class TileEntityAccess(
             val tileEntity = world.getTileEntity(pos)
             if (tileEntity != null) {
                 weakRef = WeakReference(tileEntity)
-                onNewTileEntityAppeared?.invoke(tileEntity)
-            } else {
-                onTileEntityInvalidated?.invoke()
             }
             tileEntity
         }

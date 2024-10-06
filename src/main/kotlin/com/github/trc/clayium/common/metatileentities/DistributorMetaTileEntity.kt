@@ -15,12 +15,7 @@ import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
-import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.api.util.MachineIoMode
-import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.api.util.copyWithSize
-import com.github.trc.clayium.api.util.enumMapNotNull
-import com.github.trc.clayium.api.util.next
+import com.github.trc.clayium.api.util.*
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.util.CNbtUtils
 import net.minecraft.block.state.IBlockState
@@ -39,6 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
+import org.apache.logging.log4j.Level
 import java.util.EnumMap
 import java.util.function.Function
 import kotlin.math.min
@@ -200,26 +196,27 @@ class DistributorMetaTileEntity(
 
         override fun exportToNeighbors() {
             var remainingExport = amountPerAction
-            val exportItems = groups[exportPtr]
             val neighborMap = EnumFacing.entries.enumMapNotNull { side ->
                 if (!isExporting(side)) return@enumMapNotNull null
                 getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite)
             }
             @Suppress("UsePropertyAccessSyntax") //synthetic properties
             if (neighborMap.isEmpty()) return
+            val exportItems = groups[exportPtr]
+
             for (exportSlot in 0..<exportItems.slots) {
                 // create a copy, so we can safely remove elements from this copied map
                 // if a neighbor inventory is full, we remove it from the map
                 val neighbors = EnumMap(neighborMap)
-                val exported = exportItems.extractItem(exportSlot, remainingExport, true)
+                val exported = exportItems.extractItem(exportSlot, amountPerAction, true)
+                val countPerNeighbor = exported.count / neighbors.size
                 if (exported.isEmpty) continue
 
-                // try bulk insert first
-                val countPerNeighbor = exported.count / neighbors.size
-                val toInsert = exported.copyWithSize(countPerNeighbor)
                 var notInserted = 0
-                if (countPerNeighbor != 0) {
-                    for ((side, neighbor) in neighbors) {
+                for ((side, neighbor) in neighbors) {
+                    // try bulk insert first
+                    val toInsert = exported.copyWithSize(countPerNeighbor)
+                    if (countPerNeighbor != 0) {
                         val remain = ItemHandlerHelper.insertItem(neighbor, toInsert, false)
                         val inserted = toInsert.count - remain.count
                         exportItems.extractItem(exportSlot, inserted, false)

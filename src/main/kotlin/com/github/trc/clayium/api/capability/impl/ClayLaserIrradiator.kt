@@ -4,7 +4,7 @@ import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.interfaces.IWorldObject
 import com.github.trc.clayium.common.config.ConfigCore
-import com.github.trc.clayium.common.recipe.LaserRecipes
+import com.github.trc.clayium.common.recipe.registry.CRecipes
 import net.minecraft.block.material.Material
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
@@ -92,19 +92,11 @@ class ClayLaserIrradiator(
             previousTargetPos = targetPos
         }
         totalEnergyIrradiated += energy
-        val recipe = LaserRecipes.LASER.getRecipe(block, energy)
-        val resultState = if (recipe != null && recipe.isSufficient(totalEnergyIrradiated)) {
-            if (recipe.outputMeta != null) {
-                recipe.output.getStateFromMeta(recipe.outputMeta)
-            } else {
-                recipe.output.defaultState
-            }
-        } else {
-            null
-        }
+        val recipe = CRecipes.LASER.getRecipe(block, energy) ?: return
+        if (!recipe.isSufficient(totalEnergyIrradiated)) return
+        val resultState = recipe.outputState
         if (transformationCt++ < 10) return
         transformationCt = 0
-        if (resultState == null) return
         totalEnergyIrradiated = 0.0
         world.destroyBlock(targetPos, false)
         world.setBlockState(targetPos, resultState)
