@@ -7,6 +7,8 @@ object CRecipeLoader {
     fun load() {
         ClayWorkTableRecipeLoader.registerRecipes()
 
+        LaserRecipeLoader.registerRecipes()
+
         CraftingRecipeLoader.registerRecipes()
         MaterialRecipeHandler.registerRecipes()
 

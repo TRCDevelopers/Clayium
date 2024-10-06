@@ -3,10 +3,9 @@ package com.github.trc.clayium.api.capability.impl
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.interfaces.IWorldObject
-import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.config.ConfigCore
+import com.github.trc.clayium.common.recipe.registry.CRecipes
 import net.minecraft.block.material.Material
-import net.minecraft.init.Blocks
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
@@ -28,6 +27,7 @@ class ClayLaserIrradiator(
      */
     private var previousTargetPos: BlockPos? = null
     private var totalEnergyIrradiated: Double = 0.0
+    private var transformationCt: Byte = 0
 
     private fun TileEntity.getLaserAcceptor(targetSide: EnumFacing) =
         getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, targetSide)
@@ -85,18 +85,19 @@ class ClayLaserIrradiator(
 
     private fun irradiateLaserBlock(energy: Double, targetPos: BlockPos) {
         val world = world ?: return
-        val block = world.getBlockState(targetPos).block
+        val block = world.getBlockState(targetPos)
         if (previousTargetPos != targetPos) {
             totalEnergyIrradiated = 0.0
+            transformationCt = 0
             previousTargetPos = targetPos
         }
         totalEnergyIrradiated += energy
-        val resultState = if (block === Blocks.SAPLING && energy >= 1000 && totalEnergyIrradiated >= 300000) {
-            ClayiumBlocks.CLAY_TREE_SAPLING.defaultState
-        } else {
-            null
-        }
-        if (resultState == null) return
+        val recipe = CRecipes.LASER.getRecipe(block, energy) ?: return
+        if (!recipe.isSufficient(totalEnergyIrradiated)) return
+        val resultState = recipe.outputState
+        if (transformationCt++ < 10) return
+        transformationCt = 0
+        totalEnergyIrradiated = 0.0
         world.destroyBlock(targetPos, false)
         world.setBlockState(targetPos, resultState)
     }

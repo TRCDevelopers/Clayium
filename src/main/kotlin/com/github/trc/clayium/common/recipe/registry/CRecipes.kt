@@ -47,6 +47,9 @@ object CRecipes {
     val CHEMICAL_METAL_SEPARATOR = addRegistry("chemical_metal_separator", WeightedRecipeBuilder(), 1, 1)
     val CENTRIFUGE = addRegistry("centrifuge", SimpleRecipeBuilder(), 1, 4)
 
+    // not item recipe
+    val LASER = LaserRecipeRegistry()
+
     fun <R: RecipeBuilder<R>> addRegistry(name: String, buildSample: R, inputSize: Int, outputSize: Int): RecipeRegistry<R> {
         val registry = RecipeRegistry(name, buildSample, inputSize, outputSize)
         REGISTRY[name] = registry
