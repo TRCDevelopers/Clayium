@@ -64,7 +64,7 @@ abstract class ProxyMetaTileEntityBase(
         this.targetDimensionId = dimId
         this.targetPos = pos
         val world = DimensionManager.getWorld(dimId) ?: return
-        this.teAccess = TileEntityAccess(world, pos, ::onNewTarget, ::unlinkSelf)
+        this.teAccess = TileEntityAccess(world, pos, ::onNewTarget, ::unlink)
         // don't link here, because the target may not be loaded yet.
         // the link will be established onFirstTick.
     }
@@ -130,7 +130,7 @@ abstract class ProxyMetaTileEntityBase(
         this.targetPos = pos
         this.targetDimensionId = world.provider?.dimension ?: -1
         writeTargetData(target)
-        teAccess = TileEntityAccess(world, pos, ::onNewTarget, ::unlinkSelf)
+        teAccess = TileEntityAccess(world, pos, ::onNewTarget, ::unlink)
         markDirty()
     }
 
@@ -139,10 +139,7 @@ abstract class ProxyMetaTileEntityBase(
         writeTargetRemoved()
         markDirty()
     }
-    fun unlinkSelf() {
-        writeTargetRemoved()
-        markDirty()
-    }
+
     /**
      * called when a player attempts to establish a link using a synchronizer.
      * not called when validating the multiblock structure.
