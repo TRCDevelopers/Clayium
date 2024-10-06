@@ -11,7 +11,6 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.init.Blocks
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
@@ -43,7 +42,6 @@ class LaserProxyMetaTileEntity(
 
     override fun unlink() {
         super.unlink()
-        if (targetPos != null && world!!.isBlockLoaded(targetPos!!) && world!!.getBlockState(targetPos!!).block === Blocks.AIR) return
         this.target?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
             ?.acceptLaser(this.frontFacing.opposite, null)
     }

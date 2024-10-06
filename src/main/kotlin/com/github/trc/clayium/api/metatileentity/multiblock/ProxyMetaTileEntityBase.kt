@@ -12,7 +12,6 @@ import com.github.trc.clayium.api.util.getMetaTileEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
-import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
@@ -64,7 +63,7 @@ abstract class ProxyMetaTileEntityBase(
         this.targetDimensionId = dimId
         this.targetPos = pos
         val world = DimensionManager.getWorld(dimId) ?: return
-        this.teAccess = TileEntityAccess(world, pos, ::onNewTarget, ::unlink)
+        this.teAccess = TileEntityAccess(world, pos)
         // don't link here, because the target may not be loaded yet.
         // the link will be established onFirstTick.
     }
@@ -77,8 +76,24 @@ abstract class ProxyMetaTileEntityBase(
         }
     }
 
+    override fun update() {
+        super.update()
+        if (isRemote || offsetTimer % 5 != 0L) return
+        val world = DimensionManager.getWorld(this.targetDimensionId) ?: return
+        val targetPos = this.targetPos ?: return
+        if (world.isBlockLoaded(targetPos)) {
+            val target = this.target
+            // loaded but target is null,
+            // assume the target is removed.
+            if (target == null) {
+                this.unlink()
+            }
+        }
+    }
+
     override fun onFirstTick() {
         super.onFirstTick()
+        if (isRemote) return
         if (this.targetPos != null) {
             val world = DimensionManager.getWorld(this.targetDimensionId) ?: return
             val metaTileEntity = world.getMetaTileEntity(this.targetPos) ?: return
@@ -116,13 +131,6 @@ abstract class ProxyMetaTileEntityBase(
         return true
     }
 
-    private fun onNewTarget(tileEntity: TileEntity) {
-        if (tileEntity !is MetaTileEntityHolder) return
-        val metaTileEntity = tileEntity.metaTileEntity ?: return
-        if (!canLink(metaTileEntity)) return
-        this.linkTo(metaTileEntity)
-    }
-
     @MustBeInvokedByOverriders
     open fun linkTo(target: MetaTileEntity) {
         val world = target.world ?: return
@@ -130,7 +138,7 @@ abstract class ProxyMetaTileEntityBase(
         this.targetPos = pos
         this.targetDimensionId = world.provider?.dimension ?: -1
         writeTargetData(target)
-        teAccess = TileEntityAccess(world, pos, ::onNewTarget, ::unlink)
+        teAccess = TileEntityAccess(world, pos)
         markDirty()
     }
 
