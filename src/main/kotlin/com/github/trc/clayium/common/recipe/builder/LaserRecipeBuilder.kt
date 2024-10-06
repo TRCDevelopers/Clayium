@@ -17,11 +17,27 @@ class LaserRecipeBuilder(
     var requiredEnergy: Double = 0.0
     var inputMeta: Int = W
 
+    /**
+     * add input as block + meta pair.
+     * matches block and meta.
+     */
     fun input(block: Block, meta: Int): LaserRecipeBuilder {
         input = block
         inputMeta = meta
         return this
     }
+
+    /**
+     * add input as block + meta pair.
+     * matches block and meta.
+     */
+    fun input(state: IBlockState) = input(state.block, state.block.getMetaFromState(state))
+
+    /**
+     * add input as block.
+     * matches block only, ignores meta.
+     * i.e. meta is treated as wildcard.
+     */
     fun input(block: Block) = input(block, W)
 
     fun output(state: IBlockState): LaserRecipeBuilder {
