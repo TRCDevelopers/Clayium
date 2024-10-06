@@ -10,7 +10,7 @@ class LaserRecipeRegistry {
     val recipes get() = _recipes.toList()
 
     private fun register0(input: Block, inputMeta: Int?, output: Block, outputMeta: Int?, energyMin: Double, energyMax: Double?, requiredEnergy: Double) {
-        _recipes.add(LaserRecipe(input, output, inputMeta, outputMeta, energyMin, energyMax, requiredEnergy))
+        _recipes.add(LaserRecipe(input, output, inputMeta, outputMeta, energyMin, energyMax?: Double.MAX_VALUE, requiredEnergy))
         _recipes.sortWith(RECIPE_COMPARATOR)
     }
 

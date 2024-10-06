@@ -10,7 +10,7 @@ class LaserRecipeBuilder{
     var input: Block? = null
     var output: Block? = null
     var energyMin: Double = 0.0
-    var energyMax: Double? = null
+    var energyMax: Double = Double.MAX_VALUE
     var requiredEnergy: Double = 0.0
     var inputMeta: Int? = null
     var outputMeta: Int? = null
