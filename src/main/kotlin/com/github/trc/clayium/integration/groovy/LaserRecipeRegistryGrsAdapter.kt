@@ -8,6 +8,7 @@ import com.github.trc.clayium.common.recipe.builder.LaserRecipeBuilder
 import com.github.trc.clayium.common.recipe.registry.LaserRecipeRegistry
 import com.google.common.base.CaseFormat
 import net.minecraft.block.Block
+import net.minecraft.block.state.IBlockState
 
 class LaserRecipeRegistryGrsAdapter(
     val backingRegistry: LaserRecipeRegistry,
@@ -24,8 +25,8 @@ class LaserRecipeRegistryGrsAdapter(
     override fun getName(): String? {
         return "laser_transformation"
     }
-
-    fun removeRecipe(input: Block, inputMeta: Int?): Boolean {
+    @JvmOverloads
+    fun removeRecipe(input: Block, inputMeta: Int? = null): Boolean {
         return backingRegistry.getAllRecipes().filter { it.grsMatches(input, inputMeta) }
             .map { recipe ->
                 val removed = backingRegistry.removeRecipe(recipe)
@@ -33,5 +34,8 @@ class LaserRecipeRegistryGrsAdapter(
                 removed
             }
             .all { it }
+    }
+    fun removeRecipe(input: IBlockState): Boolean {
+        return removeRecipe(input.block, input.block.getMetaFromState(input))
     }
 }
