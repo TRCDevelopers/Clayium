@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write
+      pul-requests: write
     steps:
-    - uses: actions/labeler@v5
+      - name: PR Labeler
+        uses: actions/labeler@v5
