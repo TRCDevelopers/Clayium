@@ -26,6 +26,13 @@ class RedstoneProxyMetaTileEntity(
     tier: ITier,
 ) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "redstone_proxy") {
 
+    init {
+        /**
+         * this machine has a synchro part by default = remote sync is enabled by default.
+         */
+        this.hasSynchroParts = true
+    }
+
     override val faceTexture: ResourceLocation = clayiumId("blocks/redstone_proxy")
     override val useFaceForAllSides: Boolean = true
 

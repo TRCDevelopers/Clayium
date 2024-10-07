@@ -9,10 +9,13 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.TileEntityAccess
 import com.github.trc.clayium.api.util.getMetaTileEntity
+import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.DimensionManager
@@ -46,6 +49,8 @@ abstract class ProxyMetaTileEntityBase(
         private set
     final override var targetItemStack: ItemStack = ItemStack.EMPTY
 
+    protected var hasSynchroParts = false
+
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val exportItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val itemInventory: IItemHandler = EmptyItemStackHandler
@@ -54,10 +59,12 @@ abstract class ProxyMetaTileEntityBase(
         super.writeToNBT(data)
         data.setLong("targetPos", this.targetPos?.toLong() ?: -1)
         data.setInteger("targetDimensionId", this.targetDimensionId)
+        data.setBoolean("hasSynchroParts", hasSynchroParts)
     }
 
     override fun readFromNBT(data: NBTTagCompound) {
         super.readFromNBT(data)
+        hasSynchroParts = data.getBoolean("hasSynchroParts")
         val pos = BlockPos.fromLong(data.getLong("targetPos"))
         val dimId = data.getInteger("targetDimensionId")
         this.targetDimensionId = dimId
@@ -103,6 +110,21 @@ abstract class ProxyMetaTileEntityBase(
         }
     }
 
+    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        if (super.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)) {
+            return true
+        } else if (!this.hasSynchroParts) {
+            val stack = player.getHeldItem(hand)
+            val synchroParts = MetaItemClayParts.SynchronousParts.getStackForm()
+            if (stack.isItemEqual(synchroParts) && stack.metadata == synchroParts.metadata) {
+                this.hasSynchroParts = true
+                if (!player.isCreative) stack.shrink(1)
+                return true
+            }
+        }
+        return false
+    }
+
     override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
         // no-op, this block is a proxy
     }
@@ -120,7 +142,7 @@ abstract class ProxyMetaTileEntityBase(
     /**
      * check if synchronization with a Synchronizer Item is allowed.
      */
-    protected open fun canSynchronize() = true
+    protected open fun canSynchronize() = hasSynchroParts
 
     final override fun synchronize(pos: BlockPos, dimensionId: Int): Boolean {
         if (!canSynchronize()) return false

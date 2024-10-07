@@ -389,17 +389,21 @@ abstract class MetaTileEntity(
 
     /**
      * only called on the server side.
+     * @return true if something happened and no further processing should be done.
      */
-    open fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+    open fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         val stack = player.getHeldItem(hand)
         val confTool = stack.getCapability(ClayiumCapabilities.CONFIG_TOOL, null)
         if (confTool != null) {
             this.onToolClick(confTool, player, hand, clickedSide, hitX, hitY, hitZ)
-            return
+            return true
         }
-        val pos = this.pos ?: return
+        val pos = this.pos ?: return false
         if (this.canOpenGui()) {
             MetaTileEntityGuiFactory.open(player, pos)
+            return true
+        } else {
+            return false
         }
     }
 
