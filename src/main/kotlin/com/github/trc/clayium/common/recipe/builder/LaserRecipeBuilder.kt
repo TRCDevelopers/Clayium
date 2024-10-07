@@ -24,7 +24,6 @@ class LaserRecipeBuilder(
     fun input(block: Block, meta: Int): LaserRecipeBuilder {
         input = block
         inputMeta = meta
-        println("$input $inputMeta")
         return this
     }
 
