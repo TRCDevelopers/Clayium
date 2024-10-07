@@ -1,0 +1,33 @@
+# Copied & modified from GTCEu actions.
+# https://github.com/GregTechCEu/GregTech/blob/master/.github/actions/build_setup/action.yml
+# Distributed under the LGPL-3.0 License: https://github.com/GregTechCEu/GregTech/blob/master/LICENSE
+
+name: Build Setup
+description: Setup for standard Java builds
+
+inputs:
+  update-cache:
+    description: If cache should be updated
+    required: false
+    default: false
+
+runs:
+  using: 'composite'
+
+  steps:
+    - name: Set up JDK 8
+      uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73
+      with:
+        java-version: 8
+        distribution: zulu
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+      with:
+        cache-write-only: ${{ inputs.update-cache }}
+        gradle-home-cache-includes: |
+          caches
+          caches/retro_futura_gradle
+          notifications
+          jdks
+          wrapper
