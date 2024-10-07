@@ -20,6 +20,10 @@ class LaserRecipe(
         return sameBlock && metaMatches && energyOk
     }
 
+    @JvmOverloads
+    fun grsMatches(input: Block, meta: Int = W): Boolean {
+        return this.inputBlock === input && this.inputMeta == meta
+    }
     fun isSufficient(totalEnergy: Double): Boolean {
         return requiredEnergy <= totalEnergy
     }
