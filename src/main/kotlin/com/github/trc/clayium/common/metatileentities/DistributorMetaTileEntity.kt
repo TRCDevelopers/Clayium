@@ -216,14 +216,19 @@ class DistributorMetaTileEntity(
          */
         @VisibleForTesting
         fun distribute(source: IItemHandler, neighborMap: Map<EnumFacing, IItemHandler>): Boolean {
+            //todo CLEANUP?
             var remainingExport = amountPerAction
             for (exportSlot in 0..<source.slots) {
-                // create a copy, so we can safely remove elements from this copied map
-                // if a neighbor inventory is full, we remove it from the map
-                val neighbors = EnumMap(neighborMap)
-                val exported = source.extractItem(exportSlot, amountPerAction, true)
-                val countPerNeighbor = exported.count / neighbors.size
+                val exported = source.extractItem(exportSlot, remainingExport, true)
+                val exportedCount = exported.count
                 if (exported.isEmpty) continue
+
+                // create a copy, so we can safely remove elements from this copied map
+                // if the neighbor inventory is full, we remove it from the map
+                // Why we don't remove from [neighborMap] directory:
+                // even if this stack can't be inserted, another stack may be inserted.
+                val neighbors = EnumMap(neighborMap)
+                val countPerNeighbor = exportedCount / neighbors.size
 
                 var notInserted = 0
                 for ((side, neighbor) in neighbors) {
@@ -245,7 +250,7 @@ class DistributorMetaTileEntity(
                 if (neighbors.isEmpty()) continue
 
                 // one by one insertion
-                val nextNeighbor = generateSequence(lastDirection.next()) { current ->
+                val nextNeighbor: Iterator<EnumFacing> = generateSequence(lastDirection.next()) { current ->
                     @Suppress("UsePropertyAccessSyntax") //synthetic properties
                     if (neighbors.isEmpty()) {
                         return@generateSequence null
@@ -259,7 +264,7 @@ class DistributorMetaTileEntity(
                     }
                 }.iterator()
 
-                notInserted += exported.count % neighbors.size
+                notInserted += exportedCount % neighbors.size
                 val toInsertCount1 = exported.copyWithSize(1)
                 while (remainingExport > 0 && notInserted > 0 && nextNeighbor.hasNext()) {
                     val side = nextNeighbor.next()
