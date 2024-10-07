@@ -3,6 +3,7 @@ package com.github.trc.clayium.integration.groovy
 import com.cleanroommc.groovyscript.api.GroovyLog
 import com.cleanroommc.groovyscript.helper.Alias
 import com.cleanroommc.groovyscript.registry.VirtualizedRegistry
+import com.github.trc.clayium.api.W
 import com.github.trc.clayium.common.recipe.LaserRecipe
 import com.github.trc.clayium.common.recipe.builder.LaserRecipeBuilder
 import com.github.trc.clayium.common.recipe.registry.LaserRecipeRegistry
@@ -26,7 +27,7 @@ class LaserRecipeRegistryGrsAdapter(
         return "laser_transformation"
     }
     @JvmOverloads
-    fun removeRecipe(input: Block, inputMeta: Int? = null): Boolean {
+    fun removeRecipe(input: Block, inputMeta: Int = W): Boolean {
         return backingRegistry.getAllRecipes().filter { it.grsMatches(input, inputMeta) }
             .map { recipe ->
                 val removed = backingRegistry.removeRecipe(recipe)
