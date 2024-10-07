@@ -32,11 +32,15 @@ import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
+import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
-import org.apache.logging.log4j.Level
+import org.jetbrains.annotations.VisibleForTesting
 import java.util.EnumMap
 import java.util.function.Function
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.iterator
 import kotlin.math.min
 
 class DistributorMetaTileEntity(
@@ -63,7 +67,8 @@ class DistributorMetaTileEntity(
     private var groupIndex = 0
 
     @Suppress("unused")
-    private val ioHandler = DistributorIoHandler()
+    @VisibleForTesting
+    val ioHandler = DistributorIoHandler()
 
     override fun onPlacement() {
         for (side in EnumFacing.entries) {
@@ -146,7 +151,7 @@ class DistributorMetaTileEntity(
      * imported or exported -> pointer++
      * if the exportation is one lap behind, stop importing
      */
-    private inner class DistributorIoHandler : AutoIoHandler.Combined(this@DistributorMetaTileEntity, isBuffer = true) {
+    inner class DistributorIoHandler : AutoIoHandler.Combined(this@DistributorMetaTileEntity, isBuffer = true) {
         private var oneLapBehind = false
         private var importPtr = 0
             set(value) {
@@ -195,22 +200,35 @@ class DistributorMetaTileEntity(
         }
 
         override fun exportToNeighbors() {
-            var remainingExport = amountPerAction
             val neighborMap = EnumFacing.entries.enumMapNotNull { side ->
                 if (!isExporting(side)) return@enumMapNotNull null
                 getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite)
             }
             @Suppress("UsePropertyAccessSyntax") //synthetic properties
             if (neighborMap.isEmpty()) return
-            val exportItems = groups[exportPtr]
+            val currentInv = groups[exportPtr]
 
-            for (exportSlot in 0..<exportItems.slots) {
-                // create a copy, so we can safely remove elements from this copied map
-                // if a neighbor inventory is full, we remove it from the map
-                val neighbors = EnumMap(neighborMap)
-                val exported = exportItems.extractItem(exportSlot, amountPerAction, true)
-                val countPerNeighbor = exported.count / neighbors.size
+            if (distribute(currentInv, neighborMap)) exportPtr++
+        }
+
+        /**
+         * @return true if insertion was proceeded, false if no insertion was proceeded
+         */
+        @VisibleForTesting
+        fun distribute(source: IItemHandler, neighborMap: Map<EnumFacing, IItemHandler>): Boolean {
+            //todo CLEANUP?
+            var remainingExport = amountPerAction
+            for (exportSlot in 0..<source.slots) {
+                val exported = source.extractItem(exportSlot, remainingExport, true)
+                val exportedCount = exported.count
                 if (exported.isEmpty) continue
+
+                // create a copy, so we can safely remove elements from this copied map
+                // if the neighbor inventory is full, we remove it from the map
+                // Why we don't remove from [neighborMap] directory:
+                // even if this stack can't be inserted, another stack may be inserted.
+                val neighbors = EnumMap(neighborMap)
+                val countPerNeighbor = exportedCount / neighbors.size
 
                 var notInserted = 0
                 for ((side, neighbor) in neighbors) {
@@ -219,7 +237,7 @@ class DistributorMetaTileEntity(
                     if (countPerNeighbor != 0) {
                         val remain = ItemHandlerHelper.insertItem(neighbor, toInsert, false)
                         val inserted = toInsert.count - remain.count
-                        exportItems.extractItem(exportSlot, inserted, false)
+                        source.extractItem(exportSlot, inserted, false)
                         remainingExport -= inserted
                         notInserted += remain.count
                         if (!remain.isEmpty) {
@@ -232,7 +250,7 @@ class DistributorMetaTileEntity(
                 if (neighbors.isEmpty()) continue
 
                 // one by one insertion
-                val nextNeighbor = generateSequence(lastDirection.next()) { current ->
+                val nextNeighbor: Iterator<EnumFacing> = generateSequence(lastDirection.next()) { current ->
                     @Suppress("UsePropertyAccessSyntax") //synthetic properties
                     if (neighbors.isEmpty()) {
                         return@generateSequence null
@@ -246,7 +264,7 @@ class DistributorMetaTileEntity(
                     }
                 }.iterator()
 
-                notInserted += exported.count % neighbors.size
+                notInserted += exportedCount % neighbors.size
                 val toInsertCount1 = exported.copyWithSize(1)
                 while (remainingExport > 0 && notInserted > 0 && nextNeighbor.hasNext()) {
                     val side = nextNeighbor.next()
@@ -257,12 +275,12 @@ class DistributorMetaTileEntity(
                         neighbors.remove(side)
                         continue
                     }
-                    exportItems.extractItem(exportSlot, 1, false)
+                    source.extractItem(exportSlot, 1, false)
                     notInserted--
                     remainingExport--
                 }
             }
-            if (remainingExport != amountPerAction) exportPtr++
+            return remainingExport != amountPerAction
         }
     }
 
