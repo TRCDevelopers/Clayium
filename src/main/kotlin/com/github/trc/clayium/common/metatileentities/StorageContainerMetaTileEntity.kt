@@ -119,7 +119,7 @@ class StorageContainerMetaTileEntity(
         }
     }
 
-    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         val stack = player.getHeldItem(hand)
         val clayCore = MetaItemClayParts.ClayCore.getStackForm()
         //todo use capability
@@ -131,10 +131,10 @@ class StorageContainerMetaTileEntity(
                 upgradedStorageContainerStack.tagCompound = NBTTagCompound().apply { writeItemStackNbt(this) }
                 this.blockMachine.onBlockPlacedBy(world, pos, world.getBlockState(pos), player, upgradedStorageContainerStack)
                 stack.shrink(1)
-                return
+                return true
             }
         }
-        super.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
+        return super.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {

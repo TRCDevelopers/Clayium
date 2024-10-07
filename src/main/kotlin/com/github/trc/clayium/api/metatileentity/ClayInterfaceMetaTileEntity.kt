@@ -11,9 +11,7 @@ import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
@@ -43,23 +41,6 @@ class ClayInterfaceMetaTileEntity(
 
     override var validInputModes: List<MachineIoMode> = onlyNoneList
     override var validOutputModes: List<MachineIoMode> = onlyNoneList
-
-    var hasSynchroParts = false
-        private set
-
-    override fun writeToNBT(data: NBTTagCompound) {
-        super.writeToNBT(data)
-        data.setBoolean("hasSynchroParts", hasSynchroParts)
-    }
-
-    override fun readFromNBT(data: NBTTagCompound) {
-        super.readFromNBT(data)
-        hasSynchroParts = data.getBoolean("hasSynchroParts")
-    }
-
-    override fun canSynchronize(): Boolean {
-        return hasSynchroParts
-    }
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayInterfaceMetaTileEntity(metaTileEntityId, tier)
@@ -103,24 +84,22 @@ class ClayInterfaceMetaTileEntity(
         this.validOutputModes = onlyNoneList
     }
 
-    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
-        if (!this.hasSynchroParts) {
-            val stack = player.getHeldItem(hand)
-            val synchroParts = MetaItemClayParts.SynchronousParts.getStackForm()
-            if (stack.isItemEqual(synchroParts) && stack.metadata == synchroParts.metadata) {
-                this.hasSynchroParts = true
-                if (!player.isCreative) stack.shrink(1)
-                return
-            }
+    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        if (super.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)) {
+            return true
         }
         val mimicTarget = this.target
         if (mimicTarget?.canOpenGui() == true) {
-            val targetPos = mimicTarget.pos ?: return
-            val targetWorld = mimicTarget.world ?: return
+            val targetPos = mimicTarget.pos ?: return false
+            val targetWorld = mimicTarget.world ?: return false
             MetaTileEntityGuiFactory.open(player, targetPos, targetWorld)
+            return true
+        } else {
+            return false
         }
     }
 
+    override fun canOpenGui() = false
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         throw UnsupportedOperationException("no direct gui for clay interfaces")
     }
