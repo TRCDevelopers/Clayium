@@ -1,4 +1,5 @@
 <!-- 
+For japanese speakers:
 PRのタイトルはChangelogに使われるので、なるべく英語にしてください。
 PRの内容は日本語で大丈夫です。
 -->
