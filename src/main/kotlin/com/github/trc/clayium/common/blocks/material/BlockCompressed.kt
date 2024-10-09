@@ -42,7 +42,7 @@ abstract class BlockCompressed(mapping: Map<Int, CMaterial>) : BlockMaterialBase
     }
 
     @SideOnly(Side.CLIENT)
-    override fun getRenderLayer() = BlockRenderLayer.SOLID
+    override fun getRenderLayer() = BlockRenderLayer.TRANSLUCENT
 
     @SideOnly(Side.CLIENT)
     override fun registerModels() {

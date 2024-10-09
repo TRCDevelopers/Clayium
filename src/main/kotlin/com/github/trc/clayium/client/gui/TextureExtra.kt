@@ -36,6 +36,8 @@ class TextureExtra(
         }
         val width = baseSprite.iconWidth
         val height = baseSprite.iconHeight
+        iconWidth = width
+        iconHeight = height
         val pixels = Array<IntArray?> (mipmapLevels + 1) { null }
         pixels[0] = IntArray(width * height)
 
@@ -58,7 +60,7 @@ class TextureExtra(
                 blendImages(bufImage, image)
             }
         }
-        pixels[0] = bufImage!!.getRGB(0, 0, width, height, pixels[0], 0, width)
+        bufImage!!.getRGB(0, 0, width, height, pixels[0], 0, width)
         this.clearFramesTextureData()
         this.framesTextureData.add(pixels)
         // javadoc says "Returning false from this function will prevent this icon from being stitched onto the master texture."
