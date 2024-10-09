@@ -51,7 +51,7 @@ class TextureExtra(
         pixels[0] = bufImage!!.getRGB(0, 0, width, height, pixels[0], 0, width)
         this.clearFramesTextureData()
         this.framesTextureData.add(pixels)
-        return false
+        return true
     }
 }
 
