@@ -61,7 +61,9 @@ class TextureExtra(
         pixels[0] = bufImage!!.getRGB(0, 0, width, height, pixels[0], 0, width)
         this.clearFramesTextureData()
         this.framesTextureData.add(pixels)
-        return true
+        // javadoc says "Returning false from this function will prevent this icon from being stitched onto the master texture."
+        // but it seems to be inverted? or maybe I'm just misunderstanding it // help wanted
+        return false
     }
 }
 

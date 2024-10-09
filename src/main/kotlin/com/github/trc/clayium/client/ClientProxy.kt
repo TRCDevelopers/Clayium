@@ -79,8 +79,10 @@ class ClientProxy : CommonProxy() {
             val colors = material.colors ?: return
             val name = material.upperCamelName
 
-            val sprite = TextureExtra(clayiumId(name).toString(), compressedBlockTextures, colors)
-            event.map.setTextureEntry(sprite)
+            val sprite = TextureExtra(clayiumId("blocks/compressed_$name").toString(), compressedBlockTextures, colors)
+            if (event.map.getTextureExtry(sprite.iconName) == null) {
+                event.map.setTextureEntry(sprite)
+            }
             sprites[name] = sprite
         }
     }

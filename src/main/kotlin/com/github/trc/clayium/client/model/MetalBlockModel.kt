@@ -1,7 +1,6 @@
 package com.github.trc.clayium.client.model
 
-import com.github.trc.clayium.client.ClientProxy
-import com.github.trc.clayium.common.ClayiumMod
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.material.BlockCompressed
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -34,9 +33,7 @@ class MetalBlockModel : IModel {
             val exState = state as? IExtendedBlockState ?: return emptyList()
             val materialName = exState.getValue(BlockCompressed.MATERIAL_NAME)
             return cache.getOrPut(materialName) {
-                val atlas = ClayiumMod.proxy.getSprite(materialName)!!
-                println("atlas=$atlas, atlasName=${atlas.iconName}")
-                println("missing: ${(ClayiumMod.proxy as ClientProxy).texMap.missingSprite}")
+                val atlas = texGetter.apply(clayiumId("blocks/compressed_$materialName"))
                 EnumFacing.entries.map { ModelTextures.createQuad(it, atlas) }
             }
         }
