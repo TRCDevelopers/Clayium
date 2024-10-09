@@ -33,7 +33,7 @@ body:
     id: cross-mod
     attributes:
       label: Cross-Mod Interaction
-      description: Does this bug occur because of another mod installed alongside GregTech CEu?
+      description: Does this bug occur because of another mod installed alongside Clayium Unofficial?
       options:
         - "Yes"
         - "No"
