@@ -1,6 +1,9 @@
 package com.github.trc.clayium.client
 
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.client.gui.TextureExtra
 import com.github.trc.clayium.client.model.LaserReflectorModelLoader
 import com.github.trc.clayium.client.model.MetaTileEntityModelLoader
 import com.github.trc.clayium.client.renderer.ClayLaserReflectorRenderer
@@ -18,6 +21,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraftforge.client.event.ColorHandlerEvent
 import net.minecraftforge.client.event.ModelRegistryEvent
+import net.minecraftforge.client.event.TextureStitchEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.client.model.ModelLoaderRegistry
 import net.minecraftforge.common.MinecraftForge
@@ -32,6 +36,8 @@ import net.minecraftforge.registries.IForgeRegistry
 @Suppress("unused")
 @SideOnly(Side.CLIENT)
 class ClientProxy : CommonProxy() {
+
+    private val compressedBlockMaterials = mutableListOf<CMaterial>()
 
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
@@ -59,6 +65,17 @@ class ClientProxy : CommonProxy() {
         ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(item.registryName!!, "inventory"))
     }
 
+    fun onTextureStitchPre(event: TextureStitchEvent.Pre) {
+        val compressedBlockTextures = listOf("metalblock_base", "metalblock_dark", "metalblock_light")
+        for (material in compressedBlockMaterials) {
+            val colors = material.colors ?: return
+            val name = material.upperCamelName
+
+            val sprite = TextureExtra(clayiumId(name).toString(), compressedBlockTextures, colors)
+            event.map.setTextureEntry(sprite)
+        }
+    }
+
     @SubscribeEvent
     fun registerModels(event: ModelRegistryEvent) {
         ClayiumBlocks.registerStateMappers()
@@ -76,5 +93,9 @@ class ClientProxy : CommonProxy() {
     fun registerItemColors(e: ColorHandlerEvent.Item) {
         ClayiumBlocks.registerItemColors(e)
         MetaItemClayium.registerColors(e)
+    }
+
+    override fun registerCompressedBlockSprite(material: CMaterial) {
+        compressedBlockMaterials.add(material)
     }
 }
