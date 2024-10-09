@@ -125,6 +125,7 @@ open class CommonProxy {
         for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) registry.register(block)
         for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) registry.register(block)
         for (block in ClayiumBlocks.COMPRESSED_BLOCKS) registry.register(block)
+        for (block in ClayiumBlocks.METAL_CHEST) registry.register(block)
     }
 
     //todo move to ClayiumBlocks/Items

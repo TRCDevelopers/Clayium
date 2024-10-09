@@ -21,6 +21,7 @@ import com.github.trc.clayium.common.blocks.marker.BlockClayMarker
 import com.github.trc.clayium.common.blocks.material.BlockCompressed
 import com.github.trc.clayium.common.blocks.material.BlockCompressedClay
 import com.github.trc.clayium.common.blocks.material.BlockEnergizedClay
+import com.github.trc.clayium.common.blocks.metalchest.BlockMetalChest
 import com.github.trc.clayium.common.blocks.ores.BlockClayOre
 import com.github.trc.clayium.common.blocks.ores.BlockDenseClayOre
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
@@ -84,15 +85,18 @@ object ClayiumBlocks {
     val COMPRESSED_CLAY_BLOCKS = mutableListOf<BlockCompressedClay>()
     val ENERGIZED_CLAY_BLOCKS = mutableListOf<BlockEnergizedClay>()
     val COMPRESSED_BLOCKS = mutableListOf<BlockCompressed>()
+    val METAL_CHEST = mutableListOf<BlockMetalChest>()
 
     private val compressedClay = mutableMapOf<CMaterial, BlockCompressedClay>()
     private val energizedClay = mutableMapOf<CMaterial, BlockEnergizedClay>()
     private val compressedBlocks = mutableMapOf<CMaterial, BlockCompressed>()
+    private val metalChests = mutableMapOf<CMaterial, BlockMetalChest>()
 
     /* ---------------------------------- */
 
     private val stateMapperCache = mutableMapOf<Block, IStateMapper>()
     private val COMPRESSED_ITEM_BLOCKS = mutableListOf<ItemBlockMaterial>()
+    private val METAL_CHEST_ITEM_BLOCKS = mutableListOf<ItemBlockMaterial>()
 
     init {
         createMaterialBlock(
@@ -107,6 +111,10 @@ object ClayiumBlocks {
             { !OrePrefix.block.isIgnored(it)
                 && (it.hasProperty(CPropertyKey.INGOT) || it.hasProperty(CPropertyKey.MATTER)) },
             this::createCompressedBock)
+        createMaterialBlock(
+            { !OrePrefix.block.isIgnored(it)
+                    && (it.hasProperty(CPropertyKey.INGOT) || it.hasProperty(CPropertyKey.MATTER)) },
+            this::createMetalChest)
     }
 
     private fun <T: Block> createBlock(key: String, block: T, tab: CreativeTabs = ClayiumCTabs.main): T {
@@ -143,7 +151,11 @@ object ClayiumBlocks {
             registry.register(ib)
             COMPRESSED_ITEM_BLOCKS.add(ib)
         }
-
+        for (block in METAL_CHEST) {
+            val ib = createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.chest) }
+            registry.register(ib)
+            METAL_CHEST_ITEM_BLOCKS.add(ib)
+        }
         registry.register(createItemBlock(COLORED_SILICONE, ::VariantItemBlock))
     }
 
@@ -199,6 +211,13 @@ object ClayiumBlocks {
         metaMaterialMap.values.forEach { compressedBlocks[it] = block }
     }
 
+    fun createMetalChest(metaMaterialMap: Map<Int, CMaterial>, index: Int) {
+        val block = BlockMetalChest.create(metaMaterialMap)
+        block.registryName = clayiumId("metal_chest_$index")
+        METAL_CHEST.add(block)
+        metaMaterialMap.values.forEach { metalChests[it] = block }
+
+    }
     @SideOnly(Side.CLIENT)
     fun registerStateMappers() {
         setStateMapper(CLAY_TREE_LEAVES, StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build())
@@ -218,6 +237,7 @@ object ClayiumBlocks {
         for (block in ENERGIZED_CLAY_BLOCKS) block.registerModels()
         for (block in COMPRESSED_CLAY_BLOCKS) block.registerModels()
         for (block in COMPRESSED_BLOCKS) block.registerModels()
+        for (block in METAL_CHEST) block.registerModels()
 
         stateMapperCache.clear()
     }
@@ -251,6 +271,11 @@ object ClayiumBlocks {
     fun registerBlockColors(e: ColorHandlerEvent.Block) {
         val blockColors = e.blockColors
         for (block in COMPRESSED_BLOCKS) {
+            blockColors.registerBlockColorHandler({ state, _, _, i ->
+                block.getCMaterial(state).colors?.get(i) ?: 0
+            }, block)
+        }
+        for (block in METAL_CHEST) {
             blockColors.registerBlockColorHandler({ state, _, _, i ->
                 block.getCMaterial(state).colors?.get(i) ?: 0
             }, block)

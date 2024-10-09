@@ -110,6 +110,7 @@ class OrePrefix(
         val spindle = OrePrefix("spindle", 4.M, hasClayPartsFlag)
         val stick = OrePrefix("stick", MaterialAmount.NONE, hasClayPartsFlag)
         val wheel = OrePrefix("wheel", MaterialAmount.NONE, hasClayPartsFlag)
+        val chest = OrePrefix("chest", MaterialAmount.NONE)
 
         val metaItemPrefixes = listOf(ingot, dust, impureDust, gem, plate, largePlate,
             bearing, blade, cuttingHead, cylinder, disc, gear, grindingHead, needle,
