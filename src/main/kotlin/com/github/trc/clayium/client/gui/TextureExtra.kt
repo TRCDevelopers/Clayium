@@ -9,21 +9,30 @@ import net.minecraft.util.ResourceLocation
 import java.awt.image.BufferedImage
 import java.util.function.Function
 
-private const val BASE_PATH = "textures/blocks"
+private const val BASE_PATH = "blocks"
 
 class TextureExtra(
     id: String,
     private val extras: List<String>,
     private val colors: IntArray?,
 ) : TextureAtlasSprite(id) {
+
+    override fun getDependencies(): Collection<ResourceLocation?> {
+        return extras.map { createRl(it, 0) }
+    }
+
     override fun hasCustomLoader(manager: IResourceManager, location: ResourceLocation): Boolean {
         return true
     }
 
-    override fun load(manager: IResourceManager, location: ResourceLocation, textureGetter: Function<ResourceLocation?, TextureAtlasSprite?>): Boolean {
+    override fun load(manager: IResourceManager, location: ResourceLocation, textureGetter: Function<ResourceLocation, TextureAtlasSprite?>): Boolean {
         val mipmapLevels = Minecraft.getMinecraft().gameSettings.mipmapLevels
         var bufImage: BufferedImage? = null
-        val baseSprite = textureGetter.apply(createRl(extras[0], 0))!!
+        val baseSprite = textureGetter.apply(createRl(extras[0], 0))
+        if (baseSprite == null) {
+            println("baseSprite is null")
+            throw NullPointerException("baseSprite is null")
+        }
         val width = baseSprite.iconWidth
         val height = baseSprite.iconHeight
         val pixels = Array<IntArray?> (mipmapLevels + 1) { null }
@@ -57,7 +66,7 @@ class TextureExtra(
 
 private fun createRl(path: String, mipmapLevel: Int): ResourceLocation {
     return if (mipmapLevel == 0) {
-        clayiumId("$BASE_PATH/$path.png")
+        clayiumId("$BASE_PATH/$path")
     } else {
         clayiumId("$BASE_PATH/mipmaps/$path.$mipmapLevel.png")
     }
