@@ -11,7 +11,6 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
-import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
@@ -19,9 +18,15 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
 import net.minecraftforge.items.ItemStackHandler
 
-class TileEntityMetalChest() : TileEntity(), IGuiHolder<PosGuiData> {
+class TileEntityMetalChest(
+    val inventoryRowSize: Int,
+    val inventoryColumnSize: Int,
+    val inventoryPage: Int
+
+) : TileEntity(), IGuiHolder<PosGuiData> {
     var customName: String? = null
-    val itemInventory = ItemStackHandler(6*9)
+
+    val itemInventory = ItemStackHandler(inventoryRowSize*inventoryColumnSize*inventoryPage)
     fun hasCustomName() : Boolean {
         return customName != null
     }
@@ -52,14 +57,12 @@ class TileEntityMetalChest() : TileEntity(), IGuiHolder<PosGuiData> {
         }
         return super.getCapability(capability, facing)
     }
-    override fun buildUI(
-        data: PosGuiData,
-        syncManager: GuiSyncManager
+    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager
     ): ModularPanel {
-        syncManager.registerSlotGroup("metal_chest_inv", 6)
-        val columnStr = "I".repeat(9)
-        val matrixStr = (0..<6).map { columnStr }
-        return ModularPanel.defaultPanel("metal_chest_inv", GUI_DEFAULT_WIDTH, 18 + 6 * 18 + 94 + 2)
+        syncManager.registerSlotGroup("metal_chest_inv", inventoryRowSize)
+        val columnStr = "I".repeat(inventoryColumnSize)
+        val matrixStr = (0..<inventoryRowSize).map { columnStr }
+        return ModularPanel.defaultPanel("metal_chest_inv", 18 * inventoryColumnSize + 14, 18 + inventoryRowSize * 18 + 94 + 2 + 36)
             .child(
                 TextWidget(IKey.lang("metal_chest"))
                     .margin(6)
