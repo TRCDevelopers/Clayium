@@ -1,5 +1,6 @@
 package com.github.trc.clayium.client.gui
 
+import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
@@ -9,7 +10,7 @@ import net.minecraft.util.ResourceLocation
 import java.awt.image.BufferedImage
 import java.util.function.Function
 
-private const val BASE_PATH = "blocks"
+private const val BASE_PATH = "textures/blocks"
 
 class TextureExtra(
     id: String,
@@ -18,7 +19,7 @@ class TextureExtra(
 ) : TextureAtlasSprite(id) {
 
     override fun getDependencies(): Collection<ResourceLocation?> {
-        return extras.map { createRl(it, 0) }
+        return extras.map { clayiumId("blocks/${extras[0]}") }
     }
 
     override fun hasCustomLoader(manager: IResourceManager, location: ResourceLocation): Boolean {
@@ -28,9 +29,9 @@ class TextureExtra(
     override fun load(manager: IResourceManager, location: ResourceLocation, textureGetter: Function<ResourceLocation, TextureAtlasSprite?>): Boolean {
         val mipmapLevels = Minecraft.getMinecraft().gameSettings.mipmapLevels
         var bufImage: BufferedImage? = null
-        val baseSprite = textureGetter.apply(createRl(extras[0], 0))
+        val baseSprite = textureGetter.apply(clayiumId("blocks/${extras[0]}"))
         if (baseSprite == null) {
-            println("baseSprite is null")
+            CLog.error("MetalBlock: baseSprite is null")
             throw NullPointerException("baseSprite is null")
         }
         val width = baseSprite.iconWidth
@@ -66,7 +67,7 @@ class TextureExtra(
 
 private fun createRl(path: String, mipmapLevel: Int): ResourceLocation {
     return if (mipmapLevel == 0) {
-        clayiumId("$BASE_PATH/$path")
+        clayiumId("$BASE_PATH/$path.png")
     } else {
         clayiumId("$BASE_PATH/mipmaps/$path.$mipmapLevel.png")
     }
