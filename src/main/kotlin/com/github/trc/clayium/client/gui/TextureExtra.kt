@@ -1,5 +1,8 @@
 package com.github.trc.clayium.client.gui
 
+import codechicken.lib.colour.ColourARGB
+import codechicken.lib.colour.ColourRGBA
+import com.github.trc.clayium.api.extensions.ccl.*
 import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.client.Minecraft
@@ -15,11 +18,11 @@ private const val BASE_PATH = "textures/blocks"
 class TextureExtra(
     id: String,
     private val extras: List<String>,
-    private val colors: IntArray?,
+    private val colors: List<ColourRGBA>?,
 ) : TextureAtlasSprite(id) {
 
     override fun getDependencies(): Collection<ResourceLocation?> {
-        return extras.map { clayiumId("blocks/${extras[0]}") }
+        return extras.map { clayiumId("blocks/$it") }
     }
 
     override fun hasCustomLoader(manager: IResourceManager, location: ResourceLocation): Boolean {
@@ -63,7 +66,9 @@ class TextureExtra(
         bufImage!!.getRGB(0, 0, width, height, pixels[0], 0, width)
         this.clearFramesTextureData()
         this.framesTextureData.add(pixels)
-        // javadoc says "Returning false from this function will prevent this icon from being stitched onto the master texture."
+        println(pixels[0]!!.map { Integer.toHexString(it).uppercase() })
+        println("pixels 0 size: ${pixels[0]!!.size}")
+        // Javadoc says "Returning false from this function will prevent this icon from being stitched onto the master texture."
         // but it seems to be inverted? or maybe I'm just misunderstanding it // help wanted
         return false
     }
@@ -81,8 +86,8 @@ private fun blendImages(image0: BufferedImage, image1: BufferedImage): BufferedI
     val ret = image0
     for (x in 0 until image0.width) {
         for (y in 0 until image0.height) {
-            val (r0, g0, b0, a0) = destructRgba(image0.getRGB(x, y))
-            val (r1, g1, b1, a1) = destructRgba(image1.getRGB(x, y))
+            val (a0, r0, g0, b0) = ColourARGB(image0.getRGB(x, y)).packIntArray()
+            val (a1, r1, g1, b1) = ColourARGB(image1.getRGB(x, y)).packIntArray()
 
             val a2 = a0 + a1 - a0 * a1 / 255
             val r2 =
@@ -97,12 +102,12 @@ private fun blendImages(image0: BufferedImage, image1: BufferedImage): BufferedI
     return ret
 }
 
-private fun recolorImage(image0: BufferedImage, color: Int): BufferedImage {
+private fun recolorImage(image0: BufferedImage, colorRGBA: ColourRGBA): BufferedImage {
     val ret = image0
     for (x in 0 until image0.width) {
         for (y in 0 until image0.height) {
-            val (r0, g0, b0, a0) = destructRgba(image0.getRGB(x, y))
-            val (r1, g1, b1, a1) = destructRgba(color)
+            val (a0, r0, g0, b0) = ColourARGB(image0.getRGB(x, y)).packIntArray()
+            val (r1, g1, b1, a1) = colorRGBA.packIntArray()
 
             val a2 = a0 * a1 / 255
             val r2 = r0 * r1 / 255
@@ -115,7 +120,7 @@ private fun recolorImage(image0: BufferedImage, color: Int): BufferedImage {
 }
 
 /**
- * [R, G, B, A] IntArray
+ * RGBA to [R, G, B, A] IntArray
  */
 private fun destructRgba(color: Int): IntArray {
     return intArrayOf(color shr 16 and 0xFF, color shr 8 and 0xFF, color and 0xFF, color shr 24 and 0xFF)

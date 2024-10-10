@@ -1,5 +1,6 @@
 package com.github.trc.clayium.client
 
+import codechicken.lib.colour.ColourRGBA
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.util.clayiumId
@@ -76,8 +77,12 @@ class ClientProxy : CommonProxy() {
         val compressedBlockTextures = listOf("metalblock_base", "metalblock_dark", "metalblock_light")
         texMap = event.map
         for (material in compressedBlockMaterials) {
-            val colors = material.colors ?: return
+            val colorsRaw = material.colors ?: return
             val name = material.upperCamelName
+
+            val colors = colorsRaw.map { color ->
+                ColourRGBA(0xFF shl 24 or color)
+            }
 
             val sprite = TextureExtra(clayiumId("blocks/compressed_$name").toString(), compressedBlockTextures, colors)
             if (event.map.getTextureExtry(sprite.iconName) == null) {
