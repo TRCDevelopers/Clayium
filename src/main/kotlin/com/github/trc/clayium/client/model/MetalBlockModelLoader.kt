@@ -1,6 +1,7 @@
 package com.github.trc.clayium.client.model
 
 import com.github.trc.clayium.api.MOD_ID
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.IResourceManager
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ICustomModelLoader
@@ -11,7 +12,11 @@ object MetalBlockModelLoader : ICustomModelLoader {
     }
 
     override fun accepts(modelLocation: ResourceLocation): Boolean {
-        return modelLocation.namespace == MOD_ID && modelLocation.path == "material/compressed_material"
+        if (modelLocation !is ModelResourceLocation) return false
+        return modelLocation.namespace == MOD_ID
+                && modelLocation.path == "material/compressed_material"
+                && modelLocation.variant == "variant=block"
+
     }
 
     override fun loadModel(modelLocation: ResourceLocation): IModel {

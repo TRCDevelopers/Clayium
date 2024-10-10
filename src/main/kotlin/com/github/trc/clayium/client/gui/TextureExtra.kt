@@ -66,11 +66,6 @@ class TextureExtra(
         bufImage!!.getRGB(0, 0, width, height, pixels[0], 0, width)
         this.clearFramesTextureData()
         this.framesTextureData.add(pixels)
-        println("=== TextureExtra ===")
-//        println(pixels[0]!!.map { Integer.toHexString(it).uppercase() })
-//        println("pixels 0 size: ${pixels[0]!!.size}")
-        // Javadoc says, "Returning false from this function will prevent this icon from being stitched onto the master texture."
-        // but it seems to be inverted? or maybe I'm just misunderstanding it // help wanted
         return false
     }
 }
@@ -98,9 +93,6 @@ private fun blendImages(image0: BufferedImage, image1: BufferedImage): BufferedI
             val b2 =
                 if ((a2 == 0)) b0 else (a0 * (255 - a1) * b0 / (255 * a0 + 255 * a1 - a0 * a1) + a1 * 255 * b1 / (255 * a0 + 255 * a1 - a0 * a1))
             image0.setRGB(x, y, (r2 shl 16) + (g2 shl 8) + b2 + (a2 shl 24))
-            if (r2 != 0 || g2 != 0 || b2 != 0) {
-                println("bruh: r2: $r2, g2: $g2, b2: $b2, a2: $a2")
-            }
         }
     }
     return ret
@@ -112,22 +104,13 @@ private fun recolorImage(image0: BufferedImage, colorRGBA: ColourRGBA): Buffered
         for (y in 0..<image0.height) {
             val (a0, r0, g0, b0) = ColourARGB(image0.getRGB(x, y)).packIntArray()
             val (r1, g1, b1, a1) = colorRGBA.packIntArray()
-            println("color1: ${ColourARGB(a0, r0, g0, b0)} color2: ${ColourRGBA(a1, r1, g1, b1)}")
 
             val a2 = a0 * a1 / 255
             val r2 = r0 * r1 / 255
             val g2 = g0 * g1 / 255
             val b2 = b0 * b1 / 255
-            println("$a0 * $a1 / 255 = $a2")
             ret.setRGB(x, y, (r2 shl 16) + (g2 shl 8) + b2 + (a2 shl 24))
         }
     }
     return ret
-}
-
-/**
- * RGBA to [R, G, B, A] IntArray
- */
-private fun destructRgba(color: Int): IntArray {
-    return intArrayOf(color shr 16 and 0xFF, color shr 8 and 0xFF, color and 0xFF, color shr 24 and 0xFF)
 }

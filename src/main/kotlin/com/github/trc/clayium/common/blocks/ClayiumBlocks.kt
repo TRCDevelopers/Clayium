@@ -254,26 +254,21 @@ object ClayiumBlocks {
     @SideOnly(Side.CLIENT)
     fun registerBlockColors(e: ColorHandlerEvent.Block) {
         val blockColors = e.blockColors
-//        for (block in COMPRESSED_BLOCKS) {
-//            blockColors.registerBlockColorHandler({ state, _, _, i ->
-//                block.getCMaterial(state).colors?.get(i) ?: 0
-//            }, block)
-//        }
-//        blockColors.registerBlockColorHandler({ state, _, _, _ ->
-//            COLORED_SILICONE.getEnum(state).colorValue
-//        }, COLORED_SILICONE)
+        blockColors.registerBlockColorHandler({ state, _, _, _ ->
+            COLORED_SILICONE.getEnum(state).colorValue
+        }, COLORED_SILICONE)
     }
 
     @SideOnly(Side.CLIENT)
     fun registerItemColors(e: ColorHandlerEvent.Item) {
         val itemColors = e.itemColors
-//        for (item in COMPRESSED_ITEM_BLOCKS) {
-//            itemColors.registerItemColorHandler({ stack, i ->
-//                item.blockMaterial.getCMaterial(stack.itemDamage).colors?.get(i) ?: 0
-//            }, item)
-//        }
-//        itemColors.registerItemColorHandler({ stack, _ ->
-//            COLORED_SILICONE.getEnum(stack).colorValue
-//        }, COLORED_SILICONE)
+        for (item in COMPRESSED_ITEM_BLOCKS) {
+            itemColors.registerItemColorHandler({ stack, i ->
+                item.blockMaterial.getCMaterial(stack.itemDamage).colors?.get(i) ?: 0
+            }, item)
+        }
+        itemColors.registerItemColorHandler({ stack, _ ->
+            COLORED_SILICONE.getEnum(stack).colorValue
+        }, COLORED_SILICONE)
     }
 }

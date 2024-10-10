@@ -42,16 +42,17 @@ abstract class BlockCompressed(mapping: Map<Int, CMaterial>) : BlockMaterialBase
     }
 
     @SideOnly(Side.CLIENT)
-    override fun getRenderLayer() = BlockRenderLayer.TRANSLUCENT
+    override fun getRenderLayer() = BlockRenderLayer.SOLID
 
     @SideOnly(Side.CLIENT)
     override fun registerModels() {
-        val loc = ModelResourceLocation(clayiumId("material/compressed_material"), "variant=basic")
+        val blockLoc = ModelResourceLocation(clayiumId("material/compressed_material"), "variant=block")
+        val itemLoc = ModelResourceLocation(clayiumId("material/compressed_material"), "variant=item")
         ModelLoader.setCustomStateMapper(this,
-            object : StateMapperBase() { override fun getModelResourceLocation(state: IBlockState) = loc }
+            object : StateMapperBase() { override fun getModelResourceLocation(state: IBlockState) = blockLoc }
         )
         for (state in blockState.validStates) {
-            ModelLoader.setCustomModelResourceLocation(this.getAsItem(), this.getMetaFromState(state), loc)
+            ModelLoader.setCustomModelResourceLocation(this.getAsItem(), this.getMetaFromState(state), itemLoc)
         }
     }
 

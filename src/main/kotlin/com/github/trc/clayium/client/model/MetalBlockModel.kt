@@ -32,10 +32,13 @@ class MetalBlockModel : IModel {
             if (state == null || side == null) return emptyList()
             val exState = state as? IExtendedBlockState ?: return emptyList()
             val materialName = exState.getValue(BlockCompressed.MATERIAL_NAME)
-            return cache.getOrPut(materialName) {
+            val quads = mutableListOf<BakedQuad>()
+            val allSideQuads = cache.getOrPut(materialName) {
                 val atlas = texGetter.apply(clayiumId("blocks/compressed_$materialName"))
                 EnumFacing.entries.map { ModelTextures.createQuad(it, atlas) }
             }
+            quads.add(allSideQuads[side.index])
+            return quads
         }
 
         override fun isAmbientOcclusion() = true
