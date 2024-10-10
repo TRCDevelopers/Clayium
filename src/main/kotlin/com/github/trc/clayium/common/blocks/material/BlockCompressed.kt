@@ -1,6 +1,7 @@
 package com.github.trc.clayium.common.blocks.material
 
 import codechicken.lib.block.property.unlisted.UnlistedStringProperty
+import codechicken.lib.render.particle.CustomParticleHandler
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.util.BlockMaterial
 import com.github.trc.clayium.api.util.clayiumId
@@ -11,16 +12,20 @@ import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import net.minecraft.block.SoundType
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.particle.ParticleManager
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.block.statemap.StateMapperBase
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.NonNullList
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
+import net.minecraft.world.WorldServer
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.fml.relauncher.Side
@@ -65,6 +70,32 @@ abstract class BlockCompressed(mapping: Map<Int, CMaterial>) : BlockMaterialBase
         val material = getCMaterial(state)
         return (state as IExtendedBlockState).withProperty(MATERIAL_NAME, material.upperCamelName)
     }
+
+    /* BoilerPlate for custom particle handling */
+    @SideOnly(Side.CLIENT)
+    override fun addHitEffects(state: IBlockState, world: World, target: RayTraceResult, manager: ParticleManager): Boolean {
+        CustomParticleHandler.handleHitEffects(state, world, target, manager)
+        return true
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun addDestroyEffects(world: World, pos: BlockPos, manager: ParticleManager): Boolean {
+        CustomParticleHandler.handleDestroyEffects(world, pos, manager)
+        return true
+    }
+
+    override fun addRunningEffects(state: IBlockState, world: World, pos: BlockPos, entity: Entity): Boolean {
+        if (world.isRemote) {
+            CustomParticleHandler.handleRunningEffects(world, pos, state, entity)
+        }
+        return true
+    }
+
+    override fun addLandingEffects(state: IBlockState, worldObj: WorldServer, blockPosition: BlockPos, iblockstate: IBlockState, entity: EntityLivingBase, numberOfParticles: Int): Boolean {
+        CustomParticleHandler.handleLandingEffects(worldObj, blockPosition, entity, numberOfParticles)
+        return true
+    }
+
 
     companion object {
         val MATERIAL_NAME = UnlistedStringProperty("material")

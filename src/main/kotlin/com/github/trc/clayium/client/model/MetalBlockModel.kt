@@ -1,5 +1,6 @@
 package com.github.trc.clayium.client.model
 
+import codechicken.lib.render.particle.IModelParticleProvider
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.material.BlockCompressed
 import net.minecraft.block.state.IBlockState
@@ -10,8 +11,10 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.renderer.vertex.VertexFormat
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.RayTraceResult
+import net.minecraft.world.IBlockAccess
 import net.minecraftforge.client.model.IModel
-import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.model.IModelState
 import net.minecraftforge.common.property.IExtendedBlockState
 import java.util.function.Function
@@ -23,7 +26,7 @@ class MetalBlockModel : IModel {
 
     class MetalBlockBakedModel(
         private val texGetter: Function<ResourceLocation, TextureAtlasSprite>
-    ) : IBakedModel {
+    ) : IModelParticleProvider {
 
         // MaterialName -> BakedQuads
         private val cache = mutableMapOf<String, List<BakedQuad>>()
@@ -41,12 +44,24 @@ class MetalBlockModel : IModel {
             return quads
         }
 
+        override fun getHitEffects(traceResult: RayTraceResult, state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite?> {
+            return getParticle(state)
+        }
+
+        override fun getDestroyEffects(state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite?> {
+            return getParticle(state)
+        }
+
+        private fun getParticle(state: IBlockState?): Set<TextureAtlasSprite> {
+            val state = state as? IExtendedBlockState ?: return emptySet()
+            val materialName = state.getValue(BlockCompressed.MATERIAL_NAME)
+            val atlas = texGetter.apply(clayiumId("blocks/compressed_$materialName"))
+            return setOf(atlas)
+        }
+
         override fun isAmbientOcclusion() = true
         override fun isGui3d() = true
         override fun isBuiltInRenderer() = false
-        override fun getParticleTexture(): TextureAtlasSprite {
-            return ModelLoader.White.INSTANCE
-        }
 
         override fun getOverrides(): ItemOverrideList {
             return ItemOverrideList.NONE
