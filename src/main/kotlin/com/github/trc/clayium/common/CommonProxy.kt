@@ -11,6 +11,7 @@ import com.github.trc.clayium.api.events.ClayiumMteRegistryEvent
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.CUtils
@@ -46,6 +47,7 @@ import com.github.trc.clayium.integration.CModIntegration
 import com.github.trc.clayium.integration.gregtech.GTOreDictUnifierAdapter
 import com.github.trc.clayium.network.ClayChunkLoaderCallback
 import net.minecraft.block.Block
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.crafting.IRecipe
@@ -228,4 +230,8 @@ open class CommonProxy {
 
         GameRegistry.registerTileEntity(ChunkLoaderTileEntity::class.java, clayiumId("chunkLoader"))
     }
+
+    /* Client-Only Methods */
+    open fun registerCompressedBlockSprite(material: CMaterial) {}
+    open fun getSprite(name: String): TextureAtlasSprite? = null
 }

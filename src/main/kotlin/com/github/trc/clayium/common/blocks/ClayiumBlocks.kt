@@ -11,6 +11,7 @@ import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
+import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.blocks.chunkloader.ChunkLoaderBlock
 import com.github.trc.clayium.common.blocks.claycraftingtable.BlockClayCraftingBoard
 import com.github.trc.clayium.common.blocks.claytree.BlockClayLeaves
@@ -196,7 +197,10 @@ object ClayiumBlocks {
         val block = BlockCompressed.create(metaMaterialMap)
         block.registryName = clayiumId("compressed_block_$index")
         COMPRESSED_BLOCKS.add(block)
-        metaMaterialMap.values.forEach { compressedBlocks[it] = block }
+        metaMaterialMap.values.forEach {
+            compressedBlocks[it] = block
+            ClayiumMod.proxy.registerCompressedBlockSprite(it)
+        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -250,11 +254,6 @@ object ClayiumBlocks {
     @SideOnly(Side.CLIENT)
     fun registerBlockColors(e: ColorHandlerEvent.Block) {
         val blockColors = e.blockColors
-        for (block in COMPRESSED_BLOCKS) {
-            blockColors.registerBlockColorHandler({ state, _, _, i ->
-                block.getCMaterial(state).colors?.get(i) ?: 0
-            }, block)
-        }
         blockColors.registerBlockColorHandler({ state, _, _, _ ->
             COLORED_SILICONE.getEnum(state).colorValue
         }, COLORED_SILICONE)
