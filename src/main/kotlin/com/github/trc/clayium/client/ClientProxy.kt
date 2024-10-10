@@ -20,8 +20,6 @@ import com.github.trc.clayium.common.metatileentities.MetaTileEntities
 import com.github.trc.clayium.common.util.KeyInput
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.client.renderer.texture.TextureAtlasSprite
-import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.item.Item
 import net.minecraftforge.client.event.ColorHandlerEvent
 import net.minecraftforge.client.event.ModelRegistryEvent
@@ -42,8 +40,6 @@ import net.minecraftforge.registries.IForgeRegistry
 class ClientProxy : CommonProxy() {
 
     private val compressedBlockMaterials = mutableListOf<CMaterial>()
-    private val sprites = mutableMapOf<String, TextureAtlasSprite>()
-    lateinit var texMap: TextureMap
 
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
@@ -75,7 +71,6 @@ class ClientProxy : CommonProxy() {
     @SubscribeEvent
     fun onTextureStitchPre(event: TextureStitchEvent.Pre) {
         val compressedBlockTextures = listOf("metalblock_base", "metalblock_dark", "metalblock_light")
-        texMap = event.map
         for (material in compressedBlockMaterials) {
             val colorsRaw = material.colors ?: return
             val name = material.upperCamelName
@@ -89,8 +84,8 @@ class ClientProxy : CommonProxy() {
             if (event.map.getTextureExtry(sprite.iconName) == null) {
                 event.map.setTextureEntry(sprite)
             }
-            sprites[name] = sprite
         }
+        compressedBlockMaterials.clear()
     }
 
     @SubscribeEvent
@@ -114,9 +109,5 @@ class ClientProxy : CommonProxy() {
 
     override fun registerCompressedBlockSprite(material: CMaterial) {
         compressedBlockMaterials.add(material)
-    }
-
-    override fun getSprite(name: String): TextureAtlasSprite? {
-        return texMap.getTextureExtry(clayiumId(name).toString())
     }
 }
