@@ -18,7 +18,7 @@ import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
 import net.minecraftforge.items.ItemStackHandler
-import java.awt.Button
+import kotlin.math.max
 
 class TileEntityMetalChest(
     val inventoryRowSize: Int,
@@ -64,9 +64,9 @@ class TileEntityMetalChest(
         syncManager.registerSlotGroup("metal_chest_inv", inventoryRowSize)
         val columnStr = "I".repeat(inventoryColumnSize)
         val matrixStr = (0..<inventoryRowSize).map { columnStr }
-        return ModularPanel.defaultPanel("metal_chest_inv", 18 * inventoryColumnSize + 14, 18 + inventoryRowSize * 18 + 94 + 2)
+        return ModularPanel.defaultPanel("metal_chest_inv", 18 * max(inventoryColumnSize,9) + 14, 18 + inventoryRowSize * 18 + 94 + 2)
             .child(
-                TextWidget(IKey.lang("metal_chest"))
+                TextWidget(if (hasCustomName()) IKey.str(customName!!) else IKey.lang("metal_chest"))
                     .margin(6)
                     .align(Alignment.TopLeft))
             .child(Column()
@@ -86,8 +86,26 @@ class TileEntityMetalChest(
                         .paddingBottom(1)
                         .left(6)))
             .child(ButtonWidget()
-                .marginTop(18 * inventoryRowSize + 30)
-                .marginLeft(18 * inventoryColumnSize)
+                .marginTop(18 * inventoryRowSize + 30 + 2/* For centering */)
+                .marginLeft(18 * 9 + 9 * max(-1,inventoryColumnSize-10) + 18)
+                .size(14,14)
+            )
+            .child(TextWidget(IKey.str("<"))
+                .marginTop(18 * inventoryRowSize + 30 + 2 + 4)
+                .marginLeft(18 * 9 + 9 * max(-1,inventoryColumnSize-10) + 18 + 4)
+            )
+            .child(ButtonWidget()
+                .marginTop(18 * inventoryRowSize + 30 + 2/* For centering */)
+                .marginLeft(18 * 9 + 9 * max(-1,inventoryColumnSize-10) + 18 + 15)
+                .size(14,14)
+            )
+            .child(TextWidget(IKey.str(">"))
+                .marginTop(18 * inventoryRowSize + 30 + 2 + 4)
+                .marginLeft(18 * 9 + 9 * max(-1,inventoryColumnSize-10) + 18 + 15 + 6)
+            )
+            .child(TextWidget(IKey.str("1 / $inventoryPage"))
+                .marginTop(18 * inventoryRowSize + 30 + 2 + 15)
+                .marginLeft(18 * 9 + 9 * max(-1,inventoryColumnSize-10) + 18)
             )
             .bindPlayerInventory()
     }

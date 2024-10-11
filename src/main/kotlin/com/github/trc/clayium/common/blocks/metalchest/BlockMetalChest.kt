@@ -35,7 +35,7 @@ abstract class BlockMetalChest(
     }
 
     override fun createTileEntity(world: World, state: IBlockState): TileEntity? {
-        return TileEntityMetalChest(6,13,2)
+        return TileEntityMetalChest(6,11,2)
     }
 
     @SideOnly(Side.CLIENT)
