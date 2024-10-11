@@ -6,7 +6,7 @@ body:
     id: version
     attributes:
       label: Mod Version
-      description: The version of Clayium Unofficial you were using when this bug was encountered. If you do not know where to find this, look for the mod jar file in the mods folder, or in the mods viewer in-game.
+      description: The version of Clayium Unofficial you are using for suggesting a new feature. If you do not know where to find this, look for the mod jar file in the mods folder, or in the mods viewer in-game.
       placeholder: "vX.Y.Z"
     validations:
       required: true
