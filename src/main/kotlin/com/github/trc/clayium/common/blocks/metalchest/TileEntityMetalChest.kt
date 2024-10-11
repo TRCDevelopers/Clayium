@@ -12,9 +12,13 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
+import com.github.trc.clayium.api.util.toList
+import net.minecraft.inventory.ItemStackHelper
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.NonNullList
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
 import net.minecraftforge.items.ItemStackHandler
@@ -37,6 +41,11 @@ class TileEntityMetalChest(
     }
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound);
+        val list = NonNullList.withSize(inventoryRowSize*inventoryColumnSize*inventoryPage, ItemStack.EMPTY)
+        ItemStackHelper.loadAllItems(compound, list)
+        list.forEachIndexed { slot, stack ->
+            this.itemInventory.insertItem(slot, stack, false)
+        }
         if (compound.hasKey("CustomName", 8))
         {
             this.customName = compound.getString("CustomName");
@@ -45,6 +54,8 @@ class TileEntityMetalChest(
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         super.writeToNBT(compound)
+        var list = itemInventory.toList()
+        ItemStackHelper.saveAllItems(compound, NonNullList.from<ItemStack>(ItemStack.EMPTY, *list.toTypedArray()))
         if (this.hasCustomName())
         {
             compound.setString("CustomName", this.customName!!);
@@ -58,6 +69,13 @@ class TileEntityMetalChest(
             return capability.cast(itemInventory)
         }
         return super.getCapability(capability, facing)
+    }
+
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
+        if (capability === ITEM_HANDLER_CAPABILITY) {
+            return true
+        }
+        return super.hasCapability(capability, facing)
     }
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager
     ): ModularPanel {
