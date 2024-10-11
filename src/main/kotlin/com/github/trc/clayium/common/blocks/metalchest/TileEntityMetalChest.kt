@@ -7,6 +7,7 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
@@ -17,6 +18,7 @@ import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
 import net.minecraftforge.items.ItemStackHandler
+import java.awt.Button
 
 class TileEntityMetalChest(
     val inventoryRowSize: Int,
@@ -62,7 +64,7 @@ class TileEntityMetalChest(
         syncManager.registerSlotGroup("metal_chest_inv", inventoryRowSize)
         val columnStr = "I".repeat(inventoryColumnSize)
         val matrixStr = (0..<inventoryRowSize).map { columnStr }
-        return ModularPanel.defaultPanel("metal_chest_inv", 18 * inventoryColumnSize + 14, 18 + inventoryRowSize * 18 + 94 + 2 + 36)
+        return ModularPanel.defaultPanel("metal_chest_inv", 18 * inventoryColumnSize + 14, 18 + inventoryRowSize * 18 + 94 + 2)
             .child(
                 TextWidget(IKey.lang("metal_chest"))
                     .margin(6)
@@ -83,6 +85,10 @@ class TileEntityMetalChest(
                         .paddingTop(1)
                         .paddingBottom(1)
                         .left(6)))
+            .child(ButtonWidget()
+                .marginTop(18 * inventoryRowSize + 30)
+                .marginLeft(18 * inventoryColumnSize)
+            )
             .bindPlayerInventory()
     }
 
