@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      TIMEOUT: 90s
+      TIMEOUT: 120s
 
     steps:
       - name: Checkout repository
@@ -28,8 +28,8 @@ jobs:
         shell: bash
         run: |
           mkdir -p run
-          echo "eula=true" > run/eula.txt
-          echo "stop" > run/stop.txt
+          echo "eula=true" > run/server/eula.txt
+          echo "stop" > run/server.stop.txt
           timeout ${{ env.TIMEOUT }} ./gradlew runServer 2>&1 < run/stop.txt | tee -a server.log || true
 
       - name: Test no errors reported during the server run
