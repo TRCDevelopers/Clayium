@@ -58,6 +58,7 @@ Clayium Unofficial would not have been possible without the following OSS:
 |     [CodeChickenLib](https://github.com/TheCBProject/CodeChickenLib)     |  [LGPL-2.1](https://github.com/TheCBProject/CodeChickenLib/blob/master/LICENSE)   |
 | [Forgelin Continuous](https://github.com/ChAoSUnItY/Forgelin-Continuous) | [LGPL-3.0](https://github.com/ChAoSUnItY/Forgelin-Continuous/blob/master/LICENSE) |
 |    [GTCEu Buildscripts](https://github.com/GregTechCEu/Buildscripts)     |      [MIT](https://github.com/GregTechCEu/Buildscripts/blob/master/LICENSE)       |
+|     [GTExpert-Core](https://github.com/GTModpackTeam/GTExpert-Core)      |  [LGPL-3.0](https://github.com/GTModpackTeam/GTExpert-Core/blob/master/LICENSE)   |
 |          [GregTechCEu](https://github.com/GregTechCEu/GregTech)          |      [LGPL-3.0](https://github.com/GregTechCEu/GregTech/blob/master/LICENSE)      |
 |          [ModularUI](https://github.com/CleanroomMC/ModularUI)           |     [LGPL-3.0](https://github.com/CleanroomMC/ModularUI/blob/master/LICENSE)      |
 |        [RFTools](https://github.com/McJtyMods/RFTools/tree/1.12)         |         [MIT](https://github.com/McJtyMods/RFTools/blob/1.12/LICENSE.md)          |
