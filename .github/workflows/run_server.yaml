@@ -2,6 +2,10 @@ name: Run Dedicated Server
 
 on: pull_request
 
+concurrency:
+  group: run-dedicated-server-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   run-server:
     runs-on: ubuntu-latest
