@@ -252,11 +252,10 @@ if (enableSpotless.toBoolean()) {
             target 'src/*/kotlin/**/*.kt'
 
             toggleOffOn()
-            ktfmt('0.39')
+            ktlint()
 
-            trimTrailingWhitespace()
-            indentWithSpaces(4)
-            endWithNewline()
+//            trimTrailingWhitespace()
+//            endWithNewline()
         }
         scala {
             target 'src/*/scala/**/*.scala'
