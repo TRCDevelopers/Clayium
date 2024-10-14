@@ -105,6 +105,7 @@ open class CommonProxy {
     }
 
     open fun postInit(event: FMLPostInitializationEvent) {
+        println("rerun")
         ClientProxy().postInit(event)
     }
 
