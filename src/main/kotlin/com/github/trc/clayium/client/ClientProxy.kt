@@ -2,7 +2,6 @@ package com.github.trc.clayium.client
 
 import codechicken.lib.colour.ColourRGBA
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
-import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.gui.TextureExtra
 import com.github.trc.clayium.client.model.LaserReflectorModelLoader
@@ -39,8 +38,6 @@ import net.minecraftforge.registries.IForgeRegistry
 @SideOnly(Side.CLIENT)
 class ClientProxy : CommonProxy() {
 
-    private val compressedBlockMaterials = mutableListOf<CMaterial>()
-
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
         MinecraftForge.EVENT_BUS.register(KeyInput)
@@ -71,21 +68,22 @@ class ClientProxy : CommonProxy() {
     @SubscribeEvent
     fun onTextureStitchPre(event: TextureStitchEvent.Pre) {
         val compressedBlockTextures = listOf("metalblock_base", "metalblock_dark", "metalblock_light")
-        for (material in compressedBlockMaterials) {
-            val colorsRaw = material.colors ?: return
-            val name = material.upperCamelName
+        for (block in ClayiumBlocks.COMPRESSED_BLOCKS) {
+            for (material in block.mapping.values) {
+                val colorsRaw = material.colors ?: return
+                val name = material.upperCamelName
 
-            val colors = colorsRaw.map { color ->
-                ColourRGBA(color shl 8).apply { a = 255.toByte() }
+                val colors = colorsRaw.map { color ->
+                    ColourRGBA(color shl 8).apply { a = 255.toByte() }
 
-            }
+                }
 
-            val sprite = TextureExtra(clayiumId("blocks/compressed_$name").toString(), compressedBlockTextures, colors)
-            if (event.map.getTextureExtry(sprite.iconName) == null) {
-                event.map.setTextureEntry(sprite)
+                val sprite = TextureExtra(clayiumId("blocks/compressed_$name").toString(), compressedBlockTextures, colors)
+                if (event.map.getTextureExtry(sprite.iconName) == null) {
+                    event.map.setTextureEntry(sprite)
+                }
             }
         }
-        compressedBlockMaterials.clear()
     }
 
     @SubscribeEvent
@@ -105,9 +103,5 @@ class ClientProxy : CommonProxy() {
     fun registerItemColors(e: ColorHandlerEvent.Item) {
         ClayiumBlocks.registerItemColors(e)
         MetaItemClayium.registerColors(e)
-    }
-
-    override fun registerCompressedBlockSprite(material: CMaterial) {
-        compressedBlockMaterials.add(material)
     }
 }
