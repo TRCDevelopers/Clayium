@@ -43,7 +43,6 @@ class ClientProxy : CommonProxy() {
 
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
-        throw IllegalStateException("Client side code is loaded.")
         MinecraftForge.EVENT_BUS.register(KeyInput)
 
         ModelLoaderRegistry.registerLoader(MetaTileEntityModelLoader)
