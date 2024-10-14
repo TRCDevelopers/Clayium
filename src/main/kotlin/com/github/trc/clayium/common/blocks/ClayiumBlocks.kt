@@ -11,7 +11,6 @@ import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
-import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.blocks.chunkloader.ChunkLoaderBlock
 import com.github.trc.clayium.common.blocks.claycraftingtable.BlockClayCraftingBoard
 import com.github.trc.clayium.common.blocks.claytree.BlockClayLeaves
@@ -197,10 +196,7 @@ object ClayiumBlocks {
         val block = BlockCompressed.create(metaMaterialMap)
         block.registryName = clayiumId("compressed_block_$index")
         COMPRESSED_BLOCKS.add(block)
-        metaMaterialMap.values.forEach {
-            compressedBlocks[it] = block
-            ClayiumMod.proxy.registerCompressedBlockSprite(it)
-        }
+        metaMaterialMap.values.forEach { compressedBlocks[it] = block }
     }
 
     @SideOnly(Side.CLIENT)

@@ -17,6 +17,11 @@ This mod is currently in alpha stage and may contain critical bugs including gam
 - [CodeChickenLib](https://github.com/TheCBProject/CodeChickenLib)
 - [Forgelin Continuous](https://github.com/ChAoSUnItY/Forgelin-Continuous)
 
+## Recipe Customization
+We have integration with [GroovyScript](https://github.com/CleanroomMC/GroovyScript).
+
+See [wiki](https://bqc0n.github.io/clayium-wiki/) for more information.
+
 ## Ported Features
 Features have been ported up to tier 13 Clay Fabricator Mk3, 
 including PAN, except for those listed below.
