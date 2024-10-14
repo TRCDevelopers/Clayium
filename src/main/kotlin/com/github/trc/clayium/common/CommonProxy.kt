@@ -234,7 +234,4 @@ open class CommonProxy {
 
         GameRegistry.registerTileEntity(ChunkLoaderTileEntity::class.java, clayiumId("chunkLoader"))
     }
-
-    /* Client-Only Methods */
-    open fun registerCompressedBlockSprite(material: CMaterial) {}
 }
