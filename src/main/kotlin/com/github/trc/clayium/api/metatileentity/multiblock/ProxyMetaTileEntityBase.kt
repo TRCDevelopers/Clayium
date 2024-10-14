@@ -28,25 +28,26 @@ abstract class ProxyMetaTileEntityBase(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     translationKey: String,
-) : MetaTileEntity(
-    metaTileEntityId, tier, onlyNoneList, onlyNoneList, translationKey
-), IMultiblockPart, ISynchronizedInterface {
+) :
+    MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, translationKey),
+    IMultiblockPart,
+    ISynchronizedInterface {
 
     final override var isAttachedToMultiblock = false
         private set
 
     private var teAccess: TileEntityAccess? = null
 
-    /**
-     * only available on the server side.
-     */
+    /** only available on the server side. */
     override val target: MetaTileEntity?
         get() = (teAccess?.getIfLoaded() as? MetaTileEntityHolder)?.metaTileEntity
 
     final override var targetPos: BlockPos? = null
         private set
+
     final override var targetDimensionId: Int = -1
         private set
+
     final override var targetItemStack: ItemStack = ItemStack.EMPTY
 
     protected var hasSynchroParts = false
@@ -110,7 +111,14 @@ abstract class ProxyMetaTileEntityBase(
         }
     }
 
-    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+    override fun onRightClick(
+        player: EntityPlayer,
+        hand: EnumHand,
+        clickedSide: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float
+    ): Boolean {
         if (super.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)) {
             return true
         } else if (!this.hasSynchroParts) {
@@ -139,9 +147,7 @@ abstract class ProxyMetaTileEntityBase(
         this.unlink()
     }
 
-    /**
-     * check if synchronization with a Synchronizer Item is allowed.
-     */
+    /** check if synchronization with a Synchronizer Item is allowed. */
     protected open fun canSynchronize() = hasSynchroParts
 
     final override fun synchronize(pos: BlockPos, dimensionId: Int): Boolean {
@@ -171,8 +177,8 @@ abstract class ProxyMetaTileEntityBase(
     }
 
     /**
-     * called when a player attempts to establish a link using a synchronizer.
-     * not called when validating the multiblock structure.
+     * called when a player attempts to establish a link using a synchronizer. not called when
+     * validating the multiblock structure.
      */
     @MustBeInvokedByOverriders
     open fun canLink(target: MetaTileEntity): Boolean {
@@ -197,9 +203,7 @@ abstract class ProxyMetaTileEntityBase(
     }
 
     private fun writeTargetRemoved() {
-        writeCustomData(INTERFACE_SYNC_MIMIC_TARGET) {
-            writeBoolean(false)
-        }
+        writeCustomData(INTERFACE_SYNC_MIMIC_TARGET) { writeBoolean(false) }
     }
 
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {

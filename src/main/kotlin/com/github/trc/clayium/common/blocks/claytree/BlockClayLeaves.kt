@@ -24,10 +24,18 @@ import java.util.Random
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockClayLeaves : BlockLeaves(), ITieredBlock {
     init {
-        defaultState = blockState.baseState.withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true)
+        defaultState =
+            blockState.baseState.withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true)
     }
+
     override fun getWoodType(meta: Int) = BlockPlanks.EnumType.OAK
-    override fun onSheared(item: ItemStack, world: IBlockAccess?, pos: BlockPos?, fortune: Int): List<ItemStack> {
+
+    override fun onSheared(
+        item: ItemStack,
+        world: IBlockAccess?,
+        pos: BlockPos?,
+        fortune: Int
+    ): List<ItemStack> {
         return listOf(ItemStack(this.getAsItem()))
     }
 
@@ -46,19 +54,39 @@ class BlockClayLeaves : BlockLeaves(), ITieredBlock {
     }
 
     // default implementation uses damageDropped for metadata. so we have to adjust it to 0.
-    override fun getPickBlock(state: IBlockState, target: RayTraceResult, world: World, pos: BlockPos, player: EntityPlayer): ItemStack {
+    override fun getPickBlock(
+        state: IBlockState,
+        target: RayTraceResult,
+        world: World,
+        pos: BlockPos,
+        player: EntityPlayer
+    ): ItemStack {
         return ItemStack(this)
     }
 
-    override fun getStateFromMeta(meta: Int) = defaultState.withProperty(CHECK_DECAY, meta and 0b01 != 0).withProperty(DECAYABLE, meta and 0b10 != 0)
-    override fun getMetaFromState(state: IBlockState) = (if (state.getValue(CHECK_DECAY)) 0b01 else 0) or (if (state.getValue(DECAYABLE)) 0b10 else 0)
+    override fun getStateFromMeta(meta: Int) =
+        defaultState
+            .withProperty(CHECK_DECAY, meta and 0b01 != 0)
+            .withProperty(DECAYABLE, meta and 0b10 != 0)
+
+    override fun getMetaFromState(state: IBlockState) =
+        (if (state.getValue(CHECK_DECAY)) 0b01 else 0) or
+            (if (state.getValue(DECAYABLE)) 0b10 else 0)
 
     override fun createBlockState() = BlockStateContainer(this, CHECK_DECAY, DECAYABLE)
 
     override fun getTier(stack: ItemStack) = ClayTiers.CLAY_STEEL
+
     override fun getTier(world: IBlockAccess, pos: BlockPos) = ClayTiers.CLAY_STEEL
 
     override fun getRenderLayer() = Blocks.LEAVES.defaultState.block.getRenderLayer()
+
     override fun isOpaqueCube(state: IBlockState) = Blocks.LEAVES.defaultState.isOpaqueCube
-    override fun shouldSideBeRendered(blockState: IBlockState, blockAccess: IBlockAccess, pos: BlockPos, side: EnumFacing) = Blocks.LEAVES.defaultState.shouldSideBeRendered(blockAccess, pos, side)
+
+    override fun shouldSideBeRendered(
+        blockState: IBlockState,
+        blockAccess: IBlockAccess,
+        pos: BlockPos,
+        side: EnumFacing
+    ) = Blocks.LEAVES.defaultState.shouldSideBeRendered(blockAccess, pos, side)
 }

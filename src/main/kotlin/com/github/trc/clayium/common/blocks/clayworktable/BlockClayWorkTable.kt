@@ -24,16 +24,23 @@ class BlockClayWorkTable : Block(Material.ROCK), ITieredBlock {
     }
 
     override fun getTier(stack: ItemStack) = ClayTiers.DEFAULT
+
     override fun getTier(world: IBlockAccess, pos: BlockPos) = ClayTiers.DEFAULT
 
     override fun hasTileEntity(state: IBlockState) = true
+
     override fun createTileEntity(world: World, state: IBlockState) = TileClayWorkTable()
 
     override fun onBlockActivated(
-        worldIn: World, pos: BlockPos, state: IBlockState,
-        playerIn: EntityPlayer, hand: EnumHand,
+        worldIn: World,
+        pos: BlockPos,
+        state: IBlockState,
+        playerIn: EntityPlayer,
+        hand: EnumHand,
         facing: EnumFacing,
-        hitX: Float, hitY: Float, hitZ: Float
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float
     ): Boolean {
         if (worldIn.isRemote) return true
         playerIn.openGui(ClayiumMod, GuiHandler.CLAY_WORK_TABLE, worldIn, pos.x, pos.y, pos.z)

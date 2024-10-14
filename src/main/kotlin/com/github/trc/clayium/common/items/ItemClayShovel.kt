@@ -34,7 +34,12 @@ class ItemClayShovel : ItemSpade(ToolMaterial.WOOD) {
     }
 
     @SideOnly(Side.CLIENT)
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         tooltip.add(I18n.format("item.clayium.clay_shovel.tooltip"))
     }
 }

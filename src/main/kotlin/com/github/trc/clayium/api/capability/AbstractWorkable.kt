@@ -26,12 +26,13 @@ import net.minecraftforge.fml.common.Optional
 import org.jetbrains.annotations.MustBeInvokedByOverriders
 import kotlin.math.round
 
-//todo cleanup
+// todo cleanup
 abstract class AbstractWorkable(
     metaTileEntity: MetaTileEntity,
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.RECIPE_LOGIC), IControllable {
     var requiredProgress = 0L
         protected set
+
     var currentProgress = 0L
         protected set
 
@@ -39,16 +40,14 @@ abstract class AbstractWorkable(
     protected var invalidInputsForRecipes = false
     protected var outputsFull = false
 
-    /**
-     * always false for 1 tick recipe. so it isn't used for Redstone Interface.
-     */
-    private val isProcessingRecipe: Boolean get() = currentProgress != 0L
+    /** always false for 1 tick recipe. so it isn't used for Redstone Interface. */
+    private val isProcessingRecipe: Boolean
+        get() = currentProgress != 0L
 
-    /**
-     * used for Redstone Interfaces.
-     * should be overridden if the machine has 1 tick recipe.
-     */
-    override val isWorking: Boolean get() = isProcessingRecipe
+    /** used for Redstone Interfaces. should be overridden if the machine has 1 tick recipe. */
+    override val isWorking: Boolean
+        get() = isProcessingRecipe
+
     override var isWorkingEnabled: Boolean = true
     private var canProgress = false
 
@@ -56,15 +55,12 @@ abstract class AbstractWorkable(
     protected var itemOutputs: List<ItemStack> = emptyList()
 
     /**
-     * try to search for a new recipe.
-     * you should mutate [invalidInputsForRecipes] or [outputsFull] here.
+     * try to search for a new recipe. you should mutate [invalidInputsForRecipes] or [outputsFull]
+     * here.
      */
     protected abstract fun trySearchNewRecipe()
 
-    /**
-     * Show recipes in JEI.
-     * Not called if Jei isn't loaded.
-     */
+    /** Show recipes in JEI. Not called if Jei isn't loaded. */
     protected abstract fun showRecipesInJei()
 
     protected open fun getTier(): Int = metaTileEntity.tier.numeric
@@ -76,7 +72,8 @@ abstract class AbstractWorkable(
         }
         if (!canProgress) return
 
-        // if you updateProgress then searchRecipe, it practically increases recipe duration by 1 tick.
+        // if you updateProgress then searchRecipe, it practically increases recipe duration by 1
+        // tick.
         // this is because when the (recipe output > half of the max stack size),
         // next recipe output cannot fit in the output slot and thus will not match.
         if (!isProcessingRecipe && shouldSearchForRecipe()) {
@@ -92,17 +89,14 @@ abstract class AbstractWorkable(
         this.canProgress = canProgress()
     }
 
-    /**
-     * Called every second.
-     * You can check some extra conditions like neighbouring blocks here.
-     */
+    /** Called every second. You can check some extra conditions like neighbouring blocks here. */
     protected open fun canProgress(): Boolean {
         return true
     }
 
     /**
-     * Called every tick when the machine is working.
-     * If you have to consume Energy or other resources, You should do it here.
+     * Called every tick when the machine is working. If you have to consume Energy or other
+     * resources, You should do it here.
      */
     protected open fun updateWorkingProgress() {
         currentProgress += (getProgressPerTick() * ocHandler.accelerationFactor).toLong()
@@ -112,8 +106,8 @@ abstract class AbstractWorkable(
     }
 
     /**
-     * returns the progress per tick without overclocking.
-     * called every tick when the machine is working.
+     * returns the progress per tick without overclocking. called every tick when the machine is
+     * working.
      */
     protected open fun getProgressPerTick(): Long {
         return 1
@@ -138,17 +132,17 @@ abstract class AbstractWorkable(
 
     private fun canFitNewOutputs(): Boolean {
         return true
-        
+
         // currently, NotifiableItemStackHandler.onContentsChanged isn't called
         // if the item is extracted without pressing a shift key in GUI.
         // therefore, metaTileEntity.hasNotifiedOutputs is remains false in that case.
         // so output full check is disabled.
 
-//        if (outputsFull && !metaTileEntity.hasNotifiedOutputs) return false
-//
-//        outputsFull = false
-//        metaTileEntity.hasNotifiedOutputs = false
-//        return true
+        //        if (outputsFull && !metaTileEntity.hasNotifiedOutputs) return false
+        //
+        //        outputsFull = false
+        //        metaTileEntity.hasNotifiedOutputs = false
+        //        return true
     }
 
     override fun serializeNBT(): NBTTagCompound {
@@ -167,20 +161,30 @@ abstract class AbstractWorkable(
     }
 
     fun getProgressBar(syncManager: GuiSyncManager): ProgressWidget {
-        syncManager.syncValue("requiredProgress", SyncHandlers.longNumber(::requiredProgress, ::requiredProgress::set))
-        syncManager.syncValue("craftingProgress", SyncHandlers.longNumber(::currentProgress, ::currentProgress::set))
+        syncManager.syncValue(
+            "requiredProgress",
+            SyncHandlers.longNumber(::requiredProgress, ::requiredProgress::set)
+        )
+        syncManager.syncValue(
+            "craftingProgress",
+            SyncHandlers.longNumber(::currentProgress, ::currentProgress::set)
+        )
 
-        val widget = ProgressWidget()
-            .size(22, 17)
-            .progress(this::getNormalizedProgress)
-            .texture(ClayGuiTextures.PROGRESS_BAR, 22)
+        val widget =
+            ProgressWidget()
+                .size(22, 17)
+                .progress(this::getNormalizedProgress)
+                .texture(ClayGuiTextures.PROGRESS_BAR, 22)
         if (Mods.JustEnoughItems.isModLoaded) {
-            widget.addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
-                .listenGuiAction(IGuiAction.MousePressed { _ ->
-                    if (!widget.isBelowMouse) return@MousePressed false
-                    showRecipesInJei()
-                    return@MousePressed true
-                })
+            widget
+                .addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
+                .listenGuiAction(
+                    IGuiAction.MousePressed { _ ->
+                        if (!widget.isBelowMouse) return@MousePressed false
+                        showRecipesInJei()
+                        return@MousePressed true
+                    }
+                )
         }
 
         return widget
@@ -201,31 +205,40 @@ abstract class AbstractWorkable(
 
     @Optional.Method(modid = Mods.Names.THE_ONE_PROBE)
     @MustBeInvokedByOverriders
-    /**
-     * must be annotated with `@Optional.Method(modid = Mods.Names.THE_ONE_PROBE)`
-     */
-    open fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
+    /** must be annotated with `@Optional.Method(modid = Mods.Names.THE_ONE_PROBE)` */
+    open fun addProbeInfo(
+        mode: ProbeMode,
+        probeInfo: IProbeInfo,
+        player: EntityPlayer,
+        world: World,
+        state: IBlockState,
+        hitData: IProbeHitData
+    ) {
         if (!isWorking) return
 
         var progress = currentProgress
         var maxProgress = requiredProgress
 
-        val suffix = if (maxProgress > HALF_HOUR_TICKS) {
-            progress = round(progress / ONE_MIN_TICKS).toLong()
-            maxProgress = round(maxProgress / ONE_MIN_TICKS).toLong()
-            " / $maxProgress min"
-        } else if (maxProgress > 20) {
-            progress = round(progress / 20.0).toLong()
-            maxProgress = round(maxProgress / 20.0).toLong()
-            " / $maxProgress s"
-        } else {
-            " / $maxProgress t"
-        }
+        val suffix =
+            if (maxProgress > HALF_HOUR_TICKS) {
+                progress = round(progress / ONE_MIN_TICKS).toLong()
+                maxProgress = round(maxProgress / ONE_MIN_TICKS).toLong()
+                " / $maxProgress min"
+            } else if (maxProgress > 20) {
+                progress = round(progress / 20.0).toLong()
+                maxProgress = round(maxProgress / 20.0).toLong()
+                " / $maxProgress s"
+            } else {
+                " / $maxProgress t"
+            }
 
         val color = if (isWorkingEnabled) COLOR_ENABLED_ARGB else COLOR_DISABLED_ARGB
         if (requiredProgress > 0) {
             probeInfo.progress(
-                progress, maxProgress, probeInfo.defaultProgressStyle()
+                progress,
+                maxProgress,
+                probeInfo
+                    .defaultProgressStyle()
                     .suffix(suffix)
                     .filledColor(color)
                     .alternateFilledColor(color)

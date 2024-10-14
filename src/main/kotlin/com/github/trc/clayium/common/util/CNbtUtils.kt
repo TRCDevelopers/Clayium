@@ -9,7 +9,13 @@ import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.IItemHandler
 
 object CNbtUtils {
-    fun handleInvSizeDifference(world: World, pos: BlockPos, oldMteData: NBTTagCompound, key: String, thisInventory: IItemHandler) {
+    fun handleInvSizeDifference(
+        world: World,
+        pos: BlockPos,
+        oldMteData: NBTTagCompound,
+        key: String,
+        thisInventory: IItemHandler
+    ) {
         val inventoryData = oldMteData.getTagList(key, Constants.NBT.TAG_COMPOUND)
         val oldSlots = inventoryData.tagCount()
         val thisInvSize = thisInventory.slots

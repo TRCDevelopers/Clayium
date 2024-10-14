@@ -33,49 +33,67 @@ object AlloySmelterRecipeLoader {
             .output(OrePrefix.ingot, CMaterials.electrum, 2)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(ingotDust, CMaterials.zinc, 9)
             .input(ingotDust, CMaterials.aluminum)
             .output(OrePrefix.ingot, CMaterials.zinc_aluminum, 10)
-            .tier(6).CEt(ClayEnergy.milli(100)).duration(50)
+            .tier(6)
+            .CEt(ClayEnergy.milli(100))
+            .duration(50)
             .buildAndRegister()
-        registry.builder()
+        registry
+            .builder()
             .input(ingotDust, CMaterials.zinc, 9)
             .input(ingotDust, CMaterials.zirconium)
             .output(OrePrefix.ingot, CMaterials.zinc_zirconium, 10)
-            .tier(6).CEt(ClayEnergy.of(3)).duration(50)
+            .tier(6)
+            .CEt(ClayEnergy.of(3))
+            .duration(50)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(ingotDust, CMaterials.magnesium, 9)
             .input(ingotDust, CMaterials.zinc_aluminum)
             .output(OrePrefix.ingot, CMaterials.az91d, 10)
-            .tier(6).CEt(ClayEnergy.of(1)).duration(500)
+            .tier(6)
+            .CEt(ClayEnergy.of(1))
+            .duration(500)
             .buildAndRegister()
-        registry.builder()
+        registry
+            .builder()
             .input(ingotDust, CMaterials.magnesium, 19)
             .input(ingotDust, CMaterials.zinc_zirconium)
             .output(OrePrefix.ingot, CMaterials.zk60a, 20)
-            .tier(6).CEt(ClayEnergy.of(3)).duration(500)
+            .tier(6)
+            .CEt(ClayEnergy.of(3))
+            .duration(500)
             .buildAndRegister()
         if (Mods.EnderIO.isModLoaded) {
             /* Redstone Alloy */
-            registry.builder()
+            registry
+                .builder()
                 .input(Items.REDSTONE)
                 .input(OrePrefix.item, CMaterials.silicon)
                 .output(OrePrefix.ingot, CMarkerMaterials.redstoneAlloy)
-                .tier(6).defaultCEt().duration(100)
+                .tier(6)
+                .defaultCEt()
+                .duration(100)
                 .buildAndRegister()
             /* Conductive Iron */
-            registry.builder()
+            registry
+                .builder()
                 .input(Items.REDSTONE)
                 .input(arrayOf(OrePrefix.ingot, OrePrefix.dust), CMaterials.iron)
                 .output(OrePrefix.ingot, CMarkerMaterials.conductiveIron)
-                .tier(6).defaultCEt().duration(100)
+                .tier(6)
+                .defaultCEt()
+                .duration(100)
                 .buildAndRegister()
         }
     }
 
-    private fun simpleAlloy() = CRecipes.ALLOY_SMELTER.builder()
-        .tier(0).CEt(ClayEnergy.milli(1)).duration(40)
+    private fun simpleAlloy() =
+        CRecipes.ALLOY_SMELTER.builder().tier(0).CEt(ClayEnergy.milli(1)).duration(40)
 }

@@ -16,15 +16,13 @@ enum class KeyInput(
     // Double Supplier to keep client classes from loading
     keyBinding: () -> (() -> KeyBinding)
 ) {
-    SPRINT({{ Minecraft.getMinecraft().gameSettings.keyBindSprint }}),
+    SPRINT({ { Minecraft.getMinecraft().gameSettings.keyBindSprint } }),
     ;
 
     private val mapping by lazy { WeakHashMap<EntityPlayerMP, MutBooleanPairKeyData>() }
     private lateinit var keyBinding: KeyBinding
-    @SideOnly(Side.CLIENT)
-    private var isKeyDown = false
-    @SideOnly(Side.CLIENT)
-    private var isPressed = false
+    @SideOnly(Side.CLIENT) private var isKeyDown = false
+    @SideOnly(Side.CLIENT) private var isPressed = false
 
     init {
         if (CUtils.isClientSide) {
@@ -56,10 +54,7 @@ enum class KeyInput(
         return mapping[player]?.isPressed == true
     }
 
-    class MutBooleanPairKeyData(
-        var isKeyDown: Boolean,
-        var isPressed: Boolean
-    )
+    class MutBooleanPairKeyData(var isKeyDown: Boolean, var isPressed: Boolean)
 
     companion object {
         @SubscribeEvent

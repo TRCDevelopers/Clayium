@@ -31,7 +31,9 @@ abstract class BlockMaterialBase(
     }
 
     fun getCMaterial(meta: Int) = mapping[meta] ?: mapping.values.first()
+
     fun getCMaterial(stack: ItemStack) = getCMaterial(stack.metadata)
+
     fun getCMaterial(state: IBlockState) = state.getValue(getMaterialProperty())
 
     override fun createBlockState(): BlockStateContainer {
@@ -56,7 +58,12 @@ abstract class BlockMaterialBase(
     }
 
     @SideOnly(Side.CLIENT)
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         val material = getCMaterial(stack.metadata)
         if (material.tier != null) {
             tooltip.add(I18n.format("tooltip.clayium.tier", material.tier.numeric))
@@ -68,7 +75,9 @@ abstract class BlockMaterialBase(
         ModelLoader.setCustomStateMapper(this, MaterialStateMapper)
         for (state in blockState.validStates) {
             ModelLoader.setCustomModelResourceLocation(
-                this.getAsItem(), this.getMetaFromState(state), MaterialStateMapper.createModelLocation(state)
+                this.getAsItem(),
+                this.getMetaFromState(state),
+                MaterialStateMapper.createModelLocation(state)
             )
         }
     }

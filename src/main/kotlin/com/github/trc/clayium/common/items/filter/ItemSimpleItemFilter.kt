@@ -41,69 +41,105 @@ import net.minecraftforge.items.IItemHandlerModifiable
 class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
     override fun buildUI(data: HandGuiData, syncManager: GuiSyncManager): ModularPanel {
         val stack = data.usedItemStack
-        val itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable
-            ?: return ModularPanel.defaultPanel("simple_item_filter_error")
+        val itemHandler =
+            stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
+                as? IItemHandlerModifiable
+                ?: return ModularPanel.defaultPanel("simple_item_filter_error")
 
         syncManager.registerSlotGroup("filter", FILTER_SIZE_X)
-        val matrix: Array<String> = "I".repeat(FILTER_SIZE_X).let { column ->
-            (0..<FILTER_SIZE_Y).map { column }.toTypedArray()
-        }
-
-        val isWhiteListSyncHandler = SyncHandlers.bool(
-            {
-                val tag = data.usedItemStack.tagCompound
-                if (tag == null || !tag.hasKey("isWhiteList", Constants.NBT.TAG_BYTE)) {
-                    true
-                } else {
-                    tag.getBoolean("isWhiteList")
-                }
-            },
-            { value ->
-                val tag = stack.tagCompound ?: NBTTagCompound()
-                tag.setBoolean("isWhiteList", value)
-                stack.tagCompound = tag
+        val matrix: Array<String> =
+            "I".repeat(FILTER_SIZE_X).let { column ->
+                (0..<FILTER_SIZE_Y).map { column }.toTypedArray()
             }
-        )
+
+        val isWhiteListSyncHandler =
+            SyncHandlers.bool(
+                {
+                    val tag = data.usedItemStack.tagCompound
+                    if (tag == null || !tag.hasKey("isWhiteList", Constants.NBT.TAG_BYTE)) {
+                        true
+                    } else {
+                        tag.getBoolean("isWhiteList")
+                    }
+                },
+                { value ->
+                    val tag = stack.tagCompound ?: NBTTagCompound()
+                    tag.setBoolean("isWhiteList", value)
+                    stack.tagCompound = tag
+                }
+            )
 
         return ModularPanel.defaultPanel("simple_item_filter")
-            .child(Column().margin(7)
-                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.str(stack.displayName).asWidget()
-                        .align(Alignment.TopLeft))
-                    .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
-                    .child(CycleButtonWidget()
-                        .length(2)
-                        .align(Alignment.CenterRight)
-                        .value(isWhiteListSyncHandler)
-                        .overlay(DynamicDrawable {
-                            if (isWhiteListSyncHandler.value) {
-                                GuiTextures.FILTER
-                            } else {
-                                GuiTextures.CLOSE
-                            }
-                        })
-                        .addTooltip(0, "Deny")
-                        .addTooltip(1, "Allow")
+            .child(
+                Column()
+                    .margin(7)
+                    .child(
+                        ParentWidget()
+                            .widthRel(1f)
+                            .expanded()
+                            .marginBottom(2)
+                            .child(IKey.str(stack.displayName).asWidget().align(Alignment.TopLeft))
+                            .child(
+                                IKey.lang("container.inventory")
+                                    .asWidget()
+                                    .align(Alignment.BottomLeft)
+                            )
+                            .child(
+                                CycleButtonWidget()
+                                    .length(2)
+                                    .align(Alignment.CenterRight)
+                                    .value(isWhiteListSyncHandler)
+                                    .overlay(
+                                        DynamicDrawable {
+                                            if (isWhiteListSyncHandler.value) {
+                                                GuiTextures.FILTER
+                                            } else {
+                                                GuiTextures.CLOSE
+                                            }
+                                        }
+                                    )
+                                    .addTooltip(0, "Deny")
+                                    .addTooltip(1, "Allow")
+                            )
+                            .child(
+                                SlotGroupWidget.builder()
+                                    .matrix(*matrix)
+                                    .key('I') { i ->
+                                        ItemSlot()
+                                            .slot(
+                                                SyncHandlers.phantomItemSlot(itemHandler, i)
+                                                    .slotGroup("filter")
+                                            )
+                                    }
+                                    .build()
+                                    .align(Alignment.Center)
+                            )
                     )
-                    .child(SlotGroupWidget.builder()
-                        .matrix(*matrix)
-                        .key('I') { i -> ItemSlot().slot(SyncHandlers.phantomItemSlot(itemHandler, i)
-                            .slotGroup("filter"))
-                        }
-                        .build()
-                        .align(Alignment.Center)))
-                .child(SlotGroupWidget.playerInventory(0)))
+                    .child(SlotGroupWidget.playerInventory(0))
+            )
     }
 
-    override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
+    override fun onItemRightClick(
+        worldIn: World,
+        playerIn: EntityPlayer,
+        handIn: EnumHand
+    ): ActionResult<ItemStack> {
         if (!worldIn.isRemote) {
             ItemGuiFactory.open(playerIn as EntityPlayerMP, handIn)
         }
         return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
     }
 
-    override fun onItemUseFirst(player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, hand: EnumHand): EnumActionResult {
+    override fun onItemUseFirst(
+        player: EntityPlayer,
+        world: World,
+        pos: BlockPos,
+        side: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float,
+        hand: EnumHand
+    ): EnumActionResult {
         val metaTileEntity = world.getMetaTileEntity(pos) ?: return EnumActionResult.PASS
         if (world.isRemote) return EnumActionResult.SUCCESS
         metaTileEntity.setFilter(side, createFilter(player.getHeldItem(hand)), FilterType.SIMPLE)
@@ -111,7 +147,9 @@ class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
     }
 
     private fun createFilter(stack: ItemStack): IItemFilter {
-        val itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable
+        val itemHandler =
+            stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
+                as? IItemHandlerModifiable
         if (itemHandler == null) return SimpleItemFilter()
 
         val stacksMutableList = mutableListOf<ItemStack>()
@@ -130,10 +168,10 @@ class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
         return object : ItemCapabilityProvider {
             override fun <T> getCapability(capability: Capability<T>): T? {
                 return when {
-                    capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-                        -> capability.cast(ItemStackItemHandler(stack, FILTER_SIZE_X * FILTER_SIZE_Y))
-                    capability === ClayiumCapabilities.ITEM_FILTER
-                        -> capability.cast(createFilter(stack))
+                    capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ->
+                        capability.cast(ItemStackItemHandler(stack, FILTER_SIZE_X * FILTER_SIZE_Y))
+                    capability === ClayiumCapabilities.ITEM_FILTER ->
+                        capability.cast(createFilter(stack))
                     else -> null
                 }
             }

@@ -14,10 +14,9 @@ object ClayiumApi {
     val PAN_RECIPE_FACTORIES = mutableListOf<IPanRecipeFactory>()
 
     /**
-     * A Registry of MteRegistries.
-     * If you want to create new MteRegistry,
-     * listen to [ClayiumMteRegistryEvent]
-     * and register your MteRegistry using [ClayiumMteRegistryEvent.mteManager]
+     * A Registry of MteRegistries. If you want to create new MteRegistry, listen to
+     * [ClayiumMteRegistryEvent] and register your MteRegistry using
+     * [ClayiumMteRegistryEvent.mteManager]
      */
     val mteManager: CMteManager = CMteManager()
 }

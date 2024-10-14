@@ -10,15 +10,18 @@ import net.minecraftforge.common.capabilities.Capability
 @Suppress("unused")
 object MetaItemClayParts : MetaItemClayium("clay_parts") {
 
-    //region Circuits
+    // region Circuits
     val ClayCircuit = addItem(0, "clay_circuit").tier(2)
     val SimpleCircuit = addItem(1, "simple_circuit").tier(3)
     val BasicCircuit = addItem(2, "basic_circuit").tier(4)
     val AdvancedCircuit = addItem(3, "advanced_circuit").tier(5).oreDict("circuitBasic")
     val PrecisionCircuit = addItem(4, "precision_circuit").tier(6).oreDict("circuitAdvanced")
     val IntegratedCircuit = addItem(5, "integrated_circuit").tier(7).oreDict("circuitElite")
-    val ClayCore = addItem(6, "clay_core").tier(8).oreDict("circuitUltimate")
-        .tooltip("item.clayium.clay_core.tooltip")
+    val ClayCore =
+        addItem(6, "clay_core")
+            .tier(8)
+            .oreDict("circuitUltimate")
+            .tooltip("item.clayium.clay_core.tooltip")
     val ClayBrain = addItem(7, "clay_brain").tier(9)
     val ClaySpirit = addItem(8, "clay_spirit").tier(10)
     val ClaySoul = addItem(9, "clay_soul").tier(11)
@@ -27,7 +30,7 @@ object MetaItemClayParts : MetaItemClayium("clay_parts") {
 
     val ClayCircuitBoard = addItem(12, "clay_circuit_board").tier(2)
     val CeeBoard = addItem(13, "cee_board").tier(3)
-    //endregion
+    // endregion
 
     val LargeClayBall = addItem(14, "large_clay_ball").tier(2)
 
@@ -42,8 +45,8 @@ object MetaItemClayParts : MetaItemClayium("clay_parts") {
     val ManipulatorMk3 = addItem(21, "manipulator_mk3").tier(12)
 
     val LaserParts = addItem(22, "laser_parts").tier(7)
-    val SynchronousParts = addItem(23, "synchronous_parts").tier(9)
-        .tooltip("item.clayium.synchronous_parts.tooltip")
+    val SynchronousParts =
+        addItem(23, "synchronous_parts").tier(9).tooltip("item.clayium.synchronous_parts.tooltip")
     val TeleportationParts = addItem(24, "teleportation_parts").tier(11)
 
     val AntimatterSeed = addItem(25, "antimatter_seed").tier(9)
@@ -59,14 +62,21 @@ object MetaItemClayParts : MetaItemClayium("clay_parts") {
 
     private fun createRawClayConfigTool(meta: Short, name: String): MetaValueItem {
         return addItem(meta, name)
-            .addComponent(TooltipBehavior { UtilLocale.formatTooltips(it, "item.clayium.filter_remover.tooltip") })
-            .addComponent(object : IItemCapabilityProvider {
-                override fun <T : Any> getCapability(capability: Capability<T>): T? {
-                    return if (capability == ClayiumCapabilities.CONFIG_TOOL)
-                        ClayiumCapabilities.CONFIG_TOOL.cast(IConfigurationTool { IConfigurationTool.ToolType.FILTER_REMOVER } )
-                    else
-                        null
+            .addComponent(
+                TooltipBehavior {
+                    UtilLocale.formatTooltips(it, "item.clayium.filter_remover.tooltip")
                 }
-            })
+            )
+            .addComponent(
+                object : IItemCapabilityProvider {
+                    override fun <T : Any> getCapability(capability: Capability<T>): T? {
+                        return if (capability == ClayiumCapabilities.CONFIG_TOOL)
+                            ClayiumCapabilities.CONFIG_TOOL.cast(
+                                IConfigurationTool { IConfigurationTool.ToolType.FILTER_REMOVER }
+                            )
+                        else null
+                    }
+                }
+            )
     }
 }

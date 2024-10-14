@@ -22,8 +22,23 @@ import java.util.Random
 
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockClaySapling : BlockBush(), IGrowable, ITieredBlock {
-    val clayTreeGen = WorldGenTrees(true, 4, ClayiumBlocks.CLAY_TREE_LOG.defaultState, ClayiumBlocks.CLAY_TREE_LEAVES.defaultState, false)
-    val saplingAabb = AxisAlignedBB(0.09999999403953552, 0.0, 0.09999999403953552, 0.8999999761581421, 0.800000011920929, 0.8999999761581421)
+    val clayTreeGen =
+        WorldGenTrees(
+            true,
+            4,
+            ClayiumBlocks.CLAY_TREE_LOG.defaultState,
+            ClayiumBlocks.CLAY_TREE_LEAVES.defaultState,
+            false
+        )
+    val saplingAabb =
+        AxisAlignedBB(
+            0.09999999403953552,
+            0.0,
+            0.09999999403953552,
+            0.8999999761581421,
+            0.800000011920929,
+            0.8999999761581421
+        )
 
     init {
         setHardness(0.0f)
@@ -32,14 +47,26 @@ class BlockClaySapling : BlockBush(), IGrowable, ITieredBlock {
     }
 
     override fun createBlockState() = BlockStateContainer(this, STAGE)
+
     override fun getMetaFromState(state: IBlockState) = state.getValue(STAGE)
+
     override fun getStateFromMeta(meta: Int) = defaultState.withProperty(STAGE, meta)
 
-    override fun canGrow(worldIn: World, pos: BlockPos, state: IBlockState, isClient: Boolean): Boolean {
+    override fun canGrow(
+        worldIn: World,
+        pos: BlockPos,
+        state: IBlockState,
+        isClient: Boolean
+    ): Boolean {
         return true
     }
 
-    override fun canUseBonemeal(worldIn: World, rand: Random, pos: BlockPos, state: IBlockState): Boolean {
+    override fun canUseBonemeal(
+        worldIn: World,
+        rand: Random,
+        pos: BlockPos,
+        state: IBlockState
+    ): Boolean {
         return rand.nextDouble() < 0.45
     }
 
@@ -68,8 +95,10 @@ class BlockClaySapling : BlockBush(), IGrowable, ITieredBlock {
         clayTreeGen.generate(worldIn, rand, pos)
     }
 
-    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = saplingAabb
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) =
+        saplingAabb
 
     override fun getTier(stack: ItemStack) = ClayTiers.CLAY_STEEL
+
     override fun getTier(world: IBlockAccess, pos: BlockPos) = ClayTiers.CLAY_STEEL
 }

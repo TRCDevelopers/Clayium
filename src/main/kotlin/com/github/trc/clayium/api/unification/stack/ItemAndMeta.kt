@@ -16,7 +16,9 @@ fun PacketBuffer.writeItemAndMeta(itemAndMeta: ItemAndMeta) {
 }
 
 fun PacketBuffer.readItemAndMeta(): ItemAndMeta {
-    val item = Item.getByNameOrId(readString(Short.MAX_VALUE.toInt())) ?: throw IllegalArgumentException("Invalid item")
+    val item =
+        Item.getByNameOrId(readString(Short.MAX_VALUE.toInt()))
+            ?: throw IllegalArgumentException("Invalid item")
     val meta = readVarInt()
     return ItemAndMeta(item, meta)
 }
@@ -26,8 +28,13 @@ data class ItemAndMeta(
     val meta: Int = 0,
 ) {
     constructor(block: Block, meta: Int = 0) : this(block.getAsItem(), meta)
+
     constructor(itemStack: ItemStack) : this(itemStack.item, itemStack.metadata)
-    constructor(orePrefix: OrePrefix, material: CMaterial) : this(OreDictUnifier.get(orePrefix, material))
+
+    constructor(
+        orePrefix: OrePrefix,
+        material: CMaterial
+    ) : this(OreDictUnifier.get(orePrefix, material))
 
     init {
         require(item !== Items.AIR) { "Empty ItemAndMeta is not allowed" }

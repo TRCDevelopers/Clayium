@@ -26,26 +26,24 @@ class ClayLaserSourceMteTrait(
             val syncFlag = !metaTileEntity.isRemote && (field != value)
             field = value
             if (syncFlag) {
-                writeCustomData(UPDATE_LASER_LENGTH) {
-                    writeInt(value)
-                }
+                writeCustomData(UPDATE_LASER_LENGTH) { writeInt(value) }
             }
         }
+
     var isIrradiating = false
         set(value) {
             val syncFlag = !metaTileEntity.isRemote && (field != value)
             field = value
             if (syncFlag) {
-                writeCustomData(UPDATE_LASER_ACTIVATION) {
-                    writeBoolean(value)
-                }
+                writeCustomData(UPDATE_LASER_ACTIVATION) { writeBoolean(value) }
             }
         }
 
     override val irradiatingLaser: ClayLaser?
         get() = if (isIrradiating) sampleLaser else null
 
-    override val direction get() = metaTileEntity.frontFacing
+    override val direction
+        get() = metaTileEntity.frontFacing
 
     override fun update() {
         if (metaTileEntity.isRemote) return
@@ -80,6 +78,7 @@ class ClayLaserSourceMteTrait(
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        return if (capability === ClayiumTileCapabilities.CLAY_LASER_SOURCE) capability.cast(this) else null
+        return if (capability === ClayiumTileCapabilities.CLAY_LASER_SOURCE) capability.cast(this)
+        else null
     }
 }

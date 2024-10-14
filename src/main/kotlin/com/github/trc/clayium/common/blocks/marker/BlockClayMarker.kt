@@ -29,9 +29,11 @@ class BlockClayMarker : VariantBlock<ClayMarkerType>(Material.GROUND) {
     }
 
     override fun hasTileEntity(state: IBlockState) = true
+
     override fun createTileEntity(world: World, state: IBlockState): TileEntity {
         // when use getEnum(state) directly in when, it will throw
-        // java.lang.NoClassDefFoundError: com/github/trc/clayium/common/blocks/marker/BlockClayMarker$WhenMappings
+        // java.lang.NoClassDefFoundError:
+        // com/github/trc/clayium/common/blocks/marker/BlockClayMarker$WhenMappings
         val type: ClayMarkerType = getEnum(state)
         return when (type) {
             ClayMarkerType.NO_EXTEND -> TileClayMarker.NoExtend()
@@ -41,24 +43,46 @@ class BlockClayMarker : VariantBlock<ClayMarkerType>(Material.GROUND) {
         }
     }
 
-    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+    override fun onBlockActivated(
+        worldIn: World,
+        pos: BlockPos,
+        state: IBlockState,
+        playerIn: EntityPlayer,
+        hand: EnumHand,
+        facing: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float
+    ): Boolean {
         val tileEntity = worldIn.getTileEntity(pos) as? TileClayMarker ?: return false
         tileEntity.onRightClick()
         return true
     }
 
     override fun isFullBlock(state: IBlockState) = false
+
     override fun isFullCube(state: IBlockState) = false
+
     override fun isOpaqueCube(state: IBlockState) = false
+
     override fun causesSuffocation(state: IBlockState) = false
 
-    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = CLAY_MARKER_AABB
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) =
+        CLAY_MARKER_AABB
 
     @SideOnly(Side.CLIENT)
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
         UtilLocale.formatTooltips(tooltip, "${super.translationKey}.tooltip")
-        UtilLocale.formatTooltips(tooltip, "${super.translationKey}.${getEnum(stack).lowerName}.tooltip")
+        UtilLocale.formatTooltips(
+            tooltip,
+            "${super.translationKey}.${getEnum(stack).lowerName}.tooltip"
+        )
     }
 
     companion object {

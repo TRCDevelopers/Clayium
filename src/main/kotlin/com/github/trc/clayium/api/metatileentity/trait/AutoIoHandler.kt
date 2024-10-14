@@ -20,8 +20,12 @@ abstract class AutoIoHandler(
     tier: Int = metaTileEntity.tier.numeric,
 ) : MTETrait(metaTileEntity, traitName) {
 
-    protected val coolTime = if (isBuffer) ConfigTierBalance.bufferInterval[tier] else ConfigTierBalance.machineInterval[tier]
-    protected val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[tier] else ConfigTierBalance.machineAmount[tier]
+    protected val coolTime =
+        if (isBuffer) ConfigTierBalance.bufferInterval[tier]
+        else ConfigTierBalance.machineInterval[tier]
+    protected val amountPerAction =
+        if (isBuffer) ConfigTierBalance.bufferAmount[tier]
+        else ConfigTierBalance.machineAmount[tier]
 
     protected var ticked = 0
 
@@ -37,21 +41,34 @@ abstract class AutoIoHandler(
         }
     }
 
-    protected open fun isImporting(side: EnumFacing): Boolean = metaTileEntity.getInput(side) != MachineIoMode.NONE
-    protected open fun isExporting(side: EnumFacing): Boolean = metaTileEntity.getOutput(side) != MachineIoMode.NONE
+    protected open fun isImporting(side: EnumFacing): Boolean =
+        metaTileEntity.getInput(side) != MachineIoMode.NONE
 
-    protected open fun getImportItems(side: EnumFacing): IItemHandler? = metaTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)
-    protected open fun getExportItems(side: EnumFacing): IItemHandler? = metaTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)
+    protected open fun isExporting(side: EnumFacing): Boolean =
+        metaTileEntity.getOutput(side) != MachineIoMode.NONE
+
+    protected open fun getImportItems(side: EnumFacing): IItemHandler? =
+        metaTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)
+
+    protected open fun getExportItems(side: EnumFacing): IItemHandler? =
+        metaTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)
 
     protected open fun importFromNeighbors() {
         var remainingImport = amountPerAction
         for (side in EnumFacing.entries) {
             if (remainingImport > 0 && isImporting(side)) {
-                remainingImport = transferItemStack(
-                    from = metaTileEntity.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
-                    to = getImportItems(side) ?: continue,
-                    amount = remainingImport,
-                )
+                remainingImport =
+                    transferItemStack(
+                        from =
+                            metaTileEntity
+                                .getNeighbor(side)
+                                ?.getCapability(
+                                    CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+                                    side.opposite
+                                ) ?: continue,
+                        to = getImportItems(side) ?: continue,
+                        amount = remainingImport,
+                    )
             }
         }
     }
@@ -60,11 +77,18 @@ abstract class AutoIoHandler(
         var remainingExport = amountPerAction
         for (side in EnumFacing.entries) {
             if (remainingExport > 0 && isExporting(side)) {
-                remainingExport = transferItemStack(
-                    from = getExportItems(side) ?: continue,
-                    to = metaTileEntity.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
-                    amount = remainingExport,
-                )
+                remainingExport =
+                    transferItemStack(
+                        from = getExportItems(side) ?: continue,
+                        to =
+                            metaTileEntity
+                                .getNeighbor(side)
+                                ?.getCapability(
+                                    CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+                                    side.opposite
+                                ) ?: continue,
+                        amount = remainingExport,
+                    )
             }
         }
     }
@@ -73,12 +97,12 @@ abstract class AutoIoHandler(
         from: IItemHandler,
         to: IItemHandler,
         amount: Int,
-    ) : Int {
+    ): Int {
         var remainingWork = amount
 
         for (i in 0..<from.slots) {
-            val extracted = from.extractItem(i, remainingWork, true)
-                .takeUnless { it.isEmpty } ?: continue
+            val extracted =
+                from.extractItem(i, remainingWork, true).takeUnless { it.isEmpty } ?: continue
             val remain = ItemHandlerHelper.insertItem(to, extracted, true)
 
             val stackToInsert = from.extractItem(i, extracted.count - remain.count, false)
@@ -99,7 +123,7 @@ abstract class AutoIoHandler(
     open class Importer(
         metaTileEntity: MetaTileEntity,
         isBuffer: Boolean = false,
-        traitName : String = ClayiumDataCodecs.AUTO_IO_HANDLER,
+        traitName: String = ClayiumDataCodecs.AUTO_IO_HANDLER,
         tier: Int = metaTileEntity.tier.numeric,
     ) : AutoIoHandler(metaTileEntity, isBuffer, traitName, tier) {
         override fun transferItems() {
@@ -108,14 +132,20 @@ abstract class AutoIoHandler(
     }
 
     /**
-     * this exists to separate limits (coolTime and amountPerAction) from the normal importer.
-     * even if the normal importer is working at full speed (and cannot import energized clay because of its limit),
-     * Energized Clay should be imported.
+     * this exists to separate limits (coolTime and amountPerAction) from the normal importer. even
+     * if the normal importer is working at full speed (and cannot import energized clay because of
+     * its limit), Energized Clay should be imported.
      */
     class EcImporter(
         metaTileEntity: MetaTileEntity,
         private val energizedClayItemHandler: IItemHandler = metaTileEntity.importItems,
-    ) : Importer(metaTileEntity, false, traitName = "${ClayiumDataCodecs.AUTO_IO_HANDLER}.${ClayiumDataCodecs.CLAY_ENERGY_HOLDER}") {
+    ) :
+        Importer(
+            metaTileEntity,
+            false,
+            traitName =
+                "${ClayiumDataCodecs.AUTO_IO_HANDLER}.${ClayiumDataCodecs.CLAY_ENERGY_HOLDER}"
+        ) {
         override fun isImporting(side: EnumFacing): Boolean {
             return metaTileEntity.getInput(side) == MachineIoMode.CE
         }

@@ -58,32 +58,44 @@ class StorageContainerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     isUpgraded: Boolean,
-) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, validOutputModesLists[1], "storage_container") {
+) :
+    MetaTileEntity(
+        metaTileEntityId,
+        tier,
+        bufferValidInputModes,
+        validOutputModesLists[1],
+        "storage_container"
+    ) {
 
     override val faceTexture = clayiumId("blocks/storage_container")
-    override val requiredTextures get() = listOf(
-        faceTexture,
-        clayiumId("blocks/storage_container_side_composed"), clayiumId("blocks/storage_container_side_upgraded"),
-        clayiumId("blocks/storage_container_top_composed"), clayiumId("blocks/storage_container_top_upgraded"),
-        clayiumId("blocks/storage_container_upgraded_base")
-    )
+    override val requiredTextures
+        get() =
+            listOf(
+                faceTexture,
+                clayiumId("blocks/storage_container_side_composed"),
+                clayiumId("blocks/storage_container_side_upgraded"),
+                clayiumId("blocks/storage_container_top_composed"),
+                clayiumId("blocks/storage_container_top_upgraded"),
+                clayiumId("blocks/storage_container_upgraded_base")
+            )
 
     override val pipeConnectionLogic: IPipeConnectionLogic = IPipeConnectionLogic.ItemPipe
 
     override val itemInventory: IItemHandler = StorageContainerItemHandler()
     override val exportItems: IItemHandlerModifiable = StorageContainerExportItems()
-    override val importItems: IItemHandlerModifiable = object : ClayiumItemStackHandler(this, 1) {
-        override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
-            if (!isItemValid(slot, stack)) return stack
-            return itemInventory.insertItem(slot, stack, simulate)
-        }
+    override val importItems: IItemHandlerModifiable =
+        object : ClayiumItemStackHandler(this, 1) {
+            override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
+                if (!isItemValid(slot, stack)) return stack
+                return itemInventory.insertItem(slot, stack, simulate)
+            }
 
-        override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
-            return filterSlot.getStackInSlot(0).canActuallyStack(stack)
-                    && currentInsertedStack.canActuallyStack(stack)
-                    && exportItems.getStackInSlot(0).canActuallyStack(stack)
+            override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
+                return filterSlot.getStackInSlot(0).canActuallyStack(stack) &&
+                    currentInsertedStack.canActuallyStack(stack) &&
+                    exportItems.getStackInSlot(0).canActuallyStack(stack)
+            }
         }
-    }
     val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
 
     private val filterSlot = ItemStackHandler(1)
@@ -96,12 +108,18 @@ class StorageContainerMetaTileEntity(
             markDirty()
             if (syncFlag) writeCustomData(UPDATE_MAX_ITEMS_STORED) { writeVarInt(value) }
         }
-    val isUpgraded get() = maxStoredItems == UPGRADED_MAX_AMOUNT
+
+    val isUpgraded
+        get() = maxStoredItems == UPGRADED_MAX_AMOUNT
 
     private var itemsStored = 0
-        set(value) { field = value; markDirty() }
+        set(value) {
+            field = value
+            markDirty()
+        }
 
     private var previousStoredItems = 0
+
     override fun update() {
         super.update()
         if (isRemote) return
@@ -119,17 +137,36 @@ class StorageContainerMetaTileEntity(
         }
     }
 
-    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+    override fun onRightClick(
+        player: EntityPlayer,
+        hand: EnumHand,
+        clickedSide: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float
+    ): Boolean {
         val stack = player.getHeldItem(hand)
         val clayCore = MetaItemClayParts.ClayCore.getStackForm()
-        //todo use capability
-        if (stack.isItemEqual(clayCore) && stack.metadata == clayCore.metadata && maxStoredItems == INITIAL_MAX_AMOUNT) {
+        // todo use capability
+        if (
+            stack.isItemEqual(clayCore) &&
+                stack.metadata == clayCore.metadata &&
+                maxStoredItems == INITIAL_MAX_AMOUNT
+        ) {
             val world = this.world
             val pos = this.pos
             if (!(world == null || pos == null)) {
-                val upgradedStorageContainerStack = MetaTileEntities.STORAGE_CONTAINER_UPGRADED.getStackForm()
-                upgradedStorageContainerStack.tagCompound = NBTTagCompound().apply { writeItemStackNbt(this) }
-                this.blockMachine.onBlockPlacedBy(world, pos, world.getBlockState(pos), player, upgradedStorageContainerStack)
+                val upgradedStorageContainerStack =
+                    MetaTileEntities.STORAGE_CONTAINER_UPGRADED.getStackForm()
+                upgradedStorageContainerStack.tagCompound =
+                    NBTTagCompound().apply { writeItemStackNbt(this) }
+                this.blockMachine.onBlockPlacedBy(
+                    world,
+                    pos,
+                    world.getBlockState(pos),
+                    player,
+                    upgradedStorageContainerStack
+                )
                 stack.shrink(1)
                 return true
             }
@@ -144,14 +181,22 @@ class StorageContainerMetaTileEntity(
         return super.getCapability(capability, facing)
     }
 
-    override fun canBeReplacedTo(world: World, pos: BlockPos, sampleMetaTileEntity: MetaTileEntity): Boolean {
+    override fun canBeReplacedTo(
+        world: World,
+        pos: BlockPos,
+        sampleMetaTileEntity: MetaTileEntity
+    ): Boolean {
         if (sampleMetaTileEntity !is StorageContainerMetaTileEntity) return false
         if (this.isUpgraded && !sampleMetaTileEntity.isUpgraded) return false
         return super.canBeReplacedTo(world, pos, sampleMetaTileEntity)
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
-        return StorageContainerMetaTileEntity(this.metaTileEntityId, this.tier, maxStoredItems == UPGRADED_MAX_AMOUNT)
+        return StorageContainerMetaTileEntity(
+            this.metaTileEntityId,
+            this.tier,
+            maxStoredItems == UPGRADED_MAX_AMOUNT
+        )
     }
 
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
@@ -204,10 +249,18 @@ class StorageContainerMetaTileEntity(
 
     override fun readFromNBT(data: NBTTagCompound) {
         super.readFromNBT(data)
-        if (data.hasKey("maxStoredItems", Constants.NBT.TAG_INT)) { maxStoredItems = data.getInteger("maxStoredItems") }
-        if (data.hasKey("itemsStored", Constants.NBT.TAG_INT)) { itemsStored = data.getInteger("itemsStored") }
-        if (data.hasKey("storedStack", Constants.NBT.TAG_COMPOUND)) { currentInsertedStack = ItemStack(data.getCompoundTag("storedStack")) }
-        if (data.hasKey("filterSlot", Constants.NBT.TAG_COMPOUND)) { filterSlot.deserializeNBT(data.getCompoundTag("filterSlot")) }
+        if (data.hasKey("maxStoredItems", Constants.NBT.TAG_INT)) {
+            maxStoredItems = data.getInteger("maxStoredItems")
+        }
+        if (data.hasKey("itemsStored", Constants.NBT.TAG_INT)) {
+            itemsStored = data.getInteger("itemsStored")
+        }
+        if (data.hasKey("storedStack", Constants.NBT.TAG_COMPOUND)) {
+            currentInsertedStack = ItemStack(data.getCompoundTag("storedStack"))
+        }
+        if (data.hasKey("filterSlot", Constants.NBT.TAG_COMPOUND)) {
+            filterSlot.deserializeNBT(data.getCompoundTag("filterSlot"))
+        }
     }
 
     override fun writeItemStackNbt(data: NBTTagCompound) {
@@ -233,53 +286,106 @@ class StorageContainerMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(this.metaTileEntityId, "inventory"))
+        ModelLoader.setCustomModelResourceLocation(
+            item,
+            meta,
+            ModelResourceLocation(this.metaTileEntityId, "inventory")
+        )
     }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
-            .child(IKey.dynamic { "$itemsStored / $maxStoredItems" }.asWidget()
-                .widthRel(0.5f).align(Alignment.BottomRight))
-            .child(Column().widthRel(0.6f).height(26)
-                .child(largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
-                    .align(Alignment.CenterLeft))
-                .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).accessibility(/* canPut = */ false, /* canTake = */ true))
-                    .align(Alignment.CenterRight))
-                .align(Alignment.Center))
-            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0))
-                .right(10).top(15))
+            .child(
+                IKey.dynamic { "$itemsStored / $maxStoredItems" }
+                    .asWidget()
+                    .widthRel(0.5f)
+                    .align(Alignment.BottomRight)
+            )
+            .child(
+                Column()
+                    .widthRel(0.6f)
+                    .height(26)
+                    .child(
+                        largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
+                            .align(Alignment.CenterLeft)
+                    )
+                    .child(
+                        largeSlot(
+                                SyncHandlers.itemSlot(exportItems, 0)
+                                    .accessibility(/* canPut= */ false, /* canTake= */ true)
+                            )
+                            .align(Alignment.CenterRight)
+                    )
+                    .align(Alignment.Center)
+            )
+            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0)).right(10).top(15))
     }
 
     @SideOnly(Side.CLIENT)
-    override fun bakeQuads(getter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
-        sideQuads = EnumFacing.HORIZONTALS.associateWith {
-            ModelTextures.createQuad(it, getter.apply(clayiumId("blocks/storage_container_side_composed")))
-        }
-        sideQuadsUpgraded = EnumFacing.entries.map {
-            when (it) {
-                EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST
-                    -> ModelTextures.createQuad(it, getter.apply(clayiumId("blocks/storage_container_side_upgraded")))
-                EnumFacing.UP
-                    -> ModelTextures.createQuad(it, getter.apply(clayiumId("blocks/storage_container_top_upgraded")))
-                EnumFacing.DOWN
-                    -> ModelTextures.createQuad(it, getter.apply(clayiumId("blocks/storage_container_upgraded_base")))
+    override fun bakeQuads(
+        getter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>,
+        faceBakery: FaceBakery
+    ) {
+        sideQuads =
+            EnumFacing.HORIZONTALS.associateWith {
+                ModelTextures.createQuad(
+                    it,
+                    getter.apply(clayiumId("blocks/storage_container_side_composed"))
+                )
             }
-        }
-        upQuad = ModelTextures.createQuad(EnumFacing.UP, getter.apply(clayiumId("blocks/storage_container_top_composed")))
-        downQuad = ModelTextures.createQuad(EnumFacing.DOWN, getter.apply(clayiumId("blocks/storage_container_top_composed")),
-            uv = floatArrayOf(16f, 16f, 0f, 0f))
+        sideQuadsUpgraded =
+            EnumFacing.entries.map {
+                when (it) {
+                    EnumFacing.NORTH,
+                    EnumFacing.SOUTH,
+                    EnumFacing.EAST,
+                    EnumFacing.WEST ->
+                        ModelTextures.createQuad(
+                            it,
+                            getter.apply(clayiumId("blocks/storage_container_side_upgraded"))
+                        )
+                    EnumFacing.UP ->
+                        ModelTextures.createQuad(
+                            it,
+                            getter.apply(clayiumId("blocks/storage_container_top_upgraded"))
+                        )
+                    EnumFacing.DOWN ->
+                        ModelTextures.createQuad(
+                            it,
+                            getter.apply(clayiumId("blocks/storage_container_upgraded_base"))
+                        )
+                }
+            }
+        upQuad =
+            ModelTextures.createQuad(
+                EnumFacing.UP,
+                getter.apply(clayiumId("blocks/storage_container_top_composed"))
+            )
+        downQuad =
+            ModelTextures.createQuad(
+                EnumFacing.DOWN,
+                getter.apply(clayiumId("blocks/storage_container_top_composed")),
+                uv = floatArrayOf(16f, 16f, 0f, 0f)
+            )
     }
 
     @SideOnly(Side.CLIENT)
-    override fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+    override fun getQuads(
+        quads: MutableList<BakedQuad>,
+        state: IBlockState?,
+        side: EnumFacing?,
+        rand: Long
+    ) {
         if (state == null || side == null) return
         val isUpgraded = this.maxStoredItems == UPGRADED_MAX_AMOUNT
         if (isUpgraded) {
             quads.add(sideQuadsUpgraded[side.index])
         } else {
             when (side) {
-                EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST
-                    -> sideQuads[side]?.let(quads::add)
+                EnumFacing.NORTH,
+                EnumFacing.SOUTH,
+                EnumFacing.WEST,
+                EnumFacing.EAST -> sideQuads[side]?.let(quads::add)
                 EnumFacing.UP -> quads.add(upQuad)
                 EnumFacing.DOWN -> quads.add(downQuad)
             }
@@ -291,7 +397,8 @@ class StorageContainerMetaTileEntity(
         val pos = this.pos ?: return
         if (world?.getBlockState(pos)?.getValue(BlockMachine.IS_PIPE) == true) return
 
-        val stack = if (currentInsertedStack.isEmpty) filterSlot.getStackInSlot(0) else currentInsertedStack
+        val stack =
+            if (currentInsertedStack.isEmpty) filterSlot.getStackInSlot(0) else currentInsertedStack
         if (stack.isEmpty) return
 
         val mc = Minecraft.getMinecraft()
@@ -338,6 +445,7 @@ class StorageContainerMetaTileEntity(
 
     private inner class StorageContainerItemHandler : IItemHandler {
         override fun getSlots() = 1
+
         override fun getSlotLimit(slot: Int) = maxStoredItems
 
         override fun getStackInSlot(slot: Int): ItemStack {
@@ -349,9 +457,12 @@ class StorageContainerMetaTileEntity(
 
         override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
             if (stack.isEmpty) return ItemStack.EMPTY
-            if (!(filterSlot.getStackInSlot(0).canActuallyStack(stack)
-                        && currentInsertedStack.canActuallyStack(stack)
-                        && exportItems.getStackInSlot(0).canActuallyStack(stack))) return stack
+            if (
+                !(filterSlot.getStackInSlot(0).canActuallyStack(stack) &&
+                    currentInsertedStack.canActuallyStack(stack) &&
+                    exportItems.getStackInSlot(0).canActuallyStack(stack))
+            )
+                return stack
 
             val amountToInsert = stack.count.coerceAtMost(maxStoredItems - itemsStored)
             val copiedStack = stack.copy()
@@ -361,7 +472,9 @@ class StorageContainerMetaTileEntity(
                 if (currentInsertedStack.isEmpty) {
                     currentInsertedStack = stack.copy().apply { count = 1 }
                     itemsStored = amountToInsert
-                    writeCustomData(UPDATE_STORED_ITEMSTACK) { writeItemStack(currentInsertedStack) }
+                    writeCustomData(UPDATE_STORED_ITEMSTACK) {
+                        writeItemStack(currentInsertedStack)
+                    }
                 } else {
                     itemsStored += amountToInsert
                 }
@@ -392,12 +505,15 @@ class StorageContainerMetaTileEntity(
                 extractItem(0, extractedAmount, false)
             }
         }
+
         override fun getSlots() = 1
+
         override fun getSlotLimit(slot: Int) = 64
 
         override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
             return itemInventory.insertItem(0, stack, simulate)
         }
+
         override fun extractItem(slot: Int, amount: Int, simulate: Boolean): ItemStack {
             return itemInventory.extractItem(0, amount, simulate)
         }
@@ -412,13 +528,9 @@ class StorageContainerMetaTileEntity(
         const val INITIAL_MAX_AMOUNT = 65536
         const val UPGRADED_MAX_AMOUNT = Int.MAX_VALUE
 
-        @SideOnly(Side.CLIENT)
-        private lateinit var sideQuads: Map<EnumFacing, BakedQuad>
-        @SideOnly(Side.CLIENT)
-        private lateinit var sideQuadsUpgraded: List<BakedQuad>
-        @SideOnly(Side.CLIENT)
-        private lateinit var upQuad: BakedQuad
-        @SideOnly(Side.CLIENT)
-        private lateinit var downQuad: BakedQuad
+        @SideOnly(Side.CLIENT) private lateinit var sideQuads: Map<EnumFacing, BakedQuad>
+        @SideOnly(Side.CLIENT) private lateinit var sideQuadsUpgraded: List<BakedQuad>
+        @SideOnly(Side.CLIENT) private lateinit var upQuad: BakedQuad
+        @SideOnly(Side.CLIENT) private lateinit var downQuad: BakedQuad
     }
 }

@@ -8,6 +8,8 @@ interface IMultiblockPart {
     val isAttachedToMultiblock: Boolean
 
     fun addToMultiblock(controller: MetaTileEntity)
+
     fun removeFromMultiblock(controller: MetaTileEntity)
+
     fun canPartShare() = true
 }

@@ -19,5 +19,6 @@ class ColoredSiliconeBlock : VariantBlock<EnumDyeColor>(BlockMaterial.IRON), ITi
     }
 
     override fun getTier(stack: ItemStack) = ClayTiers.PRECISION
+
     override fun getTier(world: IBlockAccess, pos: BlockPos) = ClayTiers.PRECISION
 }

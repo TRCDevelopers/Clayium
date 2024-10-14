@@ -27,9 +27,7 @@ class RedstoneProxyMetaTileEntity(
 ) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "redstone_proxy") {
 
     init {
-        /**
-         * this machine has a synchro part by default = remote sync is enabled by default.
-         */
+        /** this machine has a synchro part by default = remote sync is enabled by default. */
         this.hasSynchroParts = true
     }
 
@@ -45,11 +43,14 @@ class RedstoneProxyMetaTileEntity(
                 markDirty()
             }
         }
+
     private var power: Int = 0
         set(value) {
             val notifyFlag = field != value
             field = value
-            if (notifyFlag) { notifyNeighbors() }
+            if (notifyFlag) {
+                notifyNeighbors()
+            }
         }
 
     override fun createMetaTileEntity(): MetaTileEntity {
@@ -60,7 +61,8 @@ class RedstoneProxyMetaTileEntity(
         super.update()
         val world = world ?: return
         if (world.isRemote) return
-        val controllable = target?.getCapability(ClayiumTileCapabilities.CONTROLLABLE, null) ?: return
+        val controllable =
+            target?.getCapability(ClayiumTileCapabilities.CONTROLLABLE, null) ?: return
         when (this.mode) {
             Mode.NONE -> {}
             Mode.EMIT_IF_IDLE -> power = if (controllable.isWorking) 0 else 15
@@ -87,21 +89,29 @@ class RedstoneProxyMetaTileEntity(
     }
 
     override fun canLink(target: MetaTileEntity): Boolean {
-        return super.canLink(target) && target.getCapability(ClayiumTileCapabilities.CONTROLLABLE, null) != null
+        return super.canLink(target) &&
+            target.getCapability(ClayiumTileCapabilities.CONTROLLABLE, null) != null
     }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
-        return ModularPanel.defaultPanel("redstone_proxy.$tier", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT - 20)
+        return ModularPanel.defaultPanel(
+                "redstone_proxy.$tier",
+                GUI_DEFAULT_WIDTH,
+                GUI_DEFAULT_HEIGHT - 20
+            )
             .columnWithPlayerInv { child(buildMainParentWidget(syncManager)) }
     }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
-            .child(CycleButtonWidget()
-                .align(Alignment.Center).widthRel(0.7f).height(24)
-                .length(Mode.entries.size)
-                .value(IntSyncValue({ mode.ordinal }, { mode = Mode.entries[it] }))
-                .overlay(IKey.dynamic { I18n.format(mode.translationKey) })
+            .child(
+                CycleButtonWidget()
+                    .align(Alignment.Center)
+                    .widthRel(0.7f)
+                    .height(24)
+                    .length(Mode.entries.size)
+                    .value(IntSyncValue({ mode.ordinal }, { mode = Mode.entries[it] }))
+                    .overlay(IKey.dynamic { I18n.format(mode.translationKey) })
             )
     }
 
@@ -127,6 +137,5 @@ class RedstoneProxyMetaTileEntity(
         EMIT_IF_WORKING("gui.$MOD_ID.redstone_proxy.emit_if_working"),
         DO_WORK_IF_POWERED("gui.$MOD_ID.redstone_proxy.do_work_if_powered"),
         DO_WORK_IF_NOT_POWERED("gui.$MOD_ID.redstone_proxy.do_work_if_not_powered"),
-        ;
     }
 }

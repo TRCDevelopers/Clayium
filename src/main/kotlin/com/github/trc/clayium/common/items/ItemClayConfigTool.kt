@@ -28,14 +28,28 @@ class ItemClayConfigTool(
         this.maxStackSize = maxStackSize
     }
 
-    override fun doesSneakBypassUse(stack: ItemStack, world: IBlockAccess, pos: BlockPos, player: EntityPlayer): Boolean {
+    override fun doesSneakBypassUse(
+        stack: ItemStack,
+        world: IBlockAccess,
+        pos: BlockPos,
+        player: EntityPlayer
+    ): Boolean {
         return typeWhenSneak != null
     }
 
-    //todo use capability
-    override fun onItemUseFirst(player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, hand: EnumHand): EnumActionResult {
-        val typeToSend = (if (player.isSneaking) typeWhenSneak else type)
-            ?: return EnumActionResult.PASS
+    // todo use capability
+    override fun onItemUseFirst(
+        player: EntityPlayer,
+        world: World,
+        pos: BlockPos,
+        side: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float,
+        hand: EnumHand
+    ): EnumActionResult {
+        val typeToSend =
+            (if (player.isSneaking) typeWhenSneak else type) ?: return EnumActionResult.PASS
 
         val metaTileEntity = world.getMetaTileEntity(pos)
         if (metaTileEntity == null) {
@@ -57,8 +71,6 @@ class ItemClayConfigTool(
     }
 
     private fun createConfigToolCapability(): IConfigurationTool {
-        return IConfigurationTool { isSneaking ->
-            if (isSneaking) typeWhenSneak else type
-        }
+        return IConfigurationTool { isSneaking -> if (isSneaking) typeWhenSneak else type }
     }
 }

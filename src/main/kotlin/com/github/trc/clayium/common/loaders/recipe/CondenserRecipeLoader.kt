@@ -17,27 +17,33 @@ object CondenserRecipeLoader {
     fun registerRecipes() {
         val registry = CRecipes.CONDENSER
 
-        registry.builder()
+        registry
+            .builder()
             .input(MetaItemClayParts.CompressedClayShard, 4)
             .output(OrePrefix.block, CMaterials.compressedClay)
             .duration(3)
             .buildAndRegister()
-        registry.builder()
+        registry
+            .builder()
             .input(MetaItemClayParts.IndustrialClayShard, 4)
             .output(OrePrefix.block, CMaterials.industrialClay)
             .duration(6)
             .buildAndRegister()
-        registry.builder()
+        registry
+            .builder()
             .input(MetaItemClayParts.AdvancedIndustrialClayShard, 4)
             .output(OrePrefix.block, CMaterials.advancedIndustrialClay)
             .duration(9)
             .buildAndRegister()
 
         for (i in 0..<(CMaterials.PURE_ANTIMATTERS.size - 1)) {
-            registry.builder()
+            registry
+                .builder()
                 .input(OrePrefix.gem, CMaterials.PURE_ANTIMATTERS[i], 9)
                 .output(OrePrefix.gem, CMaterials.PURE_ANTIMATTERS[i + 1])
-                .tier(10).CEt(ClayEnergy.of(100)).duration(6)
+                .tier(10)
+                .CEt(ClayEnergy.of(100))
+                .duration(6)
                 .buildAndRegister()
         }
     }
@@ -62,7 +68,9 @@ object CondenserRecipeLoader {
             CRecipes.CONDENSER.builder()
                 .input(OrePrefix.dust, material, amount)
                 .output(OrePrefix.block, material)
-                .tier(tier).CEt(clayEnergy).duration(5 * amount)
+                .tier(tier)
+                .CEt(clayEnergy)
+                .duration(5 * amount)
                 .buildAndRegister()
         }
 
@@ -70,7 +78,9 @@ object CondenserRecipeLoader {
             CRecipes.CONDENSER.builder()
                 .input(OrePrefix.dust, material)
                 .output(OrePrefix.gem, material)
-                .tier(tier).CEt(clayEnergy).duration(5)
+                .tier(tier)
+                .CEt(clayEnergy)
+                .duration(5)
                 .buildAndRegister()
         }
 
@@ -78,7 +88,9 @@ object CondenserRecipeLoader {
             CRecipes.CONDENSER.builder()
                 .input(OrePrefix.dust, material)
                 .output(OrePrefix.crystal, material)
-                .tier(tier).CEt(clayEnergy).duration(5)
+                .tier(tier)
+                .CEt(clayEnergy)
+                .duration(5)
                 .buildAndRegister()
         }
     }

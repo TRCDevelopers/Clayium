@@ -11,7 +11,9 @@ object PipeDrawingRecipeLoader {
             CRecipes.PIPE_DRAWING_MACHINE.builder()
                 .input(OrePrefix.cylinder, material)
                 .output(OrePrefix.pipe, material, 2)
-                .tier(0).CEt(ClayEnergy.micro(10)).duration(3)
+                .tier(0)
+                .CEt(ClayEnergy.micro(10))
+                .duration(3)
                 .buildAndRegister()
         }
     }

@@ -33,42 +33,69 @@ class ChemicalMetalSeparatorMetaTileEntity(
     override val workable = RecipeLogicEnergy(this, recipeRegistry, clayEnergyHolder)
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
-        val slotsAndProgressBar = Row()
-            .widthRel(0.8f).height(18 * 4)
-            .align(Alignment.Center)
-            .child(largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
-                .align(Alignment.CenterLeft))
-            .child(workable.getProgressBar(syncManager)
-                .align(Alignment.CenterLeft).marginLeft(26 + 4))
-            .child(SlotGroupWidget.builder()
-                .matrix(*(0..3).map { "IIII" }.toTypedArray())
-                .key('I') {
-                    ItemSlot().slot(SyncHandlers.itemSlot(exportItems, it)
-                        .accessibility(false, true))
-                }
-                .build()
-                .align(Alignment.CenterRight)
-            )
+        val slotsAndProgressBar =
+            Row()
+                .widthRel(0.8f)
+                .height(18 * 4)
+                .align(Alignment.Center)
+                .child(
+                    largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
+                        .align(Alignment.CenterLeft)
+                )
+                .child(
+                    workable
+                        .getProgressBar(syncManager)
+                        .align(Alignment.CenterLeft)
+                        .marginLeft(26 + 4)
+                )
+                .child(
+                    SlotGroupWidget.builder()
+                        .matrix(*(0..3).map { "IIII" }.toTypedArray())
+                        .key('I') {
+                            ItemSlot()
+                                .slot(
+                                    SyncHandlers.itemSlot(exportItems, it)
+                                        .accessibility(false, true)
+                                )
+                        }
+                        .build()
+                        .align(Alignment.CenterRight)
+                )
 
         return ModularPanel.defaultPanel(translationKey, GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 20)
             .columnWithPlayerInv {
-                @Suppress("DuplicatedCode") // Output slots layout is different from super.buildMainParentWidget
-                child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.str(getStackForm().displayName).asWidget()
-                        .align(Alignment.TopLeft))
-                    .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
-                    .child(IKey.dynamic {
-                        // if empty string, a bug occurs.
-                        if (overclock != 1.0) I18n.format("gui.clayium.overclock", overclock) else " "
-                    }.asWidgetResizing().alignment(Alignment.CenterRight).align(Alignment.BottomRight))
-                    .child(slotsAndProgressBar)
-                    .child(clayEnergyHolder.createSlotWidget()
-                        .align(Alignment.BottomRight))
-                    .child(clayEnergyHolder.createCeTextWidget(syncManager)
-                        .bottom(12).left(0))
+                @Suppress(
+                    "DuplicatedCode"
+                ) // Output slots layout is different from super.buildMainParentWidget
+                child(
+                    ParentWidget()
+                        .widthRel(1f)
+                        .expanded()
+                        .marginBottom(2)
+                        .child(
+                            IKey.str(getStackForm().displayName).asWidget().align(Alignment.TopLeft)
+                        )
+                        .child(
+                            IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft)
+                        )
+                        .child(
+                            IKey.dynamic {
+                                    // if empty string, a bug occurs.
+                                    if (overclock != 1.0)
+                                        I18n.format("gui.clayium.overclock", overclock)
+                                    else " "
+                                }
+                                .asWidgetResizing()
+                                .alignment(Alignment.CenterRight)
+                                .align(Alignment.BottomRight)
+                        )
+                        .child(slotsAndProgressBar)
+                        .child(clayEnergyHolder.createSlotWidget().align(Alignment.BottomRight))
+                        .child(clayEnergyHolder.createCeTextWidget(syncManager).bottom(12).left(0))
                 )
             }
     }
 
-    override fun createMetaTileEntity() = ChemicalMetalSeparatorMetaTileEntity(metaTileEntityId, tier)
+    override fun createMetaTileEntity() =
+        ChemicalMetalSeparatorMetaTileEntity(metaTileEntityId, tier)
 }

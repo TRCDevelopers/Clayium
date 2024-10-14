@@ -3,10 +3,7 @@ package com.github.trc.clayium.api.util
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 
-/**
- * vanilla blocks that has metadata.
- * these blocks are not in [Blocks] class.
- */
+/** vanilla blocks that has metadata. these blocks are not in [Blocks] class. */
 object VBlocks {
     val PODZOL = ItemStack(Blocks.DIRT, 1, 2)
 

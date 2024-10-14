@@ -6,9 +6,8 @@ import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import net.minecraft.block.SoundType
 
-abstract class BlockCompressedClay(
-    mapping: Map<Int, CMaterial>
-) : BlockMaterialBase(net.minecraft.block.material.Material.CLAY, mapping) {
+abstract class BlockCompressedClay(mapping: Map<Int, CMaterial>) :
+    BlockMaterialBase(net.minecraft.block.material.Material.CLAY, mapping) {
     init {
         setSoundType(SoundType.GROUND)
         setHarvestLevel("shovel", 0)

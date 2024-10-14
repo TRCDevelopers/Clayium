@@ -22,6 +22,7 @@ class LaserEnergyHolder(
 
     var storedPower = LaserEnergy.ZERO
         private set
+
     private var receivedLasers: Array<ClayLaser?> = arrayOfNulls(6)
 
     override fun update() {
@@ -57,18 +58,16 @@ class LaserEnergyHolder(
     }
 
     fun createLpTextWidget(syncManager: GuiSyncManager): TextWidget {
-        syncManager.syncValue("laser_power", SyncHandlers.doubleNumber(
-            { storedPower.energy },
-            { storedPower = LaserEnergy(it) }
-        ))
+        syncManager.syncValue(
+            "laser_power",
+            SyncHandlers.doubleNumber({ storedPower.energy }, { storedPower = LaserEnergy(it) })
+        )
 
         return IKey.dynamic { "Laser : ${this.storedPower.format()}" }.asWidgetResizing()
     }
 
     override fun serializeNBT(): NBTTagCompound {
-        return super.serializeNBT().apply {
-            setDouble("storedPower", storedPower.energy)
-        }
+        return super.serializeNBT().apply { setDouble("storedPower", storedPower.energy) }
     }
 
     override fun deserializeNBT(data: NBTTagCompound) {
@@ -79,5 +78,4 @@ class LaserEnergyHolder(
     override fun acceptLaser(irradiatedSide: EnumFacing, laser: ClayLaser?) {
         this.receivedLasers[irradiatedSide.index] = laser
     }
-
 }

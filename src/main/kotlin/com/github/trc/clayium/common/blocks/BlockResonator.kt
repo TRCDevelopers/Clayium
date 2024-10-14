@@ -17,7 +17,8 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 @Suppress("OVERRIDE_DEPRECATION")
-class BlockResonator : VariantBlock<BlockCaReactorCoil.BlockType>(Material.IRON), IResonatingBlock, ITieredBlock {
+class BlockResonator :
+    VariantBlock<BlockCaReactorCoil.BlockType>(Material.IRON), IResonatingBlock, ITieredBlock {
     init {
         setSoundType(SoundType.METAL)
         setHardness(2.0f)
@@ -26,11 +27,19 @@ class BlockResonator : VariantBlock<BlockCaReactorCoil.BlockType>(Material.IRON)
     }
 
     override fun getResonance(state: IBlockState) = RESONANCE[getEnum(state).ordinal]
+
     override fun getTier(stack: ItemStack) = getEnum(stack).tier
-    override fun getTier(world: IBlockAccess, pos: BlockPos) = getEnum(world.getBlockState(pos)).tier
+
+    override fun getTier(world: IBlockAccess, pos: BlockPos) =
+        getEnum(world.getBlockState(pos)).tier
 
     @SideOnly(Side.CLIENT)
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         tooltip.add(I18n.format("gui.${MOD_ID}.resonance", RESONANCE[stack.metadata]))
     }
 

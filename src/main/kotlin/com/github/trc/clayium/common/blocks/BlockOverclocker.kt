@@ -12,14 +12,16 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
-class BlockOverclocker : VariantBlock<BlockCaReactorCoil.BlockType>(Material.IRON), IOverclockerBlock, ITieredBlock {
+class BlockOverclocker :
+    VariantBlock<BlockCaReactorCoil.BlockType>(Material.IRON), IOverclockerBlock, ITieredBlock {
     init {
         setHardness(2.0f)
         setResistance(2.0f)
         soundType = SoundType.METAL
     }
 
-    override fun getOverclockFactor(world: IBlockAccess, pos: BlockPos) = getOcFactor(getEnum(world.getBlockState(pos)))
+    override fun getOverclockFactor(world: IBlockAccess, pos: BlockPos) =
+        getOcFactor(getEnum(world.getBlockState(pos)))
 
     private fun getOcFactor(type: BlockCaReactorCoil.BlockType): Double {
         return when (type) {
@@ -31,9 +33,16 @@ class BlockOverclocker : VariantBlock<BlockCaReactorCoil.BlockType>(Material.IRO
     }
 
     override fun getTier(stack: ItemStack) = getEnum(stack).tier
-    override fun getTier(world: IBlockAccess, pos: BlockPos) = getEnum(world.getBlockState(pos)).tier
 
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun getTier(world: IBlockAccess, pos: BlockPos) =
+        getEnum(world.getBlockState(pos)).tier
+
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
         tooltip.add(I18n.format("tile.clayium.overclocker.factor", getOcFactor(getEnum(stack))))
     }

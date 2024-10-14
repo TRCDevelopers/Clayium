@@ -13,11 +13,11 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.resources.I18n
 import net.minecraft.item.ItemStack
 
-class ClayWorkTableRecipeCategory(
-    guiHelper: IGuiHelper
-) : IRecipeCategory<ClayWorkTableRecipeWrapper> {
+class ClayWorkTableRecipeCategory(guiHelper: IGuiHelper) :
+    IRecipeCategory<ClayWorkTableRecipeWrapper> {
 
-    private val overlay = guiHelper.createDrawable(clayiumId("textures/gui/clayworktable.png"), 4, 6, 168, 74)
+    private val overlay =
+        guiHelper.createDrawable(clayiumId("textures/gui/clayworktable.png"), 4, 6, 168, 74)
     private val icon = guiHelper.createDrawableIngredient(ItemStack(ClayiumBlocks.CLAY_WORK_TABLE))
 
     override fun getUid(): String {
@@ -41,7 +41,7 @@ class ClayWorkTableRecipeCategory(
     }
 
     override fun drawExtras(minecraft: Minecraft) {
-//        progressBar.draw(minecraft, 44, 23)
+        //        progressBar.draw(minecraft, 44, 23)
     }
 
     override fun setRecipe(

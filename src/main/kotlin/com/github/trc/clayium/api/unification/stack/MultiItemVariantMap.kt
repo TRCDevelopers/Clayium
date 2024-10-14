@@ -4,9 +4,8 @@ import com.github.trc.clayium.api.W
 import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap
 
 /**
- * For subtyped items.
- * Uses a map internally to store separate values for each metadata.
- * Also holds a wildcard value.
+ * For subtyped items. Uses a map internally to store separate values for each metadata. Also holds
+ * a wildcard value.
  */
 class MultiItemVariantMap<E> : MutableItemVariantMap<E> {
 
@@ -38,7 +37,6 @@ class MultiItemVariantMap<E> : MutableItemVariantMap<E> {
 
     override fun get(meta: Short): E? {
         return if (meta == W.toShort()) wildcardValue else map[meta]
-
     }
 
     override fun hasNonWildcardEntry(): Boolean {

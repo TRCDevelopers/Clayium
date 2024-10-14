@@ -27,16 +27,21 @@ import net.minecraftforge.common.capabilities.Capability
 class ClayReactorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-): WorkableMetaTileEntity(metaTileEntityId, tier, CRecipes.CLAY_REACTOR), IClayLaserAcceptor {
+) : WorkableMetaTileEntity(metaTileEntityId, tier, CRecipes.CLAY_REACTOR), IClayLaserAcceptor {
     private val multiblockLogic = MultiblockLogic(this, ::checkStructure)
 
     var laser: ClayLaser? = null
         private set
 
     fun getFaceInvalid() = clayiumId("blocks/reactor")
+
     fun getFaceValid() = clayiumId("blocks/reactor_1")
-    override val faceTexture get() = if (multiblockLogic.structureFormed) getFaceValid() else getFaceInvalid()
-    override val requiredTextures get() = listOf(getFaceValid(), getFaceInvalid())
+
+    override val faceTexture
+        get() = if (multiblockLogic.structureFormed) getFaceValid() else getFaceInvalid()
+
+    override val requiredTextures
+        get() = listOf(getFaceValid(), getFaceInvalid())
 
     private fun checkStructure(handler: MultiblockLogic): StructureValidationResult {
         val world = world ?: return StructureValidationResult.Invalid
@@ -48,7 +53,8 @@ class ClayReactorMetaTileEntity(
                 for (zz in 0..2) {
                     val relPos = handler.getControllerRelativeCoord(controllerPos, xx, yy, zz)
                     if (yy == 1 && xx == 0 && zz == 1) {
-                        val laserProxy = getLaserProxy(relPos) ?: return StructureValidationResult.Invalid
+                        val laserProxy =
+                            getLaserProxy(relPos) ?: return StructureValidationResult.Invalid
                         mbParts.add(laserProxy)
                         tiers.add(laserProxy.tier)
                     }
@@ -81,10 +87,19 @@ class ClayReactorMetaTileEntity(
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         syncManager.syncValue("clayLaser", ClayLaserSyncValue(::laser, ::laser::set))
         return super.buildMainParentWidget(syncManager)
-            .child(IKey.dynamic { I18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.energy?.toLong() ?: 0L)) }.asWidgetResizing()
-                .pos(102, 53))
-            .child(multiblockLogic.tierTextWidget(syncManager)
-                .alignX(Alignment.Center.x).bottom(12))
+            .child(
+                IKey.dynamic {
+                        I18n.format(
+                            "gui.clayium.laser_energy",
+                            UtilLocale.laserNumeral(this.laser?.energy?.toLong() ?: 0L)
+                        )
+                    }
+                    .asWidgetResizing()
+                    .pos(102, 53)
+            )
+            .child(
+                multiblockLogic.tierTextWidget(syncManager).alignX(Alignment.Center.x).bottom(12)
+            )
     }
 
     override fun acceptLaser(irradiatedSide: EnumFacing, laser: ClayLaser?) {
@@ -98,8 +113,12 @@ class ClayReactorMetaTileEntity(
         return super.getCapability(capability, facing)
     }
 
-    private inner class ClayReactorRecipeLogic : MultiblockRecipeLogic(this@ClayReactorMetaTileEntity,
-        CRecipes.CLAY_REACTOR, multiblockLogic) {
+    private inner class ClayReactorRecipeLogic :
+        MultiblockRecipeLogic(
+            this@ClayReactorMetaTileEntity,
+            CRecipes.CLAY_REACTOR,
+            multiblockLogic
+        ) {
         override fun getProgressPerTick(): Long {
             return 1L + (laser?.energy ?: 0.0).toLong()
         }

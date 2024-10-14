@@ -46,8 +46,13 @@ object ClayiumBlocks {
 
     private val blocks: MutableMap<String, Block> = mutableMapOf()
 
-    val CREATIVE_ENERGY_SOURCE = createBlock("creative_energy_source", BlockSimpleTileEntityHolder(::TileEntityCreativeEnergySource)
-        .apply { setBlockUnbreakable() })
+    val CREATIVE_ENERGY_SOURCE =
+        createBlock(
+            "creative_energy_source",
+            BlockSimpleTileEntityHolder(::TileEntityCreativeEnergySource).apply {
+                setBlockUnbreakable()
+            }
+        )
 
     val CLAY_CRAFTING_BOARD = createBlock("clay_crafting_board", BlockClayCraftingBoard())
     val CLAY_WORK_TABLE = createBlock("clay_work_table", BlockClayWorkTable())
@@ -77,7 +82,8 @@ object ClayiumBlocks {
     val CHUNK_LOADER = createBlock("chunk_loader", ChunkLoaderBlock())
 
     /* Deco Blocks */
-    val COLORED_SILICONE = createBlock("colored_silicone", ColoredSiliconeBlock(), ClayiumCTabs.decorations)
+    val COLORED_SILICONE =
+        createBlock("colored_silicone", ColoredSiliconeBlock(), ClayiumCTabs.decorations)
 
     /* ---------------------------------- */
 
@@ -96,20 +102,34 @@ object ClayiumBlocks {
 
     init {
         createMaterialBlock(
-            { !OrePrefix.block.isIgnored(it)
-                && it.hasProperty(CPropertyKey.CLAY) && it.getProperty(CPropertyKey.CLAY).energy == null },
-            this::createCompressedClayBlock)
+            {
+                !OrePrefix.block.isIgnored(it) &&
+                    it.hasProperty(CPropertyKey.CLAY) &&
+                    it.getProperty(CPropertyKey.CLAY).energy == null
+            },
+            this::createCompressedClayBlock
+        )
         createMaterialBlock(
-            { !OrePrefix.block.isIgnored(it)
-                && it.getPropOrNull(CPropertyKey.CLAY)?.energy != null },
-            this::createEnergizedClayBlock)
+            {
+                !OrePrefix.block.isIgnored(it) &&
+                    it.getPropOrNull(CPropertyKey.CLAY)?.energy != null
+            },
+            this::createEnergizedClayBlock
+        )
         createMaterialBlock(
-            { !OrePrefix.block.isIgnored(it)
-                && (it.hasProperty(CPropertyKey.INGOT) || it.hasProperty(CPropertyKey.MATTER)) },
-            this::createCompressedBock)
+            {
+                !OrePrefix.block.isIgnored(it) &&
+                    (it.hasProperty(CPropertyKey.INGOT) || it.hasProperty(CPropertyKey.MATTER))
+            },
+            this::createCompressedBock
+        )
     }
 
-    private fun <T: Block> createBlock(key: String, block: T, tab: CreativeTabs = ClayiumCTabs.main): T {
+    private fun <T : Block> createBlock(
+        key: String,
+        block: T,
+        tab: CreativeTabs = ClayiumCTabs.main
+    ): T {
         return block.apply {
             setCreativeTab(tab)
             setRegistryName(clayiumId(key))
@@ -118,9 +138,13 @@ object ClayiumBlocks {
         }
     }
 
-    private fun <T: Block, I: ItemBlock> createItemBlock(block: T, producer: (T) -> I): I {
+    private fun <T : Block, I : ItemBlock> createItemBlock(block: T, producer: (T) -> I): I {
         return producer(block).apply {
-            registryName = block.registryName ?: throw IllegalArgumentException("Block ${block.translationKey} has no registry name")
+            registryName =
+                block.registryName
+                    ?: throw IllegalArgumentException(
+                        "Block ${block.translationKey} has no registry name"
+                    )
         }
     }
 
@@ -148,7 +172,11 @@ object ClayiumBlocks {
     }
 
     fun registerOreDictionaries() {
-        OreDictUnifier.registerOre(ItemStack(COLORED_SILICONE, 1, W), OrePrefix.block, CMaterials.silicone)
+        OreDictUnifier.registerOre(
+            ItemStack(COLORED_SILICONE, 1, W),
+            OrePrefix.block,
+            CMaterials.silicone
+        )
         for ((m, b) in energizedClay) {
             val stack = b.getItemStack(m)
             OreDictUnifier.registerOre(stack, OrePrefix.block, m)
@@ -163,7 +191,10 @@ object ClayiumBlocks {
         }
     }
 
-    fun createMaterialBlock(filter: (material: CMaterial) -> Boolean, generator: (metaMaterialMap: Map<Int, CMaterial>, index: Int) -> Unit) {
+    fun createMaterialBlock(
+        filter: (material: CMaterial) -> Boolean,
+        generator: (metaMaterialMap: Map<Int, CMaterial>, index: Int) -> Unit
+    ) {
         var mapping = Int2ObjectArrayMap<CMaterial>(17)
         for ((currentId, materials) in ClayiumApi.materialRegistry.chunked(16).withIndex()) {
             for (material in materials) {
@@ -201,9 +232,15 @@ object ClayiumBlocks {
 
     @SideOnly(Side.CLIENT)
     fun registerStateMappers() {
-        setStateMapper(CLAY_TREE_LEAVES, StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build())
+        setStateMapper(
+            CLAY_TREE_LEAVES,
+            StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build()
+        )
         setStateMapper(CLAY_TREE_SAPLING, StateMap.Builder().ignore(BlockSapling.STAGE).build())
-        setStateMapper(COLORED_SILICONE, StateMap.Builder().ignore(COLORED_SILICONE.variantProperty).build())
+        setStateMapper(
+            COLORED_SILICONE,
+            StateMap.Builder().ignore(COLORED_SILICONE.variantProperty).build()
+        )
     }
 
     @SideOnly(Side.CLIENT)
@@ -227,20 +264,39 @@ object ClayiumBlocks {
         val item = block.getAsItem()
         val defaultStateMapper = DefaultStateMapper()
         when (block) {
-            CLAY_TREE_SAPLING -> ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(clayiumId("clay_tree_sapling"), "inventory"))
-            PAN_CABLE -> ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(clayiumId("pan_cable"), "inventory"))
+            CLAY_TREE_SAPLING ->
+                ModelLoader.setCustomModelResourceLocation(
+                    item,
+                    0,
+                    ModelResourceLocation(clayiumId("clay_tree_sapling"), "inventory")
+                )
+            PAN_CABLE ->
+                ModelLoader.setCustomModelResourceLocation(
+                    item,
+                    0,
+                    ModelResourceLocation(clayiumId("pan_cable"), "inventory")
+                )
             else -> {
                 val customStateMapper = stateMapperCache[block]
                 if (customStateMapper != null) {
                     val map = customStateMapper.putStateModelLocations(block)
                     for (state in block.blockState.validStates) {
-                        ModelLoader.setCustomModelResourceLocation(item, block.getMetaFromState(state),
-                            map[state] ?: error("Missing model for state $state"))
+                        ModelLoader.setCustomModelResourceLocation(
+                            item,
+                            block.getMetaFromState(state),
+                            map[state] ?: error("Missing model for state $state")
+                        )
                     }
                 } else {
                     for (state in block.blockState.validStates) {
-                        ModelLoader.setCustomModelResourceLocation(item, block.getMetaFromState(state),
-                            ModelResourceLocation(block.registryName!!, defaultStateMapper.getPropertyString(state.properties)))
+                        ModelLoader.setCustomModelResourceLocation(
+                            item,
+                            block.getMetaFromState(state),
+                            ModelResourceLocation(
+                                block.registryName!!,
+                                defaultStateMapper.getPropertyString(state.properties)
+                            )
+                        )
                     }
                 }
             }
@@ -250,21 +306,26 @@ object ClayiumBlocks {
     @SideOnly(Side.CLIENT)
     fun registerBlockColors(e: ColorHandlerEvent.Block) {
         val blockColors = e.blockColors
-        blockColors.registerBlockColorHandler({ state, _, _, _ ->
-            COLORED_SILICONE.getEnum(state).colorValue
-        }, COLORED_SILICONE)
+        blockColors.registerBlockColorHandler(
+            { state, _, _, _ -> COLORED_SILICONE.getEnum(state).colorValue },
+            COLORED_SILICONE
+        )
     }
 
     @SideOnly(Side.CLIENT)
     fun registerItemColors(e: ColorHandlerEvent.Item) {
         val itemColors = e.itemColors
         for (item in COMPRESSED_ITEM_BLOCKS) {
-            itemColors.registerItemColorHandler({ stack, i ->
-                item.blockMaterial.getCMaterial(stack.itemDamage).colors?.get(i) ?: 0
-            }, item)
+            itemColors.registerItemColorHandler(
+                { stack, i ->
+                    item.blockMaterial.getCMaterial(stack.itemDamage).colors?.get(i) ?: 0
+                },
+                item
+            )
         }
-        itemColors.registerItemColorHandler({ stack, _ ->
-            COLORED_SILICONE.getEnum(stack).colorValue
-        }, COLORED_SILICONE)
+        itemColors.registerItemColorHandler(
+            { stack, _ -> COLORED_SILICONE.getEnum(stack).colorValue },
+            COLORED_SILICONE
+        )
     }
 }

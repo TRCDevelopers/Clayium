@@ -66,7 +66,9 @@ open class CommonProxy {
     open fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(ClayiumMod.proxy)
         MinecraftForge.EVENT_BUS.register(ItemClaySteelPickaxe)
-        if (CUtils.isDeobfEnvironment) { MinecraftForge.EVENT_BUS.register(DebugUtils::class.java) }
+        if (CUtils.isDeobfEnvironment) {
+            MinecraftForge.EVENT_BUS.register(DebugUtils::class.java)
+        }
 
         ClayiumCTabs.init()
         CNetwork.init()
@@ -101,8 +103,7 @@ open class CommonProxy {
         CModIntegration.init(event)
     }
 
-    open fun postInit(event: FMLPostInitializationEvent) {
-    }
+    open fun postInit(event: FMLPostInitializationEvent) {}
 
     @Suppress("unused")
     @SubscribeEvent
@@ -127,7 +128,7 @@ open class CommonProxy {
         for (block in ClayiumBlocks.COMPRESSED_BLOCKS) registry.register(block)
     }
 
-    //todo move to ClayiumBlocks/Items
+    // todo move to ClayiumBlocks/Items
     @Suppress("unused")
     @SubscribeEvent
     fun registerItems(event: RegistryEvent.Register<Item>) {
@@ -135,7 +136,7 @@ open class CommonProxy {
 
         ClayiumBlocks.registerItemBlocks(event)
 
-        //todo: move to somewhere else
+        // todo: move to somewhere else
         registry.register(MetaItemClayParts)
         for (orePrefix in OrePrefix.metaItemPrefixes) {
             val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
@@ -172,25 +173,39 @@ open class CommonProxy {
         registry.register(createItemBlock(ClayiumBlocks.CA_REACTOR_HULL, ::ItemBlockDamaged))
         registry.register(createItemBlock(ClayiumBlocks.CA_REACTOR_COIL, ::ItemBlockTiered))
 
-        registry.register(createItemBlock(ClayiumBlocks.QUARTZ_CRUCIBLE, ItemBlockTiered<*>::noSubTypes))
+        registry.register(
+            createItemBlock(ClayiumBlocks.QUARTZ_CRUCIBLE, ItemBlockTiered<*>::noSubTypes)
+        )
 
         registry.register(createItemBlock(ClayiumBlocks.PAN_CABLE, ItemBlockTiered<*>::noSubTypes))
 
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_TREE_LOG, ItemBlockTiered<*>::noSubTypes))
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_TREE_LEAVES, ItemBlockTiered<*>::noSubTypes))
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_TREE_SAPLING, ItemBlockTiered<*>::noSubTypes))
+        registry.register(
+            createItemBlock(ClayiumBlocks.CLAY_TREE_LOG, ItemBlockTiered<*>::noSubTypes)
+        )
+        registry.register(
+            createItemBlock(ClayiumBlocks.CLAY_TREE_LEAVES, ItemBlockTiered<*>::noSubTypes)
+        )
+        registry.register(
+            createItemBlock(ClayiumBlocks.CLAY_TREE_SAPLING, ItemBlockTiered<*>::noSubTypes)
+        )
 
         registry.register(createItemBlock(ClayiumBlocks.OVERCLOCKER, ::ItemBlockTiered))
         registry.register(createItemBlock(ClayiumBlocks.ENERGY_STORAGE_UPGRADE, ::ItemBlockTiered))
 
         registry.register(createItemBlock(ClayiumBlocks.CLAY_MARKER, ::VariantItemBlock))
 
-        registry.register(createItemBlock(ClayiumBlocks.CHUNK_LOADER, ItemBlockTiered<*>::noSubTypes))
+        registry.register(
+            createItemBlock(ClayiumBlocks.CHUNK_LOADER, ItemBlockTiered<*>::noSubTypes)
+        )
 
-        registry.register(createItemBlock(ClayiumBlocks.LASER_REFLECTOR, ::ItemBlockClayLaserReflector))
+        registry.register(
+            createItemBlock(ClayiumBlocks.LASER_REFLECTOR, ::ItemBlockClayLaserReflector)
+        )
 
         for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) {
-            registry.register(createItemBlock(block) { ItemBlockEnergizedClay(it, OrePrefix.block) })
+            registry.register(
+                createItemBlock(block) { ItemBlockEnergizedClay(it, OrePrefix.block) }
+            )
         }
         for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) {
             registry.register(createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.block) })
@@ -207,24 +222,55 @@ open class CommonProxy {
         registry.register(item)
     }
 
-    private fun <T: Block> createItemBlock(block: T, producer: (T) -> ItemBlock): ItemBlock {
+    private fun <T : Block> createItemBlock(block: T, producer: (T) -> ItemBlock): ItemBlock {
         return producer(block).apply {
-            registryName = block.registryName ?: throw IllegalArgumentException("Block ${block.translationKey} has no registry name")
+            registryName =
+                block.registryName
+                    ?: throw IllegalArgumentException(
+                        "Block ${block.translationKey} has no registry name"
+                    )
         }
     }
 
     fun registerTileEntities() {
         GameRegistry.registerTileEntity(TileClayWorkTable::class.java, clayiumId("clayWorkTable"))
-        GameRegistry.registerTileEntity(TileEntityClayLaserReflector::class.java, clayiumId("laser_reflector"))
-        GameRegistry.registerTileEntity(TileEntityCreativeEnergySource::class.java, clayiumId("creativeEnergySource"))
-        GameRegistry.registerTileEntity(MetaTileEntityHolder::class.java, clayiumId("metaTileEntityHolder"))
-        GameRegistry.registerTileEntity(BlockQuartzCrucible.QuartzCrucibleTileEntity::class.java, clayiumId("quartzCrucibleTileEntity"))
-        GameRegistry.registerTileEntity(TileClayCraftingTable::class.java, clayiumId("clayCraftingTable"))
+        GameRegistry.registerTileEntity(
+            TileEntityClayLaserReflector::class.java,
+            clayiumId("laser_reflector")
+        )
+        GameRegistry.registerTileEntity(
+            TileEntityCreativeEnergySource::class.java,
+            clayiumId("creativeEnergySource")
+        )
+        GameRegistry.registerTileEntity(
+            MetaTileEntityHolder::class.java,
+            clayiumId("metaTileEntityHolder")
+        )
+        GameRegistry.registerTileEntity(
+            BlockQuartzCrucible.QuartzCrucibleTileEntity::class.java,
+            clayiumId("quartzCrucibleTileEntity")
+        )
+        GameRegistry.registerTileEntity(
+            TileClayCraftingTable::class.java,
+            clayiumId("clayCraftingTable")
+        )
 
-        GameRegistry.registerTileEntity(TileClayMarker.NoExtend::class.java, clayiumId("clayMarkerNoExtent"))
-        GameRegistry.registerTileEntity(TileClayMarker.ExtendToGround::class.java, clayiumId("clayMarkerExtendToGround"))
-        GameRegistry.registerTileEntity(TileClayMarker.ExtendToSky::class.java, clayiumId("clayMarkerExtendToSky"))
-        GameRegistry.registerTileEntity(TileClayMarker.AllHeight::class.java, clayiumId("clayMarkerAllHeight"))
+        GameRegistry.registerTileEntity(
+            TileClayMarker.NoExtend::class.java,
+            clayiumId("clayMarkerNoExtent")
+        )
+        GameRegistry.registerTileEntity(
+            TileClayMarker.ExtendToGround::class.java,
+            clayiumId("clayMarkerExtendToGround")
+        )
+        GameRegistry.registerTileEntity(
+            TileClayMarker.ExtendToSky::class.java,
+            clayiumId("clayMarkerExtendToSky")
+        )
+        GameRegistry.registerTileEntity(
+            TileClayMarker.AllHeight::class.java,
+            clayiumId("clayMarkerAllHeight")
+        )
 
         GameRegistry.registerTileEntity(ChunkLoaderTileEntity::class.java, clayiumId("chunkLoader"))
     }

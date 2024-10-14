@@ -33,7 +33,13 @@ class ItemClayPickaxe : ItemPickaxe(ToolMaterial.STONE) {
     override fun getDestroySpeed(stack: ItemStack, state: IBlockState): Float {
         if (state.block is IClayOreBlock) {
             val blockHarvestLevel = state.block.getHarvestLevel(state)
-            val itemHarvestLevel = stack.item.getHarvestLevel(stack, state.block.getHarvestTool(state) ?: "", null, state)
+            val itemHarvestLevel =
+                stack.item.getHarvestLevel(
+                    stack,
+                    state.block.getHarvestTool(state) ?: "",
+                    null,
+                    state
+                )
             return if (blockHarvestLevel <= itemHarvestLevel) {
                 efficiencyOnClayOre
             } else {
@@ -44,7 +50,12 @@ class ItemClayPickaxe : ItemPickaxe(ToolMaterial.STONE) {
     }
 
     @SideOnly(Side.CLIENT)
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         tooltip.add(I18n.format("item.clayium.clay_pickaxe.tooltip"))
     }
 }

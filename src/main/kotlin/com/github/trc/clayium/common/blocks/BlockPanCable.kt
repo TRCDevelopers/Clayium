@@ -25,13 +25,23 @@ class BlockPanCable : Block(Material.GLASS), IPanCable, ITieredBlock {
         setHardness(0.2f)
         setResistance(0.2f)
 
-        defaultState = blockState.baseState.withProperty(DOWN, false).withProperty(UP, false)
-            .withProperty(NORTH, false).withProperty(SOUTH, false).withProperty(WEST, false).withProperty(EAST, false)
+        defaultState =
+            blockState.baseState
+                .withProperty(DOWN, false)
+                .withProperty(UP, false)
+                .withProperty(NORTH, false)
+                .withProperty(SOUTH, false)
+                .withProperty(WEST, false)
+                .withProperty(EAST, false)
     }
 
     override fun createBlockState() = BlockStateContainer(this, DOWN, UP, NORTH, SOUTH, WEST, EAST)
 
-    override fun getActualState(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): IBlockState {
+    override fun getActualState(
+        state: IBlockState,
+        worldIn: IBlockAccess,
+        pos: BlockPos
+    ): IBlockState {
         var res = state
         for (side in EnumFacing.entries) {
             val property = properties[side.index]
@@ -47,12 +57,23 @@ class BlockPanCable : Block(Material.GLASS), IPanCable, ITieredBlock {
     override fun getMetaFromState(state: IBlockState) = 0
 
     override fun isFullBlock(state: IBlockState) = false
+
     override fun isFullCube(state: IBlockState) = false
+
     override fun isOpaqueCube(state: IBlockState) = false
+
     override fun causesSuffocation(state: IBlockState) = false
 
     @Suppress("DEPRECATION")
-    override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, isActualState: Boolean) {
+    override fun addCollisionBoxToList(
+        state: IBlockState,
+        worldIn: World,
+        pos: BlockPos,
+        entityBox: AxisAlignedBB,
+        collidingBoxes: MutableList<AxisAlignedBB>,
+        entityIn: Entity?,
+        isActualState: Boolean
+    ) {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, CENTER_AABB)
         val s = getActualState(state, worldIn, pos)
         if (s.getValue(DOWN)) addCollisionBoxToList(pos, entityBox, collidingBoxes, DOWN_AABB)
@@ -63,7 +84,11 @@ class BlockPanCable : Block(Material.GLASS), IPanCable, ITieredBlock {
         if (s.getValue(EAST)) addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB)
     }
 
-    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
+    override fun getBoundingBox(
+        state: IBlockState,
+        source: IBlockAccess,
+        pos: BlockPos
+    ): AxisAlignedBB {
         var aabb = CENTER_AABB
         val s = getActualState(state, source, pos)
         if (s.getValue(DOWN)) aabb = aabb.union(DOWN_AABB)
@@ -76,6 +101,7 @@ class BlockPanCable : Block(Material.GLASS), IPanCable, ITieredBlock {
     }
 
     override fun getTier(stack: ItemStack) = ClayTiers.PURE_ANTIMATTER
+
     override fun getTier(world: IBlockAccess, pos: BlockPos) = ClayTiers.PURE_ANTIMATTER
 
     companion object {
@@ -88,14 +114,69 @@ class BlockPanCable : Block(Material.GLASS), IPanCable, ITieredBlock {
         val WEST = PropertyBool.create("west")
         val EAST = PropertyBool.create("east")
 
-        val CENTER_AABB = AxisAlignedBB(0.5 - CABLE_WIDTH, 0.5 - CABLE_WIDTH, 0.5 - CABLE_WIDTH, 0.5 + CABLE_WIDTH, 0.5 + CABLE_WIDTH, 0.5 + CABLE_WIDTH)
-        val DOWN_AABB = AxisAlignedBB(0.5 - CABLE_WIDTH, 0.0, 0.5 - CABLE_WIDTH, 0.5 + CABLE_WIDTH, 0.5 - CABLE_WIDTH, 0.5 + CABLE_WIDTH)
-        val UP_AABB = AxisAlignedBB(0.5 - CABLE_WIDTH, 0.5 + CABLE_WIDTH, 0.5 - CABLE_WIDTH, 0.5 + CABLE_WIDTH, 1.0, 0.5 + CABLE_WIDTH)
-        val NORTH_AABB = AxisAlignedBB(0.5 - CABLE_WIDTH, 0.5 - CABLE_WIDTH, 0.0, 0.5 + CABLE_WIDTH, 0.5 + CABLE_WIDTH, 0.5 - CABLE_WIDTH)
-        val SOUTH_AABB = AxisAlignedBB(0.5 - CABLE_WIDTH, 0.5 - CABLE_WIDTH, 0.5 + CABLE_WIDTH, 0.5 + CABLE_WIDTH, 0.5 + CABLE_WIDTH, 1.0)
-        val WEST_AABB = AxisAlignedBB(0.0, 0.5 - CABLE_WIDTH, 0.5 - CABLE_WIDTH, 0.5 - CABLE_WIDTH, 0.5 + CABLE_WIDTH, 0.5 + CABLE_WIDTH)
-        val EAST_AABB = AxisAlignedBB(0.5 + CABLE_WIDTH, 0.5 - CABLE_WIDTH, 0.5 - CABLE_WIDTH, 1.0, 0.5 + CABLE_WIDTH, 0.5 + CABLE_WIDTH)
-
+        val CENTER_AABB =
+            AxisAlignedBB(
+                0.5 - CABLE_WIDTH,
+                0.5 - CABLE_WIDTH,
+                0.5 - CABLE_WIDTH,
+                0.5 + CABLE_WIDTH,
+                0.5 + CABLE_WIDTH,
+                0.5 + CABLE_WIDTH
+            )
+        val DOWN_AABB =
+            AxisAlignedBB(
+                0.5 - CABLE_WIDTH,
+                0.0,
+                0.5 - CABLE_WIDTH,
+                0.5 + CABLE_WIDTH,
+                0.5 - CABLE_WIDTH,
+                0.5 + CABLE_WIDTH
+            )
+        val UP_AABB =
+            AxisAlignedBB(
+                0.5 - CABLE_WIDTH,
+                0.5 + CABLE_WIDTH,
+                0.5 - CABLE_WIDTH,
+                0.5 + CABLE_WIDTH,
+                1.0,
+                0.5 + CABLE_WIDTH
+            )
+        val NORTH_AABB =
+            AxisAlignedBB(
+                0.5 - CABLE_WIDTH,
+                0.5 - CABLE_WIDTH,
+                0.0,
+                0.5 + CABLE_WIDTH,
+                0.5 + CABLE_WIDTH,
+                0.5 - CABLE_WIDTH
+            )
+        val SOUTH_AABB =
+            AxisAlignedBB(
+                0.5 - CABLE_WIDTH,
+                0.5 - CABLE_WIDTH,
+                0.5 + CABLE_WIDTH,
+                0.5 + CABLE_WIDTH,
+                0.5 + CABLE_WIDTH,
+                1.0
+            )
+        val WEST_AABB =
+            AxisAlignedBB(
+                0.0,
+                0.5 - CABLE_WIDTH,
+                0.5 - CABLE_WIDTH,
+                0.5 - CABLE_WIDTH,
+                0.5 + CABLE_WIDTH,
+                0.5 + CABLE_WIDTH
+            )
+        val EAST_AABB =
+            AxisAlignedBB(
+                0.5 + CABLE_WIDTH,
+                0.5 - CABLE_WIDTH,
+                0.5 - CABLE_WIDTH,
+                1.0,
+                0.5 + CABLE_WIDTH,
+                0.5 + CABLE_WIDTH
+            )
 
         private val properties = arrayOf(DOWN, UP, NORTH, SOUTH, WEST, EAST)
     }
