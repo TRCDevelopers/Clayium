@@ -8,6 +8,7 @@ concurrency:
 
 jobs:
   run-server:
+    name: Run Dedicated Server
     runs-on: ubuntu-latest
 
     env:
