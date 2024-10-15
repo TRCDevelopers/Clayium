@@ -233,6 +233,8 @@ object MetaTileEntities {
         EnergyConverterMetaTileEntity(clayiumId("energy_converter.${it.lowerName}"), it)
     }
 
+    val AUTO_TRADER = registerMetaTileEntity(830, AutoTraderMetaTileEntity(clayiumId("auto_trader"), ClayTiers.PRECISION))
+
     /* Builder Machines 1001-1100 */
     val BLOCK_BREAKER = registerMetaTileEntity(1001,
         BlockBreakerMetaTileEntity(clayiumId("block_breaker"), ClayTiers.AZ91D))
