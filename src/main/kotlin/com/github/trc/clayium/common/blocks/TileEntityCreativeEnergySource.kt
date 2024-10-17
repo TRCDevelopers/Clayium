@@ -25,7 +25,11 @@ class TileEntityCreativeEnergySource : TileEntity(), IGuiHolder<PosGuiData> {
             for (state in block.blockState.validStates) {
                 if (highest == null) highest = state
                 val matCe = block.getCMaterial(state).getProperty(CPropertyKey.CLAY).energy
-                val currentCe = (highest.block as BlockEnergizedClay).getCMaterial(highest).getProperty(CPropertyKey.CLAY).energy!!
+                val currentCe =
+                    (highest.block as BlockEnergizedClay)
+                        .getCMaterial(highest)
+                        .getProperty(CPropertyKey.CLAY)
+                        .energy!!
                 if (matCe == null) continue
                 if (matCe > currentCe) {
                     highest = state
@@ -37,9 +41,12 @@ class TileEntityCreativeEnergySource : TileEntity(), IGuiHolder<PosGuiData> {
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("clayium:creative_energy_source")
-            .child(ItemSlot()
-                .slot(SyncHandlers.itemSlot(handler, 0).accessibility(false, true))
-                .align(Alignment.TopCenter).top(36))
+            .child(
+                ItemSlot()
+                    .slot(SyncHandlers.itemSlot(handler, 0).accessibility(false, true))
+                    .align(Alignment.TopCenter)
+                    .top(36)
+            )
             .bindPlayerInventory()
     }
 

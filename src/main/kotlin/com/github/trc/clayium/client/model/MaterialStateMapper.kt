@@ -14,7 +14,8 @@ object MaterialStateMapper : IStateMapper {
     private val INDEX_PATTERN = Regex("_[0-9]+$")
 
     override fun putStateModelLocations(blockIn: Block): Map<IBlockState, ModelResourceLocation> {
-        if (blockIn !is BlockMaterialBase) throw IllegalArgumentException("Block is not a BlockMaterialBase")
+        if (blockIn !is BlockMaterialBase)
+            throw IllegalArgumentException("Block is not a BlockMaterialBase")
         return blockIn.blockState.validStates.associateWith(::createModelLocation)
     }
 

@@ -8,8 +8,14 @@ object SolarClayFabricatorRecipeLoader {
     fun registerRecipes() {
         val block = OrePrefix.block
 
-        val clays = mutableListOf(CMaterials.clay, CMaterials.denseClay, CMaterials.compressedClay,
-            CMaterials.industrialClay, CMaterials.advancedIndustrialClay)
+        val clays =
+            mutableListOf(
+                CMaterials.clay,
+                CMaterials.denseClay,
+                CMaterials.compressedClay,
+                CMaterials.industrialClay,
+                CMaterials.advancedIndustrialClay
+            )
 
         for (clay in clays) CRecipes.SOLAR_1.register { clayInput(block, clay).tier(5) }
 
@@ -26,7 +32,8 @@ object SolarClayFabricatorRecipeLoader {
         CRecipes.SOLAR_3.builder()
             .input(OrePrefix.ingot, CMaterials.lithium)
             .output(OrePrefix.block, CMaterials.compressedEnergeticClay4)
-            .tier(7).duration(16699)
+            .tier(7)
+            .duration(16699)
             .buildAndRegister()
     }
 }

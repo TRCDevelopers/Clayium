@@ -35,19 +35,28 @@ class LaserProxyMetaTileEntity(
     override fun linkTo(target: MetaTileEntity) {
         super.linkTo(target)
         if (this.laser != null) {
-            target.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
+            target
+                .getCapability(
+                    ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR,
+                    this.frontFacing.opposite
+                )
                 ?.acceptLaser(this.frontFacing.opposite, this.laser)
         }
     }
 
     override fun unlink() {
         super.unlink()
-        this.target?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
+        this.target
+            ?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
             ?.acceptLaser(this.frontFacing.opposite, null)
     }
 
     override fun canLink(target: MetaTileEntity): Boolean {
-        return super.canLink(target) && target.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite) != null
+        return super.canLink(target) &&
+            target.getCapability(
+                ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR,
+                this.frontFacing.opposite
+            ) != null
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
@@ -55,6 +64,7 @@ class LaserProxyMetaTileEntity(
     }
 
     override fun canOpenGui() = false
+
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): Nothing {
         throw UnsupportedOperationException()
     }
@@ -62,19 +72,33 @@ class LaserProxyMetaTileEntity(
     override fun acceptLaser(irradiatedSide: EnumFacing, laser: ClayLaser?) {
         if (irradiatedSide == this.frontFacing) {
             this.laser = laser
-            this.target?.getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, this.frontFacing.opposite)
+            this.target
+                ?.getCapability(
+                    ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR,
+                    this.frontFacing.opposite
+                )
                 ?.acceptLaser(this.frontFacing.opposite, laser)
         }
     }
 
-    override fun onToolClick(toolType: IConfigurationTool.ToolType, player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float) {
+    override fun onToolClick(
+        toolType: IConfigurationTool.ToolType,
+        player: EntityPlayer,
+        hand: EnumHand,
+        clickedSide: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float
+    ) {
         super.onToolClick(toolType, player, hand, clickedSide, hitX, hitY, hitZ)
-        //todo onFrontFacing set
+        // todo onFrontFacing set
         this.laser = null
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        if (capability == ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR && facing == this.frontFacing) {
+        if (
+            capability == ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR && facing == this.frontFacing
+        ) {
             return ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR.cast(this)
         }
         return super.getCapability(capability, facing)

@@ -20,71 +20,103 @@ object LatheRecipeLoader {
     fun registerRecipes() {
         val registry = CRecipes.LATHE
 
-        registry.builder()
+        registry
+            .builder()
             .input(Items.CLAY_BALL)
             .output(shortStick, clay)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(1)
+            .tier(0)
+            .CEt(ClayEnergy.micro(10))
+            .duration(1)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(MetaItemClayParts.LargeClayBall)
             .output(cylinder, clay)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(4)
+            .tier(0)
+            .CEt(ClayEnergy.micro(10))
+            .duration(4)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(cylinder, clay)
             .output(needle, clay)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(3)
+            .tier(0)
+            .CEt(ClayEnergy.micro(10))
+            .duration(3)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(needle, clay)
             .output(stick, clay, 6)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(3)
+            .tier(0)
+            .CEt(ClayEnergy.micro(10))
+            .duration(3)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(disc, clay)
             .output(ring, clay)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(2)
+            .tier(0)
+            .CEt(ClayEnergy.micro(10))
+            .duration(2)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(smallDisc, clay)
             .output(smallRing, clay)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(1)
+            .tier(0)
+            .CEt(ClayEnergy.micro(10))
+            .duration(1)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(block, denseClay, 2)
             .output(cylinder, denseClay)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(4)
+            .tier(0)
+            .CEt(ClayEnergy.micro(10))
+            .duration(4)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(cylinder, denseClay)
             .output(needle, denseClay)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(6)
+            .tier(0)
+            .CEt(ClayEnergy.micro(10))
+            .duration(6)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(needle, denseClay)
             .output(stick, denseClay, 6)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(6)
+            .tier(0)
+            .CEt(ClayEnergy.micro(10))
+            .duration(6)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(disc, denseClay)
             .output(ring, denseClay)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(4)
+            .tier(0)
+            .CEt(ClayEnergy.micro(10))
+            .duration(4)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(smallDisc, denseClay)
             .output(smallRing, denseClay)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(2)
+            .tier(0)
+            .CEt(ClayEnergy.micro(10))
+            .duration(2)
             .buildAndRegister()
-
     }
 }

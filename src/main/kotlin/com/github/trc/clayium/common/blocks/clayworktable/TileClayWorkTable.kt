@@ -35,7 +35,8 @@ class TileClayWorkTable : TileEntity() {
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        return if (capability === ITEM_HANDLER_CAPABILITY) capability.cast(itemHandler) else super.getCapability(capability, facing)
+        return if (capability === ITEM_HANDLER_CAPABILITY) capability.cast(itemHandler)
+        else super.getCapability(capability, facing)
     }
 
     private val currentTool: ItemStack
@@ -47,16 +48,21 @@ class TileClayWorkTable : TileEntity() {
     }
 
     fun canPushButton(id: Int): Boolean {
-        return canStartCraft(itemHandler.getStackInSlot(0), ClayWorkTableMethod.fromId(id)
-            ?: throw IllegalArgumentException("Invalid button id."))
+        return canStartCraft(
+            itemHandler.getStackInSlot(0),
+            ClayWorkTableMethod.fromId(id) ?: throw IllegalArgumentException("Invalid button id.")
+        )
     }
 
     fun pushButton(clicker: EntityPlayer, id: Int) {
         val input = itemHandler.getStackInSlot(0)
-        val method: ClayWorkTableMethod = ClayWorkTableMethod.fromId(id)
-            ?: throw IllegalArgumentException("Invalid button id.")
-        val recipe = CWTRecipes.getClayWorkTableRecipe(input, method)
-            ?: throw NullPointerException("Button pushed without any valid recipe! This should not happen.")
+        val method: ClayWorkTableMethod =
+            ClayWorkTableMethod.fromId(id) ?: throw IllegalArgumentException("Invalid button id.")
+        val recipe =
+            CWTRecipes.getClayWorkTableRecipe(input, method)
+                ?: throw NullPointerException(
+                    "Button pushed without any valid recipe! This should not happen."
+                )
         if (currentRecipe !== recipe) {
             currentRecipe = recipe
             requiredProgress = recipe.clicks
@@ -83,8 +89,15 @@ class TileClayWorkTable : TileEntity() {
         val outputSlot = itemHandler.getStackInSlot(2)
         val secondaryOutputSlot = itemHandler.getStackInSlot(3)
 
-        val canOutputPrimary = (outputSlot.isEmpty || (outputSlot.isItemEqual(recipe.primaryOutput) && outputSlot.count + recipe.primaryOutput.count <= outputSlot.maxStackSize))
-        val canOutputSecondary = (secondaryOutputSlot.isEmpty || (secondaryOutputSlot.isItemEqual(recipe.secondaryOutput) && secondaryOutputSlot.count + recipe.secondaryOutput.count <= secondaryOutputSlot.maxStackSize))
+        val canOutputPrimary =
+            (outputSlot.isEmpty ||
+                (outputSlot.isItemEqual(recipe.primaryOutput) &&
+                    outputSlot.count + recipe.primaryOutput.count <= outputSlot.maxStackSize))
+        val canOutputSecondary =
+            (secondaryOutputSlot.isEmpty ||
+                (secondaryOutputSlot.isItemEqual(recipe.secondaryOutput) &&
+                    secondaryOutputSlot.count + recipe.secondaryOutput.count <=
+                        secondaryOutputSlot.maxStackSize))
 
         return canOutputPrimary && (!recipe.hasSecondaryOutput() || canOutputSecondary)
     }

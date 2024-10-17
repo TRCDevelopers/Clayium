@@ -28,9 +28,14 @@ class ClayInterfaceMetaTileEntity(
     override val faceTexture = clayiumId("blocks/clay_interface")
     override val useFaceForAllSides = true
 
-    override val importItems: IItemHandlerModifiable get() = targetImportItems.get() ?: EmptyItemStackHandler
-    override val exportItems: IItemHandlerModifiable get() = targetExportItems.get() ?: EmptyItemStackHandler
-    override val itemInventory: IItemHandler get() = targetItemInventory.get() ?: EmptyItemStackHandler
+    override val importItems: IItemHandlerModifiable
+        get() = targetImportItems.get() ?: EmptyItemStackHandler
+
+    override val exportItems: IItemHandlerModifiable
+        get() = targetExportItems.get() ?: EmptyItemStackHandler
+
+    override val itemInventory: IItemHandler
+        get() = targetItemInventory.get() ?: EmptyItemStackHandler
 
     private var targetImportItems: WeakReference<IItemHandlerModifiable> = WeakReference(null)
     private var targetExportItems: WeakReference<IItemHandlerModifiable> = WeakReference(null)
@@ -52,13 +57,17 @@ class ClayInterfaceMetaTileEntity(
         this.targetExportItems = WeakReference(target.exportItems)
         this.targetItemInventory = WeakReference(target.itemInventory)
         target.getCapability(ClayiumTileCapabilities.AUTO_IO_HANDLER, null)?.let { targetHandler ->
-            this.autoIoHandler = AutoIoHandler.Combined(this, targetHandler.isBuffer, target.tier.numeric)
+            this.autoIoHandler =
+                AutoIoHandler.Combined(this, targetHandler.isBuffer, target.tier.numeric)
         }
-        target.getCapability(ClayiumTileCapabilities.CLAY_ENERGY_HOLDER, null)?.let { targetEnergyHolder ->
-            this.ecImporter = AutoIoHandler.EcImporter(this, targetEnergyHolder.energizedClayItemHandler)
+        target.getCapability(ClayiumTileCapabilities.CLAY_ENERGY_HOLDER, null)?.let {
+            targetEnergyHolder ->
+            this.ecImporter =
+                AutoIoHandler.EcImporter(this, targetEnergyHolder.energizedClayItemHandler)
         }
 
-        // Disable Trait Sync. These traits not exist on the client side, and they have no data to sync.
+        // Disable Trait Sync. These traits not exist on the client side, and they have no data to
+        // sync.
         val autoIoHandler = this.autoIoHandler
         if (autoIoHandler != null) {
             traitByNetworkId.remove(autoIoHandler.networkId)
@@ -84,7 +93,14 @@ class ClayInterfaceMetaTileEntity(
         this.validOutputModes = onlyNoneList
     }
 
-    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+    override fun onRightClick(
+        player: EntityPlayer,
+        hand: EnumHand,
+        clickedSide: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float
+    ): Boolean {
         if (super.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)) {
             return true
         }
@@ -100,6 +116,7 @@ class ClayInterfaceMetaTileEntity(
     }
 
     override fun canOpenGui() = false
+
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         throw UnsupportedOperationException("no direct gui for clay interfaces")
     }

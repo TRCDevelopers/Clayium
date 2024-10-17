@@ -11,6 +11,7 @@ class CMteManager {
 
     /**
      * Gets the registry for the given modId.
+     *
      * @return The registry, or null if it doesn't exist
      */
     fun getRegistry(modId: String): CMteRegistry {
@@ -28,8 +29,9 @@ class CMteManager {
 
     /**
      * Creates a new MetaTileEntity registry for the given modId.
-     * @throws IllegalArgumentException If a registry for the modId already exists
+     *
      * @return The created registry
+     * @throws IllegalArgumentException If a registry for the modId already exists
      */
     fun createRegistry(modId: String): CMteRegistry {
         val existing = modId2Registry[modId]

@@ -18,20 +18,31 @@ import kotlin.let
 class ClayBlastFurnaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : WorkableMetaTileEntity(metaTileEntityId, tier, CRecipes.CLAY_BLAST_FURNACE,) {
+) :
+    WorkableMetaTileEntity(
+        metaTileEntityId,
+        tier,
+        CRecipes.CLAY_BLAST_FURNACE,
+    ) {
     private val multiblockLogic = MultiblockLogic(this, ::checkStructure)
 
-    //todo: fix these code duplication?
+    // todo: fix these code duplication?
     fun getFaceInvalid(): ResourceLocation = clayiumId("blocks/blastfurnace")
+
     fun getFaceValid() = clayiumId("blocks/blastfurnace_1")
-    override val faceTexture get() = if (multiblockLogic.structureFormed) getFaceValid() else getFaceInvalid()
-    override val requiredTextures get() = listOf(getFaceValid(), getFaceInvalid())
+
+    override val faceTexture
+        get() = if (multiblockLogic.structureFormed) getFaceValid() else getFaceInvalid()
+
+    override val requiredTextures
+        get() = listOf(getFaceValid(), getFaceInvalid())
 
     override val importItems = NotifiableItemStackHandler(this, 2, this, isExport = false)
     override val exportItems = NotifiableItemStackHandler(this, 2, this, isExport = true)
     override val itemInventory = ItemHandlerProxy(importItems, exportItems)
 
-    override val workable: MultiblockRecipeLogic = MultiblockRecipeLogic(this, recipeRegistry, multiblockLogic)
+    override val workable: MultiblockRecipeLogic =
+        MultiblockRecipeLogic(this, recipeRegistry, multiblockLogic)
 
     private fun checkStructure(handler: MultiblockLogic): StructureValidationResult {
         val world = world
@@ -61,8 +72,7 @@ class ClayBlastFurnaceMetaTileEntity(
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
-            .child(multiblockLogic.tierTextWidget(syncManager)
-                .align(Alignment.BottomCenter))
+            .child(multiblockLogic.tierTextWidget(syncManager).align(Alignment.BottomCenter))
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {

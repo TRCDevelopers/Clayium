@@ -73,7 +73,8 @@ class PanCoreMetaTileEntity(
     private val duplicationEntries = mutableMapOf<ItemAndMeta, PanDuplicationEntry>()
 
     override fun getDuplicationEntries(): Map<ItemAndMeta, ClayEnergy> {
-        return duplicationEntries.asSequence()
+        return duplicationEntries
+            .asSequence()
             .filter { (_, e) -> e.isAllowedToDuplicate }
             .map { (k, v) -> k to v.ce }
             .toMap()
@@ -131,7 +132,8 @@ class PanCoreMetaTileEntity(
         defaultDuplicationEntries.keys.forEach { result2Dependants[it] = mutableListOf() }
 
         // add results that gathered from pan adapters as a key to the trees
-        // keys (ItemAndMetas) that added here are duplicatable if tree roots are default duplication entries.
+        // keys (ItemAndMetas) that added here are duplicatable if tree roots are default
+        // duplication entries.
         for (recipe in panRecipes) {
             for (result in recipe.results) {
                 val key = ItemAndMeta(result)
@@ -143,7 +145,9 @@ class PanCoreMetaTileEntity(
             for (ingredient in recipe.ingredients) {
                 val keys = ingredient.stacks.map { ItemAndMeta(it) }
                 keys.forEach {
-                    result2Dependants[it]?.apply { if (recipeInternal !in this) this.add(recipeInternal) }
+                    result2Dependants[it]?.apply {
+                        if (recipeInternal !in this) this.add(recipeInternal)
+                    }
                 }
             }
         }
@@ -177,7 +181,9 @@ class PanCoreMetaTileEntity(
                     val panRecipe = childRecipe.panRecipe
                     for (result in panRecipe.results.map(::ItemAndMeta)) {
                         duplicatablesQueue.add(result)
-                        val cost = (totalCost / panRecipe.results.sumOf { it.count }) + panRecipe.requiredClayEnergy
+                        val cost =
+                            (totalCost / panRecipe.results.sumOf { it.count }) +
+                                panRecipe.requiredClayEnergy
                         duplicationEntries[result] = PanDuplicationEntry(cost)
                     }
                 }
@@ -233,13 +239,21 @@ class PanCoreMetaTileEntity(
     }
 
     @SideOnly(Side.CLIENT)
-    override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
+    override fun bakeQuads(
+        getter: Function<ResourceLocation, TextureAtlasSprite>,
+        faceBakery: FaceBakery
+    ) {
         val tex = getter.apply(clayiumId("blocks/pan_core"))
         panCoreQuads = EnumFacing.entries.map { ModelTextures.createQuad(it, tex) }.toMutableList()
     }
 
     @SideOnly(Side.CLIENT)
-    override fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+    override fun getQuads(
+        quads: MutableList<BakedQuad>,
+        state: IBlockState?,
+        side: EnumFacing?,
+        rand: Long
+    ) {
         if (state == null || side == null) return
         quads.add(panCoreQuads[side.index])
     }
@@ -248,96 +262,145 @@ class PanCoreMetaTileEntity(
         if (!isRemote) {
             refreshNetworkAndThenEntries()
         }
-        val displayItems = Grid.mapToMatrix(9, duplicationEntries.toList()) { index, (itemAndMeta, entry) ->
-            val stack = itemAndMeta.asStack()
-            ItemDrawable(stack).asWidget().size(16)
-                .tooltip { tooltip ->
-                    if (isRemote) {
-                        val flag = if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips) ITooltipFlag.TooltipFlags.ADVANCED else ITooltipFlag.TooltipFlags.NORMAL
-                        tooltip.addStringLines(stack.getTooltip(data.player, flag))
+        val displayItems =
+            Grid.mapToMatrix(9, duplicationEntries.toList()) { index, (itemAndMeta, entry) ->
+                val stack = itemAndMeta.asStack()
+                ItemDrawable(stack)
+                    .asWidget()
+                    .size(16)
+                    .tooltip { tooltip ->
+                        if (isRemote) {
+                            val flag =
+                                if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips)
+                                    ITooltipFlag.TooltipFlags.ADVANCED
+                                else ITooltipFlag.TooltipFlags.NORMAL
+                            tooltip.addStringLines(stack.getTooltip(data.player, flag))
+                        }
+                        tooltip.addLine(entry.ce.format())
                     }
-                    tooltip.addLine(entry.ce.format())
-                }
-                .also {
-                    if (!entry.isAllowedToDuplicate) {
-                        it.background(Rectangle().setColor(0xFF5E1E0E.toInt()))
+                    .also {
+                        if (!entry.isAllowedToDuplicate) {
+                            it.background(Rectangle().setColor(0xFF5E1E0E.toInt()))
+                        }
                     }
-                }
-        }
+            }
         val panDisplayMargin = 4
         val panDisplayWidth = 16 * 9 + 0
         return ModularPanel.defaultPanel("pan_core", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 50)
-            .child(Column().margin(7)
-                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
-                        .align(Alignment.TopLeft))
-                    .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
-                    .child(ParentWidget().width(panDisplayWidth + panDisplayMargin * 2).heightRel(1f)
-                        .align(Alignment.TopCenter).margin(0, 2)
-                        .child(Rectangle().setColor(Color.rgb(0, 0x1E, 0)).asWidget()
-                            .width(panDisplayWidth + panDisplayMargin * 2).heightRel(1f).margin(0, 9))
-                        .child(Grid().width(panDisplayWidth).heightRel(1f).margin(panDisplayMargin, 13)
-                            .minElementMargin(0, 0)
-                            .matrix(displayItems)
-                            .scrollable(VerticalScrollData())
-                            .background(Rectangle().setColor(Color.rgb(0, 0x1E, 0))))
+            .child(
+                Column()
+                    .margin(7)
+                    .child(
+                        ParentWidget()
+                            .widthRel(1f)
+                            .expanded()
+                            .marginBottom(2)
+                            .child(
+                                IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey))
+                                    .asWidget()
+                                    .align(Alignment.TopLeft)
+                            )
+                            .child(
+                                IKey.lang("container.inventory")
+                                    .asWidget()
+                                    .align(Alignment.BottomLeft)
+                            )
+                            .child(
+                                ParentWidget()
+                                    .width(panDisplayWidth + panDisplayMargin * 2)
+                                    .heightRel(1f)
+                                    .align(Alignment.TopCenter)
+                                    .margin(0, 2)
+                                    .child(
+                                        Rectangle()
+                                            .setColor(Color.rgb(0, 0x1E, 0))
+                                            .asWidget()
+                                            .width(panDisplayWidth + panDisplayMargin * 2)
+                                            .heightRel(1f)
+                                            .margin(0, 9)
+                                    )
+                                    .child(
+                                        Grid()
+                                            .width(panDisplayWidth)
+                                            .heightRel(1f)
+                                            .margin(panDisplayMargin, 13)
+                                            .minElementMargin(0, 0)
+                                            .matrix(displayItems)
+                                            .scrollable(VerticalScrollData())
+                                            .background(Rectangle().setColor(Color.rgb(0, 0x1E, 0)))
+                                    )
+                            )
                     )
-                )
-                .child(SlotGroupWidget.playerInventory(0)))
+                    .child(SlotGroupWidget.playerInventory(0))
+            )
     }
 
     class PanDuplicationEntry(
         val ce: ClayEnergy,
         val isAllowedToDuplicate: Boolean = true,
     )
+
     private class PanIngredient(
         val ingredient: CRecipeInput,
         val cost: ClayEnergy = ClayEnergy.MAX,
         var verified: Boolean = false,
     )
+
     private class PanRecipeInternal(val panRecipe: IPanRecipe) {
         val ingsWithFlag = panRecipe.ingredients.map(::PanIngredient)
     }
 
     companion object {
         const val REFRESH_RATE_TICKS = 200
-        private val defaultDuplicationEntries: Map<ItemAndMeta, PanDuplicationEntry> by lazy { mutableMapOf<ItemAndMeta, PanDuplicationEntry>().apply {
-            put(ItemAndMeta(Blocks.COBBLESTONE), PanDuplicationEntry(ClayEnergy.micro(10)))
-            put(ItemAndMeta(Blocks.LOG), PanDuplicationEntry(ClayEnergy.micro(10)))
-            put(ItemAndMeta(Blocks.CLAY), PanDuplicationEntry(ClayEnergy.micro(10), false))
-            ClayiumBlocks.COMPRESSED_CLAY_BLOCKS.forEach { block ->
-                block.blockState.validStates.forEach { state ->
+        private val defaultDuplicationEntries: Map<ItemAndMeta, PanDuplicationEntry> by lazy {
+            mutableMapOf<ItemAndMeta, PanDuplicationEntry>()
+                .apply {
+                    put(ItemAndMeta(Blocks.COBBLESTONE), PanDuplicationEntry(ClayEnergy.micro(10)))
+                    put(ItemAndMeta(Blocks.LOG), PanDuplicationEntry(ClayEnergy.micro(10)))
+                    put(ItemAndMeta(Blocks.CLAY), PanDuplicationEntry(ClayEnergy.micro(10), false))
+                    ClayiumBlocks.COMPRESSED_CLAY_BLOCKS.forEach { block ->
+                        block.blockState.validStates.forEach { state ->
+                            put(
+                                ItemAndMeta(
+                                    OreDictUnifier.get(OrePrefix.block, block.getCMaterial(state))
+                                ),
+                                PanDuplicationEntry(ClayEnergy.micro(10), false)
+                            )
+                        }
+                    }
+                    ClayiumBlocks.ENERGIZED_CLAY_BLOCKS.forEach { block ->
+                        block.blockState.validStates.forEach { state ->
+                            val material = block.getCMaterial(state)
+                            val ce = material.getProperty(CPropertyKey.CLAY).energy!!
+                            put(
+                                ItemAndMeta(OrePrefix.block, material),
+                                PanDuplicationEntry(ce, false)
+                            )
+                        }
+                    }
+                    // impure dusts from Chemical Metal Separator
+                    for (recipe in CRecipes.CHEMICAL_METAL_SEPARATOR.getAllRecipes()) {
+                        if (recipe.chancedOutputs == null) continue
+                        val totalWeight: Double =
+                            recipe.chancedOutputs.map { it.chance }.sum().toDouble()
+                        val baseCeCost = recipe.cePerTick * recipe.duration
+                        for (chanced in recipe.chancedOutputs) {
+                            val rate = chanced.chance.toDouble() / totalWeight
+                            // rarer -> higher CE cost
+                            put(ItemAndMeta(chanced.result), PanDuplicationEntry(baseCeCost / rate))
+                        }
+                    }
                     put(
-                        ItemAndMeta(OreDictUnifier.get(OrePrefix.block, block.getCMaterial(state))),
-                        PanDuplicationEntry(ClayEnergy.micro(10), false)
+                        ItemAndMeta(OrePrefix.dust, CMaterials.salt),
+                        PanDuplicationEntry(ClayEnergy.milli(5), true)
+                    )
+                    put(
+                        ItemAndMeta(OrePrefix.gem, CMaterials.antimatter),
+                        PanDuplicationEntry(ClayEnergy.of(1), false)
                     )
                 }
-            }
-            ClayiumBlocks.ENERGIZED_CLAY_BLOCKS.forEach { block ->
-                block.blockState.validStates.forEach { state ->
-                    val material = block.getCMaterial(state)
-                    val ce = material.getProperty(CPropertyKey.CLAY).energy!!
-                    put(
-                        ItemAndMeta(OrePrefix.block, material),
-                        PanDuplicationEntry(ce, false)
-                    )
-                }
-            }
-            // impure dusts from Chemical Metal Separator
-            for (recipe in CRecipes.CHEMICAL_METAL_SEPARATOR.getAllRecipes()) {
-                if (recipe.chancedOutputs == null) continue
-                val totalWeight: Double = recipe.chancedOutputs.map { it.chance }.sum().toDouble()
-                val baseCeCost = recipe.cePerTick * recipe.duration
-                for (chanced in recipe.chancedOutputs) {
-                    val rate = chanced.chance.toDouble() / totalWeight
-                    // rarer -> higher CE cost
-                    put(ItemAndMeta(chanced.result), PanDuplicationEntry(baseCeCost / rate))
-                }
-            }
-            put(ItemAndMeta(OrePrefix.dust, CMaterials.salt), PanDuplicationEntry(ClayEnergy.milli(5), true))
-            put(ItemAndMeta(OrePrefix.gem, CMaterials.antimatter), PanDuplicationEntry(ClayEnergy.of(1), false))
-        }.toMap() }
+                .toMap()
+        }
 
         private lateinit var panCoreQuads: MutableList<BakedQuad>
     }

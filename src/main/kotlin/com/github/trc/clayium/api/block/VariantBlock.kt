@@ -16,9 +16,10 @@ open class VariantBlock<E>(
     material: Material,
 ) : Block(material) where E : Enum<E>, E : IStringSerializable {
 
-    lateinit var variantProperty : PropertyEnum<E>
+    lateinit var variantProperty: PropertyEnum<E>
         protected set
-    protected lateinit var values : Array<E>
+
+    protected lateinit var values: Array<E>
 
     init {
         require(values.size <= 16)
@@ -37,26 +38,34 @@ open class VariantBlock<E>(
     }
 
     override fun getMetaFromState(state: IBlockState) = state.getValue(variantProperty).ordinal
-    override fun getStateFromMeta(meta: Int) = defaultState.withProperty(variantProperty, values[meta])
+
+    override fun getStateFromMeta(meta: Int) =
+        defaultState.withProperty(variantProperty, values[meta])
+
     override fun damageDropped(state: IBlockState) = getMetaFromState(state)
 
     fun getItem(variant: E, amount: Int = 1) = ItemStack(this, amount, variant.ordinal)
 
     fun getEnum(state: IBlockState): E = state.getValue(variantProperty)
+
     fun getEnum(stack: ItemStack): E = values[stack.metadata.coerceAtMost(values.size - 1)]
 
     companion object {
         // copied from GTCEu
         @Suppress("UNCHECKED_CAST")
-        fun <T, E> getActualTypeParameter(thisClass: Class<out T>, declaringClass: Class<T>): Class<E> {
+        fun <T, E> getActualTypeParameter(
+            thisClass: Class<out T>,
+            declaringClass: Class<T>
+        ): Class<E> {
             var type = thisClass.genericSuperclass
 
             while (type !is ParameterizedType || type.rawType != declaringClass) {
-                type = if (type is ParameterizedType) {
-                    (type.rawType as Class<*>).genericSuperclass
-                } else {
-                    (type as Class<*>).genericSuperclass
-                }
+                type =
+                    if (type is ParameterizedType) {
+                        (type.rawType as Class<*>).genericSuperclass
+                    } else {
+                        (type as Class<*>).genericSuperclass
+                    }
             }
             return type.actualTypeArguments[0] as Class<E>
         }

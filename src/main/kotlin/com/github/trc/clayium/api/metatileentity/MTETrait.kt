@@ -19,15 +19,19 @@ abstract class MTETrait(
     }
 
     open fun update() {}
+
     open fun onFirstTick() {}
 
     open fun onPlacement() {}
+
     open fun onRemoval() {}
 
     open fun serializeNBT(): NBTTagCompound = NBTTagCompound()
+
     open fun deserializeNBT(data: NBTTagCompound) {}
 
     override fun writeInitialSyncData(buf: PacketBuffer) {}
+
     override fun receiveInitialSyncData(buf: PacketBuffer) {}
 
     override fun writeCustomData(discriminator: Int, dataWriter: PacketBuffer.() -> Unit) {

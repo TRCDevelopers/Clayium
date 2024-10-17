@@ -29,7 +29,14 @@ class ClayLaserMetaTileEntity(
     private val laserRed: Int = 0,
     private val laserGreen: Int = 0,
     private val laserBlue: Int = 0,
-) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[0], validOutputModesLists[0], "clay_laser",) {
+) :
+    MetaTileEntity(
+        metaTileEntityId,
+        tier,
+        validInputModesLists[0],
+        validOutputModesLists[0],
+        "clay_laser",
+    ) {
     override val faceTexture = ResourceLocation(MOD_ID, "blocks/clay_laser")
 
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
@@ -37,12 +44,13 @@ class ClayLaserMetaTileEntity(
     override val itemInventory: IItemHandler = EmptyItemStackHandler
 
     private val clayEnergyHolder = ClayEnergyHolder(this)
-    val energyCost = ClayEnergy.milli(
-        when (tier.numeric) {
-            in 7..10 -> 400 * 10.toDouble().pow((tier.numeric - 7).toDouble())
-            else -> 400
-        }.toLong()
-    )
+    val energyCost =
+        ClayEnergy.milli(
+            when (tier.numeric) {
+                in 7..10 -> 400 * 10.toDouble().pow((tier.numeric - 7).toDouble())
+                else -> 400
+            }.toLong()
+        )
 
     val laserManager = ClayLaserSourceMteTrait(this, laserRed, laserGreen, laserBlue)
     private var canActivateByRedstone = false
@@ -64,35 +72,40 @@ class ClayLaserMetaTileEntity(
         if (isRemote) return
         refreshRedstone()
         if (canActivateByRedstone) {
-            this.laserManager.isIrradiating = clayEnergyHolder.drawEnergy(energyCost, simulate = false)
+            this.laserManager.isIrradiating =
+                clayEnergyHolder.drawEnergy(energyCost, simulate = false)
         } else {
             this.laserManager.isIrradiating = false
         }
     }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
-        return ModularPanel.defaultPanel("clay_laser_tier$tier", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT - 40)
+        return ModularPanel.defaultPanel(
+                "clay_laser_tier$tier",
+                GUI_DEFAULT_WIDTH,
+                GUI_DEFAULT_HEIGHT - 40
+            )
             .columnWithPlayerInv {
-                child(buildMainParentWidget(syncManager)
-                    .child(clayEnergyHolder.createCeTextWidget(syncManager)
-                        .bottom(12).left(0))
-                    .child(clayEnergyHolder.createSlotWidget()
-                        .align(Alignment.BottomRight))
+                child(
+                    buildMainParentWidget(syncManager)
+                        .child(clayEnergyHolder.createCeTextWidget(syncManager).bottom(12).left(0))
+                        .child(clayEnergyHolder.createSlotWidget().align(Alignment.BottomRight))
                 )
             }
     }
 
     override fun useGlobalRenderer() = true
-    @SideOnly(Side.CLIENT)
-    override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
-    @SideOnly(Side.CLIENT)
-    override fun shouldRenderInPass(pass: Int) = (pass == 1)
+
+    @SideOnly(Side.CLIENT) override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
+
+    @SideOnly(Side.CLIENT) override fun shouldRenderInPass(pass: Int) = (pass == 1)
 
     private fun refreshRedstone() {
         val pos = this.pos ?: return
         val world = this.world ?: return
         // default->isNotPowered, inverted->isPowered
-        canActivateByRedstone = world.isBlockPowered(pos) == ConfigCore.misc.invertClayLaserRsCondition
+        canActivateByRedstone =
+            world.isBlockPowered(pos) == ConfigCore.misc.invertClayLaserRsCondition
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {

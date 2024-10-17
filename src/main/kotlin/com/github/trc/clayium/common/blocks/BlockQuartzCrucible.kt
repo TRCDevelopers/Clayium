@@ -39,15 +39,26 @@ class BlockQuartzCrucible : Block(net.minecraft.block.material.Material.GLASS), 
     }
 
     override fun getStateFromMeta(meta: Int) = defaultState.withProperty(LEVEL, meta)
+
     override fun getMetaFromState(state: IBlockState) = state.getValue(LEVEL)
 
     override fun hasTileEntity(state: IBlockState) = true
+
     override fun createTileEntity(world: World, state: IBlockState) = QuartzCrucibleTileEntity()
 
-    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = SELECT_AABB
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) =
+        SELECT_AABB
 
     @Suppress("DEPRECATION")
-    override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, isActualState: Boolean) {
+    override fun addCollisionBoxToList(
+        state: IBlockState,
+        worldIn: World,
+        pos: BlockPos,
+        entityBox: AxisAlignedBB,
+        collidingBoxes: MutableList<AxisAlignedBB>,
+        entityIn: Entity?,
+        isActualState: Boolean
+    ) {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_BASE)
         addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_NORTH)
         addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_SOUTH)
@@ -56,11 +67,19 @@ class BlockQuartzCrucible : Block(net.minecraft.block.material.Material.GLASS), 
     }
 
     override fun isFullBlock(state: IBlockState) = false
+
     override fun isFullCube(state: IBlockState) = false
+
     override fun isOpaqueCube(state: IBlockState) = false
+
     override fun causesSuffocation(state: IBlockState) = false
 
-    override fun onEntityCollision(worldIn: World, pos: BlockPos, state: IBlockState, entityIn: Entity) {
+    override fun onEntityCollision(
+        worldIn: World,
+        pos: BlockPos,
+        state: IBlockState,
+        entityIn: Entity
+    ) {
         if (worldIn.isRemote || entityIn !is EntityItem) return
         val tileEntity = worldIn.getTileEntity(pos) as? QuartzCrucibleTileEntity ?: return
         val stack = entityIn.item
@@ -85,13 +104,15 @@ class BlockQuartzCrucible : Block(net.minecraft.block.material.Material.GLASS), 
                     entityIn.setDead()
                 }
                 tileEntity.ingotQuantity = 0
-                spawnAsEntity(worldIn, pos, OreDictUnifier.get(OrePrefix.ingot, CMaterials.silicon, amount = currentLevel))
+                spawnAsEntity(
+                    worldIn,
+                    pos,
+                    OreDictUnifier.get(OrePrefix.ingot, CMaterials.silicon, amount = currentLevel)
+                )
                 worldIn.setBlockState(pos, state.withProperty(LEVEL, 0))
             }
         }
     }
-
-
 
     override fun getTier(stack: ItemStack): ITier {
         return ClayTiers.ADVANCED
@@ -109,6 +130,7 @@ class BlockQuartzCrucible : Block(net.minecraft.block.material.Material.GLASS), 
                 field = value
                 markDirty()
             }
+
         var ticked = 0
             set(value) {
                 field = value
@@ -116,9 +138,8 @@ class BlockQuartzCrucible : Block(net.minecraft.block.material.Material.GLASS), 
             }
 
         override fun update() {
-            if (world.isRemote
-                || ingotQuantity <= 0
-                || ticked >= TICKS_PER_ITEM * ingotQuantity) return
+            if (world.isRemote || ingotQuantity <= 0 || ticked >= TICKS_PER_ITEM * ingotQuantity)
+                return
             ticked++
         }
 
@@ -135,7 +156,12 @@ class BlockQuartzCrucible : Block(net.minecraft.block.material.Material.GLASS), 
             ticked = compound.getInteger("ticked")
         }
 
-        override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean {
+        override fun shouldRefresh(
+            world: World,
+            pos: BlockPos,
+            oldState: IBlockState,
+            newSate: IBlockState
+        ): Boolean {
             return oldState.block != newSate.block
         }
     }

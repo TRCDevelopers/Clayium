@@ -66,7 +66,9 @@ abstract class AbstractMinerMetaTileEntity(
     name: String,
     validInputModes: List<MachineIoMode> = validInputModesLists[0],
     validOutputModes: List<MachineIoMode> = validOutputModesLists[1],
-) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, name), IClayLaserAcceptor {
+) :
+    MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, name),
+    IClayLaserAcceptor {
 
     override val itemInventory = ClayiumItemStackHandler(this, INV_ROW * INV_COLUMN)
     override val importItems = EmptyItemStackHandler
@@ -83,20 +85,18 @@ abstract class AbstractMinerMetaTileEntity(
 
     protected var currentPos: BlockPos? = null
 
-    /**
-     * used for rendering.
-     * null for disable range rendering.
-     */
+    /** used for rendering. null for disable range rendering. */
     abstract val rangeRelative: Cuboid6?
 
     abstract val maxBlocksPerTick: Int
 
     abstract fun drawEnergy(accelerationRate: Double): Boolean
+
     abstract fun getNextBlockPos(): BlockPos?
 
     /**
-     * return true if the block is mined, so the next block is searched.
-     * also, if all [maxBlocksPerTick] blocks are mined, [progress] will be reset.
+     * return true if the block is mined, so the next block is searched. also, if all
+     * [maxBlocksPerTick] blocks are mined, [progress] will be reset.
      */
     protected open fun mine(world: World, pos: BlockPos, state: IBlockState): Boolean {
         val drops = NonNullList.create<ItemStack>()
@@ -116,8 +116,7 @@ abstract class AbstractMinerMetaTileEntity(
         progress += PROGRESS_PER_TICK_BASE * getAccelerationRate()
 
         for (i in 0..<maxBlocksPerTick) {
-            val pos = this.currentPos ?: getNextBlockPos()
-                ?: continue
+            val pos = this.currentPos ?: getNextBlockPos() ?: continue
             val state = world.getBlockState(pos)
             val filter = this.filter
             if (!(filter == null || filter.test(state.toItemStack()))) {
@@ -147,8 +146,8 @@ abstract class AbstractMinerMetaTileEntity(
     }
 
     /**
-     * called on the server when the reset button in the gui is pressed.
-     * this is intended to reset the iteration state.
+     * called on the server when the reset button in the gui is pressed. this is intended to reset
+     * the iteration state.
      */
     protected open fun resetButtonPressed() = true
 
@@ -175,58 +174,103 @@ abstract class AbstractMinerMetaTileEntity(
         val columnStr = "I".repeat(INV_COLUMN)
         val matrixStr = (0..<INV_ROW).map { columnStr }
 
-        val startButton = ToggleButton()
-            .value(BoolValue.Dynamic(workingEnabledSync::getValue) { workingEnabledSync.value = true })
-            .background(ClayGuiTextures.START_BUTTON)
-            .hoverBackground(ClayGuiTextures.START_BUTTON_HOVERED)
-            .selectedBackground(ClayGuiTextures.START_BUTTON_DISABLED)
-        val stopButton = ToggleButton()
-            .value(BoolValue.Dynamic({ !workingEnabledSync.value }, { workingEnabledSync.value = false }))
-            .background(ClayGuiTextures.STOP_BUTTON)
-            .hoverBackground(ClayGuiTextures.STOP_BUTTON_HOVERED)
-            .selectedBackground(ClayGuiTextures.STOP_BUTTON_DISABLED)
-        val displayRange = CycleButtonWidget()
-            .background(ClayGuiTextures.DISPLAY_RANGE)
-            .hoverBackground(ClayGuiTextures.DISPLAY_RANGE_HOVERED)
-            .length(3)
-            .value(EnumValue.Dynamic(RangeRenderMode::class.java, ::rangeRenderMode, ::rangeRenderMode::set))
-            .tooltip(0) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.disabled")) }
-            .tooltip(1) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled")) }
-            .tooltip(2) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled_xray")) }
-            .textureGetter { IDrawable.EMPTY }
-        val resetButton = ButtonWidget()
-            .syncHandler(InteractionSyncHandler()
-                .setOnMousePressed { if (!it.isClient) resetButtonPressed() })
-            .background(ClayGuiTextures.RESET)
-            .hoverBackground(ClayGuiTextures.RESET_HOVERED)
+        val startButton =
+            ToggleButton()
+                .value(
+                    BoolValue.Dynamic(workingEnabledSync::getValue) {
+                        workingEnabledSync.value = true
+                    }
+                )
+                .background(ClayGuiTextures.START_BUTTON)
+                .hoverBackground(ClayGuiTextures.START_BUTTON_HOVERED)
+                .selectedBackground(ClayGuiTextures.START_BUTTON_DISABLED)
+        val stopButton =
+            ToggleButton()
+                .value(
+                    BoolValue.Dynamic(
+                        { !workingEnabledSync.value },
+                        { workingEnabledSync.value = false }
+                    )
+                )
+                .background(ClayGuiTextures.STOP_BUTTON)
+                .hoverBackground(ClayGuiTextures.STOP_BUTTON_HOVERED)
+                .selectedBackground(ClayGuiTextures.STOP_BUTTON_DISABLED)
+        val displayRange =
+            CycleButtonWidget()
+                .background(ClayGuiTextures.DISPLAY_RANGE)
+                .hoverBackground(ClayGuiTextures.DISPLAY_RANGE_HOVERED)
+                .length(3)
+                .value(
+                    EnumValue.Dynamic(
+                        RangeRenderMode::class.java,
+                        ::rangeRenderMode,
+                        ::rangeRenderMode::set
+                    )
+                )
+                .tooltip(0) {
+                    it.addLine(IKey.lang("gui.clayium.range_visualization_mode.disabled"))
+                }
+                .tooltip(1) {
+                    it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled"))
+                }
+                .tooltip(2) {
+                    it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled_xray"))
+                }
+                .textureGetter { IDrawable.EMPTY }
+        val resetButton =
+            ButtonWidget()
+                .syncHandler(
+                    InteractionSyncHandler().setOnMousePressed {
+                        if (!it.isClient) resetButtonPressed()
+                    }
+                )
+                .background(ClayGuiTextures.RESET)
+                .hoverBackground(ClayGuiTextures.RESET_HOVERED)
 
         return super.buildMainParentWidget(syncManager)
-            .child(Grid().coverChildren()
-                .row(startButton, stopButton)
-                .row(displayRange, resetButton)
-                .minElementMargin(1, 1)
-                .left(4).top(12)
+            .child(
+                Grid()
+                    .coverChildren()
+                    .row(startButton, stopButton)
+                    .row(displayRange, resetButton)
+                    .minElementMargin(1, 1)
+                    .left(4)
+                    .top(12)
             )
-            .child(SlotGroupWidget.builder()
-                .matrix(*matrixStr.toTypedArray())
-                .key('I') { ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, it).slotGroup("breaker_inv")) }
-                .build().alignX(Alignment.TopCenter.x).top(12)
+            .child(
+                SlotGroupWidget.builder()
+                    .matrix(*matrixStr.toTypedArray())
+                    .key('I') {
+                        ItemSlot()
+                            .slot(SyncHandlers.itemSlot(itemInventory, it).slotGroup("breaker_inv"))
+                    }
+                    .build()
+                    .alignX(Alignment.TopCenter.x)
+                    .top(12)
             )
-            .child(IKey.dynamic { "Laser : ${laser?.let { LaserEnergy(it.energy).format() } ?: 0}" }.asWidgetResizing()
-                .alignX(Alignment.Center.x).bottom(12)
+            .child(
+                IKey.dynamic { "Laser : ${laser?.let { LaserEnergy(it.energy).format() } ?: 0}" }
+                    .asWidgetResizing()
+                    .alignX(Alignment.Center.x)
+                    .bottom(12)
             )
-            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) })
-                .background(ClayGuiTextures.FILTER_SLOT)
-                .top(12).right(24)
-                .tooltipBuilder { it.addLine(IKey.lang("gui.clayium.miner.filter")) }
+            .child(
+                ItemSlot()
+                    .slot(
+                        SyncHandlers.phantomItemSlot(filterSlot, 0).filter {
+                            it.hasCapability(ClayiumCapabilities.ITEM_FILTER)
+                        }
+                    )
+                    .background(ClayGuiTextures.FILTER_SLOT)
+                    .top(12)
+                    .right(24)
+                    .tooltipBuilder { it.addLine(IKey.lang("gui.clayium.miner.filter")) }
             )
     }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("breaker", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 20)
-            .columnWithPlayerInv {
-                child(buildMainParentWidget(syncManager))
-            }
+            .columnWithPlayerInv { child(buildMainParentWidget(syncManager)) }
     }
 
     override fun onPlacement() {
@@ -260,18 +304,21 @@ abstract class AbstractMinerMetaTileEntity(
     }
 
     @SideOnly(Side.CLIENT)
-    override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
+    override fun bakeQuads(
+        getter: Function<ResourceLocation, TextureAtlasSprite>,
+        faceBakery: FaceBakery
+    ) {
         val atlas = getter.apply(clayiumId("blocks/miner_back"))
         MINER_BACK = EnumFacing.entries.map { ModelTextures.createQuad(it, atlas) }
     }
 
-    @SideOnly(Side.CLIENT)
-    override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
+    @SideOnly(Side.CLIENT) override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
 
     @SideOnly(Side.CLIENT)
     override fun getRenderBoundingBox() = TileEntityBeacon.INFINITE_EXTENT_AABB
-    @SideOnly(Side.CLIENT)
-    override fun useGlobalRenderer() = true
+
+    @SideOnly(Side.CLIENT) override fun useGlobalRenderer() = true
+
     @SideOnly(Side.CLIENT)
     override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
         AreaMarkerRenderer.render(Cuboid6.full, rangeRelative, x, y, z, rangeRenderMode)

@@ -29,7 +29,14 @@ import kotlin.math.pow
 class WaterwheelMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "waterwheel",) {
+) :
+    MetaTileEntity(
+        metaTileEntityId,
+        tier,
+        onlyNoneList,
+        onlyNoneList,
+        "waterwheel",
+    ) {
     override val faceTexture = clayiumId("blocks/waterwheel")
     override val importItems = EmptyItemStackHandler
     override val exportItems = EmptyItemStackHandler
@@ -64,8 +71,11 @@ class WaterwheelMetaTileEntity(
     private fun emitEnergy() {
         val pos = pos ?: return
         for (side in EnumFacing.entries) {
-            val energyHolder = world?.getTileEntity(pos.offset(side))?.getCapability(ClayiumTileCapabilities.CLAY_ENERGY_HOLDER, side.opposite)
-                ?: continue
+            val energyHolder =
+                world
+                    ?.getTileEntity(pos.offset(side))
+                    ?.getCapability(ClayiumTileCapabilities.CLAY_ENERGY_HOLDER, side.opposite)
+                    ?: continue
 
             val mte = world?.getMetaTileEntity(pos.offset(side))
             if (mte != null && mte.tier.numeric > ConfigCore.misc.waterwheelMaxTier) {
@@ -79,20 +89,49 @@ class WaterwheelMetaTileEntity(
     }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
-        syncManager.syncValue("waterCount", SyncHandlers.intNumber({ waterCount }, { waterCount = it }))
+        syncManager.syncValue(
+            "waterCount",
+            SyncHandlers.intNumber({ waterCount }, { waterCount = it })
+        )
         syncManager.syncValue("progress", SyncHandlers.intNumber({ progress }, { progress = it }))
         return ModularPanel.defaultPanel("waterwheel", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT - 50)
-            .child(Column().margin(7)
-                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
-                        .align(Alignment.TopLeft))
-                    .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
-                    .child(IKey.dynamic { I18n.format("gui.clayium.waterwheel.waters", waterCount) }.asWidget()
-                        .widthRel(0.3f).align(Alignment.CenterRight))
-                    .child(IKey.dynamic { I18n.format("gui.clayium.waterwheel.progress", progress) }.asWidget()
-                        .widthRel(0.6f).align(Alignment.CenterLeft)))
-                .child(SlotGroupWidget.playerInventory(0)))
+            .child(
+                Column()
+                    .margin(7)
+                    .child(
+                        ParentWidget()
+                            .widthRel(1f)
+                            .expanded()
+                            .marginBottom(2)
+                            .child(
+                                IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey))
+                                    .asWidget()
+                                    .align(Alignment.TopLeft)
+                            )
+                            .child(
+                                IKey.lang("container.inventory")
+                                    .asWidget()
+                                    .align(Alignment.BottomLeft)
+                            )
+                            .child(
+                                IKey.dynamic {
+                                        I18n.format("gui.clayium.waterwheel.waters", waterCount)
+                                    }
+                                    .asWidget()
+                                    .widthRel(0.3f)
+                                    .align(Alignment.CenterRight)
+                            )
+                            .child(
+                                IKey.dynamic {
+                                        I18n.format("gui.clayium.waterwheel.progress", progress)
+                                    }
+                                    .asWidget()
+                                    .widthRel(0.6f)
+                                    .align(Alignment.CenterLeft)
+                            )
+                    )
+                    .child(SlotGroupWidget.playerInventory(0))
+            )
     }
 
     private fun getWaterFlowsCount(): Int {
@@ -104,7 +143,10 @@ class WaterwheelMetaTileEntity(
                 for (dz in -1..1) {
                     val state = world.getBlockState(pos.add(dx, dy, dz))
                     val block = state.block
-                    if ((block === Blocks.WATER || block === Blocks.FLOWING_WATER) && state.getValue(BlockLiquid.LEVEL) != 0) {
+                    if (
+                        (block === Blocks.WATER || block === Blocks.FLOWING_WATER) &&
+                            state.getValue(BlockLiquid.LEVEL) != 0
+                    ) {
                         waterFlows++
                     }
                 }

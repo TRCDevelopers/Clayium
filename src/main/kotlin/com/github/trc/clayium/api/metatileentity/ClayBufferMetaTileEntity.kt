@@ -27,25 +27,35 @@ import net.minecraftforge.items.CapabilityItemHandler
 class ClayBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(metaTileEntityId, tier, validInputModes = bufferValidInputModes, validOutputModes = validOutputModesLists[1], name = "clay_buffer") {
+) :
+    MetaTileEntity(
+        metaTileEntityId,
+        tier,
+        validInputModes = bufferValidInputModes,
+        validOutputModes = validOutputModesLists[1],
+        name = "clay_buffer"
+    ) {
 
     override val hasFrontFacing: Boolean = false
 
     override val pipeConnectionLogic = IPipeConnectionLogic.ItemPipe
 
-    val inventoryRowSize = when (tier.numeric) {
-        in 4..7 -> tier.numeric - 3
-        8, -> 4
-        in 9..13 -> 6
-        else -> 1
-    }
-    val inventoryColumnSize = when (tier.numeric) {
-        in 4..7 -> tier.numeric - 2
-        in 8..13 -> 9
-        else -> 1
-    }
+    val inventoryRowSize =
+        when (tier.numeric) {
+            in 4..7 -> tier.numeric - 3
+            8, -> 4
+            in 9..13 -> 6
+            else -> 1
+        }
+    val inventoryColumnSize =
+        when (tier.numeric) {
+            in 4..7 -> tier.numeric - 2
+            in 8..13 -> 9
+            else -> 1
+        }
 
-    override val itemInventory = ClayiumItemStackHandler(this, inventoryRowSize * inventoryColumnSize)
+    override val itemInventory =
+        ClayiumItemStackHandler(this, inventoryRowSize * inventoryColumnSize)
     override val importItems = itemInventory
     override val exportItems = itemInventory
     private val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this, isBuffer = true)
@@ -71,36 +81,57 @@ class ClayBufferMetaTileEntity(
         val columnStr = "I".repeat(inventoryColumnSize)
         val matrixStr = (0..<inventoryRowSize).map { columnStr }
 
-        return ModularPanel.defaultPanel("clay_buffer", GUI_DEFAULT_WIDTH, 18 + inventoryRowSize * 18 + 94 + 2)
+        return ModularPanel.defaultPanel(
+                "clay_buffer",
+                GUI_DEFAULT_WIDTH,
+                18 + inventoryRowSize * 18 + 94 + 2
+            )
             .child(
                 TextWidget(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)))
                     .margin(6)
-                    .align(Alignment.TopLeft))
-            .child(Column()
-                .marginTop(18)
-                .child(SlotGroupWidget.builder()
-                    .matrix(*matrixStr.toTypedArray())
-                    .key('I') { index ->
-                        ItemSlot().slot(
-                            SyncHandlers.itemSlot(itemInventory, index)
-                                .slotGroup("buffer_inv")
-                        )
-                    }
-                    .build())
-                .child(
-                    TextWidget(IKey.lang("container.inventory"))
-                        .paddingTop(1)
-                        .paddingBottom(1)
-                        .left(6)))
+                    .align(Alignment.TopLeft)
+            )
+            .child(
+                Column()
+                    .marginTop(18)
+                    .child(
+                        SlotGroupWidget.builder()
+                            .matrix(*matrixStr.toTypedArray())
+                            .key('I') { index ->
+                                ItemSlot()
+                                    .slot(
+                                        SyncHandlers.itemSlot(itemInventory, index)
+                                            .slotGroup("buffer_inv")
+                                    )
+                            }
+                            .build()
+                    )
+                    .child(
+                        TextWidget(IKey.lang("container.inventory"))
+                            .paddingTop(1)
+                            .paddingBottom(1)
+                            .left(6)
+                    )
+            )
             .bindPlayerInventory()
     }
 
-    override fun onReplace(world: World, pos: BlockPos, newMetaTileEntity: MetaTileEntity, oldMteData: NBTTagCompound) {
-        CNbtUtils.handleInvSizeDifference(world, pos, oldMteData, IMPORT_INVENTORY, newMetaTileEntity.itemInventory)
+    override fun onReplace(
+        world: World,
+        pos: BlockPos,
+        newMetaTileEntity: MetaTileEntity,
+        oldMteData: NBTTagCompound
+    ) {
+        CNbtUtils.handleInvSizeDifference(
+            world,
+            pos,
+            oldMteData,
+            IMPORT_INVENTORY,
+            newMetaTileEntity.itemInventory
+        )
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayBufferMetaTileEntity(this.metaTileEntityId, this.tier)
     }
-
 }

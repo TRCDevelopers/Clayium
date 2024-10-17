@@ -11,6 +11,11 @@ object CNetwork {
 
     fun init() {
         var id = 0
-        channel.registerMessage(KeyInputPacketHandler, KeyInputPacket::class.java, id++, Side.SERVER)
+        channel.registerMessage(
+            KeyInputPacketHandler,
+            KeyInputPacket::class.java,
+            id++,
+            Side.SERVER
+        )
     }
 }

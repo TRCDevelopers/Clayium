@@ -12,15 +12,35 @@ import net.minecraftforge.common.capabilities.CapabilityManager
 
 object SimpleCapabilityManager {
     private fun <T> registerCapabilityWithNoDefault(capabilityClass: Class<T>) {
-        CapabilityManager.INSTANCE.register(capabilityClass, object : Capability.IStorage<T> {
-            override fun writeNBT(capability: Capability<T?>?, instance: T?, side: EnumFacing?): NBTBase? {
-                throw UnsupportedOperationException("Capability $capabilityClass does not support default instances")
+        CapabilityManager.INSTANCE.register(
+            capabilityClass,
+            object : Capability.IStorage<T> {
+                override fun writeNBT(
+                    capability: Capability<T?>?,
+                    instance: T?,
+                    side: EnumFacing?
+                ): NBTBase? {
+                    throw UnsupportedOperationException(
+                        "Capability $capabilityClass does not support default instances"
+                    )
+                }
+
+                override fun readNBT(
+                    capability: Capability<T?>?,
+                    instance: T?,
+                    side: EnumFacing?,
+                    nbt: NBTBase?
+                ) {
+                    throw UnsupportedOperationException(
+                        "Capability $capabilityClass does not support default instances"
+                    )
+                }
             }
-            override fun readNBT(capability: Capability<T?>?, instance: T?, side: EnumFacing?, nbt: NBTBase?) {
-                throw UnsupportedOperationException("Capability $capabilityClass does not support default instances")
-            }
+        ) {
+            throw UnsupportedOperationException(
+                "Capability $capabilityClass does not support default instances"
+            )
         }
-        ) { throw UnsupportedOperationException("Capability $capabilityClass does not support default instances") }
     }
 
     fun registerCapabilities() {

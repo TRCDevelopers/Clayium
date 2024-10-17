@@ -9,8 +9,8 @@ import java.lang.ref.WeakReference
  * holds tile entity as a weak reference.
  *
  * if you get non-null from the [get] method, it ensures the following:
- *  - is valid
- *  - has the same position as [pos]
+ * - is valid
+ * - has the same position as [pos]
  *
  * if you get non-null from the [getIfLoaded] method, it also ensures the pos is loaded.
  */
@@ -25,15 +25,16 @@ class TileEntityAccess(
 
     fun get(): TileEntity? {
         val prev = weakRef.get()
-        val thisTime = if (isTileEntityValid(prev)) {
-            prev
-        } else {
-            val tileEntity = world.getTileEntity(pos)
-            if (tileEntity != null) {
-                weakRef = WeakReference(tileEntity)
+        val thisTime =
+            if (isTileEntityValid(prev)) {
+                prev
+            } else {
+                val tileEntity = world.getTileEntity(pos)
+                if (tileEntity != null) {
+                    weakRef = WeakReference(tileEntity)
+                }
+                tileEntity
             }
-            tileEntity
-        }
         return thisTime
     }
 

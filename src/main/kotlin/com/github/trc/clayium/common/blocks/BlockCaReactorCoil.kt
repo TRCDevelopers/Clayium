@@ -22,7 +22,9 @@ class BlockCaReactorCoil : VariantBlock<BlockCaReactorCoil.BlockType>(Material.I
     }
 
     override fun getTier(stack: ItemStack) = getEnum(stack).tier
-    override fun getTier(world: IBlockAccess, pos: BlockPos) = getEnum(world.getBlockState(pos)).tier
+
+    override fun getTier(world: IBlockAccess, pos: BlockPos) =
+        getEnum(world.getBlockState(pos)).tier
 
     enum class BlockType(val tier: ITier) : IStringSerializable {
         ANTIMATTER(ClayTiers.ANTIMATTER),

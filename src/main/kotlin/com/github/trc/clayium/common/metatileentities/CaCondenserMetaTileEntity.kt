@@ -20,11 +20,12 @@ class CaCondenserMetaTileEntity(
     val energyHolder = ClayEnergyHolder(this)
     val resonanceManager = ResonanceManager(this, 2)
 
-    private val craftTimeMultiplier = when (tier.numeric) {
-        10 -> 10
-        11 -> 100
-        else -> 1
-    }
+    private val craftTimeMultiplier =
+        when (tier.numeric) {
+            10 -> 10
+            11 -> 100
+            else -> 1
+        }
 
     override val faceTexture = clayiumId("blocks/ca_condenser")
 
@@ -34,13 +35,18 @@ class CaCondenserMetaTileEntity(
         return CaCondenserMetaTileEntity(metaTileEntityId, tier)
     }
 
-    private inner class RecipeLogicCaCondenser : RecipeLogicEnergy(this@CaCondenserMetaTileEntity, recipeRegistry, energyHolder) {
-        //todo 生成される量を加工開始時にも考慮するべきか否か
+    private inner class RecipeLogicCaCondenser :
+        RecipeLogicEnergy(this@CaCondenserMetaTileEntity, recipeRegistry, energyHolder) {
+        // todo 生成される量を加工開始時にも考慮するべきか否か
         override fun completeWork() {
             currentProgress = 0
-            TransferUtils.insertToHandler(metaTileEntity.exportItems, itemOutputs.map { it.apply {
-                count = (ln(resonanceManager.resonance).toInt() + 1).coerceIn(1..64)
-            } }
+            TransferUtils.insertToHandler(
+                metaTileEntity.exportItems,
+                itemOutputs.map {
+                    it.apply {
+                        count = (ln(resonanceManager.resonance).toInt() + 1).coerceIn(1..64)
+                    }
+                }
             )
         }
 

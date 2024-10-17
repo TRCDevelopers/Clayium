@@ -18,18 +18,29 @@ class ClayiumRecipeCategory(
     private val clayiumCategory: RecipeCategory,
 ) : IRecipeCategory<ClayiumRecipeWrapper> {
 
-    private val background = guiHelper.createDrawable(
-        clayiumId("textures/gui/jei.png"),
-        5, 11, 166, 65,
-    )
-    private val progressBarBackground = guiHelper.createDrawable(
-        clayiumId("textures/gui/progress_bar.png"),
-        0, 0, 24, 17,
-    )
-    private val progressBar = guiHelper.createAnimatedDrawable(
-        guiHelper.createDrawable(clayiumId("textures/gui/progress_bar.png"), 0, 17, 24, 17),
-        40, IDrawableAnimated.StartDirection.LEFT, false,
-    )
+    private val background =
+        guiHelper.createDrawable(
+            clayiumId("textures/gui/jei.png"),
+            5,
+            11,
+            166,
+            65,
+        )
+    private val progressBarBackground =
+        guiHelper.createDrawable(
+            clayiumId("textures/gui/progress_bar.png"),
+            0,
+            0,
+            24,
+            17,
+        )
+    private val progressBar =
+        guiHelper.createAnimatedDrawable(
+            guiHelper.createDrawable(clayiumId("textures/gui/progress_bar.png"), 0, 17, 24, 17),
+            40,
+            IDrawableAnimated.StartDirection.LEFT,
+            false,
+        )
 
     override fun getUid(): String {
         return clayiumCategory.uniqueId
@@ -62,7 +73,6 @@ class ClayiumRecipeCategory(
         ingredients.getOutputs(VanillaTypes.ITEM).forEachIndexed { i, output ->
             stacks.init(i + inputs.size, false, 97 + i * 17, 20)
             stacks.set(i + inputs.size, output)
-
         }
     }
 

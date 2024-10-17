@@ -21,7 +21,9 @@ sealed class MetaTileEntityGuiData(
     ) : MetaTileEntityGuiData(player) {
         override val metaTileEntity: MetaTileEntity by lazy {
             this.world.getMetaTileEntity(pos)
-                ?: throw IllegalStateException("Could not find a MetaTileEntity at $pos in ${this.world.provider?.dimensionType}")
+                ?: throw IllegalStateException(
+                    "Could not find a MetaTileEntity at $pos in ${this.world.provider?.dimensionType}"
+                )
         }
     }
 
@@ -30,9 +32,13 @@ sealed class MetaTileEntityGuiData(
         private val metaTileEntityId: ResourceLocation,
     ) : MetaTileEntityGuiData(player) {
         override val metaTileEntity: MetaTileEntity by lazy {
-            ClayiumApi.mteManager.getRegistry(metaTileEntityId.namespace)
-                .getObject(metaTileEntityId)?.createMetaTileEntity()
-                ?: throw IllegalStateException("Could not find a MetaTileEntity Id $metaTileEntityId")
+            ClayiumApi.mteManager
+                .getRegistry(metaTileEntityId.namespace)
+                .getObject(metaTileEntityId)
+                ?.createMetaTileEntity()
+                ?: throw IllegalStateException(
+                    "Could not find a MetaTileEntity Id $metaTileEntityId"
+                )
         }
     }
 }

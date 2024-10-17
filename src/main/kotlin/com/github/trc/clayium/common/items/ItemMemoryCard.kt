@@ -24,7 +24,16 @@ class ItemMemoryCard : Item() {
         maxStackSize = 1
     }
 
-    override fun onItemUseFirst(player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, hand: EnumHand): EnumActionResult {
+    override fun onItemUseFirst(
+        player: EntityPlayer,
+        world: World,
+        pos: BlockPos,
+        side: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float,
+        hand: EnumHand
+    ): EnumActionResult {
         val metaTileEntity = world.getMetaTileEntity(pos)
         if (metaTileEntity == null) return EnumActionResult.PASS
         if (world.isRemote) return EnumActionResult.SUCCESS
@@ -48,7 +57,10 @@ class ItemMemoryCard : Item() {
     private fun isTagValid(tag: NBTTagCompound): Boolean {
         for (side in EnumFacing.entries) {
             val i = side.index
-            if (!(tag.hasKey("input$i", Constants.NBT.TAG_INT) || tag.hasKey("output$i", Constants.NBT.TAG_INT))) {
+            if (
+                !(tag.hasKey("input$i", Constants.NBT.TAG_INT) ||
+                    tag.hasKey("output$i", Constants.NBT.TAG_INT))
+            ) {
                 return false
             }
         }
@@ -67,13 +79,22 @@ class ItemMemoryCard : Item() {
         return tag
     }
 
-    private fun applyToMetaTileEntity(tag: NBTTagCompound, metaTileEntity: MetaTileEntity): Boolean {
-        val inputs = EnumFacing.entries.map { MachineIoMode.byId(tag.getInteger("input${it.index}")) }
-        val outputs = EnumFacing.entries.map { MachineIoMode.byId(tag.getInteger("output${it.index}")) }
+    private fun applyToMetaTileEntity(
+        tag: NBTTagCompound,
+        metaTileEntity: MetaTileEntity
+    ): Boolean {
+        val inputs =
+            EnumFacing.entries.map { MachineIoMode.byId(tag.getInteger("input${it.index}")) }
+        val outputs =
+            EnumFacing.entries.map { MachineIoMode.byId(tag.getInteger("output${it.index}")) }
 
         val io = inputs.zip(outputs)
 
-        if (io.any { (i, o) -> !(metaTileEntity.isInputModeValid(i) && metaTileEntity.isOutputModeValid(o)) }) {
+        if (
+            io.any { (i, o) ->
+                !(metaTileEntity.isInputModeValid(i) && metaTileEntity.isOutputModeValid(o))
+            }
+        ) {
             return false
         }
 
@@ -86,7 +107,12 @@ class ItemMemoryCard : Item() {
     }
 
     @SideOnly(Side.CLIENT)
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
         UtilLocale.formatTooltips(tooltip, "item.clayium.memory_card.tooltip")
     }

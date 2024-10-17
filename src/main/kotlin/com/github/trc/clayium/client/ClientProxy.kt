@@ -46,11 +46,22 @@ class ClientProxy : CommonProxy() {
         ModelLoaderRegistry.registerLoader(LaserReflectorModelLoader)
         ModelLoaderRegistry.registerLoader(MetalBlockModelLoader)
 
-        ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, MetaTileEntityRenderDispatcher)
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayLaserReflector::class.java, ClayLaserReflectorRenderer)
-        ClientRegistry.bindTileEntitySpecialRenderer(TileClayMarker.NoExtend::class.java, ClayMarkerTESR)
+        ClientRegistry.bindTileEntitySpecialRenderer(
+            MetaTileEntityHolder::class.java,
+            MetaTileEntityRenderDispatcher
+        )
+        ClientRegistry.bindTileEntitySpecialRenderer(
+            TileEntityClayLaserReflector::class.java,
+            ClayLaserReflectorRenderer
+        )
+        ClientRegistry.bindTileEntitySpecialRenderer(
+            TileClayMarker.NoExtend::class.java,
+            ClayMarkerTESR
+        )
 
-        ClayiumBlocks.CLAY_TREE_LEAVES.setGraphicsLevel(Minecraft.getMinecraft().gameSettings.fancyGraphics)
+        ClayiumBlocks.CLAY_TREE_LEAVES.setGraphicsLevel(
+            Minecraft.getMinecraft().gameSettings.fancyGraphics
+        )
     }
 
     override fun init(event: FMLInitializationEvent) {
@@ -62,23 +73,31 @@ class ClientProxy : CommonProxy() {
         if (item is MetaItemClayium) {
             item.registerModels()
         }
-        ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(item.registryName!!, "inventory"))
+        ModelLoader.setCustomModelResourceLocation(
+            item,
+            0,
+            ModelResourceLocation(item.registryName!!, "inventory")
+        )
     }
 
     @SubscribeEvent
     fun onTextureStitchPre(event: TextureStitchEvent.Pre) {
-        val compressedBlockTextures = listOf("metalblock_base", "metalblock_dark", "metalblock_light")
+        val compressedBlockTextures =
+            listOf("metalblock_base", "metalblock_dark", "metalblock_light")
         for (block in ClayiumBlocks.COMPRESSED_BLOCKS) {
             for (material in block.mapping.values) {
                 val colorsRaw = material.colors ?: return
                 val name = material.upperCamelName
 
-                val colors = colorsRaw.map { color ->
-                    ColourRGBA(color shl 8).apply { a = 255.toByte() }
+                val colors =
+                    colorsRaw.map { color -> ColourRGBA(color shl 8).apply { a = 255.toByte() } }
 
-                }
-
-                val sprite = TextureExtra(clayiumId("blocks/compressed_$name").toString(), compressedBlockTextures, colors)
+                val sprite =
+                    TextureExtra(
+                        clayiumId("blocks/compressed_$name").toString(),
+                        compressedBlockTextures,
+                        colors
+                    )
                 if (event.map.getTextureExtry(sprite.iconName) == null) {
                     event.map.setTextureEntry(sprite)
                 }

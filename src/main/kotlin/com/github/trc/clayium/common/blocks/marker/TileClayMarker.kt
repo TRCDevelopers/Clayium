@@ -11,10 +11,7 @@ import net.minecraft.util.math.BlockPos
 
 abstract class TileClayMarker : TileEntity() {
 
-    /**
-     * range of this marker.
-     * null if not marked yet.
-     */
+    /** range of this marker. null if not marked yet. */
     var rangeRelative: Cuboid6? = null
         private set
 
@@ -22,7 +19,7 @@ abstract class TileClayMarker : TileEntity() {
 
     var rangeRenderMode = RangeRenderMode.DISABLED
 
-    //todo remove logic from client
+    // todo remove logic from client
     fun onRightClick() {
         rangeRenderMode = rangeRenderMode.next()
         val mutPos = BlockPos.MutableBlockPos()
@@ -38,15 +35,12 @@ abstract class TileClayMarker : TileEntity() {
                 }
             }
         }
-        this.rangeRelative = constructRange(markerPoses)
-            .subtract(pos)
+        this.rangeRelative = constructRange(markerPoses).subtract(pos)
         this.markerPoses.clear()
         this.markerPoses.addAll(markerPoses)
     }
 
-    /**
-     * @return Absolute.
-     */
+    /** @return Absolute. */
     abstract fun constructRange(markerPoses: List<BlockPos>): Cuboid6
 
     override fun getRenderBoundingBox(): AxisAlignedBB {
@@ -56,34 +50,34 @@ abstract class TileClayMarker : TileEntity() {
     open class NoExtend : TileClayMarker() {
         override fun constructRange(markerPoses: List<BlockPos>): Cuboid6 {
             return Cuboid6(
-                    markerPoses.minOf { it.x }.toDouble(),
-                    markerPoses.minOf { it.y }.toDouble(),
-                    markerPoses.minOf { it.z }.toDouble(),
-                    markerPoses.maxOf { it.x }.toDouble() + 1.0,
-                    markerPoses.maxOf { it.y }.toDouble() + 1.0,
-                    markerPoses.maxOf { it.z }.toDouble() + 1.0
+                markerPoses.minOf { it.x }.toDouble(),
+                markerPoses.minOf { it.y }.toDouble(),
+                markerPoses.minOf { it.z }.toDouble(),
+                markerPoses.maxOf { it.x }.toDouble() + 1.0,
+                markerPoses.maxOf { it.y }.toDouble() + 1.0,
+                markerPoses.maxOf { it.z }.toDouble() + 1.0
             )
         }
     }
 
     class ExtendToGround : NoExtend() {
         override fun constructRange(markerPoses: List<BlockPos>): Cuboid6 {
-            return super.constructRange(markerPoses)
-                .apply { min.y = 0.0 }
+            return super.constructRange(markerPoses).apply { min.y = 0.0 }
         }
     }
 
     class ExtendToSky : NoExtend() {
         override fun constructRange(markerPoses: List<BlockPos>): Cuboid6 {
-            return super.constructRange(markerPoses)
-                .apply { max.y = 255.0 }
+            return super.constructRange(markerPoses).apply { max.y = 255.0 }
         }
     }
 
     class AllHeight : NoExtend() {
         override fun constructRange(markerPoses: List<BlockPos>): Cuboid6 {
-            return super.constructRange(markerPoses)
-                .apply { min.y = 0.0; max.y = 255.0 }
+            return super.constructRange(markerPoses).apply {
+                min.y = 0.0
+                max.y = 255.0
+            }
         }
     }
 }

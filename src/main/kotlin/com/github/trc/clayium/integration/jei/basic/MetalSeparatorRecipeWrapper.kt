@@ -12,10 +12,19 @@ class MetalSeparatorRecipeWrapper(
 
     override fun getIngredients(ingredients: IIngredients) {
         ingredients.setInputLists(VanillaTypes.ITEM, recipe.inputs.map { it.stacks })
-        ingredients.setOutput(VanillaTypes.ITEM, recipe.chancedOutputs!!.chancedOutputs[index].result)
+        ingredients.setOutput(
+            VanillaTypes.ITEM,
+            recipe.chancedOutputs!!.chancedOutputs[index].result
+        )
     }
 
-    override fun drawInfo(minecraft: Minecraft, recipeWidth: Int, recipeHeight: Int, mouseX: Int, mouseY: Int) {
+    override fun drawInfo(
+        minecraft: Minecraft,
+        recipeWidth: Int,
+        recipeHeight: Int,
+        mouseX: Int,
+        mouseY: Int
+    ) {
         super.drawInfo(minecraft, recipeWidth, recipeHeight, mouseX, mouseY)
         val chance = "${recipe.chancedOutputs!!.chancedOutputs[index].chance / 100.0} %"
         val chanceTextWidth = minecraft.fontRenderer.getStringWidth(chance)

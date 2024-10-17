@@ -5,5 +5,4 @@ enum class PipeConnectionMode {
     INPUT,
     OUTPUT,
     BOTH,
-    ;
 }

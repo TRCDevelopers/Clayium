@@ -13,7 +13,12 @@ import org.lwjgl.opengl.GL11
 
 object ClayLaserRenderer {
     fun renderLaser(
-        laser: ClayLaser, direction: EnumFacing, length: Int, x: Double, y: Double, z: Double,
+        laser: ClayLaser,
+        direction: EnumFacing,
+        length: Int,
+        x: Double,
+        y: Double,
+        z: Double,
         bindTexture: (ResourceLocation) -> Unit,
     ) {
         val rawLaserRed = laser.red
@@ -22,7 +27,7 @@ object ClayLaserRenderer {
         val max = maxOf(rawLaserRed, rawLaserGreen, rawLaserBlue)
         if (max == 0) return
 
-        //reference: https://qiita.com/KrGit3/items/6b2673c6362a3f88ef7a
+        // reference: https://qiita.com/KrGit3/items/6b2673c6362a3f88ef7a
         GlStateManager.pushMatrix()
         GlStateManager.disableLighting()
         GlStateManager.enableBlend()

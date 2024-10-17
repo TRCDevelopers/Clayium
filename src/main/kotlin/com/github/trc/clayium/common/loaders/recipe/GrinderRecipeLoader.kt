@@ -34,49 +34,74 @@ object GrinderRecipeLoader {
     fun registerRecipes() {
         val registry = CRecipes.GRINDER
 
-        registry.builder()
+        registry
+            .builder()
             .input(ClayiumBlocks.CLAY_ORE)
             .output(MetaItemClayParts.CompressedClayShard, 2)
             .duration(3)
             .buildAndRegister()
-        registry.builder()
+        registry
+            .builder()
             .input(ClayiumBlocks.DENSE_CLAY_ORE)
             .output(MetaItemClayParts.IndustrialClayShard, 3)
             .duration(6)
             .buildAndRegister()
-        registry.builder()
+        registry
+            .builder()
             .input(ClayiumBlocks.LARGE_DENSE_CLAY_ORE)
             .output(MetaItemClayParts.AdvancedIndustrialClayShard, 5)
             .duration(9)
             .buildAndRegister()
-        registry.builder()
+        registry
+            .builder()
             .input(ClayiumBlocks.CLAY_TREE_LOG)
             .output(OrePrefix.dust, CMaterials.organicClay)
-            .tier(5).defaultCEt().duration(200)
+            .tier(5)
+            .defaultCEt()
+            .duration(200)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(Blocks.COBBLESTONE)
             .output(Blocks.GRAVEL)
-            .tier(0).CEt(ClayEnergy.micro(10)).duration(10)
+            .tier(0)
+            .CEt(ClayEnergy.micro(10))
+            .duration(10)
             .buildAndRegister()
-        registry.builder()
+        registry
+            .builder()
             .input(Blocks.COBBLESTONE, 16)
             .output(Blocks.GRAVEL, 16)
-            .tier(1).CEt(ClayEnergy.micro(10)).duration(10)
+            .tier(1)
+            .CEt(ClayEnergy.micro(10))
+            .duration(10)
             .buildAndRegister()
-        registry.builder()
+        registry
+            .builder()
             .input(Blocks.COBBLESTONE, 64)
             .output(Blocks.GRAVEL, 64)
-            .tier(2).CEt(ClayEnergy.micro(10)).duration(10)
+            .tier(2)
+            .CEt(ClayEnergy.micro(10))
+            .duration(10)
             .buildAndRegister()
 
         // clay block grinding
-        for ((i, m) in listOf(CMaterials.clay, CMaterials.denseClay, CMaterials.industrialClay, CMaterials.advancedIndustrialClay).withIndex()) {
-            registry.builder()
+        for ((i, m) in
+            listOf(
+                    CMaterials.clay,
+                    CMaterials.denseClay,
+                    CMaterials.industrialClay,
+                    CMaterials.advancedIndustrialClay
+                )
+                .withIndex()) {
+            registry
+                .builder()
                 .input(block, m)
                 .output(OrePrefix.dust, m)
-                .tier(0).defaultCEt().duration(4 * (i + 1))
+                .tier(0)
+                .defaultCEt()
+                .duration(4 * (i + 1))
                 .buildAndRegister()
         }
     }
@@ -90,9 +115,20 @@ object GrinderRecipeLoader {
             if (!OreDictUnifier.exists(prefix, material)) continue
             when (prefix) {
                 block -> handleBlockGrinding(material)
-                ingot, gem, crystal,
-                bearing, blade, cuttingHead, cylinder, disc,
-                gear, grindingHead, needle, pipe, ring, spindle -> {
+                ingot,
+                gem,
+                crystal,
+                bearing,
+                blade,
+                cuttingHead,
+                cylinder,
+                disc,
+                gear,
+                grindingHead,
+                needle,
+                pipe,
+                ring,
+                spindle -> {
                     addDefaultGrindingRecipe(prefix, material)
                 }
             }
@@ -101,7 +137,12 @@ object GrinderRecipeLoader {
 
     private fun handleBlockGrinding(material: IMaterial) {
         // skip if it's a clay block. (energy, duration) of these are special
-        if (material === CMaterials.clay || material === CMaterials.denseClay || material === CMaterials.industrialClay || material === CMaterials.advancedIndustrialClay) {
+        if (
+            material === CMaterials.clay ||
+                material === CMaterials.denseClay ||
+                material === CMaterials.industrialClay ||
+                material === CMaterials.advancedIndustrialClay
+        ) {
             return
         }
         addDefaultGrindingRecipe(block, material)
@@ -117,7 +158,9 @@ object GrinderRecipeLoader {
         CRecipes.GRINDER.builder()
             .input(orePrefix, material)
             .output(OrePrefix.dust, material, amount)
-            .tier(tier).CEt(clayEnergy).duration(80 * durationModifier)
+            .tier(tier)
+            .CEt(clayEnergy)
+            .duration(80 * durationModifier)
             .buildAndRegister()
     }
 }

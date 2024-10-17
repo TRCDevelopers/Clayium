@@ -11,21 +11,25 @@ import com.github.trc.clayium.integration.groovy.GroovyScriptModule
 import com.github.trc.clayium.integration.groovy.RecipeRegistryGrsAdapter
 import net.minecraft.item.ItemStack
 
-open class RecipeRegistry<R: RecipeBuilder<R>>(
+open class RecipeRegistry<R : RecipeBuilder<R>>(
     val category: RecipeCategory,
     private val builderSample: R,
     val maxInputs: Int,
     val maxOutputs: Int,
 ) : IRecipeProvider {
 
-    constructor(translationKey: String, builderSample: R, maxInputs: Int, maxOutputs: Int) :
-            this(RecipeCategory.create(MOD_ID, translationKey), builderSample, maxInputs, maxOutputs)
+    constructor(
+        translationKey: String,
+        builderSample: R,
+        maxInputs: Int,
+        maxOutputs: Int
+    ) : this(RecipeCategory.create(MOD_ID, translationKey), builderSample, maxInputs, maxOutputs)
 
     val categoryName = category.categoryName
     override val jeiCategory = category.uniqueId
 
-    val grsVirtualizedRegistry: RecipeRegistryGrsAdapter?
-        = if (Mods.GroovyScript.isModLoaded) RecipeRegistryGrsAdapter(this) else null
+    val grsVirtualizedRegistry: RecipeRegistryGrsAdapter? =
+        if (Mods.GroovyScript.isModLoaded) RecipeRegistryGrsAdapter(this) else null
 
     init {
         builderSample.setRegistry(this)
@@ -43,7 +47,7 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
         builder.buildAndRegister()
     }
 
-    //todo use hash table?
+    // todo use hash table?
     fun findRecipe(machineTier: Int, inputsIn: List<ItemStack>): Recipe? {
         return _recipes.firstOrNull { it.matches(inputsIn, machineTier) }
     }
@@ -104,9 +108,10 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
     }
 
     companion object {
-        val TIER_DURATION_CE = Comparator.comparingInt(Recipe::recipeTier)
-            .thenComparingLong(Recipe::duration)
-            .thenComparingLong { recipe -> recipe.cePerTick.energy }
+        val TIER_DURATION_CE =
+            Comparator.comparingInt(Recipe::recipeTier)
+                .thenComparingLong(Recipe::duration)
+                .thenComparingLong { recipe -> recipe.cePerTick.energy }
 
         val TIER_DURATION_CE_REVERSED = TIER_DURATION_CE.reversed()
     }

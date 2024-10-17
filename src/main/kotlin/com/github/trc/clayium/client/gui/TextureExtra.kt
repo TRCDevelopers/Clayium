@@ -29,7 +29,11 @@ class TextureExtra(
         return true
     }
 
-    override fun load(manager: IResourceManager, location: ResourceLocation, textureGetter: Function<ResourceLocation, TextureAtlasSprite?>): Boolean {
+    override fun load(
+        manager: IResourceManager,
+        location: ResourceLocation,
+        textureGetter: Function<ResourceLocation, TextureAtlasSprite?>
+    ): Boolean {
         val mipmapLevels = Minecraft.getMinecraft().gameSettings.mipmapLevels
         var bufImage: BufferedImage? = null
         val baseSprite = textureGetter.apply(clayiumId("blocks/${extras[0]}"))
@@ -41,27 +45,29 @@ class TextureExtra(
         val height = baseSprite.iconHeight
         iconWidth = width
         iconHeight = height
-        val pixels = Array<IntArray?> (mipmapLevels + 1) { null }
+        val pixels = Array<IntArray?>(mipmapLevels + 1) { null }
         pixels[0] = IntArray(width * height)
 
         for ((i, extraTex) in extras.withIndex()) {
             val rl = createRl(extraTex, 0)
             val resource: IResource = manager.getResource(rl)
 
-            val image = resource.inputStream.use { stream ->
-                val image: BufferedImage = javax.imageio.ImageIO.read(stream)
-                if (colors != null) {
-                    recolorImage(image, colors[i])
-                } else {
-                    image
+            val image =
+                resource.inputStream.use { stream ->
+                    val image: BufferedImage = javax.imageio.ImageIO.read(stream)
+                    if (colors != null) {
+                        recolorImage(image, colors[i])
+                    } else {
+                        image
+                    }
                 }
-            }
 
-            bufImage = if (bufImage == null) {
-                image
-            } else {
-                blendImages(bufImage, image)
-            }
+            bufImage =
+                if (bufImage == null) {
+                    image
+                } else {
+                    blendImages(bufImage, image)
+                }
         }
         bufImage!!.getRGB(0, 0, width, height, pixels[0], 0, width)
         this.clearFramesTextureData()
@@ -87,11 +93,20 @@ private fun blendImages(image0: BufferedImage, image1: BufferedImage): BufferedI
 
             val a2 = a0 + a1 - a0 * a1 / 255
             val r2 =
-                if ((a2 == 0)) r0 else (a0 * (255 - a1) * r0 / (255 * a0 + 255 * a1 - a0 * a1) + a1 * 255 * r1 / (255 * a0 + 255 * a1 - a0 * a1))
+                if ((a2 == 0)) r0
+                else
+                    (a0 * (255 - a1) * r0 / (255 * a0 + 255 * a1 - a0 * a1) +
+                        a1 * 255 * r1 / (255 * a0 + 255 * a1 - a0 * a1))
             val g2 =
-                if ((a2 == 0)) g0 else (a0 * (255 - a1) * g0 / (255 * a0 + 255 * a1 - a0 * a1) + a1 * 255 * g1 / (255 * a0 + 255 * a1 - a0 * a1))
+                if ((a2 == 0)) g0
+                else
+                    (a0 * (255 - a1) * g0 / (255 * a0 + 255 * a1 - a0 * a1) +
+                        a1 * 255 * g1 / (255 * a0 + 255 * a1 - a0 * a1))
             val b2 =
-                if ((a2 == 0)) b0 else (a0 * (255 - a1) * b0 / (255 * a0 + 255 * a1 - a0 * a1) + a1 * 255 * b1 / (255 * a0 + 255 * a1 - a0 * a1))
+                if ((a2 == 0)) b0
+                else
+                    (a0 * (255 - a1) * b0 / (255 * a0 + 255 * a1 - a0 * a1) +
+                        a1 * 255 * b1 / (255 * a0 + 255 * a1 - a0 * a1))
             image0.setRGB(x, y, (r2 shl 16) + (g2 shl 8) + b2 + (a2 shl 24))
         }
     }

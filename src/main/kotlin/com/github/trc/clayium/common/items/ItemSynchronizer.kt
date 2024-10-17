@@ -21,33 +21,65 @@ class ItemSynchronizer : Item() {
         maxStackSize = 1
     }
 
-    override fun onItemUseFirst(player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, hand: EnumHand): EnumActionResult {
+    override fun onItemUseFirst(
+        player: EntityPlayer,
+        world: World,
+        pos: BlockPos,
+        side: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float,
+        hand: EnumHand
+    ): EnumActionResult {
         if (world.getMetaTileEntity(pos) == null || player.isSneaking) return EnumActionResult.PASS
         if (world.isRemote) return EnumActionResult.SUCCESS
 
         val itemStack = player.getHeldItem(hand)
         val stackTag = itemStack.tagCompound
         if (stackTag != null && isTagValid(stackTag)) {
-            val proxy = world.getTileEntity(pos)?.getCapability(ClayiumCapabilities.SYNCHRONIZED_INTERFACE, side)
+            val proxy =
+                world
+                    .getTileEntity(pos)
+                    ?.getCapability(ClayiumCapabilities.SYNCHRONIZED_INTERFACE, side)
             if (proxy != null) {
                 val targetPos = BlockPos.fromLong(stackTag.getLong("pos"))
                 val targetWorld = stackTag.getInteger("world")
                 if (proxy.synchronize(targetPos, targetWorld)) {
-                    player.sendMessage(TextComponentTranslation("item.clayium.synchronizer.synchronized", createPosTooltip(targetPos, targetWorld)))
+                    player.sendMessage(
+                        TextComponentTranslation(
+                            "item.clayium.synchronizer.synchronized",
+                            createPosTooltip(targetPos, targetWorld)
+                        )
+                    )
                 } else {
-                    player.sendMessage(TextComponentTranslation("item.clayium.synchronizer.synchronize_failed", createPosTooltip(targetPos, targetWorld)))
+                    player.sendMessage(
+                        TextComponentTranslation(
+                            "item.clayium.synchronizer.synchronize_failed",
+                            createPosTooltip(targetPos, targetWorld)
+                        )
+                    )
                 }
                 return EnumActionResult.SUCCESS
             }
         }
 
         itemStack.tagCompound = createPositionNbt(pos, world.provider.dimension)
-        player.sendMessage(TextComponentTranslation("item.clayium.synchronizer.position_saved", createPosTooltip(pos, world.provider.dimension)))
+        player.sendMessage(
+            TextComponentTranslation(
+                "item.clayium.synchronizer.position_saved",
+                createPosTooltip(pos, world.provider.dimension)
+            )
+        )
 
         return EnumActionResult.SUCCESS
     }
 
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         val stackTag = stack.tagCompound
         if (stackTag != null && stackTag.hasKey("pos") && stackTag.hasKey("world")) {
             val pos = BlockPos.fromLong(stackTag.getLong("pos"))

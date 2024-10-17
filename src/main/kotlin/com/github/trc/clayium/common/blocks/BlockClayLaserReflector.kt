@@ -30,7 +30,12 @@ class BlockClayLaserReflector : Block(Material.IRON) {
         defaultState = defaultState.withProperty(FACING, EnumFacing.NORTH)
     }
 
-    override fun canCreatureSpawn(state: IBlockState, world: IBlockAccess, pos: BlockPos, type: EntityLiving.SpawnPlacementType): Boolean {
+    override fun canCreatureSpawn(
+        state: IBlockState,
+        world: IBlockAccess,
+        pos: BlockPos,
+        type: EntityLiving.SpawnPlacementType
+    ): Boolean {
         return false
     }
 
@@ -38,13 +43,26 @@ class BlockClayLaserReflector : Block(Material.IRON) {
         return BlockStateContainer(this, FACING)
     }
 
-    override fun getStateFromMeta(meta: Int) = defaultState.withProperty(FACING, EnumFacing.byIndex(meta))
+    override fun getStateFromMeta(meta: Int) =
+        defaultState.withProperty(FACING, EnumFacing.byIndex(meta))
+
     override fun getMetaFromState(state: IBlockState) = state.getValue(FACING).index
 
-    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+    override fun onBlockActivated(
+        worldIn: World,
+        pos: BlockPos,
+        state: IBlockState,
+        playerIn: EntityPlayer,
+        hand: EnumHand,
+        facing: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float
+    ): Boolean {
         val stack: ItemStack = playerIn.getHeldItem(hand)
-        val type = stack.getCapability(ClayiumCapabilities.CONFIG_TOOL, null)?.getType(playerIn.isSneaking)
-            ?: return false
+        val type =
+            stack.getCapability(ClayiumCapabilities.CONFIG_TOOL, null)?.getType(playerIn.isSneaking)
+                ?: return false
         if (type != IConfigurationTool.ToolType.ROTATION) return false
 
         val direction = state.getValue(FACING)
@@ -57,35 +75,81 @@ class BlockClayLaserReflector : Block(Material.IRON) {
     }
 
     override fun isFullBlock(state: IBlockState) = false
+
     override fun isFullCube(state: IBlockState) = isFullBlock(state)
+
     override fun isOpaqueCube(state: IBlockState) = isFullBlock(state)
+
     override fun causesSuffocation(state: IBlockState) = isFullBlock(state)
 
     override fun hasTileEntity(state: IBlockState) = true
+
     override fun createTileEntity(world: World, state: IBlockState) = TileEntityClayLaserReflector()
 
-    override fun getStateForPlacement(world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand): IBlockState {
+    override fun getStateForPlacement(
+        world: World,
+        pos: BlockPos,
+        facing: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float,
+        meta: Int,
+        placer: EntityLivingBase,
+        hand: EnumHand
+    ): IBlockState {
         val facing = EnumFacing.getDirectionFromEntityLiving(pos, placer)
         return defaultState.withProperty(FACING, facing)
     }
 
     override fun getRenderLayer() = BlockRenderLayer.TRANSLUCENT
+
     override fun getRenderType(state: IBlockState) = EnumBlockRenderType.INVISIBLE
 
-    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
+    override fun getBoundingBox(
+        state: IBlockState,
+        source: IBlockAccess,
+        pos: BlockPos
+    ): AxisAlignedBB {
         val direction = state.getValue(FACING)
         return when (direction) {
-            EnumFacing.DOWN, EnumFacing.UP -> Y_AABB
-            EnumFacing.NORTH, EnumFacing.SOUTH -> Z_AABB
-            EnumFacing.WEST, EnumFacing.EAST -> X_AABB
+            EnumFacing.DOWN,
+            EnumFacing.UP -> Y_AABB
+            EnumFacing.NORTH,
+            EnumFacing.SOUTH -> Z_AABB
+            EnumFacing.WEST,
+            EnumFacing.EAST -> X_AABB
         }
     }
 
     companion object {
         val FACING = PropertyDirection.create("direction")
 
-        private val X_AABB = AxisAlignedBB(0.0 + 0.125, 0.0 + 0.125 * 2.0, 0.0 + 0.125 * 2.0, 1.0 - 0.125, 1.0 - 0.125 * 2.0, 1.0 - 0.125 * 2.0)
-        private val Y_AABB = AxisAlignedBB(0.0 + 0.125 * 2.0, 0.0 + 0.125, 0.0 + 0.125 * 2.0, 1.0 - 0.125 * 2.0, 1.0 - 0.125, 1.0 - 0.125 * 2.0)
-        private val Z_AABB = AxisAlignedBB(0.0 + 0.125 * 2.0, 0.0 + 0.125 * 2.0, 0.0 + 0.125, 1.0 - 0.125 * 2.0, 1.0 - 0.125 * 2.0, 1.0 - 0.125)
+        private val X_AABB =
+            AxisAlignedBB(
+                0.0 + 0.125,
+                0.0 + 0.125 * 2.0,
+                0.0 + 0.125 * 2.0,
+                1.0 - 0.125,
+                1.0 - 0.125 * 2.0,
+                1.0 - 0.125 * 2.0
+            )
+        private val Y_AABB =
+            AxisAlignedBB(
+                0.0 + 0.125 * 2.0,
+                0.0 + 0.125,
+                0.0 + 0.125 * 2.0,
+                1.0 - 0.125 * 2.0,
+                1.0 - 0.125,
+                1.0 - 0.125 * 2.0
+            )
+        private val Z_AABB =
+            AxisAlignedBB(
+                0.0 + 0.125 * 2.0,
+                0.0 + 0.125 * 2.0,
+                0.0 + 0.125,
+                1.0 - 0.125 * 2.0,
+                1.0 - 0.125 * 2.0,
+                1.0 - 0.125
+            )
     }
 }

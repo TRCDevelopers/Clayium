@@ -14,7 +14,6 @@ import com.github.trc.clayium.common.recipe.CWTRecipes
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 
-
 object ClayWorkTableRecipeLoader {
     fun registerRecipes() {
         CWTRecipes.CLAY_WORK_TABLE.register {

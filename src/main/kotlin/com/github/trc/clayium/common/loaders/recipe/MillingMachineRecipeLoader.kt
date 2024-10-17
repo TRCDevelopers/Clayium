@@ -10,22 +10,31 @@ object MillingMachineRecipeLoader {
     fun registerRecipes() {
         val registry = CRecipes.MILLING_MACHINE
 
-        registry.builder()
+        registry
+            .builder()
             .input(OrePrefix.plate, CMaterials.denseClay)
             .output(MetaItemClayParts.ClayCircuitBoard)
-            .tier(0).CEtByTier(0).duration(32)
+            .tier(0)
+            .CEtByTier(0)
+            .duration(32)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(OrePrefix.plate, CMaterials.industrialClay)
             .output(MetaItemClayParts.ClayCircuitBoard)
-            .tier(0).CEtByTier(0).duration(1)
+            .tier(0)
+            .CEtByTier(0)
+            .duration(1)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(OrePrefix.plate, CMaterials.advancedIndustrialClay)
             .output(MetaItemClayParts.CeeBoard)
-            .tier(3).CEt(ClayEnergy.micro(20)).duration(32)
+            .tier(3)
+            .CEt(ClayEnergy.micro(20))
+            .duration(32)
             .buildAndRegister()
     }
 }

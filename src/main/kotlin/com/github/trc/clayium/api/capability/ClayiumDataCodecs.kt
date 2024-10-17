@@ -2,6 +2,7 @@ package com.github.trc.clayium.api.capability
 
 object ClayiumDataCodecs {
     private var nextId = 0
+
     fun assignId(): Int = nextId++
 
     val INITIALIZE_MTE = assignId()

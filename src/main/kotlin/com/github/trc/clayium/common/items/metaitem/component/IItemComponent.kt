@@ -16,7 +16,12 @@ fun interface ISubItemHandler : IItemComponent {
 }
 
 interface IItemBehavior : IItemComponent {
-    fun addInformation(stack: ItemStack, world: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {}
+    fun addInformation(
+        stack: ItemStack,
+        world: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {}
 }
 
 fun interface IItemColorHandler : IItemComponent {
@@ -25,6 +30,10 @@ fun interface IItemColorHandler : IItemComponent {
 
 interface IItemCapabilityProvider : IItemComponent, ICapabilityProvider {
     fun <T : Any> getCapability(capability: Capability<T>): T?
-    override fun <T : Any> getCapability(capability: Capability<T>, facing: EnumFacing?) = getCapability(capability)
-    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?) = getCapability(capability) != null
+
+    override fun <T : Any> getCapability(capability: Capability<T>, facing: EnumFacing?) =
+        getCapability(capability)
+
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?) =
+        getCapability(capability) != null
 }

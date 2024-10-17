@@ -8,9 +8,10 @@ import net.minecraft.util.IStringSerializable
 import net.minecraft.world.World
 import net.minecraftforge.common.IRarity
 
-class VariantItemBlock<E, B>(val variantBlock: B) : ItemBlock(variantBlock)
-where E : Enum<E>, E : IStringSerializable, B : VariantBlock<E>
-{
+class VariantItemBlock<E, B>(val variantBlock: B) : ItemBlock(variantBlock) where
+E : Enum<E>,
+E : IStringSerializable,
+B : VariantBlock<E> {
     init {
         hasSubtypes = true
     }
@@ -30,7 +31,12 @@ where E : Enum<E>, E : IStringSerializable, B : VariantBlock<E>
         return super.getForgeRarity(stack)
     }
 
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String?>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String?>,
+        flagIn: ITooltipFlag
+    ) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
         if (variantBlock is ITieredBlock) {
             tooltip.add(ITier.tierNumericTooltip(variantBlock.getTier(stack)))

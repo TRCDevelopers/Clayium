@@ -30,14 +30,27 @@ object LaserReflectorModelLoader : ICustomModelLoader {
                 return listOf(clayiumId("blocks/laserreflector"))
             }
 
-            override fun bake(state: IModelState, format: VertexFormat, bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>): IBakedModel {
+            override fun bake(
+                state: IModelState,
+                format: VertexFormat,
+                bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>
+            ): IBakedModel {
                 return object : IBakedModel {
-                    override fun getQuads( state: IBlockState?, side: EnumFacing?, rand: Long ): List<BakedQuad> = emptyList()
-                    override fun getParticleTexture(): TextureAtlasSprite  = bakedTextureGetter.apply(clayiumId("blocks/laserreflector"))
+                    override fun getQuads(
+                        state: IBlockState?,
+                        side: EnumFacing?,
+                        rand: Long
+                    ): List<BakedQuad> = emptyList()
+
+                    override fun getParticleTexture(): TextureAtlasSprite =
+                        bakedTextureGetter.apply(clayiumId("blocks/laserreflector"))
 
                     override fun isAmbientOcclusion() = true
+
                     override fun isGui3d() = true
+
                     override fun isBuiltInRenderer() = true
+
                     override fun getOverrides(): ItemOverrideList = ItemOverrideList.NONE
                 }
             }

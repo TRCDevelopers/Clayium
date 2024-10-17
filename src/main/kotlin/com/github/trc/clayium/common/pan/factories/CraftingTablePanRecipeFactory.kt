@@ -20,7 +20,13 @@ object CraftingTablePanRecipeFactory : IPanRecipeFactory {
 
     private val ENERGY = ClayEnergy.micro(100)
 
-    override fun getEntry(world: IBlockAccess, pos: BlockPos, stacks: List<ItemStack>, laserEnergy: Double, laserCostPerTick: ClayEnergy): IPanRecipe? {
+    override fun getEntry(
+        world: IBlockAccess,
+        pos: BlockPos,
+        stacks: List<ItemStack>,
+        laserEnergy: Double,
+        laserCostPerTick: ClayEnergy
+    ): IPanRecipe? {
         if (world.getBlockState(pos).block !== Blocks.CRAFTING_TABLE || world !is World) return null
 
         val matrix = InventoryCrafting(DummyContainer, 3, 3)
@@ -28,13 +34,14 @@ object CraftingTablePanRecipeFactory : IPanRecipeFactory {
 
         val recipe: IRecipe = CraftingManager.findMatchingRecipe(matrix, world) ?: return null
         val output = recipe.recipeOutput.copy()
-        val inputs = recipe.ingredients.map { ingredient ->
-            // field `matchingStacks` and method `getMatchingStacks` is not the same.
-            // `matchingStacks` is an empty list in OreIngredient.
-            val stacks = ingredient.getMatchingStacks()
-            // todo: use cached recipe inputs instead of creating new one
-            CItemRecipeInput(stacks.map { it.copyWithSize(1) }, 1)
-        }
+        val inputs =
+            recipe.ingredients.map { ingredient ->
+                // field `matchingStacks` and method `getMatchingStacks` is not the same.
+                // `matchingStacks` is an empty list in OreIngredient.
+                val stacks = ingredient.getMatchingStacks()
+                // todo: use cached recipe inputs instead of creating new one
+                CItemRecipeInput(stacks.map { it.copyWithSize(1) }, 1)
+            }
 
         return PanRecipe(inputs, listOf(output), ENERGY)
     }

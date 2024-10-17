@@ -20,7 +20,11 @@ import net.minecraftforge.common.property.IExtendedBlockState
 import java.util.function.Function
 
 class MetalBlockModel : IModel {
-    override fun bake(state: IModelState, format: VertexFormat, bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>): IBakedModel {
+    override fun bake(
+        state: IModelState,
+        format: VertexFormat,
+        bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>
+    ): IBakedModel {
         return MetalBlockBakedModel(bakedTextureGetter)
     }
 
@@ -36,19 +40,29 @@ class MetalBlockModel : IModel {
             val exState = state as? IExtendedBlockState ?: return emptyList()
             val materialName = exState.getValue(BlockCompressed.MATERIAL_NAME)
             val quads = mutableListOf<BakedQuad>()
-            val allSideQuads = cache.getOrPut(materialName) {
-                val atlas = texGetter.apply(clayiumId("blocks/compressed_$materialName"))
-                EnumFacing.entries.map { ModelTextures.createQuad(it, atlas) }
-            }
+            val allSideQuads =
+                cache.getOrPut(materialName) {
+                    val atlas = texGetter.apply(clayiumId("blocks/compressed_$materialName"))
+                    EnumFacing.entries.map { ModelTextures.createQuad(it, atlas) }
+                }
             quads.add(allSideQuads[side.index])
             return quads
         }
 
-        override fun getHitEffects(traceResult: RayTraceResult, state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite?> {
+        override fun getHitEffects(
+            traceResult: RayTraceResult,
+            state: IBlockState?,
+            world: IBlockAccess?,
+            pos: BlockPos?
+        ): Set<TextureAtlasSprite?> {
             return getParticle(state)
         }
 
-        override fun getDestroyEffects(state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite?> {
+        override fun getDestroyEffects(
+            state: IBlockState?,
+            world: IBlockAccess?,
+            pos: BlockPos?
+        ): Set<TextureAtlasSprite?> {
             return getParticle(state)
         }
 
@@ -60,7 +74,9 @@ class MetalBlockModel : IModel {
         }
 
         override fun isAmbientOcclusion() = true
+
         override fun isGui3d() = true
+
         override fun isBuiltInRenderer() = false
 
         override fun getOverrides(): ItemOverrideList {

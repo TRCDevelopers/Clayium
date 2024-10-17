@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
  * so we have to use Java.
  */
 public class ClayLaserByteBufAdapter implements IByteBufAdapter<@Nullable ClayLaser> {
+
     public static final ClayLaserByteBufAdapter INSTANCE = new ClayLaserByteBufAdapter();
 
     private ClayLaserByteBufAdapter() {}

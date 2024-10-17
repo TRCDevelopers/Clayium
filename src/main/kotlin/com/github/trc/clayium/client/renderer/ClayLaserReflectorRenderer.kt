@@ -11,7 +11,15 @@ import net.minecraft.util.EnumFacing
 import org.lwjgl.opengl.GL11
 
 object ClayLaserReflectorRenderer : TileEntitySpecialRenderer<TileEntityClayLaserReflector>() {
-    override fun render(reflector: TileEntityClayLaserReflector, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
+    override fun render(
+        reflector: TileEntityClayLaserReflector,
+        x: Double,
+        y: Double,
+        z: Double,
+        partialTicks: Float,
+        destroyStage: Int,
+        alpha: Float
+    ) {
         GlStateManager.pushMatrix()
         GlStateManager.disableLighting()
         GlStateManager.enableBlend()
@@ -25,7 +33,7 @@ object ClayLaserReflectorRenderer : TileEntitySpecialRenderer<TileEntityClayLase
             this.bindTexture(clayiumId("textures/blocks/laserreflector.png"))
 
             GlStateManager.translate(x, y, z)
-            GlStateManager.color(1f, 1f, 1f ,1f)
+            GlStateManager.color(1f, 1f, 1f, 1f)
 
             GlStateManager.translate(0.5, 0.5, 0.5)
             when (direction) {
@@ -69,10 +77,19 @@ object ClayLaserReflectorRenderer : TileEntitySpecialRenderer<TileEntityClayLase
         GlStateManager.enableDepth()
         GlStateManager.popMatrix()
 
-        val laserSource = reflector.getCapability(ClayiumTileCapabilities.CLAY_LASER_SOURCE, null) ?: return
+        val laserSource =
+            reflector.getCapability(ClayiumTileCapabilities.CLAY_LASER_SOURCE, null) ?: return
         if (laserSource.irradiatingLaser == null) return
 
-        ClayLaserRenderer.renderLaser(laserSource.irradiatingLaser!!, laserSource.direction, laserSource.length, x, y, z, this::bindTexture)
+        ClayLaserRenderer.renderLaser(
+            laserSource.irradiatingLaser!!,
+            laserSource.direction,
+            laserSource.length,
+            x,
+            y,
+            z,
+            this::bindTexture
+        )
     }
 
     override fun isGlobalRenderer(te: TileEntityClayLaserReflector): Boolean {

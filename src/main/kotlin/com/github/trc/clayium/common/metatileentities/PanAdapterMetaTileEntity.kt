@@ -57,19 +57,21 @@ class PanAdapterMetaTileEntity(
     tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "pan_adapter"), IPanAdapter {
 
-    override val requiredTextures get() = listOf(clayiumId("blocks/pan_adapter"))
+    override val requiredTextures
+        get() = listOf(clayiumId("blocks/pan_adapter"))
 
     override val importItems = EmptyItemStackHandler
     override val exportItems = EmptyItemStackHandler
     override val itemInventory = EmptyItemStackHandler
 
-    private val pageNum = when (tier.numeric) {
-        10 -> 1
-        11 -> 2
-        12 -> 4
-        13 -> 8
-        else -> 1
-    }
+    private val pageNum =
+        when (tier.numeric) {
+            10 -> 1
+            11 -> 2
+            12 -> 4
+            13 -> 8
+            else -> 1
+        }
 
     private val recipeInventories = List(pageNum) { ListeningItemStackHandler(9, ::onSlotChanged) }
     private val resultInventories = List(pageNum) { ItemStackHandler(9) }
@@ -81,15 +83,13 @@ class PanAdapterMetaTileEntity(
         refreshEntries()
     }
 
-    /**
-     * @return LaserEnergy, EnergyCost/t
-     */
+    /** @return LaserEnergy, EnergyCost/t */
     private fun calculateLaserEnergy(): Pair<Double, ClayEnergy> {
         val laserRgb = IntArray(3)
         var energyCost = ClayEnergy.ZERO
         for (i in 0..<laserInventory.slots) {
             val stack = laserInventory.getStackInSlot(i)
-            val laserMte = (CUtils.getMetaTileEntity(stack) as? ClayLaserMetaTileEntity)  ?: continue
+            val laserMte = (CUtils.getMetaTileEntity(stack) as? ClayLaserMetaTileEntity) ?: continue
             val laser = laserMte.laserManager.irradiatingLaser ?: continue
             val laserCostPerTick = laserMte.energyCost
             laserRgb[0] += (laser.red * stack.count)
@@ -125,9 +125,10 @@ class PanAdapterMetaTileEntity(
             val stacks = pattern.toList()
             var entry: IPanRecipe? = null
             for (side in EnumFacing.entries) {
-                entry = ClayiumApi.PAN_RECIPE_FACTORIES.firstNotNullOfOrNull { factory ->
-                    factory.getEntry(world, pos.offset(side), stacks, laserEnergy, cet)
-                }
+                entry =
+                    ClayiumApi.PAN_RECIPE_FACTORIES.firstNotNullOfOrNull { factory ->
+                        factory.getEntry(world, pos.offset(side), stacks, laserEnergy, cet)
+                    }
                 if (entry != null) break
             }
             if (entry == null) {
@@ -182,65 +183,111 @@ class PanAdapterMetaTileEntity(
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         val tabController = PagedWidget.Controller()
-        val buttons = Grid.mapToMatrix(2, resultInventories) { index, handler ->
-            ParentWidget().size(16)
-                .child(PageButton(index, tabController)
-                    .background(false, GuiTextures.MC_BUTTON)
-                    .background(true, ClayGuiTextures.BUTTON_PRESSED)
-                    .disableHoverBackground()
-                    .size(16, 16))
-                .child(DynamicDrawable { ItemDrawable(handler.getStackInSlot(0)) }.asWidget().size(16)
-                    .tooltip { it.addLine(IKey.dynamic { if (handler.getStackInSlot(0).isEmpty) "<no recipe>" else handler.getStackInSlot(0).displayName }) }
-                )
-        }
-        val pages = recipeInventories.zip(resultInventories).map{ (pattern, result) ->
-            val slots = SlotGroupWidget.builder()
-                .matrix("III", "III", "III")
-                .key('I') { ItemSlot().slot(SyncHandlers.phantomItemSlot(pattern, it))
-                    .background(ClayGuiTextures.FILTER_SLOT) }
-                .build()
-            val resultSlots = SlotGroupWidget.builder()
-                .matrix("III", "III", "III")
-                .key('I') { ItemSlot().slot(SyncHandlers.itemSlot(result, it).accessibility(false, false)) }
-                .build()
-            Row().widthRel(1f).height(64)
-                .child(Grid().width(32).heightRel(1f).align(Alignment.TopLeft)
-                    .minElementMargin(0, 0)
-                    .matrix(buttons)
-                )
-                .child(slots.left(32 + 8))
-                .child(resultSlots.align(Alignment.TopRight))
-        }
-        return ModularPanel.defaultPanel("pan_adapter", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 32)
-            .columnWithPlayerInv {
-                child(buildMainParentWidget(syncManager)
-                    .child(PagedWidget().margin(0, 9).widthRel(1f).height(16*4)
-                        .controller(tabController)
-                        .apply { for (page in pages) addPage(page) }
+        val buttons =
+            Grid.mapToMatrix(2, resultInventories) { index, handler ->
+                ParentWidget()
+                    .size(16)
+                    .child(
+                        PageButton(index, tabController)
+                            .background(false, GuiTextures.MC_BUTTON)
+                            .background(true, ClayGuiTextures.BUTTON_PRESSED)
+                            .disableHoverBackground()
+                            .size(16, 16)
                     )
-                    .child(SlotGroupWidget.builder()
-                        .row("I".repeat(9))
-                        .key('I') { index ->
-                            ItemSlot().slot(ModularSlot(laserInventory, index))
-                                .tooltip { it.addLine(IKey.lang("machine.clayium.pan_adapter.laser_slot_tooltip")) }
+                    .child(
+                        DynamicDrawable { ItemDrawable(handler.getStackInSlot(0)) }
+                            .asWidget()
+                            .size(16)
+                            .tooltip {
+                                it.addLine(
+                                    IKey.dynamic {
+                                        if (handler.getStackInSlot(0).isEmpty) "<no recipe>"
+                                        else handler.getStackInSlot(0).displayName
+                                    }
+                                )
+                            }
+                    )
+            }
+        val pages =
+            recipeInventories.zip(resultInventories).map { (pattern, result) ->
+                val slots =
+                    SlotGroupWidget.builder()
+                        .matrix("III", "III", "III")
+                        .key('I') {
+                            ItemSlot()
+                                .slot(SyncHandlers.phantomItemSlot(pattern, it))
+                                .background(ClayGuiTextures.FILTER_SLOT)
                         }
                         .build()
-                        .bottom(10)
+                val resultSlots =
+                    SlotGroupWidget.builder()
+                        .matrix("III", "III", "III")
+                        .key('I') {
+                            ItemSlot()
+                                .slot(SyncHandlers.itemSlot(result, it).accessibility(false, false))
+                        }
+                        .build()
+                Row()
+                    .widthRel(1f)
+                    .height(64)
+                    .child(
+                        Grid()
+                            .width(32)
+                            .heightRel(1f)
+                            .align(Alignment.TopLeft)
+                            .minElementMargin(0, 0)
+                            .matrix(buttons)
                     )
+                    .child(slots.left(32 + 8))
+                    .child(resultSlots.align(Alignment.TopRight))
+            }
+        return ModularPanel.defaultPanel("pan_adapter", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 32)
+            .columnWithPlayerInv {
+                child(
+                    buildMainParentWidget(syncManager)
+                        .child(
+                            PagedWidget()
+                                .margin(0, 9)
+                                .widthRel(1f)
+                                .height(16 * 4)
+                                .controller(tabController)
+                                .apply { for (page in pages) addPage(page) }
+                        )
+                        .child(
+                            SlotGroupWidget.builder()
+                                .row("I".repeat(9))
+                                .key('I') { index ->
+                                    ItemSlot().slot(ModularSlot(laserInventory, index)).tooltip {
+                                        it.addLine(
+                                            IKey.lang(
+                                                "machine.clayium.pan_adapter.laser_slot_tooltip"
+                                            )
+                                        )
+                                    }
+                                }
+                                .build()
+                                .bottom(10)
+                        )
                 )
             }
     }
 
     @SideOnly(Side.CLIENT)
-    override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
+    override fun bakeQuads(
+        getter: Function<ResourceLocation, TextureAtlasSprite>,
+        faceBakery: FaceBakery
+    ) {
         val sprite = getter.apply(clayiumId("blocks/pan_adapter"))
-        adapterQuads = EnumFacing.entries.map {
-            ModelTextures.createQuad(it, sprite)
-        }
+        adapterQuads = EnumFacing.entries.map { ModelTextures.createQuad(it, sprite) }
     }
 
     @SideOnly(Side.CLIENT)
-    override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+    override fun overlayQuads(
+        quads: MutableList<BakedQuad>,
+        state: IBlockState?,
+        side: EnumFacing?,
+        rand: Long
+    ) {
         if (state == null || side == null) return
         quads.add(adapterQuads[side.index])
     }

@@ -6,5 +6,6 @@ import net.minecraft.world.IBlockAccess
 
 interface ICaReactorHull {
     fun getCaRank(stack: ItemStack): Int
+
     fun getCaRank(world: IBlockAccess, pos: BlockPos): Int
 }

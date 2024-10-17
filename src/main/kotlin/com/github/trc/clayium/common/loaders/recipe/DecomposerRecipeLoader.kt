@@ -10,16 +10,21 @@ object DecomposerRecipeLoader {
     fun registerRecipes() {
         val registry = CRecipes.DECOMPOSER
 
-        registry.builder()
+        registry
+            .builder()
             .input(OrePrefix.dust, CMaterials.industrialClay)
             .output(MetaItemClayParts.EnergizedClayDust, 3)
-            .tier(0).duration(60)
+            .tier(0)
+            .duration(60)
             .buildAndRegister()
 
-        registry.builder()
+        registry
+            .builder()
             .input(OrePrefix.dust, CMaterials.advancedIndustrialClay)
             .output(MetaItemClayParts.EnergizedClayDust, 28)
-            .tier(4).CEt(ClayEnergy.milli(10)).duration(60)
+            .tier(4)
+            .CEt(ClayEnergy.milli(10))
+            .duration(60)
             .buildAndRegister()
     }
 }

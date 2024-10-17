@@ -7,5 +7,6 @@ import net.minecraft.world.IBlockAccess
 
 interface ITieredBlock {
     fun getTier(stack: ItemStack): ITier
+
     fun getTier(world: IBlockAccess, pos: BlockPos): ITier
 }

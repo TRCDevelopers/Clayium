@@ -20,8 +20,10 @@ class BlockClayLog : BlockRotatedPillar(Material.WOOD), ITieredBlock {
     }
 
     override fun canSustainLeaves(state: IBlockState, world: IBlockAccess, pos: BlockPos) = true
+
     override fun isWood(world: IBlockAccess, pos: BlockPos) = true
 
     override fun getTier(stack: ItemStack) = ClayTiers.CLAY_STEEL
+
     override fun getTier(world: IBlockAccess, pos: BlockPos) = ClayTiers.CLAY_STEEL
 }

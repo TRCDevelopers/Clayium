@@ -15,16 +15,16 @@ class ClayLaserIrradiator(
     val tileEntity: IWorldObject,
 ) {
 
-    val world get() = tileEntity.worldObj
-    val pos get() = tileEntity.position
+    val world
+        get() = tileEntity.worldObj
+
+    val pos
+        get() = tileEntity.position
 
     private var previousTarget: WeakReference<TileEntity>? = null
     private var lastDirection = EnumFacing.NORTH
 
-    /**
-     * to memorize how much energy irradiated to block
-     * won't be used if target was TileEntity
-     */
+    /** to memorize how much energy irradiated to block won't be used if target was TileEntity */
     private var previousTargetPos: BlockPos? = null
     private var totalEnergyIrradiated: Double = 0.0
     private var transformationCt: Byte = 0
@@ -32,9 +32,7 @@ class ClayLaserIrradiator(
     private fun TileEntity.getLaserAcceptor(targetSide: EnumFacing) =
         getCapability(ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR, targetSide)
 
-    /**
-     * returns laser length.
-     */
+    /** returns laser length. */
     fun irradiateLaser(direction: EnumFacing, laser: ClayLaser): Int {
         val world = this.world ?: return 0
         val pos = this.pos ?: return 0
@@ -62,8 +60,7 @@ class ClayLaserIrradiator(
 
     fun stopIrradiation() {
         val targetSide = lastDirection.opposite
-        this.previousTarget?.get()?.getLaserAcceptor(targetSide)
-            ?.acceptLaser(targetSide, null)
+        this.previousTarget?.get()?.getLaserAcceptor(targetSide)?.acceptLaser(targetSide, null)
     }
 
     private fun getLaserLength(direction: EnumFacing): Int {

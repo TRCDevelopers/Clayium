@@ -39,8 +39,11 @@ object ModelTextures {
         private set
 
     // metaTileEntity.faceTexture -> map
-    private val _faceQuads: MutableMap<ResourceLocation, Map<EnumFacing, BakedQuad>> = mutableMapOf()
-    val FACE_QUADS: Map<ResourceLocation, Map<EnumFacing, BakedQuad>> get() = _faceQuads
+    private val _faceQuads: MutableMap<ResourceLocation, Map<EnumFacing, BakedQuad>> =
+        mutableMapOf()
+    val FACE_QUADS: Map<ResourceLocation, Map<EnumFacing, BakedQuad>>
+        get() = _faceQuads
+
     private lateinit var HULL_QUADS: Map<String, Map<EnumFacing, BakedQuad>>
     private lateinit var HULL_TEXTURES: Map<String, TextureAtlasSprite>
     private lateinit var inputModeQuads: Map<MachineIoMode, List<BakedQuad>?>
@@ -48,14 +51,22 @@ object ModelTextures {
     private lateinit var filterQuads: List<BakedQuad>
 
     val faceBakery = FaceBakery()
-    fun createQuad(side: EnumFacing, texture: TextureAtlasSprite, uv: FloatArray = floatArrayOf(0f, 0f, 16f, 16f)): BakedQuad {
+
+    fun createQuad(
+        side: EnumFacing,
+        texture: TextureAtlasSprite,
+        uv: FloatArray = floatArrayOf(0f, 0f, 16f, 16f)
+    ): BakedQuad {
         return faceBakery.makeBakedQuad(
             Vector3f(0f, 0f, 0f),
             Vector3f(16f, 16f, 16f),
             BlockPartFace(null, 0, "", BlockFaceUV(uv, 0)),
             texture,
-            side, ModelRotation.X0_Y0,
-            null, true, true,
+            side,
+            ModelRotation.X0_Y0,
+            null,
+            true,
+            true,
         )
     }
 
@@ -64,15 +75,16 @@ object ModelTextures {
         isInitialized = true
         MISSING = getter.apply(ModelLoader.MODEL_MISSING)
 
-        this.HULL_TEXTURES = ClayTiers.entries.associate {
-            it.prefixTranslationKey to getter.apply(it.hullLocation)
-        }
+        this.HULL_TEXTURES =
+            ClayTiers.entries.associate { it.prefixTranslationKey to getter.apply(it.hullLocation) }
 
-        this.HULL_QUADS = ClayTiers.entries.associate { tier ->
-            tier.prefixTranslationKey to (EnumFacing.VALUES.associateWith { side ->
-                createQuad(side, getHullTexture(tier))
-            })
-        }
+        this.HULL_QUADS =
+            ClayTiers.entries.associate { tier ->
+                tier.prefixTranslationKey to
+                    (EnumFacing.VALUES.associateWith { side ->
+                        createQuad(side, getHullTexture(tier))
+                    })
+            }
 
         _faceQuads.clear()
         for (registry in ClayiumApi.mteManager.allRegistries()) {
@@ -88,43 +100,47 @@ object ModelTextures {
             }
         }
 
-        this.inputModeQuads = MachineIoMode.entries.associateWith { ioMode ->
-            val textureName = when (ioMode) {
-                NONE -> return@associateWith null
-                FIRST -> "import_1"
-                SECOND -> "import_2"
-                ALL -> "import"
-                CE -> "import_energy"
-                M_ALL -> "import_m0"
-                M_1 -> "import_m1"
-                M_2 -> "import_m2"
-                M_3 -> "import_m3"
-                M_4 -> "import_m4"
-                M_5 -> "import_m5"
-                M_6 -> "import_m6"
+        this.inputModeQuads =
+            MachineIoMode.entries.associateWith { ioMode ->
+                val textureName =
+                    when (ioMode) {
+                        NONE -> return@associateWith null
+                        FIRST -> "import_1"
+                        SECOND -> "import_2"
+                        ALL -> "import"
+                        CE -> "import_energy"
+                        M_ALL -> "import_m0"
+                        M_1 -> "import_m1"
+                        M_2 -> "import_m2"
+                        M_3 -> "import_m3"
+                        M_4 -> "import_m4"
+                        M_5 -> "import_m5"
+                        M_6 -> "import_m6"
+                    }
+                val atlasSprite = getter.apply(clayiumId("blocks/$textureName"))
+                EnumFacing.entries.map { side -> createQuad(side, atlasSprite) }
             }
-            val atlasSprite = getter.apply(clayiumId("blocks/$textureName"))
-            EnumFacing.entries.map { side -> createQuad(side, atlasSprite) }
-        }
 
-        outputModeQuads = MachineIoMode.entries.associateWith { ioMode ->
-            val textureName = when (ioMode) {
-                NONE -> return@associateWith null
-                FIRST -> "export_1"
-                SECOND -> "export_2"
-                ALL -> "export"
-                CE -> return@associateWith null
-                M_ALL -> "export_m0"
-                M_1 -> "export_m1"
-                M_2 -> "export_m2"
-                M_3 -> "export_m3"
-                M_4 -> "export_m4"
-                M_5 -> "export_m5"
-                M_6 -> "export_m6"
+        outputModeQuads =
+            MachineIoMode.entries.associateWith { ioMode ->
+                val textureName =
+                    when (ioMode) {
+                        NONE -> return@associateWith null
+                        FIRST -> "export_1"
+                        SECOND -> "export_2"
+                        ALL -> "export"
+                        CE -> return@associateWith null
+                        M_ALL -> "export_m0"
+                        M_1 -> "export_m1"
+                        M_2 -> "export_m2"
+                        M_3 -> "export_m3"
+                        M_4 -> "export_m4"
+                        M_5 -> "export_m5"
+                        M_6 -> "export_m6"
+                    }
+                val atlasSprite = getter.apply(clayiumId("blocks/$textureName"))
+                EnumFacing.entries.map { side -> createQuad(side, atlasSprite) }
             }
-            val atlasSprite = getter.apply(clayiumId("blocks/$textureName"))
-            EnumFacing.entries.map { side -> createQuad(side, atlasSprite) }
-        }
 
         val filterSprite = getter.apply(clayiumId("blocks/filter"))
         filterQuads = EnumFacing.entries.map { createQuad(it, filterSprite) }

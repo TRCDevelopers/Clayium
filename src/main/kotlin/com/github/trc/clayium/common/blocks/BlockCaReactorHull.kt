@@ -28,7 +28,9 @@ class BlockCaReactorHull : Block(Material.IRON), ICaReactorHull, ITieredBlock {
     }
 
     override fun getTier(stack: ItemStack) = getTier(stack.metadata.coerceIn(0..9))
-    override fun getTier(world: IBlockAccess, pos: BlockPos) = getTier(world.getBlockState(pos).getValue(META))
+
+    override fun getTier(world: IBlockAccess, pos: BlockPos) =
+        getTier(world.getBlockState(pos).getValue(META))
 
     private fun getTier(meta: Int): ITier {
         return when (meta) {
@@ -41,16 +43,22 @@ class BlockCaReactorHull : Block(Material.IRON), ICaReactorHull, ITieredBlock {
     }
 
     override fun getCaRank(stack: ItemStack) = stack.metadata + 1
-    override fun getCaRank(world: IBlockAccess, pos: BlockPos) = world.getBlockState(pos).getValue(META) + 1
+
+    override fun getCaRank(world: IBlockAccess, pos: BlockPos) =
+        world.getBlockState(pos).getValue(META) + 1
 
     override fun createBlockState() = BlockStateContainer(this, META)
 
     override fun getMetaFromState(state: IBlockState) = state.getValue(META)
+
     override fun getStateFromMeta(meta: Int) = defaultState.withProperty(META, meta)
+
     override fun damageDropped(state: IBlockState) = getMetaFromState(state)
 
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
-        for (i in 0..9) { items.add(ItemStack(this, 1, i)) }
+        for (i in 0..9) {
+            items.add(ItemStack(this, 1, i))
+        }
     }
 
     companion object {

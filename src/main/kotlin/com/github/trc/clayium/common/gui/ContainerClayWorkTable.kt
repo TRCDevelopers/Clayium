@@ -21,46 +21,54 @@ class ContainerClayWorkTable(
     init {
         val itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
         // Input
-        addSlotToContainer(object : SlotItemHandler(itemHandler, 0, 17, 30) {
-            override fun isItemValid(stack: ItemStack): Boolean {
-                return ClayWorkTableMethod.entries.any { tile.canStartCraft(stack, it) }
-            }
+        addSlotToContainer(
+            object : SlotItemHandler(itemHandler, 0, 17, 30) {
+                override fun isItemValid(stack: ItemStack): Boolean {
+                    return ClayWorkTableMethod.entries.any { tile.canStartCraft(stack, it) }
+                }
 
-            override fun onSlotChanged() {
-                tile.resetRecipeIfEmptyInput()
-                tile.markDirty()
+                override fun onSlotChanged() {
+                    tile.resetRecipeIfEmptyInput()
+                    tile.markDirty()
+                }
             }
-        })
+        )
         // Tool
-        addSlotToContainer(object : SlotItemHandler(itemHandler, 1, 80, 17) {
-            override fun isItemValid(stack: ItemStack): Boolean {
-                return ClayWorkTableMethod.entries.any { stack.item in it.requiredTools }
-            }
+        addSlotToContainer(
+            object : SlotItemHandler(itemHandler, 1, 80, 17) {
+                override fun isItemValid(stack: ItemStack): Boolean {
+                    return ClayWorkTableMethod.entries.any { stack.item in it.requiredTools }
+                }
 
-            override fun onSlotChanged() {
-                tile.markDirty()
+                override fun onSlotChanged() {
+                    tile.markDirty()
+                }
             }
-        })
+        )
         // Primary Output
-        addSlotToContainer(object : SlotItemHandler(itemHandler, 2, 143, 30) {
-            override fun isItemValid(stack: ItemStack): Boolean {
-                return false
-            }
+        addSlotToContainer(
+            object : SlotItemHandler(itemHandler, 2, 143, 30) {
+                override fun isItemValid(stack: ItemStack): Boolean {
+                    return false
+                }
 
-            override fun onSlotChanged() {
-                tile.markDirty()
+                override fun onSlotChanged() {
+                    tile.markDirty()
+                }
             }
-        })
+        )
         // Secondary Output
-        addSlotToContainer(object : SlotItemHandler(itemHandler, 3, 143, 55) {
-            override fun isItemValid(stack: ItemStack): Boolean {
-                return false
-            }
+        addSlotToContainer(
+            object : SlotItemHandler(itemHandler, 3, 143, 55) {
+                override fun isItemValid(stack: ItemStack): Boolean {
+                    return false
+                }
 
-            override fun onSlotChanged() {
-                tile.markDirty()
+                override fun onSlotChanged() {
+                    tile.markDirty()
+                }
             }
-        })
+        )
     }
 
     override fun canInteractWith(playerIn: EntityPlayer): Boolean {

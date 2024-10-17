@@ -31,58 +31,91 @@ class CentrifugeMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     outputSize: Int,
-) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1], CRecipes.CENTRIFUGE, outputSize = outputSize) {
+) :
+    WorkableMetaTileEntity(
+        metaTileEntityId,
+        tier,
+        validInputModesLists[1],
+        validOutputModesLists[1],
+        CRecipes.CENTRIFUGE,
+        outputSize = outputSize
+    ) {
 
     @Suppress("Unused") private val ioHandler = AutoIoHandler.Combined(this)
 
     override val faceTexture = clayiumId("blocks/centrifuge")
-    override val workable = RecipeLogicEnergy(this, recipeRegistry, clayEnergyHolder)
-        .setDurationMultiplier(ConfigTierBalance.crafting::getCraftTimeMultiplier)
-        .setEnergyConsumingMultiplier(ConfigTierBalance.crafting::getConsumingEnergyMultiplier)
+    override val workable =
+        RecipeLogicEnergy(this, recipeRegistry, clayEnergyHolder)
+            .setDurationMultiplier(ConfigTierBalance.crafting::getCraftTimeMultiplier)
+            .setEnergyConsumingMultiplier(ConfigTierBalance.crafting::getConsumingEnergyMultiplier)
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
-        return ModularPanel.defaultPanel(this.metaTileEntityId.toString(), GUI_DEFAULT_WIDTH, 104 + ((outputSize + 1) * 9 + 46))
-            .columnWithPlayerInv {
-                child(buildMainParentWidget(syncManager))
-            }
+        return ModularPanel.defaultPanel(
+                this.metaTileEntityId.toString(),
+                GUI_DEFAULT_WIDTH,
+                104 + ((outputSize + 1) * 9 + 46)
+            )
+            .columnWithPlayerInv { child(buildMainParentWidget(syncManager)) }
     }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
-        val slotsAndProgressBar = Row()
-            .widthRel(0.7f).height(26)
-            .align(Alignment.Center)
-            .top(30)
-            .child(workable.getProgressBar(syncManager).align(Alignment.Center))
+        val slotsAndProgressBar =
+            Row()
+                .widthRel(0.7f)
+                .height(26)
+                .align(Alignment.Center)
+                .top(30)
+                .child(workable.getProgressBar(syncManager).align(Alignment.Center))
 
-        slotsAndProgressBar.child(largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
-            .align(Alignment.CenterLeft))
-        slotsAndProgressBar.child(SlotGroupWidget.builder()
-            .matrix(*(0..<outputSize).map { "I" }.toTypedArray())
-            .key('I') {
-                ItemSlot().slot(SyncHandlers.itemSlot(exportItems, it)
-                    .accessibility(false, true))
-            }
-            .build()
-            .align(Alignment.CenterRight)
+        slotsAndProgressBar.child(
+            largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
+                .align(Alignment.CenterLeft)
+        )
+        slotsAndProgressBar.child(
+            SlotGroupWidget.builder()
+                .matrix(*(0..<outputSize).map { "I" }.toTypedArray())
+                .key('I') {
+                    ItemSlot()
+                        .slot(SyncHandlers.itemSlot(exportItems, it).accessibility(false, true))
+                }
+                .build()
+                .align(Alignment.CenterRight)
         )
 
         @Suppress("DuplicatedCode") // special output slot layout
-        return ParentWidget().widthRel(1f).expanded().marginBottom(2)
-            .child(IKey.str(getStackForm().displayName).asWidget()
-                .align(Alignment.TopLeft))
+        return ParentWidget()
+            .widthRel(1f)
+            .expanded()
+            .marginBottom(2)
+            .child(IKey.str(getStackForm().displayName).asWidget().align(Alignment.TopLeft))
             .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
-            .child(IKey.dynamic {
-                if (overclock != 1.0) I18n.format("gui.clayium.overclock", overclock) else " "
-            }.asWidgetResizing().alignment(Alignment.CenterRight).align(Alignment.BottomRight))
+            .child(
+                IKey.dynamic {
+                        if (overclock != 1.0) I18n.format("gui.clayium.overclock", overclock)
+                        else " "
+                    }
+                    .asWidgetResizing()
+                    .alignment(Alignment.CenterRight)
+                    .align(Alignment.BottomRight)
+            )
             .child(slotsAndProgressBar.align(Alignment.Center))
-            .child(clayEnergyHolder.createCeTextWidget(syncManager)
-                .bottom(12).left(0))
-            .child(clayEnergyHolder.createSlotWidget()
-                .align(Alignment.BottomRight))
+            .child(clayEnergyHolder.createCeTextWidget(syncManager).bottom(12).left(0))
+            .child(clayEnergyHolder.createSlotWidget().align(Alignment.BottomRight))
     }
 
-    override fun onReplace(world: World, pos: BlockPos, newMetaTileEntity: MetaTileEntity, oldMteData: NBTTagCompound) {
-        CNbtUtils.handleInvSizeDifference(world, pos, oldMteData, EXPORT_INVENTORY, newMetaTileEntity.exportItems)
+    override fun onReplace(
+        world: World,
+        pos: BlockPos,
+        newMetaTileEntity: MetaTileEntity,
+        oldMteData: NBTTagCompound
+    ) {
+        CNbtUtils.handleInvSizeDifference(
+            world,
+            pos,
+            oldMteData,
+            EXPORT_INVENTORY,
+            newMetaTileEntity.exportItems
+        )
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {

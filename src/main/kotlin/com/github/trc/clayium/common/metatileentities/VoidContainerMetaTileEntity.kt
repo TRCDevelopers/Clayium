@@ -39,9 +39,15 @@ import java.util.function.Function
 class VoidContainerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, onlyNoneList, "void_container")  {
+) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, onlyNoneList, "void_container") {
     override val requiredTextures: List<ResourceLocation?>
-        get() = listOf(clayiumId("blocks/void_container"), clayiumId("blocks/void_container_side"), clayiumId("blocks/void_container_top"))
+        get() =
+            listOf(
+                clayiumId("blocks/void_container"),
+                clayiumId("blocks/void_container_side"),
+                clayiumId("blocks/void_container_top")
+            )
+
     override val faceTexture = clayiumId("blocks/void_container")
 
     override val importItems: IItemHandlerModifiable = VoidContainerItemHandler()
@@ -49,15 +55,20 @@ class VoidContainerMetaTileEntity(
     override val itemInventory = importItems
 
     private val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
-    private val filterSlot =  ClayiumItemStackHandler(this, 1)
-    private val filterStack get() = filterSlot.getStackInSlot(0)
+    private val filterSlot = ClayiumItemStackHandler(this, 1)
+    private val filterStack
+        get() = filterSlot.getStackInSlot(0)
 
     private var lastFilterStack: ItemStack = ItemStack.EMPTY
+
     override fun update() {
         super.update()
         if (isRemote || offsetTimer % 100 != 0L) return
-        if (filterStack.isEmpty && lastFilterStack.isEmpty
-            || ItemHandlerHelper.canItemStacksStack(lastFilterStack, filterStack)) return
+        if (
+            filterStack.isEmpty && lastFilterStack.isEmpty ||
+                ItemHandlerHelper.canItemStacksStack(lastFilterStack, filterStack)
+        )
+            return
         lastFilterStack = filterStack.copy()
         writeCustomData(UPDATE_FILTER_ITEM) { writeItemStack(filterStack) }
     }
@@ -68,11 +79,16 @@ class VoidContainerMetaTileEntity(
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
-            .child(largeSlot(SyncHandlers.itemSlot(importItems, 0)
-                .filter { filterStack.isEmpty || ItemHandlerHelper.canItemStacksStack(it, filterStack) })
-                .align(Alignment.Center))
-            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0))
-                .right(10).top(15))
+            .child(
+                largeSlot(
+                        SyncHandlers.itemSlot(importItems, 0).filter {
+                            filterStack.isEmpty ||
+                                ItemHandlerHelper.canItemStacksStack(it, filterStack)
+                        }
+                    )
+                    .align(Alignment.Center)
+            )
+            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0)).right(10).top(15))
     }
 
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
@@ -104,19 +120,39 @@ class VoidContainerMetaTileEntity(
     }
 
     @SideOnly(Side.CLIENT)
-    override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
+    override fun bakeQuads(
+        getter: Function<ResourceLocation, TextureAtlasSprite>,
+        faceBakery: FaceBakery
+    ) {
         val sprite = getter.apply(clayiumId("blocks/void_container_side"))
         voidContainerSide = EnumFacing.HORIZONTALS.map { ModelTextures.createQuad(it, sprite) }
-        voidContainerTop = ModelTextures.createQuad(EnumFacing.UP, getter.apply(clayiumId("blocks/void_container_top")))
-        voidContainerBottom = ModelTextures.createQuad(EnumFacing.DOWN, getter.apply(clayiumId("blocks/void_container_top")), uv = floatArrayOf(16f, 16f, 0f, 0f))
+        voidContainerTop =
+            ModelTextures.createQuad(
+                EnumFacing.UP,
+                getter.apply(clayiumId("blocks/void_container_top"))
+            )
+        voidContainerBottom =
+            ModelTextures.createQuad(
+                EnumFacing.DOWN,
+                getter.apply(clayiumId("blocks/void_container_top")),
+                uv = floatArrayOf(16f, 16f, 0f, 0f)
+            )
     }
 
     @SideOnly(Side.CLIENT)
-    override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+    override fun overlayQuads(
+        quads: MutableList<BakedQuad>,
+        state: IBlockState?,
+        side: EnumFacing?,
+        rand: Long
+    ) {
         super.overlayQuads(quads, state, side, rand)
         if (state == null || side == null || side == this.frontFacing) return
         when (side) {
-            EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST -> quads.add(voidContainerSide[side.horizontalIndex])
+            EnumFacing.NORTH,
+            EnumFacing.SOUTH,
+            EnumFacing.WEST,
+            EnumFacing.EAST -> quads.add(voidContainerSide[side.horizontalIndex])
             EnumFacing.UP -> quads.add(voidContainerTop)
             EnumFacing.DOWN -> quads.add(voidContainerBottom)
         }
@@ -150,7 +186,11 @@ class VoidContainerMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(this.metaTileEntityId, "inventory"))
+        ModelLoader.setCustomModelResourceLocation(
+            item,
+            meta,
+            ModelResourceLocation(this.metaTileEntityId, "inventory")
+        )
     }
 
     private inner class VoidContainerItemHandler : VoidingItemHandler() {

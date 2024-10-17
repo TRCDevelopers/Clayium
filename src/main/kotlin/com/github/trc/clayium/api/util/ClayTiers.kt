@@ -30,5 +30,6 @@ enum class ClayTiers(
     ;
 
     override val lowerName: String = name.lowercase()
+
     override fun getName(): String = lowerName
 }

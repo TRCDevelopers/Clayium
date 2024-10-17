@@ -12,10 +12,16 @@ import net.minecraft.network.PacketBuffer
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
-object MetaTileEntityGuiFactory : AbstractUIFactory<MetaTileEntityGuiData>("$MOD_ID:metatileentity") {
+object MetaTileEntityGuiFactory :
+    AbstractUIFactory<MetaTileEntityGuiData>("$MOD_ID:metatileentity") {
 
-    fun <T> open(player: EntityPlayer, metaTileEntity: T) where T: MetaTileEntity {
-        val data = MetaTileEntityGuiData.WorldAndPos(player, metaTileEntity.world ?: return, metaTileEntity.pos ?: return)
+    fun <T> open(player: EntityPlayer, metaTileEntity: T) where T : MetaTileEntity {
+        val data =
+            MetaTileEntityGuiData.WorldAndPos(
+                player,
+                metaTileEntity.world ?: return,
+                metaTileEntity.pos ?: return
+            )
         GuiManager.open(this, data, player as EntityPlayerMP)
     }
 

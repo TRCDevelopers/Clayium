@@ -48,14 +48,29 @@ class BlockClayOre : Block(Material.ROCK), IClayOreBlock {
         return 4 + random.nextInt(5) * random.nextInt(4)
     }
 
-    override fun canHarvestBlock(world: IBlockAccess, pos: BlockPos, player: EntityPlayer): Boolean {
-        return (player.heldItemMainhand.item is ItemClayShovel) || super.canHarvestBlock(world, pos, player)
+    override fun canHarvestBlock(
+        world: IBlockAccess,
+        pos: BlockPos,
+        player: EntityPlayer
+    ): Boolean {
+        return (player.heldItemMainhand.item is ItemClayShovel) ||
+            super.canHarvestBlock(world, pos, player)
     }
 
-    override fun harvestBlock(worldIn: World, player: EntityPlayer, pos: BlockPos, state: IBlockState, te: TileEntity?, stack: ItemStack) {
+    override fun harvestBlock(
+        worldIn: World,
+        player: EntityPlayer,
+        pos: BlockPos,
+        state: IBlockState,
+        te: TileEntity?,
+        stack: ItemStack
+    ) {
         StatList.getBlockStats(this)?.let { player.addStat(it) }
         player.addExhaustion(0.005f)
-        if (this.canSilkHarvest(worldIn, pos, state, player) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0 ) {
+        if (
+            this.canSilkHarvest(worldIn, pos, state, player) &&
+                EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0
+        ) {
             val items: MutableList<ItemStack> = ArrayList()
             val itemStack = getSilkTouchDrop(state)
             if (!itemStack.isEmpty) {

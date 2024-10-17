@@ -7,8 +7,10 @@ object CRenderUtils {
         GlStateManager.disableLighting()
         GlStateManager.enableBlend()
         GlStateManager.tryBlendFuncSeparate(
-            GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
-            GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO
+            GlStateManager.SourceFactor.SRC_ALPHA,
+            GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+            GlStateManager.SourceFactor.ONE,
+            GlStateManager.DestFactor.ZERO
         )
         GlStateManager.enableDepth()
         GlStateManager.depthMask(false)

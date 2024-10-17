@@ -14,12 +14,14 @@ data class Recipe(
     val chancedOutputs: ChancedOutputList<ItemStack>?,
     val duration: Long,
     val cePerTick: ClayEnergy,
-    /**
-     * if `machine.tier.numeric < recipe.tier`, then the recipe is not matched
-     */
+    /** if `machine.tier.numeric < recipe.tier`, then the recipe is not matched */
     val recipeTier: Int,
 ) {
-    fun matches(consumeOnMatch: Boolean, inputsIn: IItemHandlerModifiable, machineTier: Int): Boolean {
+    fun matches(
+        consumeOnMatch: Boolean,
+        inputsIn: IItemHandlerModifiable,
+        machineTier: Int
+    ): Boolean {
 
         if (this.recipeTier > machineTier) return false
         val (isItemsMatched, amountsToConsume) = matchesItems(inputsIn.toList())

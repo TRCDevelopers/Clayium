@@ -9,10 +9,8 @@ import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import net.minecraft.network.PacketBuffer
 
-class ResonanceManager(
-    metaTileEntity: MetaTileEntity,
-    private val range: Int
-) : MTETrait(metaTileEntity, ClayiumDataCodecs.RESONANCE_LISTENER) {
+class ResonanceManager(metaTileEntity: MetaTileEntity, private val range: Int) :
+    MTETrait(metaTileEntity, ClayiumDataCodecs.RESONANCE_LISTENER) {
 
     var resonance = 1.0
         private set(value) {
@@ -20,9 +18,7 @@ class ResonanceManager(
             val syncFlag = (!metaTileEntity.isRemote) && (field != v)
             field = v
             if (syncFlag) {
-                writeCustomData(UPDATE_RESONANCE) {
-                    writeDouble(v)
-                }
+                writeCustomData(UPDATE_RESONANCE) { writeDouble(v) }
             }
         }
 

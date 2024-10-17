@@ -20,7 +20,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 
-class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLaserSource, IClayLaserAcceptor, IWorldObject {
+class TileEntityClayLaserReflector :
+    SyncedTileEntityBase(), ITickable, IClayLaserSource, IClayLaserAcceptor, IWorldObject {
 
     override var irradiatingLaser: ClayLaser? = null
         private set(value) {
@@ -30,21 +31,24 @@ class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLas
                 writeLaser(value)
             }
         }
+
     override var length: Int = 0
         private set(value) {
             val syncFlag = !world.isRemote && (value != field)
             field = value
             if (syncFlag) {
-                writeCustomData(UPDATE_LASER_LENGTH) {
-                    writeVarInt(value)
-                }
+                writeCustomData(UPDATE_LASER_LENGTH) { writeVarInt(value) }
             }
         }
+
     private val laserManager = ClayLaserIrradiator(this)
     private val receivedLasers = Object2ObjectOpenHashMap<EnumFacing, ClayLaser>()
 
-    override val worldObj: World? get() = world
-    override val position: BlockPos? get() = pos
+    override val worldObj: World?
+        get() = world
+
+    override val position: BlockPos?
+        get() = pos
 
     override val direction
         get() = world.getBlockState(pos).getValue(BlockClayLaserReflector.FACING)
@@ -122,9 +126,9 @@ class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLas
     }
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
-        return capability === ClayiumTileCapabilities.CLAY_LASER_SOURCE
-                || capability === ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR
-                || super.hasCapability(capability, facing)
+        return capability === ClayiumTileCapabilities.CLAY_LASER_SOURCE ||
+            capability === ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR ||
+            super.hasCapability(capability, facing)
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {

@@ -17,7 +17,12 @@ class BlockDenseClayOre : Block(Material.ROCK), IClayOreBlock {
         setHarvestLevel("pickaxe", 1)
     }
 
-    override fun canHarvestBlock(world: IBlockAccess, pos: BlockPos, player: EntityPlayer): Boolean {
-        return if (player.heldItemMainhand.item is ItemClayShovel) true else super.canHarvestBlock(world, pos, player)
+    override fun canHarvestBlock(
+        world: IBlockAccess,
+        pos: BlockPos,
+        player: EntityPlayer
+    ): Boolean {
+        return if (player.heldItemMainhand.item is ItemClayShovel) true
+        else super.canHarvestBlock(world, pos, player)
     }
 }

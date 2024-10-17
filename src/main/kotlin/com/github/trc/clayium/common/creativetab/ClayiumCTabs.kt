@@ -11,5 +11,9 @@ object ClayiumCTabs {
     fun init() {}
 
     val main = BasicCreativeTab(MOD_ID, { ItemStack(Items.CLAY_BALL) })
-    val decorations = BasicCreativeTab("$MOD_ID.decorations", { ClayiumBlocks.COMPRESSED_BLOCKS.first().defaultState.toItemStack() })
+    val decorations =
+        BasicCreativeTab(
+            "$MOD_ID.decorations",
+            { ClayiumBlocks.COMPRESSED_BLOCKS.first().defaultState.toItemStack() }
+        )
 }

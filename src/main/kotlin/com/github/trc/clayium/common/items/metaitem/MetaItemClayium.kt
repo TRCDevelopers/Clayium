@@ -30,14 +30,17 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
     init {
         hasSubtypes = true
 
-        @Suppress("LeakingThis")
-        _metaItems.add(this)
+        @Suppress("LeakingThis") _metaItems.add(this)
     }
 
     protected val metaValueItems = mutableMapOf<Short, MetaValueItem>()
     protected val metaOreDicts = Short2ObjectAVLTreeMap<String>()
 
-    protected fun addItem(meta: Short, name: String, itemModifier: MetaValueItem.() -> Unit = {}): MetaValueItem {
+    protected fun addItem(
+        meta: Short,
+        name: String,
+        itemModifier: MetaValueItem.() -> Unit = {}
+    ): MetaValueItem {
         val item = MetaValueItem(meta, name)
         item.itemModifier()
         this.metaValueItems[meta] = item
@@ -45,19 +48,28 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
     }
 
     private fun getItem(meta: Short) = this.metaValueItems[meta]
+
     private fun getItem(stack: ItemStack) = getItem(stack.itemDamage.toShort())
 
     @SideOnly(Side.CLIENT)
     fun registerColorHandler(e: ColorHandlerEvent.Item) {
-        e.itemColors.registerItemColorHandler({ stack, tintIndex ->
-            getItem(stack.itemDamage.toShort())?.colorHandler?.getColor(stack, tintIndex) ?: 0xFFFFFF
-        }, this)
+        e.itemColors.registerItemColorHandler(
+            { stack, tintIndex ->
+                getItem(stack.itemDamage.toShort())?.colorHandler?.getColor(stack, tintIndex)
+                    ?: 0xFFFFFF
+            },
+            this
+        )
     }
 
     @SideOnly(Side.CLIENT)
     open fun registerModels() {
         for (item in this.metaValueItems.values) {
-            ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation(clayiumId(item.name), "inventory"))
+            ModelLoader.setCustomModelResourceLocation(
+                this,
+                item.meta.toInt(),
+                ModelResourceLocation(clayiumId(item.name), "inventory")
+            )
         }
     }
 
@@ -88,7 +100,12 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
     }
 
     @SideOnly(Side.CLIENT)
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         val item = getItem(stack.itemDamage.toShort()) ?: return
 
         for (behavior in item.behaviors) {
@@ -106,7 +123,8 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         var rarity: IRarity = EnumRarity.COMMON
         var capabilityProvider: IItemCapabilityProvider? = null
 
-        fun getStackForm(count: Int = 1): ItemStack = ItemStack(this@MetaItemClayium, count, meta.toInt())
+        fun getStackForm(count: Int = 1): ItemStack =
+            ItemStack(this@MetaItemClayium, count, meta.toInt())
 
         fun addComponent(component: IItemComponent): MetaValueItem {
             when (component) {
@@ -118,18 +136,25 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
             return this
         }
 
-        /**
-         * sets the rarity and adds a tooltip by tier.
-         * if -1 is passed, it mutates nothing
-         */
+        /** sets the rarity and adds a tooltip by tier. if -1 is passed, it mutates nothing */
         fun tier(tier: Int): MetaValueItem {
             if (tier == -1) return this
-            rarity = when (tier) {
-                4, 5, 6, 7 -> EnumRarity.UNCOMMON
-                8, 9, 10, 11 -> EnumRarity.RARE
-                12, 13, 14, 15 -> EnumRarity.EPIC
-                else -> EnumRarity.COMMON
-            }
+            rarity =
+                when (tier) {
+                    4,
+                    5,
+                    6,
+                    7 -> EnumRarity.UNCOMMON
+                    8,
+                    9,
+                    10,
+                    11 -> EnumRarity.RARE
+                    12,
+                    13,
+                    14,
+                    15 -> EnumRarity.EPIC
+                    else -> EnumRarity.COMMON
+                }
             addComponent(TooltipBehavior { it.add(1, "§rTier $tier") })
             return this
         }
@@ -151,7 +176,8 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
 
     companion object {
         private val _metaItems = mutableListOf<MetaItemClayium>()
-        val META_ITEMS: List<MetaItemClayium> get() = _metaItems
+        val META_ITEMS: List<MetaItemClayium>
+            get() = _metaItems
 
         @SideOnly(Side.CLIENT)
         fun registerModels() {

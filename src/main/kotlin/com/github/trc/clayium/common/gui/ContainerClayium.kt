@@ -14,7 +14,9 @@ abstract class ContainerClayium(
         // add player inventory slots
         for (i in 0..2) {
             for (j in 0..8) {
-                this.addSlotToContainer(Slot(playerInv, j + i * 9 + 9, 8 + j * 18, playerInvOffsetY + i * 18))
+                this.addSlotToContainer(
+                    Slot(playerInv, j + i * 9 + 9, 8 + j * 18, playerInvOffsetY + i * 18)
+                )
             }
         }
         // hot bar
@@ -36,22 +38,28 @@ abstract class ContainerClayium(
         when (index) {
             // player inventory -> container? -> hot bar
             in 0..<27 -> {
-                if (!(mergeItemStack(slotStack, 36, inventorySlots.size, false)
-                            || mergeItemStack(slotStack, 27, 36, false))) {
+                if (
+                    !(mergeItemStack(slotStack, 36, inventorySlots.size, false) ||
+                        mergeItemStack(slotStack, 27, 36, false))
+                ) {
                     return ItemStack.EMPTY
                 }
             }
             // hot bar -> container? -> player inventory
             in 27..<36 -> {
-                if (!(mergeItemStack(slotStack, 36, inventorySlots.size, false)
-                            || mergeItemStack(slotStack, 0, 27, false))) {
+                if (
+                    !(mergeItemStack(slotStack, 36, inventorySlots.size, false) ||
+                        mergeItemStack(slotStack, 0, 27, false))
+                ) {
                     return ItemStack.EMPTY
                 }
             }
             // container -> hot bar? -> player inventory
             in 36..<inventorySlots.size -> {
-                if (!(mergeItemStack(slotStack, 27, 36, false)
-                        || mergeItemStack(slotStack, 0, 27, false))) {
+                if (
+                    !(mergeItemStack(slotStack, 27, 36, false) ||
+                        mergeItemStack(slotStack, 0, 27, false))
+                ) {
                     return ItemStack.EMPTY
                 }
             }

@@ -11,8 +11,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject
 object ClayiumTileCapabilities {
     @CapabilityInject(IClayEnergyHolder::class)
     lateinit var CLAY_ENERGY_HOLDER: Capability<IClayEnergyHolder>
-    @CapabilityInject(AutoIoHandler::class)
-    lateinit var AUTO_IO_HANDLER: Capability<AutoIoHandler>
+    @CapabilityInject(AutoIoHandler::class) lateinit var AUTO_IO_HANDLER: Capability<AutoIoHandler>
 
     @CapabilityInject(IClayLaserSource::class)
     lateinit var CLAY_LASER_SOURCE: Capability<IClayLaserSource>
@@ -20,20 +19,15 @@ object ClayiumTileCapabilities {
     @CapabilityInject(IClayLaserAcceptor::class)
     lateinit var CLAY_LASER_ACCEPTOR: Capability<IClayLaserAcceptor>
 
-    @CapabilityInject(IControllable::class)
-    lateinit var CONTROLLABLE: Capability<IControllable>
+    @CapabilityInject(IControllable::class) lateinit var CONTROLLABLE: Capability<IControllable>
 
-    @CapabilityInject(AbstractWorkable::class)
-    lateinit var WORKABLE: Capability<AbstractWorkable>
+    @CapabilityInject(AbstractWorkable::class) lateinit var WORKABLE: Capability<AbstractWorkable>
     @CapabilityInject(AbstractRecipeLogic::class)
     lateinit var RECIPE_LOGIC: Capability<AbstractRecipeLogic>
 
-    @CapabilityInject(IPanCable::class)
-    lateinit var PAN_CABLE: Capability<IPanCable>
-    @CapabilityInject(IPanAdapter::class)
-    lateinit var PAN_ADAPTER: Capability<IPanAdapter>
-    @CapabilityInject(IPanUser::class)
-    lateinit var PAN_USER: Capability<IPanUser>
+    @CapabilityInject(IPanCable::class) lateinit var PAN_CABLE: Capability<IPanCable>
+    @CapabilityInject(IPanAdapter::class) lateinit var PAN_ADAPTER: Capability<IPanAdapter>
+    @CapabilityInject(IPanUser::class) lateinit var PAN_USER: Capability<IPanUser>
 
     @CapabilityInject(IPipeConnectable::class)
     lateinit var PIPE_CONNECTABLE: Capability<IPipeConnectable>

@@ -16,22 +16,26 @@ import net.minecraft.util.ResourceLocation
 class SaltExtractorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : AbstractItemGeneratorMetaTileEntity(
-    metaTileEntityId, tier,
-    validInputModes = energyAndNone, validOutputModes = validOutputModesLists[1],
-    name = "salt_extractor",
-) {
+) :
+    AbstractItemGeneratorMetaTileEntity(
+        metaTileEntityId,
+        tier,
+        validInputModes = energyAndNone,
+        validOutputModes = validOutputModesLists[1],
+        name = "salt_extractor",
+    ) {
 
     override val faceTexture = clayiumId("blocks/salt_extractor")
 
     override val progressPerItem: Int = 100
-    override val progressPerTick = when (tier.numeric) {
-        4 -> 50
-        5 -> 200
-        6 -> 1000
-        7 -> 8000
-        else -> 1
-    }
+    override val progressPerTick =
+        when (tier.numeric) {
+            4 -> 50
+            5 -> 200
+            6 -> 1000
+            7 -> 8000
+            else -> 1
+        }
 
     // wait for oreDict registration
     override val generatingItem by lazy { OreDictUnifier.get(OrePrefix.dust, CMaterials.salt) }
@@ -61,6 +65,7 @@ class SaltExtractorMetaTileEntity(
     }
 
     override fun canProgress(): Boolean {
-        return super.canProgress() && this.clayEnergyHolder.drawEnergy(energyPerProgress, simulate = false)
+        return super.canProgress() &&
+            this.clayEnergyHolder.drawEnergy(energyPerProgress, simulate = false)
     }
 }

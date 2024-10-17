@@ -12,8 +12,7 @@ enum class Mods(
     GroovyScript(Names.GROOVY_SCRIPT),
     JustEnoughItems(Names.JUST_ENOUGH_ITEMS),
     ModularUI(Names.MODULAR_UI),
-    TheOneProbe(Names.THE_ONE_PROBE)
-    ;
+    TheOneProbe(Names.THE_ONE_PROBE);
 
     val isModLoaded by lazy { Loader.isModLoaded(this.modId) }
 

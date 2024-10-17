@@ -16,7 +16,7 @@ fun PacketBuffer.readClayEnergy(): ClayEnergy {
 @JvmInline
 value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
 
-    //todo: minimum digits?
+    // todo: minimum digits?
     fun format(): String {
         return "${formatWithoutUnit()}CE"
     }
@@ -26,9 +26,10 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
         val digits = abs(energy).toString().length
         val microCe = energy.toDouble() * 10.0
         val unitIndex = digits / 3
-        val displayValue = String.format("%.3f", microCe / 10.0.pow(unitIndex * 3))
-            .replace(matchesExcessZero, "")
-            .replace(matchesExcessDecimalPoint, "")
+        val displayValue =
+            String.format("%.3f", microCe / 10.0.pow(unitIndex * 3))
+                .replace(matchesExcessZero, "")
+                .replace(matchesExcessDecimalPoint, "")
         return "$displayValue${units[unitIndex]}"
     }
 
@@ -37,12 +38,19 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
     }
 
     operator fun plus(other: ClayEnergy) = ClayEnergy(energy + other.energy)
+
     operator fun minus(other: ClayEnergy) = ClayEnergy(energy - other.energy)
+
     operator fun times(value: Int) = ClayEnergy(energy * value)
+
     operator fun times(value: Long) = ClayEnergy(energy * value)
+
     operator fun times(value: Double) = ClayEnergy((energy * value).toLong())
+
     operator fun div(value: Int) = ClayEnergy(energy / value)
+
     operator fun div(value: Double) = ClayEnergy((energy.toDouble() / value).toLong())
+
     override operator fun compareTo(other: ClayEnergy) = energy.compareTo(other.energy)
 
     companion object {

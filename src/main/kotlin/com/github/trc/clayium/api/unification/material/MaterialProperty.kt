@@ -8,7 +8,9 @@ sealed interface MaterialProperty {
     fun verify(material: CMaterial): Boolean = true
 
     data object Ingot : MaterialProperty
+
     data object Dust : MaterialProperty
+
     class Matter(
         texture: String = "matter",
     ) : MaterialProperty {
@@ -20,9 +22,9 @@ sealed interface MaterialProperty {
         val requiredTick: Int,
         val tier: Int,
     ) : MaterialProperty {
-        override fun verify(material: CMaterial) = material.hasProperty(CPropertyKey.Companion.INGOT) || material.hasProperty(
-            CPropertyKey.Companion.MATTER
-        )
+        override fun verify(material: CMaterial) =
+            material.hasProperty(CPropertyKey.Companion.INGOT) ||
+                material.hasProperty(CPropertyKey.Companion.MATTER)
     }
 
     class ImpureDust(
@@ -34,14 +36,18 @@ sealed interface MaterialProperty {
         }
 
         override fun verify(material: CMaterial) = material.hasProperty(CPropertyKey.Companion.DUST)
+
         fun getColor(i: Int) = colors[i]
     }
 }
 
-class Clay(val compressionLevel: Int, val compressedInto: CMaterial?, val energy: ClayEnergy?) : MaterialProperty
+class Clay(val compressionLevel: Int, val compressedInto: CMaterial?, val energy: ClayEnergy?) :
+    MaterialProperty
+
 class ClaySmelting(val factor: Double, val tier: Int, val duration: Int) : MaterialProperty {
     constructor(tier: Int, duration: Int) : this(1.0, tier, duration)
 }
+
 class BlastSmelting(val factor: Double, val tier: Int, val duration: Int) : MaterialProperty {
     constructor(tier: Int, duration: Int) : this(1.0, tier, duration)
 }

@@ -13,26 +13,30 @@ import net.minecraft.util.ResourceLocation
 class CobblestoneGeneratorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : AbstractItemGeneratorMetaTileEntity(
-    metaTileEntityId, tier,
-    validInputModes = onlyNoneList, validOutputModes = validOutputModesLists[1],
-    "cobblestone_generator",
-) {
+) :
+    AbstractItemGeneratorMetaTileEntity(
+        metaTileEntityId,
+        tier,
+        validInputModes = onlyNoneList,
+        validOutputModes = validOutputModesLists[1],
+        "cobblestone_generator",
+    ) {
 
     override val faceTexture = clayiumId("blocks/cobblestone_generator")
 
     override val generatingItem: ItemStack = ItemStack(Blocks.COBBLESTONE)
     override val progressPerItem = 100
-    override val progressPerTick = when (tier.numeric) {
-        1 -> 2
-        2 -> 5
-        3 -> 15
-        4 -> 50
-        5 -> 200
-        6 -> 1000
-        7 -> 8000
-        else -> 1
-    }
+    override val progressPerTick =
+        when (tier.numeric) {
+            1 -> 2
+            2 -> 5
+            3 -> 15
+            4 -> 50
+            5 -> 200
+            6 -> 1000
+            7 -> 8000
+            else -> 1
+        }
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return CobblestoneGeneratorMetaTileEntity(this.metaTileEntityId, this.tier)

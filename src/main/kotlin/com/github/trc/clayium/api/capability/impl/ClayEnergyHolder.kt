@@ -26,16 +26,19 @@ class ClayEnergyHolder(
     metaTileEntity: MetaTileEntity,
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.CLAY_ENERGY_HOLDER), IClayEnergyHolder {
 
-    private val backingEcSlotHandler = object : ClayiumItemStackHandler(metaTileEntity, 1) {
-        override fun getSlotLimit(slot: Int): Int {
-            return ceSlotStackLimit
+    private val backingEcSlotHandler =
+        object : ClayiumItemStackHandler(metaTileEntity, 1) {
+            override fun getSlotLimit(slot: Int): Int {
+                return ceSlotStackLimit
+            }
         }
-    }
-    override val energizedClayItemHandler = FilteredItemHandlerModifiable(backingEcSlotHandler) {
-        it.hasCapability(ClayiumCapabilities.ENERGIZED_CLAY, null)
-    }
+    override val energizedClayItemHandler =
+        FilteredItemHandlerModifiable(backingEcSlotHandler) {
+            it.hasCapability(ClayiumCapabilities.ENERGIZED_CLAY, null)
+        }
 
-    private val energizedClayImporter = AutoIoHandler.EcImporter(metaTileEntity, energizedClayItemHandler)
+    private val energizedClayImporter =
+        AutoIoHandler.EcImporter(metaTileEntity, energizedClayItemHandler)
 
     private var clayEnergy: ClayEnergy = ClayEnergy.ZERO
     private var ceSlotStackLimit = 1
@@ -72,9 +75,7 @@ class ClayEnergyHolder(
         this.clayEnergy += ce
     }
 
-    /**
-     * tries to consume energized clay from the slot if the current energy is not enough
-     */
+    /** tries to consume energized clay from the slot if the current energy is not enough */
     override fun hasEnoughEnergy(ce: ClayEnergy): Boolean {
         if (this.clayEnergy < ce) tryConsumeEnergizedClay()
         return this.clayEnergy >= ce
@@ -82,17 +83,16 @@ class ClayEnergyHolder(
 
     fun createSlotWidget(): ItemSlot {
         return ItemSlot()
-            .slot(SyncHandlers.itemSlot(energizedClayItemHandler, 0)
-                .accessibility(false, false))
+            .slot(SyncHandlers.itemSlot(energizedClayItemHandler, 0).accessibility(false, false))
             .setEnabledIf { GuiScreen.isShiftKeyDown() }
             .background(IDrawable.EMPTY)
     }
 
     fun createCeTextWidget(syncManager: GuiSyncManager): TextWidget {
-        syncManager.syncValue("${this.name}.text", SyncHandlers.longNumber(
-            { clayEnergy.energy },
-            { clayEnergy = ClayEnergy(it) }
-        ))
+        syncManager.syncValue(
+            "${this.name}.text",
+            SyncHandlers.longNumber({ clayEnergy.energy }, { clayEnergy = ClayEnergy(it) })
+        )
 
         return IKey.dynamic { this.clayEnergy.format() }.asWidgetResizing()
     }
@@ -106,9 +106,7 @@ class ClayEnergyHolder(
     }
 
     override fun serializeNBT(): NBTTagCompound {
-        return super.serializeNBT().apply {
-            setLong("clayEnergy", clayEnergy.energy)
-        }
+        return super.serializeNBT().apply { setLong("clayEnergy", clayEnergy.energy) }
     }
 
     override fun deserializeNBT(data: NBTTagCompound) {

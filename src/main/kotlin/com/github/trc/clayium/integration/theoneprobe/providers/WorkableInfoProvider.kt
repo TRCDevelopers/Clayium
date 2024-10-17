@@ -14,7 +14,15 @@ import net.minecraftforge.common.capabilities.Capability
 class WorkableInfoProvider : CapabilityInfoProvider<AbstractWorkable>() {
     override val capability: Capability<AbstractWorkable> = ClayiumTileCapabilities.WORKABLE
 
-    override fun addProbeInfo(capability: AbstractWorkable, mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
+    override fun addProbeInfo(
+        capability: AbstractWorkable,
+        mode: ProbeMode,
+        probeInfo: IProbeInfo,
+        player: EntityPlayer,
+        world: World,
+        state: IBlockState,
+        hitData: IProbeHitData
+    ) {
         capability.addProbeInfo(mode, probeInfo, player, world, state, hitData)
     }
 

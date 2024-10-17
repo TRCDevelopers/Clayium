@@ -21,7 +21,7 @@ object LaserReflectorItemStackRenderer : TileEntityItemStackRenderer() {
             val tessellator = Tessellator.getInstance()
             val buf = tessellator.buffer
 
-            GlStateManager.color(1f, 1f, 1f ,1f)
+            GlStateManager.color(1f, 1f, 1f, 1f)
 
             GlStateManager.translate(0.5, 0.5, 0.5)
             GlStateManager.scale(0.8f, 0.8f, 0.8f)
@@ -30,8 +30,9 @@ object LaserReflectorItemStackRenderer : TileEntityItemStackRenderer() {
             GlStateManager.translate(-0.5, -0.5, -0.5)
             GlStateManager.translate(0.0, 0.1, 0.0)
 
-
-            TileEntityRendererDispatcher.instance.renderEngine.bindTexture(clayiumId("textures/blocks/laserreflector.png"))
+            TileEntityRendererDispatcher.instance.renderEngine.bindTexture(
+                clayiumId("textures/blocks/laserreflector.png")
+            )
 
             val offset = 0.125
             val offset2 = offset * 2

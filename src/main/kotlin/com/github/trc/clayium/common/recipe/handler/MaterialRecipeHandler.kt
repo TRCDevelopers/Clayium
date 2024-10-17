@@ -20,15 +20,16 @@ object MaterialRecipeHandler {
         for (material in ClayiumApi.materialRegistry) {
             GrinderRecipeLoader.handleOre(material)
 
-            if (!material.hasOre(OrePrefix.ingot))
-                CondenserRecipeLoader.handleOre(material)
+            if (!material.hasOre(OrePrefix.ingot)) CondenserRecipeLoader.handleOre(material)
 
             if (material.hasOre(OrePrefix.ingot)) {
-                if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.ingot, material)
+                if (material.hasProperty(CPropertyKey.PLATE))
+                    addPlateRecipe(OrePrefix.ingot, material)
             }
 
             if (material.hasOre(OrePrefix.gem)) {
-                if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.gem, material)
+                if (material.hasProperty(CPropertyKey.PLATE))
+                    addPlateRecipe(OrePrefix.gem, material)
             }
 
             if (material.hasOre(OrePrefix.dust)) {
@@ -40,12 +41,16 @@ object MaterialRecipeHandler {
             }
 
             if (material.hasOre(OrePrefix.block)) {
-                if (material.hasProperty(CPropertyKey.PLATE) && OrePrefix.block.getMaterialAmount(material) == MaterialAmount.of(1)) {
+                if (
+                    material.hasProperty(CPropertyKey.PLATE) &&
+                        OrePrefix.block.getMaterialAmount(material) == MaterialAmount.of(1)
+                ) {
                     addPlateRecipe(OrePrefix.block, material)
                 }
                 if (material.hasProperty(CPropertyKey.CLAY)) {
                     val prop = material.getProperty(CPropertyKey.CLAY)
-                    if (prop.compressedInto != null) addClayBlockRecipe(material, prop.compressedInto)
+                    if (prop.compressedInto != null)
+                        addClayBlockRecipe(material, prop.compressedInto)
                 }
             }
         }
@@ -92,13 +97,14 @@ object MaterialRecipeHandler {
 
     private fun handleImpureDust(material: CMaterial) {
         val tier = material.tier?.numeric ?: 0
-        val (cePerTick, duration) = when (tier) {
-            6 -> ClayEnergy.milli(100) to 100
-            7 -> ClayEnergy.of(10) to 300
-            8 -> ClayEnergy.of(100) to 1000
-            9 -> ClayEnergy.of(1000) to 3000
-            else -> ClayEnergy.micro(10) to 1
-        }
+        val (cePerTick, duration) =
+            when (tier) {
+                6 -> ClayEnergy.milli(100) to 100
+                7 -> ClayEnergy.of(10) to 300
+                8 -> ClayEnergy.of(100) to 1000
+                9 -> ClayEnergy.of(1000) to 3000
+                else -> ClayEnergy.micro(10) to 1
+            }
         CRecipes.ELECTROLYSIS_REACTOR.register {
             input(OrePrefix.impureDust, material)
             output(OrePrefix.dust, material)
@@ -109,8 +115,8 @@ object MaterialRecipeHandler {
     }
 
     /**
-     * Adds plate and largePlate recipe for [material].
-     * Assumes that [material] has a plate property.
+     * Adds plate and largePlate recipe for [material]. Assumes that [material] has a plate
+     * property.
      */
     private fun addPlateRecipe(inputPrefix: OrePrefix, material: CMaterial) {
         val plateProperty = material.getProperty(CPropertyKey.PLATE)
@@ -137,15 +143,21 @@ object MaterialRecipeHandler {
         if (clayProperty != null) {
             // generate recipes for non-energy clay blocks
             if (resultClayProperty.energy == null) {
-                RecipeUtils.addShapedRecipe("${compressedInto.materialId.path}_block_compose",
+                RecipeUtils.addShapedRecipe(
+                    "${compressedInto.materialId.path}_block_compose",
                     OreDictUnifier.get(OrePrefix.block, compressedInto),
                     "CCC",
                     "CCC",
                     "CCC",
-                    'C', UnificationEntry(OrePrefix.block, material))
+                    'C',
+                    UnificationEntry(OrePrefix.block, material)
+                )
 
-                RecipeUtils.addShapelessRecipe("${compressedInto.materialId.path}_block_decompose",
-                    OreDictUnifier.get(OrePrefix.block, material, 9), UnificationEntry(OrePrefix.block, compressedInto))
+                RecipeUtils.addShapelessRecipe(
+                    "${compressedInto.materialId.path}_block_decompose",
+                    OreDictUnifier.get(OrePrefix.block, material, 9),
+                    UnificationEntry(OrePrefix.block, compressedInto)
+                )
 
                 CRecipes.DECOMPOSER.register {
                     input(OrePrefix.block, compressedInto)

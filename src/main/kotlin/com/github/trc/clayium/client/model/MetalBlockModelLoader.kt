@@ -8,15 +8,13 @@ import net.minecraftforge.client.model.ICustomModelLoader
 import net.minecraftforge.client.model.IModel
 
 object MetalBlockModelLoader : ICustomModelLoader {
-    override fun onResourceManagerReload(resourceManager: IResourceManager) {
-    }
+    override fun onResourceManagerReload(resourceManager: IResourceManager) {}
 
     override fun accepts(modelLocation: ResourceLocation): Boolean {
         if (modelLocation !is ModelResourceLocation) return false
-        return modelLocation.namespace == MOD_ID
-                && modelLocation.path == "material/compressed_material"
-                && modelLocation.variant == "variant=block"
-
+        return modelLocation.namespace == MOD_ID &&
+            modelLocation.path == "material/compressed_material" &&
+            modelLocation.variant == "variant=block"
     }
 
     override fun loadModel(modelLocation: ResourceLocation): IModel {
