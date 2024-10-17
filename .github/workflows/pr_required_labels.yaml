@@ -39,5 +39,5 @@ jobs:
         with:
           mode: minimum
           count: 1
-          labels: 'feature, bug, refactoring, translation, ignore changelog'
+          labels: 'feature, bug, refactoring, translation, type: ci, ignore changelog'
           exit_type: failure
