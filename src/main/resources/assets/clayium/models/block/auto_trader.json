@@ -1,0 +1,25 @@
+{
+  "parent": "block/block",
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "down": {"texture": "clayium:blocks/az91d_hull", "uv": [0, 0, 16, 16]},
+        "up": {"texture": "clayium:blocks/az91d_hull", "uv": [0, 0, 16, 16]},
+        "north": {"texture": "clayium:blocks/az91d_hull", "uv": [0, 0, 16, 16]},
+        "south": {"texture": "clayium:blocks/az91d_hull", "uv": [0, 0, 16, 16]},
+        "west": {"texture": "clayium:blocks/az91d_hull", "uv": [0, 0, 16, 16]},
+        "east": {"texture": "clayium:blocks/az91d_hull", "uv": [0, 0, 16, 16]}
+      }
+    },
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "up": {"texture": "clayium:blocks/auto_trader_up", "uv": [0, 0, 16, 16]},
+        "north": {"texture": "clayium:blocks/auto_trader_side", "uv": [0, 0, 16, 16]}
+      }
+    }
+  ]
+}

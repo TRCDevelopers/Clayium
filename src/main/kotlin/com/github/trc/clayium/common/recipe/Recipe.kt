@@ -11,7 +11,7 @@ import net.minecraftforge.items.IItemHandlerModifiable
 data class Recipe(
     val inputs: List<CRecipeInput>,
     val outputs: List<ItemStack>,
-    val chancedOutputs: ChancedOutputList<ItemStack>?,
+    val chancedOutputs: ChancedOutputList<ItemStack>? = null,
     val duration: Long,
     val cePerTick: ClayEnergy,
     /**

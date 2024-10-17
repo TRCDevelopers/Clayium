@@ -166,7 +166,7 @@ abstract class AbstractWorkable(
         itemOutputs = CUtils.readItems("itemOutputs", data)
     }
 
-    fun getProgressBar(syncManager: GuiSyncManager): ProgressWidget {
+    fun getProgressBar(syncManager: GuiSyncManager, showRecipes: Boolean = true): ProgressWidget {
         syncManager.syncValue("requiredProgress", SyncHandlers.longNumber(::requiredProgress, ::requiredProgress::set))
         syncManager.syncValue("craftingProgress", SyncHandlers.longNumber(::currentProgress, ::currentProgress::set))
 
@@ -174,7 +174,7 @@ abstract class AbstractWorkable(
             .size(22, 17)
             .progress(this::getNormalizedProgress)
             .texture(ClayGuiTextures.PROGRESS_BAR, 22)
-        if (Mods.JustEnoughItems.isModLoaded) {
+        if (showRecipes && Mods.JustEnoughItems.isModLoaded) {
             widget.addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
                 .listenGuiAction(IGuiAction.MousePressed { _ ->
                     if (!widget.isBelowMouse) return@MousePressed false

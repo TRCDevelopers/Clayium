@@ -9,6 +9,11 @@ class CItemRecipeInput(
     isConsumable: Boolean = true,
 ): CRecipeInput(isConsumable) {
 
+    init {
+        require(stacks.all { !it.isEmpty }) { "Empty ItemStack is not allowed." }
+    }
+
+    constructor(stack: ItemStack, isConsumable: Boolean = true): this(listOf(stack), stack.count, isConsumable)
     constructor(stack: ItemStack, amount: Int, isConsumable: Boolean = true): this(listOf(stack), amount, isConsumable)
 
     override fun testItemStackAndAmount(stack: ItemStack): Boolean {
