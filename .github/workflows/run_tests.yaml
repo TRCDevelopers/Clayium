@@ -7,6 +7,10 @@ on:
       - develop
   pull_request:
 
+concurrency:
+  group: run-tests-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   run_test:
     name: Run Tests
