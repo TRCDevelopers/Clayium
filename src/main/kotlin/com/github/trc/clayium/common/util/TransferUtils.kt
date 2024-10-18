@@ -23,16 +23,22 @@ fun IItemHandler.transferTo(to: IItemHandler) {
 object TransferUtils {
     /**
      * Insert a list of ItemStacks to an IItemHandlerModifiable
+     *
      * @param simulate if true, the operation will be simulated. default = false
      * @return true if all stacks are inserted successfully
      */
-    fun insertToHandler(handler: IItemHandlerModifiable, stacks: List<ItemStack>, simulate: Boolean = false): Boolean {
+    fun insertToHandler(
+        handler: IItemHandlerModifiable,
+        stacks: List<ItemStack>,
+        simulate: Boolean = false
+    ): Boolean {
         if (simulate) {
-            val copiedHandler = ItemStackHandler(handler.slots).apply {
-                for (i in 0..<handler.slots) {
-                    this.setStackInSlot(i, handler.getStackInSlot(i).copy())
+            val copiedHandler =
+                ItemStackHandler(handler.slots).apply {
+                    for (i in 0..<handler.slots) {
+                        this.setStackInSlot(i, handler.getStackInSlot(i).copy())
+                    }
                 }
-            }
             for (stack in stacks) {
                 val remain = ItemHandlerHelper.insertItemStacked(copiedHandler, stack, false)
                 if (!remain.isEmpty) return false

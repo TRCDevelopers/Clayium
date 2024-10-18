@@ -31,7 +31,8 @@ import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-abstract class BlockCompressed(mapping: Map<Int, CMaterial>) : BlockMaterialBase(BlockMaterial.IRON, mapping) {
+abstract class BlockCompressed(mapping: Map<Int, CMaterial>) :
+    BlockMaterialBase(BlockMaterial.IRON, mapping) {
 
     init {
         setCreativeTab(ClayiumCTabs.decorations)
@@ -39,41 +40,65 @@ abstract class BlockCompressed(mapping: Map<Int, CMaterial>) : BlockMaterialBase
 
     override fun createBlockState(): BlockStateContainer {
         return BlockStateContainer.Builder(this)
-            .add(getMaterialProperty()).add(MATERIAL_NAME).build()
+            .add(getMaterialProperty())
+            .add(MATERIAL_NAME)
+            .build()
     }
 
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
         super.getSubBlocks(itemIn, items)
     }
 
-    @SideOnly(Side.CLIENT)
-    override fun getRenderLayer() = BlockRenderLayer.SOLID
+    @SideOnly(Side.CLIENT) override fun getRenderLayer() = BlockRenderLayer.SOLID
 
     @SideOnly(Side.CLIENT)
     override fun registerModels() {
-        val blockLoc = ModelResourceLocation(clayiumId("material/compressed_material"), "variant=block")
-        val itemLoc = ModelResourceLocation(clayiumId("material/compressed_material"), "variant=item")
-        ModelLoader.setCustomStateMapper(this,
-            object : StateMapperBase() { override fun getModelResourceLocation(state: IBlockState) = blockLoc }
+        val blockLoc =
+            ModelResourceLocation(clayiumId("material/compressed_material"), "variant=block")
+        val itemLoc =
+            ModelResourceLocation(clayiumId("material/compressed_material"), "variant=item")
+        ModelLoader.setCustomStateMapper(
+            this,
+            object : StateMapperBase() {
+                override fun getModelResourceLocation(state: IBlockState) = blockLoc
+            }
         )
         for (state in blockState.validStates) {
-            ModelLoader.setCustomModelResourceLocation(this.getAsItem(), this.getMetaFromState(state), itemLoc)
+            ModelLoader.setCustomModelResourceLocation(
+                this.getAsItem(),
+                this.getMetaFromState(state),
+                itemLoc
+            )
         }
     }
 
-    override fun getSoundType(state: IBlockState, world: World, pos: BlockPos, entity: Entity?): SoundType {
-        //todo: different sound for different materials?
+    override fun getSoundType(
+        state: IBlockState,
+        world: World,
+        pos: BlockPos,
+        entity: Entity?
+    ): SoundType {
+        // todo: different sound for different materials?
         return SoundType.METAL
     }
 
-    override fun getExtendedState(state: IBlockState, world: IBlockAccess, pos: BlockPos): IBlockState {
+    override fun getExtendedState(
+        state: IBlockState,
+        world: IBlockAccess,
+        pos: BlockPos
+    ): IBlockState {
         val material = getCMaterial(state)
         return (state as IExtendedBlockState).withProperty(MATERIAL_NAME, material.upperCamelName)
     }
 
     /* BoilerPlate for custom particle handling */
     @SideOnly(Side.CLIENT)
-    override fun addHitEffects(state: IBlockState, world: World, target: RayTraceResult, manager: ParticleManager): Boolean {
+    override fun addHitEffects(
+        state: IBlockState,
+        world: World,
+        target: RayTraceResult,
+        manager: ParticleManager
+    ): Boolean {
         CustomParticleHandler.handleHitEffects(state, world, target, manager)
         return true
     }
@@ -84,21 +109,38 @@ abstract class BlockCompressed(mapping: Map<Int, CMaterial>) : BlockMaterialBase
         return true
     }
 
-    override fun addRunningEffects(state: IBlockState, world: World, pos: BlockPos, entity: Entity): Boolean {
+    override fun addRunningEffects(
+        state: IBlockState,
+        world: World,
+        pos: BlockPos,
+        entity: Entity
+    ): Boolean {
         if (world.isRemote) {
             CustomParticleHandler.handleRunningEffects(world, pos, state, entity)
         }
         return true
     }
 
-    override fun addLandingEffects(state: IBlockState, worldObj: WorldServer, blockPosition: BlockPos, iblockstate: IBlockState, entity: EntityLivingBase, numberOfParticles: Int): Boolean {
-        CustomParticleHandler.handleLandingEffects(worldObj, blockPosition, entity, numberOfParticles)
+    override fun addLandingEffects(
+        state: IBlockState,
+        worldObj: WorldServer,
+        blockPosition: BlockPos,
+        iblockstate: IBlockState,
+        entity: EntityLivingBase,
+        numberOfParticles: Int
+    ): Boolean {
+        CustomParticleHandler.handleLandingEffects(
+            worldObj,
+            blockPosition,
+            entity,
+            numberOfParticles
+        )
         return true
     }
 
-
     companion object {
         val MATERIAL_NAME = UnlistedStringProperty("material")
+
         fun create(mapping: Map<Int, CMaterial>): BlockCompressed {
             val materials = mapping.values
             val prop = CMaterialProperty(materials, "material")

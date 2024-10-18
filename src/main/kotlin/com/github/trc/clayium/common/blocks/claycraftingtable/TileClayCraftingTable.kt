@@ -51,54 +51,117 @@ class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         syncManager.registerSlotGroup("input_inventory", 3)
         return ModularPanel.defaultPanel("clay_crafting_table")
-            .child(Column().margin(7).sizeRel(1f)
-                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.lang("tile.$MOD_ID.clay_crafting_board.name").asWidget().align(Alignment.TopLeft))
-                    .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
-                    .child(Row().widthRel(0.7f).height(18 * 3).align(Alignment.Center)
-                        .child(SlotGroupWidget.builder()
-                            .matrix("III", "III", "III")
-                            .key('I') { i ->
-                                ItemSlot().slot(SyncHandlers.itemSlot(inputInventory, i)
-                                    .slotGroup("input_inventory")
-                                    .changeListener { newItem, onlyAmountChanged, client, init ->
-                                        onInputSlotChanged()
-                                    }
-                                )
-                            }.build().align(Alignment.CenterLeft)
-                        )
-                        .child(ProgressWidget().size(22, 17).progress { 0.0 }.texture(ClayGuiTextures.PROGRESS_BAR, 22)
-                            .left(18 * 3 + 5).top(18 * 3 / 2 - 8)
-                            .also {
-                                if (Mods.JustEnoughItems.isModLoaded) {
-                                    it.addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
-                                        .listenGuiAction(IGuiAction.MousePressed { _ ->
-                                            if (!it.isBelowMouse) return@MousePressed false
-                                            JeiPlugin.jeiRuntime.recipesGui.showCategories(listOf(VanillaRecipeCategoryUid.CRAFTING))
-                                            return@MousePressed true
-                                        })
-                                }
-                            }
-                        )
-                        .child(ParentWidget().size(26, 26).background(ClayGuiTextures.LARGE_SLOT)
-                            .child(ItemSlot().align(Alignment.Center)
-                                .slot(object: ModularSlot(outputInventory, 0) {
-                                        override fun onTake(thePlayer: EntityPlayer, stack: ItemStack): ItemStack {
-                                            onOutputSlotTake()
-                                            return super.onTake(thePlayer, stack)
-                                        }
-                                    }.accessibility(false, true))
-                                .background(IDrawable.EMPTY))
-                            .align(Alignment.CenterRight))
+            .child(
+                Column()
+                    .margin(7)
+                    .sizeRel(1f)
+                    .child(
+                        ParentWidget()
+                            .widthRel(1f)
+                            .expanded()
+                            .marginBottom(2)
+                            .child(
+                                IKey.lang("tile.$MOD_ID.clay_crafting_board.name")
+                                    .asWidget()
+                                    .align(Alignment.TopLeft)
+                            )
+                            .child(
+                                IKey.lang("container.inventory")
+                                    .asWidget()
+                                    .align(Alignment.BottomLeft)
+                            )
+                            .child(
+                                Row()
+                                    .widthRel(0.7f)
+                                    .height(18 * 3)
+                                    .align(Alignment.Center)
+                                    .child(
+                                        SlotGroupWidget.builder()
+                                            .matrix("III", "III", "III")
+                                            .key('I') { i ->
+                                                ItemSlot()
+                                                    .slot(
+                                                        SyncHandlers.itemSlot(inputInventory, i)
+                                                            .slotGroup("input_inventory")
+                                                            .changeListener {
+                                                                newItem,
+                                                                onlyAmountChanged,
+                                                                client,
+                                                                init ->
+                                                                onInputSlotChanged()
+                                                            }
+                                                    )
+                                            }
+                                            .build()
+                                            .align(Alignment.CenterLeft)
+                                    )
+                                    .child(
+                                        ProgressWidget()
+                                            .size(22, 17)
+                                            .progress { 0.0 }
+                                            .texture(ClayGuiTextures.PROGRESS_BAR, 22)
+                                            .left(18 * 3 + 5)
+                                            .top(18 * 3 / 2 - 8)
+                                            .also {
+                                                if (Mods.JustEnoughItems.isModLoaded) {
+                                                    it.addTooltipLine(
+                                                            IKey.lang("jei.tooltip.show.recipes")
+                                                        )
+                                                        .listenGuiAction(
+                                                            IGuiAction.MousePressed { _ ->
+                                                                if (!it.isBelowMouse)
+                                                                    return@MousePressed false
+                                                                JeiPlugin.jeiRuntime.recipesGui
+                                                                    .showCategories(
+                                                                        listOf(
+                                                                            VanillaRecipeCategoryUid
+                                                                                .CRAFTING
+                                                                        )
+                                                                    )
+                                                                return@MousePressed true
+                                                            }
+                                                        )
+                                                }
+                                            }
+                                    )
+                                    .child(
+                                        ParentWidget()
+                                            .size(26, 26)
+                                            .background(ClayGuiTextures.LARGE_SLOT)
+                                            .child(
+                                                ItemSlot()
+                                                    .align(Alignment.Center)
+                                                    .slot(
+                                                        object : ModularSlot(outputInventory, 0) {
+                                                                override fun onTake(
+                                                                    thePlayer: EntityPlayer,
+                                                                    stack: ItemStack
+                                                                ): ItemStack {
+                                                                    onOutputSlotTake()
+                                                                    return super.onTake(
+                                                                        thePlayer,
+                                                                        stack
+                                                                    )
+                                                                }
+                                                            }
+                                                            .accessibility(false, true)
+                                                    )
+                                                    .background(IDrawable.EMPTY)
+                                            )
+                                            .align(Alignment.CenterRight)
+                                    )
+                            )
                     )
-                )
-                .child(SlotGroupWidget.playerInventory(0))
+                    .child(SlotGroupWidget.playerInventory(0))
             )
     }
 
     private fun onInputSlotChanged() {
         val matrix = InventoryCrafting(DummyContainer, 3, 3)
-        for (slot in 0..<9) matrix.setInventorySlotContents(slot, inputInventory.getStackInSlot(slot))
+        for (slot in 0..<9) matrix.setInventorySlotContents(
+            slot,
+            inputInventory.getStackInSlot(slot)
+        )
         val recipe = CraftingManager.findMatchingRecipe(matrix, world)
         if (recipe == null) {
             outputInventory.setStackInSlot(0, ItemStack.EMPTY)
@@ -111,7 +174,10 @@ class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
 
     private fun onOutputSlotTake() {
         val matrix = InventoryCrafting(DummyContainer, 3, 3)
-        for (slot in 0..<9) matrix.setInventorySlotContents(slot, inputInventory.getStackInSlot(slot))
+        for (slot in 0..<9) matrix.setInventorySlotContents(
+            slot,
+            inputInventory.getStackInSlot(slot)
+        )
         val recipe = CraftingManager.findMatchingRecipe(matrix, world) ?: return
         recipe.getRemainingItems(matrix).forEachIndexed { i, stack ->
             inputInventory.setStackInSlot(i, stack)

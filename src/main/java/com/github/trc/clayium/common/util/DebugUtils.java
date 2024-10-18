@@ -9,6 +9,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class DebugUtils {
+
     @SuppressWarnings("unused")
     @SubscribeEvent
     @SideOnly(Side.CLIENT)

@@ -35,26 +35,37 @@ object RecipeUtils {
         addShapedRecipe(registryName, result, false, *recipe)
     }
 
-    fun addShapedRecipe(registryName: String, result: ItemStack, isMirrored: Boolean, vararg recipe: Any) {
+    fun addShapedRecipe(
+        registryName: String,
+        result: ItemStack,
+        isMirrored: Boolean,
+        vararg recipe: Any
+    ) {
         // default modid to clayium
-        val actualRegName = if (registryName.contains(":")) ResourceLocation(registryName) else clayiumId(registryName)
+        val actualRegName =
+            if (registryName.contains(":")) ResourceLocation(registryName)
+            else clayiumId(registryName)
         if (validateRecipe(actualRegName, result, recipe)) {
             ForgeRegistries.RECIPES.register(
                 ShapedOreRecipe(null, result, *finalizeRecipe(recipe))
                     .setMirrored(isMirrored)
-                    .setRegistryName(actualRegName))
+                    .setRegistryName(actualRegName)
+            )
         }
     }
 
     fun addShapelessRecipe(registryName: String, result: ItemStack, vararg recipe: Any) {
-        val actualRegName = if (registryName.contains(":")) ResourceLocation(registryName) else clayiumId(registryName)
-        ForgeRegistries.RECIPES.register(ShapelessOreRecipe(null, result, *finalizeRecipe(recipe))
-            .setRegistryName(actualRegName))
+        val actualRegName =
+            if (registryName.contains(":")) ResourceLocation(registryName)
+            else clayiumId(registryName)
+        ForgeRegistries.RECIPES.register(
+            ShapelessOreRecipe(null, result, *finalizeRecipe(recipe)).setRegistryName(actualRegName)
+        )
     }
 
     private fun finalizeRecipe(recipe: Array<out Any>): Array<out Any> {
         val arr = Array<Any>(recipe.size) {}
-        for (i in recipe.indices)  {
+        for (i in recipe.indices) {
             arr[i] = finalizeIngredient(recipe[i])
         }
         return arr
@@ -69,13 +80,20 @@ object RecipeUtils {
         }
     }
 
-    private fun validateRecipe(registryName: ResourceLocation, result: ItemStack, recipe: Array<out Any>): Boolean {
+    private fun validateRecipe(
+        registryName: ResourceLocation,
+        result: ItemStack,
+        recipe: Array<out Any>
+    ): Boolean {
         if (ForgeRegistries.RECIPES.containsKey(registryName)) {
-            logInvalidRecipe("Recipe $registryName already exists."); return false
+            logInvalidRecipe("Recipe $registryName already exists.")
+            return false
         } else if (recipe.isEmpty()) {
-            logInvalidRecipe("Recipe $registryName has no ingredients."); return false
+            logInvalidRecipe("Recipe $registryName has no ingredients.")
+            return false
         } else if (result.isEmpty) {
-            logInvalidRecipe("Recipe $registryName has an empty result."); return false
+            logInvalidRecipe("Recipe $registryName has an empty result.")
+            return false
         }
 
         return true

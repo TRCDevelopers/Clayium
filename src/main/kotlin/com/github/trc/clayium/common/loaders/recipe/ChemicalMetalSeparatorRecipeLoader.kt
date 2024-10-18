@@ -5,14 +5,16 @@ import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 
-
 object ChemicalMetalSeparatorRecipeLoader {
     fun registerRecipes() {
         val registry = CRecipes.CHEMICAL_METAL_SEPARATOR
 
-        registry.builder()
+        registry
+            .builder()
             .input(OrePrefix.dust, CMaterials.industrialClay)
-            .duration(40).CEt(ClayEnergy.milli(50)).tier(6)
+            .duration(40)
+            .CEt(ClayEnergy.milli(50))
+            .tier(6)
             .chancedOutput(OrePrefix.impureDust, CMaterials.aluminum, 200)
             .chancedOutput(OrePrefix.impureDust, CMaterials.manganese, 80)
             .chancedOutput(OrePrefix.impureDust, CMaterials.magnesium, 60)

@@ -43,9 +43,10 @@ fun ItemStack.copyWithSize(size: Int): ItemStack {
 }
 
 fun ItemStack.canStackWith(other: ItemStack): Boolean {
-    return (this.isEmpty || other.isEmpty) || (isItemEqual(other)
-            && (!item.isDamageable || itemDamage == other.itemDamage)
-            && ItemStack.areItemStackTagsEqual(this, other))
+    return (this.isEmpty || other.isEmpty) ||
+        (isItemEqual(other) &&
+            (!item.isDamageable || itemDamage == other.itemDamage) &&
+            ItemStack.areItemStackTagsEqual(this, other))
 }
 
 fun <T> ItemStack.getCapability(capability: Capability<T>): T? {
@@ -90,7 +91,9 @@ inline fun <reified K : Enum<K>, V, T : EnumEntries<K>> T.enumMap(mapper: (K) ->
     return map
 }
 
-inline fun <reified K : Enum<K>, V, T : EnumEntries<K>> T.enumMapNotNull(mapper: (K) -> V?): EnumMap<K, V> {
+inline fun <reified K : Enum<K>, V, T : EnumEntries<K>> T.enumMapNotNull(
+    mapper: (K) -> V?
+): EnumMap<K, V> {
     val map = EnumMap<K, V>(K::class.java)
     for (key in this) {
         val value = mapper(key)
@@ -158,7 +161,7 @@ object CUtils {
         val tagList = tag.getTagList(tagName, Constants.NBT.TAG_COMPOUND)
         for (i in 0..<tagList.tagCount()) {
             val stackTag = tagList.getCompoundTagAt(i)
-            if (stackTag.hasKey("Slot"))  {
+            if (stackTag.hasKey("Slot")) {
                 items.add(ItemStack(stackTag))
             } else {
                 items.add(ItemStack.EMPTY)
@@ -169,7 +172,8 @@ object CUtils {
 
     fun getMetaTileEntity(stack: ItemStack): MetaTileEntity? {
         return if (stack.item is ItemBlockMachine) {
-            ClayiumApi.mteManager.getRegistrySafe(stack.item.registryName!!.namespace)
+            ClayiumApi.mteManager
+                .getRegistrySafe(stack.item.registryName!!.namespace)
                 ?.getObjectById(stack.itemDamage)
         } else {
             null

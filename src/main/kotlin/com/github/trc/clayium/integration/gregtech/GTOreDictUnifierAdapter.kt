@@ -14,8 +14,7 @@ object GTOreDictUnifierAdapter : IOreDictUnifier {
     }
 
     override fun get(oreDict: String, amount: Int): ItemStack {
-        return gregtech.api.unification.OreDictUnifier.get(oreDict)
-            .copyWithSize(amount)
+        return gregtech.api.unification.OreDictUnifier.get(oreDict).copyWithSize(amount)
     }
 
     override fun getAll(oreDict: String, amount: Int): List<ItemStack> {

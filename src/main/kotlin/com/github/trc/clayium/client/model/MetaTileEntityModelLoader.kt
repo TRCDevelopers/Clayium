@@ -14,8 +14,7 @@ object MetaTileEntityModelLoader : ICustomModelLoader {
     }
 
     override fun accepts(modelLocation: ResourceLocation): Boolean {
-        if (!(modelLocation.namespace == MOD_ID
-                    && modelLocation is ModelResourceLocation)) {
+        if (!(modelLocation.namespace == MOD_ID && modelLocation is ModelResourceLocation)) {
             return false
         }
 

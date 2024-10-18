@@ -31,12 +31,16 @@ class ResonatingCollectorMetaTileEntity(
     override val faceTexture = clayiumId("blocks/ca_resonating_collector")
 
     // these are used in superclass to create itemHandler, so they have a custom getter
-    override val inventoryColumnSize get() = 3
-    override val inventoryRowSize get() = 3
+    override val inventoryColumnSize
+        get() = 3
+
+    override val inventoryRowSize
+        get() = 3
 
     override val progressPerItem = 10_000
     override val progressPerTick: Int
         get() = (resonanceManager.resonance - 1.0).coerceAtMost(Int.MAX_VALUE.toDouble()).toInt()
+
     override val generatingItem by lazy { OreDictUnifier.get(OrePrefix.gem, CMaterials.antimatter) }
 
     override fun isTerrainValid() = true
@@ -52,15 +56,28 @@ class ResonatingCollectorMetaTileEntity(
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         resonanceManager.sync(syncManager)
         return super.buildMainParentWidget(syncManager)
-            .child(IKey.dynamic {
-                I18n.format("gui.$MOD_ID.resonance", NumberFormat.formatWithMaxDigits(resonanceManager.resonance))
-            }.asWidgetResizing()
-                .align(Alignment.BottomRight))
-            .child(SlotGroupWidget.builder()
-                .matrix("III", "III", "III")
-                .key('I') { i ->
-                    ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, i)
-                        .slotGroup("machine_inventory"))
-                }.build().align(Alignment.Center))
+            .child(
+                IKey.dynamic {
+                        I18n.format(
+                            "gui.$MOD_ID.resonance",
+                            NumberFormat.formatWithMaxDigits(resonanceManager.resonance)
+                        )
+                    }
+                    .asWidgetResizing()
+                    .align(Alignment.BottomRight)
+            )
+            .child(
+                SlotGroupWidget.builder()
+                    .matrix("III", "III", "III")
+                    .key('I') { i ->
+                        ItemSlot()
+                            .slot(
+                                SyncHandlers.itemSlot(itemInventory, i)
+                                    .slotGroup("machine_inventory")
+                            )
+                    }
+                    .build()
+                    .align(Alignment.Center)
+            )
     }
 }

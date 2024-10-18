@@ -7,9 +7,16 @@ import net.minecraft.item.ItemStack
 
 class ClayWorkTableRecipeRegistry {
     private val _recipes = mutableListOf<ClayWorkTableRecipe>()
-    val recipes get() = _recipes.toList()
+    val recipes
+        get() = _recipes.toList()
 
-    fun register(input: RecipeInput, primaryOutput: ItemStack, secondaryOutput: ItemStack = ItemStack.EMPTY, method: ClayWorkTableMethod, clicks: Int) {
+    fun register(
+        input: RecipeInput,
+        primaryOutput: ItemStack,
+        secondaryOutput: ItemStack = ItemStack.EMPTY,
+        method: ClayWorkTableMethod,
+        clicks: Int
+    ) {
         _recipes.add(ClayWorkTableRecipe(input, primaryOutput, secondaryOutput, method, clicks))
         _recipes.sortWith(RECIPE_COMPARATOR)
     }
@@ -31,8 +38,7 @@ class ClayWorkTableRecipeRegistry {
     }
 
     companion object {
-        private val RECIPE_COMPARATOR = compareBy<ClayWorkTableRecipe> {
-            it.input.amount
-        }.reversed()
+        private val RECIPE_COMPARATOR =
+            compareBy<ClayWorkTableRecipe> { it.input.amount }.reversed()
     }
 }

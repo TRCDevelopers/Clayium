@@ -41,7 +41,9 @@ class EnergyConverterMetaTileEntity(
     override val useFaceForAllSides: Boolean = true
 
     init {
-        require(tier.numeric in 4..13) { "EnergyConverterMetaTileEntity can only be created with a tier between 4 and 13" }
+        require(tier.numeric in 4..13) {
+            "EnergyConverterMetaTileEntity can only be created with a tier between 4 and 13"
+        }
     }
 
     override val importItems = EmptyItemStackHandler
@@ -49,25 +51,33 @@ class EnergyConverterMetaTileEntity(
     override val itemInventory = EmptyItemStackHandler
     private val clayEnergyHolder = ClayEnergyHolder(this)
 
-    private val feStorage = EnergyStorageSerializable(ConfigCore.feGen.feStorageSize[tier.numeric - 4])
+    private val feStorage =
+        EnergyStorageSerializable(ConfigCore.feGen.feStorageSize[tier.numeric - 4])
     private val exposedFeStorage = EnergyStorageExportOnly(feStorage)
 
     private val rawFePerTick = ConfigCore.feGen.fePerTick[tier.numeric - 4]
-    private val fePerTick: Int get() = (rawFePerTick * overclock).toInt()
-    private val rawCePerTick: ClayEnergy = ClayEnergy.of(1) * ConfigCore.feGen.cePerTick[tier.numeric - 4]
-    private val cePerTick: ClayEnergy get() = (rawCePerTick * overclock)
+    private val fePerTick: Int
+        get() = (rawFePerTick * overclock).toInt()
+
+    private val rawCePerTick: ClayEnergy =
+        ClayEnergy.of(1) * ConfigCore.feGen.cePerTick[tier.numeric - 4]
+    private val cePerTick: ClayEnergy
+        get() = (rawCePerTick * overclock)
 
     override fun update() {
         super.update()
         if (isRemote) return
 
-        if (feStorage.receiveEnergy(fePerTick, true) == fePerTick
-            && clayEnergyHolder.drawEnergy(cePerTick, false)) {
+        if (
+            feStorage.receiveEnergy(fePerTick, true) == fePerTick &&
+                clayEnergyHolder.drawEnergy(cePerTick, false)
+        ) {
             feStorage.receiveEnergy(fePerTick, false)
         }
-        //todo: control output allowed sides
+        // todo: control output allowed sides
         for (side in EnumFacing.entries) {
-            val receiver = this.getNeighbor(side)?.getCapability(CapabilityEnergy.ENERGY, side.opposite)
+            val receiver =
+                this.getNeighbor(side)?.getCapability(CapabilityEnergy.ENERGY, side.opposite)
             if (receiver != null && feStorage.energyStored > 0) {
                 val maxTransfer = feStorage.extractEnergy(fePerTick, true)
                 val actualTransfer = receiver.receiveEnergy(maxTransfer, false)
@@ -83,25 +93,52 @@ class EnergyConverterMetaTileEntity(
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
         return ModularPanel.defaultPanel(translationKey, GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 10)
-            .columnWithPlayerInv {
-                child(buildMainParentWidget(syncManager))
-            }
+            .columnWithPlayerInv { child(buildMainParentWidget(syncManager)) }
     }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
-        syncManager.syncValue("feStorage", SyncHandlers.intNumber(feStorage::getEnergyStored, feStorage::setEnergy))
+        syncManager.syncValue(
+            "feStorage",
+            SyncHandlers.intNumber(feStorage::getEnergyStored, feStorage::setEnergy)
+        )
         return super.buildMainParentWidget(syncManager)
-            .child(clayEnergyHolder.createSlotWidget()
-                .align(Alignment.BottomRight))
-            .child(clayEnergyHolder.createCeTextWidget(syncManager)
-                .left(0).bottom(10))
-            .child(Column().widthRel(1f).height(8 * 3 + 3 * 2 + 10).align(Alignment.Center)
-                .child(IKey.dynamic { I18n.format("gui.clayium.energy_converter.storage", feStorage.energyStored, feStorage.maxEnergyStored) }
-                    .asWidget().widthRel(1f))
-                .child(IKey.dynamic { I18n.format("gui.clayium.energy_converter.rate", cePerTick.format(), fePerTick) }
-                    .asWidget().widthRel(1f).margin(0, 3))
-                .child(IKey.dynamic { I18n.format("gui.clayium.energy_converter.output", fePerTick) }
-                    .asWidget().widthRel(1f))
+            .child(clayEnergyHolder.createSlotWidget().align(Alignment.BottomRight))
+            .child(clayEnergyHolder.createCeTextWidget(syncManager).left(0).bottom(10))
+            .child(
+                Column()
+                    .widthRel(1f)
+                    .height(8 * 3 + 3 * 2 + 10)
+                    .align(Alignment.Center)
+                    .child(
+                        IKey.dynamic {
+                                I18n.format(
+                                    "gui.clayium.energy_converter.storage",
+                                    feStorage.energyStored,
+                                    feStorage.maxEnergyStored
+                                )
+                            }
+                            .asWidget()
+                            .widthRel(1f)
+                    )
+                    .child(
+                        IKey.dynamic {
+                                I18n.format(
+                                    "gui.clayium.energy_converter.rate",
+                                    cePerTick.format(),
+                                    fePerTick
+                                )
+                            }
+                            .asWidget()
+                            .widthRel(1f)
+                            .margin(0, 3)
+                    )
+                    .child(
+                        IKey.dynamic {
+                                I18n.format("gui.clayium.energy_converter.output", fePerTick)
+                            }
+                            .asWidget()
+                            .widthRel(1f)
+                    )
             )
     }
 
@@ -122,9 +159,20 @@ class EnergyConverterMetaTileEntity(
     }
 
     @SideOnly(Side.CLIENT)
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
-        tooltip.add(I18n.format("machine.clayium.energy_converter.tooltip.rate", cePerTick.format(), fePerTick))
+        tooltip.add(
+            I18n.format(
+                "machine.clayium.energy_converter.tooltip.rate",
+                cePerTick.format(),
+                fePerTick
+            )
+        )
         tooltip.add(I18n.format("machine.clayium.energy_converter.tooltip.output", fePerTick))
     }
 

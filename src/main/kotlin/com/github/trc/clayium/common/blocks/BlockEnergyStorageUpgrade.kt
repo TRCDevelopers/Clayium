@@ -12,19 +12,30 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
-class BlockEnergyStorageUpgrade : VariantBlock<BlockCaReactorCoil.BlockType>(Material.IRON), IEnergyStorageUpgradeBlock, ITieredBlock {
+class BlockEnergyStorageUpgrade :
+    VariantBlock<BlockCaReactorCoil.BlockType>(Material.IRON),
+    IEnergyStorageUpgradeBlock,
+    ITieredBlock {
     init {
         setHardness(2.0f)
         setResistance(2.0f)
         soundType = SoundType.METAL
     }
 
-    override fun getExtraStackLimit(world: IBlockAccess, pos: BlockPos) = getExtraStackLimit(getEnum(world.getBlockState(pos)))
+    override fun getExtraStackLimit(world: IBlockAccess, pos: BlockPos) =
+        getExtraStackLimit(getEnum(world.getBlockState(pos)))
 
     override fun getTier(stack: ItemStack) = getEnum(stack).tier
-    override fun getTier(world: IBlockAccess, pos: BlockPos) = getEnum(world.getBlockState(pos)).tier
 
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: List<String?>, flagIn: ITooltipFlag) {
+    override fun getTier(world: IBlockAccess, pos: BlockPos) =
+        getEnum(world.getBlockState(pos)).tier
+
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: List<String?>,
+        flagIn: ITooltipFlag
+    ) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
     }
 

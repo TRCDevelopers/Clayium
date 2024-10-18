@@ -60,7 +60,15 @@ class PanDuplicatorMetaTileEntity(
     tier: ITier,
     private val duplicatorRank: Int,
     private val machineHullTier: ITier = ClayTiers.entries[duplicatorRank + 3]
-) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[2], validOutputModesLists[1], "pan_duplicator"), IPanUser {
+) :
+    MetaTileEntity(
+        metaTileEntityId,
+        tier,
+        validInputModesLists[2],
+        validOutputModesLists[1],
+        "pan_duplicator"
+    ),
+    IPanUser {
 
     override val faceTexture = clayiumId("blocks/pan_duplicator")
 
@@ -105,27 +113,52 @@ class PanDuplicatorMetaTileEntity(
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
-            .child(clayEnergyHolder.createCeTextWidget(syncManager)
-                .bottom(12).left(0))
-            .child(clayEnergyHolder.createSlotWidget()
-                .align(Alignment.BottomRight))
-            .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
-                .child(SlotGroupWidget.builder()
-                    .row("AD")
-                    .key('A', ItemSlot().slot(SyncHandlers.itemSlot(antimatterSlot, 0).singletonSlotGroup())
-                        .background(ClayGuiTextures.IMPORT_1_SLOT))
-                    .key('D', ItemSlot().slot(SyncHandlers.itemSlot(duplicationTargetSlot, 0).singletonSlotGroup())
-                        .background(ClayGuiTextures.IMPORT_2_SLOT))
-                    .build()
-                    .align(Alignment.CenterLeft)
-                )
-                .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).singletonSlotGroup().accessibility(false, true))
-                    .align(Alignment.CenterRight))
-                .child(ProgressWidget()
-                    .progress(0.0)
-                    .size(22, 17).align(Alignment.Center)
-                    .texture(ClayGuiTextures.PROGRESS_BAR, 22)
-                )
+            .child(clayEnergyHolder.createCeTextWidget(syncManager).bottom(12).left(0))
+            .child(clayEnergyHolder.createSlotWidget().align(Alignment.BottomRight))
+            .child(
+                Row()
+                    .widthRel(0.7f)
+                    .height(26)
+                    .align(Alignment.Center)
+                    .child(
+                        SlotGroupWidget.builder()
+                            .row("AD")
+                            .key(
+                                'A',
+                                ItemSlot()
+                                    .slot(
+                                        SyncHandlers.itemSlot(antimatterSlot, 0)
+                                            .singletonSlotGroup()
+                                    )
+                                    .background(ClayGuiTextures.IMPORT_1_SLOT)
+                            )
+                            .key(
+                                'D',
+                                ItemSlot()
+                                    .slot(
+                                        SyncHandlers.itemSlot(duplicationTargetSlot, 0)
+                                            .singletonSlotGroup()
+                                    )
+                                    .background(ClayGuiTextures.IMPORT_2_SLOT)
+                            )
+                            .build()
+                            .align(Alignment.CenterLeft)
+                    )
+                    .child(
+                        largeSlot(
+                                SyncHandlers.itemSlot(exportItems, 0)
+                                    .singletonSlotGroup()
+                                    .accessibility(false, true)
+                            )
+                            .align(Alignment.CenterRight)
+                    )
+                    .child(
+                        ProgressWidget()
+                            .progress(0.0)
+                            .size(22, 17)
+                            .align(Alignment.Center)
+                            .texture(ClayGuiTextures.PROGRESS_BAR, 22)
+                    )
             )
     }
 
@@ -139,8 +172,11 @@ class PanDuplicatorMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta,
-            ModelResourceLocation(clayiumId("machines/pan_duplicator"), "rank=$duplicatorRank"))
+        ModelLoader.setCustomModelResourceLocation(
+            item,
+            meta,
+            ModelResourceLocation(clayiumId("machines/pan_duplicator"), "rank=$duplicatorRank")
+        )
     }
 
     @SideOnly(Side.CLIENT)
@@ -149,17 +185,30 @@ class PanDuplicatorMetaTileEntity(
     }
 
     @SideOnly(Side.CLIENT)
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
         tooltip.add("CE Consumption Rate: ${ceConsumption.format()}/t")
     }
 
-    override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
+    override fun bakeQuads(
+        getter: Function<ResourceLocation, TextureAtlasSprite>,
+        faceBakery: FaceBakery
+    ) {
         val sprite = getter.apply(clayiumId("blocks/pan_casing"))
         panCasingQuads = EnumFacing.entries.map { ModelTextures.createQuad(it, sprite) }
     }
 
-    override fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+    override fun getQuads(
+        quads: MutableList<BakedQuad>,
+        state: IBlockState?,
+        side: EnumFacing?,
+        rand: Long
+    ) {
         if (state == null || side == null || state !is IExtendedBlockState) return
         quads.add(ModelTextures.getHullQuads(this.machineHullTier)?.get(side) ?: return)
         if (side != this.frontFacing) quads.add(panCasingQuads[side.index])
@@ -167,8 +216,10 @@ class PanDuplicatorMetaTileEntity(
 
     private inner class PanRecipeProvider : IRecipeProvider {
         override val jeiCategory = null
+
         override fun searchRecipe(machineTier: Int, inputs: List<ItemStack>): Recipe? {
-            if (!antimatterInput.testItemStackAndAmount(antimatterSlot.getStackInSlot(0))) return null
+            if (!antimatterInput.testItemStackAndAmount(antimatterSlot.getStackInSlot(0)))
+                return null
             val targetStack = duplicationTargetSlot.getStackInSlot(0)
             if (targetStack.isEmpty) return null
             val dupTarget = duplicationTargetSlot.getStackInSlot(0).copyWithSize(1)
@@ -178,7 +229,9 @@ class PanDuplicatorMetaTileEntity(
                 .inputs(antimatterInput)
                 .notConsumable(dupTarget)
                 .output(dupTarget)
-                .tier(0).CEt(ceConsumption).duration(duration)
+                .tier(0)
+                .CEt(ceConsumption)
+                .duration(duration)
                 .build()
         }
     }

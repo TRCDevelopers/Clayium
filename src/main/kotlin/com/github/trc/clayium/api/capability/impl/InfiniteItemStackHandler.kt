@@ -17,9 +17,7 @@ class InfiniteItemStackHandler(
     }
 
     override fun extractItem(slot: Int, amount: Int, simulate: Boolean): ItemStack {
-        return stack.copy().apply {
-            count = amount.coerceAtMost(getSlotLimit(0))
-        }
+        return stack.copy().apply { count = amount.coerceAtMost(getSlotLimit(0)) }
     }
 
     override fun getSlotLimit(slot: Int) = stack.maxStackSize

@@ -24,16 +24,31 @@ class ItemBlockMachine(
         hasSubtypes = true
     }
 
-    override fun onItemUseFirst(player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, hand: EnumHand): EnumActionResult {
+    override fun onItemUseFirst(
+        player: EntityPlayer,
+        world: World,
+        pos: BlockPos,
+        side: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float,
+        hand: EnumHand
+    ): EnumActionResult {
         if (!world.isRemote && KeyInput.SPRINT.isKeyDown(player as EntityPlayerMP)) {
             val stack = player.getHeldItem(hand)
-            val sampleMetaTileEntity = CUtils.getMetaTileEntity(stack) ?: return EnumActionResult.PASS
+            val sampleMetaTileEntity =
+                CUtils.getMetaTileEntity(stack) ?: return EnumActionResult.PASS
             val metaTileEntity = world.getMetaTileEntity(pos) ?: return EnumActionResult.PASS
-            if (!metaTileEntity.canBeReplacedTo(world, pos, sampleMetaTileEntity)) return EnumActionResult.PASS
+            if (!metaTileEntity.canBeReplacedTo(world, pos, sampleMetaTileEntity))
+                return EnumActionResult.PASS
             val oldState = world.getBlockState(pos)
             if (!player.isCreative) stack.shrink(1)
 
-            world.playEvent(Constants.WorldEvents.BREAK_BLOCK_EFFECTS, pos, Block.getStateId(oldState))
+            world.playEvent(
+                Constants.WorldEvents.BREAK_BLOCK_EFFECTS,
+                pos,
+                Block.getStateId(oldState)
+            )
 
             metaTileEntity.replaceTo(world, pos, sampleMetaTileEntity)
             return EnumActionResult.SUCCESS
@@ -50,13 +65,17 @@ class ItemBlockMachine(
         }
     }
 
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         return CUtils.getMetaTileEntity(stack)?.addInformation(stack, worldIn, tooltip, flagIn)
             ?: super.addInformation(stack, worldIn, tooltip, flagIn)
     }
 
     override fun getForgeRarity(stack: ItemStack): IRarity {
-        return CUtils.getMetaTileEntity(stack)?.forgeRarity
-            ?: super.getForgeRarity(stack)
+        return CUtils.getMetaTileEntity(stack)?.forgeRarity ?: super.getForgeRarity(stack)
     }
 }

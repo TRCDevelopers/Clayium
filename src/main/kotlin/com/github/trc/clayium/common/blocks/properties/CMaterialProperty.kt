@@ -21,7 +21,10 @@ class CMaterialProperty(
         if (modIdAndName.size != 2) return Optional.absent()
         val namespace = modIdAndName[0]
         val path = modIdAndName[1]
-        val material = allowedValues.find { it.materialId.namespace == namespace && it.materialId.path == path }
+        val material =
+            allowedValues.find {
+                it.materialId.namespace == namespace && it.materialId.path == path
+            }
         return Optional.fromNullable(material)
     }
 

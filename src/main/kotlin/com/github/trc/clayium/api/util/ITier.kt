@@ -12,6 +12,7 @@ interface ITier : Comparable<ITier> {
     val rarity: IRarity
 
     abstract override fun hashCode(): Int
+
     override fun compareTo(other: ITier): Int = numeric.compareTo(other.numeric)
 
     companion object {

@@ -17,9 +17,7 @@ class OverclockHandler(
             val syncFlag = !metaTileEntity.isRemote && field != value
             field = value
             if (syncFlag) {
-                writeCustomData(ClayiumDataCodecs.UPDATE_OC_FACTOR) {
-                    writeDouble(rawOcFactor)
-                }
+                writeCustomData(ClayiumDataCodecs.UPDATE_OC_FACTOR) { writeDouble(rawOcFactor) }
             }
             accelerationFactor = min(rawOcFactor, 10.0)
             compensatedFactor = if (rawOcFactor > 10.0) rawOcFactor / accelerationFactor else 1.0
@@ -27,6 +25,7 @@ class OverclockHandler(
 
     var accelerationFactor = 1.0
         private set
+
     var compensatedFactor = 1.0
         private set
 
@@ -47,7 +46,11 @@ class OverclockHandler(
             val neighborState = metaTileEntity.getNeighborBlockState(side) ?: continue
             val neighboringBlock = neighborState.block
             if (neighboringBlock is IOverclockerBlock) {
-                value *= (neighboringBlock as IOverclockerBlock).getOverclockFactor(world, pos.offset(side))
+                value *=
+                    (neighboringBlock as IOverclockerBlock).getOverclockFactor(
+                        world,
+                        pos.offset(side)
+                    )
             }
         }
         return value

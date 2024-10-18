@@ -1,9 +1,6 @@
 package com.github.trc.clayium.api.unification.stack
 
-/**
- * For non subtyped items.
- * Holds one shard value for all metadata.
- */
+/** For non subtyped items. Holds one shard value for all metadata. */
 class SingleItemVariantMap<E> : MutableItemVariantMap<E> {
 
     private var value: E? = null

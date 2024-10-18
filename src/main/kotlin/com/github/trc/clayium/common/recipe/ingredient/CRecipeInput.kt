@@ -12,6 +12,7 @@ abstract class CRecipeInput(val isConsumable: Boolean = true) {
     val consumeAmount: Int by lazy { if (isConsumable) amount else 0 }
 
     abstract fun testItemStackAndAmount(stack: ItemStack): Boolean
+
     abstract fun testIgnoringAmount(item: ItemAndMeta): Boolean
 
     fun isValid(): Boolean {

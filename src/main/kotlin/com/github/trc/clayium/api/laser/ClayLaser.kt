@@ -27,17 +27,23 @@ data class ClayLaser(
     val age: Int = 0,
 ) {
 
-    val energy: Double = calcLaserEnergyPerColor(blue, bases[0], maxEnergies[0]) *
-                                       calcLaserEnergyPerColor(green, bases[1], maxEnergies[1]) *
-                                       calcLaserEnergyPerColor(red, bases[2], maxEnergies[2]) - 1
+    val energy: Double =
+        calcLaserEnergyPerColor(blue, bases[0], maxEnergies[0]) *
+            calcLaserEnergyPerColor(green, bases[1], maxEnergies[1]) *
+            calcLaserEnergyPerColor(red, bases[2], maxEnergies[2]) - 1
 
     companion object {
         private val bases = doubleArrayOf(2.5, 1.8, 1.5)
         private val maxEnergies = doubleArrayOf(1000.0, 300.0, 100.0)
 
         @Suppress("LocalVariableName")
-        private fun calcLaserEnergyPerColor(n_i: Int, b_i: Double, m_i: Double, r: Double = 0.1): Double {
-            if (n_i <= 0 || r <= 0.0 || m_i < 0.0 || b_i  < 1.0) return 1.0
+        private fun calcLaserEnergyPerColor(
+            n_i: Int,
+            b_i: Double,
+            m_i: Double,
+            r: Double = 0.1
+        ): Double {
+            if (n_i <= 0 || r <= 0.0 || m_i < 0.0 || b_i < 1.0) return 1.0
             val nd = n_i.toDouble()
             val r1 = r + 1.0
             val C_i = b_i.pow((r1) * (ln(r1 / r) / ln(m_i)))

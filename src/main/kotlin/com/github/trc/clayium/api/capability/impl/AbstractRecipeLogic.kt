@@ -14,9 +14,7 @@ import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 import kotlin.math.pow
 
-/**
- * Recipe-based implementation of [AbstractWorkable]
- */
+/** Recipe-based implementation of [AbstractWorkable] */
 abstract class AbstractRecipeLogic(
     metaTileEntity: MetaTileEntity,
     val recipeProvider: IRecipeProvider,
@@ -31,8 +29,8 @@ abstract class AbstractRecipeLogic(
         protected set
 
     /**
-     * Draw energy from the energy container.
-     * Overclocking should be applied.
+     * Draw energy from the energy container. Overclocking should be applied.
+     *
      * @param ce Clay Energy to remove
      * @param simulate whether to simulate energy extraction or not, default is false
      * @return true if energy can/was drained, otherwise false
@@ -53,11 +51,12 @@ abstract class AbstractRecipeLogic(
 
     override fun trySearchNewRecipe() {
         var currentRecipe: Recipe? = null
-        currentRecipe = if (previousRecipe?.matches(false, inputInventory, getTier()) == true) {
-            previousRecipe
-        } else {
-            recipeProvider.searchRecipe(getTier(), inputInventory.toList())
-        }
+        currentRecipe =
+            if (previousRecipe?.matches(false, inputInventory, getTier()) == true) {
+                previousRecipe
+            } else {
+                recipeProvider.searchRecipe(getTier(), inputInventory.toList())
+            }
 
         if (currentRecipe == null) {
             invalidInputsForRecipes = true
@@ -75,7 +74,8 @@ abstract class AbstractRecipeLogic(
             return false
         }
         if (!recipe.matches(true, inputInventory, getTier())) return false
-        val (cePerTick, duration) = applyOverclock(recipe.cePerTick, recipe.duration, ocHandler.compensatedFactor)
+        val (cePerTick, duration) =
+            applyOverclock(recipe.cePerTick, recipe.duration, ocHandler.compensatedFactor)
         this.itemOutputs = outputs
         this.recipeCEt = ClayEnergy(cePerTick)
         this.requiredProgress = duration
@@ -86,9 +86,14 @@ abstract class AbstractRecipeLogic(
 
     /**
      * Applies overclock to the recipe.
+     *
      * @return { RawCEt, duration }
      */
-    protected open fun applyOverclock(cePt: ClayEnergy, duration: Long, compensatedFactor: Double): LongArray {
+    protected open fun applyOverclock(
+        cePt: ClayEnergy,
+        duration: Long,
+        compensatedFactor: Double
+    ): LongArray {
         val rawCEt = cePt.energy * compensatedFactor.pow(1.5)
         val durationOCed = (duration / compensatedFactor)
         return longArrayOf(rawCEt.toLong(), durationOCed.toLong())

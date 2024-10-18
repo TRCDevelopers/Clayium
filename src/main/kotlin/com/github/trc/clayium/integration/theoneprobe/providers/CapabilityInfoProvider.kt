@@ -13,11 +13,23 @@ abstract class CapabilityInfoProvider<T> : IProbeInfoProvider {
     abstract val capability: Capability<T>
 
     protected abstract fun addProbeInfo(
-        capability: T, mode: ProbeMode, probeInfo: IProbeInfo,
-        player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData
+        capability: T,
+        mode: ProbeMode,
+        probeInfo: IProbeInfo,
+        player: EntityPlayer,
+        world: World,
+        state: IBlockState,
+        hitData: IProbeHitData
     )
 
-    override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
+    override fun addProbeInfo(
+        mode: ProbeMode,
+        probeInfo: IProbeInfo,
+        player: EntityPlayer,
+        world: World,
+        state: IBlockState,
+        hitData: IProbeHitData
+    ) {
         world.getTileEntity(hitData.pos)?.getCapability(capability, null)?.let { capability ->
             addProbeInfo(capability, mode, probeInfo, player, world, state, hitData)
         }

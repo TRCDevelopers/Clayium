@@ -35,8 +35,7 @@ class GroovyScriptModule : GroovyPlugin {
 
     companion object {
         fun isCurrentlyRunning(): Boolean {
-            return Mods.GroovyScript.isModLoaded
-                    && GroovyScript.getSandbox().isRunning
+            return Mods.GroovyScript.isModLoaded && GroovyScript.getSandbox().isRunning
         }
     }
 }

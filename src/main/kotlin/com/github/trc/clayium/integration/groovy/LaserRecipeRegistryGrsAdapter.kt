@@ -13,7 +13,10 @@ import net.minecraft.block.state.IBlockState
 
 class LaserRecipeRegistryGrsAdapter(
     val backingRegistry: LaserRecipeRegistry,
-) : VirtualizedRegistry<LaserRecipe>(Alias.generateOf("laser_transformation", CaseFormat.LOWER_UNDERSCORE)) {
+) :
+    VirtualizedRegistry<LaserRecipe>(
+        Alias.generateOf("laser_transformation", CaseFormat.LOWER_UNDERSCORE)
+    ) {
     override fun onReload() {
         removeScripted().forEach(backingRegistry::removeRecipe)
         restoreFromBackup().forEach(backingRegistry::addRecipe)
@@ -26,9 +29,12 @@ class LaserRecipeRegistryGrsAdapter(
     override fun getName(): String? {
         return "laser_transformation"
     }
+
     @JvmOverloads
     fun removeRecipe(input: Block, inputMeta: Int = W): Boolean {
-        return backingRegistry.getAllRecipes().filter { it.grsMatches(input, inputMeta) }
+        return backingRegistry
+            .getAllRecipes()
+            .filter { it.grsMatches(input, inputMeta) }
             .map { recipe ->
                 val removed = backingRegistry.removeRecipe(recipe)
                 if (!removed) GroovyLog.msg("Failed to remove recipe $recipe")
@@ -36,6 +42,7 @@ class LaserRecipeRegistryGrsAdapter(
             }
             .all { it }
     }
+
     fun removeRecipe(input: IBlockState): Boolean {
         return removeRecipe(input.block, input.block.getMetaFromState(input))
     }

@@ -34,12 +34,21 @@ class SolarClayFabricatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     val registry: RecipeRegistry<ClayFabricatorRecipeBuilder>
-) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModesLists[1], "solar_clay_fabricator") {
+) :
+    MetaTileEntity(
+        metaTileEntityId,
+        tier,
+        validInputModes,
+        validOutputModesLists[1],
+        "solar_clay_fabricator"
+    ) {
 
     override val faceTexture: ResourceLocation = clayiumId("blocks/solar")
 
-    override val importItems: IItemHandlerModifiable = NotifiableItemStackHandler(this, 1, this, false)
-    override val exportItems: IItemHandlerModifiable = NotifiableItemStackHandler(this, 1, this, true)
+    override val importItems: IItemHandlerModifiable =
+        NotifiableItemStackHandler(this, 1, this, false)
+    override val exportItems: IItemHandlerModifiable =
+        NotifiableItemStackHandler(this, 1, this, true)
     override val itemInventory: IItemHandler = ItemHandlerProxy(importItems, exportItems)
     val autoIoHandler: AutoIoHandler = AutoIoHandler.Combined(this)
 
@@ -60,19 +69,30 @@ class SolarClayFabricatorMetaTileEntity(
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
-            .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
-                .child(largeSlot(SyncHandlers.itemSlot(importItems, 0)
-                    .singletonSlotGroup(2)).align(Alignment.CenterLeft))
-                .child(workable.getProgressBar(syncManager).align(Alignment.Center))
-                .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0)
-                    .accessibility(false, true)
-                    .singletonSlotGroup(0)).align(Alignment.CenterRight))
+            .child(
+                Row()
+                    .widthRel(0.7f)
+                    .height(26)
+                    .align(Alignment.Center)
+                    .child(
+                        largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup(2))
+                            .align(Alignment.CenterLeft)
+                    )
+                    .child(workable.getProgressBar(syncManager).align(Alignment.Center))
+                    .child(
+                        largeSlot(
+                                SyncHandlers.itemSlot(exportItems, 0)
+                                    .accessibility(false, true)
+                                    .singletonSlotGroup(0)
+                            )
+                            .align(Alignment.CenterRight)
+                    )
             )
-            .child(workable.createCeTextWidget(syncManager)
-                .bottom(12).left(0).widthRel(0.5f))
+            .child(workable.createCeTextWidget(syncManager).bottom(12).left(0).widthRel(0.5f))
     }
 
-    private inner class SolarClayFabricatorRecipeLogic : AbstractRecipeLogic(this@SolarClayFabricatorMetaTileEntity, registry) {
+    private inner class SolarClayFabricatorRecipeLogic :
+        AbstractRecipeLogic(this@SolarClayFabricatorMetaTileEntity, registry) {
         private var clayEnergy = ClayEnergy.ZERO
 
         override fun drawEnergy(ce: ClayEnergy, simulate: Boolean): Boolean {
@@ -91,19 +111,28 @@ class SolarClayFabricatorMetaTileEntity(
         }
 
         fun createCeTextWidget(syncManager: GuiSyncManager): TextWidget {
-            syncManager.syncValue("clayEnergy", SyncHandlers.longNumber(
-                { clayEnergy.energy },
-                { clayEnergy = ClayEnergy(it) }
-            ))
+            syncManager.syncValue(
+                "clayEnergy",
+                SyncHandlers.longNumber({ clayEnergy.energy }, { clayEnergy = ClayEnergy(it) })
+            )
 
             return IKey.dynamic { clayEnergy.format() }.asWidget()
         }
 
-        override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
+        override fun addProbeInfo(
+            mode: ProbeMode,
+            probeInfo: IProbeInfo,
+            player: EntityPlayer,
+            world: World,
+            state: IBlockState,
+            hitData: IProbeHitData
+        ) {
             super.addProbeInfo(mode, probeInfo, player, world, state, hitData)
             if (this.isWorking) {
                 val cet = recipeCEt * overclockHandler.accelerationFactor
-                probeInfo.text("Generating ${TextFormatting.GREEN}${cet.formatWithoutUnit()}${TextFormatting.WHITE} CE/t")
+                probeInfo.text(
+                    "Generating ${TextFormatting.GREEN}${cet.formatWithoutUnit()}${TextFormatting.WHITE} CE/t"
+                )
             }
         }
     }

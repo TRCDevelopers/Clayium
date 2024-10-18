@@ -7,15 +7,19 @@ class CItemRecipeInput(
     override val stacks: List<ItemStack>,
     override val amount: Int,
     isConsumable: Boolean = true,
-): CRecipeInput(isConsumable) {
+) : CRecipeInput(isConsumable) {
 
-    constructor(stack: ItemStack, amount: Int, isConsumable: Boolean = true): this(listOf(stack), amount, isConsumable)
+    constructor(
+        stack: ItemStack,
+        amount: Int,
+        isConsumable: Boolean = true
+    ) : this(listOf(stack), amount, isConsumable)
 
     override fun testItemStackAndAmount(stack: ItemStack): Boolean {
         return stacks.any {
-            ItemStack.areItemsEqual(it, stack)
-                    && (!stack.hasSubtypes || stack.metadata == it.metadata || stack.metadata == 32767)
-                    && stack.count >= amount
+            ItemStack.areItemsEqual(it, stack) &&
+                (!stack.hasSubtypes || stack.metadata == it.metadata || stack.metadata == 32767) &&
+                stack.count >= amount
         }
     }
 

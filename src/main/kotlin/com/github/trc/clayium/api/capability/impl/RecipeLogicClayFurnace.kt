@@ -20,27 +20,45 @@ class RecipeLogicClayFurnace(
 ) : RecipeLogicEnergy(metaTileEntity, registry, clayEnergyHolder) {
 
     override fun trySearchNewRecipe() {
-        val smeltingResult = FurnaceRecipes.instance().getSmeltingResult(inputInventory.getStackInSlot(0)).copy()
+        val smeltingResult =
+            FurnaceRecipes.instance().getSmeltingResult(inputInventory.getStackInSlot(0)).copy()
         if (smeltingResult.isEmpty) return super.trySearchNewRecipe()
         prepareVanillaFurnaceRecipe(smeltingResult)
     }
 
-    override fun applyOverclock(cePt: ClayEnergy, duration: Long, compensatedFactor: Double): LongArray {
+    override fun applyOverclock(
+        cePt: ClayEnergy,
+        duration: Long,
+        compensatedFactor: Double
+    ): LongArray {
         val (cet, duration) = super.applyOverclock(cePt, duration, compensatedFactor)
         val machineTierNum = metaTileEntity.tier.numeric
         val multipliedRecipeCEt =
-            ClayEnergy((cet.toDouble() * ConfigTierBalance.crafting.smelterConsumingEnergyMultiplier[machineTierNum - 4]).toLong())
-        val multipliedRecipeTime = (duration * ConfigTierBalance.crafting.smelterCraftTimeMultiplier[machineTierNum - 4]).toLong()
+            ClayEnergy(
+                (cet.toDouble() *
+                        ConfigTierBalance.crafting.smelterConsumingEnergyMultiplier[
+                                machineTierNum - 4])
+                    .toLong()
+            )
+        val multipliedRecipeTime =
+            (duration * ConfigTierBalance.crafting.smelterCraftTimeMultiplier[machineTierNum - 4])
+                .toLong()
         return longArrayOf(multipliedRecipeCEt.energy, multipliedRecipeTime)
     }
 
     override fun prepareRecipe(recipe: Recipe): Boolean {
-        val multipliedRecipeCEt = ClayEnergy(
-            (recipe.cePerTick.energy.toDouble() * ConfigTierBalance.crafting.smelterConsumingEnergyMultiplier[metaTileEntity.tier.numeric - 4]).toLong()
-        )
-        val multipliedRecipeTime = (
-            recipe.duration * ConfigTierBalance.crafting.smelterCraftTimeMultiplier[metaTileEntity.tier.numeric - 4]
-        ).toLong()
+        val multipliedRecipeCEt =
+            ClayEnergy(
+                (recipe.cePerTick.energy.toDouble() *
+                        ConfigTierBalance.crafting.smelterConsumingEnergyMultiplier[
+                                metaTileEntity.tier.numeric - 4])
+                    .toLong()
+            )
+        val multipliedRecipeTime =
+            (recipe.duration *
+                    ConfigTierBalance.crafting.smelterCraftTimeMultiplier[
+                            metaTileEntity.tier.numeric - 4])
+                .toLong()
         if (!this.drawEnergy(multipliedRecipeCEt, simulate = true)) return false
         val outputs = recipe.copyOutputs()
         if (!TransferUtils.insertToHandler(metaTileEntity.exportItems, outputs, true)) {
@@ -58,13 +76,16 @@ class RecipeLogicClayFurnace(
 
     private fun prepareVanillaFurnaceRecipe(smeltingResult: ItemStack) {
         require(!smeltingResult.isEmpty)
-        if (!TransferUtils.insertToHandler(metaTileEntity.exportItems, listOf(smeltingResult), true)) {
+        if (
+            !TransferUtils.insertToHandler(metaTileEntity.exportItems, listOf(smeltingResult), true)
+        ) {
             this.outputsFull = true
             return
         }
         this.inputInventory.extractItem(0, 1, false)
 
-        val (cet, duration) = applyOverclock(BASE_CE_CONSUMPTION, FURNACE_RECIPE_TIME, ocHandler.compensatedFactor)
+        val (cet, duration) =
+            applyOverclock(BASE_CE_CONSUMPTION, FURNACE_RECIPE_TIME, ocHandler.compensatedFactor)
         this.itemOutputs = listOf(smeltingResult)
         this.recipeCEt = ClayEnergy(cet)
         this.requiredProgress = duration
@@ -72,7 +93,7 @@ class RecipeLogicClayFurnace(
     }
 
     private companion object {
-        private const val FURNACE_RECIPE_TIME = 200L //ticks
+        private const val FURNACE_RECIPE_TIME = 200L // ticks
         private val BASE_CE_CONSUMPTION = ClayEnergy(4)
     }
 }

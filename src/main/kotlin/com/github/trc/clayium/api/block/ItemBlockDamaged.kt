@@ -11,14 +11,19 @@ import net.minecraftforge.fml.relauncher.SideOnly
 
 class ItemBlockDamaged<T>(
     tieredBlock: T,
-) : ItemBlockTiered<T>(tieredBlock) where T: Block, T: ITieredBlock {
+) : ItemBlockTiered<T>(tieredBlock) where T : Block, T : ITieredBlock {
     @SideOnly(Side.CLIENT)
     override fun getItemStackDisplayName(stack: ItemStack): String {
         return I18n.format("$translationKey.${stack.metadata}")
     }
 
     @SideOnly(Side.CLIENT)
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
         UtilLocale.formatTooltips(tooltip, "$translationKey.${stack.metadata}.tooltip")
     }

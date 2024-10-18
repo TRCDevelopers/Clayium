@@ -6,7 +6,8 @@ import net.minecraft.util.math.BlockPos
 /**
  * An iterator that iterates over all block positions within a Cuboid6 in a top-down order.
  *
- * **Uses MutableBlockPos. If you want to store the returned BlockPos for an extended period of time, call `.toImmutable()`.**
+ * **Uses MutableBlockPos. If you want to store the returned BlockPos for an extended period of
+ * time, call `.toImmutable()`.**
  */
 class Cuboid6BlockPosIterator(
     cuboid6: Cuboid6,

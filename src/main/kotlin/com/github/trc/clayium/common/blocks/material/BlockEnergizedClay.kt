@@ -27,10 +27,16 @@ abstract class BlockEnergizedClay(
     }
 
     @SideOnly(Side.CLIENT)
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
         val energizedClayCapability = stack.getCapability(ClayiumCapabilities.ENERGIZED_CLAY, null)
-        if (energizedClayCapability != null) tooltip.add(energizedClayCapability.getClayEnergy().format())
+        if (energizedClayCapability != null)
+            tooltip.add(energizedClayCapability.getClayEnergy().format())
     }
 
     companion object {

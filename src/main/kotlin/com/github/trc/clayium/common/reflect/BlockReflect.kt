@@ -8,7 +8,12 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper
 @Suppress("DEPRECATION")
 object BlockReflect {
     private val silkTouchDrop by lazy {
-        ReflectionHelper.findMethod(Block::class.java, "getSilkTouchDrop", "func_180643_i", IBlockState::class.java)
+        ReflectionHelper.findMethod(
+            Block::class.java,
+            "getSilkTouchDrop",
+            "func_180643_i",
+            IBlockState::class.java
+        )
     }
 
     fun getSilkTouchDrop(block: Block, state: IBlockState): ItemStack {

@@ -22,5 +22,6 @@ class BlockMachineHull : VariantBlock<ClayTiers>(Material.IRON), ITieredBlock {
     }
 
     override fun getTier(stack: ItemStack) = getEnum(stack)
+
     override fun getTier(world: IBlockAccess, pos: BlockPos) = getEnum(world.getBlockState(pos))
 }

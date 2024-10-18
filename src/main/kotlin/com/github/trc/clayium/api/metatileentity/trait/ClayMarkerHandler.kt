@@ -10,14 +10,12 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 
-class ClayMarkerHandler(
-    metaTileEntity: MetaTileEntity
-) : MTETrait(metaTileEntity, ClayiumDataCodecs.CLAY_MARKER_HANDLER) {
+class ClayMarkerHandler(metaTileEntity: MetaTileEntity) :
+    MTETrait(metaTileEntity, ClayiumDataCodecs.CLAY_MARKER_HANDLER) {
 
     /**
-     * available after onPlacement.
-     * null if no neighbor marker.
-     * once set, never change (on the serve side).
+     * available after onPlacement. null if no neighbor marker. once set, never change (on the serve
+     * side).
      */
     var markedRangeAbsolute: Cuboid6? = null
         private set
@@ -46,17 +44,16 @@ class ClayMarkerHandler(
 
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
         if (discriminator == UPDATE_AREA_RANGE) {
-            markedRangeAbsolute = if (buf.readBoolean()) {
-                Cuboid6(buf.readCompoundTag())
-            } else {
-                null
-            }
+            markedRangeAbsolute =
+                if (buf.readBoolean()) {
+                    Cuboid6(buf.readCompoundTag())
+                } else {
+                    null
+                }
         }
     }
 
-    /**
-     * null if no neighbor marker.
-     */
+    /** null if no neighbor marker. */
     private fun getRangeFromNeighborMarker(): Cuboid6? {
         val world = this.metaTileEntity.world ?: return null
         if (world.isRemote) return null

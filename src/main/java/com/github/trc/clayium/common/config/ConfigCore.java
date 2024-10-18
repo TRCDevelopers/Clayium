@@ -21,6 +21,7 @@ public class ConfigCore {
     public static FeGen feGen = new FeGen();
 
     public static class SubCategoryRendering {
+
         private SubCategoryRendering() {}
 
         @Config.Comment({
@@ -33,6 +34,7 @@ public class ConfigCore {
     }
 
     public static class SubCategoryWorldGen {
+
         private SubCategoryWorldGen() {}
 
         @Config.Comment("Default: 88")
@@ -60,6 +62,7 @@ public class ConfigCore {
     }
 
     public static class SubCategoryMisc {
+
         private SubCategoryMisc() {}
 
         @Config.Comment({
@@ -80,8 +83,8 @@ public class ConfigCore {
 
         @Config.RangeInt(min = 1, max = 30)
         @Config.Comment({
-               "The maximum tier that the waterwheel can provide energy to.",
-               "It cannot provide energy to machines of a higher tier.",
+                "The maximum tier that the waterwheel can provide energy to.",
+                "It cannot provide energy to machines of a higher tier.",
                 "Default: 3"
         })
         public int waterwheelMaxTier = 3;
@@ -120,6 +123,7 @@ public class ConfigCore {
     }
 
     public static class FeGen {
+
         private FeGen() {}
 
         @Config.Comment("Default: false")
@@ -145,6 +149,7 @@ public class ConfigCore {
                 "Default: FE/t * 1000"
         })
         @Config.Name("FE Storage Size")
-        public int[] feStorageSize = new int[] { 10_000, 30_000, 90_000, 270_000, 810_000, 2430_000, 7290_000, 21870_000, 65610_000, 196830_000 };
+        public int[] feStorageSize = new int[] { 10_000, 30_000, 90_000, 270_000, 810_000, 2430_000, 7290_000,
+                21870_000, 65610_000, 196830_000 };
     }
 }

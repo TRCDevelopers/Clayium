@@ -19,7 +19,9 @@ class MetaTileEntityBakedModel : IModelParticleProvider {
 
     override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> {
         if (state == null || side == null || state !is IExtendedBlockState) return emptyList()
-        val mte = (state.getValue(TILE_ENTITY) as? MetaTileEntityHolder)?.metaTileEntity ?: return emptyList()
+        val mte =
+            (state.getValue(TILE_ENTITY) as? MetaTileEntityHolder)?.metaTileEntity
+                ?: return emptyList()
 
         val quads = mutableListOf<BakedQuad>()
         mte.getQuads(quads, state, side, rand)
@@ -30,18 +32,32 @@ class MetaTileEntityBakedModel : IModelParticleProvider {
         return quads
     }
 
-    override fun getHitEffects(traceResult: RayTraceResult, state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite> {
-        val metaTileEntity = world.getMetaTileEntity(pos) ?: return setOf(TextureUtils.getMissingSprite())
+    override fun getHitEffects(
+        traceResult: RayTraceResult,
+        state: IBlockState?,
+        world: IBlockAccess?,
+        pos: BlockPos?
+    ): Set<TextureAtlasSprite> {
+        val metaTileEntity =
+            world.getMetaTileEntity(pos) ?: return setOf(TextureUtils.getMissingSprite())
         return setOf(ModelTextures.getHullTexture(metaTileEntity.tier))
     }
 
-    override fun getDestroyEffects(state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite> {
-        val metaTileEntity = world.getMetaTileEntity(pos) ?: return setOf(TextureUtils.getMissingSprite())
+    override fun getDestroyEffects(
+        state: IBlockState?,
+        world: IBlockAccess?,
+        pos: BlockPos?
+    ): Set<TextureAtlasSprite> {
+        val metaTileEntity =
+            world.getMetaTileEntity(pos) ?: return setOf(TextureUtils.getMissingSprite())
         return setOf(ModelTextures.getHullTexture(metaTileEntity.tier))
     }
 
     override fun isAmbientOcclusion() = true
+
     override fun isGui3d() = true
+
     override fun isBuiltInRenderer() = false
+
     override fun getOverrides(): ItemOverrideList = ItemOverrideList.NONE
 }

@@ -25,9 +25,16 @@ class ChunkLoaderBlock : Block(Material.IRON), ITieredBlock {
     }
 
     override fun hasTileEntity(state: IBlockState) = true
+
     override fun createTileEntity(world: World, state: IBlockState) = ChunkLoaderTileEntity()
 
-    override fun onBlockPlacedBy(worldIn: World, pos: BlockPos, state: IBlockState, placer: EntityLivingBase, stack: ItemStack) {
+    override fun onBlockPlacedBy(
+        worldIn: World,
+        pos: BlockPos,
+        state: IBlockState,
+        placer: EntityLivingBase,
+        stack: ItemStack
+    ) {
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack)
         val tileEntity = worldIn.getTileEntity(pos)
         if (tileEntity is ChunkLoaderTileEntity) {
@@ -44,6 +51,7 @@ class ChunkLoaderBlock : Block(Material.IRON), ITieredBlock {
     }
 
     override fun getTier(stack: ItemStack): ITier = ClayTiers.PRECISION
+
     override fun getTier(world: IBlockAccess, pos: BlockPos): ITier = ClayTiers.PRECISION
 
     override fun getRenderLayer() = BlockRenderLayer.CUTOUT_MIPPED

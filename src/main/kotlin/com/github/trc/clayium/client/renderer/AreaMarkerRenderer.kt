@@ -5,7 +5,14 @@ import codechicken.lib.vec.Cuboid6
 import net.minecraft.client.renderer.GlStateManager
 
 object AreaMarkerRenderer {
-    fun render(source: Cuboid6, area: Cuboid6?, x: Double, y: Double, z: Double, mode: RangeRenderMode) {
+    fun render(
+        source: Cuboid6,
+        area: Cuboid6?,
+        x: Double,
+        y: Double,
+        z: Double,
+        mode: RangeRenderMode
+    ) {
         if (mode == RangeRenderMode.DISABLED) return
         GlStateManager.pushMatrix()
         GlStateManager.translate(x, y, z)
@@ -34,19 +41,25 @@ object AreaMarkerRenderer {
     private fun renderRangeOverlay(range: Cuboid6, xray: Boolean) {
         GlStateManager.pushMatrix()
         CRenderUtils.enableTranslucent()
-        if (xray) { CRenderUtils.enableXray() }
+        if (xray) {
+            CRenderUtils.enableXray()
+        }
         run {
             GlStateManager.color(0.1f, 0.1f, 0.7f, 0.3f)
             RenderUtils.drawCuboidSolid(range)
             GlStateManager.color(0.1f, 0.1f, 0.7f, 1f)
             RenderUtils.drawCuboidOutline(range)
         }
-        if (xray) { CRenderUtils.disableXray() }
+        if (xray) {
+            CRenderUtils.disableXray()
+        }
         CRenderUtils.disableTranslucent()
         GlStateManager.popMatrix()
     }
 
     enum class RangeRenderMode {
-        DISABLED, ENABLED, ENABLED_XRAY
+        DISABLED,
+        ENABLED,
+        ENABLED_XRAY
     }
 }

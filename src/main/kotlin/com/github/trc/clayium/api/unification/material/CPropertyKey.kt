@@ -2,7 +2,7 @@ package com.github.trc.clayium.api.unification.material
 
 data class CPropertyKey<T : MaterialProperty>(
     val name: String,
-)  {
+) {
     @Suppress("UNCHECKED_CAST")
     fun cast(value: MaterialProperty): T {
         return value as T

@@ -31,43 +31,50 @@ object PipedMachineIoRenderer {
     // offset to prevent z-fighting
     private const val CUBE_OFFSET = 0.01f
 
-    private val inputTextures: Map<MachineIoMode, ResourceLocation?> = MachineIoMode.entries.associateWith {
-        when (it) {
-            NONE -> null
-            FIRST -> clayiumId("textures/blocks/import_1_p.png")
-            SECOND -> clayiumId("textures/blocks/import_2_p.png")
-            ALL -> clayiumId("textures/blocks/import_p.png")
-            CE -> clayiumId("textures/blocks/import_energy_p.png")
-            M_ALL -> clayiumId("textures/blocks/import_m0_p.png")
-            M_1 -> clayiumId("textures/blocks/import_m1_p.png")
-            M_2 -> clayiumId("textures/blocks/import_m2_p.png")
-            M_3 -> clayiumId("textures/blocks/import_m3_p.png")
-            M_4 -> clayiumId("textures/blocks/import_m4_p.png")
-            M_5 -> clayiumId("textures/blocks/import_m5_p.png")
-            M_6 -> clayiumId("textures/blocks/import_m6_p.png")
+    private val inputTextures: Map<MachineIoMode, ResourceLocation?> =
+        MachineIoMode.entries.associateWith {
+            when (it) {
+                NONE -> null
+                FIRST -> clayiumId("textures/blocks/import_1_p.png")
+                SECOND -> clayiumId("textures/blocks/import_2_p.png")
+                ALL -> clayiumId("textures/blocks/import_p.png")
+                CE -> clayiumId("textures/blocks/import_energy_p.png")
+                M_ALL -> clayiumId("textures/blocks/import_m0_p.png")
+                M_1 -> clayiumId("textures/blocks/import_m1_p.png")
+                M_2 -> clayiumId("textures/blocks/import_m2_p.png")
+                M_3 -> clayiumId("textures/blocks/import_m3_p.png")
+                M_4 -> clayiumId("textures/blocks/import_m4_p.png")
+                M_5 -> clayiumId("textures/blocks/import_m5_p.png")
+                M_6 -> clayiumId("textures/blocks/import_m6_p.png")
+            }
         }
-    }
 
-    private val outputTextures: Map<MachineIoMode, ResourceLocation?> = MachineIoMode.entries.associateWith {
-        when (it) {
-            NONE, CE -> null
-            FIRST -> clayiumId("textures/blocks/export_1_p.png")
-            SECOND -> clayiumId("textures/blocks/export_2_p.png")
-            ALL -> clayiumId("textures/blocks/export_p.png")
-            M_ALL -> clayiumId("textures/blocks/export_m0_p.png")
-            M_1 -> clayiumId("textures/blocks/export_m1_p.png")
-            M_2 -> clayiumId("textures/blocks/export_m2_p.png")
-            M_3 -> clayiumId("textures/blocks/export_m3_p.png")
-            M_4 -> clayiumId("textures/blocks/export_m4_p.png")
-            M_5 -> clayiumId("textures/blocks/export_m5_p.png")
-            M_6 -> clayiumId("textures/blocks/export_m6_p.png")
+    private val outputTextures: Map<MachineIoMode, ResourceLocation?> =
+        MachineIoMode.entries.associateWith {
+            when (it) {
+                NONE,
+                CE -> null
+                FIRST -> clayiumId("textures/blocks/export_1_p.png")
+                SECOND -> clayiumId("textures/blocks/export_2_p.png")
+                ALL -> clayiumId("textures/blocks/export_p.png")
+                M_ALL -> clayiumId("textures/blocks/export_m0_p.png")
+                M_1 -> clayiumId("textures/blocks/export_m1_p.png")
+                M_2 -> clayiumId("textures/blocks/export_m2_p.png")
+                M_3 -> clayiumId("textures/blocks/export_m3_p.png")
+                M_4 -> clayiumId("textures/blocks/export_m4_p.png")
+                M_5 -> clayiumId("textures/blocks/export_m5_p.png")
+                M_6 -> clayiumId("textures/blocks/export_m6_p.png")
+            }
         }
-    }
 
     private val sideQuads = EnumFacing.entries.map { createQuadsFor(it) }
 
     fun renderPipeIoIcons(
-        holder: MetaTileEntityHolder, x: Double, y: Double, z: Double, player: EntityPlayer,
+        holder: MetaTileEntityHolder,
+        x: Double,
+        y: Double,
+        z: Double,
+        player: EntityPlayer,
         bindTexture: (ResourceLocation) -> Unit
     ) {
         if (!isPipingTool(player.heldItemMainhand.item)) return
@@ -107,14 +114,15 @@ object PipedMachineIoRenderer {
     }
 
     private fun createQuadsFor(cubePos: EnumFacing): List<TexturedQuad> {
-        val (x, y, z) = when (cubePos) {
-            EnumFacing.DOWN -> Triple(5f - CUBE_OFFSET, 0f - CUBE_OFFSET, 5f - CUBE_OFFSET)
-            EnumFacing.UP -> Triple(5f - CUBE_OFFSET, 11f - CUBE_OFFSET, 5f - CUBE_OFFSET)
-            EnumFacing.NORTH -> Triple(5f - CUBE_OFFSET, 5f - CUBE_OFFSET, 0f - CUBE_OFFSET)
-            EnumFacing.SOUTH -> Triple(5f - CUBE_OFFSET, 5f - CUBE_OFFSET, 11f - CUBE_OFFSET)
-            EnumFacing.WEST -> Triple(0f - CUBE_OFFSET, 5f - CUBE_OFFSET, 5f - CUBE_OFFSET)
-            EnumFacing.EAST -> Triple(11f - CUBE_OFFSET, 5f - CUBE_OFFSET, 5f - CUBE_OFFSET)
-        }
+        val (x, y, z) =
+            when (cubePos) {
+                EnumFacing.DOWN -> Triple(5f - CUBE_OFFSET, 0f - CUBE_OFFSET, 5f - CUBE_OFFSET)
+                EnumFacing.UP -> Triple(5f - CUBE_OFFSET, 11f - CUBE_OFFSET, 5f - CUBE_OFFSET)
+                EnumFacing.NORTH -> Triple(5f - CUBE_OFFSET, 5f - CUBE_OFFSET, 0f - CUBE_OFFSET)
+                EnumFacing.SOUTH -> Triple(5f - CUBE_OFFSET, 5f - CUBE_OFFSET, 11f - CUBE_OFFSET)
+                EnumFacing.WEST -> Triple(0f - CUBE_OFFSET, 5f - CUBE_OFFSET, 5f - CUBE_OFFSET)
+                EnumFacing.EAST -> Triple(11f - CUBE_OFFSET, 5f - CUBE_OFFSET, 5f - CUBE_OFFSET)
+            }
 
         val xTo = x + (if (cubePos.axis == EnumFacing.Axis.X) 5f else 6f) + CUBE_OFFSET * 2
         val yTo = y + (if (cubePos.axis == EnumFacing.Axis.Y) 5f else 6f) + CUBE_OFFSET * 2
@@ -133,14 +141,15 @@ object PipedMachineIoRenderer {
 
         for (facingOfQuad in EnumFacing.entries) {
             if (facingOfQuad.axis == cubePos.axis) continue
-            val ptvs = when (facingOfQuad) {
-                EnumFacing.DOWN -> arrayOf(ptv4, ptv3, ptv7, ptv0)
-                EnumFacing.UP -> arrayOf(ptv1, ptv2, ptv6, ptv5)
-                EnumFacing.NORTH -> arrayOf(ptv2, ptv1, ptv0, ptv7)
-                EnumFacing.SOUTH -> arrayOf(ptv5, ptv6, ptv3, ptv4)
-                EnumFacing.EAST -> arrayOf(ptv1, ptv5, ptv4, ptv0)
-                EnumFacing.WEST -> arrayOf(ptv6, ptv2, ptv7, ptv3)
-            }
+            val ptvs =
+                when (facingOfQuad) {
+                    EnumFacing.DOWN -> arrayOf(ptv4, ptv3, ptv7, ptv0)
+                    EnumFacing.UP -> arrayOf(ptv1, ptv2, ptv6, ptv5)
+                    EnumFacing.NORTH -> arrayOf(ptv2, ptv1, ptv0, ptv7)
+                    EnumFacing.SOUTH -> arrayOf(ptv5, ptv6, ptv3, ptv4)
+                    EnumFacing.EAST -> arrayOf(ptv1, ptv5, ptv4, ptv0)
+                    EnumFacing.WEST -> arrayOf(ptv6, ptv2, ptv7, ptv3)
+                }
             val uv = ModelUtils.getUvInt(cubePos, facingOfQuad)
             quads.add(TexturedQuad(ptvs, uv[0], uv[1], uv[2], uv[3], 16f, 16f))
         }

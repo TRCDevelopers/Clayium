@@ -12,14 +12,16 @@ private val RECIPE_COMPARATOR = compareBy<LaserRecipe> { it.energyMin }.reversed
 
 class LaserRecipeRegistry {
     private val _recipes = mutableListOf<LaserRecipe>()
-    val recipes get() = _recipes.toList()
+    val recipes
+        get() = _recipes.toList()
 
     fun register(recipe: LaserRecipe) {
         _recipes.add(recipe)
         _recipes.sortWith(RECIPE_COMPARATOR)
     }
-    val grsVirtualizedRegistry: LaserRecipeRegistryGrsAdapter?
-            = if (Mods.GroovyScript.isModLoaded) LaserRecipeRegistryGrsAdapter(this) else null
+
+    val grsVirtualizedRegistry: LaserRecipeRegistryGrsAdapter? =
+        if (Mods.GroovyScript.isModLoaded) LaserRecipeRegistryGrsAdapter(this) else null
 
     fun register(create: LaserRecipeBuilder.() -> Unit) {
         val builder = LaserRecipeBuilder(this)

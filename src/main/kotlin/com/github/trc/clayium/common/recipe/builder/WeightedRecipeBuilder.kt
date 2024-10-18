@@ -6,7 +6,9 @@ import com.github.trc.clayium.common.recipe.chanced.IChancedOutputLogic.Companio
 
 class WeightedRecipeBuilder : RecipeBuilder<WeightedRecipeBuilder> {
     constructor() : super()
+
     constructor(another: WeightedRecipeBuilder) : super(another)
+
     override fun copy() = WeightedRecipeBuilder(this)
 
     override fun buildAndRegister() {

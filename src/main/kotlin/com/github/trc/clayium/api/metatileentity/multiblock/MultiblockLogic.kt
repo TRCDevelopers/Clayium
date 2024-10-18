@@ -57,8 +57,13 @@ class MultiblockLogic(
                     structureFormed = true
                     this.multiblockParts.addAll(result.parts)
                     this.multiblockParts.forEach { it.addToMultiblock(metaTileEntity) }
-                    val tierNums = listOf(result.tiers.map { it.numeric }, result.parts.map { it.tier.numeric }).flatten()
-                        .toIntArray()
+                    val tierNums =
+                        listOf(
+                                result.tiers.map { it.numeric },
+                                result.parts.map { it.tier.numeric }
+                            )
+                            .flatten()
+                            .toIntArray()
                     this.recipeLogicTier = calculateStructureTier(tierNums)
                     writeStructureValidity(true)
                 }
@@ -74,28 +79,46 @@ class MultiblockLogic(
         val metaTileEntity = world.getMetaTileEntity(pos)
         if (metaTileEntity == this.metaTileEntity) return BlockValidationResult.Matched(null)
 
-        if (metaTileEntity is IMultiblockPart) return BlockValidationResult.MultiblockPart(metaTileEntity)
+        if (metaTileEntity is IMultiblockPart)
+            return BlockValidationResult.MultiblockPart(metaTileEntity)
         val block = world.getBlockState(pos).block
-        if (block is BlockMachineHull) return BlockValidationResult.Matched(block.getTier(world, pos))
+        if (block is BlockMachineHull)
+            return BlockValidationResult.Matched(block.getTier(world, pos))
 
         return BlockValidationResult.Invalid
     }
 
-    fun getControllerRelativeCoord(controllerPos: BlockPos, right: Int, up: Int, backwards: Int): BlockPos {
+    fun getControllerRelativeCoord(
+        controllerPos: BlockPos,
+        right: Int,
+        up: Int,
+        backwards: Int
+    ): BlockPos {
         val frontFacing = metaTileEntity.frontFacing
         val relRight = RelativeDirection.RIGHT.getActualFacing(frontFacing)
         val relUp = RelativeDirection.UP.getActualFacing(frontFacing)
         val relBackwards = RelativeDirection.BACK.getActualFacing(frontFacing)
         return BlockPos(
-            controllerPos.x + relRight.xOffset * right + relUp.xOffset * up + relBackwards.xOffset * backwards,
-            controllerPos.y + relRight.yOffset * right + relUp.yOffset * up + relBackwards.yOffset * backwards,
-            controllerPos.z + relRight.zOffset * right + relUp.zOffset * up + relBackwards.zOffset * backwards,
+            controllerPos.x +
+                relRight.xOffset * right +
+                relUp.xOffset * up +
+                relBackwards.xOffset * backwards,
+            controllerPos.y +
+                relRight.yOffset * right +
+                relUp.yOffset * up +
+                relBackwards.yOffset * backwards,
+            controllerPos.z +
+                relRight.zOffset * right +
+                relUp.zOffset * up +
+                relBackwards.zOffset * backwards,
         )
     }
 
     private fun calculateStructureTier(partTiers: IntArray): Int {
         var a = 0.0
-        for (tier in partTiers) { a += 2.0.pow(16 - tier) }
+        for (tier in partTiers) {
+            a += 2.0.pow(16 - tier)
+        }
         a /= partTiers.size
         return max(floor(16.0 - floor(ln(a) / ln(2.0) + 0.5)), 0.0).toInt()
     }
@@ -127,18 +150,26 @@ class MultiblockLogic(
     }
 
     fun tierTextWidget(syncManager: GuiSyncManager): TextWidget {
-        syncManager.syncValue("multiblock_tier", SyncHandlers.intNumber({ recipeLogicTier }, { recipeLogicTier = it }))
-        return IKey.dynamic { I18n.format("tooltip.clayium.tier", recipeLogicTier) }.asWidgetResizing()
+        syncManager.syncValue(
+            "multiblock_tier",
+            SyncHandlers.intNumber({ recipeLogicTier }, { recipeLogicTier = it })
+        )
+        return IKey.dynamic { I18n.format("tooltip.clayium.tier", recipeLogicTier) }
+            .asWidgetResizing()
     }
 
     sealed interface BlockValidationResult {
         object Invalid : BlockValidationResult
+
         data class Matched(val tier: ITier?) : BlockValidationResult
+
         data class MultiblockPart(val part: IMultiblockPart) : BlockValidationResult
     }
 
     sealed interface StructureValidationResult {
         object Invalid : StructureValidationResult
-        data class Valid(val parts: Collection<IMultiblockPart>, val tiers: Collection<ITier>) : StructureValidationResult
+
+        data class Valid(val parts: Collection<IMultiblockPart>, val tiers: Collection<ITier>) :
+            StructureValidationResult
     }
 }

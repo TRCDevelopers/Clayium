@@ -15,17 +15,24 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
     name = MOD_NAME,
     version = CTags.VERSION,
     modLanguageAdapter = "io.github.chaosunity.forgelin.KotlinAdapter",
-    dependencies = "required:forge@[14.23.5.2847,);" +
+    dependencies =
+        "required:forge@[14.23.5.2847,);" +
             "required-after:forgelin_continuous@[2.0.0.0,);" +
             "required-after:modularui@[2.4.3,);" +
             "required-after:codechickenlib@[3.2.3,);" +
             "required-after:mixinbooter@[9.1,);" +
-            "after:jei@[4.15.0,);" + "after:groovyscript@[1.1.3,);" +
-            "after:enderio;" + "after:theoneprobe;" + "after:gregtech;"
+            "after:jei@[4.15.0,);" +
+            "after:groovyscript@[1.1.3,);" +
+            "after:enderio;" +
+            "after:theoneprobe;" +
+            "after:gregtech;"
 )
 object ClayiumMod {
 
-    @SidedProxy(clientSide = "com.github.trc.clayium.client.ClientProxy", serverSide = "com.github.trc.clayium.common.CommonProxy")
+    @SidedProxy(
+        clientSide = "com.github.trc.clayium.client.ClientProxy",
+        serverSide = "com.github.trc.clayium.common.CommonProxy"
+    )
     lateinit var proxy: CommonProxy
 
     @Mod.EventHandler

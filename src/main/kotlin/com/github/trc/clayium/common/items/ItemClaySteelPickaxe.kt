@@ -73,13 +73,20 @@ class ItemClaySteelPickaxe : ItemPickaxe(ToolMaterial.DIAMOND) {
             val block = ForgeRegistries.BLOCKS.getValue(ResourceLocation(blockAndMeta[0]))
             val meta = blockAndMeta[1].toIntOrNull()
             @Suppress("DEPRECATION")
-            if (block != null && meta != null) block.getStateFromMeta(meta) else Blocks.CLAY.defaultState
+            if (block != null && meta != null) block.getStateFromMeta(meta)
+            else Blocks.CLAY.defaultState
         }
     }
 
-    override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack?> {
-        if (playerIn.isSneaking) return ActionResult.newResult(EnumActionResult.PASS, playerIn.getHeldItem(handIn))
-        if (worldIn.isRemote) return ActionResult.newResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
+    override fun onItemRightClick(
+        worldIn: World,
+        playerIn: EntityPlayer,
+        handIn: EnumHand
+    ): ActionResult<ItemStack?> {
+        if (playerIn.isSneaking)
+            return ActionResult.newResult(EnumActionResult.PASS, playerIn.getHeldItem(handIn))
+        if (worldIn.isRemote)
+            return ActionResult.newResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
 
         val stack = playerIn.getHeldItem(handIn)
         val mode = getMode(stack)
@@ -93,24 +100,45 @@ class ItemClaySteelPickaxe : ItemPickaxe(ToolMaterial.DIAMOND) {
         return ActionResult.newResult(EnumActionResult.SUCCESS, stack)
     }
 
-    override fun onItemUse(player: EntityPlayer, world: World, targetPos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
+    override fun onItemUse(
+        player: EntityPlayer,
+        world: World,
+        targetPos: BlockPos,
+        hand: EnumHand,
+        facing: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float
+    ): EnumActionResult {
         if (player.isSneaking) {
             val oldState = world.getBlockState(targetPos)
             val block = oldState.block
-            val pos = if (block.isReplaceable(world, targetPos)) targetPos else targetPos.offset(facing)
-            val blockStack = ItemStack(rangeBlock.block, 1, rangeBlock.block.getMetaFromState(rangeBlock))
-            if (!(player.canPlayerEdit(pos, facing, blockStack) && world.mayPlace(Blocks.CLAY, pos, false, facing, player))){
+            val pos =
+                if (block.isReplaceable(world, targetPos)) targetPos else targetPos.offset(facing)
+            val blockStack =
+                ItemStack(rangeBlock.block, 1, rangeBlock.block.getMetaFromState(rangeBlock))
+            if (
+                !(player.canPlayerEdit(pos, facing, blockStack) &&
+                    world.mayPlace(Blocks.CLAY, pos, false, facing, player))
+            ) {
                 return EnumActionResult.FAIL
             }
 
             if (world.setBlockState(pos, rangeBlock, Constants.BlockFlags.DEFAULT_AND_RERENDER)) {
                 val soundType = rangeBlock.block.getSoundType(rangeBlock, world, pos, player)
-                world.playSound(player, pos, soundType.placeSound, SoundCategory.BLOCKS, (soundType.volume + 1f) / 2f, soundType.pitch * 0.8f)
+                world.playSound(
+                    player,
+                    pos,
+                    soundType.placeSound,
+                    SoundCategory.BLOCKS,
+                    (soundType.volume + 1f) / 2f,
+                    soundType.pitch * 0.8f
+                )
             }
             return EnumActionResult.SUCCESS
         } else {
-            val poses = getPoses(player, targetPos, 2)
-                .filter { rangeBlock == world.getBlockState(it) }
+            val poses =
+                getPoses(player, targetPos, 2).filter { rangeBlock == world.getBlockState(it) }
             if (!world.isRemote) {
                 val stack = player.getHeldItem(hand)
                 if (!stack.hasTagCompound()) stack.tagCompound = NBTTagCompound()
@@ -121,25 +149,37 @@ class ItemClaySteelPickaxe : ItemPickaxe(ToolMaterial.DIAMOND) {
         }
     }
 
-    override fun onBlockDestroyed(stack: ItemStack, worldIn: World, state: IBlockState, pos: BlockPos, entityLiving: EntityLivingBase): Boolean {
+    override fun onBlockDestroyed(
+        stack: ItemStack,
+        worldIn: World,
+        state: IBlockState,
+        pos: BlockPos,
+        entityLiving: EntityLivingBase
+    ): Boolean {
         if (worldIn.isRemote) return true
-        val poses = when (getMode(stack)) {
-            null, SINGLE -> { return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving) }
-            RANGED -> getPoses(entityLiving, pos, 1)
-            CUSTOM -> {
-                stack.tagCompound?.getIntArray("poses")?.takeUnless { it.isEmpty() }
-                    ?.toBlockPosList { pos.add(it) }
-                    ?: getPoses(entityLiving, pos, 2)
+        val poses =
+            when (getMode(stack)) {
+                null,
+                SINGLE -> {
+                    return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving)
+                }
+                RANGED -> getPoses(entityLiving, pos, 1)
+                CUSTOM -> {
+                    stack.tagCompound
+                        ?.getIntArray("poses")
+                        ?.takeUnless { it.isEmpty() }
+                        ?.toBlockPosList { pos.add(it) } ?: getPoses(entityLiving, pos, 2)
+                }
             }
-        }
         for (harvesting in poses) {
             if (harvesting == pos) continue
             val state = worldIn.getBlockState(harvesting)
             if (state.getBlockHardness(worldIn, harvesting) == HARDNESS_UNBREAKABLE) continue
-            if (entityLiving is EntityPlayer
-                && state.block.canSilkHarvest(worldIn, harvesting, state, entityLiving)
-                && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0)
-            {
+            if (
+                entityLiving is EntityPlayer &&
+                    state.block.canSilkHarvest(worldIn, harvesting, state, entityLiving) &&
+                    EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0
+            ) {
                 val drop = BlockReflect.getSilkTouchDrop(state.block, state)
                 if (!drop.isEmpty) Block.spawnAsEntity(worldIn, harvesting, drop)
                 worldIn.destroyBlock(harvesting, false)
@@ -158,8 +198,12 @@ class ItemClaySteelPickaxe : ItemPickaxe(ToolMaterial.DIAMOND) {
             val pos2 = pos.offset(facing.rotateYCCW(), range).offset(EnumFacing.UP, range)
             BlockPos.getAllInBox(pos1, pos2)
         } else {
-            val pos1 = pos.offset(facing.rotateAround(EnumFacing.Axis.X), range).offset(facing.rotateAround(EnumFacing.Axis.Z), range)
-            val pos2 = pos.offset(facing.rotateAround(EnumFacing.Axis.X), -range).offset(facing.rotateAround(EnumFacing.Axis.Z), -range)
+            val pos1 =
+                pos.offset(facing.rotateAround(EnumFacing.Axis.X), range)
+                    .offset(facing.rotateAround(EnumFacing.Axis.Z), range)
+            val pos2 =
+                pos.offset(facing.rotateAround(EnumFacing.Axis.X), -range)
+                    .offset(facing.rotateAround(EnumFacing.Axis.Z), -range)
             BlockPos.getAllInBox(pos1, pos2)
         }
     }
@@ -176,7 +220,12 @@ class ItemClaySteelPickaxe : ItemPickaxe(ToolMaterial.DIAMOND) {
         return Mode.entries[i]
     }
 
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         val regName = this.registryName ?: return
         UtilLocale.formatTooltips(tooltip, "item.${regName.namespace}.${regName.path}.tooltip")
     }
@@ -189,6 +238,7 @@ class ItemClaySteelPickaxe : ItemPickaxe(ToolMaterial.DIAMOND) {
 
     companion object {
         private var firstCall = true
+
         @SubscribeEvent
         fun onBreakSpeed(e: PlayerEvent.BreakSpeed) {
             // state.getPlayerRelativeBlockHardness fires this event
@@ -202,20 +252,24 @@ class ItemClaySteelPickaxe : ItemPickaxe(ToolMaterial.DIAMOND) {
             if (!stack.hasTagCompound()) return
             val tag = stack.tagCompound!!
             val mode = Mode.entries[tag.getInteger("mode")]
-            val poses = when (mode) {
-                SINGLE -> return
-                RANGED -> item.getPoses(e.entityPlayer, e.pos, 1)
-                CUSTOM -> {
-                    stack.tagCompound?.getIntArray("poses")?.takeUnless { it.isEmpty() }
-                        ?.toBlockPosList { e.pos.add(it) }
-                        ?: item.getPoses(e.entityPlayer, e.pos, 2)
+            val poses =
+                when (mode) {
+                    SINGLE -> return
+                    RANGED -> item.getPoses(e.entityPlayer, e.pos, 1)
+                    CUSTOM -> {
+                        stack.tagCompound
+                            ?.getIntArray("poses")
+                            ?.takeUnless { it.isEmpty() }
+                            ?.toBlockPosList { e.pos.add(it) }
+                            ?: item.getPoses(e.entityPlayer, e.pos, 2)
+                    }
                 }
-            }
             var hardness = 0f
             for (pos in poses) {
                 val state = world.getBlockState(pos)
                 if (state.material == Material.AIR) continue
-                val relHardness = state.getPlayerRelativeBlockHardness(e.entityPlayer, world, pos) * 30f
+                val relHardness =
+                    state.getPlayerRelativeBlockHardness(e.entityPlayer, world, pos) * 30f
                 hardness += if (relHardness == 0.0f) Float.POSITIVE_INFINITY else 1.0f / relHardness
             }
             e.newSpeed = if (hardness == 0f) Float.POSITIVE_INFINITY else 1f / hardness

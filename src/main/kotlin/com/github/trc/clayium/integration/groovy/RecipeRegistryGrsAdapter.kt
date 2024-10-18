@@ -11,7 +11,10 @@ import net.minecraft.item.ItemStack
 
 class RecipeRegistryGrsAdapter(
     val backingRegistry: RecipeRegistry<*>,
-) : VirtualizedRegistry<Recipe>(Alias.generateOf(backingRegistry.categoryName, CaseFormat.LOWER_UNDERSCORE)) {
+) :
+    VirtualizedRegistry<Recipe>(
+        Alias.generateOf(backingRegistry.categoryName, CaseFormat.LOWER_UNDERSCORE)
+    ) {
     override fun onReload() {
         removeScripted().forEach(backingRegistry::removeRecipe)
         restoreFromBackup().forEach(backingRegistry::addRecipe)
@@ -26,7 +29,9 @@ class RecipeRegistryGrsAdapter(
     }
 
     fun removeRecipe(inputs: List<ItemStack>, tier: Int): Boolean {
-        return backingRegistry.getAllRecipes().filter { it.matches(inputs, tier) }
+        return backingRegistry
+            .getAllRecipes()
+            .filter { it.matches(inputs, tier) }
             .map { recipe ->
                 val removed = backingRegistry.removeRecipe(recipe)
                 if (!removed) GroovyLog.msg("Failed to remove recipe $recipe")

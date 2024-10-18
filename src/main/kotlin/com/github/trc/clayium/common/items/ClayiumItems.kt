@@ -10,18 +10,50 @@ import net.minecraft.item.Item
 
 object ClayiumItems {
 
-    //region Tools
-    val CLAY_ROLLING_PIN = createItem("clay_rolling_pin", ItemClayConfigTool(maxDamage = 60, type = IConfigurationTool.ToolType.INSERTION))
-    val CLAY_SLICER = createItem("clay_slicer", ItemClayConfigTool(maxDamage = 60, type = IConfigurationTool.ToolType.EXTRACTION))
-    val CLAY_SPATULA = createItem("clay_spatula", ItemClayConfigTool(maxDamage = 36, type = IConfigurationTool.ToolType.PIPING))
+    // region Tools
+    val CLAY_ROLLING_PIN =
+        createItem(
+            "clay_rolling_pin",
+            ItemClayConfigTool(maxDamage = 60, type = IConfigurationTool.ToolType.INSERTION)
+        )
+    val CLAY_SLICER =
+        createItem(
+            "clay_slicer",
+            ItemClayConfigTool(maxDamage = 60, type = IConfigurationTool.ToolType.EXTRACTION)
+        )
+    val CLAY_SPATULA =
+        createItem(
+            "clay_spatula",
+            ItemClayConfigTool(maxDamage = 36, type = IConfigurationTool.ToolType.PIPING)
+        )
 
-    val CLAY_WRENCH = createItem("clay_wrench", ItemClayConfigTool(maxDamage = 0, type = IConfigurationTool.ToolType.ROTATION))
-    val CLAY_IO_CONFIGURATOR = createItem("clay_io_configurator", ItemClayConfigTool(maxDamage = 0, type = IConfigurationTool.ToolType.INSERTION, typeWhenSneak = IConfigurationTool.ToolType.EXTRACTION))
-    val CLAY_PIPING_TOOL = createItem("clay_piping_tool", ItemClayConfigTool(maxDamage = 0, type = IConfigurationTool.ToolType.PIPING, typeWhenSneak = IConfigurationTool.ToolType.ROTATION))
+    val CLAY_WRENCH =
+        createItem(
+            "clay_wrench",
+            ItemClayConfigTool(maxDamage = 0, type = IConfigurationTool.ToolType.ROTATION)
+        )
+    val CLAY_IO_CONFIGURATOR =
+        createItem(
+            "clay_io_configurator",
+            ItemClayConfigTool(
+                maxDamage = 0,
+                type = IConfigurationTool.ToolType.INSERTION,
+                typeWhenSneak = IConfigurationTool.ToolType.EXTRACTION
+            )
+        )
+    val CLAY_PIPING_TOOL =
+        createItem(
+            "clay_piping_tool",
+            ItemClayConfigTool(
+                maxDamage = 0,
+                type = IConfigurationTool.ToolType.PIPING,
+                typeWhenSneak = IConfigurationTool.ToolType.ROTATION
+            )
+        )
 
     val MEMORY_CARD = createItem("memory_card", ItemMemoryCard())
     val SYNCHRONIZER = createItem("synchronizer", ItemSynchronizer())
-    //endregion
+    // endregion
 
     val CLAY_PICKAXE = createItem("clay_pickaxe", ItemClayPickaxe())
     val CLAY_SHOVEL = createItem("clay_shovel", ItemClayShovel())
@@ -36,7 +68,7 @@ object ClayiumItems {
         }
     }
 
-    private fun <T: Item> createItem(name: String, item: T): T {
+    private fun <T : Item> createItem(name: String, item: T): T {
         return item.apply {
             setCreativeTab(ClayiumCTabs.main)
             setRegistryName(clayiumId(name))

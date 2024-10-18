@@ -6,9 +6,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage
 
 class KeyInputPacket() : IMessage {
 
-    /**
-     * Client Only
-     */
+    /** Client Only */
     constructor(updating: List<KeyInput>) : this() {
         this.updating = updating
         this.data = updating.map { KeyInput.MutBooleanPairKeyData(it.isKeyDown(), it.isPressed()) }

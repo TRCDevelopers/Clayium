@@ -16,24 +16,50 @@ class SimpleMachineMetaTileEntity(
     override val faceTexture: ResourceLocation,
     recipeRegistry: RecipeRegistry<*>,
     // saved for createMetaTileEntity()
-    private val workableProvider: (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> AbstractRecipeLogic = ::RecipeLogicEnergy,
-) : WorkableMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, recipeRegistry) {
+    private val workableProvider:
+        (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> AbstractRecipeLogic =
+        ::RecipeLogicEnergy,
+) :
+    WorkableMetaTileEntity(
+        metaTileEntityId,
+        tier,
+        validInputModes,
+        validOutputModes,
+        recipeRegistry
+    ) {
 
     constructor(
         metaTileEntityId: ResourceLocation,
         tier: ITier,
         recipeRegistry: RecipeRegistry<*>,
-        workableProvider: (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> AbstractRecipeLogic = ::RecipeLogicEnergy,
+        workableProvider:
+            (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> AbstractRecipeLogic =
+            ::RecipeLogicEnergy,
     ) : this(
-        metaTileEntityId, tier,
-        validInputModesLists[recipeRegistry.maxInputs], validOutputModesLists[recipeRegistry.maxOutputs],
-        faceTexture = ResourceLocation(metaTileEntityId.namespace, "blocks/${recipeRegistry.category.categoryName}"),
-        recipeRegistry, workableProvider
+        metaTileEntityId,
+        tier,
+        validInputModesLists[recipeRegistry.maxInputs],
+        validOutputModesLists[recipeRegistry.maxOutputs],
+        faceTexture =
+            ResourceLocation(
+                metaTileEntityId.namespace,
+                "blocks/${recipeRegistry.category.categoryName}"
+            ),
+        recipeRegistry,
+        workableProvider
     )
 
     override val workable = workableProvider(this, recipeRegistry, clayEnergyHolder)
 
     override fun createMetaTileEntity(): MetaTileEntity {
-        return SimpleMachineMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, faceTexture, recipeRegistry, workableProvider)
+        return SimpleMachineMetaTileEntity(
+            metaTileEntityId,
+            tier,
+            validInputModes,
+            validOutputModes,
+            faceTexture,
+            recipeRegistry,
+            workableProvider
+        )
     }
 }

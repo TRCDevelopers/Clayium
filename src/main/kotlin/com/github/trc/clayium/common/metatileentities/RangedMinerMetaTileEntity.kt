@@ -27,8 +27,7 @@ open class RangedMinerMetaTileEntity(
     override val faceTexture: ResourceLocation = clayiumId("blocks/miner")
 
     private val clayMarkerHandler = ClayMarkerHandler(this)
-    @Suppress("unused")
-    val ioHandler = AutoIoHandler.Exporter(this)
+    @Suppress("unused") val ioHandler = AutoIoHandler.Exporter(this)
     val clayEnergyHolder = ClayEnergyHolder(this)
 
     override val maxBlocksPerTick: Int = ConfigCore.misc.rangedMinerMaxBlocksPerTick
@@ -61,10 +60,8 @@ open class RangedMinerMetaTileEntity(
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
-            .child(clayEnergyHolder.createCeTextWidget(syncManager)
-                .left(0).bottom(12))
-            .child(clayEnergyHolder.createSlotWidget()
-                .align(Alignment.BottomRight))
+            .child(clayEnergyHolder.createCeTextWidget(syncManager).left(0).bottom(12))
+            .child(clayEnergyHolder.createSlotWidget().align(Alignment.BottomRight))
     }
 
     override fun onPlacement() {

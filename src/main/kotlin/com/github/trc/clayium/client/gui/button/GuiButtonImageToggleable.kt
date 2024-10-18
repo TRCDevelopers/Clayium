@@ -18,7 +18,18 @@ class GuiButtonImageToggleable(
     private val xTexStartEnabledHovered: Int,
     private val yTexStartEnabledHovered: Int,
     private val resourceLocation: ResourceLocation
-) : GuiButtonImage(buttonId, xIn, yIn, widthIn, heightIn, textureOffestX, textureOffestY, 0, resourceLocation) {
+) :
+    GuiButtonImage(
+        buttonId,
+        xIn,
+        yIn,
+        widthIn,
+        heightIn,
+        textureOffestX,
+        textureOffestY,
+        0,
+        resourceLocation
+    ) {
     constructor(
         buttonId: Int,
         xIn: Int,
@@ -29,10 +40,17 @@ class GuiButtonImageToggleable(
         textureOffestY: Int,
         resource: ResourceLocation
     ) : this(
-        buttonId, xIn, yIn, widthIn, heightIn,
-        textureOffestX, textureOffestY,
-        textureOffestX, textureOffestY + heightIn,
-        textureOffestX, textureOffestY + heightIn * 2,
+        buttonId,
+        xIn,
+        yIn,
+        widthIn,
+        heightIn,
+        textureOffestX,
+        textureOffestY,
+        textureOffestX,
+        textureOffestY + heightIn,
+        textureOffestX,
+        textureOffestY + heightIn * 2,
         resource
     )
 
@@ -43,9 +61,23 @@ class GuiButtonImageToggleable(
                 mc.textureManager.bindTexture(this.resourceLocation)
                 GlStateManager.disableDepth()
                 if (hovered) {
-                    this.drawTexturedModalRect(x, y, xTexStartEnabledHovered, yTexStartEnabledHovered, width, height)
+                    this.drawTexturedModalRect(
+                        x,
+                        y,
+                        xTexStartEnabledHovered,
+                        yTexStartEnabledHovered,
+                        width,
+                        height
+                    )
                 } else {
-                    this.drawTexturedModalRect(x, y, xTexStartEnabled, yTexStartEnabled, width, height)
+                    this.drawTexturedModalRect(
+                        x,
+                        y,
+                        xTexStartEnabled,
+                        yTexStartEnabled,
+                        width,
+                        height
+                    )
                 }
                 GlStateManager.enableDepth()
             }

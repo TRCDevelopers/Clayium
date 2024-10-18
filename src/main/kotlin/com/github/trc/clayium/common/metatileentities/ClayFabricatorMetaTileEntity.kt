@@ -43,7 +43,14 @@ class ClayFabricatorMetaTileEntity(
     tier: ITier,
     private val maxClayCompressionLevel: Int,
     private val craftTimeLogic: (compressionLevel: Int, stackCount: Int) -> Long
-) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, validOutputModesLists[1], name = "clay_fabricator") {
+) :
+    MetaTileEntity(
+        metaTileEntityId,
+        tier,
+        bufferValidInputModes,
+        validOutputModesLists[1],
+        name = "clay_fabricator"
+    ) {
     override val faceTexture = clayiumId("blocks/clay_fabricator")
 
     override val importItems = NotifiableItemStackHandler(this, 1, this, isExport = false)
@@ -60,25 +67,47 @@ class ClayFabricatorMetaTileEntity(
     }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
-        syncManager.syncValue("clay_energy", SyncHandlers.longNumber({ workable.currentCe.energy }, { workable.currentCe = ClayEnergy(it) }))
-        val slotsAndProgressBar = Row().widthRel(0.7f).height(26)
-            .child(largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
-                .align(Alignment.CenterLeft))
-            .child(workable.getProgressBar(syncManager).align(Alignment.Center))
-            .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).accessibility(false, true))
-                .align(Alignment.CenterRight))
+        syncManager.syncValue(
+            "clay_energy",
+            SyncHandlers.longNumber(
+                { workable.currentCe.energy },
+                { workable.currentCe = ClayEnergy(it) }
+            )
+        )
+        val slotsAndProgressBar =
+            Row()
+                .widthRel(0.7f)
+                .height(26)
+                .child(
+                    largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
+                        .align(Alignment.CenterLeft)
+                )
+                .child(workable.getProgressBar(syncManager).align(Alignment.Center))
+                .child(
+                    largeSlot(SyncHandlers.itemSlot(exportItems, 0).accessibility(false, true))
+                        .align(Alignment.CenterRight)
+                )
 
         return super.buildMainParentWidget(syncManager)
             .child(slotsAndProgressBar.align(Alignment.Center))
-            .child(IKey.dynamic { workable.currentCe.format() }.asWidgetResizing()
-                .left(0).bottom(10))
+            .child(
+                IKey.dynamic { workable.currentCe.format() }.asWidgetResizing().left(0).bottom(10)
+            )
     }
 
-    override fun createMetaTileEntity() = ClayFabricatorMetaTileEntity(metaTileEntityId, tier, maxClayCompressionLevel, craftTimeLogic)
+    override fun createMetaTileEntity() =
+        ClayFabricatorMetaTileEntity(
+            metaTileEntityId,
+            tier,
+            maxClayCompressionLevel,
+            craftTimeLogic
+        )
 
-    private inner class ClayFabricatorRecipeLogic : AbstractWorkable(this@ClayFabricatorMetaTileEntity) {
+    private inner class ClayFabricatorRecipeLogic :
+        AbstractWorkable(this@ClayFabricatorMetaTileEntity) {
         private var cePerTick = ClayEnergy.ZERO
         var currentCe = ClayEnergy.ZERO
+
         override fun trySearchNewRecipe() {
             val inputStack = importItems.getStackInSlot(0)
             if (inputStack.isEmpty) return invalidateInput()
@@ -92,7 +121,8 @@ class ClayFabricatorMetaTileEntity(
             if (inputItem is ItemBlockMaterial) {
                 val material = inputItem.blockMaterial.getCMaterial(inputStack)
                 val clayProperty = material.getPropOrNull(CPropertyKey.CLAY)
-                if (clayProperty == null || clayProperty.compressionLevel > maxClayCompressionLevel) return invalidateInput()
+                if (clayProperty == null || clayProperty.compressionLevel > maxClayCompressionLevel)
+                    return invalidateInput()
                 prepareCMaterialClay(material, clayProperty, inputStack.count)
             }
         }
@@ -115,10 +145,14 @@ class ClayFabricatorMetaTileEntity(
                 return
             }
             this.itemOutputs = outputs
-            this.requiredProgress = (craftTimeLogic(clayProperty.compressionLevel, count) / overclockHandler.compensatedFactor).toLong()
+            this.requiredProgress =
+                (craftTimeLogic(clayProperty.compressionLevel, count) /
+                        overclockHandler.compensatedFactor)
+                    .toLong()
             this.currentProgress = 1
             if (clayProperty.energy != null) {
-                this.cePerTick = ClayEnergy((clayProperty.energy * count).energy / this.requiredProgress)
+                this.cePerTick =
+                    ClayEnergy((clayProperty.energy * count).energy / this.requiredProgress)
             }
         }
 
@@ -151,11 +185,20 @@ class ClayFabricatorMetaTileEntity(
             cePerTick = ClayEnergy(data.getLong("cePerTick"))
         }
 
-        override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
+        override fun addProbeInfo(
+            mode: ProbeMode,
+            probeInfo: IProbeInfo,
+            player: EntityPlayer,
+            world: World,
+            state: IBlockState,
+            hitData: IProbeHitData
+        ) {
             super.addProbeInfo(mode, probeInfo, player, world, state, hitData)
             if (isWorking) {
                 val cet = cePerTick * overclockHandler.accelerationFactor
-                probeInfo.text("Generating ${TextFormatting.GREEN}${cet.formatWithoutUnit()}${TextFormatting.WHITE} CE/t")
+                probeInfo.text(
+                    "Generating ${TextFormatting.GREEN}${cet.formatWithoutUnit()}${TextFormatting.WHITE} CE/t"
+                )
             }
         }
     }
@@ -165,20 +208,53 @@ class ClayFabricatorMetaTileEntity(
          * craft time functions
          * calculation logic is same as original. you can find that on the japanese wiki page: https://clayium.wiki.fc2.com/wiki/%E6%A9%9F%E6%A2%B0
          */
-        private fun getCraftTime(compLevel: Int, stackCount: Int, maxCompLevel: Int, compMitigationFactor: Double, countMitigationFactor: Double, eff: Double): Long {
-            return (64 * 10.0.pow(maxCompLevel) * (stackCount.toDouble() / 64.0).pow(countMitigationFactor) * compMitigationFactor.pow(compLevel - maxCompLevel) * 20.0 / eff).toLong()
+        private fun getCraftTime(
+            compLevel: Int,
+            stackCount: Int,
+            maxCompLevel: Int,
+            compMitigationFactor: Double,
+            countMitigationFactor: Double,
+            eff: Double
+        ): Long {
+            return (64 *
+                    10.0.pow(maxCompLevel) *
+                    (stackCount.toDouble() / 64.0).pow(countMitigationFactor) *
+                    compMitigationFactor.pow(compLevel - maxCompLevel) *
+                    20.0 / eff)
+                .toLong()
         }
 
         fun mk1(compLevel: Int, stackCount: Int): Long {
-            return getCraftTime(compLevel, stackCount, maxCompLevel = 11, compMitigationFactor = 5.0, countMitigationFactor = 0.85, eff = 4.5*10.0.pow(7))
+            return getCraftTime(
+                compLevel,
+                stackCount,
+                maxCompLevel = 11,
+                compMitigationFactor = 5.0,
+                countMitigationFactor = 0.85,
+                eff = 4.5 * 10.0.pow(7)
+            )
         }
 
         fun mk2(compLevel: Int, stackCount: Int): Long {
-            return getCraftTime(compLevel, stackCount, maxCompLevel = 13, compMitigationFactor = 2.0, countMitigationFactor = 0.3, eff = 10.0.pow(9))
+            return getCraftTime(
+                compLevel,
+                stackCount,
+                maxCompLevel = 13,
+                compMitigationFactor = 2.0,
+                countMitigationFactor = 0.3,
+                eff = 10.0.pow(9)
+            )
         }
 
         fun mk3(compLevel: Int, stackCount: Int): Long {
-            return getCraftTime(compLevel, stackCount, maxCompLevel = 13, compMitigationFactor = 1.3, countMitigationFactor = 0.06, eff = 10.0.pow(12))
+            return getCraftTime(
+                compLevel,
+                stackCount,
+                maxCompLevel = 13,
+                compMitigationFactor = 1.3,
+                countMitigationFactor = 0.06,
+                eff = 10.0.pow(12)
+            )
         }
     }
 }

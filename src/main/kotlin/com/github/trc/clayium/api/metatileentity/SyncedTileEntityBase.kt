@@ -23,8 +23,11 @@ abstract class SyncedTileEntityBase : TileEntity(), ISyncedTileEntity {
 
     override fun getUpdatePacket(): SPacketUpdateTileEntity? {
         if (this.updates.isEmpty) return null
-        return SPacketUpdateTileEntity(pos, 0,
-            NBTTagCompound().also { it.setTag("d", this.updates.dumpToNbt()) })
+        return SPacketUpdateTileEntity(
+            pos,
+            0,
+            NBTTagCompound().also { it.setTag("d", this.updates.dumpToNbt()) }
+        )
     }
 
     override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {

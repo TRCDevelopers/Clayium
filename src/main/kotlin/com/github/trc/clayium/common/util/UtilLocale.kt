@@ -10,7 +10,7 @@ import kotlin.math.log10
 import kotlin.math.min
 import kotlin.math.pow
 
-//mostly copied from the original version of Clayium
+// mostly copied from the original version of Clayium
 object UtilLocale {
     var SNumerals = arrayOf("", "k", "M", "G", "T", "P", "E", "Z", "Y")
     private const val MAX_TOOLTIP_LINES = 12
@@ -34,7 +34,11 @@ object UtilLocale {
         val d: Int = (n.toDouble() / 10.0.pow((k - 2).toDouble())).toInt()
         val flag1 = flag && k % 3 <= 1 && d % 10 == 0
         val flag2 = flag1 && k % 3 == 0 && d / 10 % 10 == 0
-        return s + d / 100 + (if (flag2) "" else (if (k % 3 == 0) "." else "") + d / 10 % 10) + (if (flag1) "" else (if (k % 3 == 1) "." else "") + d % 10) + SNumerals[p]
+        return s +
+            d / 100 +
+            (if (flag2) "" else (if (k % 3 == 0) "." else "") + d / 10 % 10) +
+            (if (flag1) "" else (if (k % 3 == 1) "." else "") + d % 10) +
+            SNumerals[p]
     }
 
     fun StackSizeNumeral(stackSize: Long): String {
@@ -87,12 +91,13 @@ object UtilLocale {
 
     fun localizeAndFormat(str: String, vararg args: Any?): String? {
         var ret = localizeUnsafe(str) ?: return null
-        ret = try {
-            String.format(ret, *args)
-        } catch (e: IllegalFormatException) {
-            //ClayiumCore.logger.catching((Throwable)e);
-            return str
-        }
+        ret =
+            try {
+                String.format(ret, *args)
+            } catch (e: IllegalFormatException) {
+                // ClayiumCore.logger.catching((Throwable)e);
+                return str
+            }
         return ret
     }
 
@@ -109,7 +114,10 @@ object UtilLocale {
             if (loc != null) {
                 if (loc == "__DETAIL__") {
                     if (GuiScreen.isShiftKeyDown()) continue
-                    ret.add(localizeUnsafe("tooltip.HoldShiftForDetails") ?: "Failed to load tooltip.HoldShiftForDetails")
+                    ret.add(
+                        localizeUnsafe("tooltip.HoldShiftForDetails")
+                            ?: "Failed to load tooltip.HoldShiftForDetails"
+                    )
                     flag = false
                     continue
                 }
@@ -122,8 +130,7 @@ object UtilLocale {
     }
 
     /**
-     * for translating multiline tooltips.
-     * does nothing if the key does not exist.
+     * for translating multiline tooltips. does nothing if the key does not exist.
      *
      * @param tooltip tooltip list that is given in addInformation
      * @param key translation key. line number is appended to this: `$key$i`

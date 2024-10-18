@@ -100,11 +100,13 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
     }
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
-        return metaTileEntity?.getCapability(capability, facing) != null || super.hasCapability(capability, facing)
+        return metaTileEntity?.getCapability(capability, facing) != null ||
+            super.hasCapability(capability, facing)
     }
 
     override fun <T> getCapability(capability: Capability<T?>, facing: EnumFacing?): T? {
-        return metaTileEntity?.getCapability(capability, facing) ?: super.getCapability(capability, facing)
+        return metaTileEntity?.getCapability(capability, facing)
+            ?: super.getCapability(capability, facing)
     }
 
     override fun onNeighborChanged(facing: EnumFacing) {
@@ -124,15 +126,27 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
         world?.notifyNeighborsOfStateChange(pos, blockType, true)
     }
 
-    override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean {
+    override fun shouldRefresh(
+        world: World,
+        pos: BlockPos,
+        oldState: IBlockState,
+        newSate: IBlockState
+    ): Boolean {
         return oldState.block != newSate.block
     }
 
     @SideOnly(Side.CLIENT)
-    override fun shouldRenderInPass(pass: Int) = metaTileEntity?.shouldRenderInPass(pass) ?: super.shouldRenderInPass(pass)
-    @Suppress("UsePropertyAccessSyntax") // `super.maxRenderDistanceSquared` errors with "Unresolved reference"
+    override fun shouldRenderInPass(pass: Int) =
+        metaTileEntity?.shouldRenderInPass(pass) ?: super.shouldRenderInPass(pass)
+
+    @Suppress(
+        "UsePropertyAccessSyntax"
+    ) // `super.maxRenderDistanceSquared` errors with "Unresolved reference"
     @SideOnly(Side.CLIENT)
-    override fun getMaxRenderDistanceSquared() = metaTileEntity?.getMaxRenderDistanceSquared() ?: super.getMaxRenderDistanceSquared()
+    override fun getMaxRenderDistanceSquared() =
+        metaTileEntity?.getMaxRenderDistanceSquared() ?: super.getMaxRenderDistanceSquared()
+
     @SideOnly(Side.CLIENT)
-    override fun getRenderBoundingBox() = metaTileEntity?.getRenderBoundingBox() ?: super.getRenderBoundingBox()
+    override fun getRenderBoundingBox() =
+        metaTileEntity?.getRenderBoundingBox() ?: super.getRenderBoundingBox()
 }

@@ -9,7 +9,10 @@ open class ItemBlockMaterial(
     val blockMaterial: BlockMaterialBase,
     val orePrefix: OrePrefix,
 ) : ItemBlock(blockMaterial) {
-    init { hasSubtypes = true }
+    init {
+        hasSubtypes = true
+    }
+
     override fun getMetadata(damage: Int) = damage
 
     override fun getItemStackDisplayName(stack: ItemStack): String {

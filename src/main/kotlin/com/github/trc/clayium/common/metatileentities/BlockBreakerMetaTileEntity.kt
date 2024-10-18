@@ -13,25 +13,23 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.property.IExtendedBlockState
 
-class BlockBreakerMetaTileEntity(
-    metaTileEntityId: ResourceLocation,
-    tier: ITier
-) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, "block_breaker") {
+class BlockBreakerMetaTileEntity(metaTileEntityId: ResourceLocation, tier: ITier) :
+    AbstractMinerMetaTileEntity(metaTileEntityId, tier, "block_breaker") {
 
     override val faceTexture: ResourceLocation = clayiumId("blocks/miner")
 
-    @Suppress("unused")
-    val ioHandler = AutoIoHandler.Exporter(this)
+    @Suppress("unused") val ioHandler = AutoIoHandler.Exporter(this)
 
     override val maxBlocksPerTick: Int = 1
 
     private val backingRange = Cuboid6()
     private val backingBlockPos = BlockPos.MutableBlockPos()
-    override val rangeRelative: Cuboid6 get() {
-        backingBlockPos.setPos(BlockPos.ORIGIN)
-        backingBlockPos.move(this.frontFacing.opposite)
-        return backingRange.set(backingBlockPos, backingBlockPos.add(1, 1, 1))
-    }
+    override val rangeRelative: Cuboid6
+        get() {
+            backingBlockPos.setPos(BlockPos.ORIGIN)
+            backingBlockPos.move(this.frontFacing.opposite)
+            return backingRange.set(backingBlockPos, backingBlockPos.add(1, 1, 1))
+        }
 
     override fun drawEnergy(accelerationRate: Double): Boolean {
         // no energy required
@@ -50,7 +48,12 @@ class BlockBreakerMetaTileEntity(
         return BlockBreakerMetaTileEntity(metaTileEntityId, tier)
     }
 
-    override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+    override fun overlayQuads(
+        quads: MutableList<BakedQuad>,
+        state: IBlockState?,
+        side: EnumFacing?,
+        rand: Long
+    ) {
         super.overlayQuads(quads, state, side, rand)
         if (state == null || side == null || state !is IExtendedBlockState) return
         if (side == this.frontFacing.opposite) {

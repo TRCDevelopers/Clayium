@@ -17,7 +17,7 @@ class CMaterialProperties {
         return key.cast(property)
     }
 
-    fun <T: MaterialProperty> getPropOrNull(key: CPropertyKey<T>): T? {
+    fun <T : MaterialProperty> getPropOrNull(key: CPropertyKey<T>): T? {
         val property = properties[key] ?: return null
         return key.cast(property)
     }

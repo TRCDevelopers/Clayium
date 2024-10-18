@@ -9,7 +9,12 @@ open class NotifiableItemStackHandler(
     private val isExport: Boolean,
 ) : ClayiumItemStackHandler(metaTileEntity, size) {
 
-    constructor(metaTileEntity: MetaTileEntity, size: Int, entityToNotify: MetaTileEntity, isExport: Boolean) : this(metaTileEntity, size, mutableListOf(entityToNotify), isExport)
+    constructor(
+        metaTileEntity: MetaTileEntity,
+        size: Int,
+        entityToNotify: MetaTileEntity,
+        isExport: Boolean
+    ) : this(metaTileEntity, size, mutableListOf(entityToNotify), isExport)
 
     override fun onContentsChanged(slot: Int) {
         super.onContentsChanged(slot)

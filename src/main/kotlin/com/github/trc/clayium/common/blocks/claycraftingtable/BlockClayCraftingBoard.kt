@@ -24,12 +24,26 @@ class BlockClayCraftingBoard : Block(Material.CLAY), ITieredBlock {
     }
 
     private val aabb = AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.25, 1.0)
+
     override fun hasTileEntity(state: IBlockState) = true
+
     override fun createTileEntity(world: World, state: IBlockState) = TileClayCraftingTable()
+
     override fun getTier(stack: ItemStack) = ClayTiers.DEFAULT
+
     override fun getTier(world: IBlockAccess, pos: BlockPos) = ClayTiers.DEFAULT
 
-    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+    override fun onBlockActivated(
+        worldIn: World,
+        pos: BlockPos,
+        state: IBlockState,
+        playerIn: EntityPlayer,
+        hand: EnumHand,
+        facing: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float
+    ): Boolean {
         if (!worldIn.isRemote) {
             TileEntityGuiFactory.open(playerIn, pos)
         }
@@ -37,13 +51,21 @@ class BlockClayCraftingBoard : Block(Material.CLAY), ITieredBlock {
     }
 
     override fun isFullBlock(state: IBlockState) = false
+
     override fun isFullCube(state: IBlockState) = false
+
     override fun isOpaqueCube(state: IBlockState) = false
+
     override fun causesSuffocation(state: IBlockState) = false
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = aabb
 
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
         tooltip.add("WIP, not functional yet")
     }
 }

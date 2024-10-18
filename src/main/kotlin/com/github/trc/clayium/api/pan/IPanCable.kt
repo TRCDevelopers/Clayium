@@ -6,7 +6,8 @@ import net.minecraft.world.IBlockAccess
 
 fun IBlockAccess.isPanCable(pos: BlockPos): Boolean {
     // Forge Multipart support?
-    return getBlockState(pos).block is IPanCable || getTileEntity(pos)?.getCapability(ClayiumTileCapabilities.PAN_CABLE, null) != null
+    return getBlockState(pos).block is IPanCable ||
+        getTileEntity(pos)?.getCapability(ClayiumTileCapabilities.PAN_CABLE, null) != null
 }
 
 interface IPanCable {
