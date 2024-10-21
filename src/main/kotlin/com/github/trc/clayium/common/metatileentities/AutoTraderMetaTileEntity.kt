@@ -5,12 +5,12 @@ import com.cleanroommc.modularui.drawable.DynamicDrawable
 import com.cleanroommc.modularui.drawable.UITexture
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.DoubleValue
+import com.cleanroommc.modularui.value.BoolValue
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
-import com.cleanroommc.modularui.widgets.ProgressWidget
+import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.ClayEnergy
@@ -46,9 +46,27 @@ import net.minecraftforge.items.IItemHandlerModifiable
 import java.lang.ref.WeakReference
 
 private val EMPTY_MLIST = MerchantRecipeList()
-private val TRADE_DISABLED: UITexture = UITexture.builder().location(ResourceLocation("textures/gui/container/villager.png"))
-    .uv(212, 0, 28, 21)
+fun tradeIcon() = UITexture.builder()
+    .location(ResourceLocation("textures/gui/container/villager.png"))
+    .imageSize(256, 256)
+private val TRADE_DISABLED: UITexture = tradeIcon()
+    .imageSize(256, 256)
+    .uv(215, 3, 22, 17)
     .build()
+
+private val NEXT = tradeIcon()
+    .uv(177, 2, 10, 15).build()
+private val NEXT_SELECTED = tradeIcon()
+    .uv(177, 2, 10, 15).build()
+private val NEXT_DISABLED = tradeIcon()
+    .uv(177, 2, 10, 15).build()
+
+private val PREV = tradeIcon()
+    .uv(177, 21, 10, 15).build()
+private val PREV_SELECTED = tradeIcon()
+    .uv(177, 21, 10, 15).build()
+private val PREV_DISALBED = tradeIcon()
+    .uv(177, 21, 10, 15).build()
 
 class AutoTraderMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -81,7 +99,7 @@ class AutoTraderMetaTileEntity(
             if (trades.size <= this.tradeIndex) {
                 this.tradeIndex = 0
             }
-            return trades[tradeIndex]?.takeUnless { it.isRecipeDisabled }
+            return trades[tradeIndex]
         }
 
     private val tradePreviewItemHandler = TradePreviewItemHandler()
@@ -123,11 +141,30 @@ class AutoTraderMetaTileEntity(
                 ClayGuiTextures.PROGRESS_BAR
             }
         }
+        val next = ToggleButton()
+            .value(BoolValue.Dynamic({
+                val trades = trades
+                if (trades == null) return@Dynamic false
+                tradeIndex < trades.size - 1
+            }, {
+                println("Next, ${it}, ${tradeIndex}")
+            }))
+        val prev = ToggleButton()
+            .value(BoolValue.Dynamic({
+                val trades = trades
+                if (trades == null) return@Dynamic false
+                tradeIndex > 0 && trades.isNotEmpty()
+            }, {}))
         return super.buildMainParentWidget(syncManager)
-            .child(Column().widthRel(0.9f).coverChildrenHeight().alignX(0.5f).top(16)
-                .child(Row().widthRel(1f).height(17).debugName("Preview Row")
-                    .alignX(0.5f)
-                    .child(ItemSlot().alignY(0.5f).marginLeft(0).background(IDrawable.EMPTY)
+            .child(Column().widthRel(1f).coverChildrenHeight().alignX(0.5f).top(16)
+                .child(Row().widthRel(1f).height(17).debugName("Preview Row").alignX(0.5f)
+                    .child(prev.size(10, 15).align(Alignment.CenterLeft)
+                        .background(PREV_DISALBED)
+                        .hoverBackground(PREV_SELECTED)
+                        .selectedBackground(PREV)
+                        .selectedHoverBackground(PREV_SELECTED)
+                    )
+                    .child(ItemSlot().alignY(0.5f).marginLeft(15).background(IDrawable.EMPTY)
                         .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 0)
                             .accessibility(false, false))
                     )
@@ -136,13 +173,18 @@ class AutoTraderMetaTileEntity(
                             .accessibility(false, false))
                     )
                     .child(
-                        ProgressWidget().size(22, 17).align(Alignment.Center)
-                        .value(DoubleValue(0.0))
-                        .texture(ClayGuiTextures.PROGRESS_BAR, 22)
+                        previewProgressBar.asWidget().size(22, 17)
+                            .align(Alignment.Center)
                     )
-                    .child(ItemSlot().right(4).alignY(0.5f).background(IDrawable.EMPTY)
+                    .child(ItemSlot().right(15).alignY(0.5f).background(IDrawable.EMPTY)
                         .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 2)
                             .accessibility(false, false))
+                    )
+                    .child(next.size(10, 15).align(Alignment.CenterRight)
+                        .background(NEXT_DISABLED)
+                        .hoverBackground(NEXT_SELECTED)
+                        .selectedBackground(NEXT)
+                        .selectedHoverBackground(NEXT_SELECTED)
                     )
                 )
                 .child(Row().widthRel(1f).height(26).alignX(0.5f).marginTop(6)
@@ -181,7 +223,9 @@ class AutoTraderMetaTileEntity(
         }
 
         override fun completeWork() {
-            merchant?.useRecipe(trade!!)
+            val trade = trade
+            if (trade == null || trade.isRecipeDisabled) return
+            merchant?.useRecipe(trade)
             super.completeWork()
         }
     }
@@ -191,7 +235,8 @@ class AutoTraderMetaTileEntity(
 
         override fun searchRecipe(machineTier: Int, inputs: List<ItemStack>): Recipe? {
             val trade = trade
-            if (trade == null) return null
+            if (trade == null || trade.isRecipeDisabled) return null
+
             val cet = ClayEnergy.of(ConfigCore.misc.autoTraderEnergyConsumption.toLong())
             val input = trade.itemToBuy
             val secondaryInput = trade.secondItemToBuy
