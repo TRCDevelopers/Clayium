@@ -1,6 +1,8 @@
 package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IDrawable
+import com.cleanroommc.modularui.drawable.DynamicDrawable
+import com.cleanroommc.modularui.drawable.UITexture
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.DoubleValue
@@ -24,6 +26,7 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.recipe.IRecipeProvider
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.gui.sync.MerchantRecipeListSyncValue
@@ -43,6 +46,9 @@ import net.minecraftforge.items.IItemHandlerModifiable
 import java.lang.ref.WeakReference
 
 private val EMPTY_MLIST = MerchantRecipeList()
+private val TRADE_DISABLED: UITexture = UITexture.builder().location(ResourceLocation("textures/gui/container/villager.png"))
+    .uv(212, 0, 28, 21)
+    .build()
 
 class AutoTraderMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -80,12 +86,7 @@ class AutoTraderMetaTileEntity(
 
     private val tradePreviewItemHandler = TradePreviewItemHandler()
 
-    private val recipeLogic = object : RecipeLogicEnergy(this@AutoTraderMetaTileEntity, AutoTraderRecipeProvider(), clayEnergyHolder) {
-        override fun completeWork() {
-            merchant?.useRecipe(trade!!)
-            super.completeWork()
-        }
-    }
+    private val recipeLogic = AutoTraderRecipeLogic()
 
     override fun update() {
         super.update()
@@ -114,6 +115,14 @@ class AutoTraderMetaTileEntity(
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
         syncManager.syncValue("trade", MerchantRecipeListSyncValue({ this.trades ?: EMPTY_MLIST }, { this.trades = it }))
+        val previewProgressBar = DynamicDrawable {
+            val trade = this.trade
+            if (trade == null || trade.isRecipeDisabled) {
+                TRADE_DISABLED
+            } else {
+                ClayGuiTextures.PROGRESS_BAR
+            }
+        }
         return super.buildMainParentWidget(syncManager)
             .child(Column().widthRel(0.9f).coverChildrenHeight().alignX(0.5f).top(16)
                 .child(Row().widthRel(1f).height(17).debugName("Preview Row")
@@ -126,7 +135,8 @@ class AutoTraderMetaTileEntity(
                         .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 1)
                             .accessibility(false, false))
                     )
-                    .child(ProgressWidget().size(22, 17).align(Alignment.Center)
+                    .child(
+                        ProgressWidget().size(22, 17).align(Alignment.Center)
                         .value(DoubleValue(0.0))
                         .texture(ClayGuiTextures.PROGRESS_BAR, 22)
                     )
@@ -155,6 +165,25 @@ class AutoTraderMetaTileEntity(
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return AutoTraderMetaTileEntity(metaTileEntityId, tier)
+    }
+
+    private inner class AutoTraderRecipeLogic : RecipeLogicEnergy(this@AutoTraderMetaTileEntity, AutoTraderRecipeProvider(), clayEnergyHolder) {
+
+        override fun trySearchNewRecipe() {
+            // don't use a cached recipe because it may run out of stock
+            val recipe = recipeProvider.searchRecipe(getTier(), inputInventory.toList())
+            if (recipe == null) {
+                invalidInputsForRecipes = true
+                this.isWorking = false
+                return
+            }
+            this.isWorking = prepareRecipe(recipe)
+        }
+
+        override fun completeWork() {
+            merchant?.useRecipe(trade!!)
+            super.completeWork()
+        }
     }
 
     private inner class AutoTraderRecipeProvider : IRecipeProvider {
