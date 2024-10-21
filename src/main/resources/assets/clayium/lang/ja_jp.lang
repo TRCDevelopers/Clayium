@@ -537,7 +537,7 @@ tile.clayium.chunk_loader.name=3x3 チャンクローダー
 machine.clayium.storage_container=ストレージコンテナ
 machine.clayium.void_container=虚空コンテナ
 machine.clayium.void_container.tooltip1=搬入されたアイテムを消去する
-machine.clayium.blockAutoTrader.name=自動取引装置
+machine.clayium.auto_trader=自動取引装置
 
 tile.clayium.clay_marker.tooltip1=範囲機械の使用に必要
 tile.clayium.clay_marker.no_extend.name=粘土マーカー

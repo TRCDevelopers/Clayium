@@ -26,9 +26,11 @@ import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.gui.ClayGuiTextures
+import com.github.trc.clayium.common.gui.sync.MerchantRecipeListSyncValue
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.ingredient.CItemRecipeInput
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
+import net.minecraft.entity.IMerchant
 import net.minecraft.entity.passive.EntityVillager
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
@@ -62,6 +64,7 @@ class AutoTraderMetaTileEntity(
             weakRefFakePlayer = WeakReference(newFakePlayer)
             return newFakePlayer
         }
+    private var merchant: IMerchant? = null
     private var trades: MerchantRecipeList? = null
     private var tradeIndex: Int = 0
     private val trade: MerchantRecipe?
@@ -72,12 +75,17 @@ class AutoTraderMetaTileEntity(
             if (trades.size <= this.tradeIndex) {
                 this.tradeIndex = 0
             }
-            return trades[tradeIndex]
+            return trades[tradeIndex]?.takeUnless { it.isRecipeDisabled }
         }
 
     private val tradePreviewItemHandler = TradePreviewItemHandler()
 
-    private val recipeLogic = RecipeLogicEnergy(this, AutoTraderRecipeProvider(), clayEnergyHolder)
+    private val recipeLogic = object : RecipeLogicEnergy(this@AutoTraderMetaTileEntity, AutoTraderRecipeProvider(), clayEnergyHolder) {
+        override fun completeWork() {
+            merchant?.useRecipe(trade!!)
+            super.completeWork()
+        }
+    }
 
     override fun update() {
         super.update()
@@ -87,9 +95,14 @@ class AutoTraderMetaTileEntity(
 
         val entities = world.getEntitiesWithinAABB(EntityVillager::class.java, AxisAlignedBB(pos, pos.add(1, 3, 1)))
             .filter { !it.isChild }
-        if (entities.isEmpty()) return
-
-        this.trades = entities.first().getRecipes(fakePlayer)
+        if (entities.isEmpty()) {
+            this.trades = EMPTY_MLIST
+            this.merchant = null
+        } else {
+            val merchant = entities.first()
+            this.trades = merchant.getRecipes(fakePlayer)
+            this.merchant = merchant
+        }
     }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
@@ -100,9 +113,10 @@ class AutoTraderMetaTileEntity(
     }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+        syncManager.syncValue("trade", MerchantRecipeListSyncValue({ this.trades ?: EMPTY_MLIST }, { this.trades = it }))
         return super.buildMainParentWidget(syncManager)
             .child(Column().widthRel(0.9f).coverChildrenHeight().alignX(0.5f).top(16)
-                .child(Row().widthRel(1f).height(22).debugName("Preview Row")
+                .child(Row().widthRel(1f).height(17).debugName("Preview Row")
                     .alignX(0.5f)
                     .child(ItemSlot().alignY(0.5f).marginLeft(0).background(IDrawable.EMPTY)
                         .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 0)
@@ -116,13 +130,13 @@ class AutoTraderMetaTileEntity(
                         .value(DoubleValue(0.0))
                         .texture(ClayGuiTextures.PROGRESS_BAR, 22)
                     )
-                    .child(ItemSlot().right(0).background(IDrawable.EMPTY)
+                    .child(ItemSlot().right(4).alignY(0.5f).background(IDrawable.EMPTY)
                         .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 2)
                             .accessibility(false, false))
                     )
                 )
-                .child(Row().widthRel(1f).height(26).debugName("Inventory Row")
-                    .alignX(0.5f).marginTop(2)
+                .child(Row().widthRel(1f).height(26).alignX(0.5f).marginTop(6)
+                    .debugName("Inventory Row")
                     .child(ItemSlot().alignY(0.5f).marginLeft(0).background(ClayGuiTextures.IMPORT_1_SLOT)
                         .slot(SyncHandlers.itemSlot(importItems, 0))
                     )
