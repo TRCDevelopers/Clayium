@@ -46,27 +46,21 @@ import net.minecraftforge.items.IItemHandlerModifiable
 import java.lang.ref.WeakReference
 
 private val EMPTY_MLIST = MerchantRecipeList()
+
 fun tradeIcon() = UITexture.builder()
     .location(ResourceLocation("textures/gui/container/villager.png"))
     .imageSize(256, 256)
-private val TRADE_DISABLED: UITexture = tradeIcon()
-    .imageSize(256, 256)
-    .uv(215, 3, 22, 17)
-    .build()
 
-private val NEXT = tradeIcon()
-    .uv(177, 2, 10, 15).build()
-private val NEXT_SELECTED = tradeIcon()
-    .uv(177, 2, 10, 15).build()
-private val NEXT_DISABLED = tradeIcon()
-    .uv(177, 2, 10, 15).build()
+private val TRADE_DISABLED: UITexture = tradeIcon().uv(215, 3, 22, 15).build()
+private val TRADE_ENABLED = tradeIcon().uv(86, 24, 22, 15).build()
 
-private val PREV = tradeIcon()
-    .uv(177, 21, 10, 15).build()
-private val PREV_SELECTED = tradeIcon()
-    .uv(177, 21, 10, 15).build()
-private val PREV_DISALBED = tradeIcon()
-    .uv(177, 21, 10, 15).build()
+private val NEXT = tradeIcon().uv(177, 2, 10, 15).build()
+private val NEXT_SELECTED = tradeIcon().uv(189, 2, 10, 15).build()
+private val NEXT_DISABLED = tradeIcon().uv(201, 2, 10, 15).build()
+
+private val PREV = tradeIcon().uv(177, 21, 10, 15).build()
+private val PREV_SELECTED = tradeIcon().uv(189, 21, 10, 15).build()
+private val PREV_DISALBED = tradeIcon().uv(201, 21, 10, 15).build()
 
 class AutoTraderMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -132,13 +126,16 @@ class AutoTraderMetaTileEntity(
     }
 
     override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
-        syncManager.syncValue("trade", MerchantRecipeListSyncValue({ this.trades ?: EMPTY_MLIST }, { this.trades = it }))
+        syncManager.syncValue("trades", MerchantRecipeListSyncValue({ this.trades ?: EMPTY_MLIST }, { this.trades = it }))
+        val tradeIndexSh = SyncHandlers.intNumber({ tradeIndex }, { tradeIndex = it })
+        syncManager.syncValue("tradeIndex", tradeIndexSh)
+
         val previewProgressBar = DynamicDrawable {
             val trade = this.trade
             if (trade == null || trade.isRecipeDisabled) {
                 TRADE_DISABLED
             } else {
-                ClayGuiTextures.PROGRESS_BAR
+                TRADE_ENABLED
             }
         }
         val next = ToggleButton()
@@ -146,23 +143,32 @@ class AutoTraderMetaTileEntity(
                 val trades = trades
                 if (trades == null) return@Dynamic false
                 tradeIndex < trades.size - 1
-            }, {
-                println("Next, ${it}, ${tradeIndex}")
+            }, { disabled ->
+                val enabled = !disabled
+                if (enabled) {
+                    tradeIndex++
+                    tradeIndexSh.value = tradeIndex
+                }
             }))
         val prev = ToggleButton()
             .value(BoolValue.Dynamic({
                 val trades = trades
                 if (trades == null) return@Dynamic false
                 tradeIndex > 0 && trades.isNotEmpty()
-            }, {}))
+            }, { disabled ->
+                val enabled = !disabled
+                if (enabled) {
+                    tradeIndex--
+                    tradeIndexSh.value = tradeIndex
+                }
+            }))
         return super.buildMainParentWidget(syncManager)
             .child(Column().widthRel(1f).coverChildrenHeight().alignX(0.5f).top(16)
                 .child(Row().widthRel(1f).height(17).debugName("Preview Row").alignX(0.5f)
                     .child(prev.size(10, 15).align(Alignment.CenterLeft)
                         .background(PREV_DISALBED)
-                        .hoverBackground(PREV_SELECTED)
-                        .selectedBackground(PREV)
-                        .selectedHoverBackground(PREV_SELECTED)
+                        .hoverBackground(PREV_DISALBED)
+                        .selectedBackground(PREV).selectedHoverBackground(PREV_SELECTED)
                     )
                     .child(ItemSlot().alignY(0.5f).marginLeft(15).background(IDrawable.EMPTY)
                         .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 0)
@@ -172,8 +178,7 @@ class AutoTraderMetaTileEntity(
                         .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 1)
                             .accessibility(false, false))
                     )
-                    .child(
-                        previewProgressBar.asWidget().size(22, 17)
+                    .child(previewProgressBar.asWidget().size(22, 15)
                             .align(Alignment.Center)
                     )
                     .child(ItemSlot().right(15).alignY(0.5f).background(IDrawable.EMPTY)
@@ -181,10 +186,8 @@ class AutoTraderMetaTileEntity(
                             .accessibility(false, false))
                     )
                     .child(next.size(10, 15).align(Alignment.CenterRight)
-                        .background(NEXT_DISABLED)
-                        .hoverBackground(NEXT_SELECTED)
-                        .selectedBackground(NEXT)
-                        .selectedHoverBackground(NEXT_SELECTED)
+                        .background(NEXT_DISABLED).hoverBackground(NEXT_DISABLED)
+                        .selectedBackground(NEXT).selectedHoverBackground(NEXT_SELECTED)
                     )
                 )
                 .child(Row().widthRel(1f).height(26).alignX(0.5f).marginTop(6)
