@@ -1,33 +1,51 @@
 package com.github.trc.clayium.common.gui.sync
 
-import com.cleanroommc.modularui.utils.serialization.IByteBufSerializer
-import com.cleanroommc.modularui.utils.serialization.IEquals
-import com.cleanroommc.modularui.value.sync.GenericSyncValue
+import com.cleanroommc.modularui.value.sync.ValueSyncHandler
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.village.MerchantRecipeList
 import java.util.function.Consumer
 import java.util.function.Supplier
 
 class MerchantRecipeListSyncValue(
-    getter: Supplier<MerchantRecipeList>,
-    setter: Consumer<MerchantRecipeList>,
-) : GenericSyncValue<MerchantRecipeList>(
-    getter, setter, MerchantRecipeList::readFromBuf, MerchantRecipeListSerializer, equals,
-)
+    private val getter: Supplier<MerchantRecipeList>,
+    private val setter: Consumer<MerchantRecipeList>,
+) : ValueSyncHandler<MerchantRecipeList>() {
 
-private object MerchantRecipeListSerializer : IByteBufSerializer<MerchantRecipeList> {
-    override fun serialize(buffer: PacketBuffer, value: MerchantRecipeList) {
-        value.writeToBuf(buffer)
+    private var cache: MerchantRecipeList? = null
+    private var cacheNbt: List<NBTTagCompound>? = null
+
+    override fun setValue(value: MerchantRecipeList, setSource: Boolean, sync: Boolean) {
+        this.cache = value
+        this.cacheNbt = value.map { it.writeToTags() }
+        if (setSource) {
+            this.setter.accept(value)
+        }
+        if (sync) {
+            this.sync(0, this::write)
+        }
     }
-}
 
-private val equals = IEquals.wrapNullSafe(MerchantRecipeEquals())
+    override fun updateCacheFromSource(isFirstSync: Boolean): Boolean {
+        val value = this.getter.get()
+        val valueNbt = value.map { it.writeToTags() }
+        val cacheNbt = this.cacheNbt
+        val isEqual = cacheNbt != null && valueNbt.zip(cacheNbt).all { (t1, t2) -> t1 == t2 }
+        if (isFirstSync || !isEqual) {
+            setValue(value, setSource = false, sync = false)
+        }
+        return !isEqual
+    }
 
-private class MerchantRecipeEquals : IEquals<MerchantRecipeList> {
-    override fun areEqual(t1: MerchantRecipeList, t2: MerchantRecipeList): Boolean {
-        val t1Tags = t1.map { it.writeToTags() }
-        val t2Tags = t2.map { it.writeToTags() }
+    override fun write(buffer: PacketBuffer) {
+        this.cache!!.writeToBuf(buffer)
+    }
 
-        return t1Tags.zip(t2Tags).all { (t1, t2) -> t1 == t2 }
+    override fun read(buffer: PacketBuffer) {
+        this.setValue(MerchantRecipeList.readFromBuf(buffer), setSource = true, sync = false)
+    }
+
+    override fun getValue(): MerchantRecipeList? {
+        return this.cache
     }
 }
