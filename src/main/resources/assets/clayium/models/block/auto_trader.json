@@ -23,7 +23,10 @@
       "to": [16, 16, 16],
       "faces": {
         "up": {"texture": "#top", "uv": [0, 0, 16, 16]},
-        "north": {"texture": "#side", "uv": [0, 0, 16, 16]}
+        "north": {"texture": "#side", "uv": [0, 0, 16, 16]},
+        "south": {"texture": "#side", "uv": [0, 0, 16, 16]},
+        "west": {"texture": "#side", "uv": [0, 0, 16, 16]},
+        "east": {"texture": "#side", "uv": [0, 0, 16, 16]}
       }
     }
   ]

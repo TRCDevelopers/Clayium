@@ -26,24 +26,35 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.recipe.IRecipeProvider
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.toList
+import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.gui.sync.MerchantRecipeListSyncValue
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.ingredient.CItemRecipeInput
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
+import net.minecraft.block.state.IBlockState
+import net.minecraft.client.renderer.block.model.BakedQuad
+import net.minecraft.client.renderer.block.model.FaceBakery
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.entity.IMerchant
 import net.minecraft.entity.passive.EntityVillager
 import net.minecraft.item.ItemStack
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.village.MerchantRecipe
 import net.minecraft.village.MerchantRecipeList
 import net.minecraft.world.WorldServer
+import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.common.util.FakePlayer
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.IItemHandlerModifiable
 import java.lang.ref.WeakReference
+import java.util.function.Function
 
 private val EMPTY_MLIST = MerchantRecipeList()
 
@@ -51,7 +62,7 @@ fun tradeIcon() = UITexture.builder()
     .location(ResourceLocation("textures/gui/container/villager.png"))
     .imageSize(256, 256)
 
-private val TRADE_DISABLED: UITexture = tradeIcon().uv(215, 3, 22, 15).build()
+private val TRADE_DISABLED = tradeIcon().uv(215, 3, 22, 15).build()
 private val TRADE_ENABLED = tradeIcon().uv(86, 24, 22, 15).build()
 
 private val NEXT = tradeIcon().uv(177, 2, 10, 15).build()
@@ -61,6 +72,9 @@ private val NEXT_DISABLED = tradeIcon().uv(201, 2, 10, 15).build()
 private val PREV = tradeIcon().uv(177, 21, 10, 15).build()
 private val PREV_SELECTED = tradeIcon().uv(189, 21, 10, 15).build()
 private val PREV_DISALBED = tradeIcon().uv(201, 21, 10, 15).build()
+
+private lateinit var sideQuads: List<BakedQuad>
+private lateinit var topQuad: BakedQuad
 
 class AutoTraderMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -209,6 +223,25 @@ class AutoTraderMetaTileEntity(
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return AutoTraderMetaTileEntity(metaTileEntityId, tier)
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
+        val topSprite = getter.apply(clayiumId("blocks/auto_trader_top"))
+        val sideSprite = getter.apply(clayiumId("blocks/auto_trader_side"))
+        topQuad = ModelTextures.createQuad(EnumFacing.UP, topSprite)
+        sideQuads = EnumFacing.HORIZONTALS.map { ModelTextures.createQuad(it, sideSprite) }
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+        if (state == null || side == null || state !is IExtendedBlockState) return
+        super.getQuads(quads, state, side, rand)
+        if (side == EnumFacing.UP) {
+            quads.add(topQuad)
+        } else if (side.axis.isHorizontal) {
+            quads.add(sideQuads[side.horizontalIndex])
+        }
     }
 
     private inner class AutoTraderRecipeLogic : RecipeLogicEnergy(this@AutoTraderMetaTileEntity, AutoTraderRecipeProvider(), clayEnergyHolder) {
