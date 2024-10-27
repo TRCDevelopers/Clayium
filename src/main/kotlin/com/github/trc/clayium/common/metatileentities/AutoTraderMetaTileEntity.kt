@@ -23,9 +23,12 @@ import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.recipe.IRecipeProvider
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.RelativeDirection
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.client.model.ModelTextures
@@ -83,6 +86,7 @@ class AutoTraderMetaTileEntity(
     override val importItems = NotifiableItemStackHandler(this, 2, this, isExport = false)
     override val exportItems = NotifiableItemStackHandler(this, 1, this, isExport = true)
     override val itemInventory = ItemHandlerProxy(importItems, exportItems)
+    private val autoIoHandler = AutoIoHandler.Combined(this)
 
     private val clayEnergyHolder = ClayEnergyHolder(this)
 
@@ -130,6 +134,14 @@ class AutoTraderMetaTileEntity(
             this.trades = merchant.getRecipes(fakePlayer)
             this.merchant = merchant
         }
+    }
+
+    override fun onPlacement() {
+        super.onPlacement()
+        this.setOutput(RelativeDirection.FRONT.getActualFacing(this.frontFacing), MachineIoMode.ALL)
+        this.setInput(RelativeDirection.LEFT.getActualFacing(this.frontFacing), MachineIoMode.SECOND)
+        this.setInput(RelativeDirection.RIGHT.getActualFacing(this.frontFacing), MachineIoMode.FIRST)
+        this.setInput(RelativeDirection.BACK.getActualFacing(this.frontFacing), MachineIoMode.CE)
     }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
