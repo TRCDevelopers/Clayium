@@ -177,7 +177,7 @@ class AutoTraderMetaTileEntity(
                 }
             }))
         return super.buildMainParentWidget(syncManager)
-            .child(Column().widthRel(1f).coverChildrenHeight().alignX(0.5f).top(16)
+            .child(Column().widthRel(0.9f).coverChildrenHeight().alignX(0.5f).top(16)
                 .child(Row().widthRel(1f).height(17).debugName("Preview Row").alignX(0.5f)
                     .child(prev.size(10, 15).align(Alignment.CenterLeft)
                         .background(PREV_DISALBED)
@@ -193,7 +193,7 @@ class AutoTraderMetaTileEntity(
                             .accessibility(false, false))
                     )
                     .child(previewProgressBar.asWidget().size(22, 15)
-                            .align(Alignment.Center)
+                            .alignX(0.6f).alignY(0.5f)
                     )
                     .child(ItemSlot().right(15).alignY(0.5f).background(IDrawable.EMPTY)
                         .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 2)
@@ -213,7 +213,7 @@ class AutoTraderMetaTileEntity(
                         .slot(SyncHandlers.itemSlot(importItems, 1).singletonSlotGroup(101))
                     )
                     .child(recipeLogic.getProgressBar(syncManager, showRecipes = false)
-                        .align(Alignment.Center))
+                        .alignX(0.6f).alignY(0.5f))
                     .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).accessibility(false, true))
                         .right(11)
                     )
@@ -245,6 +245,12 @@ class AutoTraderMetaTileEntity(
     }
 
     private inner class AutoTraderRecipeLogic : RecipeLogicEnergy(this@AutoTraderMetaTileEntity, AutoTraderRecipeProvider(), clayEnergyHolder) {
+
+        override fun shouldSearchForRecipe(): Boolean {
+            // A trade may be re-enabled after several trades
+            // so we don't check about inputs
+            return canFitNewOutputs()
+        }
 
         override fun trySearchNewRecipe() {
             // don't use a cached recipe because it may run out of stock

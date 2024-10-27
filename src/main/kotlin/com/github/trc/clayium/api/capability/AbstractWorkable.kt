@@ -128,7 +128,7 @@ abstract class AbstractWorkable(
         return canWorkWithInputs() && canFitNewOutputs()
     }
 
-    private fun canWorkWithInputs(): Boolean {
+    protected fun canWorkWithInputs(): Boolean {
         if (invalidInputsForRecipes && !metaTileEntity.hasNotifiedInputs) return false
 
         invalidInputsForRecipes = false
@@ -136,7 +136,7 @@ abstract class AbstractWorkable(
         return true
     }
 
-    private fun canFitNewOutputs(): Boolean {
+    protected fun canFitNewOutputs(): Boolean {
         return true
         
         // currently, NotifiableItemStackHandler.onContentsChanged isn't called
