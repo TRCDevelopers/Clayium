@@ -13,6 +13,7 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.api.util.clayiumId
@@ -118,6 +119,7 @@ open class CommonProxy {
     @Suppress("unused")
     @SubscribeEvent
     fun registerBlocks(event: RegistryEvent.Register<Block>) {
+        CLog.info("Registering blocks...")
         val registry: IForgeRegistry<Block> = event.registry
 
         ClayiumBlocks.registerBlocks(event)
@@ -131,6 +133,7 @@ open class CommonProxy {
     @Suppress("unused")
     @SubscribeEvent
     fun registerItems(event: RegistryEvent.Register<Item>) {
+        CLog.info("Registering items...")
         val registry = event.registry
 
         ClayiumBlocks.registerItemBlocks(event)

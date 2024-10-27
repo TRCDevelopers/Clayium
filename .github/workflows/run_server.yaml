@@ -1,0 +1,40 @@
+name: Run Dedicated Server
+
+on: pull_request
+
+concurrency:
+  group: run-dedicated-server-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  run-server:
+    name: Run Dedicated Server
+    runs-on: ubuntu-latest
+
+    env:
+      TIMEOUT: 120s
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Grant execute permission for gradlew
+        shell: bash
+        run: chmod +x gradlew
+
+      - name: Setup Build
+        uses: ./.github/actions/build_setup
+
+      - name: Run Dedicated Server
+        shell: bash
+        run: |
+          mkdir -p run/server
+          echo "eula=true" > run/server/eula.txt
+          echo "stop" > run/server/stop.txt
+          echo "level-type=flat" > run/server/server.properties
+          timeout ${{ env.TIMEOUT }} ./gradlew runServer 2>&1 < run/server/stop.txt | tee -a server.log || true
+
+      - name: Test no errors reported during the server run
+        run: |
+          chmod +x ./.github/actions/test_no_error_reports.sh
+          ./.github/actions/test_no_error_reports.sh
