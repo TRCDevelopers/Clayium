@@ -13,7 +13,6 @@ import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
-import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.pan.IPan
@@ -33,6 +32,7 @@ import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.builder.SimpleRecipeBuilder
 import com.github.trc.clayium.common.recipe.ingredient.COreRecipeInput
+import com.github.trc.clayium.common.recipe.logic.PanDuplicatorRecipeLogic
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -64,7 +64,7 @@ class PanDuplicatorMetaTileEntity(
 
     override val faceTexture = clayiumId("blocks/pan_duplicator")
 
-    private val ceConsumption = ClayEnergy(10_000 * 10.0.pow(duplicatorRank - 1).toLong())
+    val maxCeConsumptionRate = ClayEnergy(10_000 * 10.0.pow(duplicatorRank - 1).toLong())
 
     private val antimatterSlot = NotifiableItemStackHandler(this, 1, this, isExport = false)
     private val duplicationTargetSlot = NotifiableItemStackHandler(this, 1, this, isExport = false)
@@ -75,7 +75,7 @@ class PanDuplicatorMetaTileEntity(
 
     @Suppress("unused") private val ioHandler = AutoIoHandler.Combined(this)
     private val clayEnergyHolder = ClayEnergyHolder(this)
-    private val recipeLogic = RecipeLogicEnergy(this, PanRecipeProvider(), clayEnergyHolder)
+    private val recipeLogic = PanDuplicatorRecipeLogic(this, PanRecipeProvider(), clayEnergyHolder)
 
     private var pan: IPan? = null
 
@@ -151,7 +151,7 @@ class PanDuplicatorMetaTileEntity(
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
-        tooltip.add("CE Consumption Rate: ${ceConsumption.format()}/t")
+        tooltip.add("CE Consumption Rate: ${maxCeConsumptionRate.format()}/t")
     }
 
     override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
@@ -165,6 +165,7 @@ class PanDuplicatorMetaTileEntity(
         if (side != this.frontFacing) quads.add(panCasingQuads[side.index])
     }
 
+    // cePerTick means the duplication cost
     private inner class PanRecipeProvider : IRecipeProvider {
         override val jeiCategory = null
         override fun searchRecipe(machineTier: Int, inputs: List<ItemStack>): Recipe? {
@@ -173,12 +174,13 @@ class PanDuplicatorMetaTileEntity(
             if (targetStack.isEmpty) return null
             val dupTarget = duplicationTargetSlot.getStackInSlot(0).copyWithSize(1)
             val energy = pan?.getDuplicationEntries()[ItemAndMeta(dupTarget)] ?: return null
-            val duration = max(1, (energy.energy / ceConsumption.energy).toLong())
+            val duration = max(1, (energy.energy / maxCeConsumptionRate.energy).toLong())
             return SimpleRecipeBuilder()
                 .inputs(antimatterInput)
                 .notConsumable(dupTarget)
                 .output(dupTarget)
-                .tier(0).CEt(ceConsumption).duration(duration)
+                .tier(0).duration(duration)
+                .CEt(energy)
                 .build()
         }
     }
