@@ -25,6 +25,7 @@ import com.github.trc.clayium.api.util.*
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.ingredient.COreRecipeInput
+import com.github.trc.clayium.common.util.TransferUtils
 import mcjty.theoneprobe.api.IProbeHitData
 import mcjty.theoneprobe.api.IProbeInfo
 import mcjty.theoneprobe.api.NumberFormat
@@ -169,6 +170,11 @@ class PanDuplicatorMetaTileEntity(
             if (targetStack.isEmpty) return
             val duplicationTarget = targetStack.copyWithSize(1)
             val duplicationCost: ClayEnergy = pan?.getDuplicationEntries()[ItemAndMeta(duplicationTarget)] ?: return
+
+            if (!TransferUtils.insertToHandler(metaTileEntity.exportItems, listOf(duplicationTarget), true)) {
+                this.outputsFull = true
+                return
+            }
 
             antimatterSlot.extractItem(0, 1, false)
             this.requiredProgress = duplicationCost.energy
