@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.capability.AbstractWorkable
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
@@ -17,17 +18,13 @@ import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.pan.IPan
 import com.github.trc.clayium.api.pan.IPanCable
 import com.github.trc.clayium.api.pan.IPanUser
-import com.github.trc.clayium.api.recipe.IRecipeProvider
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.ItemAndMeta
 import com.github.trc.clayium.api.util.*
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
-import com.github.trc.clayium.common.recipe.Recipe
-import com.github.trc.clayium.common.recipe.builder.SimpleRecipeBuilder
 import com.github.trc.clayium.common.recipe.ingredient.COreRecipeInput
-import com.github.trc.clayium.common.recipe.logic.PanDuplicatorRecipeLogic
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -47,7 +44,6 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
 import java.util.function.Function
-import kotlin.math.max
 import kotlin.math.pow
 
 class PanDuplicatorMetaTileEntity(
@@ -70,7 +66,7 @@ class PanDuplicatorMetaTileEntity(
 
     @Suppress("unused") private val ioHandler = AutoIoHandler.Combined(this)
     private val clayEnergyHolder = ClayEnergyHolder(this)
-    private val recipeLogic = PanDuplicatorRecipeLogic(this, PanRecipeProvider(), clayEnergyHolder)
+    private val recipeLogic = PanDuplicatorRecipeLogic()
 
     private var pan: IPan? = null
 
@@ -117,8 +113,8 @@ class PanDuplicatorMetaTileEntity(
                 .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).singletonSlotGroup().accessibility(false, true))
                     .align(Alignment.CenterRight))
                 .child(recipeLogic.getProgressBar(syncManager, showRecipes = false)
-                    .size(22, 17).align(Alignment.Center)
-                    .texture(ClayGuiTextures.PROGRESS_BAR, 22)
+                    .progress(recipeLogic::getNormalizedProgress)
+                    .align(Alignment.Center)
                 )
             )
     }
@@ -159,23 +155,40 @@ class PanDuplicatorMetaTileEntity(
         if (side != this.frontFacing) quads.add(panCasingQuads[side.index])
     }
 
-    // cePerTick means the duplication cost
-    private inner class PanRecipeProvider : IRecipeProvider {
-        override val jeiCategory = null
-        override fun searchRecipe(machineTier: Int, inputs: List<ItemStack>): Recipe? {
-            if (!antimatterInput.testItemStackAndAmount(antimatterSlot.getStackInSlot(0))) return null
+    private inner class PanDuplicatorRecipeLogic : AbstractWorkable(this@PanDuplicatorMetaTileEntity) {
+        override fun trySearchNewRecipe() {
+            val hasAntimatter = antimatterInput.testItemStackAndAmount(antimatterSlot.getStackInSlot(0))
+            if (!hasAntimatter) return
             val targetStack = duplicationTargetSlot.getStackInSlot(0)
-            if (targetStack.isEmpty) return null
-            val dupTarget = duplicationTargetSlot.getStackInSlot(0).copyWithSize(1)
-            val energy = pan?.getDuplicationEntries()[ItemAndMeta(dupTarget)] ?: return null
-            val duration = max(1, (energy.energy / maxCeConsumptionRate.energy).toLong())
-            return SimpleRecipeBuilder()
-                .inputs(antimatterInput)
-                .notConsumable(dupTarget)
-                .output(dupTarget)
-                .tier(0).duration(duration)
-                .CEt(energy)
-                .build()
+            if (targetStack.isEmpty) return
+            val duplicationTarget = targetStack.copyWithSize(1)
+            val duplicationCost: ClayEnergy = pan?.getDuplicationEntries()[ItemAndMeta(duplicationTarget)] ?: return
+
+            antimatterSlot.extractItem(0, 1, false)
+            this.requiredProgress = duplicationCost.energy
+            this.currentProgress = 1
+            this.itemOutputs = listOf(duplicationTarget)
+        }
+
+        override fun updateWorkingProgress() {
+            val requiredEnergyRemaining = ClayEnergy(requiredProgress - currentProgress)
+            val maxConsumption = applyOverclock(maxCeConsumptionRate) * ocHandler.accelerationFactor
+            val actualConsumption = ClayEnergy.min(requiredEnergyRemaining, maxConsumption)
+            if (!clayEnergyHolder.drawEnergy(actualConsumption, simulate = true)) return
+
+            clayEnergyHolder.drawEnergy(actualConsumption, simulate = false)
+            currentProgress += actualConsumption.energy
+            if (currentProgress >= requiredProgress) {
+                completeWork()
+            }
+        }
+
+        private fun applyOverclock(baseConsumption: ClayEnergy): ClayEnergy {
+            // C Factor reduces the crafting time by 1/C,
+            // and multiplies the CE Consumption by C^1.5.
+            // [!] PAN Duplicators have 100% OC efficiency, so this is the formula for the overclocking.
+            val c = ocHandler.compensatedFactor
+            return baseConsumption * c * c.pow(1.5)
         }
     }
 

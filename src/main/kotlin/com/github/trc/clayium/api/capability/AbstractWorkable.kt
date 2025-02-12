@@ -65,7 +65,7 @@ abstract class AbstractWorkable(
      * Show recipes in JEI.
      * Not called if Jei isn't loaded.
      */
-    protected abstract fun showRecipesInJei()
+    protected open fun showRecipesInJei() {}
 
     protected open fun getTier(): Int = metaTileEntity.tier.numeric
 
@@ -186,7 +186,7 @@ abstract class AbstractWorkable(
         return widget
     }
 
-    fun getNormalizedProgress(): Double {
+    open fun getNormalizedProgress(): Double {
         if (currentProgress == 0L || requiredProgress == 0L) return 0.0
         return (currentProgress.toDouble() - 1.0) / requiredProgress.toDouble()
     }
