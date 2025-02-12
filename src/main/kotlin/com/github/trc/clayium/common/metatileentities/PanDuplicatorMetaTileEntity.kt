@@ -177,14 +177,14 @@ class PanDuplicatorMetaTileEntity(
         }
 
         override fun updateWorkingProgress() {
-            val requiredEnergyRemaining = ClayEnergy(requiredProgress - currentProgress)
+            val requiredEnergyRemaining = ClayEnergy(requiredProgress - currentProgress + 1) // +1 because we start progress at 1
             val maxConsumption = applyOverclock(maxCeConsumptionRate) * ocHandler.accelerationFactor
             val actualConsumption = ClayEnergy.min(requiredEnergyRemaining, maxConsumption)
             if (!clayEnergyHolder.drawEnergy(actualConsumption, simulate = true)) return
 
             clayEnergyHolder.drawEnergy(actualConsumption, simulate = false)
             currentProgress += actualConsumption.energy
-            if (currentProgress >= requiredProgress) {
+            if (currentProgress > requiredProgress) {
                 completeWork()
             }
         }
