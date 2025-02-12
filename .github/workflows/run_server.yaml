@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      TIMEOUT: 120s
+      TIMEOUT: 600s
 
     steps:
       - name: Checkout repository
