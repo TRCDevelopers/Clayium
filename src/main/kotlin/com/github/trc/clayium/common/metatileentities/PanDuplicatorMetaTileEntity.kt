@@ -5,7 +5,6 @@ import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
-import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.ClayEnergy
@@ -22,11 +21,7 @@ import com.github.trc.clayium.api.recipe.IRecipeProvider
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.ItemAndMeta
-import com.github.trc.clayium.api.util.ClayTiers
-import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.api.util.MachineIoMode
-import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.api.util.copyWithSize
+import com.github.trc.clayium.api.util.*
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.Recipe
@@ -121,8 +116,7 @@ class PanDuplicatorMetaTileEntity(
                 )
                 .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).singletonSlotGroup().accessibility(false, true))
                     .align(Alignment.CenterRight))
-                .child(ProgressWidget()
-                    .progress(0.0)
+                .child(recipeLogic.getProgressBar(syncManager, showRecipes = false)
                     .size(22, 17).align(Alignment.Center)
                     .texture(ClayGuiTextures.PROGRESS_BAR, 22)
                 )
