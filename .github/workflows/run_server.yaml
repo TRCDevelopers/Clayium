@@ -30,9 +30,9 @@ jobs:
         run: |
           mkdir -p run/server
           echo "eula=true" > run/server/eula.txt
-          echo "stop" > run/server/stop.txt
           echo "level-type=flat" > run/server/server.properties
-          timeout ${{ env.TIMEOUT }} ./gradlew runServer 2>&1 < run/server/stop.txt | tee -a server.log || true
+          chmod +x ./.github/actions/run_server_autostop.sh
+          timeout ${{ env.TIMEOUT }} ./.github/actions/run_server_autostop.sh
 
       - name: Test no errors reported during the server run
         run: |
