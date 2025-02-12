@@ -23,7 +23,6 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.common.Optional
-import org.jetbrains.annotations.MustBeInvokedByOverriders
 import kotlin.math.round
 
 //todo cleanup
@@ -200,7 +199,6 @@ abstract class AbstractWorkable(
     }
 
     @Optional.Method(modid = Mods.Names.THE_ONE_PROBE)
-    @MustBeInvokedByOverriders
     /**
      * must be annotated with `@Optional.Method(modid = Mods.Names.THE_ONE_PROBE)`
      */

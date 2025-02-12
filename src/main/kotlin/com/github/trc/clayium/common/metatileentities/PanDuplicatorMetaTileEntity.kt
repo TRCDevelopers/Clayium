@@ -25,6 +25,10 @@ import com.github.trc.clayium.api.util.*
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.ingredient.COreRecipeInput
+import mcjty.theoneprobe.api.IProbeHitData
+import mcjty.theoneprobe.api.IProbeInfo
+import mcjty.theoneprobe.api.NumberFormat
+import mcjty.theoneprobe.api.ProbeMode
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -32,6 +36,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
@@ -40,6 +45,7 @@ import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.property.IExtendedBlockState
+import net.minecraftforge.fml.common.Optional
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
@@ -190,6 +196,27 @@ class PanDuplicatorMetaTileEntity(
             val c = ocHandler.compensatedFactor
             return baseConsumption * c * c.pow(1.5)
         }
+
+
+        @Optional.Method(modid = Mods.Names.THE_ONE_PROBE)
+        override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
+            if (!isWorking) return
+            val energy = ClayEnergy(currentProgress)
+            val maxEnergy = ClayEnergy(requiredProgress)
+
+            val color = if (isWorkingEnabled) COLOR_ENABLED_ARGB else COLOR_DISABLED_ARGB
+            if (requiredProgress > 0) {
+                probeInfo.progress(
+                    currentProgress, requiredProgress, probeInfo.defaultProgressStyle()
+                        .numberFormat(NumberFormat.NONE)
+                        .prefix(energy.format())
+                        .suffix(" / ${maxEnergy.format()}")
+                        .filledColor(color)
+                        .alternateFilledColor(color)
+                        .borderColor(BORDER_COLOR)
+                )
+            }
+        }
     }
 
     companion object {
@@ -198,3 +225,11 @@ class PanDuplicatorMetaTileEntity(
         private lateinit var panCasingQuads: List<BakedQuad>
     }
 }
+
+// TOP Info Colors
+//TODO: put these variables in somewhere public
+private const val COLOR_ENABLED_ARGB: Int = 0xFF4CBB17.toInt()
+private const val COLOR_DISABLED_ARGB: Int = 0xFFBB1C28.toInt()
+private const val BORDER_COLOR: Int = 0xFF555555.toInt()
+private const val HALF_HOUR_TICKS: Int = 30 * 60 * 20
+private const val ONE_MIN_TICKS: Double = 60 * 20.0
