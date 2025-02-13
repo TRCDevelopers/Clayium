@@ -32,7 +32,7 @@ jobs:
           echo "eula=true" > run/server/eula.txt
           echo "level-type=flat" > run/server/server.properties
           chmod +x ./.github/actions/run_server_autostop.sh
-          timeout ${{ env.TIMEOUT }} ./.github/actions/run_server_autostop.sh
+          timeout ${{ env.TIMEOUT }} ./.github/actions/run_server_autostop.sh | tee -a server.log || true
 
       - name: Test no errors reported during the server run
         run: |
