@@ -1,12 +1,16 @@
 package com.github.trc.clayium.common.blocks
 
 import com.cleanroommc.modularui.api.IGuiHolder
+import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.capability.impl.InfiniteItemStackHandler
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.util.toItemStack
@@ -37,10 +41,17 @@ class TileEntityCreativeEnergySource : TileEntity(), IGuiHolder<PosGuiData> {
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("clayium:creative_energy_source")
-            .child(ItemSlot()
-                .slot(SyncHandlers.itemSlot(handler, 0).accessibility(false, true))
-                .align(Alignment.TopCenter).top(36))
-            .bindPlayerInventory()
+            .child(Column().margin(7).sizeRel(1f)
+                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
+                    .child(IKey.lang("tile.clayium.creative_energy_source.name").asWidget()
+                        .align(Alignment.TopLeft))
+                    .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
+                    .child(ItemSlot()
+                        .slot(SyncHandlers.itemSlot(handler, 0).accessibility(false, true))
+                        .align(Alignment.Center))
+                )
+                .child(SlotGroupWidget.playerInventory(0))
+            )
     }
 
     override fun <T> getCapability(capability: Capability<T?>, facing: EnumFacing?): T? {
