@@ -31,13 +31,8 @@ jobs:
           mkdir -p run/server
           echo "eula=true" > run/server/eula.txt
           echo "level-type=flat" > run/server/server.properties
-          stdbuf -oL bash -c "./gradlew runServer" | while read line; do
-            echo $line
-            if [ "$(echo $line | grep -c "Done")" -gt 0 ]; then
-              echo "Server has started"
-              exit 0
-            fi
-          done
+          chmod +x ./.github/actions/run_server_autostop.sh
+          timeout ${{ env.TIMEOUT }} ./.github/actions/run_server_autostop.sh | tee -a server.log || true
 
       - name: Test no errors reported during the server run
         run: |
