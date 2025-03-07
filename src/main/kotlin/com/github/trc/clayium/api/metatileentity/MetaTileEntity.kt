@@ -708,11 +708,13 @@ abstract class MetaTileEntity(
             }
     }
 
-    protected inline fun ModularPanel.columnWithPlayerInv(builder: (Column.() -> Column)) = this.child(
-        Column().margin(7).sizeRel(1f)
-            .builder()
-            .child(SlotGroupWidget.playerInventory(0))
-    )
+    protected inline fun ModularPanel.columnWithPlayerInv(builder: (Flow.() -> Flow)): ModularPanel {
+        return this.child(
+            Column().margin(7).sizeRel(1f)
+                .builder()
+                .child(SlotGroupWidget.playerInventory(0))
+        )
+    }
 
     /**
      * returns the main parent widget positioned above player inventory.
