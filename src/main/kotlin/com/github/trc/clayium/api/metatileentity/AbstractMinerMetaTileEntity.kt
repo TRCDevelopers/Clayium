@@ -104,6 +104,7 @@ abstract class AbstractMinerMetaTileEntity(
         if (!drawEnergy(r)) return
         progress += PROGRESS_PER_TICK_BASE * getAccelerationRate()
 
+        @Suppress("unused")
         for (i in 0..<maxBlocksPerTick) {
             val pos = this.currentPos ?: getNextBlockPos()
                 ?: continue

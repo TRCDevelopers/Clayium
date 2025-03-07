@@ -319,7 +319,7 @@ class PanCoreMetaTileEntity(
             // impure dusts from Chemical Metal Separator
             for (recipe in CRecipes.CHEMICAL_METAL_SEPARATOR.getAllRecipes()) {
                 if (recipe.chancedOutputs == null) continue
-                val totalWeight: Double = recipe.chancedOutputs.map { it.chance }.sum().toDouble()
+                val totalWeight: Double = recipe.chancedOutputs.sumOf { it.chance }.toDouble()
                 val baseCeCost = recipe.cePerTick * recipe.duration
                 for (chanced in recipe.chancedOutputs) {
                     val rate = chanced.chance.toDouble() / totalWeight
