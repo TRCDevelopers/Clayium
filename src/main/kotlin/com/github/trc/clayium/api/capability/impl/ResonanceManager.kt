@@ -1,6 +1,6 @@
 package com.github.trc.clayium.api.capability.impl
 
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.github.trc.clayium.api.block.IResonatingBlock
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs
@@ -56,7 +56,7 @@ class ResonanceManager(
         }
     }
 
-    fun sync(syncManager: GuiSyncManager) {
+    fun sync(syncManager: PanelSyncManager) {
         syncManager.syncValue("resonance", SyncHandlers.doubleNumber(::resonance, ::resonance::set))
     }
 }

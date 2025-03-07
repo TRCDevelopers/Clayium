@@ -2,7 +2,7 @@ package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
@@ -36,11 +36,8 @@ import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
 import org.jetbrains.annotations.VisibleForTesting
-import java.util.EnumMap
+import java.util.*
 import java.util.function.Function
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.iterator
 import kotlin.math.min
 
 class DistributorMetaTileEntity(
@@ -81,7 +78,7 @@ class DistributorMetaTileEntity(
         super.onPlacement()
     }
 
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         val height = GUI_DEFAULT_HEIGHT - 50 + (18*2 * groupY + 2 * (groupY - 1))
         return ModularPanel.defaultPanel(translationKey, GUI_DEFAULT_WIDTH, height)
             .columnWithPlayerInv {
@@ -89,7 +86,7 @@ class DistributorMetaTileEntity(
             }
     }
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         val groups = groups.mapIndexed { i, handler ->
             syncManager.registerSlotGroup("group$i", 2)
             val group = SlotGroupWidget.builder()

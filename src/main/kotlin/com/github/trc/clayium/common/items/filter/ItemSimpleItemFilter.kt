@@ -10,7 +10,7 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.ItemCapabilityProvider
 import com.cleanroommc.modularui.utils.ItemStackItemHandler
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.CycleButtonWidget
@@ -39,7 +39,7 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
 class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
-    override fun buildUI(data: HandGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: HandGuiData, syncManager: PanelSyncManager): ModularPanel {
         val stack = data.usedItemStack
         val itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable
             ?: return ModularPanel.defaultPanel("simple_item_filter_error")
@@ -98,7 +98,7 @@ class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         if (!worldIn.isRemote) {
-            ItemGuiFactory.open(playerIn as EntityPlayerMP, handIn)
+            ItemGuiFactory.INSTANCE.open(playerIn as EntityPlayerMP, handIn)
         }
         return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
     }

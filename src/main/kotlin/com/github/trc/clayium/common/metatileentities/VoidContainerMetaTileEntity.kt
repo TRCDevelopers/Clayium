@@ -1,7 +1,7 @@
 package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
@@ -66,7 +66,7 @@ class VoidContainerMetaTileEntity(
         return VoidContainerMetaTileEntity(metaTileEntityId, tier)
     }
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(largeSlot(SyncHandlers.itemSlot(importItems, 0)
                 .filter { filterStack.isEmpty || ItemHandlerHelper.canItemStacksStack(it, filterStack) })

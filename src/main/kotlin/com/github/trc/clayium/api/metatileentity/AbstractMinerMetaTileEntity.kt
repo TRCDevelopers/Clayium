@@ -1,21 +1,16 @@
 package com.github.trc.clayium.api.metatileentity
 
 import codechicken.lib.vec.Cuboid6
-import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.BoolValue
 import com.cleanroommc.modularui.value.EnumValue
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ButtonWidget
-import com.cleanroommc.modularui.widgets.CycleButtonWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
-import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.ToggleButton
+import com.cleanroommc.modularui.widgets.*
 import com.cleanroommc.modularui.widgets.layout.Grid
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
@@ -30,13 +25,7 @@ import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.gui.sync.ClayLaserSyncValue
 import com.github.trc.clayium.api.laser.ClayLaser
-import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.api.util.MachineIoMode
-import com.github.trc.clayium.api.util.asWidgetResizing
-import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.api.util.getCapability
-import com.github.trc.clayium.api.util.hasCapability
-import com.github.trc.clayium.api.util.toItemStack
+import com.github.trc.clayium.api.util.*
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer.RangeRenderMode
@@ -115,6 +104,7 @@ abstract class AbstractMinerMetaTileEntity(
         if (!drawEnergy(r)) return
         progress += PROGRESS_PER_TICK_BASE * getAccelerationRate()
 
+        @Suppress("unused")
         for (i in 0..<maxBlocksPerTick) {
             val pos = this.currentPos ?: getNextBlockPos()
                 ?: continue
@@ -167,7 +157,7 @@ abstract class AbstractMinerMetaTileEntity(
         this.laser = laser
     }
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         syncManager.registerSlotGroup("breaker_inv", INV_ROW)
         val workingEnabledSync = SyncHandlers.bool(::workingEnabled, ::workingEnabled::set)
         syncManager.syncValue("working_enabled", workingEnabledSync)
@@ -193,7 +183,6 @@ abstract class AbstractMinerMetaTileEntity(
             .tooltip(0) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.disabled")) }
             .tooltip(1) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled")) }
             .tooltip(2) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled_xray")) }
-            .textureGetter { IDrawable.EMPTY }
         val resetButton = ButtonWidget()
             .syncHandler(InteractionSyncHandler()
                 .setOnMousePressed { if (!it.isClient) resetButtonPressed() })
@@ -222,7 +211,7 @@ abstract class AbstractMinerMetaTileEntity(
             )
     }
 
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("breaker", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 20)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager))

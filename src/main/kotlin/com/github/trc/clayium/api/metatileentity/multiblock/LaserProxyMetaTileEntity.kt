@@ -1,6 +1,6 @@
 package com.github.trc.clayium.api.metatileentity.multiblock
 
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IClayLaserAcceptor
 import com.github.trc.clayium.api.capability.IConfigurationTool
@@ -55,7 +55,7 @@ class LaserProxyMetaTileEntity(
     }
 
     override fun canOpenGui() = false
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): Nothing {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): Nothing {
         throw UnsupportedOperationException()
     }
 

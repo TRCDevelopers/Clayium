@@ -1,7 +1,7 @@
 package com.github.trc.clayium.api.metatileentity.multiblock
 
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
@@ -13,7 +13,6 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import net.minecraft.util.ResourceLocation
-import kotlin.let
 
 class ClayBlastFurnaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -59,7 +58,7 @@ class ClayBlastFurnaceMetaTileEntity(
         return StructureValidationResult.Valid(mbParts, tiers)
     }
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(multiblockLogic.tierTextWidget(syncManager)
                 .align(Alignment.BottomCenter))

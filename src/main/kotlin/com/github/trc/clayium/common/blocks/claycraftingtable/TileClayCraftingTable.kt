@@ -7,7 +7,7 @@ import com.cleanroommc.modularui.api.widget.IGuiAction
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
@@ -48,7 +48,7 @@ class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
         outputInventory.deserializeNBT(compound.getCompoundTag("output_inventory"))
     }
 
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: PosGuiData, syncManager: PanelSyncManager): ModularPanel {
         syncManager.registerSlotGroup("input_inventory", 3)
         return ModularPanel.defaultPanel("clay_crafting_table")
             .child(Column().margin(7).sizeRel(1f)

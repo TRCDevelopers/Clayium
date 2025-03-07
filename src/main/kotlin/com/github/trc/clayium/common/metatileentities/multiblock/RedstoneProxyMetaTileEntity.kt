@@ -3,8 +3,8 @@ package com.github.trc.clayium.common.metatileentities.multiblock
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.IntSyncValue
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.CycleButtonWidget
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
@@ -90,17 +90,17 @@ class RedstoneProxyMetaTileEntity(
         return super.canLink(target) && target.getCapability(ClayiumTileCapabilities.CONTROLLABLE, null) != null
     }
 
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("redstone_proxy.$tier", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT - 20)
             .columnWithPlayerInv { child(buildMainParentWidget(syncManager)) }
     }
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(CycleButtonWidget()
                 .align(Alignment.Center).widthRel(0.7f).height(24)
                 .length(Mode.entries.size)
-                .value(IntSyncValue({ mode.ordinal }, { mode = Mode.entries[it] }))
+                .value(IntSyncValue({ mode.ordinal }, { i: Int -> mode = Mode.entries[i] }))
                 .overlay(IKey.dynamic { I18n.format(mode.translationKey) })
             )
     }

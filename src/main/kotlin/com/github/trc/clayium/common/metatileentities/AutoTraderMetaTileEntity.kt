@@ -6,7 +6,7 @@ import com.cleanroommc.modularui.drawable.UITexture
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.BoolValue
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
@@ -16,21 +16,12 @@ import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
-import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
-import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
-import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
-import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
-import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
+import com.github.trc.clayium.api.capability.impl.*
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.recipe.IRecipeProvider
-import com.github.trc.clayium.api.util.CUtils
-import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.api.util.MachineIoMode
-import com.github.trc.clayium.api.util.RelativeDirection
-import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.api.util.toList
+import com.github.trc.clayium.api.util.*
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.gui.ClayGuiTextures
@@ -144,14 +135,14 @@ class AutoTraderMetaTileEntity(
         this.setInput(RelativeDirection.BACK.getActualFacing(this.frontFacing), MachineIoMode.CE)
     }
 
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         return ModularPanel.defaultPanel(translationKey, GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 22)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager))
             }
     }
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         syncManager.syncValue("trades", MerchantRecipeListSyncValue({ this.trades ?: EMPTY_MLIST }, { this.trades = it }))
         val tradeIndexSh = SyncHandlers.intNumber({ tradeIndex }, { tradeIndex = it })
         syncManager.syncValue("tradeIndex", tradeIndexSh)

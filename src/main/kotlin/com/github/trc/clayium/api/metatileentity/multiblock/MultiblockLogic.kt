@@ -1,7 +1,7 @@
 package com.github.trc.clayium.api.metatileentity.multiblock
 
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.github.trc.clayium.api.MOD_ID
@@ -126,7 +126,7 @@ class MultiblockLogic(
         super.receiveCustomData(discriminator, buf)
     }
 
-    fun tierTextWidget(syncManager: GuiSyncManager): TextWidget {
+    fun tierTextWidget(syncManager: PanelSyncManager): TextWidget {
         syncManager.syncValue("multiblock_tier", SyncHandlers.intNumber({ recipeLogicTier }, { recipeLogicTier = it }))
         return IKey.dynamic { I18n.format("tooltip.clayium.tier", recipeLogicTier) }.asWidgetResizing()
     }

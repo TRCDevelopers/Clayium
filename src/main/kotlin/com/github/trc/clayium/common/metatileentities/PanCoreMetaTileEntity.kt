@@ -6,26 +6,19 @@ import com.cleanroommc.modularui.drawable.Rectangle
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.Color
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Grid
-import com.github.trc.clayium.api.ClayEnergy
-import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
-import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
+import com.github.trc.clayium.api.*
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_PAN_DUPLICATION_ENTRIES
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.pan.IPan
-import com.github.trc.clayium.api.pan.IPanCable
-import com.github.trc.clayium.api.pan.IPanRecipe
-import com.github.trc.clayium.api.pan.IPanUser
-import com.github.trc.clayium.api.pan.isPanCable
-import com.github.trc.clayium.api.readClayEnergy
+import com.github.trc.clayium.api.pan.*
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.CPropertyKey
@@ -36,7 +29,6 @@ import com.github.trc.clayium.api.unification.stack.writeItemAndMeta
 import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.api.writeClayEnergy
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.config.ConfigCore
@@ -244,7 +236,7 @@ class PanCoreMetaTileEntity(
         quads.add(panCoreQuads[side.index])
     }
 
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         if (!isRemote) {
             refreshNetworkAndThenEntries()
         }
@@ -256,7 +248,7 @@ class PanCoreMetaTileEntity(
                         val flag = if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips) ITooltipFlag.TooltipFlags.ADVANCED else ITooltipFlag.TooltipFlags.NORMAL
                         tooltip.addStringLines(stack.getTooltip(data.player, flag))
                     }
-                    tooltip.addLine(entry.ce.format())
+                    tooltip.add(entry.ce.format())
                 }
                 .also {
                     if (!entry.isAllowedToDuplicate) {
@@ -327,7 +319,7 @@ class PanCoreMetaTileEntity(
             // impure dusts from Chemical Metal Separator
             for (recipe in CRecipes.CHEMICAL_METAL_SEPARATOR.getAllRecipes()) {
                 if (recipe.chancedOutputs == null) continue
-                val totalWeight: Double = recipe.chancedOutputs.map { it.chance }.sum().toDouble()
+                val totalWeight: Double = recipe.chancedOutputs.sumOf { it.chance }.toDouble()
                 val baseCeCost = recipe.cePerTick * recipe.duration
                 for (chanced in recipe.chancedOutputs) {
                     val rate = chanced.chance.toDouble() / totalWeight
