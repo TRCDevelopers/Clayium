@@ -296,7 +296,7 @@ object MachineBlockRecipeLoader {
         }
         registerLowTierRecipe(MetaTileEntities.COBBLESTONE_GENERATOR, " g ", "OHO", " g ")
         registerMachineRecipeBuffer(MetaTileEntities.SALT_EXTRACTOR) {
-            input(MetaItemClayParts.SimpleCircuit)
+            input(MetaItemClayParts.BasicCircuit)
         }
 
         /* Storage Container */
