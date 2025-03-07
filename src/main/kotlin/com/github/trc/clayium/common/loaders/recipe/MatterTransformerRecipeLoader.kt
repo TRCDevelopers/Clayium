@@ -238,7 +238,7 @@ object MatterTransformerRecipeLoader {
             .tier(8).CEtFactor(20.0).duration(200)
             .chain(CMaterials.silver).tier(9).CEtFactor(10.0)
             .chain(CMaterials.gold).tier(9).CEtFactor(50.0)
-            .chain(CMaterials.palladium).tier(10).CEtFactor(30.0)
+            .chain(CMaterials.platinum).tier(10).CEtFactor(30.0)
             .chain(CMaterials.iridium).tier(11).CEtFactor(10.0)
             .chain(CMaterials.osmium).tier(11).CEtFactor(30.0)
             .chain(CMaterials.rhenium).tier(12).CEtFactor(10.0)
