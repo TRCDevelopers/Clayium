@@ -5,6 +5,7 @@ import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.CMaterials.clay
 import com.github.trc.clayium.api.unification.material.CMaterials.denseClay
+import com.github.trc.clayium.api.unification.material.MaterialAmount
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
@@ -58,7 +59,10 @@ object CraftingRecipeLoader {
         }
 
         for (material in ClayiumApi.materialRegistry) {
-            if (!OrePrefix.block.isIgnored(material) && OreDictUnifier.exists(OrePrefix.block, material)) {
+            if (!OrePrefix.block.isIgnored(material)
+                && OreDictUnifier.exists(OrePrefix.block, material)
+                && OrePrefix.block.getMaterialAmount(material) == MaterialAmount.of(9)
+            ) {
                 val orePrefix = if (OreDictUnifier.exists(OrePrefix.ingot, material))
                     OrePrefix.ingot
                 else if (OreDictUnifier.exists(OrePrefix.gem, material))
