@@ -182,7 +182,6 @@ abstract class AbstractMinerMetaTileEntity(
             .tooltip(0) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.disabled")) }
             .tooltip(1) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled")) }
             .tooltip(2) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled_xray")) }
-            // .textureGetter { IDrawable.EMPTY } TODO
         val resetButton = ButtonWidget()
             .syncHandler(InteractionSyncHandler()
                 .setOnMousePressed { if (!it.isClient) resetButtonPressed() })
