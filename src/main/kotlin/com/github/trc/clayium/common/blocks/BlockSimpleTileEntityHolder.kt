@@ -33,7 +33,7 @@ class BlockSimpleTileEntityHolder(
 
         val tileEntity = worldIn.getTileEntity(pos) ?: return true
         if (tileEntity is IGuiHolder<*>) {
-            TileEntityGuiFactory.open(playerIn, pos)
+            TileEntityGuiFactory.INSTANCE.open(playerIn, pos)
         }
         return true
     }

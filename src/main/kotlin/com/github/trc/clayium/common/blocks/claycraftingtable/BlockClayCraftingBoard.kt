@@ -31,7 +31,7 @@ class BlockClayCraftingBoard : Block(Material.CLAY), ITieredBlock {
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         if (!worldIn.isRemote) {
-            TileEntityGuiFactory.open(playerIn, pos)
+            TileEntityGuiFactory.INSTANCE.open(playerIn, pos)
         }
         return true
     }

@@ -1,7 +1,6 @@
 package com.github.trc.clayium.api.metatileentity
 
 import codechicken.lib.vec.Cuboid6
-import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
@@ -183,7 +182,7 @@ abstract class AbstractMinerMetaTileEntity(
             .tooltip(0) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.disabled")) }
             .tooltip(1) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled")) }
             .tooltip(2) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled_xray")) }
-            .textureGetter { IDrawable.EMPTY }
+            // .textureGetter { IDrawable.EMPTY } TODO
         val resetButton = ButtonWidget()
             .syncHandler(InteractionSyncHandler()
                 .setOnMousePressed { if (!it.isClient) resetButtonPressed() })

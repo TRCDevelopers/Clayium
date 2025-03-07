@@ -100,7 +100,7 @@ class RedstoneProxyMetaTileEntity(
             .child(CycleButtonWidget()
                 .align(Alignment.Center).widthRel(0.7f).height(24)
                 .length(Mode.entries.size)
-                .value(IntSyncValue({ mode.ordinal }, { mode = Mode.entries[it] }))
+                .value(IntSyncValue({ mode.ordinal }, { i: Int -> mode = Mode.entries[i] }))
                 .overlay(IKey.dynamic { I18n.format(mode.translationKey) })
             )
     }

@@ -98,7 +98,7 @@ class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         if (!worldIn.isRemote) {
-            ItemGuiFactory.open(playerIn as EntityPlayerMP, handIn)
+            ItemGuiFactory.INSTANCE.open(playerIn as EntityPlayerMP, handIn)
         }
         return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
     }
