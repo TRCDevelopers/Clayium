@@ -2,19 +2,13 @@ package com.github.trc.clayium.api.unification.ore
 
 import com.github.trc.clayium.api.FALLBACK
 import com.github.trc.clayium.api.MOD_ID
-import com.github.trc.clayium.api.unification.material.CMarkerMaterials
-import com.github.trc.clayium.api.unification.material.CMaterial
-import com.github.trc.clayium.api.unification.material.CMaterialFlags
-import com.github.trc.clayium.api.unification.material.CMaterials
-import com.github.trc.clayium.api.unification.material.CPropertyKey
-import com.github.trc.clayium.api.unification.material.IMaterial
-import com.github.trc.clayium.api.unification.material.MaterialAmount
+import com.github.trc.clayium.api.unification.material.*
 import com.github.trc.clayium.common.util.BothSideI18n
 import com.google.common.base.CaseFormat
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap
 import java.util.function.Predicate
 
-private val Long.M get() = MaterialAmount.of(this)
+private val Int.M get() = MaterialAmount.of(this.toLong())
 
 class OrePrefix(
     val camel: String,
@@ -49,6 +43,10 @@ class OrePrefix(
                 && itemGenerationLogic.test(material))
     }
 
+    /**
+     * If a material is ignored, a material item (prefixItem e.g. ingotClayium) nor recipes will not be generated for it,
+     *
+     */
     fun ignore(material: CMaterial) {
         ignoredMaterials.add(material)
     }
@@ -125,6 +123,12 @@ class OrePrefix(
                 block.ignore(it)
             }
 
+            // vanilla
+            block.ignore(CMaterials.lapis)
+            block.ignore(CMaterials.gold)
+            block.ignore(CMaterials.iron)
+            block.ignore(CMaterials.coal)
+            block.ignore(CMaterials.quartz)
             // silicone has 16 colored deco blocks, so disable auto-gen
             block.ignore(CMaterials.silicone)
 
