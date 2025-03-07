@@ -3,7 +3,7 @@ package com.github.trc.clayium.common.metatileentities
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
@@ -32,7 +32,7 @@ class ChemicalMetalSeparatorMetaTileEntity(
     override val exportItems = NotifiableItemStackHandler(this, 116, this, isExport = true)
     override val workable = RecipeLogicEnergy(this, recipeRegistry, clayEnergyHolder)
 
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         val slotsAndProgressBar = Row()
             .widthRel(0.8f).height(18 * 4)
             .align(Alignment.Center)

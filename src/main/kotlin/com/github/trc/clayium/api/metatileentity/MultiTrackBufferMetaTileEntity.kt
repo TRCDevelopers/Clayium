@@ -3,7 +3,7 @@ package com.github.trc.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
@@ -20,14 +20,7 @@ import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
-import com.github.trc.clayium.api.util.MachineIoMode.M_1
-import com.github.trc.clayium.api.util.MachineIoMode.M_2
-import com.github.trc.clayium.api.util.MachineIoMode.M_3
-import com.github.trc.clayium.api.util.MachineIoMode.M_4
-import com.github.trc.clayium.api.util.MachineIoMode.M_5
-import com.github.trc.clayium.api.util.MachineIoMode.M_6
-import com.github.trc.clayium.api.util.MachineIoMode.M_ALL
-import com.github.trc.clayium.api.util.MachineIoMode.NONE
+import com.github.trc.clayium.api.util.MachineIoMode.*
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.util.CNbtUtils
 import net.minecraft.item.ItemStack
@@ -41,7 +34,6 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
-import kotlin.Int
 import kotlin.math.max
 import kotlin.math.min
 
@@ -117,7 +109,7 @@ class MultiTrackBufferMetaTileEntity(
 
     private fun getTrackWithFilter(track: Int): IItemHandler = FilteredItemHandler(tracks[track], slotFilters[track])
 
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         (0..<trackRow).forEach { syncManager.registerSlotGroup("mt_buffer_inv_${it}", 1) }
         val slotsRowString = "I".repeat(trackInvSize)
         return ModularPanel("multi_track_buffer")

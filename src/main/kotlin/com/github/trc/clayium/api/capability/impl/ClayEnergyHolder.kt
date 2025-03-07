@@ -2,7 +2,7 @@ package com.github.trc.clayium.api.capability.impl
 
 import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.TextWidget
@@ -88,7 +88,7 @@ class ClayEnergyHolder(
             .background(IDrawable.EMPTY)
     }
 
-    fun createCeTextWidget(syncManager: GuiSyncManager): TextWidget {
+    fun createCeTextWidget(syncManager: PanelSyncManager): TextWidget {
         syncManager.syncValue("${this.name}.text", SyncHandlers.longNumber(
             { clayEnergy.energy },
             { clayEnergy = ClayEnergy(it) }

@@ -2,7 +2,7 @@ package com.github.trc.clayium.api.capability
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.api.widget.IGuiAction
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.github.trc.clayium.api.metatileentity.MTETrait
@@ -165,7 +165,7 @@ abstract class AbstractWorkable(
         itemOutputs = CUtils.readItems("itemOutputs", data)
     }
 
-    fun getProgressBar(syncManager: GuiSyncManager, showRecipes: Boolean = true): ProgressWidget {
+    fun getProgressBar(syncManager: PanelSyncManager, showRecipes: Boolean = true): ProgressWidget {
         syncManager.syncValue("requiredProgress", SyncHandlers.longNumber(::requiredProgress, ::requiredProgress::set))
         syncManager.syncValue("craftingProgress", SyncHandlers.longNumber(::currentProgress, ::currentProgress::set))
 

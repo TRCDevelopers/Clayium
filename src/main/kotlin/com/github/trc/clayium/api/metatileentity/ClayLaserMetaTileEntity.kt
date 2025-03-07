@@ -2,7 +2,7 @@ package com.github.trc.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
@@ -70,7 +70,7 @@ class ClayLaserMetaTileEntity(
         }
     }
 
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("clay_laser_tier$tier", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT - 40)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)

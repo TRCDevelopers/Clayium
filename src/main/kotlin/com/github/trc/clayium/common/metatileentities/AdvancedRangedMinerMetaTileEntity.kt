@@ -1,17 +1,13 @@
 package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
-import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.api.util.getCapability
-import com.github.trc.clayium.api.util.hasCapability
-import com.github.trc.clayium.api.util.toItemStack
+import com.github.trc.clayium.api.util.*
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.reflect.BlockReflect
 import com.github.trc.clayium.common.util.TransferUtils
@@ -54,7 +50,7 @@ class AdvancedRangedMinerMetaTileEntity(
         return true
     }
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(extraFilters, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) })
                 .background(ClayGuiTextures.FILTER_SLOT)

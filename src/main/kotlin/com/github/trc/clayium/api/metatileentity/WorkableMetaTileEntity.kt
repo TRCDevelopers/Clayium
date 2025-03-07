@@ -1,8 +1,8 @@
 package com.github.trc.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
@@ -56,7 +56,7 @@ abstract class WorkableMetaTileEntity(
         clearInventory(itemBuffer, clayEnergyHolder.energizedClayItemHandler)
     }
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         val slotsAndProgressBar = Row()
             .widthRel(0.7f).height(26)
             .align(Alignment.Center)

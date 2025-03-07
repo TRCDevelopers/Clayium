@@ -2,7 +2,7 @@ package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.TextWidget
@@ -58,7 +58,7 @@ class SolarClayFabricatorMetaTileEntity(
         super.onPlacement()
     }
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
                 .child(largeSlot(SyncHandlers.itemSlot(importItems, 0)
@@ -90,7 +90,7 @@ class SolarClayFabricatorMetaTileEntity(
             super.completeWork()
         }
 
-        fun createCeTextWidget(syncManager: GuiSyncManager): TextWidget {
+        fun createCeTextWidget(syncManager: PanelSyncManager): TextWidget {
             syncManager.syncValue("clayEnergy", SyncHandlers.longNumber(
                 { clayEnergy.energy },
                 { clayEnergy = ClayEnergy(it) }
