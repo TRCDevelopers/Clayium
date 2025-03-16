@@ -13,7 +13,7 @@ and published on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/clayi
 This mod is currently in alpha stage and may contain critical bugs including game crashes.
 
 ## Required Mods
-- [ModularUI](https://github.com/CleanroomMC/ModularUI) (currently incompatible with `v2.5.0-rc1`, please use `v2.4.3` instead)
+- [ModularUI](https://github.com/CleanroomMC/ModularUI) (v2.5.0-rc4)
 - [CodeChickenLib](https://github.com/TheCBProject/CodeChickenLib)
 - [Forgelin Continuous](https://github.com/ChAoSUnItY/Forgelin-Continuous)
 
