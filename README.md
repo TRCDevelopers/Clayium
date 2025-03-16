@@ -23,12 +23,11 @@ We have integration with [GroovyScript](https://github.com/CleanroomMC/GroovyScr
 See [wiki](https://bqc0n.github.io/clayium-wiki/) for more information.
 
 ## Ported Features
-Features have been ported up to tier 13 Clay Fabricator Mk3, 
-including PAN, except for those listed below.
+- up to tier 13 Clay Fabricator Mk3, except for those listed below.
+- PAN is implemented, but has many bugs.
 
 ## WIP Features
 - Auto Crafter
-- Auto Trader
 - Clay Crafting Board
 - Clay Gadgets
 - Clay Guns
