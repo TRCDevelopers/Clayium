@@ -20,7 +20,7 @@ object CPanRecipeFactory : IPanRecipeFactory {
         val recipe = metaTileEntity
             ?.getCapability(ClayiumTileCapabilities.RECIPE_LOGIC, null)
             ?.recipeProvider
-            ?.searchRecipe(Int.MAX_VALUE, stacks)
+            ?.searchRecipe(metaTileEntity.tier.numeric, stacks)
             ?: return null
 
         return PanRecipe(recipe.inputs, recipe.copyOutputs(), recipe.cePerTick * recipe.duration)
