@@ -13,14 +13,22 @@ import net.minecraft.world.IBlockAccess
 
 object CPanRecipeFactory : IPanRecipeFactory {
     override fun getEntry(world: IBlockAccess, pos: BlockPos, stacks: List<ItemStack>, laserEnergy: Double, laserCostPerTick: ClayEnergy): IPanRecipe? {
-        val metaTileEntity = world.getMetaTileEntity(pos)
-        if (metaTileEntity is ClayReactorMetaTileEntity) {
-            return getEntryClayReactor(metaTileEntity, stacks, laserEnergy, laserCostPerTick)
+        val metaTileEntity = world.getMetaTileEntity(pos) ?: return null
+
+        val multiblockCapability = metaTileEntity.getCapability(ClayiumTileCapabilities.MULTIBLOCK, null)
+        var machineTier = metaTileEntity.tier.numeric
+
+        if (multiblockCapability != null) {
+            if (metaTileEntity is ClayReactorMetaTileEntity) return getEntryClayReactor(metaTileEntity, stacks, laserEnergy, laserCostPerTick)
+            val multiblockCapability = metaTileEntity.getCapability(ClayiumTileCapabilities.MULTIBLOCK, null)
+                ?: return null
+            if (!multiblockCapability.structureFormed) return null
+            machineTier = multiblockCapability.recipeLogicTier
         }
         val recipe = metaTileEntity
-            ?.getCapability(ClayiumTileCapabilities.RECIPE_LOGIC, null)
+            .getCapability(ClayiumTileCapabilities.RECIPE_LOGIC, null)
             ?.recipeProvider
-            ?.searchRecipe(metaTileEntity.tier.numeric, stacks)
+            ?.searchRecipe(machineTier, stacks)
             ?: return null
 
         return PanRecipe(recipe.inputs, recipe.copyOutputs(), recipe.cePerTick * recipe.duration)

@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_STRUCTURE_VALIDITY
+import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.ITier
@@ -15,8 +16,10 @@ import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.common.blocks.BlockMachineHull
 import net.minecraft.client.resources.I18n
 import net.minecraft.network.PacketBuffer
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
+import net.minecraftforge.common.capabilities.Capability
 import kotlin.math.floor
 import kotlin.math.ln
 import kotlin.math.max
@@ -129,6 +132,13 @@ class MultiblockLogic(
     fun tierTextWidget(syncManager: PanelSyncManager): TextWidget {
         syncManager.syncValue("multiblock_tier", SyncHandlers.intNumber({ recipeLogicTier }, { recipeLogicTier = it }))
         return IKey.dynamic { I18n.format("tooltip.clayium.tier", recipeLogicTier) }.asWidgetResizing()
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === ClayiumTileCapabilities.MULTIBLOCK) {
+            return ClayiumTileCapabilities.MULTIBLOCK.cast(this)
+        }
+        return super.getCapability(capability, facing)
     }
 
     sealed interface BlockValidationResult {

@@ -1,6 +1,7 @@
 package com.github.trc.clayium.api.capability
 
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
+import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
@@ -27,6 +28,8 @@ object ClayiumTileCapabilities {
     lateinit var WORKABLE: Capability<AbstractWorkable>
     @CapabilityInject(AbstractRecipeLogic::class)
     lateinit var RECIPE_LOGIC: Capability<AbstractRecipeLogic>
+    @CapabilityInject(MultiblockLogic::class)
+    lateinit var MULTIBLOCK: Capability<MultiblockLogic>
 
     @CapabilityInject(IPanCable::class)
     lateinit var PAN_CABLE: Capability<IPanCable>

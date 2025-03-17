@@ -1,6 +1,7 @@
 package com.github.trc.clayium.api.capability
 
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
+import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
@@ -31,6 +32,7 @@ object SimpleCapabilityManager {
         registerCapabilityWithNoDefault(IControllable::class.java)
         registerCapabilityWithNoDefault(AbstractWorkable::class.java)
         registerCapabilityWithNoDefault(AbstractRecipeLogic::class.java)
+        registerCapabilityWithNoDefault(MultiblockLogic::class.java)
         registerCapabilityWithNoDefault(IPipeConnectable::class.java)
 
         registerCapabilityWithNoDefault(ISynchronizedInterface::class.java)
