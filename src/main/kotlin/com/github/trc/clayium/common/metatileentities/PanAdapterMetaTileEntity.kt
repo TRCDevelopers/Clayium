@@ -90,7 +90,7 @@ class PanAdapterMetaTileEntity(
         for (i in 0..<laserInventory.slots) {
             val stack = laserInventory.getStackInSlot(i)
             val laserMte = (CUtils.getMetaTileEntity(stack) as? ClayLaserMetaTileEntity)  ?: continue
-            val laser = laserMte.laserManager.irradiatingLaser ?: continue
+            val laser = laserMte.laserManager.sampleLaser
             val laserCostPerTick = laserMte.energyCost
             laserRgb[0] += (laser.red * stack.count)
             laserRgb[1] += (laser.green * stack.count)
