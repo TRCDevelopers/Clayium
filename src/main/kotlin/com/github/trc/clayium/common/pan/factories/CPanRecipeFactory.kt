@@ -38,6 +38,7 @@ object CPanRecipeFactory : IPanRecipeFactory {
     private fun getEntryClayReactor(clayReactor: ClayReactorMetaTileEntity, stacks: List<ItemStack>, laserEnergy: Double, laserCostPerTick: ClayEnergy): IPanRecipe? {
         val recipe = clayReactor.workable.recipeProvider.searchRecipe(Int.MAX_VALUE, stacks) ?: return null
 
+        // TODO: Ignore white laser
         val finalizedDuration = ceil(recipe.duration.toDouble() / (laserEnergy + 1.0)).toLong()
         return PanRecipe(recipe.inputs, recipe.copyOutputs(), (recipe.cePerTick + laserCostPerTick) * finalizedDuration)
     }

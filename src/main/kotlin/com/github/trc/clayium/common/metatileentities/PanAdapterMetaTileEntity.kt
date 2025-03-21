@@ -166,6 +166,7 @@ class PanAdapterMetaTileEntity(
         recipeInventories.forEachIndexed { i, h ->
             CUtils.writeItems(h, "panAdapterPattern$i", data)
         }
+        CUtils.writeItems(laserInventory, "laserInventory", data)
     }
 
     override fun readFromNBT(data: NBTTagCompound) {
@@ -173,6 +174,7 @@ class PanAdapterMetaTileEntity(
         recipeInventories.forEachIndexed { i, h ->
             CUtils.readItems(h, "panAdapterPattern$i", data)
         }
+        CUtils.readItems(laserInventory, "laserInventory", data)
     }
 
     override fun onFirstTick() {

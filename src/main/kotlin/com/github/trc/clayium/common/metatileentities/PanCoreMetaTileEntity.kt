@@ -111,6 +111,7 @@ class PanCoreMetaTileEntity(
         }
     }
 
+    // TODO: レシピ出力個数を考慮してコストを算出する
     private fun refreshDuplicationEntries() {
         duplicationEntries.clear()
         duplicationEntries.putAll(defaultDuplicationEntries)
