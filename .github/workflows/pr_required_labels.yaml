@@ -26,6 +26,8 @@ jobs:
       pull-requests: read # needed to utilize required-labels
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Auto Labeling
         uses: actions/labeler@v5.0.0
       - name: Check for Merge-Blocking Labels # blocks merge if present
