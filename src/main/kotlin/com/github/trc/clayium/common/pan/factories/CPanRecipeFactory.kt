@@ -20,10 +20,8 @@ object CPanRecipeFactory : IPanRecipeFactory {
         var machineTier = metaTileEntity.tier.numeric
 
         if (multiblockCapability != null) {
-            if (metaTileEntity is ClayReactorMetaTileEntity) return getEntryClayReactor(metaTileEntity, stacks, laserEnergy, laserCostPerTick)
-            val multiblockCapability = metaTileEntity.getCapability(ClayiumTileCapabilities.MULTIBLOCK, null)
-                ?: return null
             if (!multiblockCapability.structureFormed) return null
+            if (metaTileEntity is ClayReactorMetaTileEntity) return getEntryClayReactor(metaTileEntity, stacks, laserEnergy, laserCostPerTick)
             machineTier = multiblockCapability.recipeLogicTier
         }
         val recipe = metaTileEntity

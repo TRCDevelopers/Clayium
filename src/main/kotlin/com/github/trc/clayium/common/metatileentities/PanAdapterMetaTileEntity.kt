@@ -103,6 +103,13 @@ class PanAdapterMetaTileEntity(
         return PanAdapterMetaTileEntity(metaTileEntityId, tier)
     }
 
+    override fun update() {
+        super.update()
+        if (offsetTimer % 20 == 0L) {
+            refreshEntries()
+        }
+    }
+
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         return when {
             capability === ClayiumTileCapabilities.PAN_CABLE -> capability.cast(IPanCable.INSTANCE)
