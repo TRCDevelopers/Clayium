@@ -111,11 +111,20 @@ class PanCoreMetaTileEntity(
         }
     }
 
-    // TODO: レシピ出力個数を考慮してコストを算出する
+    // TODO: 機械の稼働コストを考慮する
     private fun refreshDuplicationEntries() {
         duplicationEntries.clear()
         duplicationEntries.putAll(defaultDuplicationEntries)
 
+        // --- Algorithm ---
+        // 1. Gather all PanRecipes from PanAdapters.
+        // 2. Traverse entries from defaultDuplicationEntries. Create queue.
+        // 2-1. If all ingredients of a recipe are verified (already duplicatable), add the result to the queue.
+        // 2-2. Calculate the cost etc.
+        // 2-3. repeat while the queue is not empty.
+        // 3. done.
+
+        // -- PART 1: Gather all PanRecipes from PanAdapters --
         // [PanRecipeInternal] has [PanIngredient]s.
         // PanIngredient has a flag that indicates whether the ingredient is duplicatable or not.
         val internalRecipes = panRecipes.map { PanRecipeInternal(it) }
@@ -141,6 +150,7 @@ class PanCoreMetaTileEntity(
             }
         }
 
+        // -- PART 2, 3 --
         val duplicatablesQueue = ArrayDeque<ItemAndMeta>()
         val walked = mutableSetOf<ItemAndMeta>()
         duplicatablesQueue.addAll(defaultDuplicationEntries.keys)
@@ -154,23 +164,23 @@ class PanCoreMetaTileEntity(
             val childRecipes = result2Dependants[parent] ?: continue
             for (childRecipe in childRecipes) {
                 var allVerified = true
-                var totalCost = ClayEnergy.ZERO
+                var totalCostOfChildren = ClayEnergy.ZERO
                 for (ing in childRecipe.ingsWithFlag) {
                     val ingIsChild = ing.ingredient.testIgnoringAmount(parent)
                     if (ingIsChild) {
                         ing.verified = true
-                        val costByThis = duplicationEntries[parent]!!.ce
-                        val currentCostOfIng = ing.cost
-                        val newCost = ClayEnergy(min(costByThis.energy, currentCostOfIng.energy))
-                        totalCost += newCost
+                        val costThisTime = duplicationEntries[parent]!!.ce
+                        val currentCostOfIngredient = ing.cost
+                        val newCost = ClayEnergy(min(costThisTime.energy, currentCostOfIngredient.energy))
+                        totalCostOfChildren += newCost
                     }
                     allVerified = allVerified && ing.verified
                 }
                 if (allVerified) {
                     val panRecipe = childRecipe.panRecipe
-                    for (result in panRecipe.results.map(::ItemAndMeta)) {
+                    for ((result, count) in panRecipe.results.map { Pair(ItemAndMeta(it), it.count) }) {
                         duplicatablesQueue.add(result)
-                        val cost = (totalCost / panRecipe.results.sumOf { it.count }) + panRecipe.requiredClayEnergy
+                        val cost = (totalCostOfChildren + panRecipe.requiredClayEnergy) / count
                         duplicationEntries[result] = PanDuplicationEntry(cost)
                     }
                 }
