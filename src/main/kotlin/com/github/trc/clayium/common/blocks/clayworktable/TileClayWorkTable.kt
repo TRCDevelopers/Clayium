@@ -47,16 +47,15 @@ class TileClayWorkTable : TileEntity() {
     }
 
     fun canPushButton(id: Int): Boolean {
-        return canStartCraft(itemHandler.getStackInSlot(0), ClayWorkTableMethod.fromId(id)
-            ?: throw IllegalArgumentException("Invalid button id."))
+        return canStartCraft(itemHandler.getStackInSlot(0), ClayWorkTableMethod.fromId(id) ?: return false)
     }
 
     fun pushButton(clicker: EntityPlayer, id: Int) {
         val input = itemHandler.getStackInSlot(0)
         val method: ClayWorkTableMethod = ClayWorkTableMethod.fromId(id)
-            ?: throw IllegalArgumentException("Invalid button id.")
+            ?: return
         val recipe = CWTRecipes.getClayWorkTableRecipe(input, method)
-            ?: throw NullPointerException("Button pushed without any valid recipe! This should not happen.")
+            ?: throw NullPointerException("Button pushed without any valid recipe! This should not happen. Please report this at the issue tracker.")
         if (currentRecipe !== recipe) {
             currentRecipe = recipe
             requiredProgress = recipe.clicks
