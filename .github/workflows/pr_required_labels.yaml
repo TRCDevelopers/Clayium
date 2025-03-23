@@ -23,9 +23,13 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      pull-requests: read # needed to utilize required-labels
+      pull-requests: write
 
     steps:
+      - name: Auto Labeling
+        uses: actions/labeler@v5.0.0
+        with:
+          configuration-path: .github/labeler.yaml
       - name: Check for Merge-Blocking Labels # blocks merge if present
         uses: mheap/github-action-required-labels@5847eef68201219cf0a4643ea7be61e77837bbce # 5.4.1
         with:
