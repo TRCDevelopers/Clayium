@@ -388,7 +388,7 @@ machine.clayium.electrolysis_reactor=%s電気精錬機
 machine.clayium.distributor=%s分配機
 machine.clayium.distributor.tooltip1=内部のアイテムを出来るだけ均等に分配しようとする
 
-machine.clayium.laser_proxy=OPA レーザーインターフェース
+machine.clayium.laser_proxy=%sレーザーインターフェース
 machine.clayium.laser_proxy.tooltip1=粘土反応炉に使用
 machine.clayium.laser_proxy.tooltip2=__DETAIL__
 machine.clayium.laser_proxy.tooltip3=マルチブロック装置でなくても、
