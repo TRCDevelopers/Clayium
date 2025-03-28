@@ -508,7 +508,7 @@ object MachineBlockRecipeLoader {
             val clay = if (mte.tier.numeric == 1) CMaterials.clay else CMaterials.denseClay
             val ingMap = mutableMapOf(
                 'p' to UnificationEntry(OrePrefix.plate, clay), 'P' to UnificationEntry(OrePrefix.largePlate, clay),
-                'g' to UnificationEntry(OrePrefix.gear, clay), 'G' to UnificationEntry(OrePrefix.cuttingHead, clay),
+                'g' to UnificationEntry(OrePrefix.gear, clay), 'G' to UnificationEntry(OrePrefix.grindingHead, clay),
                 's' to UnificationEntry(OrePrefix.stick, clay), 'S' to UnificationEntry(OrePrefix.stick, clay),
                 'M' to UnificationEntry(OrePrefix.spindle, clay),
                 'c' to circuits[mte.tier.numeric], 'C' to UnificationEntry(OrePrefix.cuttingHead, clay),
