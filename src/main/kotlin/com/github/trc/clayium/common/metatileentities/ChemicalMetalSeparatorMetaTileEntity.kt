@@ -19,7 +19,7 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import net.minecraft.client.resources.I18n
+import com.github.trc.clayium.common.util.SidelessI18n
 import net.minecraft.util.ResourceLocation
 
 class ChemicalMetalSeparatorMetaTileEntity(
@@ -59,7 +59,7 @@ class ChemicalMetalSeparatorMetaTileEntity(
                     .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
                     .child(IKey.dynamic {
                         // if empty string, a bug occurs.
-                        if (overclock != 1.0) I18n.format("gui.clayium.overclock", overclock) else " "
+                        if (overclock != 1.0) SidelessI18n.format("gui.clayium.overclock", overclock) else " "
                     }.asWidgetResizing().alignment(Alignment.CenterRight).align(Alignment.BottomRight))
                     .child(slotsAndProgressBar)
                     .child(clayEnergyHolder.createSlotWidget()

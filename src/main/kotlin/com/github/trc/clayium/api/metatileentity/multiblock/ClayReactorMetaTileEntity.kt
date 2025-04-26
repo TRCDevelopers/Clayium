@@ -17,8 +17,8 @@ import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.common.recipe.registry.CRecipes
+import com.github.trc.clayium.common.util.SidelessI18n
 import com.github.trc.clayium.common.util.UtilLocale
-import net.minecraft.client.resources.I18n
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
@@ -81,7 +81,7 @@ class ClayReactorMetaTileEntity(
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         syncManager.syncValue("clayLaser", ClayLaserSyncValue(::laser, ::laser::set))
         return super.buildMainParentWidget(syncManager)
-            .child(IKey.dynamic { I18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.energy?.toLong() ?: 0L)) }.asWidgetResizing()
+            .child(IKey.dynamic { SidelessI18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.energy?.toLong() ?: 0L)) }.asWidgetResizing()
                 .pos(102, 53))
             .child(multiblockLogic.tierTextWidget(syncManager)
                 .alignX(Alignment.Center.x).bottom(12))

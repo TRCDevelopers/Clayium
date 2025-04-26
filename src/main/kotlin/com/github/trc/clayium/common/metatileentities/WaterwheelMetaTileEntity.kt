@@ -19,8 +19,8 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.common.config.ConfigCore
+import com.github.trc.clayium.common.util.SidelessI18n
 import net.minecraft.block.BlockLiquid
-import net.minecraft.client.resources.I18n
 import net.minecraft.init.Blocks
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -88,9 +88,9 @@ class WaterwheelMetaTileEntity(
                         .align(Alignment.TopLeft))
                     .child(IKey.lang("container.inventory").asWidget()
                         .align(Alignment.BottomLeft))
-                    .child(IKey.dynamic { I18n.format("gui.clayium.waterwheel.waters", waterCount) }.asWidget()
+                    .child(IKey.dynamic { SidelessI18n.format("gui.clayium.waterwheel.waters", waterCount) }.asWidget()
                         .widthRel(0.3f).align(Alignment.CenterRight))
-                    .child(IKey.dynamic { I18n.format("gui.clayium.waterwheel.progress", progress) }.asWidget()
+                    .child(IKey.dynamic { SidelessI18n.format("gui.clayium.waterwheel.progress", progress) }.asWidget()
                         .widthRel(0.6f).align(Alignment.CenterLeft)))
                 .child(SlotGroupWidget.playerInventory(0)))
     }

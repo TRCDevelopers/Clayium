@@ -25,6 +25,7 @@ import com.github.trc.clayium.common.blocks.BlockCaReactorCoil
 import com.github.trc.clayium.common.blocks.BlockCaReactorHull
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.registry.CaReactorRecipeRegistry
+import com.github.trc.clayium.common.util.SidelessI18n
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import net.minecraft.client.resources.I18n
 import net.minecraft.util.EnumFacing
@@ -199,10 +200,10 @@ class CaReactorMetaTileEntity(
                     syncManager.player.sendMessage(err)
                 })
             )
-            .child(IKey.dynamic { I18n.format("gui.clayium.ca_reactor.efficiency", NumberFormat.formatWithMaxDigits(efficiency)) }
+            .child(IKey.dynamic { SidelessI18n.format("gui.clayium.ca_reactor.efficiency", NumberFormat.formatWithMaxDigits(efficiency)) }
                 .asWidgetResizing().alignment(Alignment.CenterRight).alignX(Alignment.BottomRight.x).bottom(14)
             )
-            .child(IKey.dynamic { I18n.format("gui.clayium.ca_reactor.rank_size", avgHullRank, hullCount) }
+            .child(IKey.dynamic { SidelessI18n.format("gui.clayium.ca_reactor.rank_size", avgHullRank, hullCount) }
                 .asWidgetResizing().left(0).top(10))
     }
 

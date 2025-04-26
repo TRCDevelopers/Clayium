@@ -13,7 +13,7 @@ import com.github.trc.clayium.api.util.CUtils
  * **use [net.minecraft.client.resources.I18n] or [net.minecraft.util.text.TextComponentTranslation] whenever possible.**
  */
 @Suppress("DEPRECATION")
-object BothSideI18n {
+object SidelessI18n {
     fun format(key: String, vararg args: Any): String {
         return if (CUtils.isClientSide) {
             net.minecraft.client.resources.I18n.format(key, *args)

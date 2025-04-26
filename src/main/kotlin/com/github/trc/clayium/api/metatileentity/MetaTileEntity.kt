@@ -37,7 +37,7 @@ import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.items.filter.FilterType
-import com.github.trc.clayium.common.util.BothSideI18n
+import com.github.trc.clayium.common.util.SidelessI18n
 import com.github.trc.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import net.minecraft.block.Block
@@ -628,10 +628,10 @@ abstract class MetaTileEntity(
     }
 
     open fun getItemStackDisplayName(): String {
-        return if (BothSideI18n.hasKey("${this.translationKey}.${tier.lowerName}")) {
-            BothSideI18n.format("${this.translationKey}.${tier.lowerName}")
+        return if (SidelessI18n.hasKey("${this.translationKey}.${tier.lowerName}")) {
+            SidelessI18n.format("${this.translationKey}.${tier.lowerName}")
         } else {
-            BothSideI18n.format(this.translationKey, BothSideI18n.format(this.tier.prefixTranslationKey))
+            SidelessI18n.format(this.translationKey, SidelessI18n.format(this.tier.prefixTranslationKey))
         }
     }
 
@@ -726,7 +726,7 @@ abstract class MetaTileEntity(
             .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
             .child(IKey.dynamic {
                 // if empty string, a bug occurs.
-                if (overclock != 1.0) I18n.format("gui.clayium.overclock", overclock) else " "
+                if (overclock != 1.0) SidelessI18n.format("gui.clayium.overclock", overclock) else " "
             }.asWidgetResizing().alignment(Alignment.CenterRight).align(Alignment.BottomRight))
     }
 

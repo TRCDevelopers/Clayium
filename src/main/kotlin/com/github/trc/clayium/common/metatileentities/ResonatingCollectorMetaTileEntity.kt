@@ -18,7 +18,7 @@ import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.clayiumId
-import net.minecraft.client.resources.I18n
+import com.github.trc.clayium.common.util.SidelessI18n
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 
@@ -53,7 +53,7 @@ class ResonatingCollectorMetaTileEntity(
         resonanceManager.sync(syncManager)
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic {
-                I18n.format("gui.$MOD_ID.resonance", NumberFormat.formatWithMaxDigits(resonanceManager.resonance))
+                SidelessI18n.format("gui.$MOD_ID.resonance", NumberFormat.formatWithMaxDigits(resonanceManager.resonance))
             }.asWidgetResizing()
                 .align(Alignment.BottomRight))
             .child(SlotGroupWidget.builder()

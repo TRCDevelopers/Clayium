@@ -3,7 +3,7 @@ package com.github.trc.clayium.api.unification.ore
 import com.github.trc.clayium.api.FALLBACK
 import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.unification.material.*
-import com.github.trc.clayium.common.util.BothSideI18n
+import com.github.trc.clayium.common.util.SidelessI18n
 import com.google.common.base.CaseFormat
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap
 import java.util.function.Predicate
@@ -57,10 +57,10 @@ class OrePrefix(
 
     fun getLocalizedName(material: CMaterial): String {
         val specialKey = "${material.translationKey}.${this.snake}"
-        if (BothSideI18n.hasKey(specialKey)) {
-            return BothSideI18n.format(specialKey)
+        if (SidelessI18n.hasKey(specialKey)) {
+            return SidelessI18n.format(specialKey)
         }
-        return BothSideI18n.format("${MOD_ID}.ore_prefix.${snake}", BothSideI18n.format(material.translationKey))
+        return SidelessI18n.format("${MOD_ID}.ore_prefix.${snake}", SidelessI18n.format(material.translationKey))
     }
 
     override fun toString(): String {

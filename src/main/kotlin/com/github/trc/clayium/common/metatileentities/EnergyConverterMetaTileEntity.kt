@@ -20,6 +20,7 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.config.ConfigCore
+import com.github.trc.clayium.common.util.SidelessI18n
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemStack
@@ -96,11 +97,11 @@ class EnergyConverterMetaTileEntity(
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .left(0).bottom(10))
             .child(Column().widthRel(1f).height(8 * 3 + 3 * 2 + 10).align(Alignment.Center)
-                .child(IKey.dynamic { I18n.format("gui.clayium.energy_converter.storage", feStorage.energyStored, feStorage.maxEnergyStored) }
+                .child(IKey.dynamic { SidelessI18n.format("gui.clayium.energy_converter.storage", feStorage.energyStored, feStorage.maxEnergyStored) }
                     .asWidget().widthRel(1f))
-                .child(IKey.dynamic { I18n.format("gui.clayium.energy_converter.rate", cePerTick.format(), fePerTick) }
+                .child(IKey.dynamic { SidelessI18n.format("gui.clayium.energy_converter.rate", cePerTick.format(), fePerTick) }
                     .asWidget().widthRel(1f).margin(0, 3))
-                .child(IKey.dynamic { I18n.format("gui.clayium.energy_converter.output", fePerTick) }
+                .child(IKey.dynamic { SidelessI18n.format("gui.clayium.energy_converter.output", fePerTick) }
                     .asWidget().widthRel(1f))
             )
     }

@@ -21,7 +21,7 @@ import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.config.ConfigTierBalance
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.common.util.CNbtUtils
-import net.minecraft.client.resources.I18n
+import com.github.trc.clayium.common.util.SidelessI18n
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
@@ -72,7 +72,7 @@ class CentrifugeMetaTileEntity(
                 .align(Alignment.TopLeft))
             .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
             .child(IKey.dynamic {
-                if (overclock != 1.0) I18n.format("gui.clayium.overclock", overclock) else " "
+                if (overclock != 1.0) SidelessI18n.format("gui.clayium.overclock", overclock) else " "
             }.asWidgetResizing().alignment(Alignment.CenterRight).align(Alignment.BottomRight))
             .child(slotsAndProgressBar.align(Alignment.Center))
             .child(clayEnergyHolder.createCeTextWidget(syncManager)

@@ -16,7 +16,7 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.ProxyMetaTileEntityBase
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
-import net.minecraft.client.resources.I18n
+import com.github.trc.clayium.common.util.SidelessI18n
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -101,7 +101,7 @@ class RedstoneProxyMetaTileEntity(
                 .align(Alignment.Center).widthRel(0.7f).height(24)
                 .length(Mode.entries.size)
                 .value(IntSyncValue({ mode.ordinal }, { i: Int -> mode = Mode.entries[i] }))
-                .overlay(IKey.dynamic { I18n.format(mode.translationKey) })
+                .overlay(IKey.dynamic { SidelessI18n.format(mode.translationKey) })
             )
     }
 
