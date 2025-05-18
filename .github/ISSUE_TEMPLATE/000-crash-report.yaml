@@ -64,8 +64,8 @@ body:
     attributes:
       label: Crash Report
       description: |
-        You can find the crash report in `(installation)/crash-reports/`, if one was created. Additionally, please attach `installation/logs/latest.log`. If either or both files do not exist, state such. Please link to a paste site with their content, such as [mclo.gs](https://mclo.gs), [GitHub Gists](https://gist.github.com), [Pastebin](https://pastebin.com). **Do not paste the contents of either these files directly into the text box.**
-        クラッシュレポートは、生成されていれば`(インストール先)/crash-reports/`に生成されます。加えて、`(インストール先)/logs/latest.log`を添付してください。どちらか、または両方のファイルが存在しない場合は、その旨を記載してください。[mclo.gs](https://mclo.gs)、[GitHub Gists](https://gist.github.com)、[Pastebin](https://pastebin.com)などのペーストサイトにリンクしてください。**これらのファイルの内容を直接テキストボックスに貼り付けないでください。**
+        You can find the crash report in `(installation)/crash-reports/`, if one was created. Additionally, please attach `(installation)/logs/latest.log`. If either or both files do not exist, state such. Please link to a paste site with their content, such as [mclo.gs](https://mclo.gs), [GitHub Gists](https://gist.github.com), [Pastebin](https://pastebin.com). **Do not paste the contents of either these files directly into the text box.**
+        クラッシュレポートは、生成されていれば `(インストール先)/crash-reports/` に生成されます。加えて、 `(インストール先)/logs/latest.log` を添付してください。どちらか、または両方のファイルが存在しない場合は、その旨を記載してください。これらファイルの内容は[mclo.gs](https://mclo.gs)、[GitHub Gists](https://gist.github.com)、[Pastebin](https://pastebin.com)などのペーストサイトにリンクしてください。**これらのファイルの内容を直接テキストボックスに貼り付けないでください。**
       placeholder: "Example: a link to a paste site with the crash report and latest.log."
     validations:
       required: true
