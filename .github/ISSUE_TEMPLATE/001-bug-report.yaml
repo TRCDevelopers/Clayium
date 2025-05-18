@@ -84,7 +84,7 @@ body:
       label: Additional Information
       description: |
         Any additional information you wish to provide. Please add anything which did not fit into the other sections here.
-        追加情報や、その他のセクションに収まらなかった情報があれば入力してください。
+        追加情報や、他のセクションに収まらなかった情報があれば入力してください。
       placeholder: "Example: This is likely caused by X because... / 例: おそらくXが原因で..."
     validations:
       required: false
