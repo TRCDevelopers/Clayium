@@ -8,7 +8,7 @@ body:
       label: Mod Version
       description: |
         The version of Clayium Unofficial you were using when this bug was encountered. If you do not know where to find this, look for the mod jar file in the mods folder, or in the mods viewer in-game.
-        バグに遭遇したときに利用していたClayium Unofficialのバージョンを入力して下さい。modsフィルだの中にあるModのjarファイルや、ゲーム内の「Mods」から確認できます。
+        バグに遭遇したときに利用していたClayium Unofficialのバージョンを入力してください。modsフォルダの中にあるModのjarファイルや、ゲーム内の「Mods」から確認できます。
       placeholder: "vX.Y.Z"
     validations:
       required: true
@@ -16,7 +16,9 @@ body:
     id: environment
     attributes:
       label: Environment
-      description: "How you were playing on the world. Typical answers include: Singleplayer, Open to LAN, Forge Server, Sponge Server, or Mohist Server."
+      description: |
+        How you were playing on the world. Typical answers include: Singleplayer, Open to LAN, Forge Server, Sponge Server, or Mohist Server.
+        どのような環境でプレイしていたかを入力してください。例: シングルプレイ、LANに公開、Forgeサーバー、Spongeサーバー、Mohistサーバー。
       placeholder: "Example: Singleplayer"
     validations:
       required: true
@@ -24,7 +26,9 @@ body:
     id: crash
     attributes:
       label: Side Crashed
-      description: Where the game crashed.
+      description: |
+        Where the game crashed.
+        何がクラッシュしたか入力してください。
       options:
         - "Client"
         - "Server"
@@ -36,7 +40,9 @@ body:
     id: world
     attributes:
       label: New Worlds
-      description: Does this crash occur on a newly generated world?
+      description: |
+        Does this crash occur on a newly generated world?
+        新しく生成したワールドでもクラッシュするか入力してください。
       options:
         - "Yes"
         - "No"
@@ -47,7 +53,9 @@ body:
     id: reproduction
     attributes:
       label: Steps to Reproduce
-      description: How to reproduce the crash.
+      description: |
+        How to reproduce the crash.
+        クラッシュを再現する手順を入力してください。
       placeholder: "Example: 1) I did X..."
     validations:
       required: true
@@ -55,7 +63,9 @@ body:
     id: crash-report
     attributes:
       label: Crash Report
-      description: "You can find the crash report in `installation/crash-reports/`, if one was created. Additionally, please attach `installation/logs/latest.log`. If either or both files do not exist, state such. Please link to a paste site with their content, such as mclo.gs, GitHub Gists or Pastebin. **Do not paste the contents of either these files directly into the text box.**"
+      description: |
+        You can find the crash report in `(installation)/crash-reports/`, if one was created. Additionally, please attach `installation/logs/latest.log`. If either or both files do not exist, state such. Please link to a paste site with their content, such as mclo.gs, GitHub Gists or Pastebin. **Do not paste the contents of either these files directly into the text box.**
+        クラッシュレポートは、生成されていれば`(インストール先)/crash-reports/`に生成されます。加えて、`(インストール先)/logs/latest.log`を添付してください。どちらか、または両方のファイルが存在しない場合は、その旨を記載してください。[mclo.gs](https://mclo.gs)、GitHub Gists、Pastebinなどのペーストサイトにリンクしてください。**これらのファイルの内容を直接テキストボックスに貼り付けないでください。**
       placeholder: "Example: a link to a paste site with the crash report and latest.log."
     validations:
       required: true
@@ -63,10 +73,14 @@ body:
     id: additional-info
     attributes:
       label: Additional Information
-      description: Any additional information you wish to provide. Please add anything which did not fit into the other sections here.
+      description: |
+        Any additional information you wish to provide. Please add anything which did not fit into the other sections here.
+        追加情報があれば入力してください。また、その他のセクションに収まらなかった情報を入力してください。
       placeholder: "Example: This is likely caused by X because..."
     validations:
       required: false
   - type: markdown
     attributes:
-      value: Thank you for taking the time to fill out this crash report.
+      value: |
+        Thank you for taking the time to fill out this crash report.
+        ご記入いただきありがとうございます。
