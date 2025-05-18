@@ -6,7 +6,9 @@ body:
     id: version
     attributes:
       label: Mod Version
-      description: The version of Clayium Unofficial you are using for suggesting a new feature. If you do not know where to find this, look for the mod jar file in the mods folder, or in the mods viewer in-game.
+      description: |
+        The version of Clayium Unofficial you are using for suggesting a new feature. If you do not know where to find this, look for the mod jar file in the mods folder, or in the mods viewer in-game.
+        あなたが今利用しているClayium Unofficialのバージョンを入力してください。modsフォルダの中にあるModのjarファイルや、ゲーム内の「Mods」から確認できます。
       placeholder: "vX.Y.Z"
     validations:
       required: true
@@ -14,7 +16,9 @@ body:
     id: problem
     attributes:
       label: Related Problem
-      description: If the feature you wish to change is related to a problem, please desscribe it. Leave this field blank if it is not related to a problem.
+      description: |
+        If the feature you wish to change is related to a problem, please desscribe it. Leave this field blank if it is not related to a problem.
+        もし、希望する機能が何かしらプレイするときに生じる問題に関連している場合は、その問題を入力してください。問題に関連していない場合は、この項目は空欄のままで構いません。
       placeholder: "Example: I'm always frustrated when..."
     validations:
       required: false
@@ -22,7 +26,9 @@ body:
     id: solution
     attributes:
       label: Your Solution
-      description: Describe the solution you would like to have happen.
+      description: |
+        Describe the solution you would like to have happen.
+        どのような解決策を望んでいるかを入力してください。
       placeholder: "Example: If I could..."
     validations:
       required: true
@@ -30,10 +36,14 @@ body:
     id: additional-info
     attributes:
       label: Additional Information
-      description: Any additional information you wish to provide. Please add anything which did not fit into the other sections here.
+      description: |
+        Any additional information you wish to provide. Please add anything which did not fit into the other sections here.
+        追加情報があれば入力してください。また、その他のセクションに収まらなかった情報を入力してください。
       placeholder: "Example: This is likely achieveable by doing X because..."
     validations:
       required: false
   - type: markdown
     attributes:
-      value: Thank you for taking the time to fill out this feature request.
+      value: |
+        Thank you for taking the time to fill out this crash report.
+        ご記入いただきありがとうございます。
