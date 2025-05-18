@@ -28,7 +28,7 @@ body:
       label: Your Solution
       description: |
         Describe the solution you would like to have happen.
-        どのような解決策を望んでいるかを入力してください。
+        どのような機能の実装を望みますか？
       placeholder: "Example: If I could... / 例: Aができれば..."
     validations:
       required: true
