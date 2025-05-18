@@ -55,7 +55,7 @@ body:
       description: |
         What you expected to happen. Attach screenshots here as necessary.
         想定される正常な動作を入力してください。必要に応じてスクリーンショットを添付してください。
-      placeholder: "Example: Expected to produce X by consuming Y."
+      placeholder: "Example: Expected to produce X by consuming Y. / 例: Yを消費してXが生成される。"
     validations:
       required: true
   - type: textarea
@@ -65,7 +65,7 @@ body:
       description: |
         What happened despite your expectations. Attach screenshots here as necessary.
         実際の動作を入力してください。必要に応じてスクリーンショットを添付してください。
-      placeholder: "Example: Produced one X but Y was not consumed."
+      placeholder: "Example: Produced one X but Y was not consumed. / 例: Xが1つ生成されたがYは消費されなかった。"
     validations:
       required: true
   - type: textarea
@@ -75,7 +75,7 @@ body:
       description: |
         How to reproduce the bug.
         バグの再現手順を入力してください。
-      placeholder: "Example: 1) I did X..."
+      placeholder: "Example: 1) I did X... / 例: 1) まず、Xを行い..."
     validations:
       required: true
   - type: textarea
@@ -85,7 +85,7 @@ body:
       description: |
         Any additional information you wish to provide. Please add anything which did not fit into the other sections here.
         追加情報があれば入力してください。また、その他のセクションに収まらなかった情報を入力してください。
-      placeholder: "Example: This is likely caused by X because..."
+      placeholder: "Example: This is likely caused by X because... / 例: おそらくXが原因で..."
     validations:
       required: false
   - type: markdown

@@ -19,7 +19,7 @@ body:
       description: |
         If the feature you wish to change is related to a problem, please desscribe it. Leave this field blank if it is not related to a problem.
         もし、希望する機能が何かしらプレイするときに生じる問題に関連している場合は、その問題を入力してください。問題に関連していない場合は、この項目は空欄のままで構いません。
-      placeholder: "Example: I'm always frustrated when..."
+      placeholder: "Example: I'm always frustrated when... / 例: Xを行うのが非常に面倒で..."
     validations:
       required: false
   - type: textarea
@@ -29,7 +29,7 @@ body:
       description: |
         Describe the solution you would like to have happen.
         どのような解決策を望んでいるかを入力してください。
-      placeholder: "Example: If I could..."
+      placeholder: "Example: If I could... / 例: Aができれば..."
     validations:
       required: true
   - type: textarea
@@ -39,7 +39,7 @@ body:
       description: |
         Any additional information you wish to provide. Please add anything which did not fit into the other sections here.
         追加情報があれば入力してください。また、その他のセクションに収まらなかった情報を入力してください。
-      placeholder: "Example: This is likely achieveable by doing X because..."
+      placeholder: "Example: This is likely achieveable by doing X because... / 例: おそらくYを行うことで実現できると思います。"
     validations:
       required: false
   - type: markdown

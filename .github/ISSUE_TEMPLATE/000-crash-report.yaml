@@ -56,7 +56,7 @@ body:
       description: |
         How to reproduce the crash.
         クラッシュを再現する手順を入力してください。
-      placeholder: "Example: 1) I did X..."
+      placeholder: "Example: 1) I did X... / 例: 1) まず、Xを行い..."
     validations:
       required: true
   - type: textarea
@@ -66,7 +66,7 @@ body:
       description: |
         You can find the crash report in `(installation)/crash-reports/`, if one was created. Additionally, please attach `(installation)/logs/latest.log`. If either or both files do not exist, state such. Please link to a paste site with their content, such as [mclo.gs](https://mclo.gs), [GitHub Gists](https://gist.github.com), [Pastebin](https://pastebin.com). **Do not paste the contents of either these files directly into the text box.**
         クラッシュレポートは、生成されていれば `(インストール先)/crash-reports/` に生成されます。加えて、 `(インストール先)/logs/latest.log` を添付してください。どちらか、または両方のファイルが存在しない場合は、その旨を記載してください。これらファイルの内容は[mclo.gs](https://mclo.gs)、[GitHub Gists](https://gist.github.com)、[Pastebin](https://pastebin.com)などのペーストサイトにリンクしてください。**これらのファイルの内容を直接テキストボックスに貼り付けないでください。**
-      placeholder: "Example: a link to a paste site with the crash report and latest.log."
+      placeholder: "Example: a link to a paste site with the crash report and latest.log. / 例: クラッシュレポートとlatest.logのペーストサイトへのリンク"
     validations:
       required: true
   - type: textarea
@@ -76,7 +76,7 @@ body:
       description: |
         Any additional information you wish to provide. Please add anything which did not fit into the other sections here.
         追加情報があれば入力してください。また、その他のセクションに収まらなかった情報を入力してください。
-      placeholder: "Example: This is likely caused by X because..."
+      placeholder: "Example: This is likely caused by X because... / 例: おそらくXが原因で..."
     validations:
       required: false
   - type: markdown
