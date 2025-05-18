@@ -27,8 +27,8 @@ body:
     attributes:
       label: New Worlds
       description: |
-        Does this crash occur on a newly generated world?
-        新しく生成したワールドでもクラッシュするか入力してください。
+        Does this bug occur on a newly generated world?
+        新しく生成したワールドでもバグが発生するか入力してください。
       options:
         - "Yes"
         - "No"
@@ -41,7 +41,7 @@ body:
       label: Cross-Mod Interaction
       description: |
         Does this bug occur because of another mod installed alongside Clayium Unofficial?
-        このバグはClayium UnofficialのほかにインストールされているModが原因で発生しているか入力してください。
+        このバグは、Clayium Unofficial以外にインストールされているModが原因で発生していますか？
       options:
         - "Yes"
         - "No"
@@ -84,7 +84,7 @@ body:
       label: Additional Information
       description: |
         Any additional information you wish to provide. Please add anything which did not fit into the other sections here.
-        追加情報があれば入力してください。また、その他のセクションに収まらなかった情報を入力してください。
+        追加情報や、その他のセクションに収まらなかった情報があれば入力してください。
       placeholder: "Example: This is likely caused by X because... / 例: おそらくXが原因で..."
     validations:
       required: false
