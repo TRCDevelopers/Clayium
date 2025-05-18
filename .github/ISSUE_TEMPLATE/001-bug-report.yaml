@@ -6,7 +6,9 @@ body:
     id: version
     attributes:
       label: Mod Version
-      description: The version of Clayium Unofficial you were using when this bug was encountered. If you do not know where to find this, look for the mod jar file in the mods folder, or in the mods viewer in-game.
+      description: |
+        The version of Clayium Unofficial you were using when this bug was encountered. If you do not know where to find this, look for the mod jar file in the mods folder, or in the mods viewer in-game.
+        バグに遭遇したときに利用していたClayium Unofficialのバージョンを入力してください。modsフォルダの中にあるModのjarファイルや、ゲーム内の「Mods」から確認できます。
       placeholder: "vX.Y.Z"
     validations:
       required: true
@@ -14,7 +16,9 @@ body:
     id: environment
     attributes:
       label: Environment
-      description: "How you were playing on the world. Typical answers include: Singleplayer, Open to LAN, Forge Server, Sponge Server, or Mohist Server."
+      description: |
+        How you were playing on the world. Typical answers include: Singleplayer, Open to LAN, Forge Server, Sponge Server, or Mohist Server.
+        どのような環境でプレイしていたかを入力してください。例: シングルプレイ、LANに公開、Forgeサーバー、Spongeサーバー、Mohistサーバー。
       placeholder: "Example: Singleplayer"
     validations:
       required: true
@@ -22,7 +26,9 @@ body:
     id: world
     attributes:
       label: New Worlds
-      description: Does this bug occur on a newly generated world?
+      description: |
+        Does this crash occur on a newly generated world?
+        新しく生成したワールドでもクラッシュするか入力してください。
       options:
         - "Yes"
         - "No"
@@ -33,7 +39,9 @@ body:
     id: cross-mod
     attributes:
       label: Cross-Mod Interaction
-      description: Does this bug occur because of another mod installed alongside Clayium Unofficial?
+      description: |
+        Does this bug occur because of another mod installed alongside Clayium Unofficial?
+        このバグはClayium UnofficialのほかにインストールされているModが原因で発生しているか入力してください。
       options:
         - "Yes"
         - "No"
@@ -44,7 +52,9 @@ body:
     id: expected
     attributes:
       label: Expected Behavior
-      description: What you expected to happen. Attach screenshots here as necessary.
+      description: |
+        What you expected to happen. Attach screenshots here as necessary.
+        想定される正常な動作を入力してください。必要に応じてスクリーンショットを添付してください。
       placeholder: "Example: Expected to produce X by consuming Y."
     validations:
       required: true
@@ -52,7 +62,9 @@ body:
     id: result
     attributes:
       label: Actual Behavior
-      description: What happened despite your expectations. Attach screenshots here as necessary.
+      description: |
+        What happened despite your expectations. Attach screenshots here as necessary.
+        実際の動作を入力してください。必要に応じてスクリーンショットを添付してください。
       placeholder: "Example: Produced one X but Y was not consumed."
     validations:
       required: true
@@ -60,7 +72,9 @@ body:
     id: reproduction
     attributes:
       label: Steps to Reproduce
-      description: How to reproduce the bug.
+      description: |
+        How to reproduce the bug.
+        バグの再現手順を入力してください。
       placeholder: "Example: 1) I did X..."
     validations:
       required: true
@@ -68,10 +82,14 @@ body:
     id: additional-info
     attributes:
       label: Additional Information
-      description: Any additional information you wish to provide. Please add anything which did not fit into the other sections here.
+      description: |
+        Any additional information you wish to provide. Please add anything which did not fit into the other sections here.
+        追加情報があれば入力してください。また、その他のセクションに収まらなかった情報を入力してください。
       placeholder: "Example: This is likely caused by X because..."
     validations:
       required: false
   - type: markdown
     attributes:
-      value: Thank you for taking the time to fill out this bug report.
+      value: |
+        Thank you for taking the time to fill out this crash report.
+        ご記入いただきありがとうございます。
