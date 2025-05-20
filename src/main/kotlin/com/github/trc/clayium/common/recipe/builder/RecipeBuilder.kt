@@ -34,12 +34,13 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     protected var duration: Long,
     protected var cePerTick: ClayEnergy,
     protected var tier: Int,
+    protected var priority: Int,
 ) {
-    constructor() : this(mutableListOf(), mutableListOf(), mutableListOf(), null, 0, ClayEnergy.ZERO, 0)
+    constructor() : this(mutableListOf(), mutableListOf(), mutableListOf(), null, 0, ClayEnergy.ZERO, 0, 0)
 
     constructor(another: RecipeBuilder<R>) : this(another.inputs.toMutableList(), another.outputs.toMutableList(),
         another.chancedOutputs, another.chancedOutputLogic,
-        another.duration, another.cePerTick, another.tier) {
+        another.duration, another.cePerTick, another.tier, another.priority) {
         recipeRegistry = another.recipeRegistry
     }
 
@@ -49,6 +50,11 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
 
     fun setRegistry(registry: RecipeRegistry<R>): R {
         recipeRegistry = registry
+        return this as R
+    }
+
+    fun priority(priority: Int): R {
+        this.priority = priority
         return this as R
     }
 
@@ -190,7 +196,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
             null
         }
 
-        return Recipe(inputs, outputs, chancedOutputList, duration, cePerTick, tier)
+        return Recipe(inputs, outputs, chancedOutputList, duration, cePerTick, tier, priority)
     }
 
     protected fun setDefaults() {
