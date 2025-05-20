@@ -7,7 +7,7 @@ body:
     attributes:
       label: Mod Version
       description: |
-        The version of Clayium Unofficial you were using when this bug was encountered. If you do not know where to find this, look for the mod jar file in the mods folder, or in the mods viewer in-game.
+        The version of Clayium Unofficial you were using when this bug was encountered. If you do not know where to find this, look for the mod jar file in the mods folder, or in the mods viewer in-game.<br>
         バグに遭遇したときに利用していたClayium Unofficialのバージョンを入力してください。modsフォルダの中にあるModのjarファイルや、ゲーム内の「Mods」から確認できます。
       placeholder: "vX.Y.Z"
     validations:
@@ -17,7 +17,7 @@ body:
     attributes:
       label: Environment
       description: |
-        How you were playing on the world. Typical answers include: Singleplayer, Open to LAN, Forge Server, Sponge Server, or Mohist Server.
+        How you were playing on the world. Typical answers include: Singleplayer, Open to LAN, Forge Server, Sponge Server, or Mohist Server.<br>
         どのような環境でプレイしていたかを入力してください。例: シングルプレイ、LANに公開、Forgeサーバー、Spongeサーバー、Mohistサーバー。
       placeholder: "Example: Singleplayer"
     validations:
@@ -27,7 +27,7 @@ body:
     attributes:
       label: Side Crashed
       description: |
-        Where the game crashed.
+        Where the game crashed.<br>
         クライアント/サーバーどちらがクラッシュしたか入力してください。
       options:
         - "Client"
@@ -41,7 +41,7 @@ body:
     attributes:
       label: New Worlds
       description: |
-        Does this crash occur on a newly generated world?
+        Does this crash occur on a newly generated world?<br>
         新しく生成したワールドでも、同じくクラッシュしますか？
       options:
         - "Yes"
@@ -54,7 +54,7 @@ body:
     attributes:
       label: Steps to Reproduce
       description: |
-        How to reproduce the crash.
+        How to reproduce the crash.<br>
         クラッシュを再現する手順を入力してください。
       placeholder: "Example: 1) I did X... / 例: 1) まず、Xを行い..."
     validations:
@@ -64,7 +64,7 @@ body:
     attributes:
       label: Crash Report
       description: |
-        You can find the crash report in `(installation)/crash-reports/`, if one was created. Additionally, please attach `(installation)/logs/latest.log`. If either or both files do not exist, state such. Please link to a paste site with their content, such as [mclo.gs](https://mclo.gs), [GitHub Gists](https://gist.github.com), [Pastebin](https://pastebin.com). **Do not paste the contents of either these files directly into the text box.**
+        You can find the crash report in `(installation)/crash-reports/`, if one was created. Additionally, please attach `(installation)/logs/latest.log`. If either or both files do not exist, state such. Please link to a paste site with their content, such as [mclo.gs](https://mclo.gs), [GitHub Gists](https://gist.github.com), [Pastebin](https://pastebin.com). **Do not paste the contents of either these files directly into the text box.**<br>
         クラッシュレポートは、生成されていれば `(インストール先)/crash-reports/` に生成されます。加えて、 `(インストール先)/logs/latest.log` を添付してください。どちらか、または両方のファイルが存在しない場合は、その旨を記載してください。これらファイルの内容は[mclo.gs](https://mclo.gs)、[GitHub Gists](https://gist.github.com)、[Pastebin](https://pastebin.com)などのペーストサイトにリンクしてください。**これらのファイルの内容を直接テキストボックスに貼り付けないでください。**
       placeholder: "Example: a link to a paste site with the crash report and latest.log. / 例: クラッシュレポートとlatest.logのペーストサイトへのリンク"
     validations:
@@ -74,7 +74,7 @@ body:
     attributes:
       label: Additional Information
       description: |
-        Any additional information you wish to provide. Please add anything which did not fit into the other sections here.
+        Any additional information you wish to provide. Please add anything which did not fit into the other sections here.<br>
         追加情報や、他のセクションに収まらなかった情報があれば入力してください。
       placeholder: "Example: This is likely caused by X because... / 例: おそらくXが原因で..."
     validations:
@@ -82,5 +82,5 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for taking the time to fill out this crash report.
+        Thank you for taking the time to fill out this crash report.<br>
         ご記入いただきありがとうございます。
