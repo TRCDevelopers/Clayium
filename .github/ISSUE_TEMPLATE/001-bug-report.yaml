@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug where something is not working as expected, which does not crash the game.
+description: Report a bug where something is not working as expected, which does not crash the game. / クラッシュはしないが、想定通りに動かないバグ。
 labels: [ "status: unverified", "bug" ]
 body:
   - type: input
@@ -28,7 +28,7 @@ body:
       label: New Worlds
       description: |
         Does this bug occur on a newly generated world?
-        新しく生成したワールドでもバグが発生するか入力してください。
+        新しく生成したワールドでも、同じバグが発生しますか？
       options:
         - "Yes"
         - "No"
@@ -54,7 +54,7 @@ body:
       label: Expected Behavior
       description: |
         What you expected to happen. Attach screenshots here as necessary.
-        想定される正常な動作を入力してください。必要に応じてスクリーンショットを添付してください。
+        想定していた正常な動作を入力してください。必要に応じてスクリーンショットを添付してください。
       placeholder: "Example: Expected to produce X by consuming Y. / 例: Yを消費してXが生成される。"
     validations:
       required: true

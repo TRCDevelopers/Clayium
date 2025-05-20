@@ -1,5 +1,5 @@
 name: Request a Feature
-description: Request a new feature or a change to an existing one.
+description: Request a new feature or a change to an existing one. / 新たな機能の提案や、既存の機能に対する変更の提案。
 labels: [ "feature" ]
 body:
   - type: input
@@ -17,9 +17,9 @@ body:
     attributes:
       label: Related Problem
       description: |
-        If the feature you wish to change is related to a problem, please desscribe it. Leave this field blank if it is not related to a problem.
+        If the feature you wish to change is related to a problem, please describe it. Leave this field blank if it is not related to a problem.
         もし、希望する機能が何かしらプレイするときに生じる問題に関連している場合は、その問題を入力してください。問題に関連していない場合は、この項目は空欄のままで構いません。
-      placeholder: "Example: I'm always frustrated when... / 例: Xを行うのが非常に面倒で..."
+      placeholder: "Example: I'm always frustrated when... / 例: Aを行うのが非常に面倒で..."
     validations:
       required: false
   - type: textarea
@@ -28,8 +28,8 @@ body:
       label: Your Solution
       description: |
         Describe the solution you would like to have happen.
-        どのような機能の実装を望みますか？
-      placeholder: "Example: If I could... / 例: Aができれば..."
+        どのような機能の実装を希望しますか?
+      placeholder: "Example: If I could... / 例: Bができれば..."
     validations:
       required: true
   - type: textarea
@@ -39,7 +39,7 @@ body:
       description: |
         Any additional information you wish to provide. Please add anything which did not fit into the other sections here.
         追加情報や、他のセクションに収まらなかった情報があれば入力してください。
-      placeholder: "Example: This is likely achieveable by doing X because... / 例: おそらくYを行うことで実現できると思います。"
+      placeholder: "Example: This is likely achievable by doing X because... / 例: おそらくXを行うことで実現できると思います。"
     validations:
       required: false
   - type: markdown

@@ -1,5 +1,5 @@
 name: Crash Report
-description: Report a bug that crashes the game or prevents startup.
+description: Report a bug that crashes the game or prevents startup. / 起動できない、またはクラッシュする。
 labels: [ "status: unverified", "bug", "high priority" ]
 body:
   - type: input
@@ -28,7 +28,7 @@ body:
       label: Side Crashed
       description: |
         Where the game crashed.
-        何がクラッシュしたか入力してください。
+        クライアント/サーバーどちらがクラッシュしたか入力してください。
       options:
         - "Client"
         - "Server"
@@ -42,7 +42,7 @@ body:
       label: New Worlds
       description: |
         Does this crash occur on a newly generated world?
-        新しく生成したワールドでもクラッシュするか入力してください。
+        新しく生成したワールドでも、同じくクラッシュしますか？
       options:
         - "Yes"
         - "No"
