@@ -13,9 +13,16 @@ import com.github.trc.clayium.integration.groovy.RecipeRegistryGrsAdapter
 import net.minecraft.item.ItemStack
 
 open class RecipeRegistry<R: RecipeBuilder<R>>(
+    /** Used for getting faceTexture location in MTE, and used as UID in JEI. */
     val category: RecipeCategory,
     private val builderSample: R,
+    /**
+     * Max input slot count. Used in MTEs to determine input slot count.
+     */
     val maxInputs: Int,
+    /**
+     * Max output slot count.  Used in MTEs to determine output slot count.
+     */
     val maxOutputs: Int,
 ) : IRecipeProvider {
 
@@ -38,7 +45,7 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
     private val _recipesListForJei = mutableListOf<Recipe>()
 
     /**
-     * Value List MUST always be sorted with `Recipe.priority` in descending order, i.e. higher is preferred.
+     * Value List MUST always be sorted with `Recipe.tier` then `Recipe.priority` in descending order, i.e. higher is preferred.
      */
     private val recipeSearchMap = mutableMapOf<ItemAndMeta, MutableList<Recipe>>()
 
@@ -105,7 +112,12 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
         if (GroovyScriptModule.isCurrentlyRunning()) {
             grsVirtualizedRegistry?.addBackup(recipe)
         }
-        return _recipesListForJei.remove(recipe)
+        _recipesListForJei.remove(recipe)
+        var removed = false
+        for (list in recipeSearchMap.values) {
+            removed = removed || list.remove(recipe)
+        }
+        return removed
     }
 
     private fun validateRecipe(recipe: Recipe): Result<Recipe> {
