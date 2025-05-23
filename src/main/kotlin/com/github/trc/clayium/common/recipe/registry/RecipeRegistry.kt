@@ -102,7 +102,7 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
                 recipeSearchMap[key] = recipes
             } else {
                 recipes.add(recipe)
-                recipes.sortWith(TIER_THEN_PRIORITY_DESCENDING)
+                recipes.sortWith(PRIO_THEN_TIER_DESCENDING)
             }
         }
         CLog.debug("Recipe added: {}", recipe)
@@ -165,8 +165,8 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
          * Recipe selection order.
          * for recipe map value list.
          */
-        val TIER_THEN_PRIORITY_DESCENDING: Comparator<Recipe> = Comparator.comparingInt(Recipe::recipeTier)
-            .thenComparing(Recipe::priority)
+        val PRIO_THEN_TIER_DESCENDING: Comparator<Recipe> = Comparator.comparingInt(Recipe::priority)
+            .thenComparing(Recipe::recipeTier)
             .reversed()
     }
 }
