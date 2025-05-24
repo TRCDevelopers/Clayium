@@ -65,10 +65,10 @@ abstract class AbstractMinerMetaTileEntity(
         get() = filterSlot.getStackInSlot(0).getCapability(ClayiumCapabilities.ITEM_FILTER)
 
     protected var progress = 0.0
-    private var workingEnabled = true
+    protected var workingEnabled = true
     private var laser: ClayLaser? = null
 
-    private var rangeRenderMode = RangeRenderMode.DISABLED
+     var rangeRenderMode = RangeRenderMode.DISABLED
 
     protected var currentPos: BlockPos? = null
 
