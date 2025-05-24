@@ -14,6 +14,21 @@ abstract class CRecipeInput(val isConsumable: Boolean = true) {
     abstract fun testItemStackAndAmount(stack: ItemStack): Boolean
     abstract fun testIgnoringAmount(item: ItemAndMeta): Boolean
 
+    private val hash: Int by lazy {
+        // If overflow occurs, it will be negative, but it is not a problem.
+        var result = isConsumable.hashCode()
+        result = 31 * result + amount
+        result = 31 * result + consumeAmount
+        for (s in stacks) {
+            result = 31 * result + s.item.hashCode()
+            result = 31 * result + s.metadata
+            result = 31 * result + s.count
+            result = 31 * result + s.tagCompound.hashCode()
+        }
+
+        result
+    }
+
     fun isValid(): Boolean {
         if (stacks.isEmpty()) {
             CLog.error("Stacks must not be empty")
@@ -44,17 +59,6 @@ abstract class CRecipeInput(val isConsumable: Boolean = true) {
     }
 
     override fun hashCode(): Int {
-        var result = isConsumable.hashCode()
-        result = 31 * result + amount
-        result = 31 * result + consumeAmount
-        for (s in stacks) {
-            result = 31 * result + s.item.hashCode()
-            result = 31 * result + s.metadata
-            result = 31 * result + s.count
-            result = 31 * result + s.tagCompound.hashCode()
-        }
-
-        return result
+        return this.hash
     }
-
 }
