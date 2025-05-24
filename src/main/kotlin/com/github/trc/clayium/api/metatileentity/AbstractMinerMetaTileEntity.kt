@@ -148,7 +148,7 @@ abstract class AbstractMinerMetaTileEntity(
         return 1 + 4 * log10(energy / 1000 + 1)
     }
 
-    protected fun getRequiredProgress(state: IBlockState, world: World, pos: BlockPos): Double {
+    protected open fun getRequiredProgress(state: IBlockState, world: World, pos: BlockPos): Double {
         val hardness = if (state.material.isLiquid) 1f else state.getBlockHardness(world, pos)
         return REQUIRED_PROGRESS_BASE * (0.1 + hardness)
     }

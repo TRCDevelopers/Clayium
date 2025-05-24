@@ -7,6 +7,7 @@ import com.github.trc.clayium.api.block.ItemBlockMachine
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.common.gui.ResizingTextWidget
+import com.github.trc.clayium.common.util.FakeServerHandler
 import com.mojang.authlib.GameProfile
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
@@ -27,8 +28,12 @@ import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
-import java.util.EnumMap
-import java.util.UUID
+import java.util.*
+import kotlin.collections.AbstractList
+import kotlin.collections.List
+import kotlin.collections.forEachIndexed
+import kotlin.collections.mutableListOf
+import kotlin.collections.set
 import kotlin.enums.EnumEntries
 import kotlin.enums.enumEntries
 
@@ -188,6 +193,9 @@ object CUtils {
 
     fun getFakePlayer(world: WorldServer): FakePlayer {
         return FakePlayerFactory.get(world, profile)
+            .apply {
+                connection = FakeServerHandler(this)
+            }
     }
 
     val isClientSide by lazy { FMLCommonHandler.instance().side.isClient }
