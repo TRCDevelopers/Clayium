@@ -2,10 +2,9 @@ package com.github.trc.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.screen.UISettings
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
@@ -16,6 +15,7 @@ import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.common.util.CNbtUtils
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -66,7 +66,7 @@ class ClayBufferMetaTileEntity(
         super.onPlacement()
     }
 
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager, uiSettings: UISettings): ModularPanel {
         syncManager.registerSlotGroup("buffer_inv", inventoryRowSize)
         val columnStr = "I".repeat(inventoryColumnSize)
         val matrixStr = (0..<inventoryRowSize).map { columnStr }
@@ -81,10 +81,7 @@ class ClayBufferMetaTileEntity(
                 .child(SlotGroupWidget.builder()
                     .matrix(*matrixStr.toTypedArray())
                     .key('I') { index ->
-                        ItemSlot().slot(
-                            SyncHandlers.itemSlot(itemInventory, index)
-                                .slotGroup("buffer_inv")
-                        )
+                        MuiSlots.itemSlotBuilder(itemInventory, index).slotGroup("buffer_inv").build()
                     }
                     .build())
                 .child(

@@ -9,7 +9,6 @@ import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData
-import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Grid
 import com.github.trc.clayium.api.*
@@ -33,6 +32,7 @@ import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
 import com.github.trc.clayium.common.recipe.registry.CRecipes
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -283,7 +283,7 @@ class PanCoreMetaTileEntity(
                             .background(Rectangle().setColor(Color.rgb(0, 0x1E, 0))))
                     )
                 )
-                .child(SlotGroupWidget.playerInventory(0)))
+                .child(MuiSlots.playerInventory(0)))
     }
 
     class PanDuplicationEntry(

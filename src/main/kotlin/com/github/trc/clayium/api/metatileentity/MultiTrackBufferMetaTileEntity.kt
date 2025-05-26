@@ -5,10 +5,10 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.IPipeConnectionLogic
@@ -23,6 +23,7 @@ import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.MachineIoMode.*
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.util.CNbtUtils
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
@@ -127,13 +128,13 @@ class MultiTrackBufferMetaTileEntity(
                                     .child(SlotGroupWidget.builder()
                                         .matrix(slotsRowString)
                                         .key('I') { slotIndex ->
-                                            ItemSlot().slot(SyncHandlers.itemSlot(handler, slotIndex)
+                                            ItemSlot.create(false).slot(SyncHandlers.itemSlot(handler, slotIndex)
                                                 .slotGroup("mt_buffer_inv_${i}")
                                                 .filter(slotFilters[i]))
                                                 .background(ClayGuiTextures.M_TRACK_SLOTS[i])
                                         }
                                         .build())
-                                    .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filtersHandler, i))
+                                    .child(MuiSlots.phantomSlot(filtersHandler, i)
                                         .background(ClayGuiTextures.M_TRACK_FILTER_SLOTS[i])
                                         .align(Alignment.CenterRight)))
                             }

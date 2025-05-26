@@ -4,8 +4,8 @@ import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.TextWidget
+import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.block.IEnergyStorageUpgradeBlock
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
@@ -81,7 +81,7 @@ class ClayEnergyHolder(
     }
 
     fun createSlotWidget(): ItemSlot {
-        return ItemSlot()
+        return ItemSlot.create(false)
             .slot(SyncHandlers.itemSlot(energizedClayItemHandler, 0)
                 .accessibility(false, false))
             .setEnabledIf { GuiScreen.isShiftKeyDown() }

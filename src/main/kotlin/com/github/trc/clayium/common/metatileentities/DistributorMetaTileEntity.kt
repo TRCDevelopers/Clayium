@@ -5,10 +5,10 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
@@ -92,7 +92,7 @@ class DistributorMetaTileEntity(
             val group = SlotGroupWidget.builder()
                 .matrix("II", "II")
                 .key('I') { j ->
-                    ItemSlot().slot(SyncHandlers.itemSlot(handler, j).slotGroup("group$i"))
+                    ItemSlot.create(false).slot(SyncHandlers.itemSlot(handler, j).slotGroup("group$i"))
                 }
                 .build()
             group

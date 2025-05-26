@@ -1,16 +1,14 @@
 package com.github.trc.clayium.api.metatileentity
 
-import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
-import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Flow
+import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.BlockMachine.Companion.IS_PIPE
@@ -39,6 +37,8 @@ import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.items.filter.FilterType
 import com.github.trc.clayium.common.util.SidelessI18n
 import com.github.trc.clayium.common.util.UtilLocale
+import com.github.trc.clayium.integration.modularui.IGuiHolderClayium
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
@@ -83,7 +83,7 @@ abstract class MetaTileEntity(
      * item model location will be ("${metaTileEntityId.namespace}:machines/${name}", "tier={tier.lowerName}").
      */
     private val name: String,
-) : ISyncedTileEntity, IWorldObject, IGuiHolder<MetaTileEntityGuiData>, IPipeConnectable {
+) : ISyncedTileEntity, IWorldObject, IGuiHolderClayium<MetaTileEntityGuiData>, IPipeConnectable {
 
     val mteRegistry = ClayiumApi.mteManager.getRegistry(metaTileEntityId.namespace)
     val blockMachine get() = mteRegistry.blockMachine
@@ -697,7 +697,7 @@ abstract class MetaTileEntity(
     protected fun largeSlot(slot: ModularSlot) = ParentWidget()
                 .size(26, 26)
                 .background(ClayGuiTextures.LARGE_SLOT)
-                .child(ItemSlot().align(Alignment.Center)
+                .child(ItemSlot.create(false).align(Alignment.Center)
                     .slot(slot)
                     .background(IDrawable.EMPTY))
 
@@ -712,7 +712,7 @@ abstract class MetaTileEntity(
         return this.child(
             Column().margin(7).sizeRel(1f)
                 .builder()
-                .child(SlotGroupWidget.playerInventory(0))
+                .child(MuiSlots.playerInventory(0))
         )
     }
 

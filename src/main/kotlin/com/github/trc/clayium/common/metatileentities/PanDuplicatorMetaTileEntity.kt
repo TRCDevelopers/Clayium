@@ -4,9 +4,9 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.AbstractWorkable
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
@@ -110,9 +110,9 @@ class PanDuplicatorMetaTileEntity(
             .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
                 .child(SlotGroupWidget.builder()
                     .row("AD")
-                    .key('A', ItemSlot().slot(SyncHandlers.itemSlot(antimatterSlot, 0).singletonSlotGroup())
+                    .key('A', ItemSlot.create(false).slot(SyncHandlers.itemSlot(antimatterSlot, 0).singletonSlotGroup())
                         .background(ClayGuiTextures.IMPORT_1_SLOT))
-                    .key('D', ItemSlot().slot(SyncHandlers.itemSlot(duplicationTargetSlot, 0).singletonSlotGroup())
+                    .key('D', ItemSlot.create(false).slot(SyncHandlers.itemSlot(duplicationTargetSlot, 0).singletonSlotGroup())
                         .background(ClayGuiTextures.IMPORT_2_SLOT))
                     .build()
                     .align(Alignment.CenterLeft)

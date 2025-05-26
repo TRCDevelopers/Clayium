@@ -10,7 +10,10 @@ import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.*
+import com.cleanroommc.modularui.widgets.ButtonWidget
+import com.cleanroommc.modularui.widgets.CycleButtonWidget
+import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Grid
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
@@ -31,6 +34,7 @@ import com.github.trc.clayium.client.renderer.AreaMarkerRenderer
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer.RangeRenderMode
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.util.TransferUtils
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -198,13 +202,13 @@ abstract class AbstractMinerMetaTileEntity(
             )
             .child(SlotGroupWidget.builder()
                 .matrix(*matrixStr.toTypedArray())
-                .key('I') { ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, it).slotGroup("breaker_inv")) }
+                .key('I') { MuiSlots.itemSlotBuilder(itemInventory, it).slotGroup("breaker_inv").build() }
                 .build().alignX(Alignment.TopCenter.x).top(12)
             )
             .child(IKey.dynamic { "Laser : ${laser?.let { LaserEnergy(it.energy).format() } ?: 0}" }.asWidgetResizing()
                 .alignX(Alignment.Center.x).bottom(12)
             )
-            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) })
+            .child(MuiSlots.phantomSlotBuilder(filterSlot, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) }.build()
                 .background(ClayGuiTextures.FILTER_SLOT)
                 .top(12).right(24)
                 .tooltipBuilder { it.addLine(IKey.lang("gui.clayium.miner.filter")) }

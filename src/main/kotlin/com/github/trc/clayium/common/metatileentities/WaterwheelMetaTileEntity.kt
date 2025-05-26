@@ -6,7 +6,6 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
@@ -20,6 +19,7 @@ import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.util.SidelessI18n
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.BlockLiquid
 import net.minecraft.init.Blocks
 import net.minecraft.util.EnumFacing
@@ -92,7 +92,7 @@ class WaterwheelMetaTileEntity(
                         .widthRel(0.3f).align(Alignment.CenterRight))
                     .child(IKey.dynamic { SidelessI18n.format("gui.clayium.waterwheel.progress", progress) }.asWidget()
                         .widthRel(0.6f).align(Alignment.CenterLeft)))
-                .child(SlotGroupWidget.playerInventory(0)))
+                .child(MuiSlots.playerInventory(0)))
     }
 
     private fun getWaterFlowsCount(): Int {

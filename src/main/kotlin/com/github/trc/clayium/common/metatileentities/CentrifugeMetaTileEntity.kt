@@ -6,9 +6,9 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
@@ -59,7 +59,7 @@ class CentrifugeMetaTileEntity(
         slotsAndProgressBar.child(SlotGroupWidget.builder()
             .matrix(*(0..<outputSize).map { "I" }.toTypedArray())
             .key('I') {
-                ItemSlot().slot(SyncHandlers.itemSlot(exportItems, it)
+                ItemSlot.create(false).slot(SyncHandlers.itemSlot(exportItems, it)
                     .accessibility(false, true))
             }
             .build()

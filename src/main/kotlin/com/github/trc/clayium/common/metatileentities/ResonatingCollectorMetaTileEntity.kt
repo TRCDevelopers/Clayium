@@ -2,11 +2,8 @@ package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.utils.NumberFormat
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.impl.ResonanceManager
@@ -19,6 +16,8 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.util.SidelessI18n
+import com.github.trc.clayium.integration.modularui.CNumFormat
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 
@@ -53,14 +52,14 @@ class ResonatingCollectorMetaTileEntity(
         resonanceManager.sync(syncManager)
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic {
-                SidelessI18n.format("gui.$MOD_ID.resonance", NumberFormat.formatWithMaxDigits(resonanceManager.resonance))
+                SidelessI18n.format("gui.$MOD_ID.resonance", CNumFormat.format(resonanceManager.resonance))
             }.asWidgetResizing()
                 .align(Alignment.BottomRight))
             .child(SlotGroupWidget.builder()
                 .matrix("III", "III", "III")
                 .key('I') { i ->
-                    ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, i)
-                        .slotGroup("machine_inventory"))
+                    MuiSlots.itemSlotBuilder(itemInventory, i)
+                        .slotGroup("machine_inventory").build()
                 }.build().align(Alignment.Center))
     }
 }

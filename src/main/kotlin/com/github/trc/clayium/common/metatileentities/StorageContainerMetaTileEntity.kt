@@ -2,11 +2,9 @@ package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.utils.NumberFormat
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.block.BlockMachine
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER_ITEM
@@ -23,6 +21,8 @@ import com.github.trc.clayium.api.util.copyWithSize
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.util.transferTo
+import com.github.trc.clayium.integration.modularui.CNumFormat
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
@@ -242,7 +242,7 @@ class StorageContainerMetaTileEntity(
                 .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).accessibility(/* canPut = */ false, /* canTake = */ true))
                     .align(Alignment.CenterRight))
                 .align(Alignment.Center))
-            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0))
+            .child(MuiSlots.phantomSlot(filterSlot, 0)
                 .right(10).top(15))
     }
 
@@ -317,7 +317,7 @@ class StorageContainerMetaTileEntity(
             }
 
             GlStateManager.pushMatrix()
-            val amountText: String = NumberFormat.formatWithMaxDigits(itemsStored.toDouble(), 3)
+            val amountText: String = CNumFormat.format(itemsStored.toDouble())
             val fRenderer = mc.fontRenderer
             GlStateManager.rotate(180.0f, 0.0f, 1.0f, 0.0f)
             GlStateManager.translate(0.0, -0.15, -0.55)

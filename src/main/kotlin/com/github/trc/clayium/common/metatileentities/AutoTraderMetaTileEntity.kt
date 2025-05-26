@@ -9,10 +9,10 @@ import com.cleanroommc.modularui.value.BoolValue
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
@@ -187,18 +187,18 @@ class AutoTraderMetaTileEntity(
                         .hoverBackground(PREV_DISALBED)
                         .selectedBackground(PREV).selectedHoverBackground(PREV_SELECTED)
                     )
-                    .child(ItemSlot().alignY(0.5f).marginLeft(15).background(IDrawable.EMPTY)
+                    .child(ItemSlot.create(false).alignY(0.5f).marginLeft(15).background(IDrawable.EMPTY)
                         .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 0)
                             .accessibility(false, false))
                     )
-                    .child(ItemSlot().alignY(0.5f).marginLeft(9).background(IDrawable.EMPTY)
+                    .child(ItemSlot.create(false).alignY(0.5f).marginLeft(9).background(IDrawable.EMPTY)
                         .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 1)
                             .accessibility(false, false))
                     )
                     .child(previewProgressBar.asWidget().size(22, 15)
                             .alignX(0.6f).alignY(0.5f)
                     )
-                    .child(ItemSlot().right(15).alignY(0.5f).background(IDrawable.EMPTY)
+                    .child(ItemSlot.create(false).right(15).alignY(0.5f).background(IDrawable.EMPTY)
                         .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 2)
                             .accessibility(false, false))
                     )
@@ -209,10 +209,10 @@ class AutoTraderMetaTileEntity(
                 )
                 .child(Row().widthRel(1f).height(26).alignX(0.5f).marginTop(6)
                     .debugName("Inventory Row")
-                    .child(ItemSlot().alignY(0.5f).marginLeft(15).background(ClayGuiTextures.IMPORT_1_SLOT)
+                    .child(ItemSlot.create(false).alignY(0.5f).marginLeft(15).background(ClayGuiTextures.IMPORT_1_SLOT)
                         .slot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup(100))
                     )
-                    .child(ItemSlot().alignY(0.5f).marginLeft(9).background(ClayGuiTextures.IMPORT_2_SLOT)
+                    .child(ItemSlot.create(false).alignY(0.5f).marginLeft(9).background(ClayGuiTextures.IMPORT_2_SLOT)
                         .slot(SyncHandlers.itemSlot(importItems, 1).singletonSlotGroup(101))
                     )
                     .child(recipeLogic.getProgressBar(syncManager, showRecipes = false)

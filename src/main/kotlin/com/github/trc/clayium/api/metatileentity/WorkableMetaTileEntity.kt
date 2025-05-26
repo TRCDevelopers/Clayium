@@ -6,9 +6,9 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
@@ -70,7 +70,7 @@ abstract class WorkableMetaTileEntity(
             slotsAndProgressBar.child(
                 SlotGroupWidget.builder()
                     .matrix("II").key('I') { index ->
-                        ItemSlot().slot(
+                        ItemSlot.create(false).slot(
                             SyncHandlers.itemSlot(importItems, index)
                                 .slotGroup("input_inv"))
                             .apply {
@@ -90,7 +90,7 @@ abstract class WorkableMetaTileEntity(
             slotsAndProgressBar.child(
                 SlotGroupWidget.builder()
                     .matrix("II").key('I') { index ->
-                        ItemSlot().slot(
+                        ItemSlot.create(false).slot(
                             SyncHandlers.itemSlot(exportItems, index)
                                 .accessibility(false, true)
                                 .slotGroup("output_inv"))
