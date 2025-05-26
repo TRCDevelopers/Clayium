@@ -7,7 +7,11 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
-import com.github.trc.clayium.api.capability.impl.*
+import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
+import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
+import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
+import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
+import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler

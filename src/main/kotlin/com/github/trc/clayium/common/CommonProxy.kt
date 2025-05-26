@@ -17,13 +17,7 @@ import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.blocks.BlockQuartzCrucible
-import com.github.trc.clayium.common.blocks.ClayiumBlocks
-import com.github.trc.clayium.common.blocks.ItemBlockClayLaserReflector
-import com.github.trc.clayium.common.blocks.ItemBlockEnergizedClay
-import com.github.trc.clayium.common.blocks.ItemBlockMaterial
-import com.github.trc.clayium.common.blocks.TileEntityClayLaserReflector
-import com.github.trc.clayium.common.blocks.TileEntityCreativeEnergySource
+import com.github.trc.clayium.common.blocks.*
 import com.github.trc.clayium.common.blocks.chunkloader.ChunkLoaderTileEntity
 import com.github.trc.clayium.common.blocks.claycraftingtable.TileClayCraftingTable
 import com.github.trc.clayium.common.blocks.clayworktable.TileClayWorkTable

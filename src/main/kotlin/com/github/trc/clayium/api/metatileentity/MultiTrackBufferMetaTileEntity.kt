@@ -20,7 +20,14 @@ import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
-import com.github.trc.clayium.api.util.MachineIoMode.*
+import com.github.trc.clayium.api.util.MachineIoMode.M_1
+import com.github.trc.clayium.api.util.MachineIoMode.M_2
+import com.github.trc.clayium.api.util.MachineIoMode.M_3
+import com.github.trc.clayium.api.util.MachineIoMode.M_4
+import com.github.trc.clayium.api.util.MachineIoMode.M_5
+import com.github.trc.clayium.api.util.MachineIoMode.M_6
+import com.github.trc.clayium.api.util.MachineIoMode.M_ALL
+import com.github.trc.clayium.api.util.MachineIoMode.NONE
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.util.CNbtUtils
 import com.github.trc.clayium.integration.modularui.MuiSlots

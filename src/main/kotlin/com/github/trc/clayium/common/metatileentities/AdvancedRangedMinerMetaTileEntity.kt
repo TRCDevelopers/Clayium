@@ -5,7 +5,11 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
-import com.github.trc.clayium.api.util.*
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.getCapability
+import com.github.trc.clayium.api.util.hasCapability
+import com.github.trc.clayium.api.util.toItemStack
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.reflect.BlockReflect
 import com.github.trc.clayium.common.util.TransferUtils

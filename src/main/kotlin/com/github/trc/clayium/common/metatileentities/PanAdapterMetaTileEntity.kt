@@ -27,7 +27,11 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
 import com.github.trc.clayium.api.pan.IPanRecipe
-import com.github.trc.clayium.api.util.*
+import com.github.trc.clayium.api.util.CUtils
+import com.github.trc.clayium.api.util.ClayTiers
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.integration.modularui.MuiSlots

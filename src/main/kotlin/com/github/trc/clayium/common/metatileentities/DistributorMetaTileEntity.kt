@@ -15,7 +15,12 @@ import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
-import com.github.trc.clayium.api.util.*
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.copyWithSize
+import com.github.trc.clayium.api.util.enumMapNotNull
+import com.github.trc.clayium.api.util.next
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.util.CNbtUtils
 import net.minecraft.block.state.IBlockState

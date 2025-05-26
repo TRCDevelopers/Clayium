@@ -21,7 +21,12 @@ import com.github.trc.clayium.api.pan.IPanUser
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.ItemAndMeta
-import com.github.trc.clayium.api.util.*
+import com.github.trc.clayium.api.util.ClayTiers
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.Mods
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.copyWithSize
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.ingredient.COreRecipeInput

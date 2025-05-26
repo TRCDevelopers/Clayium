@@ -17,7 +17,11 @@ import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.material.Clay
 import com.github.trc.clayium.api.unification.ore.OrePrefix
-import com.github.trc.clayium.api.util.*
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.asWidgetResizing
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
 import com.github.trc.clayium.common.util.TransferUtils
 import mcjty.theoneprobe.api.IProbeHitData

@@ -19,7 +19,11 @@ import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult.Invalid
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
-import com.github.trc.clayium.api.util.*
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.asWidgetResizing
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.getMetaTileEntity
+import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.common.blocks.BlockCaReactorCoil
 import com.github.trc.clayium.common.blocks.BlockCaReactorHull
 import com.github.trc.clayium.common.recipe.Recipe
