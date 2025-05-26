@@ -16,6 +16,7 @@ import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.asWidgetResizing
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
@@ -81,9 +82,7 @@ class ClayEnergyHolder(
     }
 
     fun createSlotWidget(): ItemSlot {
-        return ItemSlot.create(false)
-            .slot(SyncHandlers.itemSlot(energizedClayItemHandler, 0)
-                .accessibility(false, false))
+        return MuiSlots.itemSlotBuilder(energizedClayItemHandler, 0).lock().build()
             .setEnabledIf { GuiScreen.isShiftKeyDown() }
             .background(IDrawable.EMPTY)
     }

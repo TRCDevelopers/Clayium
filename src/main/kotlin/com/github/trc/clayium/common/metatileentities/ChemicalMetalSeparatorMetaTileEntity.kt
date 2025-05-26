@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
@@ -20,6 +19,7 @@ import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.common.util.SidelessI18n
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.util.ResourceLocation
 
 class ChemicalMetalSeparatorMetaTileEntity(
@@ -43,8 +43,7 @@ class ChemicalMetalSeparatorMetaTileEntity(
             .child(SlotGroupWidget.builder()
                 .matrix(*(0..3).map { "IIII" }.toTypedArray())
                 .key('I') {
-                    ItemSlot.create(false).slot(SyncHandlers.itemSlot(exportItems, it)
-                        .accessibility(false, true))
+                    MuiSlots.itemSlotBuilder(exportItems, it).takeOnly().build()
                 }
                 .build()
                 .align(Alignment.CenterRight)

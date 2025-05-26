@@ -719,6 +719,7 @@ abstract class MetaTileEntity(
     @SideOnly(Side.CLIENT)
     open fun useGlobalRenderer() = false
 
+    @Deprecated("Use `MuiSlots.itemSlotBuilder().buildLarge()` instead.")
     protected fun largeSlot(slot: ModularSlot) = ParentWidget()
                 .size(26, 26)
                 .background(ClayGuiTextures.LARGE_SLOT)

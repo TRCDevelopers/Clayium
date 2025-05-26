@@ -12,7 +12,6 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
@@ -38,6 +37,7 @@ import com.github.trc.clayium.common.gui.sync.MerchantRecipeListSyncValue
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.ingredient.CItemRecipeInput
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -196,20 +196,17 @@ class AutoTraderMetaTileEntity(
                         .hoverBackground(PREV_DISALBED)
                         .selectedBackground(PREV).selectedHoverBackground(PREV_SELECTED)
                     )
-                    .child(ItemSlot.create(false).alignY(0.5f).marginLeft(15).background(IDrawable.EMPTY)
-                        .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 0)
-                            .accessibility(false, false))
+                    .child(MuiSlots.itemSlotBuilder(tradePreviewItemHandler, 0).lock().build()
+                        .alignY(0.5f).marginLeft(15).background(IDrawable.EMPTY)
                     )
-                    .child(ItemSlot.create(false).alignY(0.5f).marginLeft(9).background(IDrawable.EMPTY)
-                        .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 1)
-                            .accessibility(false, false))
+                    .child(MuiSlots.itemSlotBuilder(tradePreviewItemHandler, 1).lock().build()
+                        .alignY(0.5f).marginLeft(9).background(IDrawable.EMPTY)
                     )
                     .child(previewProgressBar.asWidget().size(22, 15)
                             .alignX(0.6f).alignY(0.5f)
                     )
-                    .child(ItemSlot.create(false).right(15).alignY(0.5f).background(IDrawable.EMPTY)
-                        .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 2)
-                            .accessibility(false, false))
+                    .child(MuiSlots.itemSlotBuilder(tradePreviewItemHandler, 2).lock().build()
+                        .right(15).alignY(0.5f).background(IDrawable.EMPTY)
                     )
                     .child(next.size(10, 15).align(Alignment.CenterRight)
                         .background(NEXT_DISABLED).hoverBackground(NEXT_DISABLED)
@@ -218,15 +215,15 @@ class AutoTraderMetaTileEntity(
                 )
                 .child(Row().widthRel(1f).height(26).alignX(0.5f).marginTop(6)
                     .debugName("Inventory Row")
-                    .child(ItemSlot.create(false).alignY(0.5f).marginLeft(15).background(ClayGuiTextures.IMPORT_1_SLOT)
-                        .slot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup(100))
+                    .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup(100).build()
+                        .alignY(0.5f).marginLeft(15).background(ClayGuiTextures.IMPORT_1_SLOT)
                     )
-                    .child(ItemSlot.create(false).alignY(0.5f).marginLeft(9).background(ClayGuiTextures.IMPORT_2_SLOT)
-                        .slot(SyncHandlers.itemSlot(importItems, 1).singletonSlotGroup(101))
+                    .child(MuiSlots.itemSlotBuilder(importItems, 1).singletonSlotGroup(101).build()
+                        .alignY(0.5f).marginLeft(9).background(ClayGuiTextures.IMPORT_2_SLOT)
                     )
                     .child(recipeLogic.getProgressBar(syncManager, showRecipes = false)
                         .alignX(0.6f).alignY(0.5f))
-                    .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).accessibility(false, true))
+                    .child(MuiSlots.itemSlotBuilder(exportItems, 0).takeOnly().buildLarge()
                         .right(11)
                     )
                 )

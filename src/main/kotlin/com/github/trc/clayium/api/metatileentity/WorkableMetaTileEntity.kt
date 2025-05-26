@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
@@ -19,6 +18,7 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -70,9 +70,7 @@ abstract class WorkableMetaTileEntity(
             slotsAndProgressBar.child(
                 SlotGroupWidget.builder()
                     .matrix("II").key('I') { index ->
-                        ItemSlot.create(false).slot(
-                            SyncHandlers.itemSlot(importItems, index)
-                                .slotGroup("input_inv"))
+                        MuiSlots.itemSlotBuilder(importItems, index).slotGroup("input_inv").build()
                             .apply {
                                 if (index == 0) background(ClayGuiTextures.IMPORT_1_SLOT) else background(ClayGuiTextures.IMPORT_2_SLOT)
                             }}
@@ -81,22 +79,21 @@ abstract class WorkableMetaTileEntity(
         }
         if (exportItems.slots == 1) {
             slotsAndProgressBar.child(
-                largeSlot(SyncHandlers.itemSlot(exportItems, 0)
-                    .singletonSlotGroup()
-                    .accessibility(false, true)
-                ).align(Alignment.CenterRight))
+                MuiSlots.itemSlotBuilder(exportItems, 0).singletonSlotGroup().takeOnly().buildLarge()
+            .align(Alignment.CenterRight))
         } else if (exportItems.slots == 2) {
             syncManager.registerSlotGroup("output_inv", 1)
             slotsAndProgressBar.child(
                 SlotGroupWidget.builder()
                     .matrix("II").key('I') { index ->
-                        ItemSlot.create(false).slot(
-                            SyncHandlers.itemSlot(exportItems, index)
-                                .accessibility(false, true)
-                                .slotGroup("output_inv"))
+                        MuiSlots.itemSlotBuilder(exportItems, index)
+                            .slotGroup("output_inv")
+                            .takeOnly()
+                            .build()
                             .apply {
                                 if (index == 0) background(ClayGuiTextures.EXPORT_1_SLOT) else background(ClayGuiTextures.EXPORT_2_SLOT)
-                            }}
+                            }
+                    }
                     .build()
                     .align(Alignment.CenterRight)
             )

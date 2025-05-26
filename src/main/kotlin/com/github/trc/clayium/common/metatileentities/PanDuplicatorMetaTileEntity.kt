@@ -2,11 +2,9 @@ package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.AbstractWorkable
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
@@ -31,6 +29,7 @@ import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.ingredient.COreRecipeInput
 import com.github.trc.clayium.common.util.TransferUtils
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import mcjty.theoneprobe.api.IProbeHitData
 import mcjty.theoneprobe.api.IProbeInfo
 import mcjty.theoneprobe.api.NumberFormat
@@ -115,14 +114,14 @@ class PanDuplicatorMetaTileEntity(
             .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
                 .child(SlotGroupWidget.builder()
                     .row("AD")
-                    .key('A', ItemSlot.create(false).slot(SyncHandlers.itemSlot(antimatterSlot, 0).singletonSlotGroup())
+                    .key('A', MuiSlots.itemSlotBuilder(antimatterSlot, 0).singletonSlotGroup().build()
                         .background(ClayGuiTextures.IMPORT_1_SLOT))
-                    .key('D', ItemSlot.create(false).slot(SyncHandlers.itemSlot(duplicationTargetSlot, 0).singletonSlotGroup())
+                    .key('D', MuiSlots.itemSlotBuilder(duplicationTargetSlot, 0).singletonSlotGroup().build()
                         .background(ClayGuiTextures.IMPORT_2_SLOT))
                     .build()
                     .align(Alignment.CenterLeft)
                 )
-                .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).singletonSlotGroup().accessibility(false, true))
+                .child(MuiSlots.itemSlotBuilder(exportItems, 0).singletonSlotGroup().takeOnly().buildLarge()
                     .align(Alignment.CenterRight))
                 .child(recipeLogic.getProgressBar(syncManager, showRecipes = false)
                     .progress(recipeLogic::getNormalizedProgress)

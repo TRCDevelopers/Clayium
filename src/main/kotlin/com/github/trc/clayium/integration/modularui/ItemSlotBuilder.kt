@@ -1,8 +1,13 @@
 package com.github.trc.clayium.integration.modularui
 
+import com.cleanroommc.modularui.api.drawable.IDrawable
+import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.slot.IOnSlotChanged
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
+import com.cleanroommc.modularui.widgets.slot.SlotGroup
+import com.github.trc.clayium.common.gui.ClayGuiTextures
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandler
 import java.util.function.Predicate
@@ -19,8 +24,22 @@ class ItemSlotBuilder(
         return ItemSlot.create(phantom).slot(modularSlot)
     }
 
+    fun buildLarge(): ParentWidget<*> {
+        return ParentWidget()
+            .size(26, 26)
+            .background(ClayGuiTextures.LARGE_SLOT)
+            .child(ItemSlot.create(phantom).align(Alignment.Center)
+                .slot(modularSlot)
+                .background(IDrawable.EMPTY))
+    }
+
     fun slotGroup(slotGroup: String): ItemSlotBuilder {
         modularSlot.slotGroup(slotGroup)
+        return this
+    }
+
+    fun singletonSlotGroup(shiftClickPriority: Int = SlotGroup.STORAGE_SLOT_PRIO): ItemSlotBuilder {
+        modularSlot.singletonSlotGroup(shiftClickPriority)
         return this
     }
 

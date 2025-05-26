@@ -4,11 +4,9 @@ package com.github.trc.clayium.api.metatileentity
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.IPipeConnectionLogic
@@ -135,9 +133,9 @@ class MultiTrackBufferMetaTileEntity(
                                     .child(SlotGroupWidget.builder()
                                         .matrix(slotsRowString)
                                         .key('I') { slotIndex ->
-                                            ItemSlot.create(false).slot(SyncHandlers.itemSlot(handler, slotIndex)
+                                            MuiSlots.itemSlotBuilder(handler, slotIndex)
                                                 .slotGroup("mt_buffer_inv_${i}")
-                                                .filter(slotFilters[i]))
+                                                .filter(slotFilters[i]).build()
                                                 .background(ClayGuiTextures.M_TRACK_SLOTS[i])
                                         }
                                         .build())
