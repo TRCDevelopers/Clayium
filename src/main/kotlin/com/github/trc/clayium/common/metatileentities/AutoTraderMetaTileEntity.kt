@@ -106,7 +106,7 @@ class AutoTraderMetaTileEntity(
     private val trade: MerchantRecipe?
         get() {
             val trades = this.trades
-                ?.takeUnless { it.isEmpty }
+                ?.takeUnless { it.isEmpty() }
                 ?: return null
             if (trades.size <= this.tradeIndex) {
                 this.tradeIndex = 0
