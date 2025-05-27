@@ -4,7 +4,6 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
@@ -36,7 +35,7 @@ class ChemicalMetalSeparatorMetaTileEntity(
         val slotsAndProgressBar = Row()
             .widthRel(0.8f).height(18 * 4)
             .align(Alignment.Center)
-            .child(largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
+            .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().buildLarge()
                 .align(Alignment.CenterLeft))
             .child(workable.getProgressBar(syncManager)
                 .align(Alignment.CenterLeft).marginLeft(26 + 4))

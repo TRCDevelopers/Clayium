@@ -1,6 +1,5 @@
 package com.github.trc.clayium.api.metatileentity
 
-import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
@@ -8,8 +7,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Flow
-import com.cleanroommc.modularui.widgets.slot.ItemSlot
-import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.BlockMachine.Companion.IS_PIPE
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
@@ -58,7 +55,6 @@ import com.github.trc.clayium.api.util.MachineIoMode.SECOND
 import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
-import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.items.filter.FilterType
 import com.github.trc.clayium.common.util.SidelessI18n
 import com.github.trc.clayium.common.util.UtilLocale
@@ -718,14 +714,6 @@ abstract class MetaTileEntity(
     open fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {}
     @SideOnly(Side.CLIENT)
     open fun useGlobalRenderer() = false
-
-    @Deprecated("Use `MuiSlots.itemSlotBuilder().buildLarge()` instead.")
-    protected fun largeSlot(slot: ModularSlot) = ParentWidget()
-                .size(26, 26)
-                .background(ClayGuiTextures.LARGE_SLOT)
-                .child(ItemSlot.create(false).align(Alignment.Center)
-                    .slot(slot)
-                    .background(IDrawable.EMPTY))
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         return ModularPanel.defaultPanel(translationKey)

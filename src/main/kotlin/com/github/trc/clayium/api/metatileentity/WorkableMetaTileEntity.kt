@@ -3,7 +3,6 @@ package com.github.trc.clayium.api.metatileentity
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
@@ -63,8 +62,9 @@ abstract class WorkableMetaTileEntity(
             .child(workable.getProgressBar(syncManager).align(Alignment.Center))
 
         if (importItems.slots == 1) {
-            slotsAndProgressBar.child(largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
-                .align(Alignment.CenterLeft))
+            slotsAndProgressBar.child(
+                MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().build().align(Alignment.CenterLeft)
+            )
         } else if (importItems.slots == 2) {
             syncManager.registerSlotGroup("input_inv", 1)
             slotsAndProgressBar.child(

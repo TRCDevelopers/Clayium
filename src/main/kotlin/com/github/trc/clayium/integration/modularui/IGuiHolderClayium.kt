@@ -7,7 +7,7 @@ import com.cleanroommc.modularui.screen.UISettings
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 
 /**
- * Additional Compatibility layer
+ * wraps [IGuiHolder] to absorb changes of MUI API.
  */
 interface IGuiHolderClayium<T: GuiData> : IGuiHolder<T> {
     fun buildUI(data: T, syncManager: PanelSyncManager): ModularPanel

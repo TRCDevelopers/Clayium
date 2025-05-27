@@ -10,12 +10,13 @@ import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandler
+import org.jetbrains.annotations.ApiStatus
 import java.util.function.Predicate
 
 class ItemSlotBuilder(
     private val phantom: Boolean,
-    private val itemHandler: IItemHandler,
-    private val index: Int,
+    itemHandler: IItemHandler,
+    index: Int,
 ) {
 
     private val modularSlot = ModularSlot(itemHandler, index)
@@ -33,7 +34,19 @@ class ItemSlotBuilder(
                 .background(IDrawable.EMPTY))
     }
 
+    @Suppress("UnstableApiUsage")
+    @ApiStatus.Experimental
+    fun ignoreMaxStackSize(): ItemSlotBuilder {
+        modularSlot.ignoreMaxStackSize(true)
+        return this
+    }
+
     fun slotGroup(slotGroup: String): ItemSlotBuilder {
+        modularSlot.slotGroup(slotGroup)
+        return this
+    }
+
+    fun slotGroup(slotGroup: SlotGroup): ItemSlotBuilder {
         modularSlot.slotGroup(slotGroup)
         return this
     }

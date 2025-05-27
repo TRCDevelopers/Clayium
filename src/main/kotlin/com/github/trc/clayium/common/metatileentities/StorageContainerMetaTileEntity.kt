@@ -3,7 +3,6 @@ package com.github.trc.clayium.common.metatileentities
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.block.BlockMachine
@@ -241,9 +240,9 @@ class StorageContainerMetaTileEntity(
             .child(IKey.dynamic { "$itemsStored / $maxStoredItems" }.asWidget()
                 .widthRel(0.5f).align(Alignment.BottomRight))
             .child(Column().widthRel(0.6f).height(26)
-                .child(largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
+                .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().buildLarge()
                     .align(Alignment.CenterLeft))
-                .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).accessibility(/* canPut = */ false, /* canTake = */ true))
+                .child(MuiSlots.itemSlotBuilder(exportItems, 0).takeOnly().buildLarge()
                     .align(Alignment.CenterRight))
                 .align(Alignment.Center))
             .child(MuiSlots.phantomSlot(filterSlot, 0)
