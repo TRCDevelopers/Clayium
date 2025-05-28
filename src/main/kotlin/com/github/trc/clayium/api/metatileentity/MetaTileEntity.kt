@@ -595,9 +595,6 @@ abstract class MetaTileEntity(
         return ItemStack(blockMachine, amount, mteRegistry.getIdByKey(metaTileEntityId))
     }
 
-    open fun writeItemStackNbt(data: NBTTagCompound) {}
-    open fun readItemStackNbt(data: NBTTagCompound) {}
-
     open fun onNeighborChanged(facing: EnumFacing) {
     }
     open fun neighborChanged() {

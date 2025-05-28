@@ -5,6 +5,8 @@ import codechicken.lib.render.particle.CustomParticleHandler
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trc.clayium.api.metatileentity.interfaces.IHasItemStackNbt
+import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import net.minecraft.block.Block
@@ -119,8 +121,13 @@ class BlockMachine : Block(Material.IRON) {
         } else {
             placer.horizontalFacing.opposite
         }
-        if (stack.hasTagCompound()) {
-            newMetaTileEntity.readItemStackNbt(stack.tagCompound!!)
+        if (newMetaTileEntity is IHasItemStackNbt && stack.hasTagCompound()) {
+            val stackTagCompound = stack.tagCompound
+            if (stackTagCompound == null) {
+                CLog.error("stack.hasTagCompound() is true, but stack.tagCompound is null!")
+            } else {
+                newMetaTileEntity.readItemStackNbt(stackTagCompound)
+            }
         }
 
         newMetaTileEntity.onPlacement()
@@ -148,8 +155,11 @@ class BlockMachine : Block(Material.IRON) {
     override fun getDrops(drops: NonNullList<ItemStack>, world: IBlockAccess, pos: BlockPos, state: IBlockState, fortune: Int) {
         val metaTileEntity: MetaTileEntity = world.getMetaTileEntity(pos) ?: beingBrokenMetaTileEntity.get()
         val stack = metaTileEntity.getStackForm()
-        val data = NBTTagCompound().apply { metaTileEntity.writeItemStackNbt(this) }
-        if (!data.isEmpty) stack.tagCompound = data
+        if (metaTileEntity is IHasItemStackNbt) {
+            val data = NBTTagCompound()
+            metaTileEntity.writeToNBT(data)
+            if (!data.isEmpty) stack.tagCompound = data
+        }
         drops.add(stack)
     }
 
@@ -170,6 +180,7 @@ class BlockMachine : Block(Material.IRON) {
         }
     }
 
+    @Suppress("WRONG_NULLABILITY_FOR_JAVA_OVERRIDE") // blockIn can be null
     override fun neighborChanged(state: IBlockState, worldIn: World, pos: BlockPos, blockIn: Block?, fromPos: BlockPos) {
         (worldIn.getTileEntity(pos) as? MetaTileEntityHolder)?.neighborChanged()
     }
