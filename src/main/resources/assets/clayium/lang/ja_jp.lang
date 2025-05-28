@@ -564,8 +564,15 @@ machine.clayium.ranged_miner=範囲採掘機
 machine.clayium.advanced_ranged_miner=発展型範囲採掘機
 machine.clayium.ranged_replacer=範囲置換機
 
-tile.clayium.blockActivator.name=代行機
-tile.clayium.blockActivator.tooltip.line1=右クリックを代行
+machine.clayium.activator=代行機
+machine.clayium.activator.tooltip1=右クリックを代行
+gui.clayium.activator.click_mode.block=Block
+gui.clayium.activator.click_mode.entity=Entity
+gui.clayium.activator.click_mode.both=Block and Entity
+gui.clayium.activator.sneak=Sneak
+gui.clayium.activator.no_sneak=No Sneak
+gui.clayium.activator.raytrace=Raytrace
+gui.clayium.activator.no_raytrace=No Raytrace
 tile.clayium.blockAreaActivator.name=範囲代行機
 tile.clayium.blockAreaActivator.tooltip.line1=右クリックを代行
 

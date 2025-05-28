@@ -9,7 +9,11 @@ import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.*
+import com.cleanroommc.modularui.widgets.ButtonWidget
+import com.cleanroommc.modularui.widgets.CycleButtonWidget
+import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Grid
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.metatileentity.AbstractMinerMetaTileEntity
@@ -26,8 +30,6 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
 
-// メモ: 原作はブロックの右クリックではなく、アイテムの右クリックに焦点を当てていると思われる
-// e.g. 火打ち石、バケツ系
 class ActivatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier
@@ -52,12 +54,21 @@ class ActivatorMetaTileEntity(
         val clickPos = getNextBlockPos() ?: return false
         val world = this.world as? WorldServer ?: return false
         val player = CUtils.getFakePlayer(world)
-        player.setWorld(world)
-        player.setLocationAndAngles(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), 0f, 0f)
-        player.interactionManager.processRightClickBlock(
-            player, world, ItemStack.EMPTY, EnumHand.MAIN_HAND, getNextBlockPos(),
-            this.frontFacing.opposite, 0.5f, 0.5f, 0.5f
-        )
+
+        when (blockEntityMode) {
+            BlockEntityMode.BLOCK -> {
+                player.setWorld(world)
+                player.setLocationAndAngles(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), 0f, 0f)
+                player.isSneaking = sneaking
+                player.interactionManager.processRightClickBlock(
+                    player, world, ItemStack.EMPTY, EnumHand.MAIN_HAND, clickPos,
+                    this.frontFacing.opposite, 0.5f, 0.5f, 0.5f
+                )
+            }
+            BlockEntityMode.ENTITY -> {}
+            BlockEntityMode.BLOCK_AND_ENTITY -> {}
+        }
+
         return false
     }
 
@@ -104,12 +115,17 @@ class ActivatorMetaTileEntity(
             .stateHoverBackground(BlockEntityMode.ENTITY, ClayGuiTextures.Clicker.ENTITY_HOVERED)
             .stateBackground(BlockEntityMode.BLOCK_AND_ENTITY, ClayGuiTextures.Clicker.BLOCK_AND_ENTITY)
             .stateHoverBackground(BlockEntityMode.BLOCK_AND_ENTITY, ClayGuiTextures.Clicker.BLOCK_AND_ENTITY_HOVERED)
+            .tooltip(0) { it.addLine(IKey.lang("gui.clayium.activator.click_mode.block")) }
+            .tooltip(1) { it.addLine(IKey.lang("gui.clayium.activator.click_mode.entity")) }
+            .tooltip(2) { it.addLine(IKey.lang("gui.clayium.activator.click_mode.both")) }
         val raytraceButton = ToggleButton()
             .value(BoolValue.Dynamic(::raytrace, ::raytrace::set))
             .background(ClayGuiTextures.Clicker.FIXED_TARGET)
             .hoverBackground(ClayGuiTextures.Clicker.FIXED_TARGET_HOVERED)
             .selectedBackground(ClayGuiTextures.Clicker.RAYTRACE)
             .selectedHoverBackground(ClayGuiTextures.Clicker.RAYTRACE_HOVERED)
+            .tooltip(false) { it.addLine(IKey.lang("gui.clayium.activator.raytrace_enabled")) }
+            .tooltip(true) { it.addLine(IKey.lang("gui.clayium.activator.raytrace_disabled")) }
         val sneakingButton = ToggleButton()
             .value(BoolValue.Dynamic(::sneaking, ::sneaking::set))
             .background(ClayGuiTextures.Clicker.NO_SNEAK)
