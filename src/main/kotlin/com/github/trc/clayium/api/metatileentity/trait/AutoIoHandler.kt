@@ -11,7 +11,6 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
-import kotlin.Int
 
 abstract class AutoIoHandler(
     metaTileEntity: MetaTileEntity,

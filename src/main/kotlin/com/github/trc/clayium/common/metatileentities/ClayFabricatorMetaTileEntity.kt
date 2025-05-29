@@ -17,9 +17,14 @@ import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.material.Clay
 import com.github.trc.clayium.api.unification.ore.OrePrefix
-import com.github.trc.clayium.api.util.*
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.asWidgetResizing
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
 import com.github.trc.clayium.common.util.TransferUtils
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import mcjty.theoneprobe.api.IProbeHitData
 import mcjty.theoneprobe.api.IProbeInfo
 import mcjty.theoneprobe.api.ProbeMode
@@ -58,10 +63,10 @@ class ClayFabricatorMetaTileEntity(
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         syncManager.syncValue("clay_energy", SyncHandlers.longNumber({ workable.currentCe.energy }, { workable.currentCe = ClayEnergy(it) }))
         val slotsAndProgressBar = Row().widthRel(0.7f).height(26)
-            .child(largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
+            .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().buildLarge()
                 .align(Alignment.CenterLeft))
             .child(workable.getProgressBar(syncManager).align(Alignment.Center))
-            .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).accessibility(false, true))
+            .child(MuiSlots.itemSlotBuilder(exportItems, 0).takeOnly().buildLarge()
                 .align(Alignment.CenterRight))
 
         return super.buildMainParentWidget(syncManager)

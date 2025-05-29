@@ -3,7 +3,9 @@ package com.github.trc.clayium.common.items
 import com.github.trc.clayium.api.HARDNESS_UNBREAKABLE
 import com.github.trc.clayium.api.util.next
 import com.github.trc.clayium.common.config.ConfigCore
-import com.github.trc.clayium.common.items.ItemClaySteelPickaxe.Mode.*
+import com.github.trc.clayium.common.items.ItemClaySteelPickaxe.Mode.CUSTOM
+import com.github.trc.clayium.common.items.ItemClaySteelPickaxe.Mode.RANGED
+import com.github.trc.clayium.common.items.ItemClaySteelPickaxe.Mode.SINGLE
 import com.github.trc.clayium.common.reflect.BlockReflect
 import com.github.trc.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.ints.IntArrayList

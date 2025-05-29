@@ -3,7 +3,6 @@ package com.github.trc.clayium.common.metatileentities.multiblock
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.utils.NumberFormat
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
@@ -20,12 +19,17 @@ import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult.Invalid
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
-import com.github.trc.clayium.api.util.*
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.asWidgetResizing
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.getMetaTileEntity
+import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.common.blocks.BlockCaReactorCoil
 import com.github.trc.clayium.common.blocks.BlockCaReactorHull
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.registry.CaReactorRecipeRegistry
 import com.github.trc.clayium.common.util.SidelessI18n
+import com.github.trc.clayium.integration.modularui.CNumFormat
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import net.minecraft.client.resources.I18n
 import net.minecraft.util.EnumFacing
@@ -200,7 +204,7 @@ class CaReactorMetaTileEntity(
                     syncManager.player.sendMessage(err)
                 })
             )
-            .child(IKey.dynamic { SidelessI18n.format("gui.clayium.ca_reactor.efficiency", NumberFormat.formatWithMaxDigits(efficiency)) }
+            .child(IKey.dynamic { SidelessI18n.format("gui.clayium.ca_reactor.efficiency", CNumFormat.format(efficiency)) }
                 .asWidgetResizing().alignment(Alignment.CenterRight).alignX(Alignment.BottomRight.x).bottom(14)
             )
             .child(IKey.dynamic { SidelessI18n.format("gui.clayium.ca_reactor.rank_size", avgHullRank, hullCount) }

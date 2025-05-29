@@ -12,7 +12,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent
 import net.minecraftforge.fml.common.IWorldGenerator
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.registry.GameRegistry
-import java.util.Random
+import java.util.*
 
 object ClayOreGenerator : IWorldGenerator {
 

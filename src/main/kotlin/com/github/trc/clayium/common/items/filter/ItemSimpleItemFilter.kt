@@ -1,6 +1,5 @@
 package com.github.trc.clayium.common.items.filter
 
-import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.DynamicDrawable
 import com.cleanroommc.modularui.drawable.GuiTextures
@@ -14,13 +13,14 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.CycleButtonWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.api.capability.impl.SimpleItemFilter
 import com.github.trc.clayium.api.util.getMetaTileEntity
+import com.github.trc.clayium.integration.modularui.IGuiHolderClayium
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.Item
@@ -38,7 +38,7 @@ import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
-class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
+class ItemSimpleItemFilter : Item(), IGuiHolderClayium<HandGuiData> {
     override fun buildUI(data: HandGuiData, syncManager: PanelSyncManager): ModularPanel {
         val stack = data.usedItemStack
         val itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable
@@ -88,12 +88,10 @@ class ItemSimpleItemFilter : Item(), IGuiHolder<HandGuiData> {
                     )
                     .child(SlotGroupWidget.builder()
                         .matrix(*matrix)
-                        .key('I') { i -> ItemSlot().slot(SyncHandlers.phantomItemSlot(itemHandler, i)
-                            .slotGroup("filter"))
-                        }
+                        .key('I') { i -> MuiSlots.phantomSlotBuilder(itemHandler, i).slotGroup("filter").build() }
                         .build()
                         .align(Alignment.Center)))
-                .child(SlotGroupWidget.playerInventory(0)))
+                .child(MuiSlots.playerInventory(0)))
     }
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {

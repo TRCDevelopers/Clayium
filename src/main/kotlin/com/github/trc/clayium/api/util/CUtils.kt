@@ -27,8 +27,8 @@ import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
-import java.util.EnumMap
-import java.util.UUID
+import java.util.*
+import kotlin.collections.AbstractList
 import kotlin.enums.EnumEntries
 import kotlin.enums.enumEntries
 

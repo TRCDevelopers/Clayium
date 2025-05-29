@@ -9,10 +9,6 @@ import com.github.trc.clayium.common.metatileentities.CaInjectorMetaTileEntity
 import com.github.trc.clayium.common.metatileentities.MetaTileEntities
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import net.minecraft.item.ItemStack
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.sumOf
-import kotlin.collections.windowed
 
 object CaInjectorRecipeLoader {
     fun registerRecipes() {

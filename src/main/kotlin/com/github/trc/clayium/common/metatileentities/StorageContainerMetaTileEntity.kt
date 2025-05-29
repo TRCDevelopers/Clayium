@@ -2,11 +2,8 @@ package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.utils.NumberFormat
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.block.BlockMachine
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER_ITEM
@@ -23,6 +20,8 @@ import com.github.trc.clayium.api.util.copyWithSize
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.util.transferTo
+import com.github.trc.clayium.integration.modularui.CNumFormat
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
@@ -47,7 +46,11 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.items.*
+import net.minecraftforge.items.CapabilityItemHandler
+import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.items.IItemHandlerModifiable
+import net.minecraftforge.items.ItemHandlerHelper
+import net.minecraftforge.items.ItemStackHandler
 import kotlin.math.min
 
 class StorageContainerMetaTileEntity(
@@ -237,12 +240,12 @@ class StorageContainerMetaTileEntity(
             .child(IKey.dynamic { "$itemsStored / $maxStoredItems" }.asWidget()
                 .widthRel(0.5f).align(Alignment.BottomRight))
             .child(Column().widthRel(0.6f).height(26)
-                .child(largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
+                .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().buildLarge()
                     .align(Alignment.CenterLeft))
-                .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).accessibility(/* canPut = */ false, /* canTake = */ true))
+                .child(MuiSlots.itemSlotBuilder(exportItems, 0).takeOnly().buildLarge()
                     .align(Alignment.CenterRight))
                 .align(Alignment.Center))
-            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0))
+            .child(MuiSlots.phantomSlot(filterSlot, 0)
                 .right(10).top(15))
     }
 
@@ -317,7 +320,7 @@ class StorageContainerMetaTileEntity(
             }
 
             GlStateManager.pushMatrix()
-            val amountText: String = NumberFormat.formatWithMaxDigits(itemsStored.toDouble(), 3)
+            val amountText: String = CNumFormat.format(itemsStored.toDouble())
             val fRenderer = mc.fontRenderer
             GlStateManager.rotate(180.0f, 0.0f, 1.0f, 0.0f)
             GlStateManager.translate(0.0, -0.15, -0.55)

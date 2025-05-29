@@ -2,9 +2,7 @@ package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER_ITEM
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
@@ -14,6 +12,7 @@ import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.model.ModelTextures
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
@@ -68,10 +67,11 @@ class VoidContainerMetaTileEntity(
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
-            .child(largeSlot(SyncHandlers.itemSlot(importItems, 0)
-                .filter { filterStack.isEmpty || ItemHandlerHelper.canItemStacksStack(it, filterStack) })
+            .child(MuiSlots.itemSlotBuilder(importItems, 0)
+                .filter { filterStack.isEmpty || ItemHandlerHelper.canItemStacksStack(it, filterStack) }
+                .buildLarge()
                 .align(Alignment.Center))
-            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0))
+            .child(MuiSlots.phantomSlot(filterSlot, 0)
                 .right(10).top(15))
     }
 

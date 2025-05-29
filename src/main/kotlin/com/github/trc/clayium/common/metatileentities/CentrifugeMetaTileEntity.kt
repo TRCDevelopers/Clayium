@@ -4,9 +4,7 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
@@ -22,6 +20,7 @@ import com.github.trc.clayium.common.config.ConfigTierBalance
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.common.util.CNbtUtils
 import com.github.trc.clayium.common.util.SidelessI18n
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
@@ -54,13 +53,12 @@ class CentrifugeMetaTileEntity(
             .top(30)
             .child(workable.getProgressBar(syncManager).align(Alignment.Center))
 
-        slotsAndProgressBar.child(largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
+        slotsAndProgressBar.child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().buildLarge()
             .align(Alignment.CenterLeft))
         slotsAndProgressBar.child(SlotGroupWidget.builder()
             .matrix(*(0..<outputSize).map { "I" }.toTypedArray())
             .key('I') {
-                ItemSlot().slot(SyncHandlers.itemSlot(exportItems, it)
-                    .accessibility(false, true))
+                MuiSlots.itemSlotBuilder(exportItems, it).takeOnly().build()
             }
             .build()
             .align(Alignment.CenterRight)

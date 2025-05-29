@@ -1,20 +1,15 @@
 package com.github.trc.clayium.api.metatileentity
 
-import com.cleanroommc.modularui.api.IGuiHolder
-import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
-import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Flow
-import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.BlockMachine.Companion.IS_PIPE
-import com.github.trc.clayium.api.capability.*
+import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.INITIALIZE_MTE
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_CONNECTIONS
@@ -22,7 +17,17 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FRONT_FACING
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_INPUT_MODE
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_OUTPUT_MODE
-import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.*
+import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
+import com.github.trc.clayium.api.capability.IConfigurationTool
+import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.EXTRACTION
+import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.FILTER_REMOVER
+import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.INSERTION
+import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.PIPING
+import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.ROTATION
+import com.github.trc.clayium.api.capability.IItemFilter
+import com.github.trc.clayium.api.capability.IPipeConnectable
+import com.github.trc.clayium.api.capability.IPipeConnectionLogic
+import com.github.trc.clayium.api.capability.PipeConnectionMode
 import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
@@ -31,14 +36,30 @@ import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import com.github.trc.clayium.api.metatileentity.interfaces.IWorldObject
 import com.github.trc.clayium.api.metatileentity.trait.OverclockHandler
-import com.github.trc.clayium.api.util.*
-import com.github.trc.clayium.api.util.MachineIoMode.*
+import com.github.trc.clayium.api.util.CLog
+import com.github.trc.clayium.api.util.CUtils
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.MachineIoMode.ALL
+import com.github.trc.clayium.api.util.MachineIoMode.CE
+import com.github.trc.clayium.api.util.MachineIoMode.FIRST
+import com.github.trc.clayium.api.util.MachineIoMode.M_1
+import com.github.trc.clayium.api.util.MachineIoMode.M_2
+import com.github.trc.clayium.api.util.MachineIoMode.M_3
+import com.github.trc.clayium.api.util.MachineIoMode.M_4
+import com.github.trc.clayium.api.util.MachineIoMode.M_5
+import com.github.trc.clayium.api.util.MachineIoMode.M_6
+import com.github.trc.clayium.api.util.MachineIoMode.M_ALL
+import com.github.trc.clayium.api.util.MachineIoMode.NONE
+import com.github.trc.clayium.api.util.MachineIoMode.SECOND
+import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
-import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.items.filter.FilterType
 import com.github.trc.clayium.common.util.SidelessI18n
 import com.github.trc.clayium.common.util.UtilLocale
+import com.github.trc.clayium.integration.modularui.IGuiHolderClayium
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
@@ -83,7 +104,7 @@ abstract class MetaTileEntity(
      * item model location will be ("${metaTileEntityId.namespace}:machines/${name}", "tier={tier.lowerName}").
      */
     private val name: String,
-) : ISyncedTileEntity, IWorldObject, IGuiHolder<MetaTileEntityGuiData>, IPipeConnectable {
+) : ISyncedTileEntity, IWorldObject, IGuiHolderClayium<MetaTileEntityGuiData>, IPipeConnectable {
 
     val mteRegistry = ClayiumApi.mteManager.getRegistry(metaTileEntityId.namespace)
     val blockMachine get() = mteRegistry.blockMachine
@@ -694,13 +715,6 @@ abstract class MetaTileEntity(
     @SideOnly(Side.CLIENT)
     open fun useGlobalRenderer() = false
 
-    protected fun largeSlot(slot: ModularSlot) = ParentWidget()
-                .size(26, 26)
-                .background(ClayGuiTextures.LARGE_SLOT)
-                .child(ItemSlot().align(Alignment.Center)
-                    .slot(slot)
-                    .background(IDrawable.EMPTY))
-
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         return ModularPanel.defaultPanel(translationKey)
             .columnWithPlayerInv {
@@ -712,7 +726,7 @@ abstract class MetaTileEntity(
         return this.child(
             Column().margin(7).sizeRel(1f)
                 .builder()
-                .child(SlotGroupWidget.playerInventory(0))
+                .child(MuiSlots.playerInventory(0))
         )
     }
 

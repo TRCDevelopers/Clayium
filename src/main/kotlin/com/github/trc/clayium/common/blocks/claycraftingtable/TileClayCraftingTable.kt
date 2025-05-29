@@ -1,6 +1,5 @@
 package com.github.trc.clayium.common.blocks.claycraftingtable
 
-import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.api.widget.IGuiAction
@@ -8,13 +7,12 @@ import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
@@ -23,6 +21,8 @@ import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.util.DummyContainer
 import com.github.trc.clayium.integration.jei.JeiPlugin
+import com.github.trc.clayium.integration.modularui.IGuiHolderClayium
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.InventoryCrafting
@@ -31,7 +31,7 @@ import net.minecraft.item.crafting.CraftingManager
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 
-class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
+class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolderClayium<PosGuiData> {
     private val inputInventory = ClayiumItemStackHandler(this, 9)
     private val outputInventory = ClayiumItemStackHandler(this, 1)
 
@@ -59,12 +59,11 @@ class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
                         .child(SlotGroupWidget.builder()
                             .matrix("III", "III", "III")
                             .key('I') { i ->
-                                ItemSlot().slot(SyncHandlers.itemSlot(inputInventory, i)
+                                MuiSlots.itemSlotBuilder(inputInventory, i)
                                     .slotGroup("input_inventory")
                                     .changeListener { newItem, onlyAmountChanged, client, init ->
                                         onInputSlotChanged()
-                                    }
-                                )
+                                    }.build()
                             }.build().align(Alignment.CenterLeft)
                         )
                         .child(ProgressWidget().size(22, 17).progress { 0.0 }.texture(ClayGuiTextures.PROGRESS_BAR, 22)
@@ -81,7 +80,8 @@ class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
                             }
                         )
                         .child(ParentWidget().size(26, 26).background(ClayGuiTextures.LARGE_SLOT)
-                            .child(ItemSlot().align(Alignment.Center)
+                            // Overriding onTake, so not using ItemSlotBuilder
+                            .child(ItemSlot.create(false).align(Alignment.Center)
                                 .slot(object: ModularSlot(outputInventory, 0) {
                                         override fun onTake(thePlayer: EntityPlayer, stack: ItemStack): ItemStack {
                                             onOutputSlotTake()
@@ -92,7 +92,7 @@ class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
                             .align(Alignment.CenterRight))
                     )
                 )
-                .child(SlotGroupWidget.playerInventory(0))
+                .child(MuiSlots.playerInventory(0))
             )
     }
 

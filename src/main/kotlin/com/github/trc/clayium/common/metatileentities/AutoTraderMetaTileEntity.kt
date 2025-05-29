@@ -9,19 +9,27 @@ import com.cleanroommc.modularui.value.BoolValue
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
-import com.github.trc.clayium.api.capability.impl.*
+import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
+import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
+import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
+import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
+import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.recipe.IRecipeProvider
-import com.github.trc.clayium.api.util.*
+import com.github.trc.clayium.api.util.CUtils
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.RelativeDirection
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.gui.ClayGuiTextures
@@ -29,6 +37,7 @@ import com.github.trc.clayium.common.gui.sync.MerchantRecipeListSyncValue
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.ingredient.CItemRecipeInput
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -97,7 +106,7 @@ class AutoTraderMetaTileEntity(
     private val trade: MerchantRecipe?
         get() {
             val trades = this.trades
-                ?.takeUnless { it.isEmpty }
+                ?.takeUnless { it.isEmpty() }
                 ?: return null
             if (trades.size <= this.tradeIndex) {
                 this.tradeIndex = 0
@@ -187,20 +196,17 @@ class AutoTraderMetaTileEntity(
                         .hoverBackground(PREV_DISALBED)
                         .selectedBackground(PREV).selectedHoverBackground(PREV_SELECTED)
                     )
-                    .child(ItemSlot().alignY(0.5f).marginLeft(15).background(IDrawable.EMPTY)
-                        .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 0)
-                            .accessibility(false, false))
+                    .child(MuiSlots.itemSlotBuilder(tradePreviewItemHandler, 0).lock().build()
+                        .alignY(0.5f).marginLeft(15).background(IDrawable.EMPTY)
                     )
-                    .child(ItemSlot().alignY(0.5f).marginLeft(9).background(IDrawable.EMPTY)
-                        .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 1)
-                            .accessibility(false, false))
+                    .child(MuiSlots.itemSlotBuilder(tradePreviewItemHandler, 1).lock().build()
+                        .alignY(0.5f).marginLeft(9).background(IDrawable.EMPTY)
                     )
                     .child(previewProgressBar.asWidget().size(22, 15)
                             .alignX(0.6f).alignY(0.5f)
                     )
-                    .child(ItemSlot().right(15).alignY(0.5f).background(IDrawable.EMPTY)
-                        .slot(SyncHandlers.itemSlot(tradePreviewItemHandler, 2)
-                            .accessibility(false, false))
+                    .child(MuiSlots.itemSlotBuilder(tradePreviewItemHandler, 2).lock().build()
+                        .right(15).alignY(0.5f).background(IDrawable.EMPTY)
                     )
                     .child(next.size(10, 15).align(Alignment.CenterRight)
                         .background(NEXT_DISABLED).hoverBackground(NEXT_DISABLED)
@@ -209,15 +215,15 @@ class AutoTraderMetaTileEntity(
                 )
                 .child(Row().widthRel(1f).height(26).alignX(0.5f).marginTop(6)
                     .debugName("Inventory Row")
-                    .child(ItemSlot().alignY(0.5f).marginLeft(15).background(ClayGuiTextures.IMPORT_1_SLOT)
-                        .slot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup(100))
+                    .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup(100).build()
+                        .alignY(0.5f).marginLeft(15).background(ClayGuiTextures.IMPORT_1_SLOT)
                     )
-                    .child(ItemSlot().alignY(0.5f).marginLeft(9).background(ClayGuiTextures.IMPORT_2_SLOT)
-                        .slot(SyncHandlers.itemSlot(importItems, 1).singletonSlotGroup(101))
+                    .child(MuiSlots.itemSlotBuilder(importItems, 1).singletonSlotGroup(101).build()
+                        .alignY(0.5f).marginLeft(9).background(ClayGuiTextures.IMPORT_2_SLOT)
                     )
                     .child(recipeLogic.getProgressBar(syncManager, showRecipes = false)
                         .alignX(0.6f).alignY(0.5f))
-                    .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).accessibility(false, true))
+                    .child(MuiSlots.itemSlotBuilder(exportItems, 0).takeOnly().buildLarge()
                         .right(11)
                     )
                 )

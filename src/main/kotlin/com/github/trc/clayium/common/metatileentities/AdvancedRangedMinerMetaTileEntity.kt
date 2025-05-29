@@ -2,15 +2,18 @@ package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
-import com.github.trc.clayium.api.util.*
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.getCapability
+import com.github.trc.clayium.api.util.hasCapability
+import com.github.trc.clayium.api.util.toItemStack
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.reflect.BlockReflect
 import com.github.trc.clayium.common.util.TransferUtils
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -52,12 +55,12 @@ class AdvancedRangedMinerMetaTileEntity(
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
-            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(extraFilters, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) })
+            .child(MuiSlots.phantomSlotBuilder(extraFilters, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) }.build()
                 .background(ClayGuiTextures.FILTER_SLOT)
                 .top(12 + 18 + 2).right(24)
                 .tooltipBuilder { it.addLine(IKey.lang("enchantment.lootBonusDigger")) }
             )
-            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(extraFilters, 1).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) })
+            .child(MuiSlots.phantomSlotBuilder(extraFilters, 1).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) }.build()
                 .background(ClayGuiTextures.FILTER_SLOT)
                 .top(12 + 18 * 2 + 2 * 2).right(24)
                 .tooltipBuilder { it.addLine(IKey.lang("enchantment.untouching")) }
