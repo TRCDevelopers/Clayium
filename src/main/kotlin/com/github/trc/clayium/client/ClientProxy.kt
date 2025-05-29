@@ -75,7 +75,6 @@ class ClientProxy : CommonProxy() {
 
                 val colors = colorsRaw.map { color ->
                     ColourRGBA(color shl 8).apply { a = 255.toByte() }
-
                 }
 
                 val sprite = TextureExtra(clayiumId("blocks/compressed_$name").toString(), compressedBlockTextures, colors)
