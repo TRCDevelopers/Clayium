@@ -3,6 +3,7 @@ import {defineConfig} from "vitepress";
 export const shared = defineConfig({
     title: "Clayium Wiki",
     description: "a wiki for Clayium Unofficial",
+    base: "/Clayium/",
     lastUpdated: false,
     vite: {
         plugins: [],
