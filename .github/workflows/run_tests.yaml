@@ -5,7 +5,11 @@ on:
     branches:
       - main
       - develop
+    paths:
+      - 'src/**'
   pull_request:
+    paths:
+      - 'src/**'
 
 concurrency:
   group: run-tests-${{ github.head_ref }}

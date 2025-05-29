@@ -1,6 +1,9 @@
 name: Run Dedicated Server
 
-on: pull_request
+on:
+  pull_request:
+    paths:
+      - 'src/**'
 
 concurrency:
   group: run-dedicated-server-${{ github.head_ref }}
