@@ -2,16 +2,16 @@
 
 With [GroovyScript](https://github.com/CleanroomMC/GroovyScript), you can add or remove recipes.
 
-Recipes are stored in a `RecipeRegistry` and can be obtained as follows.
+Recipes are stored in a `RecipeRegistry`. You can get a registry as follows:
 
 ```groovy
 def recipeMap = mods.clayium.recipe_registry_name
 ```
 
 You can get a list of `RecipeRegistry` from [here](https://github.com/TRCDevelopers/Clayium/blob/develop/src/main/kotlin/com/github/trc/clayium/common/recipe/registry/CRecipes.kt).
-The string surrounded by `""` is `recipe_registry_name`.
+In the linked file, the string enclosed in double quotes (e.g., "clay_reactor") is the recipe_registry_name.
 
-With the `RecipeRegistry` you can create a Builder:
+Using the `RecipeRegistry`, you can create a new `recipeBuilder`:
 
 ```groovy
 mods.clayium.clay_reactor.recipeBuilder()
