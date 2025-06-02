@@ -18,7 +18,11 @@ import com.github.trc.clayium.integration.jei.basic.ClayiumRecipeWrapper
 import com.github.trc.clayium.integration.jei.basic.MetalSeparatorRecipeWrapper
 import com.github.trc.clayium.integration.jei.clayworktable.ClayWorkTableRecipeCategory
 import com.github.trc.clayium.integration.jei.clayworktable.ClayWorkTableRecipeWrapper
-import mezz.jei.api.*
+import mezz.jei.api.IJeiHelpers
+import mezz.jei.api.IJeiRuntime
+import mezz.jei.api.IModPlugin
+import mezz.jei.api.IModRegistry
+import mezz.jei.api.JEIPlugin
 import mezz.jei.api.ingredients.VanillaTypes
 import mezz.jei.api.recipe.IRecipeCategoryRegistration
 import mezz.jei.api.recipe.IRecipeWrapperFactory
