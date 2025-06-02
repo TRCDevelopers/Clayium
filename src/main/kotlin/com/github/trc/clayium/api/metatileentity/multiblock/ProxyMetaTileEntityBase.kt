@@ -192,7 +192,7 @@ abstract class ProxyMetaTileEntityBase(
             writeBoolean(true)
             writeBlockPos(pos)
             writeVarInt(world.provider.dimension)
-            writeItemStack(target.getStackForm())
+            writeItemStack(target.asStackForm())
         }
     }
 

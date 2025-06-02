@@ -18,11 +18,7 @@ import com.github.trc.clayium.integration.jei.basic.ClayiumRecipeWrapper
 import com.github.trc.clayium.integration.jei.basic.MetalSeparatorRecipeWrapper
 import com.github.trc.clayium.integration.jei.clayworktable.ClayWorkTableRecipeCategory
 import com.github.trc.clayium.integration.jei.clayworktable.ClayWorkTableRecipeWrapper
-import mezz.jei.api.IJeiHelpers
-import mezz.jei.api.IJeiRuntime
-import mezz.jei.api.IModPlugin
-import mezz.jei.api.IModRegistry
-import mezz.jei.api.JEIPlugin
+import mezz.jei.api.*
 import mezz.jei.api.ingredients.VanillaTypes
 import mezz.jei.api.recipe.IRecipeCategoryRegistration
 import mezz.jei.api.recipe.IRecipeWrapperFactory
@@ -77,10 +73,10 @@ class JeiPlugin : IModPlugin {
         for (registry in ClayiumApi.mteManager.allRegistries()) {
             for (metaTileEntity in registry) {
                 when (metaTileEntity) {
-                    is WorkableMetaTileEntity -> modRegistry.addRecipeCatalyst(metaTileEntity.getStackForm(),
+                    is WorkableMetaTileEntity -> modRegistry.addRecipeCatalyst(metaTileEntity.asStackForm(),
                         metaTileEntity.recipeRegistry.category.uniqueId)
 
-                    is SolarClayFabricatorMetaTileEntity -> modRegistry.addRecipeCatalyst(metaTileEntity.getStackForm(),
+                    is SolarClayFabricatorMetaTileEntity -> modRegistry.addRecipeCatalyst(metaTileEntity.asStackForm(),
                         metaTileEntity.registry.category.uniqueId)
                 }
             }

@@ -52,7 +52,7 @@ class ChemicalMetalSeparatorMetaTileEntity(
             .columnWithPlayerInv {
                 @Suppress("DuplicatedCode") // Output slots layout is different from super.buildMainParentWidget
                 child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.str(getStackForm().displayName).asWidget()
+                    .child(IKey.str(asStackForm().displayName).asWidget()
                         .align(Alignment.TopLeft))
                     .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
                     .child(IKey.dynamic {

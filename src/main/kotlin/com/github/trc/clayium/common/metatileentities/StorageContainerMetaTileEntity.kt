@@ -47,11 +47,7 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.items.CapabilityItemHandler
-import net.minecraftforge.items.IItemHandler
-import net.minecraftforge.items.IItemHandlerModifiable
-import net.minecraftforge.items.ItemHandlerHelper
-import net.minecraftforge.items.ItemStackHandler
+import net.minecraftforge.items.*
 import kotlin.math.min
 
 class StorageContainerMetaTileEntity(
@@ -128,7 +124,7 @@ class StorageContainerMetaTileEntity(
             val world = this.world
             val pos = this.pos
             if (!(world == null || pos == null)) {
-                val upgradedStorageContainerStack = MetaTileEntities.STORAGE_CONTAINER_UPGRADED.getStackForm()
+                val upgradedStorageContainerStack = MetaTileEntities.STORAGE_CONTAINER_UPGRADED.asStackForm()
                 upgradedStorageContainerStack.tagCompound = NBTTagCompound().apply { writeItemStackNbt(this) }
                 this.blockMachine.onBlockPlacedBy(world, pos, world.getBlockState(pos), player, upgradedStorageContainerStack)
                 stack.shrink(1)

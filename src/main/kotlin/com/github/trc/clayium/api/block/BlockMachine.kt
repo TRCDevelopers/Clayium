@@ -154,7 +154,7 @@ class BlockMachine : Block(Material.IRON) {
 
     override fun getDrops(drops: NonNullList<ItemStack>, world: IBlockAccess, pos: BlockPos, state: IBlockState, fortune: Int) {
         val metaTileEntity: MetaTileEntity = world.getMetaTileEntity(pos) ?: beingBrokenMetaTileEntity.get()
-        val stack = metaTileEntity.getStackForm()
+        val stack = metaTileEntity.asStackForm()
         if (metaTileEntity is IHasItemStackNbt) {
             val data = NBTTagCompound()
             metaTileEntity.writeToNBT(data)
@@ -189,13 +189,13 @@ class BlockMachine : Block(Material.IRON) {
         val registry = ClayiumApi.mteManager.getRegistry(registryName!!.namespace)
         for (mte in registry) {
             if (mte.isInCreativeTab(itemIn)) {
-                items.add(mte.getStackForm())
+                items.add(mte.asStackForm())
             }
         }
     }
 
     override fun getPickBlock(state: IBlockState, target: RayTraceResult, world: World, pos: BlockPos, player: EntityPlayer): ItemStack {
-        return world.getMetaTileEntity(pos)?.getStackForm() ?: ItemStack.EMPTY
+        return world.getMetaTileEntity(pos)?.asStackForm() ?: ItemStack.EMPTY
     }
 
     override fun canConnectRedstone(state: IBlockState, world: IBlockAccess, pos: BlockPos, side: EnumFacing?): Boolean {

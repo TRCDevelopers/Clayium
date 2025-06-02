@@ -9,7 +9,7 @@ import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Flow
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.block.BlockMachine.Companion.IS_PIPE
-import com.github.trc.clayium.api.capability.ClayiumCapabilities
+import com.github.trc.clayium.api.capability.*
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.INITIALIZE_MTE
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_CONNECTIONS
@@ -17,17 +17,7 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FRONT_FACING
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_INPUT_MODE
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_OUTPUT_MODE
-import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
-import com.github.trc.clayium.api.capability.IConfigurationTool
-import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.EXTRACTION
-import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.FILTER_REMOVER
-import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.INSERTION
-import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.PIPING
-import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.ROTATION
-import com.github.trc.clayium.api.capability.IItemFilter
-import com.github.trc.clayium.api.capability.IPipeConnectable
-import com.github.trc.clayium.api.capability.IPipeConnectionLogic
-import com.github.trc.clayium.api.capability.PipeConnectionMode
+import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.*
 import com.github.trc.clayium.api.capability.impl.FilteredItemHandler
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
@@ -36,23 +26,8 @@ import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import com.github.trc.clayium.api.metatileentity.interfaces.IWorldObject
 import com.github.trc.clayium.api.metatileentity.trait.OverclockHandler
-import com.github.trc.clayium.api.util.CLog
-import com.github.trc.clayium.api.util.CUtils
-import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.api.util.MachineIoMode
-import com.github.trc.clayium.api.util.MachineIoMode.ALL
-import com.github.trc.clayium.api.util.MachineIoMode.CE
-import com.github.trc.clayium.api.util.MachineIoMode.FIRST
-import com.github.trc.clayium.api.util.MachineIoMode.M_1
-import com.github.trc.clayium.api.util.MachineIoMode.M_2
-import com.github.trc.clayium.api.util.MachineIoMode.M_3
-import com.github.trc.clayium.api.util.MachineIoMode.M_4
-import com.github.trc.clayium.api.util.MachineIoMode.M_5
-import com.github.trc.clayium.api.util.MachineIoMode.M_6
-import com.github.trc.clayium.api.util.MachineIoMode.M_ALL
-import com.github.trc.clayium.api.util.MachineIoMode.NONE
-import com.github.trc.clayium.api.util.MachineIoMode.SECOND
-import com.github.trc.clayium.api.util.asWidgetResizing
+import com.github.trc.clayium.api.util.*
+import com.github.trc.clayium.api.util.MachineIoMode.*
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.items.filter.FilterType
@@ -203,6 +178,9 @@ abstract class MetaTileEntity(
         mteTraits.values.forEach(MTETrait::onFirstTick)
     }
 
+    /**
+     * Ctrl+RClick replacing.
+     */
     open fun canBeReplacedTo(world: World, pos: BlockPos, sampleMetaTileEntity: MetaTileEntity): Boolean {
         // shouldn't be replaced if the same MTE.
         if (sampleMetaTileEntity.metaTileEntityId == this.metaTileEntityId) return false
@@ -211,6 +189,10 @@ abstract class MetaTileEntity(
         return thisClass == thatClass
     }
 
+    /**
+     * Ctrl+RClick replacing.
+     * FIXME: Not synced to the client side.
+     */
     fun replaceTo(world: World, pos: BlockPos, sampleMetaTileEntity: MetaTileEntity) {
         if (world.isRemote) return
         if (!(world == this.world && pos == this.pos)) return
@@ -225,11 +207,14 @@ abstract class MetaTileEntity(
         }
         world.neighborChanged(pos, holder!!.blockType, pos)
         markDirty()
-        Block.spawnAsEntity(world, pos, this.getStackForm())
+        Block.spawnAsEntity(world, pos, this.asStackForm())
         this.onReplace(world, pos, newMetaTileEntity, data)
         this.scheduleRenderUpdate()
     }
 
+    /**
+     * called when Ctrl+RClick replacing happens.
+     */
     protected open fun onReplace(world: World, pos: BlockPos, newMetaTileEntity: MetaTileEntity, oldMteData: NBTTagCompound) {}
 
     open fun writeToNBT(data: NBTTagCompound) {
@@ -581,6 +566,7 @@ abstract class MetaTileEntity(
         else PipeConnectionMode.NONE
     }
 
+    // TODO: Filter周りはTraitに分離できそう
     fun setFilter(side: EnumFacing, filter: IItemFilter, type: FilterType) {
         filterAndTypes[side.index] = FilterAndType(filter, type)
         writeCustomData(UPDATE_FILTER) {
@@ -615,12 +601,18 @@ abstract class MetaTileEntity(
         this.mteTraits.values.forEach(MTETrait::onRemoval)
     }
 
-    fun getStackForm(amount: Int = 1): ItemStack {
+    fun asStackForm(amount: Int = 1): ItemStack {
         return ItemStack(blockMachine, amount, mteRegistry.getIdByKey(metaTileEntityId))
     }
 
-    open fun onNeighborChanged(facing: EnumFacing) {
-    }
+    /**
+     * Called on [Block.onNeighborChange].
+     */
+    open fun onNeighborChanged(facing: EnumFacing) {}
+
+    /**
+     * Called on [Block.neighborChanged].
+     */
     open fun neighborChanged() {
         EnumFacing.entries.forEach(this::refreshConnection)
         overclockHandler.onNeighborBlockChange()
@@ -735,7 +727,7 @@ abstract class MetaTileEntity(
      */
     protected open fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return ParentWidget().widthRel(1f).expanded().marginBottom(2)
-            .child(IKey.str(getStackForm().displayName).asWidget()
+            .child(IKey.str(asStackForm().displayName).asWidget()
                 .align(Alignment.TopLeft))
             .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
             .child(IKey.dynamic {
@@ -749,6 +741,10 @@ abstract class MetaTileEntity(
     open fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         return this.onRightClickServerSide(player, hand, clickedSide, hitX, hitY, hitZ)
     }
+
+    @Deprecated("Use asStackForm instead.", ReplaceWith("asStackForm(amount)"))
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.0.0.0")
+    fun getStackForm(amount: Int = 1) = asStackForm(amount)
 
     private data class FilterAndType(val filter: IItemFilter, val type: FilterType)
 

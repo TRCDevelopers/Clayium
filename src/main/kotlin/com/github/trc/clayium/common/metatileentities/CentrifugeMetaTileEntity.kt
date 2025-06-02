@@ -66,7 +66,7 @@ class CentrifugeMetaTileEntity(
 
         @Suppress("DuplicatedCode") // special output slot layout
         return ParentWidget().widthRel(1f).expanded().marginBottom(2)
-            .child(IKey.str(getStackForm().displayName).asWidget()
+            .child(IKey.str(asStackForm().displayName).asWidget()
                 .align(Alignment.TopLeft))
             .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
             .child(IKey.dynamic {
