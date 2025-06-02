@@ -2,7 +2,13 @@ package com.github.trc.clayium.api.unification.ore
 
 import com.github.trc.clayium.api.FALLBACK
 import com.github.trc.clayium.api.MOD_ID
-import com.github.trc.clayium.api.unification.material.*
+import com.github.trc.clayium.api.unification.material.CMarkerMaterials
+import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.material.CMaterialFlags
+import com.github.trc.clayium.api.unification.material.CMaterials
+import com.github.trc.clayium.api.unification.material.CPropertyKey
+import com.github.trc.clayium.api.unification.material.IMaterial
+import com.github.trc.clayium.api.unification.material.MaterialAmount
 import com.github.trc.clayium.common.util.SidelessI18n
 import com.google.common.base.CaseFormat
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap

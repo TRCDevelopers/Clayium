@@ -7,15 +7,12 @@ import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.PageButton
 import com.cleanroommc.modularui.widgets.PagedWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Grid
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
@@ -30,9 +27,14 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
 import com.github.trc.clayium.api.pan.IPanRecipe
-import com.github.trc.clayium.api.util.*
+import com.github.trc.clayium.api.util.CUtils
+import com.github.trc.clayium.api.util.ClayTiers
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import com.google.common.collect.ImmutableSet
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -204,12 +206,12 @@ class PanAdapterMetaTileEntity(
         val pages = recipeInventories.zip(resultInventories).map{ (pattern, result) ->
             val slots = SlotGroupWidget.builder()
                 .matrix("III", "III", "III")
-                .key('I') { ItemSlot().slot(SyncHandlers.phantomItemSlot(pattern, it))
+                .key('I') { MuiSlots.phantomSlot(pattern, it)
                     .background(ClayGuiTextures.FILTER_SLOT) }
                 .build()
             val resultSlots = SlotGroupWidget.builder()
                 .matrix("III", "III", "III")
-                .key('I') { ItemSlot().slot(SyncHandlers.itemSlot(result, it).accessibility(false, false)) }
+                .key('I') { MuiSlots.itemSlotBuilder(result, it).lock().build() }
                 .build()
             Row().widthRel(1f).height(64)
                 .child(Grid().width(32).heightRel(1f).align(Alignment.TopLeft)
@@ -229,7 +231,7 @@ class PanAdapterMetaTileEntity(
                     .child(SlotGroupWidget.builder()
                         .row("I".repeat(9))
                         .key('I') { index ->
-                            ItemSlot().slot(ModularSlot(laserInventory, index))
+                            MuiSlots.itemSlot(laserInventory, index)
                                 .tooltip { it.addLine(IKey.lang("machine.clayium.pan_adapter.laser_slot_tooltip")) }
                         }
                         .build()

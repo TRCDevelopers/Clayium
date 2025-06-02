@@ -9,16 +9,22 @@ import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData
-import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Grid
-import com.github.trc.clayium.api.*
+import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
+import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_PAN_DUPLICATION_ENTRIES
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.pan.*
+import com.github.trc.clayium.api.pan.IPan
+import com.github.trc.clayium.api.pan.IPanCable
+import com.github.trc.clayium.api.pan.IPanRecipe
+import com.github.trc.clayium.api.pan.IPanUser
+import com.github.trc.clayium.api.pan.isPanCable
+import com.github.trc.clayium.api.readClayEnergy
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.CPropertyKey
@@ -28,11 +34,13 @@ import com.github.trc.clayium.api.unification.stack.readItemAndMeta
 import com.github.trc.clayium.api.unification.stack.writeItemAndMeta
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.writeClayEnergy
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
 import com.github.trc.clayium.common.recipe.registry.CRecipes
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -283,7 +291,7 @@ class PanCoreMetaTileEntity(
                             .background(Rectangle().setColor(Color.rgb(0, 0x1E, 0))))
                     )
                 )
-                .child(SlotGroupWidget.playerInventory(0)))
+                .child(MuiSlots.playerInventory(0)))
     }
 
     class PanDuplicationEntry(

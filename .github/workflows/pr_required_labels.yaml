@@ -6,12 +6,7 @@
 name: Pull Request Labels
 
 on:
-  pull_request:
-    types:
-      - opened
-      - labeled
-      - unlabeled
-      - synchronize
+  pull_request_target:
 
 # if a second commit is pushed quickly after the first, cancel the first one's build
 concurrency:
@@ -23,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
+      contents: read
       pull-requests: write
 
     steps:

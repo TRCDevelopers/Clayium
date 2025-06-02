@@ -3,9 +3,7 @@ package com.github.trc.clayium.common.metatileentities
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
@@ -15,9 +13,15 @@ import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
-import com.github.trc.clayium.api.util.*
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.copyWithSize
+import com.github.trc.clayium.api.util.enumMapNotNull
+import com.github.trc.clayium.api.util.next
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.util.CNbtUtils
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -92,7 +96,7 @@ class DistributorMetaTileEntity(
             val group = SlotGroupWidget.builder()
                 .matrix("II", "II")
                 .key('I') { j ->
-                    ItemSlot().slot(SyncHandlers.itemSlot(handler, j).slotGroup("group$i"))
+                    MuiSlots.itemSlotBuilder(handler, j).slotGroup("group$i").build()
                 }
                 .build()
             group
