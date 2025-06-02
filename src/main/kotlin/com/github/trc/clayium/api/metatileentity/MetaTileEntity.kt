@@ -68,6 +68,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
+import org.jetbrains.annotations.ApiStatus
 import org.jetbrains.annotations.MustBeInvokedByOverriders
 
 abstract class MetaTileEntity(
@@ -379,9 +380,11 @@ abstract class MetaTileEntity(
 
     /**
      * only called on the server side.
-     * @return true if something happened and no further processing should be done.
+     * @return true if something happened i.e. no further processing should be done.
+     *
+     * For example: if clicked by a tool, maybe you don't want to open the GUI. so return true.
      */
-    open fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+    open fun onRightClickServerSide(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         val stack = player.getHeldItem(hand)
         val confTool = stack.getCapability(ClayiumCapabilities.CONFIG_TOOL, null)
         if (confTool != null) {
@@ -725,6 +728,12 @@ abstract class MetaTileEntity(
                 // if empty string, a bug occurs.
                 if (overclock != 1.0) SidelessI18n.format("gui.clayium.overclock", overclock) else " "
             }.asWidgetResizing().alignment(Alignment.CenterRight).align(Alignment.BottomRight))
+    }
+
+    @Deprecated("Use onRightClickServerSide instead.", ReplaceWith("onRightClickServerSide(player, hand, clickedSide, hitX, hitY, hitZ)"))
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.0.0.0")
+    open fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        return this.onRightClickServerSide(player, hand, clickedSide, hitX, hitY, hitZ)
     }
 
     private data class FilterAndType(val filter: IItemFilter, val type: FilterType)

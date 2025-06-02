@@ -117,7 +117,7 @@ class StorageContainerMetaTileEntity(
         }
     }
 
-    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+    override fun onRightClickServerSide(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         val stack = player.getHeldItem(hand)
         val clayCore = MetaItemClayParts.ClayCore.getStackForm()
         //todo use capability
@@ -132,7 +132,7 @@ class StorageContainerMetaTileEntity(
                 return true
             }
         }
-        return super.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
+        return super.onRightClickServerSide(player, hand, clickedSide, hitX, hitY, hitZ)
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {

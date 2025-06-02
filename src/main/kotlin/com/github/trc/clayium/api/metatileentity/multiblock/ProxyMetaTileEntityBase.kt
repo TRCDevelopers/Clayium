@@ -110,8 +110,8 @@ abstract class ProxyMetaTileEntityBase(
         }
     }
 
-    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        if (super.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)) {
+    override fun onRightClickServerSide(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        if (super.onRightClickServerSide(player, hand, clickedSide, hitX, hitY, hitZ)) {
             return true
         } else if (!this.hasSynchroParts) {
             val stack = player.getHeldItem(hand)
