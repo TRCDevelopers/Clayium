@@ -33,6 +33,7 @@ import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
+import com.github.trc.clayium.api.metatileentity.MetaTileEntity.Companion.clearInventory
 import com.github.trc.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import com.github.trc.clayium.api.metatileentity.interfaces.IWorldObject
 import com.github.trc.clayium.api.metatileentity.trait.OverclockHandler
@@ -608,7 +609,12 @@ abstract class MetaTileEntity(
         }
     }
 
-    open fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
+    /**
+     * Called when the machine is destroyed.
+     * @param itemBuffer the buffer to add items to be dropped.
+     * @see [clearInventory]
+     */
+    open fun itemsDroppedOnDestroy(itemBuffer: MutableList<ItemStack>) {
         clearInventory(itemBuffer, importItems)
         clearInventory(itemBuffer, exportItems)
     }
@@ -794,12 +800,14 @@ abstract class MetaTileEntity(
             listOf(ALL, FIRST, SECOND, NONE)
         )
 
-        fun clearInventory(itemBuffer: MutableList<ItemStack>, inventory: IItemHandlerModifiable) {
+        /**
+         * Clears the inventory and adds all items to the [itemBuffer].
+         */
+        fun clearInventory(itemBuffer: MutableList<ItemStack>, inventory: IItemHandler) {
             for (i in 0..<inventory.slots) {
                 val stack = inventory.getStackInSlot(i)
                 if (!stack.isEmpty) {
-                    itemBuffer.add(stack)
-                    inventory.setStackInSlot(i, ItemStack.EMPTY)
+                    itemBuffer.add(inventory.extractItem(i, Int.MAX_VALUE, false))
                 }
             }
         }

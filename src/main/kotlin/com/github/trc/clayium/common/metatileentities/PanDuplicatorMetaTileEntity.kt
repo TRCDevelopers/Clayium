@@ -96,8 +96,8 @@ class PanDuplicatorMetaTileEntity(
         }
     }
 
-    override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
-        super.clearMachineInventory(itemBuffer)
+    override fun itemsDroppedOnDestroy(itemBuffer: MutableList<ItemStack>) {
+        super.itemsDroppedOnDestroy(itemBuffer)
         clearInventory(itemBuffer, clayEnergyHolder.energizedClayItemHandler)
     }
 

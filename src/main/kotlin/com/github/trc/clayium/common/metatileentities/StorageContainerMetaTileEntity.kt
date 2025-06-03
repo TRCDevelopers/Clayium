@@ -230,7 +230,7 @@ class StorageContainerMetaTileEntity(
         writeCustomData(UPDATE_FILTER_ITEM) { writeCompoundTag(filterSlot.serializeNBT()) }
     }
 
-    override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {}
+    override fun itemsDroppedOnDestroy(itemBuffer: MutableList<ItemStack>) {}
 
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {

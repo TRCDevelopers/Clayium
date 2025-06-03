@@ -125,7 +125,7 @@ abstract class ProxyMetaTileEntityBase(
         return false
     }
 
-    override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
+    override fun itemsDroppedOnDestroy(itemBuffer: MutableList<ItemStack>) {
         // no-op, this block is a proxy
     }
 

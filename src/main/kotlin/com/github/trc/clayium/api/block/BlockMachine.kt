@@ -137,7 +137,7 @@ class BlockMachine : Block(Material.IRON) {
 
     override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
         worldIn.getMetaTileEntity(pos)?.let { mte ->
-            mutableListOf<ItemStack>().apply { mte.clearMachineInventory(this) }
+            mutableListOf<ItemStack>().apply { mte.itemsDroppedOnDestroy(this) }
                 .forEach { spawnAsEntity(worldIn, pos, it) }
 
             mte.onRemoval()
