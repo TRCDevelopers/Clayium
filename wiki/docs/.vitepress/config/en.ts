@@ -4,7 +4,7 @@ export const en = defineConfig({
     lang: "en_US",
     themeConfig: {
         editLink: {
-            pattern: "https://github.com/bqc0n/clayium-wiki/edit/main/docs/:path",
+            pattern: "https://github.com/TRCDevelopers/Clayium/edit/develop/wiki/docs/:path",
             text: "Edit this page on GitHub",
         },
         sidebar: {
