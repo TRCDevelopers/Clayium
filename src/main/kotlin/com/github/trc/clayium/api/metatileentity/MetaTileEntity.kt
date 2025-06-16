@@ -106,6 +106,7 @@ abstract class MetaTileEntity(
      * item model location will be ("${metaTileEntityId.namespace}:machines/${name}", "tier={tier.lowerName}").
      */
     private val name: String,
+    private val renderingOptions: MteRenderingOpts? = null,
 ) : ISyncedTileEntity, IWorldObject, IGuiHolderClayium<MetaTileEntityGuiData>, IPipeConnectable {
 
     val mteRegistry = ClayiumApi.mteManager.getRegistry(metaTileEntityId.namespace)
@@ -127,8 +128,6 @@ abstract class MetaTileEntity(
     override val worldObj: World? get() = world
     override val position: BlockPos? get() = pos
 
-    open val faceTexture: ResourceLocation? = null
-    open val requiredTextures get() = listOf(faceTexture)
 
     protected val mteTraits = mutableMapOf<String, MTETrait>()
     protected val traitByNetworkId = Int2ObjectOpenHashMap<MTETrait>()
@@ -155,7 +154,6 @@ abstract class MetaTileEntity(
         override fun get(index: Int) = filterAndTypes[index]?.filter
     }
 
-    open val hasFrontFacing = true
     var frontFacing = EnumFacing.NORTH
         set(value) {
             if (isFacingValid(value)) {
@@ -169,11 +167,6 @@ abstract class MetaTileEntity(
     private var timer = 0L
     private val timerOffset = (0..19).random()
     val offsetTimer: Long get() = timer + timerOffset
-
-    /**
-     * If true, [faceTexture] will be added to all [EnumFacing].
-     */
-    open val useFaceForAllSides = false
 
     val overclockHandler = OverclockHandler(this)
     val overclock: Double get() = overclockHandler.rawOcFactor
@@ -721,10 +714,20 @@ abstract class MetaTileEntity(
      * This is called after [getQuads], but before adding IO textures.
      */
     @SideOnly(Side.CLIENT)
+    @Suppress("DEPRECATION")
     open fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
-        if (this.hasFrontFacing && this.faceTexture != null) {
-            if (this.useFaceForAllSides || side == this.frontFacing) {
-                ModelTextures.FACE_QUADS[this.faceTexture]?.get(side)?.let { quads.add(it) }
+        val renderingOpts = this.renderingOptions
+        if (renderingOpts == null) {
+            if (this.hasFrontFacing && this.faceTexture != null) {
+                if (this.useFaceForAllSides || side == this.frontFacing) {
+                    ModelTextures.FACE_QUADS[this.faceTexture]?.get(side)?.let { quads.add(it) }
+                }
+            }
+        } else {
+            val hasFrontFacing = renderingOpts.faceTexture != null
+            val isThisSideFace = (renderingOpts.useFaceForAllSides || side == this.frontFacing)
+            if (hasFrontFacing && isThisSideFace) {
+                ModelTextures.FACE_QUADS[renderingOpts.faceTexture]?.get(side)?.let { quads.add(it) }
             }
         }
     }
@@ -776,6 +779,24 @@ abstract class MetaTileEntity(
     @Deprecated("Use asStackForm instead.", ReplaceWith("asStackForm(amount)"))
     @ApiStatus.ScheduledForRemoval(inVersion = "1.0.0.0")
     fun getStackForm(amount: Int = 1) = asStackForm(amount)
+
+    @Deprecated("Pass [MteRenderingOpts] to the constructor instead for setting rendering options.")
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.0.0.0")
+    open val faceTexture: ResourceLocation? = null
+    @Deprecated("Pass [MteRenderingOpts] to the constructor instead for setting rendering options.")
+    open val requiredTextures
+        @ApiStatus.ScheduledForRemoval(inVersion = "1.0.0.0")
+        @Deprecated("Pass [MteRenderingOpts] to the constructor instead for setting rendering options.")
+        get() = listOf(faceTexture)
+
+    @Deprecated("Pass [MteRenderingOpts] to the constructor instead for setting rendering options.")
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.0.0.0")
+    open val hasFrontFacing = true
+
+    @Deprecated("Pass [MteRenderingOpts] to the constructor instead for setting rendering options.")
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.0.0.0")
+    open val useFaceForAllSides = false
+
 
     private data class FilterAndType(val filter: IItemFilter, val type: FilterType)
 
