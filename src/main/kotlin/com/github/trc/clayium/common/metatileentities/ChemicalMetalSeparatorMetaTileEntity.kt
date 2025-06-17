@@ -12,6 +12,7 @@ import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
+import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.asWidgetResizing
@@ -25,8 +26,6 @@ class ChemicalMetalSeparatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
 ) : WorkableMetaTileEntity(metaTileEntityId, tier, CRecipes.CHEMICAL_METAL_SEPARATOR) {
-
-    override val faceTexture = clayiumId("blocks/chemical_metal_separator")
 
     override val exportItems = NotifiableItemStackHandler(this, 116, this, isExport = true)
     override val workable = RecipeLogicEnergy(this, recipeRegistry, clayEnergyHolder)
@@ -69,4 +68,8 @@ class ChemicalMetalSeparatorMetaTileEntity(
     }
 
     override fun createMetaTileEntity() = ChemicalMetalSeparatorMetaTileEntity(metaTileEntityId, tier)
+
+    override val renderingOptions by lazy {
+        MteRenderingOpts.face(clayiumId("blocks/chemical_metal_separator"))
+    }
 }

@@ -13,6 +13,7 @@ import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
 import com.github.trc.clayium.api.metatileentity.multiblock.ProxyMetaTileEntityBase
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
@@ -33,8 +34,12 @@ class RedstoneProxyMetaTileEntity(
         this.hasSynchroParts = true
     }
 
-    override val faceTexture: ResourceLocation = clayiumId("blocks/redstone_proxy")
-    override val useFaceForAllSides: Boolean = true
+    override val renderingOptions by lazy {
+        MteRenderingOpts.builder()
+            .face(clayiumId("blocks/redstone_proxy"))
+            .useFaceForAllSides()
+            .build()
+    }
 
     private var mode = Mode.NONE
         set(value) {

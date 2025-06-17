@@ -14,6 +14,7 @@ import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getMetaTileEntity
@@ -29,8 +30,8 @@ import kotlin.math.pow
 class WaterwheelMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "waterwheel",) {
-    override val faceTexture = clayiumId("blocks/waterwheel")
+) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "waterwheel") {
+
     override val importItems = EmptyItemStackHandler
     override val exportItems = EmptyItemStackHandler
     override val itemInventory = EmptyItemStackHandler
@@ -111,6 +112,10 @@ class WaterwheelMetaTileEntity(
             }
         }
         return waterFlows
+    }
+
+    override val renderingOptions by lazy {
+        MteRenderingOpts.face(clayiumId("blocks/waterwheel"))
     }
 
     companion object {

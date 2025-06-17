@@ -12,6 +12,7 @@ import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.pan.IPan
 import com.github.trc.clayium.api.pan.IPanCable
@@ -63,8 +64,6 @@ class PanDuplicatorMetaTileEntity(
     private val duplicatorRank: Int,
     private val machineHullTier: ITier = ClayTiers.entries[duplicatorRank + 3]
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[2], validOutputModesLists[1], "pan_duplicator"), IPanUser {
-
-    override val faceTexture = clayiumId("blocks/pan_duplicator")
 
     val maxCeConsumptionRate = ClayEnergy(10_000 * 10.0.pow(duplicatorRank - 1).toLong())
 
@@ -164,6 +163,10 @@ class PanDuplicatorMetaTileEntity(
         if (state == null || side == null || state !is IExtendedBlockState) return
         quads.add(ModelTextures.getHullQuads(this.machineHullTier)?.get(side) ?: return)
         if (side != this.frontFacing) quads.add(panCasingQuads[side.index])
+    }
+
+    override val renderingOptions by lazy {
+        MteRenderingOpts.face(clayiumId("blocks/pan_duplicator"))
     }
 
     private inner class PanDuplicatorRecipeLogic : AbstractWorkable(this@PanDuplicatorMetaTileEntity) {

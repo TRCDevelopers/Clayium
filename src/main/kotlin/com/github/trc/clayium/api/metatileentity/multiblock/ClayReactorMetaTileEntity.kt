@@ -10,6 +10,7 @@ import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trc.clayium.api.gui.sync.ClayLaserSyncValue
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult
 import com.github.trc.clayium.api.util.ITier
@@ -33,10 +34,14 @@ class ClayReactorMetaTileEntity(
     var laser: ClayLaser? = null
         private set
 
-    fun getFaceInvalid() = clayiumId("blocks/reactor")
-    fun getFaceValid() = clayiumId("blocks/reactor_1")
-    override val faceTexture get() = if (multiblockLogic.structureFormed) getFaceValid() else getFaceInvalid()
-    override val requiredTextures get() = listOf(getFaceValid(), getFaceInvalid())
+    override val renderingOptions by lazy {
+        val whenValid = clayiumId("blocks/reactor_1")
+        val whenInvalid = clayiumId("blocks/reactor")
+        MteRenderingOpts.builder()
+            .dynFace { if (multiblockLogic.structureFormed) whenValid else whenInvalid }
+            .addRequiredTextures(whenValid, whenInvalid)
+            .build()
+    }
 
     private fun checkStructure(handler: MultiblockLogic): StructureValidationResult {
         val world = world ?: return StructureValidationResult.Invalid

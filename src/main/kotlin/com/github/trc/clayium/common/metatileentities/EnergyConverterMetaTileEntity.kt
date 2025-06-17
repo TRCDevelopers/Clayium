@@ -16,6 +16,7 @@ import com.github.trc.clayium.api.capability.impl.EnergyStorageExportOnly
 import com.github.trc.clayium.api.capability.impl.EnergyStorageSerializable
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
@@ -37,9 +38,6 @@ class EnergyConverterMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier, energyAndNone, onlyNoneList, "energy_converter") {
-
-    override val faceTexture = clayiumId("blocks/energy_converter_overlay")
-    override val useFaceForAllSides: Boolean = true
 
     init {
         require(tier.numeric in 4..13) { "EnergyConverterMetaTileEntity can only be created with a tier between 4 and 13" }
@@ -137,5 +135,9 @@ class EnergyConverterMetaTileEntity(
     override fun readFromNBT(data: NBTTagCompound) {
         super.readFromNBT(data)
         feStorage.deserializeNBT(data.getCompoundTag("feStorage"))
+    }
+
+    override val renderingOptions by lazy {
+        MteRenderingOpts.builder().face(clayiumId("blocks/energy_converter_overlay")).useFaceForAllSides().build()
     }
 }

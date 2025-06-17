@@ -79,7 +79,6 @@ import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
-import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
@@ -106,7 +105,6 @@ abstract class MetaTileEntity(
      * item model location will be ("${metaTileEntityId.namespace}:machines/${name}", "tier={tier.lowerName}").
      */
     private val name: String,
-    private val renderingOptions: MteRenderingOpts? = null,
 ) : ISyncedTileEntity, IWorldObject, IGuiHolderClayium<MetaTileEntityGuiData>, IPipeConnectable {
 
     val mteRegistry = ClayiumApi.mteManager.getRegistry(metaTileEntityId.namespace)
@@ -170,12 +168,6 @@ abstract class MetaTileEntity(
 
     val overclockHandler = OverclockHandler(this)
     val overclock: Double get() = overclockHandler.rawOcFactor
-
-    @SideOnly(Side.CLIENT)
-    open fun registerItemModel(item: Item, meta: Int) {
-        ModelLoader.setCustomModelResourceLocation(item, meta,
-            ModelResourceLocation(ResourceLocation(metaTileEntityId.namespace, "machines/$name"), "tier=${tier.lowerName}"))
-    }
 
     fun addMetaTileEntityTrait(trait: MTETrait) {
         mteTraits[trait.name] = trait
@@ -672,6 +664,20 @@ abstract class MetaTileEntity(
         }
     }
 
+    open fun isInCreativeTab(tab: CreativeTabs): Boolean {
+        return tab === CreativeTabs.SEARCH || tab === ClayiumCTabs.main
+    }
+
+    open val renderingOptions by lazy {
+        MteRenderingOpts.builder().noFrontFacing().build()
+    }
+
+    @SideOnly(Side.CLIENT)
+    open fun registerItemModel(item: Item, meta: Int) {
+        ModelLoader.setCustomModelResourceLocation(item, meta,
+            ModelResourceLocation(ResourceLocation(metaTileEntityId.namespace, "machines/$name"), "tier=${tier.lowerName}"))
+    }
+
     @SideOnly(Side.CLIENT)
     @MustBeInvokedByOverriders
     open fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
@@ -679,20 +685,6 @@ abstract class MetaTileEntity(
         UtilLocale.formatTooltips(tooltip, "$translationKey.${tier.lowerName}.tooltip")
         UtilLocale.formatTooltips(tooltip, "$translationKey.tooltip")
     }
-
-    open fun isInCreativeTab(tab: CreativeTabs): Boolean {
-        return tab === CreativeTabs.SEARCH || tab === ClayiumCTabs.main
-    }
-
-    @SideOnly(Side.CLIENT)
-    open fun shouldRenderInPass(pass: Int) = (pass == 0)
-    @SideOnly(Side.CLIENT)
-    open fun getMaxRenderDistanceSquared(): Double = 4096.0
-    /**
-     * null for use TileEntity defaults.
-     */
-    @SideOnly(Side.CLIENT)
-    open fun getRenderBoundingBox(): AxisAlignedBB? = null
 
     /**
      * also called on model reload.
@@ -717,18 +709,12 @@ abstract class MetaTileEntity(
     @Suppress("DEPRECATION")
     open fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
         val renderingOpts = this.renderingOptions
-        if (renderingOpts == null) {
-            if (this.hasFrontFacing && this.faceTexture != null) {
-                if (this.useFaceForAllSides || side == this.frontFacing) {
-                    ModelTextures.FACE_QUADS[this.faceTexture]?.get(side)?.let { quads.add(it) }
-                }
-            }
-        } else {
-            val hasFrontFacing = renderingOpts.faceTexture != null
-            val isThisSideFace = (renderingOpts.useFaceForAllSides || side == this.frontFacing)
-            if (hasFrontFacing && isThisSideFace) {
-                ModelTextures.FACE_QUADS[renderingOpts.faceTexture]?.get(side)?.let { quads.add(it) }
-            }
+        val faceTexture = renderingOpts.faceTexture
+
+        val hasFrontFacing = faceTexture != null
+        val isThisSideFace = (renderingOpts.useFaceForAllSides || side == this.frontFacing)
+        if (hasFrontFacing && isThisSideFace) {
+            ModelTextures.FACE_QUADS[faceTexture]?.get(side)?.let { quads.add(it) }
         }
     }
 
@@ -738,8 +724,6 @@ abstract class MetaTileEntity(
      */
     @SideOnly(Side.CLIENT)
     open fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {}
-    @SideOnly(Side.CLIENT)
-    open fun useGlobalRenderer() = false
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         return ModularPanel.defaultPanel(translationKey)
@@ -779,24 +763,6 @@ abstract class MetaTileEntity(
     @Deprecated("Use asStackForm instead.", ReplaceWith("asStackForm(amount)"))
     @ApiStatus.ScheduledForRemoval(inVersion = "1.0.0.0")
     fun getStackForm(amount: Int = 1) = asStackForm(amount)
-
-    @Deprecated("Pass [MteRenderingOpts] to the constructor instead for setting rendering options.")
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.0.0.0")
-    open val faceTexture: ResourceLocation? = null
-    @Deprecated("Pass [MteRenderingOpts] to the constructor instead for setting rendering options.")
-    open val requiredTextures
-        @ApiStatus.ScheduledForRemoval(inVersion = "1.0.0.0")
-        @Deprecated("Pass [MteRenderingOpts] to the constructor instead for setting rendering options.")
-        get() = listOf(faceTexture)
-
-    @Deprecated("Pass [MteRenderingOpts] to the constructor instead for setting rendering options.")
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.0.0.0")
-    open val hasFrontFacing = true
-
-    @Deprecated("Pass [MteRenderingOpts] to the constructor instead for setting rendering options.")
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.0.0.0")
-    open val useFaceForAllSides = false
-
 
     private data class FilterAndType(val filter: IItemFilter, val type: FilterType)
 

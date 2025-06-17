@@ -47,7 +47,6 @@ import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.tileentity.TileEntityBeacon
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.NonNullList
 import net.minecraft.util.ResourceLocation
@@ -264,13 +263,6 @@ abstract class AbstractMinerMetaTileEntity(
         MINER_BACK = EnumFacing.entries.map { ModelTextures.createQuad(it, atlas) }
     }
 
-    @SideOnly(Side.CLIENT)
-    override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
-
-    @SideOnly(Side.CLIENT)
-    override fun getRenderBoundingBox() = TileEntityBeacon.INFINITE_EXTENT_AABB
-    @SideOnly(Side.CLIENT)
-    override fun useGlobalRenderer() = true
     @SideOnly(Side.CLIENT)
     override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
         AreaMarkerRenderer.render(Cuboid6.full, rangeRelative, x, y, z, rangeRenderMode)

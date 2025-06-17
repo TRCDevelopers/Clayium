@@ -9,6 +9,7 @@ import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.impl.ResonanceManager
 import com.github.trc.clayium.api.metatileentity.AbstractItemGeneratorMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
@@ -25,9 +26,8 @@ class ResonatingCollectorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
 ) : AbstractItemGeneratorMetaTileEntity(metaTileEntityId, tier, name = "resonating_collector") {
-    val resonanceManager = ResonanceManager(this, 2)
 
-    override val faceTexture = clayiumId("blocks/ca_resonating_collector")
+    val resonanceManager = ResonanceManager(this, 2)
 
     // these are used in superclass to create itemHandler, so they have a custom getter
     override val inventoryColumnSize get() = 3
@@ -61,5 +61,9 @@ class ResonatingCollectorMetaTileEntity(
                     MuiSlots.itemSlotBuilder(itemInventory, i)
                         .slotGroup("machine_inventory").build()
                 }.build().align(Alignment.Center))
+    }
+
+    override val renderingOptions by lazy {
+        MteRenderingOpts.face(clayiumId("blocks/ca_resonating_collector"))
     }
 }

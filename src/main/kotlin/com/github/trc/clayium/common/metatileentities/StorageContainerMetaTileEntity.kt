@@ -13,6 +13,7 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_STORED_ITE
 import com.github.trc.clayium.api.capability.IPipeConnectionLogic
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
 import com.github.trc.clayium.api.metatileentity.interfaces.IHasItemStackNbt
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
@@ -60,14 +61,6 @@ class StorageContainerMetaTileEntity(
     isUpgraded: Boolean,
 ) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, validOutputModesLists[1], "storage_container"),
     IHasItemStackNbt {
-
-    override val faceTexture = clayiumId("blocks/storage_container")
-    override val requiredTextures get() = listOf(
-        faceTexture,
-        clayiumId("blocks/storage_container_side_composed"), clayiumId("blocks/storage_container_side_upgraded"),
-        clayiumId("blocks/storage_container_top_composed"), clayiumId("blocks/storage_container_top_upgraded"),
-        clayiumId("blocks/storage_container_upgraded_base")
-    )
 
     override val pipeConnectionLogic: IPipeConnectionLogic = IPipeConnectionLogic.ItemPipe
 
@@ -231,6 +224,18 @@ class StorageContainerMetaTileEntity(
     }
 
     override fun itemsDroppedOnDestroy(itemBuffer: MutableList<ItemStack>) {}
+
+    override val renderingOptions by lazy {
+        MteRenderingOpts.builder()
+            .face(clayiumId("blocks/storage_container"))
+            .addRequiredTextures(
+                clayiumId("blocks/storage_container_side_composed"), clayiumId("blocks/storage_container_side_upgraded"),
+                clayiumId("blocks/storage_container_top_composed"), clayiumId("blocks/storage_container_top_upgraded"),
+                clayiumId("blocks/storage_container_upgraded_base")
+            )
+            .build()
+
+    }
 
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {

@@ -13,6 +13,7 @@ import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
+import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.IMultiblockPart
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic
@@ -47,10 +48,14 @@ class CaReactorMetaTileEntity(
     @Suppress("Unused") private val ioHandler = AutoIoHandler.Combined(this)
     private val multiblockLogic = MultiblockLogic(this, ::checkStructure)
 
-    fun getFaceInvalid(): ResourceLocation = clayiumId("blocks/ca_reactor_core_invalid")
-    fun getFaceValid() = clayiumId("blocks/ca_reactor_core_valid")
-    override val faceTexture get() = if (multiblockLogic.structureFormed) getFaceValid() else getFaceInvalid()
-    override val requiredTextures get() = listOf(getFaceValid(), getFaceInvalid())
+    override val renderingOptions by lazy {
+        val whenValid = clayiumId("blocks/ca_reactor_core_valid")
+        val whenInvalid = clayiumId("blocks/ca_reactor_core_invalid")
+        MteRenderingOpts.builder()
+            .dynFace { if (multiblockLogic.structureFormed) whenValid else whenInvalid }
+            .addRequiredTextures(whenValid, whenInvalid)
+            .build()
+    }
 
     override val importItems = NotifiableItemStackHandler(this, 1, this, isExport = false)
     override val exportItems = NotifiableItemStackHandler(this, 1, this, isExport = true)

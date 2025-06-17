@@ -28,9 +28,7 @@ abstract class ProxyMetaTileEntityBase(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     translationKey: String,
-) : MetaTileEntity(
-    metaTileEntityId, tier, onlyNoneList, onlyNoneList, translationKey
-), IMultiblockPart, ISynchronizedInterface {
+) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, translationKey), IMultiblockPart, ISynchronizedInterface {
 
     final override var isAttachedToMultiblock = false
         private set

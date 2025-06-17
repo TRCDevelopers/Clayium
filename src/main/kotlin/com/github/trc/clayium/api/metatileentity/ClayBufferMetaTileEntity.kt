@@ -27,9 +27,13 @@ import net.minecraftforge.items.CapabilityItemHandler
 class ClayBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(metaTileEntityId, tier, validInputModes = bufferValidInputModes, validOutputModes = validOutputModesLists[1], name = "clay_buffer") {
-
-    override val hasFrontFacing: Boolean = false
+) : MetaTileEntity(
+    metaTileEntityId,
+    tier,
+    validInputModes = bufferValidInputModes,
+    validOutputModes = validOutputModesLists[1],
+    name = "clay_buffer",
+) {
 
     override val pipeConnectionLogic = IPipeConnectionLogic.ItemPipe
 
@@ -100,4 +104,7 @@ class ClayBufferMetaTileEntity(
         return ClayBufferMetaTileEntity(this.metaTileEntityId, this.tier)
     }
 
+    override val renderingOptions by lazy {
+        MteRenderingOpts.builder().noFrontFacing().build()
+    }
 }

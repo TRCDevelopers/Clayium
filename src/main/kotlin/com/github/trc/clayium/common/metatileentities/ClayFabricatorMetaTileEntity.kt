@@ -11,6 +11,7 @@ import com.github.trc.clayium.api.capability.AbstractWorkable
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
@@ -45,7 +46,6 @@ class ClayFabricatorMetaTileEntity(
     private val maxClayCompressionLevel: Int,
     private val craftTimeLogic: (compressionLevel: Int, stackCount: Int) -> Long
 ) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, validOutputModesLists[1], name = "clay_fabricator") {
-    override val faceTexture = clayiumId("blocks/clay_fabricator")
 
     override val importItems = NotifiableItemStackHandler(this, 1, this, isExport = false)
     override val exportItems = NotifiableItemStackHandler(this, 1, this, isExport = true)
@@ -76,6 +76,10 @@ class ClayFabricatorMetaTileEntity(
     }
 
     override fun createMetaTileEntity() = ClayFabricatorMetaTileEntity(metaTileEntityId, tier, maxClayCompressionLevel, craftTimeLogic)
+
+    override val renderingOptions by lazy {
+        MteRenderingOpts.face(clayiumId("blocks/clay_fabricator"))
+    }
 
     private inner class ClayFabricatorRecipeLogic : AbstractWorkable(this@ClayFabricatorMetaTileEntity) {
         private var cePerTick = ClayEnergy.ZERO

@@ -14,6 +14,7 @@ import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
@@ -43,8 +44,6 @@ class AutoClayCondenserMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1], name = "auto_clay_condenser") {
-
-    override val faceTexture = clayiumId("blocks/auto_clay_condenser")
 
     override val itemInventory = object : NotifiableItemStackHandler(this, ROWS * COLS, this, isExport = false) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
@@ -218,5 +217,9 @@ class AutoClayCondenserMetaTileEntity(
     override fun readFromNBT(data: NBTTagCompound) {
         super.readFromNBT(data)
         maxCompressedClay.deserializeNBT(data.getCompoundTag("maxCompressedClay"))
+    }
+
+    override val renderingOptions by lazy {
+        MteRenderingOpts.face(clayiumId("blocks/auto_clay_condenser"))
     }
 }

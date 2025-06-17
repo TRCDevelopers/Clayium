@@ -12,6 +12,7 @@ import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
@@ -36,8 +37,6 @@ class SolarClayFabricatorMetaTileEntity(
     tier: ITier,
     val registry: RecipeRegistry<ClayFabricatorRecipeBuilder>
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModesLists[1], "solar_clay_fabricator") {
-
-    override val faceTexture: ResourceLocation = clayiumId("blocks/solar")
 
     override val importItems: IItemHandlerModifiable = NotifiableItemStackHandler(this, 1, this, false)
     override val exportItems: IItemHandlerModifiable = NotifiableItemStackHandler(this, 1, this, true)
@@ -70,6 +69,10 @@ class SolarClayFabricatorMetaTileEntity(
             )
             .child(workable.createCeTextWidget(syncManager)
                 .bottom(12).left(0).widthRel(0.5f))
+    }
+
+    override val renderingOptions by lazy {
+        MteRenderingOpts.face(clayiumId("blocks/solar"))
     }
 
     private inner class SolarClayFabricatorRecipeLogic : AbstractRecipeLogic(this@SolarClayFabricatorMetaTileEntity, registry) {

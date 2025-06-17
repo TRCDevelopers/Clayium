@@ -24,6 +24,7 @@ import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.ClayLaserMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
 import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
 import com.github.trc.clayium.api.pan.IPanRecipe
@@ -32,31 +33,21 @@ import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.toList
-import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.integration.modularui.MuiSlots
 import com.google.common.collect.ImmutableSet
-import net.minecraft.block.state.IBlockState
-import net.minecraft.client.renderer.block.model.BakedQuad
-import net.minecraft.client.renderer.block.model.FaceBakery
-import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.capabilities.Capability
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemStackHandler
-import java.util.function.Function
 
 class PanAdapterMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "pan_adapter"), IPanAdapter {
-
-    override val requiredTextures get() = listOf(clayiumId("blocks/pan_adapter"))
 
     override val importItems = EmptyItemStackHandler
     override val exportItems = EmptyItemStackHandler
@@ -241,21 +232,7 @@ class PanAdapterMetaTileEntity(
             }
     }
 
-    @SideOnly(Side.CLIENT)
-    override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
-        val sprite = getter.apply(clayiumId("blocks/pan_adapter"))
-        adapterQuads = EnumFacing.entries.map {
-            ModelTextures.createQuad(it, sprite)
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
-        if (state == null || side == null) return
-        quads.add(adapterQuads[side.index])
-    }
-
-    companion object {
-        private lateinit var adapterQuads: List<BakedQuad>
+    override val renderingOptions by lazy {
+        MteRenderingOpts.builder().face(clayiumId("blocks/pan_adapter")).useFaceForAllSides().build()
     }
 }

@@ -5,6 +5,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
+import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getCapability
@@ -28,7 +29,6 @@ class AdvancedRangedMinerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier
 ) : RangedMinerMetaTileEntity(metaTileEntityId, tier, "advanced_ranged_miner") {
-    override val faceTexture: ResourceLocation = clayiumId("blocks/adv_miner")
 
     private val extraFilters = ClayiumItemStackHandler(this, 2)
     private val fortuneFilter get() = extraFilters.getStackInSlot(0).getCapability(ClayiumCapabilities.ITEM_FILTER)
@@ -77,5 +77,9 @@ class AdvancedRangedMinerMetaTileEntity(
     override fun readFromNBT(data: NBTTagCompound) {
         super.readFromNBT(data)
         extraFilters.deserializeNBT(data.getCompoundTag("extraFilters"))
+    }
+
+    override val renderingOptions by lazy {
+        MteRenderingOpts.face(clayiumId("blocks/adv_miner"))
     }
 }

@@ -50,7 +50,6 @@ class MultiTrackBufferMetaTileEntity(
     validInputModes = mBufferValidIoModes[getTrackRows(tier.numeric)-2], validOutputModes = mBufferValidIoModes[getTrackRows(tier.numeric)-2],
     "multi_track_buffer") {
 
-    override val hasFrontFacing: Boolean = true
     override val pipeConnectionLogic: IPipeConnectionLogic = IPipeConnectionLogic.ItemPipe
 
     val trackRow = getTrackRows(tier.numeric)
@@ -74,8 +73,7 @@ class MultiTrackBufferMetaTileEntity(
             val filterStack = filtersHandler.getStackInSlot(slot)
             val filter = filterStack.getCapability(ClayiumCapabilities.ITEM_FILTER, null)
             if (filterStack.isEmpty) true
-            else if (filter != null) filter.test(stack)
-            else filterStack.isItemEqual(stack)
+            else filter?.test(stack) ?: filterStack.isItemEqual(stack)
         }
     }
     override val itemInventory = CombinedInvWrapper(*tracks)
@@ -238,5 +236,9 @@ class MultiTrackBufferMetaTileEntity(
             in 9..13 -> 6
             else -> 2
         }
+    }
+
+    override val renderingOptions by lazy {
+        MteRenderingOpts.builder().noFrontFacing().build()
     }
 }
