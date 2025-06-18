@@ -159,9 +159,8 @@ class PanDuplicatorMetaTileEntity(
         panCasingQuads = EnumFacing.entries.map { ModelTextures.createQuad(it, sprite) }
     }
 
-    override fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+    override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
         if (state == null || side == null || state !is IExtendedBlockState) return
-        quads.add(ModelTextures.getHullQuads(this.machineHullTier)?.get(side) ?: return)
         if (side != this.frontFacing) quads.add(panCasingQuads[side.index])
     }
 
@@ -244,5 +243,3 @@ class PanDuplicatorMetaTileEntity(
 private const val COLOR_ENABLED_ARGB: Int = 0xFF4CBB17.toInt()
 private const val COLOR_DISABLED_ARGB: Int = 0xFFBB1C28.toInt()
 private const val BORDER_COLOR: Int = 0xFF555555.toInt()
-private const val HALF_HOUR_TICKS: Int = 30 * 60 * 20
-private const val ONE_MIN_TICKS: Double = 60 * 20.0

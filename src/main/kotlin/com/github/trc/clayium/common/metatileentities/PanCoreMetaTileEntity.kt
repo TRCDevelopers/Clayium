@@ -36,17 +36,12 @@ import com.github.trc.clayium.api.unification.stack.writeItemAndMeta
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.writeClayEnergy
-import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import com.github.trc.clayium.integration.modularui.MuiSlots
-import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.block.model.BakedQuad
-import net.minecraft.client.renderer.block.model.FaceBakery
-import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.init.Blocks
 import net.minecraft.network.PacketBuffer
@@ -54,9 +49,6 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.capabilities.Capability
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
-import java.util.function.Function
 import kotlin.math.min
 
 class PanCoreMetaTileEntity(
@@ -240,18 +232,6 @@ class PanCoreMetaTileEntity(
         return super.getCapability(capability, facing)
     }
 
-    @SideOnly(Side.CLIENT)
-    override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
-        val tex = getter.apply(clayiumId("blocks/pan_core"))
-        panCoreQuads = EnumFacing.entries.map { ModelTextures.createQuad(it, tex) }.toMutableList()
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
-        if (state == null || side == null) return
-        quads.add(panCoreQuads[side.index])
-    }
-
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         if (!isRemote) {
             refreshNetworkAndThenEntries()
@@ -309,7 +289,10 @@ class PanCoreMetaTileEntity(
     }
 
     override val renderingOptions by lazy {
-        MteRenderingOpts.noFace()
+        MteRenderingOpts.builder()
+            .face(clayiumId("blocks/pan_core"))
+            .useFaceForAllSides()
+            .build()
     }
 
     companion object {
@@ -350,7 +333,5 @@ class PanCoreMetaTileEntity(
             put(ItemAndMeta(OrePrefix.dust, CMaterials.salt), PanDuplicationEntry(ClayEnergy.milli(5), true))
             put(ItemAndMeta(OrePrefix.gem, CMaterials.antimatter), PanDuplicationEntry(ClayEnergy.of(1), false))
         }.toMap() }
-
-        private lateinit var panCoreQuads: MutableList<BakedQuad>
     }
 }
