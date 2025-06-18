@@ -66,7 +66,7 @@ class EnergyConverterMetaTileEntity(
         }
         //todo: control output allowed sides
         for (side in EnumFacing.entries) {
-            val receiver = this.getNeighbor(side)?.getCapability(CapabilityEnergy.ENERGY, side.opposite)
+            val receiver = this.getNeighborTileEntity(side)?.getCapability(CapabilityEnergy.ENERGY, side.opposite)
             if (receiver != null && feStorage.energyStored > 0) {
                 val maxTransfer = feStorage.extractEnergy(fePerTick, true)
                 val actualTransfer = receiver.receiveEnergy(maxTransfer, false)

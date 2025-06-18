@@ -487,7 +487,7 @@ abstract class MetaTileEntity(
         if (mode !in this.validInputModes) return
         _inputModes[side.index] = mode
         this.refreshConnection(side)
-        (this.getNeighbor(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
+        (this.getNeighborTileEntity(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
         writeCustomData(UPDATE_INPUT_MODE) {
             writeByte(side.index)
             writeByte(mode.id)
@@ -501,7 +501,7 @@ abstract class MetaTileEntity(
         if (mode !in this.validOutputModes) return
         _outputModes[side.index] = mode
         this.refreshConnection(side)
-        (this.getNeighbor(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
+        (this.getNeighborTileEntity(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
         writeCustomData(UPDATE_OUTPUT_MODE) {
             writeByte(side.index)
             writeByte(mode.id)
@@ -512,7 +512,7 @@ abstract class MetaTileEntity(
         val current = _inputModes[side.index]
         _inputModes[side.index] = validInputModes[(validInputModes.indexOf(current) + 1) % validInputModes.size]
         this.refreshConnection(side)
-        (this.getNeighbor(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
+        (this.getNeighborTileEntity(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
         writeCustomData(UPDATE_INPUT_MODE) {
             writeByte(side.index)
             writeByte(_inputModes[side.index].id)
@@ -523,7 +523,7 @@ abstract class MetaTileEntity(
         val current = _outputModes[side.index]
         _outputModes[side.index] = validOutputModes[(validOutputModes.indexOf(current) + 1) % validOutputModes.size]
         this.refreshConnection(side)
-        (this.getNeighbor(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
+        (this.getNeighborTileEntity(side) as? MetaTileEntityHolder)?.metaTileEntity?.refreshConnection(side.opposite)
         writeCustomData(UPDATE_OUTPUT_MODE) {
             writeByte(side.index)
             writeByte(_outputModes[side.index].id)
@@ -533,7 +533,7 @@ abstract class MetaTileEntity(
     protected fun refreshConnection(side: EnumFacing) {
         val previous = _connectionsCache[side.index]
         val i = side.index
-        val neighborTileEntity = this.getNeighbor(side)
+        val neighborTileEntity = this.getNeighborTileEntity(side)
         if (neighborTileEntity == null) {
             _connectionsCache[i] = false
         } else {
@@ -638,7 +638,7 @@ abstract class MetaTileEntity(
 
     open fun getWeakPower(side: EnumFacing?): Int = 0
 
-    fun getNeighbor(side: EnumFacing) = holder?.getNeighbor(side)
+    fun getNeighborTileEntity(side: EnumFacing) = holder?.getNeighbor(side)
     fun scheduleRenderUpdate() = holder?.scheduleRenderUpdate()
     fun notifyNeighbors() = holder?.notifyNeighbors()
 

@@ -197,7 +197,7 @@ class DistributorMetaTileEntity(
             for (side in EnumFacing.entries) {
                 if (!(remainingImport > 0 && isImporting(side))) continue
                 remainingImport = transferItemStack(
-                    from = metaTileEntity.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                    from = metaTileEntity.getNeighborTileEntity(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
                     to = importItems,
                     amount = remainingImport,
                 )
@@ -208,7 +208,7 @@ class DistributorMetaTileEntity(
         override fun exportToNeighbors() {
             val neighborMap = EnumFacing.entries.enumMapNotNull { side ->
                 if (!isExporting(side)) return@enumMapNotNull null
-                getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite)
+                getNeighborTileEntity(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite)
             }
             @Suppress("UsePropertyAccessSyntax") //synthetic properties
             if (neighborMap.isEmpty()) return

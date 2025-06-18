@@ -163,7 +163,7 @@ class MultiTrackBufferMetaTileEntity(
             for (side in EnumFacing.entries) {
                 if (!(remaining > 0 && isImporting(side))) continue
 
-                val neighbor = getNeighbor(side) ?: continue
+                val neighbor = getNeighborTileEntity(side) ?: continue
                 if (neighbor is MetaTileEntityHolder && neighbor.metaTileEntity is MultiTrackBufferMetaTileEntity) {
                     val neighborBuffer = neighbor.metaTileEntity as MultiTrackBufferMetaTileEntity
                     remaining = transferMultiTrack(neighborBuffer, this@MultiTrackBufferMetaTileEntity, remaining)
@@ -182,7 +182,7 @@ class MultiTrackBufferMetaTileEntity(
             for (side in EnumFacing.entries) {
                 if (!(remaining > 0 && isExporting(side))) continue
 
-                val neighbor = getNeighbor(side) ?: continue
+                val neighbor = getNeighborTileEntity(side) ?: continue
                 if (neighbor is MetaTileEntityHolder && neighbor.metaTileEntity is MultiTrackBufferMetaTileEntity) {
                     val neighborBuffer = neighbor.metaTileEntity as MultiTrackBufferMetaTileEntity
                     remaining = transferMultiTrack(this@MultiTrackBufferMetaTileEntity, neighborBuffer, remaining)
