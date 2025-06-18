@@ -17,7 +17,7 @@ You're welcome to include this mod in your modpack.
 ## Recipe Customization
 We have integration with [GroovyScript](https://github.com/CleanroomMC/GroovyScript).
 
-See [wiki](https://bqc0n.github.io/clayium-wiki/) for more information.
+See [wiki](https://trcdevelopers.github.io/Clayium/) for more information.
 
 ## Textures
 The textures used are from the original Clayium mod.
