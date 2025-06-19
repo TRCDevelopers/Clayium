@@ -542,13 +542,12 @@ abstract class MetaTileEntity(
                 // neighbor has no specific implementation for this logic. default to hasItemHandler.
                 _connectionsCache[i] = neighborTileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite)
             } else {
-                val thisMode = getPipeConnectionMode(side)
-                val neighborMode = neighborConnectable.getPipeConnectionMode(side.opposite)
+                val thisMode = getPipeConnectionModeForRendering(side)
+                val neighborMode = neighborConnectable.getPipeConnectionModeForRendering(side.opposite)
                 val neighborConnectionLogic = neighborConnectable.pipeConnectionLogic
                 _connectionsCache[i] = (pipeConnectionLogic.canConnect(thisMode = thisMode, neighborMode = neighborMode)
                         || neighborConnectionLogic.canConnect(thisMode = neighborMode, neighborMode = thisMode))
             }
-
         }
         if (previous != _connectionsCache[i]) {
             writeCustomData(UPDATE_CONNECTIONS) {
@@ -558,7 +557,7 @@ abstract class MetaTileEntity(
         }
     }
 
-    override fun getPipeConnectionMode(side: EnumFacing): PipeConnectionMode {
+    override fun getPipeConnectionModeForRendering(side: EnumFacing): PipeConnectionMode {
         val input = when (getInput(side)) {
             NONE -> false
             FIRST, SECOND, ALL, CE,
@@ -687,7 +686,7 @@ abstract class MetaTileEntity(
     }
 
     /**
-     * also called on model reload.
+     * Called on init and model reload.
      */
     @SideOnly(Side.CLIENT)
     open fun bakeQuads(getter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {}
@@ -704,6 +703,9 @@ abstract class MetaTileEntity(
     /**
      * Adds overlay textures such as Machine faces.
      * This is called after [getQuads], but before adding IO textures.
+     *
+     * The reason why unify this with [getQuads] is DRY. If it is unified, and you want to add overlay **between** machine hulls and face textures,
+     * you have to write everything (hulls, overlays, face) since `super.getQuads` adds both hulls and face.
      */
     @SideOnly(Side.CLIENT)
     @Suppress("DEPRECATION")
