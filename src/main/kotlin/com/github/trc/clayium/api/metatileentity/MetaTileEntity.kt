@@ -704,8 +704,8 @@ abstract class MetaTileEntity(
      * Adds overlay textures such as Machine faces.
      * This is called after [getQuads], but before adding IO textures.
      *
-     * The reason why unify this with [getQuads] is DRY. If it is unified, and you want to add overlay **between** machine hulls and face textures,
-     * you have to write everything (hulls, overlays, face) since `super.getQuads` adds both hulls and face.
+     * The reason why don't unify this with [getQuads] is DRY. Consider if you want to add overlay **between** machine hulls and face textures.
+     * If unified, you have to write everything (hulls, overlays, face) since `super.getQuads` adds both hulls and face.
      */
     @SideOnly(Side.CLIENT)
     @Suppress("DEPRECATION")
