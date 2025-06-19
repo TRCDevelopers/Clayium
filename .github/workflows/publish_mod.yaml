@@ -1,9 +1,8 @@
 name: Publish Mod
 
 on:
-  push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+  release:
+    types: [published]
 
 env:
   VERSION_TYPE: alpha
@@ -62,11 +61,6 @@ jobs:
             jei(optional)
             groovyscript(optional)
             the-one-probe(optional)
-
-          github-generate-changelog: true
-          github-prerelease: false
-
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
           modrinth-id: m5ogv9xL
           modrinth-featured: true
