@@ -3,7 +3,7 @@ package com.github.trc.clayium.common.metatileentities
 import com.github.trc.clayium.api.capability.impl.RecipeLogicCaInjector
 import com.github.trc.clayium.api.capability.impl.ResonanceManager
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
@@ -21,8 +21,8 @@ class CaInjectorMetaTileEntity(
         return CaInjectorMetaTileEntity(metaTileEntityId, tier)
     }
 
-    override val renderingOptions: MteRenderingOpts by lazy {
-        MteRenderingOpts.face(clayiumId("blocks/ca_injector"))
+    override val renderingConfig: MteRenderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/ca_injector"))
     }
 
     companion object {

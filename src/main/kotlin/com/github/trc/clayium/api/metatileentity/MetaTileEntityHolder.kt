@@ -132,17 +132,17 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
     @SideOnly(Side.CLIENT)
     override fun shouldRenderInPass(pass: Int): Boolean {
         val mte = metaTileEntity ?: return super.shouldRenderInPass(pass)
-        return mte.renderingOptions.renderPass == pass
+        return mte.renderingConfig.renderPass == pass
     }
 
     @SideOnly(Side.CLIENT)
     override fun getMaxRenderDistanceSquared(): Double {
         val mte = metaTileEntity ?: return super.getMaxRenderDistanceSquared()
-        return mte.renderingOptions.maxRenderDistanceSquared
+        return mte.renderingConfig.maxRenderDistanceSquared
     }
 
     @SideOnly(Side.CLIENT)
     override fun getRenderBoundingBox(): AxisAlignedBB {
-        return metaTileEntity?.renderingOptions?.renderBoundingBox ?: super.getRenderBoundingBox()
+        return metaTileEntity?.renderingConfig?.renderBoundingBox ?: super.getRenderBoundingBox()
     }
 }

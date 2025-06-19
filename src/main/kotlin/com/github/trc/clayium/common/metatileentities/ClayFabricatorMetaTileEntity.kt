@@ -11,7 +11,7 @@ import com.github.trc.clayium.api.capability.AbstractWorkable
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
@@ -77,8 +77,8 @@ class ClayFabricatorMetaTileEntity(
 
     override fun createMetaTileEntity() = ClayFabricatorMetaTileEntity(metaTileEntityId, tier, maxClayCompressionLevel, craftTimeLogic)
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.face(clayiumId("blocks/clay_fabricator"))
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/clay_fabricator"))
     }
 
     private inner class ClayFabricatorRecipeLogic : AbstractWorkable(this@ClayFabricatorMetaTileEntity) {

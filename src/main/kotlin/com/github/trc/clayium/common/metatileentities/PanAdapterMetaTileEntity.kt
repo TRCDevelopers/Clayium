@@ -24,7 +24,7 @@ import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.ClayLaserMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
 import com.github.trc.clayium.api.pan.IPanRecipe
@@ -232,7 +232,7 @@ class PanAdapterMetaTileEntity(
             }
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.builder().face(clayiumId("blocks/pan_adapter")).useFaceForAllSides().build()
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder().face(clayiumId("blocks/pan_adapter")).useFaceForAllSides().build()
     }
 }

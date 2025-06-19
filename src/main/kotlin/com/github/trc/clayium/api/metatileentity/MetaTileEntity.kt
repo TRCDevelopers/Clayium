@@ -667,8 +667,8 @@ abstract class MetaTileEntity(
         return tab === CreativeTabs.SEARCH || tab === ClayiumCTabs.main
     }
 
-    open val renderingOptions by lazy {
-        MteRenderingOpts.builder().noFrontFacing().build()
+    open val renderingConfig by lazy {
+        MteRenderingConfig.builder().noFrontFacing().build()
     }
 
     @SideOnly(Side.CLIENT)
@@ -710,7 +710,7 @@ abstract class MetaTileEntity(
     @SideOnly(Side.CLIENT)
     @Suppress("DEPRECATION")
     open fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
-        val renderingOpts = this.renderingOptions
+        val renderingOpts = this.renderingConfig
         val faceTexture = renderingOpts.faceTexture
 
         val hasFrontFacing = faceTexture != null

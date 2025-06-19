@@ -5,7 +5,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getCapability
@@ -79,7 +79,7 @@ class AdvancedRangedMinerMetaTileEntity(
         extraFilters.deserializeNBT(data.getCompoundTag("extraFilters"))
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.face(clayiumId("blocks/adv_miner"))
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/adv_miner"))
     }
 }

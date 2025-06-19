@@ -8,7 +8,7 @@ import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.capability.impl.VoidingItemHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
@@ -98,8 +98,8 @@ class VoidContainerMetaTileEntity(
         filterSlot.deserializeNBT(data.getCompoundTag("filterSlot"))
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.builder().face(clayiumId("blocks/void_container"))
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder().face(clayiumId("blocks/void_container"))
             .addRequiredTextures(clayiumId("blocks/void_container"), clayiumId("blocks/void_container_side"),
                 clayiumId("blocks/void_container_top")).build()
 

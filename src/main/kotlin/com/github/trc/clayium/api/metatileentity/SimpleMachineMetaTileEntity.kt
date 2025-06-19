@@ -36,7 +36,7 @@ class SimpleMachineMetaTileEntity(
         return SimpleMachineMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, recipeRegistry, workableProvider)
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.builder().face(ResourceLocation(metaTileEntityId.namespace, "blocks/${recipeRegistry.category.categoryName}")).build()
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder().face(ResourceLocation(metaTileEntityId.namespace, "blocks/${recipeRegistry.category.categoryName}")).build()
     }
 }

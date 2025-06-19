@@ -13,7 +13,7 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_STORED_ITE
 import com.github.trc.clayium.api.capability.IPipeConnectionLogic
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.interfaces.IHasItemStackNbt
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
@@ -225,8 +225,8 @@ class StorageContainerMetaTileEntity(
 
     override fun itemsDroppedOnDestroy(itemBuffer: MutableList<ItemStack>) {}
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.builder()
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder()
             .face(clayiumId("blocks/storage_container"))
             .addRequiredTextures(
                 clayiumId("blocks/storage_container_side_composed"), clayiumId("blocks/storage_container_side_upgraded"),

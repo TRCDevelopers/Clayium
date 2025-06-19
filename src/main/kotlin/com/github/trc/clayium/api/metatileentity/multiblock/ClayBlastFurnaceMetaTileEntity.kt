@@ -7,7 +7,7 @@ import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult
 import com.github.trc.clayium.api.util.ITier
@@ -63,10 +63,10 @@ class ClayBlastFurnaceMetaTileEntity(
         return ClayBlastFurnaceMetaTileEntity(metaTileEntityId, tier)
     }
 
-    override val renderingOptions by lazy {
+    override val renderingConfig by lazy {
         val whenValid = clayiumId("blocks/blastfurnace_1")
         val whenInvalid = clayiumId("blocks/blastfurnace")
-        MteRenderingOpts.builder()
+        MteRenderingConfig.builder()
             .dynFace { if (multiblockLogic.structureFormed) whenValid else whenInvalid }
             .addRequiredTextures(whenValid, whenInvalid)
             .build()

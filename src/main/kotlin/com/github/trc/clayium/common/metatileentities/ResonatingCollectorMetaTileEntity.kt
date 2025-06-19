@@ -9,7 +9,7 @@ import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.impl.ResonanceManager
 import com.github.trc.clayium.api.metatileentity.AbstractItemGeneratorMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
@@ -63,7 +63,7 @@ class ResonatingCollectorMetaTileEntity(
                 }.build().align(Alignment.Center))
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.face(clayiumId("blocks/ca_resonating_collector"))
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/ca_resonating_collector"))
     }
 }

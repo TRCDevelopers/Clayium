@@ -22,7 +22,7 @@ import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.recipe.IRecipeProvider
 import com.github.trc.clayium.api.util.CUtils
@@ -324,7 +324,7 @@ class AutoTraderMetaTileEntity(
         }
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.noFace()
+    override val renderingConfig by lazy {
+        MteRenderingConfig.noFace()
     }
 }

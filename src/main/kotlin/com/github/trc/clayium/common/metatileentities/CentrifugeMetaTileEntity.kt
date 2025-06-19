@@ -11,7 +11,7 @@ import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
@@ -88,7 +88,7 @@ class CentrifugeMetaTileEntity(
         return CentrifugeMetaTileEntity(metaTileEntityId, tier, outputSize)
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.face(clayiumId("blocks/centrifuge"))
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/centrifuge"))
     }
 }

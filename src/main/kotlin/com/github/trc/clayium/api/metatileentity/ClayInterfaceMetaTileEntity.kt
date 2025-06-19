@@ -108,7 +108,7 @@ class ClayInterfaceMetaTileEntity(
         return super.getCapability(capability, facing)
     }
 
-    override val renderingOptions: MteRenderingOpts by lazy {
-        MteRenderingOpts.builder().face(clayiumId("blocks/clay_interface")).useFaceForAllSides().build()
+    override val renderingConfig: MteRenderingConfig by lazy {
+        MteRenderingConfig.builder().face(clayiumId("blocks/clay_interface")).useFaceForAllSides().build()
     }
 }

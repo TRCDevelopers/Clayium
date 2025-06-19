@@ -12,7 +12,7 @@ import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.pan.IPan
 import com.github.trc.clayium.api.pan.IPanCable
@@ -164,8 +164,8 @@ class PanDuplicatorMetaTileEntity(
         if (side != this.frontFacing) quads.add(panCasingQuads[side.index])
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.face(clayiumId("blocks/pan_duplicator"))
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/pan_duplicator"))
     }
 
     private inner class PanDuplicatorRecipeLogic : AbstractWorkable(this@PanDuplicatorMetaTileEntity) {

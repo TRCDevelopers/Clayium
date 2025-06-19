@@ -8,7 +8,7 @@ import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.entity.player.EntityPlayer
@@ -80,7 +80,7 @@ class LaserProxyMetaTileEntity(
         return super.getCapability(capability, facing)
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.face(clayiumId("blocks/laser_proxy"))
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/laser_proxy"))
     }
 }

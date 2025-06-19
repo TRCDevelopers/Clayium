@@ -14,7 +14,7 @@ import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getMetaTileEntity
@@ -114,8 +114,8 @@ class WaterwheelMetaTileEntity(
         return waterFlows
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.face(clayiumId("blocks/waterwheel"))
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/waterwheel"))
     }
 
     companion object {

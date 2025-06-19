@@ -81,8 +81,8 @@ class ClayLaserMetaTileEntity(
         return ClayLaserMetaTileEntity(metaTileEntityId, tier, laserRed, laserGreen, laserBlue)
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.builder()
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder()
             .face(clayiumId("blocks/clay_laser"))
             .renderPass(1)
             .alwaysRender()

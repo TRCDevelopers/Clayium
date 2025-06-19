@@ -12,7 +12,7 @@ import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
@@ -71,8 +71,8 @@ class SolarClayFabricatorMetaTileEntity(
                 .bottom(12).left(0).widthRel(0.5f))
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.face(clayiumId("blocks/solar"))
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/solar"))
     }
 
     private inner class SolarClayFabricatorRecipeLogic : AbstractRecipeLogic(this@SolarClayFabricatorMetaTileEntity, registry) {

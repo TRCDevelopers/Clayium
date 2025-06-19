@@ -2,7 +2,7 @@ package com.github.trc.clayium.common.metatileentities
 
 import com.github.trc.clayium.api.metatileentity.AbstractItemGeneratorMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.block.material.Material
@@ -49,7 +49,7 @@ class CobblestoneGeneratorMetaTileEntity(
         return false
     }
 
-    override val renderingOptions: MteRenderingOpts by lazy {
-        MteRenderingOpts.face(clayiumId("blocks/cobblestone_generator"))
+    override val renderingConfig: MteRenderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/cobblestone_generator"))
     }
 }

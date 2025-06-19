@@ -238,7 +238,7 @@ class MultiTrackBufferMetaTileEntity(
         }
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.builder().noFrontFacing().build()
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder().noFrontFacing().build()
     }
 }

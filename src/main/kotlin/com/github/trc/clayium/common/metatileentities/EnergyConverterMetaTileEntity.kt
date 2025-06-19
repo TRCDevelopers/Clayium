@@ -16,7 +16,7 @@ import com.github.trc.clayium.api.capability.impl.EnergyStorageExportOnly
 import com.github.trc.clayium.api.capability.impl.EnergyStorageSerializable
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
@@ -137,7 +137,7 @@ class EnergyConverterMetaTileEntity(
         feStorage.deserializeNBT(data.getCompoundTag("feStorage"))
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.builder().face(clayiumId("blocks/energy_converter_overlay")).useFaceForAllSides().build()
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder().face(clayiumId("blocks/energy_converter_overlay")).useFaceForAllSides().build()
     }
 }

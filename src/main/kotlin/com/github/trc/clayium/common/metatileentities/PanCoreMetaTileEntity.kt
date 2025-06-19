@@ -19,7 +19,7 @@ import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.pan.IPan
 import com.github.trc.clayium.api.pan.IPanCable
 import com.github.trc.clayium.api.pan.IPanRecipe
@@ -288,8 +288,8 @@ class PanCoreMetaTileEntity(
         val ingsWithFlag = panRecipe.ingredients.map(::PanIngredient)
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.builder()
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder()
             .face(clayiumId("blocks/pan_core"))
             .useFaceForAllSides()
             .build()

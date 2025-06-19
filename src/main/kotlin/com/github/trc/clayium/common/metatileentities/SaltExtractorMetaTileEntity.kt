@@ -4,7 +4,7 @@ import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.metatileentity.AbstractItemGeneratorMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
@@ -67,7 +67,7 @@ class SaltExtractorMetaTileEntity(
         return super.canProgress() && this.clayEnergyHolder.drawEnergy(energyPerProgress.times(progressPerTick), simulate = false)
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.face(clayiumId("blocks/salt_extractor"))
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/salt_extractor"))
     }
 }

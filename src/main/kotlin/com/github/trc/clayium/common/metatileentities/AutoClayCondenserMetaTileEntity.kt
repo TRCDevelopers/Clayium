@@ -14,7 +14,7 @@ import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
@@ -219,7 +219,7 @@ class AutoClayCondenserMetaTileEntity(
         maxCompressedClay.deserializeNBT(data.getCompoundTag("maxCompressedClay"))
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.face(clayiumId("blocks/auto_clay_condenser"))
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/auto_clay_condenser"))
     }
 }

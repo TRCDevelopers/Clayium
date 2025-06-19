@@ -5,7 +5,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import java.util.function.Supplier
 
-data class MteRenderingOpts private constructor(
+data class MteRenderingConfig private constructor(
     val faceTextureSupplier: Supplier<ResourceLocation?>,
     val requiredTextures: List<ResourceLocation>,
     val useFaceForAllSides: Boolean,
@@ -19,10 +19,10 @@ data class MteRenderingOpts private constructor(
     companion object {
         fun face(texture: ResourceLocation) = builder().face(texture).build()
         fun noFace() = builder().noFrontFacing().build()
-        fun builder()  = MteRenderingOptionsBuilder()
+        fun builder()  = MteRenderingConfigBuilder()
     }
 
-    class MteRenderingOptionsBuilder {
+    class MteRenderingConfigBuilder {
         private var faceSupplier: Supplier<ResourceLocation?>? = null
         private val requiredTextures = mutableListOf<ResourceLocation>()
         private var hasFrontFacing: Boolean = true
@@ -97,14 +97,14 @@ data class MteRenderingOpts private constructor(
             this.useGlobalRenderer = true
         }
 
-        fun build(): MteRenderingOpts {
+        fun build(): MteRenderingConfig {
             // `hasFrontFacing` is redundant because `faceSupplier` can return null,
             // but it is kept for clarity and to ensure that the user explicitly sets it.
             if (this.hasFrontFacing && this.faceSupplier == null) {
                 throw IllegalStateException("Face texture must be set if hasFrontFacing is true")
             }
 
-            return MteRenderingOpts(
+            return MteRenderingConfig(
                 faceSupplier ?: Supplier { null },
                 requiredTextures,
                 useFaceForAllSides,

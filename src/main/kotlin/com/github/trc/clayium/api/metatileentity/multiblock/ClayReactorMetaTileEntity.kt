@@ -10,7 +10,7 @@ import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trc.clayium.api.gui.sync.ClayLaserSyncValue
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.metatileentity.MteRenderingOpts
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult
 import com.github.trc.clayium.api.util.ITier
@@ -34,10 +34,10 @@ class ClayReactorMetaTileEntity(
     var laser: ClayLaser? = null
         private set
 
-    override val renderingOptions by lazy {
+    override val renderingConfig by lazy {
         val whenValid = clayiumId("blocks/reactor_1")
         val whenInvalid = clayiumId("blocks/reactor")
-        MteRenderingOpts.builder()
+        MteRenderingConfig.builder()
             .dynFace { if (multiblockLogic.structureFormed) whenValid else whenInvalid }
             .addRequiredTextures(whenValid, whenInvalid)
             .build()

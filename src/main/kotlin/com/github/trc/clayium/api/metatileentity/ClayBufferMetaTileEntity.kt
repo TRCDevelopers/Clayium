@@ -104,7 +104,7 @@ class ClayBufferMetaTileEntity(
         return ClayBufferMetaTileEntity(this.metaTileEntityId, this.tier)
     }
 
-    override val renderingOptions by lazy {
-        MteRenderingOpts.builder().noFrontFacing().build()
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder().noFrontFacing().build()
     }
 }
