@@ -14,28 +14,35 @@ import com.cleanroommc.modularui.widgets.CycleButtonWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Grid
-import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.metatileentity.AbstractMinerMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
+import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.item.ItemStack
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
+import net.minecraftforge.common.property.IExtendedBlockState
 
 class ActivatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier
 ) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, "activator", bufferValidInputModes) {
 
-    override val itemInventory = ClayiumItemStackHandler(this, 9)
+    @Suppress("unused")
+    val ioHandler = AutoIoHandler.Exporter(this)
+
     override val rangeRelative get() = Cuboid6.full.copy().add(BlockPos.ORIGIN.offset(this.frontFacing.opposite))
     override val maxBlocksPerTick = 1
 
@@ -78,18 +85,16 @@ class ActivatorMetaTileEntity(
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         syncManager.registerSlotGroup("breaker_inv", 3)
-        val workingEnabledSync = SyncHandlers.bool(::workingEnabled, ::workingEnabled::set)
-        syncManager.syncValue("working_enabled", workingEnabledSync)
         val columnStr = "I".repeat(3)
         val matrixStr = (0..<3).map { columnStr }
 
         val startButton = ToggleButton()
-            .value(BoolValue.Dynamic(workingEnabledSync::getValue) { workingEnabledSync.value = true })
+            .value(SyncHandlers.bool(::workingEnabled, ::workingEnabled::set))
             .background(ClayGuiTextures.START_BUTTON)
             .hoverBackground(ClayGuiTextures.START_BUTTON_HOVERED)
             .selectedBackground(ClayGuiTextures.START_BUTTON_DISABLED)
         val stopButton = ToggleButton()
-            .value(BoolValue.Dynamic({ !workingEnabledSync.value }, { workingEnabledSync.value = false }))
+            .value(SyncHandlers.bool({ !workingEnabled }, { workingEnabled = false }))
             .background(ClayGuiTextures.STOP_BUTTON)
             .hoverBackground(ClayGuiTextures.STOP_BUTTON_HOVERED)
             .selectedBackground(ClayGuiTextures.STOP_BUTTON_DISABLED)

@@ -4,7 +4,6 @@ import codechicken.lib.vec.Cuboid6
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.BoolValue
 import com.cleanroommc.modularui.value.EnumValue
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
@@ -168,19 +167,17 @@ abstract class AbstractMinerMetaTileEntity(
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         syncManager.registerSlotGroup("breaker_inv", INV_ROW)
-        val workingEnabledSync = SyncHandlers.bool(::workingEnabled, ::workingEnabled::set)
-        syncManager.syncValue("working_enabled", workingEnabledSync)
         syncManager.syncValue("clay_laser", ClayLaserSyncValue(::laser, ::laser::set))
         val columnStr = "I".repeat(INV_COLUMN)
         val matrixStr = (0..<INV_ROW).map { columnStr }
 
         val startButton = ToggleButton()
-            .value(BoolValue.Dynamic(workingEnabledSync::getValue) { workingEnabledSync.value = true })
+            .value(SyncHandlers.bool(::workingEnabled, ::workingEnabled::set))
             .background(ClayGuiTextures.START_BUTTON)
             .hoverBackground(ClayGuiTextures.START_BUTTON_HOVERED)
             .selectedBackground(ClayGuiTextures.START_BUTTON_DISABLED)
         val stopButton = ToggleButton()
-            .value(BoolValue.Dynamic({ !workingEnabledSync.value }, { workingEnabledSync.value = false }))
+            .value(SyncHandlers.bool({ !workingEnabled }, { workingEnabled = false }))
             .background(ClayGuiTextures.STOP_BUTTON)
             .hoverBackground(ClayGuiTextures.STOP_BUTTON_HOVERED)
             .selectedBackground(ClayGuiTextures.STOP_BUTTON_DISABLED)
