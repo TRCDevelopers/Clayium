@@ -62,6 +62,8 @@ jobs:
             groovyscript(optional)
             the-one-probe(optional)
 
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
           modrinth-id: m5ogv9xL
           modrinth-featured: true
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
