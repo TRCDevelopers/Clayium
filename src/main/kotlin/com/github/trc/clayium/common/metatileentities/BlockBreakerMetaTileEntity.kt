@@ -3,6 +3,7 @@ package com.github.trc.clayium.common.metatileentities
 import codechicken.lib.vec.Cuboid6
 import com.github.trc.clayium.api.metatileentity.AbstractMinerMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
@@ -17,8 +18,6 @@ class BlockBreakerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier
 ) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, "block_breaker") {
-
-    override val faceTexture: ResourceLocation = clayiumId("blocks/miner")
 
     @Suppress("unused")
     val ioHandler = AutoIoHandler.Exporter(this)
@@ -56,5 +55,9 @@ class BlockBreakerMetaTileEntity(
         if (side == this.frontFacing.opposite) {
             quads.add(MINER_BACK[side.index])
         }
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/miner"))
     }
 }

@@ -7,6 +7,7 @@ import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult
 import com.github.trc.clayium.api.util.ITier
@@ -17,14 +18,8 @@ import net.minecraft.util.ResourceLocation
 class ClayBlastFurnaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : WorkableMetaTileEntity(metaTileEntityId, tier, CRecipes.CLAY_BLAST_FURNACE,) {
+) : WorkableMetaTileEntity(metaTileEntityId, tier, CRecipes.CLAY_BLAST_FURNACE) {
     private val multiblockLogic = MultiblockLogic(this, ::checkStructure)
-
-    //todo: fix these code duplication?
-    fun getFaceInvalid(): ResourceLocation = clayiumId("blocks/blastfurnace")
-    fun getFaceValid() = clayiumId("blocks/blastfurnace_1")
-    override val faceTexture get() = if (multiblockLogic.structureFormed) getFaceValid() else getFaceInvalid()
-    override val requiredTextures get() = listOf(getFaceValid(), getFaceInvalid())
 
     override val importItems = NotifiableItemStackHandler(this, 2, this, isExport = false)
     override val exportItems = NotifiableItemStackHandler(this, 2, this, isExport = true)
@@ -67,4 +62,14 @@ class ClayBlastFurnaceMetaTileEntity(
     override fun createMetaTileEntity(): MetaTileEntity {
         return ClayBlastFurnaceMetaTileEntity(metaTileEntityId, tier)
     }
+
+    override val renderingConfig by lazy {
+        val whenValid = clayiumId("blocks/blastfurnace_1")
+        val whenInvalid = clayiumId("blocks/blastfurnace")
+        MteRenderingConfig.builder()
+            .dynFace { if (multiblockLogic.structureFormed) whenValid else whenInvalid }
+            .addRequiredTextures(whenValid, whenInvalid)
+            .build()
+    }
+
 }

@@ -12,12 +12,14 @@ import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.recipe.builder.ClayFabricatorRecipeBuilder
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import mcjty.theoneprobe.api.IProbeHitData
 import mcjty.theoneprobe.api.IProbeInfo
 import mcjty.theoneprobe.api.ProbeMode
@@ -35,8 +37,6 @@ class SolarClayFabricatorMetaTileEntity(
     tier: ITier,
     val registry: RecipeRegistry<ClayFabricatorRecipeBuilder>
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModesLists[1], "solar_clay_fabricator") {
-
-    override val faceTexture: ResourceLocation = clayiumId("blocks/solar")
 
     override val importItems: IItemHandlerModifiable = NotifiableItemStackHandler(this, 1, this, false)
     override val exportItems: IItemHandlerModifiable = NotifiableItemStackHandler(this, 1, this, true)
@@ -61,15 +61,18 @@ class SolarClayFabricatorMetaTileEntity(
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
-                .child(largeSlot(SyncHandlers.itemSlot(importItems, 0)
-                    .singletonSlotGroup(2)).align(Alignment.CenterLeft))
+                .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup(2).buildLarge()
+                    .align(Alignment.CenterLeft))
                 .child(workable.getProgressBar(syncManager).align(Alignment.Center))
-                .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0)
-                    .accessibility(false, true)
-                    .singletonSlotGroup(0)).align(Alignment.CenterRight))
+                .child(MuiSlots.itemSlotBuilder(exportItems, 0).singletonSlotGroup(0).takeOnly().buildLarge()
+                    .align(Alignment.CenterRight))
             )
             .child(workable.createCeTextWidget(syncManager)
                 .bottom(12).left(0).widthRel(0.5f))
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/solar"))
     }
 
     private inner class SolarClayFabricatorRecipeLogic : AbstractRecipeLogic(this@SolarClayFabricatorMetaTileEntity, registry) {

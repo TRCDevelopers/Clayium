@@ -9,16 +9,23 @@ import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData
-import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Grid
-import com.github.trc.clayium.api.*
+import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
+import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_PAN_DUPLICATION_ENTRIES
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
-import com.github.trc.clayium.api.pan.*
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
+import com.github.trc.clayium.api.pan.IPan
+import com.github.trc.clayium.api.pan.IPanCable
+import com.github.trc.clayium.api.pan.IPanRecipe
+import com.github.trc.clayium.api.pan.IPanUser
+import com.github.trc.clayium.api.pan.isPanCable
+import com.github.trc.clayium.api.readClayEnergy
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.CPropertyKey
@@ -28,16 +35,13 @@ import com.github.trc.clayium.api.unification.stack.readItemAndMeta
 import com.github.trc.clayium.api.unification.stack.writeItemAndMeta
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.client.model.ModelTextures
+import com.github.trc.clayium.api.writeClayEnergy
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import net.minecraft.block.state.IBlockState
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.block.model.BakedQuad
-import net.minecraft.client.renderer.block.model.FaceBakery
-import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.init.Blocks
 import net.minecraft.network.PacketBuffer
@@ -45,9 +49,6 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.capabilities.Capability
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
-import java.util.function.Function
 import kotlin.math.min
 
 class PanCoreMetaTileEntity(
@@ -231,18 +232,6 @@ class PanCoreMetaTileEntity(
         return super.getCapability(capability, facing)
     }
 
-    @SideOnly(Side.CLIENT)
-    override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
-        val tex = getter.apply(clayiumId("blocks/pan_core"))
-        panCoreQuads = EnumFacing.entries.map { ModelTextures.createQuad(it, tex) }.toMutableList()
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
-        if (state == null || side == null) return
-        quads.add(panCoreQuads[side.index])
-    }
-
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         if (!isRemote) {
             refreshNetworkAndThenEntries()
@@ -283,7 +272,7 @@ class PanCoreMetaTileEntity(
                             .background(Rectangle().setColor(Color.rgb(0, 0x1E, 0))))
                     )
                 )
-                .child(SlotGroupWidget.playerInventory(0)))
+                .child(MuiSlots.playerInventory(0)))
     }
 
     class PanDuplicationEntry(
@@ -297,6 +286,13 @@ class PanCoreMetaTileEntity(
     )
     private class PanRecipeInternal(val panRecipe: IPanRecipe) {
         val ingsWithFlag = panRecipe.ingredients.map(::PanIngredient)
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder()
+            .face(clayiumId("blocks/pan_core"))
+            .useFaceForAllSides()
+            .build()
     }
 
     companion object {
@@ -337,7 +333,5 @@ class PanCoreMetaTileEntity(
             put(ItemAndMeta(OrePrefix.dust, CMaterials.salt), PanDuplicationEntry(ClayEnergy.milli(5), true))
             put(ItemAndMeta(OrePrefix.gem, CMaterials.antimatter), PanDuplicationEntry(ClayEnergy.of(1), false))
         }.toMap() }
-
-        private lateinit var panCoreQuads: MutableList<BakedQuad>
     }
 }

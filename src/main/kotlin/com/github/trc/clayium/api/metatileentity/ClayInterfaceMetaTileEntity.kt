@@ -23,10 +23,7 @@ import java.lang.ref.WeakReference
 class ClayInterfaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "clay_interface") {
-
-    override val faceTexture = clayiumId("blocks/clay_interface")
-    override val useFaceForAllSides = true
+) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "clay_interface", ) {
 
     override val importItems: IItemHandlerModifiable get() = targetImportItems.get() ?: EmptyItemStackHandler
     override val exportItems: IItemHandlerModifiable get() = targetExportItems.get() ?: EmptyItemStackHandler
@@ -84,8 +81,8 @@ class ClayInterfaceMetaTileEntity(
         this.validOutputModes = onlyNoneList
     }
 
-    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        if (super.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)) {
+    override fun onRightClickServerSide(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        if (super.onRightClickServerSide(player, hand, clickedSide, hitX, hitY, hitZ)) {
             return true
         }
         val mimicTarget = this.target
@@ -109,5 +106,9 @@ class ClayInterfaceMetaTileEntity(
             return target!!.getCapability(capability, facing)
         }
         return super.getCapability(capability, facing)
+    }
+
+    override val renderingConfig: MteRenderingConfig by lazy {
+        MteRenderingConfig.builder().face(clayiumId("blocks/clay_interface")).useFaceForAllSides().build()
     }
 }

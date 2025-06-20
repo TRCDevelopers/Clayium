@@ -3,13 +3,15 @@ package com.github.trc.clayium.api.capability
 import net.minecraft.util.EnumFacing
 
 /**
- * Interface for TileEntities that can be connected to piped machines.
+ * Capability for TileEntities that can be connected to piped machines.
  *
- * This interface is used to determine whether a pipe should extend to that direction during rendering.
- * not used for actual IO handling.
+ * This interface is used to determine whether a pipe should extend to that direction **during rendering.
+ * not used for actual IO handling.**
+ *
+ * Actual IO is handled by `IItemHandler` capability.
  */
 interface IPipeConnectable {
     val pipeConnectionLogic: IPipeConnectionLogic
 
-    fun getPipeConnectionMode(side: EnumFacing): PipeConnectionMode
+    fun getPipeConnectionModeForRendering(side: EnumFacing): PipeConnectionMode
 }

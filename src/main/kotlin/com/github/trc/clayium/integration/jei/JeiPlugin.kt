@@ -77,10 +77,10 @@ class JeiPlugin : IModPlugin {
         for (registry in ClayiumApi.mteManager.allRegistries()) {
             for (metaTileEntity in registry) {
                 when (metaTileEntity) {
-                    is WorkableMetaTileEntity -> modRegistry.addRecipeCatalyst(metaTileEntity.getStackForm(),
+                    is WorkableMetaTileEntity -> modRegistry.addRecipeCatalyst(metaTileEntity.asStackForm(),
                         metaTileEntity.recipeRegistry.category.uniqueId)
 
-                    is SolarClayFabricatorMetaTileEntity -> modRegistry.addRecipeCatalyst(metaTileEntity.getStackForm(),
+                    is SolarClayFabricatorMetaTileEntity -> modRegistry.addRecipeCatalyst(metaTileEntity.asStackForm(),
                         metaTileEntity.registry.category.uniqueId)
                 }
             }

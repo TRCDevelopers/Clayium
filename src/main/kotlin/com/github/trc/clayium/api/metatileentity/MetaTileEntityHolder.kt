@@ -9,6 +9,7 @@ import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ITickable
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
@@ -129,10 +130,19 @@ class MetaTileEntityHolder : NeighborCacheTileEntityBase(), ITickable {
     }
 
     @SideOnly(Side.CLIENT)
-    override fun shouldRenderInPass(pass: Int) = metaTileEntity?.shouldRenderInPass(pass) ?: super.shouldRenderInPass(pass)
-    @Suppress("UsePropertyAccessSyntax") // `super.maxRenderDistanceSquared` errors with "Unresolved reference"
+    override fun shouldRenderInPass(pass: Int): Boolean {
+        val mte = metaTileEntity ?: return super.shouldRenderInPass(pass)
+        return mte.renderingConfig.renderPass == pass
+    }
+
     @SideOnly(Side.CLIENT)
-    override fun getMaxRenderDistanceSquared() = metaTileEntity?.getMaxRenderDistanceSquared() ?: super.getMaxRenderDistanceSquared()
+    override fun getMaxRenderDistanceSquared(): Double {
+        val mte = metaTileEntity ?: return super.getMaxRenderDistanceSquared()
+        return mte.renderingConfig.maxRenderDistanceSquared
+    }
+
     @SideOnly(Side.CLIENT)
-    override fun getRenderBoundingBox() = metaTileEntity?.getRenderBoundingBox() ?: super.getRenderBoundingBox()
+    override fun getRenderBoundingBox(): AxisAlignedBB {
+        return metaTileEntity?.renderingConfig?.renderBoundingBox ?: super.getRenderBoundingBox()
+    }
 }

@@ -19,7 +19,7 @@ class MetaTileEntityModel(
             // machine face textures
             ClayiumApi.mteManager.allRegistries().forEach {
                 it.forEach { metaTileEntity ->
-                    addAll(metaTileEntity.requiredTextures.filterNotNull())
+                    addAll(metaTileEntity.renderingConfig.requiredTextures)
                 }
             }
             // Block Breaker & Item Collector Back

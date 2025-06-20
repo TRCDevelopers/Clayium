@@ -11,7 +11,6 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
-import kotlin.Int
 
 abstract class AutoIoHandler(
     metaTileEntity: MetaTileEntity,
@@ -48,7 +47,7 @@ abstract class AutoIoHandler(
         for (side in EnumFacing.entries) {
             if (remainingImport > 0 && isImporting(side)) {
                 remainingImport = transferItemStack(
-                    from = metaTileEntity.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                    from = metaTileEntity.getNeighborTileEntity(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
                     to = getImportItems(side) ?: continue,
                     amount = remainingImport,
                 )
@@ -62,7 +61,7 @@ abstract class AutoIoHandler(
             if (remainingExport > 0 && isExporting(side)) {
                 remainingExport = transferItemStack(
                     from = getExportItems(side) ?: continue,
-                    to = metaTileEntity.getNeighbor(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                    to = metaTileEntity.getNeighborTileEntity(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
                     amount = remainingExport,
                 )
             }

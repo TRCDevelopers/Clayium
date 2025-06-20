@@ -52,7 +52,6 @@ class RecipeLogicClayFurnace(
         this.recipeCEt = multipliedRecipeCEt
         this.requiredProgress = multipliedRecipeTime
         this.currentProgress = 1
-        this.previousRecipe = recipe
         return true
     }
 

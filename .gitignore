@@ -1,3 +1,8 @@
+# Vitepress (for wiki)
+wiki/**/node_modules
+wiki/**/dist
+wiki/**/cache
+
 # User-specific stuff
 .idea/
 

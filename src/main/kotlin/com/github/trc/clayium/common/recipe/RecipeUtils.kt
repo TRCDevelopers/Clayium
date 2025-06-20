@@ -64,7 +64,7 @@ object RecipeUtils {
         return when (ingredient) {
             is MetaItemClayium.MetaValueItem -> ingredient.getStackForm()
             is UnificationEntry -> ingredient.toString()
-            is MetaTileEntity -> ingredient.getStackForm()
+            is MetaTileEntity -> ingredient.asStackForm()
             else -> ingredient
         }
     }

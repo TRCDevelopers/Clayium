@@ -7,6 +7,7 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.metatileentity.AbstractMinerMetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.metatileentity.trait.ClayMarkerHandler
 import com.github.trc.clayium.api.util.Cuboid6BlockPosIterator
@@ -23,8 +24,6 @@ open class RangedMinerMetaTileEntity(
     tier: ITier,
     machineName: String = "ranged_miner",
 ) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, machineName) {
-
-    override val faceTexture: ResourceLocation = clayiumId("blocks/miner")
 
     private val clayMarkerHandler = ClayMarkerHandler(this)
     @Suppress("unused")
@@ -81,6 +80,10 @@ open class RangedMinerMetaTileEntity(
         }
 
     override fun createMetaTileEntity() = RangedMinerMetaTileEntity(metaTileEntityId, tier)
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/miner"))
+    }
 
     companion object {
         val CE_CONSUMPTION = ClayEnergy.milli(10)

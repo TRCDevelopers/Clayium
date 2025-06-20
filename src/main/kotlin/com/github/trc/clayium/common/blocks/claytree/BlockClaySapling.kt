@@ -18,7 +18,7 @@ import net.minecraft.world.World
 import net.minecraft.world.gen.feature.WorldGenTrees
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.event.terraingen.TerrainGen
-import java.util.Random
+import java.util.*
 
 @Suppress("OVERRIDE_DEPRECATION")
 class BlockClaySapling : BlockBush(), IGrowable, ITieredBlock {

@@ -13,7 +13,6 @@ class SimpleMachineMetaTileEntity(
     tier: ITier,
     validInputModes: List<MachineIoMode>,
     validOutputModes: List<MachineIoMode>,
-    override val faceTexture: ResourceLocation,
     recipeRegistry: RecipeRegistry<*>,
     // saved for createMetaTileEntity()
     private val workableProvider: (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> AbstractRecipeLogic = ::RecipeLogicEnergy,
@@ -27,13 +26,17 @@ class SimpleMachineMetaTileEntity(
     ) : this(
         metaTileEntityId, tier,
         validInputModesLists[recipeRegistry.maxInputs], validOutputModesLists[recipeRegistry.maxOutputs],
-        faceTexture = ResourceLocation(metaTileEntityId.namespace, "blocks/${recipeRegistry.category.categoryName}"),
-        recipeRegistry, workableProvider
+        recipeRegistry,
+        workableProvider,
     )
 
     override val workable = workableProvider(this, recipeRegistry, clayEnergyHolder)
 
     override fun createMetaTileEntity(): MetaTileEntity {
-        return SimpleMachineMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, faceTexture, recipeRegistry, workableProvider)
+        return SimpleMachineMetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, recipeRegistry, workableProvider)
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder().face(ResourceLocation(metaTileEntityId.namespace, "blocks/${recipeRegistry.category.categoryName}")).build()
     }
 }

@@ -2,7 +2,7 @@ package com.github.trc.clayium.client.gui
 
 import codechicken.lib.colour.ColourARGB
 import codechicken.lib.colour.ColourRGBA
-import com.github.trc.clayium.api.extensions.ccl.*
+import com.github.trc.clayium.api.extensions.ccl.packIntArray
 import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.client.Minecraft

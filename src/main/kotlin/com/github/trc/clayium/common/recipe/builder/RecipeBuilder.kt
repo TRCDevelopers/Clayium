@@ -34,12 +34,13 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     protected var duration: Long,
     protected var cePerTick: ClayEnergy,
     protected var tier: Int,
+    protected var priority: Int,
 ) {
-    constructor() : this(mutableListOf(), mutableListOf(), mutableListOf(), null, 0, ClayEnergy.ZERO, 0)
+    constructor() : this(mutableListOf(), mutableListOf(), mutableListOf(), null, 0, ClayEnergy.ZERO, 0, 0)
 
     constructor(another: RecipeBuilder<R>) : this(another.inputs.toMutableList(), another.outputs.toMutableList(),
         another.chancedOutputs, another.chancedOutputLogic,
-        another.duration, another.cePerTick, another.tier) {
+        another.duration, another.cePerTick, another.tier, another.priority) {
         recipeRegistry = another.recipeRegistry
     }
 
@@ -49,6 +50,11 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
 
     fun setRegistry(registry: RecipeRegistry<R>): R {
         recipeRegistry = registry
+        return this as R
+    }
+
+    fun priority(priority: Int): R {
+        this.priority = priority
         return this as R
     }
 
@@ -66,7 +72,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun input(stack: ItemStack) = inputs(CItemRecipeInput(listOf(stack), stack.count))
     fun input(item: Item, amount: Int = 1) = input(ItemStack(item, amount))
     fun input(metaItem: MetaItemClayium.MetaValueItem, amount: Int = 1) = input(metaItem.getStackForm(amount))
-    fun input(metaTileEntity: MetaTileEntity, amount: Int = 1) = input(metaTileEntity.getStackForm(amount))
+    fun input(metaTileEntity: MetaTileEntity, amount: Int = 1) = input(metaTileEntity.asStackForm(amount))
     fun input(block: Block, amount: Int = 1) = input(ItemStack(block, amount))
     fun input(oreDict: String, amount: Int = 1) = inputs(COreRecipeInput(oreDict, amount))
     open fun input(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1) = inputs(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
@@ -78,7 +84,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun notConsumable(stack: ItemStack) = inputs(CItemRecipeInput(stack, stack.count, isConsumable = false))
     fun notConsumable(item: Item, amount: Int = 1) = notConsumable(ItemStack(item, amount))
     fun notConsumable(metaItem: MetaItemClayium.MetaValueItem, amount: Int = 1) = notConsumable(metaItem.getStackForm(amount))
-    fun notConsumable(metaTileEntity: MetaTileEntity, amount: Int = 1) = notConsumable(metaTileEntity.getStackForm(amount))
+    fun notConsumable(metaTileEntity: MetaTileEntity, amount: Int = 1) = notConsumable(metaTileEntity.asStackForm(amount))
     fun notConsumable(block: Block, amount: Int = 1) = notConsumable(ItemStack(block, amount))
     fun notConsumable(oreDict: String, amount: Int = 1) = inputs(COreRecipeInput(oreDict, amount, isConsumable = false))
     fun notConsumable(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1) = notConsumable(UnificationEntry(orePrefix, material).toString(), amount)
@@ -91,7 +97,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun output(stack: ItemStack) = outputs(stack)
     fun output(item: Item, amount: Int = 1) = output(ItemStack(item, amount))
     fun output(metaItem: MetaItemClayium.MetaValueItem, amount: Int = 1) = output(metaItem.getStackForm(amount))
-    fun output(metaTileEntity: MetaTileEntity, amount: Int = 1) = output(metaTileEntity.getStackForm(amount))
+    fun output(metaTileEntity: MetaTileEntity, amount: Int = 1) = output(metaTileEntity.asStackForm(amount))
     fun output(block: Block, amount: Int = 1) = output(ItemStack(block, amount))
     fun output(oreDict: String, amount: Int = 1) = outputs(OreDictUnifier.get(oreDict, amount))
     fun output(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1) = outputs(OreDictUnifier.get(orePrefix, material, amount))
@@ -103,7 +109,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun chancedOutput(item: Item, amount: Int, chance: Int): R = chancedOutput(ItemStack(item, amount), chance)
     fun chancedOutput(item: Item, chance: Int): R = chancedOutput(item, 1, chance)
     fun chancedOutput(metaItem: MetaItemClayium.MetaValueItem, amount: Int, chance: Int): R = chancedOutput(metaItem.getStackForm(amount), chance)
-    fun chancedOutput(metaTileEntity: MetaTileEntity, amount: Int, chance: Int): R = chancedOutput(metaTileEntity.getStackForm(amount), chance)
+    fun chancedOutput(metaTileEntity: MetaTileEntity, amount: Int, chance: Int): R = chancedOutput(metaTileEntity.asStackForm(amount), chance)
     fun chancedOutput(block: Block, amount: Int, chance: Int): R = chancedOutput(ItemStack(block, amount), chance)
     fun chancedOutput(block: Block, chance: Int): R = chancedOutput(block, 1, chance)
     fun chancedOutput(oreDict: String, amount: Int, chance: Int): R = chancedOutput(OreDictUnifier.get(oreDict, amount), chance)
@@ -190,7 +196,7 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
             null
         }
 
-        return Recipe(inputs, outputs, chancedOutputList, duration, cePerTick, tier)
+        return Recipe(inputs, outputs, chancedOutputList, duration, cePerTick, tier, priority)
     }
 
     protected fun setDefaults() {

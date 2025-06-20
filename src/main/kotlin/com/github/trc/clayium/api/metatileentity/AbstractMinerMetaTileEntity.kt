@@ -10,7 +10,10 @@ import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.*
+import com.cleanroommc.modularui.widgets.ButtonWidget
+import com.cleanroommc.modularui.widgets.CycleButtonWidget
+import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Grid
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
@@ -25,19 +28,25 @@ import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.gui.sync.ClayLaserSyncValue
 import com.github.trc.clayium.api.laser.ClayLaser
-import com.github.trc.clayium.api.util.*
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.asWidgetResizing
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.getCapability
+import com.github.trc.clayium.api.util.hasCapability
+import com.github.trc.clayium.api.util.toItemStack
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer.RangeRenderMode
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.util.TransferUtils
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.tileentity.TileEntityBeacon
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.NonNullList
 import net.minecraft.util.ResourceLocation
@@ -198,13 +207,13 @@ abstract class AbstractMinerMetaTileEntity(
             )
             .child(SlotGroupWidget.builder()
                 .matrix(*matrixStr.toTypedArray())
-                .key('I') { ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, it).slotGroup("breaker_inv")) }
+                .key('I') { MuiSlots.itemSlotBuilder(itemInventory, it).slotGroup("breaker_inv").build() }
                 .build().alignX(Alignment.TopCenter.x).top(12)
             )
             .child(IKey.dynamic { "Laser : ${laser?.let { LaserEnergy(it.energy).format() } ?: 0}" }.asWidgetResizing()
                 .alignX(Alignment.Center.x).bottom(12)
             )
-            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) })
+            .child(MuiSlots.phantomSlotBuilder(filterSlot, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) }.build()
                 .background(ClayGuiTextures.FILTER_SLOT)
                 .top(12).right(24)
                 .tooltipBuilder { it.addLine(IKey.lang("gui.clayium.miner.filter")) }
@@ -254,13 +263,6 @@ abstract class AbstractMinerMetaTileEntity(
         MINER_BACK = EnumFacing.entries.map { ModelTextures.createQuad(it, atlas) }
     }
 
-    @SideOnly(Side.CLIENT)
-    override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
-
-    @SideOnly(Side.CLIENT)
-    override fun getRenderBoundingBox() = TileEntityBeacon.INFINITE_EXTENT_AABB
-    @SideOnly(Side.CLIENT)
-    override fun useGlobalRenderer() = true
     @SideOnly(Side.CLIENT)
     override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
         AreaMarkerRenderer.render(Cuboid6.full, rangeRelative, x, y, z, rangeRenderMode)

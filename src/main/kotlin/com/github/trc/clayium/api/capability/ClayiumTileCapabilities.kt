@@ -21,8 +21,8 @@ object ClayiumTileCapabilities {
     @CapabilityInject(IClayLaserAcceptor::class)
     lateinit var CLAY_LASER_ACCEPTOR: Capability<IClayLaserAcceptor>
 
-    @CapabilityInject(IControllable::class)
-    lateinit var CONTROLLABLE: Capability<IControllable>
+    @CapabilityInject(IWorkingControllable::class)
+    lateinit var CONTROLLABLE: Capability<IWorkingControllable>
 
     @CapabilityInject(AbstractWorkable::class)
     lateinit var WORKABLE: Capability<AbstractWorkable>

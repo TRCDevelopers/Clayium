@@ -16,10 +16,12 @@ import com.github.trc.clayium.api.capability.impl.EnergyStorageExportOnly
 import com.github.trc.clayium.api.capability.impl.EnergyStorageSerializable
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.config.ConfigCore
+import com.github.trc.clayium.common.util.SidelessI18n
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemStack
@@ -36,9 +38,6 @@ class EnergyConverterMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier, energyAndNone, onlyNoneList, "energy_converter") {
-
-    override val faceTexture = clayiumId("blocks/energy_converter_overlay")
-    override val useFaceForAllSides: Boolean = true
 
     init {
         require(tier.numeric in 4..13) { "EnergyConverterMetaTileEntity can only be created with a tier between 4 and 13" }
@@ -67,7 +66,7 @@ class EnergyConverterMetaTileEntity(
         }
         //todo: control output allowed sides
         for (side in EnumFacing.entries) {
-            val receiver = this.getNeighbor(side)?.getCapability(CapabilityEnergy.ENERGY, side.opposite)
+            val receiver = this.getNeighborTileEntity(side)?.getCapability(CapabilityEnergy.ENERGY, side.opposite)
             if (receiver != null && feStorage.energyStored > 0) {
                 val maxTransfer = feStorage.extractEnergy(fePerTick, true)
                 val actualTransfer = receiver.receiveEnergy(maxTransfer, false)
@@ -96,11 +95,11 @@ class EnergyConverterMetaTileEntity(
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .left(0).bottom(10))
             .child(Column().widthRel(1f).height(8 * 3 + 3 * 2 + 10).align(Alignment.Center)
-                .child(IKey.dynamic { I18n.format("gui.clayium.energy_converter.storage", feStorage.energyStored, feStorage.maxEnergyStored) }
+                .child(IKey.dynamic { SidelessI18n.format("gui.clayium.energy_converter.storage", feStorage.energyStored, feStorage.maxEnergyStored) }
                     .asWidget().widthRel(1f))
-                .child(IKey.dynamic { I18n.format("gui.clayium.energy_converter.rate", cePerTick.format(), fePerTick) }
+                .child(IKey.dynamic { SidelessI18n.format("gui.clayium.energy_converter.rate", cePerTick.format(), fePerTick) }
                     .asWidget().widthRel(1f).margin(0, 3))
-                .child(IKey.dynamic { I18n.format("gui.clayium.energy_converter.output", fePerTick) }
+                .child(IKey.dynamic { SidelessI18n.format("gui.clayium.energy_converter.output", fePerTick) }
                     .asWidget().widthRel(1f))
             )
     }
@@ -116,8 +115,8 @@ class EnergyConverterMetaTileEntity(
         return super.getCapability(capability, facing)
     }
 
-    override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
-        super.clearMachineInventory(itemBuffer)
+    override fun itemsDroppedOnDestroy(itemBuffer: MutableList<ItemStack>) {
+        super.itemsDroppedOnDestroy(itemBuffer)
         clearInventory(itemBuffer, clayEnergyHolder.energizedClayItemHandler)
     }
 
@@ -136,5 +135,9 @@ class EnergyConverterMetaTileEntity(
     override fun readFromNBT(data: NBTTagCompound) {
         super.readFromNBT(data)
         feStorage.deserializeNBT(data.getCompoundTag("feStorage"))
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder().face(clayiumId("blocks/energy_converter_overlay")).useFaceForAllSides().build()
     }
 }

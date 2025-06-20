@@ -5,6 +5,7 @@ import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.capability.impl.ResonanceManager
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
@@ -26,8 +27,6 @@ class CaCondenserMetaTileEntity(
         else -> 1
     }
 
-    override val faceTexture = clayiumId("blocks/ca_condenser")
-
     override val workable: AbstractRecipeLogic = RecipeLogicCaCondenser()
 
     override fun createMetaTileEntity(): MetaTileEntity {
@@ -47,5 +46,9 @@ class CaCondenserMetaTileEntity(
         override fun getProgressPerTick(): Long {
             return craftTimeMultiplier.toLong()
         }
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/ca_condenser"))
     }
 }

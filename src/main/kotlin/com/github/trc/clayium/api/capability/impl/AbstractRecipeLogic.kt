@@ -26,7 +26,6 @@ abstract class AbstractRecipeLogic(
 
     override var isWorking: Boolean = false
 
-    protected var previousRecipe: Recipe? = null
     var recipeCEt = ClayEnergy.ZERO
         protected set
 
@@ -52,12 +51,7 @@ abstract class AbstractRecipeLogic(
     }
 
     override fun trySearchNewRecipe() {
-        var currentRecipe: Recipe? = null
-        currentRecipe = if (previousRecipe?.matches(false, inputInventory, getTier()) == true) {
-            previousRecipe
-        } else {
-            recipeProvider.searchRecipe(getTier(), inputInventory.toList())
-        }
+        val currentRecipe = recipeProvider.searchRecipe(getTier(), inputInventory.toList())
 
         if (currentRecipe == null) {
             invalidInputsForRecipes = true
@@ -80,7 +74,6 @@ abstract class AbstractRecipeLogic(
         this.recipeCEt = ClayEnergy(cePerTick)
         this.requiredProgress = duration
         this.currentProgress = 1
-        this.previousRecipe = recipe
         return true
     }
 

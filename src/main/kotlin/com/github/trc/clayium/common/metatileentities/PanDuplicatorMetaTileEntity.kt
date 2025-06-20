@@ -2,9 +2,7 @@ package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.ClayEnergy
@@ -14,6 +12,7 @@ import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.pan.IPan
 import com.github.trc.clayium.api.pan.IPanCable
@@ -21,11 +20,17 @@ import com.github.trc.clayium.api.pan.IPanUser
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.ItemAndMeta
-import com.github.trc.clayium.api.util.*
+import com.github.trc.clayium.api.util.ClayTiers
+import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.Mods
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.copyWithSize
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.ingredient.COreRecipeInput
 import com.github.trc.clayium.common.util.TransferUtils
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import mcjty.theoneprobe.api.IProbeHitData
 import mcjty.theoneprobe.api.IProbeInfo
 import mcjty.theoneprobe.api.NumberFormat
@@ -60,8 +65,6 @@ class PanDuplicatorMetaTileEntity(
     private val machineHullTier: ITier = ClayTiers.entries[duplicatorRank + 3]
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[2], validOutputModesLists[1], "pan_duplicator"), IPanUser {
 
-    override val faceTexture = clayiumId("blocks/pan_duplicator")
-
     val maxCeConsumptionRate = ClayEnergy(10_000 * 10.0.pow(duplicatorRank - 1).toLong())
 
     private val antimatterSlot = NotifiableItemStackHandler(this, 1, this, isExport = false)
@@ -92,8 +95,8 @@ class PanDuplicatorMetaTileEntity(
         }
     }
 
-    override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
-        super.clearMachineInventory(itemBuffer)
+    override fun itemsDroppedOnDestroy(itemBuffer: MutableList<ItemStack>) {
+        super.itemsDroppedOnDestroy(itemBuffer)
         clearInventory(itemBuffer, clayEnergyHolder.energizedClayItemHandler)
     }
 
@@ -110,14 +113,14 @@ class PanDuplicatorMetaTileEntity(
             .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
                 .child(SlotGroupWidget.builder()
                     .row("AD")
-                    .key('A', ItemSlot().slot(SyncHandlers.itemSlot(antimatterSlot, 0).singletonSlotGroup())
+                    .key('A', MuiSlots.itemSlotBuilder(antimatterSlot, 0).singletonSlotGroup().build()
                         .background(ClayGuiTextures.IMPORT_1_SLOT))
-                    .key('D', ItemSlot().slot(SyncHandlers.itemSlot(duplicationTargetSlot, 0).singletonSlotGroup())
+                    .key('D', MuiSlots.itemSlotBuilder(duplicationTargetSlot, 0).singletonSlotGroup().build()
                         .background(ClayGuiTextures.IMPORT_2_SLOT))
                     .build()
                     .align(Alignment.CenterLeft)
                 )
-                .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).singletonSlotGroup().accessibility(false, true))
+                .child(MuiSlots.itemSlotBuilder(exportItems, 0).singletonSlotGroup().takeOnly().buildLarge()
                     .align(Alignment.CenterRight))
                 .child(recipeLogic.getProgressBar(syncManager, showRecipes = false)
                     .progress(recipeLogic::getNormalizedProgress)
@@ -156,10 +159,13 @@ class PanDuplicatorMetaTileEntity(
         panCasingQuads = EnumFacing.entries.map { ModelTextures.createQuad(it, sprite) }
     }
 
-    override fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+    override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
         if (state == null || side == null || state !is IExtendedBlockState) return
-        quads.add(ModelTextures.getHullQuads(this.machineHullTier)?.get(side) ?: return)
         if (side != this.frontFacing) quads.add(panCasingQuads[side.index])
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/pan_duplicator"))
     }
 
     private inner class PanDuplicatorRecipeLogic : AbstractWorkable(this@PanDuplicatorMetaTileEntity) {
@@ -237,5 +243,3 @@ class PanDuplicatorMetaTileEntity(
 private const val COLOR_ENABLED_ARGB: Int = 0xFF4CBB17.toInt()
 private const val COLOR_DISABLED_ARGB: Int = 0xFFBB1C28.toInt()
 private const val BORDER_COLOR: Int = 0xFF555555.toInt()
-private const val HALF_HOUR_TICKS: Int = 30 * 60 * 20
-private const val ONE_MIN_TICKS: Double = 60 * 20.0

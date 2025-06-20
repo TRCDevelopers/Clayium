@@ -28,7 +28,7 @@ import kotlin.math.round
 //todo cleanup
 abstract class AbstractWorkable(
     metaTileEntity: MetaTileEntity,
-) : MTETrait(metaTileEntity, ClayiumDataCodecs.RECIPE_LOGIC), IControllable {
+) : MTETrait(metaTileEntity, ClayiumDataCodecs.RECIPE_LOGIC), IWorkingControllable {
     var requiredProgress = 0L
         protected set
     var currentProgress = 0L

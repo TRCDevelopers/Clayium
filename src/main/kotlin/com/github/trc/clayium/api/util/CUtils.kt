@@ -28,7 +28,6 @@ import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
-import java.util.*
 import kotlin.collections.AbstractList
 import kotlin.collections.List
 import kotlin.collections.forEachIndexed

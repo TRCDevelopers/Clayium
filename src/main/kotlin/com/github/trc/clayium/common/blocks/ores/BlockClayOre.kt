@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.event.ForgeEventFactory
-import java.util.Random
+import java.util.*
 
 class BlockClayOre : Block(Material.ROCK), IClayOreBlock {
     init {

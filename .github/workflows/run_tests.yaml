@@ -5,6 +5,8 @@ on:
     branches:
       - main
       - develop
+    paths:
+      - 'src/**'
   pull_request:
 
 concurrency:
@@ -20,8 +22,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # if there is no changes in src/, skip the tests.
+      - name: Check for changes in src
+        uses: dorny/paths-filter@v3
+        id: filter # このステップの出力を後で参照できるようにidを設定
+        with:
+          filters: |
+            src_changed:
+              - 'src/**'
+
       - name: Setup Build
+        if: steps.filter.outputs.src_changed == 'true'
         uses: ./.github/actions/build_setup
 
       - name: Run Tests with Gradle
+        if: steps.filter.outputs.src_changed == 'true'
         run: ./gradlew test --warning-mode all --build-cache
+
+      - name: Skip tests (no changes in src/)
+        if: steps.filter.outputs.src_changed == 'false'
+        run: |
+          echo "No changes detected in src/. Tests are not required for this PR."

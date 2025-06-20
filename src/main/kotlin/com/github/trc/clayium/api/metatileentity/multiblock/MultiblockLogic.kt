@@ -14,7 +14,7 @@ import com.github.trc.clayium.api.util.RelativeDirection
 import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.common.blocks.BlockMachineHull
-import net.minecraft.client.resources.I18n
+import com.github.trc.clayium.common.util.SidelessI18n
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
@@ -131,7 +131,7 @@ class MultiblockLogic(
 
     fun tierTextWidget(syncManager: PanelSyncManager): TextWidget {
         syncManager.syncValue("multiblock_tier", SyncHandlers.intNumber({ recipeLogicTier }, { recipeLogicTier = it }))
-        return IKey.dynamic { I18n.format("tooltip.clayium.tier", recipeLogicTier) }.asWidgetResizing()
+        return IKey.dynamic { SidelessI18n.format("tooltip.clayium.tier", recipeLogicTier) }.asWidgetResizing()
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {

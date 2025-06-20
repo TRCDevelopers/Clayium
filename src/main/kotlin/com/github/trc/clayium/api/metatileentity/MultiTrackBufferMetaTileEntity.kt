@@ -4,8 +4,6 @@ package com.github.trc.clayium.api.metatileentity
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
@@ -20,9 +18,17 @@ import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
-import com.github.trc.clayium.api.util.MachineIoMode.*
+import com.github.trc.clayium.api.util.MachineIoMode.M_1
+import com.github.trc.clayium.api.util.MachineIoMode.M_2
+import com.github.trc.clayium.api.util.MachineIoMode.M_3
+import com.github.trc.clayium.api.util.MachineIoMode.M_4
+import com.github.trc.clayium.api.util.MachineIoMode.M_5
+import com.github.trc.clayium.api.util.MachineIoMode.M_6
+import com.github.trc.clayium.api.util.MachineIoMode.M_ALL
+import com.github.trc.clayium.api.util.MachineIoMode.NONE
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.util.CNbtUtils
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
@@ -44,7 +50,6 @@ class MultiTrackBufferMetaTileEntity(
     validInputModes = mBufferValidIoModes[getTrackRows(tier.numeric)-2], validOutputModes = mBufferValidIoModes[getTrackRows(tier.numeric)-2],
     "multi_track_buffer") {
 
-    override val hasFrontFacing: Boolean = true
     override val pipeConnectionLogic: IPipeConnectionLogic = IPipeConnectionLogic.ItemPipe
 
     val trackRow = getTrackRows(tier.numeric)
@@ -68,8 +73,7 @@ class MultiTrackBufferMetaTileEntity(
             val filterStack = filtersHandler.getStackInSlot(slot)
             val filter = filterStack.getCapability(ClayiumCapabilities.ITEM_FILTER, null)
             if (filterStack.isEmpty) true
-            else if (filter != null) filter.test(stack)
-            else filterStack.isItemEqual(stack)
+            else filter?.test(stack) ?: filterStack.isItemEqual(stack)
         }
     }
     override val itemInventory = CombinedInvWrapper(*tracks)
@@ -127,13 +131,13 @@ class MultiTrackBufferMetaTileEntity(
                                     .child(SlotGroupWidget.builder()
                                         .matrix(slotsRowString)
                                         .key('I') { slotIndex ->
-                                            ItemSlot().slot(SyncHandlers.itemSlot(handler, slotIndex)
+                                            MuiSlots.itemSlotBuilder(handler, slotIndex)
                                                 .slotGroup("mt_buffer_inv_${i}")
-                                                .filter(slotFilters[i]))
+                                                .filter(slotFilters[i]).build()
                                                 .background(ClayGuiTextures.M_TRACK_SLOTS[i])
                                         }
                                         .build())
-                                    .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filtersHandler, i))
+                                    .child(MuiSlots.phantomSlot(filtersHandler, i)
                                         .background(ClayGuiTextures.M_TRACK_FILTER_SLOTS[i])
                                         .align(Alignment.CenterRight)))
                             }
@@ -159,7 +163,7 @@ class MultiTrackBufferMetaTileEntity(
             for (side in EnumFacing.entries) {
                 if (!(remaining > 0 && isImporting(side))) continue
 
-                val neighbor = getNeighbor(side) ?: continue
+                val neighbor = getNeighborTileEntity(side) ?: continue
                 if (neighbor is MetaTileEntityHolder && neighbor.metaTileEntity is MultiTrackBufferMetaTileEntity) {
                     val neighborBuffer = neighbor.metaTileEntity as MultiTrackBufferMetaTileEntity
                     remaining = transferMultiTrack(neighborBuffer, this@MultiTrackBufferMetaTileEntity, remaining)
@@ -178,7 +182,7 @@ class MultiTrackBufferMetaTileEntity(
             for (side in EnumFacing.entries) {
                 if (!(remaining > 0 && isExporting(side))) continue
 
-                val neighbor = getNeighbor(side) ?: continue
+                val neighbor = getNeighborTileEntity(side) ?: continue
                 if (neighbor is MetaTileEntityHolder && neighbor.metaTileEntity is MultiTrackBufferMetaTileEntity) {
                     val neighborBuffer = neighbor.metaTileEntity as MultiTrackBufferMetaTileEntity
                     remaining = transferMultiTrack(this@MultiTrackBufferMetaTileEntity, neighborBuffer, remaining)
@@ -232,5 +236,9 @@ class MultiTrackBufferMetaTileEntity(
             in 9..13 -> 6
             else -> 2
         }
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder().noFrontFacing().build()
     }
 }
