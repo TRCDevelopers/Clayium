@@ -163,6 +163,18 @@ class ActivatorMetaTileEntity(
         return ActivatorMetaTileEntity(metaTileEntityId, tier)
     }
 
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/areaactivator"))
+    }
+
+    override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+        super.overlayQuads(quads, state, side, rand)
+        if (state == null || side == null || state !is IExtendedBlockState) return
+        if (side == this.frontFacing.opposite) {
+            quads.add(MINER_BACK[side.index])
+        }
+    }
+
     enum class BlockEntityMode {
         BLOCK, ENTITY, BLOCK_AND_ENTITY,
     }
