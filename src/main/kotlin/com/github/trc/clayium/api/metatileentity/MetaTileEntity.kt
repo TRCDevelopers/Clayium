@@ -33,6 +33,7 @@ import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
+import com.github.trc.clayium.api.item.filter.ItemFilterRegistry
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity.Companion.clearInventory
 import com.github.trc.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import com.github.trc.clayium.api.metatileentity.interfaces.IWorldObject
@@ -146,10 +147,10 @@ abstract class MetaTileEntity(
     val outputModes get() = _outputModes.toList()
     val connectionsCache get() = _connectionsCache.copyOf()
 
-    private val filterAndTypes = MutableList<FilterAndType?>(6) { null }
+    private val filterAndIds = MutableList<Pair<ResourceLocation, IItemFilter>?>(6) { null }
     val filters: List<IItemFilter?> = object : AbstractList<IItemFilter?>() {
-        override val size get() = filterAndTypes.size
-        override fun get(index: Int) = filterAndTypes[index]?.filter
+        override val size get() = filterAndIds.size
+        override fun get(index: Int) = filterAndIds[index]?.second
     }
 
     var frontFacing = EnumFacing.NORTH
@@ -233,10 +234,11 @@ abstract class MetaTileEntity(
         data.setByteArray("inputModes", ByteArray(6) { _inputModes[it].id.toByte() })
         data.setByteArray("outputModes", ByteArray(6) { _outputModes[it].id.toByte() })
         data.setByteArray("connections", ByteArray(6) { if (_connectionsCache[it]) 1 else 0 })
-        filterAndTypes.forEachIndexed { i, filterAndType ->
-            if (filterAndType == null) return@forEachIndexed
-            data.setInteger("filterType$i", filterAndType.type.id)
-            data.setTag("filter$i", filterAndType.filter.serializeNBT())
+        // TODO: Migration. `filterType$i`: Int -> `filterId$i`: ResourceLocation
+        filterAndIds.forEachIndexed { i, filterAndId ->
+            if (filterAndId == null) return@forEachIndexed
+            data.setString("filterId$i", filterAndId.first.toString())
+            data.setTag("filter$i", filterAndId.second.serializeNBT())
         }
         CUtils.writeItems(importItems, IMPORT_INVENTORY, data)
         CUtils.writeItems(exportItems, EXPORT_INVENTORY, data)
@@ -250,12 +252,17 @@ abstract class MetaTileEntity(
         data.getByteArray("inputModes").forEachIndexed { i, id -> _inputModes[i] = MachineIoMode.byId(id.toInt()) }
         data.getByteArray("outputModes").forEachIndexed { i, id -> _outputModes[i] = MachineIoMode.byId(id.toInt()) }
         data.getByteArray("connections").forEachIndexed { i, b -> _connectionsCache[i] = (b == 1.toByte()) }
-        filterAndTypes.forEachIndexed { i, filter ->
-            if (data.hasKey("filterType$i") && data.hasKey("filter$i")) {
-                val type = FilterType.byId(data.getInteger("filterType$i"))
-                val filter = type.factory()
+        filterAndIds.forEachIndexed { i, filter ->
+            if (data.hasKey("filterId$i") && data.hasKey("filter$i")) {
+                val rl = ResourceLocation(data.getString("filterId$i"))
+                val filterFactory = ItemFilterRegistry.get(rl)
+                val filter = filterFactory?.get()
+                if (filter == null) {
+                    CLog.error("Item Filter {} not found for MTE {} at {}", rl, metaTileEntityId, pos)
+                    return@forEachIndexed
+                }
                 filter.deserializeNBT(data.getCompoundTag("filter$i"))
-                filterAndTypes[i] = FilterAndType(filter, type)
+                filterAndIds[i] = Pair(rl, filter)
             }
         }
         CUtils.readItems(importItems, "importInventory", data)
@@ -271,7 +278,7 @@ abstract class MetaTileEntity(
             buf.writeByte(_inputModes[i].id)
             buf.writeByte(_outputModes[i].id)
             buf.writeBoolean(_connectionsCache[i])
-            buf.writeVarInt(filterAndTypes[i]?.type?.id ?: -1)
+            buf.writeString(filterAndIds[i]?.first?.toString() ?: "")
         }
         buf.writeVarInt(traitByNetworkId.size)
         for ((id, trait) in traitByNetworkId) {
@@ -286,10 +293,14 @@ abstract class MetaTileEntity(
             _inputModes[i] = MachineIoMode.byId(buf.readByte().toInt())
             _outputModes[i] = MachineIoMode.byId(buf.readByte().toInt())
             _connectionsCache[i] = buf.readBoolean()
-            val typeId = buf.readVarInt()
-            if (typeId != -1) {
-                val filterType = FilterType.byId(typeId)
-                this.setFilter(EnumFacing.byIndex(i), filterType.factory(), filterType)
+            if (buf.readBoolean()) {
+                val filterId = buf.readResourceLocation()
+                val filterFactory = ItemFilterRegistry.get(filterId)
+                if (filterFactory == null) {
+                    CLog.error("Item Filter {} not found for MTE {} at {} on Initial Sync.", filterId, metaTileEntityId, pos)
+                    continue
+                }
+                this.setFilter(EnumFacing.byIndex(i), filterFactory.get(), filterId)
             }
         }
         val numberOfTraits = buf.readVarInt()
@@ -321,13 +332,16 @@ abstract class MetaTileEntity(
             }
             UPDATE_FILTER -> {
                 val side = buf.readVarInt()
-                val typeId = buf.readVarInt()
-                if (typeId == -1) {
-                    filterAndTypes[side] = null
+                if (buf.readBoolean()) {
+                    val filterId = buf.readResourceLocation()
+                    val filterFactory = ItemFilterRegistry.get(filterId)
+                    if (filterFactory == null) {
+                        CLog.error("Item Filter {} not found for MTE {} at {} on Client.", filterId, metaTileEntityId, pos)
+                        return
+                    }
+                    filterAndIds[side] = Pair(filterId, filterFactory.get())
                 } else {
-                    val type = FilterType.byId(typeId)
-                    // on the client side, the filter is only used to rendering, so we don't have to deserialize it.
-                    filterAndTypes[side] = FilterAndType(type.factory(), type)
+                    filterAndIds[side] = null
                 }
                 this.scheduleRenderUpdate()
             }
@@ -577,19 +591,20 @@ abstract class MetaTileEntity(
     }
 
     // TODO: Filter周りはTraitに分離できそう
-    fun setFilter(side: EnumFacing, filter: IItemFilter, type: FilterType) {
-        filterAndTypes[side.index] = FilterAndType(filter, type)
+    fun setFilter(side: EnumFacing, filter: IItemFilter, id: ResourceLocation) {
+        filterAndIds[side.index] = Pair(id, filter)
         writeCustomData(UPDATE_FILTER) {
             writeVarInt(side.index)
-            writeVarInt(type.id)
+            writeBoolean(true)
+            writeResourceLocation(id)
         }
     }
 
     fun removeFilter(side: EnumFacing) {
-        filterAndTypes[side.index] = null
+        filterAndIds[side.index] = null
         writeCustomData(UPDATE_FILTER) {
             writeVarInt(side.index)
-            writeVarInt(-1)
+            writeBoolean(false)
         }
     }
 
