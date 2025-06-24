@@ -7,8 +7,12 @@ import com.github.trc.clayium.api.block.ItemBlockDamaged
 import com.github.trc.clayium.api.block.ItemBlockTiered
 import com.github.trc.clayium.api.block.VariantItemBlock
 import com.github.trc.clayium.api.capability.SimpleCapabilityManager
+import com.github.trc.clayium.api.capability.impl.OreDictionaryItemFilter
+import com.github.trc.clayium.api.capability.impl.SimpleItemFilter
+import com.github.trc.clayium.api.events.ClayiumFilterRegistrationEvent
 import com.github.trc.clayium.api.events.ClayiumMteRegistryEvent
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
+import com.github.trc.clayium.api.item.filter.ItemFilterRegistry
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
@@ -71,6 +75,7 @@ open class CommonProxy {
         NetworkRegistry.INSTANCE.registerGuiHandler(ClayiumMod, GuiHandler)
 
         MinecraftForge.EVENT_BUS.post(ClayiumMteRegistryEvent(ClayiumApi.mteManager))
+        MinecraftForge.EVENT_BUS.post(ClayiumFilterRegistrationEvent(ItemFilterRegistry))
         MetaTileEntities.init()
         CMaterials.init()
         OrePrefix.init()
@@ -225,5 +230,12 @@ open class CommonProxy {
         GameRegistry.registerTileEntity(TileClayMarker.AllHeight::class.java, clayiumId("clayMarkerAllHeight"))
 
         GameRegistry.registerTileEntity(ChunkLoaderTileEntity::class.java, clayiumId("chunkLoader"))
+    }
+
+    @SubscribeEvent
+    fun registerFilters(e: ClayiumFilterRegistrationEvent) {
+        CLog.info("Registering item filters...")
+        e.registry.register(SimpleItemFilter.ID, ::SimpleItemFilter)
+        e.registry.register(OreDictionaryItemFilter.ID, ::OreDictionaryItemFilter)
     }
 }

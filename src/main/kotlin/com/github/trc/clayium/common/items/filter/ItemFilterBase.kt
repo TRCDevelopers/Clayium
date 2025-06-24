@@ -16,12 +16,13 @@ import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
+import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 
-abstract class ItemFilterBase : Item(), IGuiHolderClayium<HandGuiData> {
+abstract class ItemFilterBase(val filterId: ResourceLocation) : Item(), IGuiHolderClayium<HandGuiData> {
 
     abstract fun createItemFilter(stack: ItemStack): IItemFilter
 
@@ -35,7 +36,7 @@ abstract class ItemFilterBase : Item(), IGuiHolderClayium<HandGuiData> {
     override fun onItemUseFirst(player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, hand: EnumHand): EnumActionResult {
         val metaTileEntity = world.getMetaTileEntity(pos) ?: return EnumActionResult.PASS
         if (world.isRemote) return EnumActionResult.SUCCESS
-        metaTileEntity.setFilter(side, this.createItemFilter(player.getHeldItem(hand)), FilterType.SIMPLE)
+        metaTileEntity.setFilter(side, this.createItemFilter(player.getHeldItem(hand)), filterId)
         return EnumActionResult.SUCCESS
     }
 

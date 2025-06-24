@@ -17,7 +17,7 @@ import net.minecraft.nbt.NBTTagCompound
 
 private const val ORE_NAME_NBT_KEY = "oreName"
 
-class ItemOreDictionaryItemFilter : ItemFilterBase() {
+class ItemOreDictionaryItemFilter : ItemFilterBase(OreDictionaryItemFilter.ID) {
     override fun buildUI(data: HandGuiData, syncManager: PanelSyncManager): ModularPanel {
         val stack = data.usedItemStack
         val oreNameSyncValue = SyncHandlers.string(

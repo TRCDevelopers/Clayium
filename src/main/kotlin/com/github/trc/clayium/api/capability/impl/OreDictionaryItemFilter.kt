@@ -2,6 +2,7 @@ package com.github.trc.clayium.api.capability.impl
 
 import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 
@@ -25,4 +26,7 @@ class OreDictionaryItemFilter(
         this.oreName = nbt.getString("oreName") ?: ""
     }
 
+    companion object {
+        val ID = clayiumId("ore_dictionary")
+    }
 }
