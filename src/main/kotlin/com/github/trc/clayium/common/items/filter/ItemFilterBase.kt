@@ -1,0 +1,57 @@
+package com.github.trc.clayium.common.items.filter
+
+import com.cleanroommc.modularui.factory.HandGuiData
+import com.cleanroommc.modularui.factory.ItemGuiFactory
+import com.github.trc.clayium.api.capability.ClayiumCapabilities
+import com.github.trc.clayium.api.capability.IItemFilter
+import com.github.trc.clayium.api.capability.ItemCapabilityProvider
+import com.github.trc.clayium.api.util.getMetaTileEntity
+import com.github.trc.clayium.integration.modularui.IGuiHolderClayium
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.EntityPlayerMP
+import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.ActionResult
+import net.minecraft.util.EnumActionResult
+import net.minecraft.util.EnumFacing
+import net.minecraft.util.EnumHand
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
+import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.common.capabilities.ICapabilityProvider
+
+abstract class ItemFilterBase : Item(), IGuiHolderClayium<HandGuiData> {
+
+    abstract fun createItemFilter(stack: ItemStack): IItemFilter
+
+    override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
+        if (!worldIn.isRemote) {
+            ItemGuiFactory.INSTANCE.open(playerIn as EntityPlayerMP, handIn)
+        }
+        return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
+    }
+
+    override fun onItemUseFirst(player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, hand: EnumHand): EnumActionResult {
+        val metaTileEntity = world.getMetaTileEntity(pos) ?: return EnumActionResult.PASS
+        if (world.isRemote) return EnumActionResult.SUCCESS
+        metaTileEntity.setFilter(side, this.createItemFilter(player.getHeldItem(hand)), FilterType.SIMPLE)
+        return EnumActionResult.SUCCESS
+    }
+
+    /**
+     * Creates an item filter instance from the given stack.
+     * @param stack [ItemStack] of this [Item]
+     */
+    override fun initCapabilities(stack: ItemStack, nbt: NBTTagCompound?): ICapabilityProvider? {
+        return object : ItemCapabilityProvider {
+            override fun <T> getCapability(capability: Capability<T>): T? {
+                return if (capability === ClayiumCapabilities.ITEM_FILTER) {
+                    capability.cast(createItemFilter(stack))
+                } else {
+                    null
+                }
+            }
+        }
+    }
+}

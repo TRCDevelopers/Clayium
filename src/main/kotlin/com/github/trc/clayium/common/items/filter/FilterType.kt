@@ -1,13 +1,16 @@
 package com.github.trc.clayium.common.items.filter
 
 import com.github.trc.clayium.api.capability.IItemFilter
+import com.github.trc.clayium.api.capability.impl.OreDictionaryItemFilter
 import com.github.trc.clayium.api.capability.impl.SimpleItemFilter
 
+// TODO: Unique Registry for this?
 enum class FilterType(
     val id: Int,
     val factory: () -> IItemFilter,
 ) {
     SIMPLE(0, { SimpleItemFilter() }),
+    ORE_DICT(1, { OreDictionaryItemFilter() }),
     ;
 
     companion object {

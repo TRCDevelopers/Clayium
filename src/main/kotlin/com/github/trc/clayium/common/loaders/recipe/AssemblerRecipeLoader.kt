@@ -41,7 +41,7 @@ object AssemblerRecipeLoader {
         registry.builder()
             .input(MetaItemClayParts.AdvancedCircuit)
             .input(OrePrefix.plate, CMaterials.industrialClay)
-            .output(ClayiumItems.simpleItemFilter)
+            .output(ClayiumItems.SIMPLE_ITEM_FILTER)
             .tier(4).CEt(ClayEnergy.micro(80)).duration(20)
             .buildAndRegister()
 

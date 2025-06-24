@@ -4,6 +4,7 @@ import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.IConfigurationTool
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
+import com.github.trc.clayium.common.items.filter.ItemOreDictionaryItemFilter
 import com.github.trc.clayium.common.items.filter.ItemSimpleItemFilter
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import net.minecraft.item.Item
@@ -28,7 +29,8 @@ object ClayiumItems {
 
     val CLAY_STEEL_PICKAXE = createItem("clay_steel_pickaxe", ItemClaySteelPickaxe())
 
-    val simpleItemFilter = createItem("simple_item_filter", ItemSimpleItemFilter())
+    val SIMPLE_ITEM_FILTER = createItem("simple_item_filter", ItemSimpleItemFilter())
+    val OREDICT_ITEM_FILTER = createItem("ore_dict_item_filter", ItemOreDictionaryItemFilter())
 
     fun registerOreDicts() {
         for (metaItem in MetaItemClayium.META_ITEMS) {

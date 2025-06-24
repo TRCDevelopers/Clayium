@@ -153,7 +153,8 @@ open class CommonProxy {
 
         registerItem(registry, ClayiumItems.MEMORY_CARD)
         registerItem(registry, ClayiumItems.SYNCHRONIZER)
-        registerItem(registry, ClayiumItems.simpleItemFilter)
+        registerItem(registry, ClayiumItems.SIMPLE_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.OREDICT_ITEM_FILTER)
 
         registry.register(createItemBlock(ClayiumBlocks.CREATIVE_ENERGY_SOURCE, ::ItemBlock))
 

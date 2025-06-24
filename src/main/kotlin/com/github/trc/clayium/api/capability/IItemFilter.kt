@@ -9,4 +9,18 @@ import net.minecraftforge.common.util.INBTSerializable
  */
 interface IItemFilter : INBTSerializable<NBTTagCompound> {
     fun test(stack: ItemStack): Boolean
+
+    // For nullability. There is no nullability annotation in the original `INBTSerializable` interface.
+    override fun serializeNBT(): NBTTagCompound
+    override fun deserializeNBT(nbt: NBTTagCompound)
+
+    companion object {
+        val ALWAYS_FALSE: IItemFilter = object : IItemFilter {
+            override fun test(stack: ItemStack): Boolean = false
+
+            override fun serializeNBT(): NBTTagCompound = NBTTagCompound()
+
+            override fun deserializeNBT(nbt: NBTTagCompound) {}
+        }
+    }
 }
