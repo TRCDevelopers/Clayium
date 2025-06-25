@@ -57,7 +57,6 @@ import com.github.trc.clayium.api.util.MachineIoMode.SECOND
 import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
-import com.github.trc.clayium.common.items.filter.FilterType
 import com.github.trc.clayium.common.util.SidelessI18n
 import com.github.trc.clayium.common.util.UtilLocale
 import com.github.trc.clayium.integration.modularui.IGuiHolderClayium
@@ -780,8 +779,6 @@ abstract class MetaTileEntity(
     @Deprecated("Use asStackForm instead.", ReplaceWith("asStackForm(amount)"))
     @ApiStatus.ScheduledForRemoval(inVersion = "1.0.0.0")
     fun getStackForm(amount: Int = 1) = asStackForm(amount)
-
-    private data class FilterAndType(val filter: IItemFilter, val type: FilterType)
 
     companion object {
 
