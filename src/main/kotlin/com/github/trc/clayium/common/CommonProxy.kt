@@ -29,6 +29,7 @@ import com.github.trc.clayium.common.blocks.marker.TileClayMarker
 import com.github.trc.clayium.common.capability.impl.ItemFilterBlockMetadata
 import com.github.trc.clayium.common.capability.impl.ItemFilterDamageValue
 import com.github.trc.clayium.common.capability.impl.ItemFilterDisplayName
+import com.github.trc.clayium.common.capability.impl.ItemFilterFuzzy
 import com.github.trc.clayium.common.capability.impl.ItemFilterModID
 import com.github.trc.clayium.common.capability.impl.ItemFilterRegistryName
 import com.github.trc.clayium.common.capability.impl.ItemFilterUnlocalizedName
@@ -165,6 +166,7 @@ open class CommonProxy {
         registerItem(registry, ClayiumItems.MEMORY_CARD)
         registerItem(registry, ClayiumItems.SYNCHRONIZER)
         registerItem(registry, ClayiumItems.SIMPLE_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.FUZZY_ITEM_FILTER)
         registerItem(registry, ClayiumItems.ORE_DICT_ITEM_FILTER)
         registerItem(registry, ClayiumItems.REGISTRY_NAME_ITEM_FILTER)
         registerItem(registry, ClayiumItems.DISPLAY_NAME_ITEM_FILTER)
@@ -248,6 +250,7 @@ open class CommonProxy {
     fun registerFilters(e: ClayiumFilterRegistrationEvent) {
         CLog.info("Registering item filters...")
         e.registry.register(ClayiumItems.SIMPLE_ITEM_FILTER.filterId, ::SimpleItemFilter)
+        e.registry.register(ClayiumItems.FUZZY_ITEM_FILTER.filterId, ::ItemFilterFuzzy)
         e.registry.register(ClayiumItems.ORE_DICT_ITEM_FILTER.filterId, ::OreDictionaryItemFilter)
         e.registry.register(ClayiumItems.REGISTRY_NAME_ITEM_FILTER.filterId, ::ItemFilterRegistryName)
         e.registry.register(ClayiumItems.DISPLAY_NAME_ITEM_FILTER.filterId, ::ItemFilterDisplayName)

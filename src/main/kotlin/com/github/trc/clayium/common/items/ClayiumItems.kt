@@ -11,6 +11,7 @@ import com.github.trc.clayium.common.capability.impl.ItemFilterModID
 import com.github.trc.clayium.common.capability.impl.ItemFilterRegistryName
 import com.github.trc.clayium.common.capability.impl.ItemFilterUnlocalizedName
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
+import com.github.trc.clayium.common.items.filter.ItemFuzzyItemFilter
 import com.github.trc.clayium.common.items.filter.ItemSimpleItemFilter
 import com.github.trc.clayium.common.items.filter.ItemStringItemFilter
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
@@ -37,6 +38,7 @@ object ClayiumItems {
     val CLAY_STEEL_PICKAXE = createItem("clay_steel_pickaxe", ItemClaySteelPickaxe())
 
     val SIMPLE_ITEM_FILTER = createItem("simple_item_filter", ItemSimpleItemFilter())
+    val FUZZY_ITEM_FILTER = createItem("item_filter_fuzzy", ItemFuzzyItemFilter())
     val ORE_DICT_ITEM_FILTER = createItem("item_filter_ore_dict", ItemStringItemFilter(
         clayiumId("ore_dictionary"), ::OreDictionaryItemFilter, "Example: ore.*"
     ))
