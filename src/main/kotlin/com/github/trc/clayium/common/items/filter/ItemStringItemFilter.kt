@@ -44,7 +44,7 @@ class ItemStringItemFilter(
                     .child(IKey.lang("container.inventory").asWidget()
                         .align(Alignment.BottomLeft))
                     .child(TextFieldWidget().widthRel(0.8f)
-                        .hintText("Example: ore.*")
+                        .hintText(hintText)
                         .value(oreNameSyncValue)
                         .align(Alignment.Center))
                 )
