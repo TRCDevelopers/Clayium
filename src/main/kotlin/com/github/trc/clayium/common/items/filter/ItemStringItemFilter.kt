@@ -10,22 +10,33 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget
 import com.github.trc.clayium.api.capability.IItemFilter
-import com.github.trc.clayium.api.capability.impl.OreDictionaryItemFilter
 import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.ResourceLocation
 
-private const val ORE_NAME_NBT_KEY = "oreName"
+class ItemStringItemFilter(
+    filterTypeId: ResourceLocation,
+    private val filterFactory: (String) -> IItemFilter,
+    private val hintText: String? = null,
+) : ItemFilterBase(filterTypeId) {
+    override fun createItemFilter(stack: ItemStack): IItemFilter {
+        val filterString = stack.tagCompound?.getString("filterString") ?: ""
+        return if (filterString.isEmpty()) {
+            IItemFilter.ALWAYS_FALSE
+        } else {
+            filterFactory(filterString)
+        }
+    }
 
-class ItemOreDictionaryItemFilter : ItemFilterBase(OreDictionaryItemFilter.ID) {
     override fun buildUI(data: HandGuiData, syncManager: PanelSyncManager): ModularPanel {
         val stack = data.usedItemStack
         val oreNameSyncValue = SyncHandlers.string(
-            { stack.tagCompound?.getString(ORE_NAME_NBT_KEY) ?: "" },
-            { stack.tagCompound = (stack.tagCompound ?: NBTTagCompound()).apply { setString(ORE_NAME_NBT_KEY, it) } }
+            { stack.tagCompound?.getString("filterString") ?: "" },
+            { stack.tagCompound = (stack.tagCompound ?: NBTTagCompound()).apply { setString("filterString", it) } }
         )
 
-        return ModularPanel.defaultPanel("simple_item_filter")
+        return ModularPanel.defaultPanel("string_type_filter")
             .child(Column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.str(stack.displayName).asWidget()
@@ -36,14 +47,8 @@ class ItemOreDictionaryItemFilter : ItemFilterBase(OreDictionaryItemFilter.ID) {
                         .hintText("Example: ore.*")
                         .value(oreNameSyncValue)
                         .align(Alignment.Center))
-                    )
+                )
                 .child(MuiSlots.playerInventory(0)))
     }
 
-    override fun createItemFilter(stack: ItemStack): IItemFilter {
-        val oreName = stack.tagCompound?.getString(ORE_NAME_NBT_KEY) ?: ""
-        if (oreName.isEmpty()) return IItemFilter.ALWAYS_FALSE
-
-        return OreDictionaryItemFilter(oreName)
-    }
 }

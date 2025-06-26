@@ -880,13 +880,11 @@ item.clayium.clay_pickaxe.tooltip=Can harvest Clay Ores so fast and increase dro
 
 item.clayium.itemFilterDuplicator.copy.name=Item Filter Duplicator
 item.clayium.simple_item_filter.name=Item Filter
-item.clayium.itemFilterWhitelist.copy.name=White List Item Filter (Copy)
-item.clayium.itemFilterBlacklist.name=Black List Item Filter
-item.clayium.itemFilterBlacklist.copy.name=Black List Item Filter (Copy)
+item.clayium.simple_item_filter.copy.name=Item Filter (Copy)
 item.clayium.itemFilterFuzzy.name=Fuzzy Item Filter
 item.clayium.itemFilterFuzzy.copy.name=Fuzzy Item Filter (Copy)
-item.clayium.itemFilterOreDict.name=Ore Dictionary Item Filter
-item.clayium.itemFilterOreDict.copy.name=Ore Dictionary Item Filter (Copy)
+item.clayium.ore_dict_item_filter.name=Ore Dictionary Item Filter
+item.clayium.ore_dict_item_filter.copy.name=Ore Dictionary Item Filter (Copy)
 item.clayium.itemFilterItemName.name=Display Name Item Filter
 item.clayium.itemFilterItemName.copy.name=Display Name Item Filter (Copy)
 item.clayium.itemFilterUnlocalizedName.name=Unlocalized Name Item Filter

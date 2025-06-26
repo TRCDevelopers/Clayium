@@ -677,13 +677,11 @@ item.clayium.clay_pickaxe.tooltip=粘土鉱石を素早く採掘し、そのド�
 
 item.clayium.itemFilterDuplicator.copy.name=アイテムフィルター複製機
 item.clayium.simple_item_filter.name=アイテムフィルター
-item.clayium.itemFilterWhitelist.copy.name=ホワイトリストアイテムフィルター (コピー)
-item.clayium.itemFilterBlacklist.name=ブラックリストアイテムフィルター
-item.clayium.itemFilterBlacklist.copy.name=ブラックリストアイテムフィルター (コピー)
+item.clayium.simple_item_filter.copy.name=アイテムフィルター (コピー)
 item.clayium.itemFilterFuzzy.name=ファジーアイテムフィルター
 item.clayium.itemFilterFuzzy.copy.name=ファジーアイテムフィルター (コピー)
-item.clayium.itemFilterOreDict.name=鉱石辞書アイテムフィルター
-item.clayium.itemFilterOreDict.copy.name=鉱石辞書アイテムフィルター (コピー)
+item.clayium.ore_dict_item_filter.name=鉱石辞書アイテムフィルター
+item.clayium.ore_dict_item_filter.copy.name=鉱石辞書アイテムフィルター (コピー)
 item.clayium.itemFilterItemName.name=表示名アイテムフィルター
 item.clayium.itemFilterItemName.copy.name=表示名アイテムフィルター (コピー)
 item.clayium.itemFilterUnlocalizedName.name=内部名アイテムフィルター

@@ -26,6 +26,12 @@ import com.github.trc.clayium.common.blocks.chunkloader.ChunkLoaderTileEntity
 import com.github.trc.clayium.common.blocks.claycraftingtable.TileClayCraftingTable
 import com.github.trc.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trc.clayium.common.blocks.marker.TileClayMarker
+import com.github.trc.clayium.common.capability.impl.ItemFilterBlockMetadata
+import com.github.trc.clayium.common.capability.impl.ItemFilterDamageValue
+import com.github.trc.clayium.common.capability.impl.ItemFilterDisplayName
+import com.github.trc.clayium.common.capability.impl.ItemFilterModID
+import com.github.trc.clayium.common.capability.impl.ItemFilterRegistryName
+import com.github.trc.clayium.common.capability.impl.ItemFilterUnlocalizedName
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.ItemClaySteelPickaxe
@@ -159,7 +165,12 @@ open class CommonProxy {
         registerItem(registry, ClayiumItems.MEMORY_CARD)
         registerItem(registry, ClayiumItems.SYNCHRONIZER)
         registerItem(registry, ClayiumItems.SIMPLE_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.OREDICT_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.ORE_DICT_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.DISPLAY_NAME_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.UNLOCALIZED_NAME_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.MOD_ID_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.DAMAGE_VALUE_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.BLOCK_METADATA_ITEM_FILTER)
 
         registry.register(createItemBlock(ClayiumBlocks.CREATIVE_ENERGY_SOURCE, ::ItemBlock))
 
@@ -235,7 +246,13 @@ open class CommonProxy {
     @SubscribeEvent
     fun registerFilters(e: ClayiumFilterRegistrationEvent) {
         CLog.info("Registering item filters...")
-        e.registry.register(SimpleItemFilter.ID, ::SimpleItemFilter)
-        e.registry.register(OreDictionaryItemFilter.ID, ::OreDictionaryItemFilter)
+        e.registry.register(ClayiumItems.SIMPLE_ITEM_FILTER.filterId, ::SimpleItemFilter)
+        e.registry.register(ClayiumItems.ORE_DICT_ITEM_FILTER.filterId, ::OreDictionaryItemFilter)
+        e.registry.register(ClayiumItems.REGISTRY_NAME_ITEM_FILTER.filterId, ::ItemFilterRegistryName)
+        e.registry.register(ClayiumItems.DISPLAY_NAME_ITEM_FILTER.filterId, ::ItemFilterDisplayName)
+        e.registry.register(ClayiumItems.UNLOCALIZED_NAME_ITEM_FILTER.filterId, ::ItemFilterUnlocalizedName)
+        e.registry.register(ClayiumItems.MOD_ID_ITEM_FILTER.filterId, ::ItemFilterModID)
+        e.registry.register(ClayiumItems.DAMAGE_VALUE_ITEM_FILTER.filterId, ::ItemFilterDamageValue)
+        e.registry.register(ClayiumItems.BLOCK_METADATA_ITEM_FILTER.filterId, ::ItemFilterBlockMetadata)
     }
 }
