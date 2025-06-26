@@ -34,6 +34,7 @@ class ItemFuzzyItemFilter : ItemFilterBase(clayiumId("fuzzy")) {
             (0..<FILTER_SIZE_Y).map { column }.toTypedArray()
         }
 
+        MuiSlots.lockHeldItem(syncManager, data.player)
         return ModularPanel.defaultPanel("item_filter_fuzzy")
             .child(Column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)

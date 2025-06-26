@@ -36,6 +36,7 @@ class ItemStringItemFilter(
             { stack.tagCompound = (stack.tagCompound ?: NBTTagCompound()).apply { setString("filterString", it) } }
         )
 
+        MuiSlots.lockHeldItem(syncManager, data.player)
         return ModularPanel.defaultPanel("string_type_filter")
             .child(Column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)

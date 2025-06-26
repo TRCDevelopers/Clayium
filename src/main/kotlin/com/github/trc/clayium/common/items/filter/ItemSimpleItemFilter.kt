@@ -52,6 +52,7 @@ class ItemSimpleItemFilter : ItemFilterBase(SimpleItemFilter.ID) {
             }
         )
 
+        MuiSlots.lockHeldItem(syncManager, data.player)
         return ModularPanel.defaultPanel("simple_item_filter")
             .child(Column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
@@ -78,7 +79,7 @@ class ItemSimpleItemFilter : ItemFilterBase(SimpleItemFilter.ID) {
                         .key('I') { i -> MuiSlots.phantomSlotBuilder(itemHandler, i).slotGroup("filter").build() }
                         .build()
                         .align(Alignment.Center)))
-                .child(MuiSlots.playerInventory(0)))
+                .child(SlotGroupWidget.playerInventory(0, false)))
     }
 
     override fun createItemFilter(stack: ItemStack): IItemFilter {
