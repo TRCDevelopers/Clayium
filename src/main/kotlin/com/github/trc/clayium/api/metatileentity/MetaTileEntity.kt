@@ -277,7 +277,14 @@ abstract class MetaTileEntity(
             buf.writeByte(_inputModes[i].id)
             buf.writeByte(_outputModes[i].id)
             buf.writeBoolean(_connectionsCache[i])
-            buf.writeString(filterAndIds[i]?.first?.toString() ?: "")
+
+            val filterAndId = filterAndIds[i]
+            if (filterAndId == null) {
+                buf.writeBoolean(false)
+            } else {
+                buf.writeBoolean(true)
+                buf.writeResourceLocation(filterAndId.first)
+            }
         }
         buf.writeVarInt(traitByNetworkId.size)
         for ((id, trait) in traitByNetworkId) {
