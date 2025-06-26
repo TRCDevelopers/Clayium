@@ -166,6 +166,7 @@ open class CommonProxy {
         registerItem(registry, ClayiumItems.SYNCHRONIZER)
         registerItem(registry, ClayiumItems.SIMPLE_ITEM_FILTER)
         registerItem(registry, ClayiumItems.ORE_DICT_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.REGISTRY_NAME_ITEM_FILTER)
         registerItem(registry, ClayiumItems.DISPLAY_NAME_ITEM_FILTER)
         registerItem(registry, ClayiumItems.UNLOCALIZED_NAME_ITEM_FILTER)
         registerItem(registry, ClayiumItems.MOD_ID_ITEM_FILTER)
