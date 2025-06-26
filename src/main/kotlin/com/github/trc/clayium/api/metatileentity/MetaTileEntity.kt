@@ -151,6 +151,8 @@ abstract class MetaTileEntity(
         override val size get() = filterAndIds.size
         override fun get(index: Int) = filterAndIds[index]?.second
     }
+    // For rendering. The client doesn't need an actual filter instance.
+    private val _clientFilterFlag = BooleanArray(6)
 
     var frontFacing = EnumFacing.NORTH
         set(value) {
@@ -277,14 +279,8 @@ abstract class MetaTileEntity(
             buf.writeByte(_inputModes[i].id)
             buf.writeByte(_outputModes[i].id)
             buf.writeBoolean(_connectionsCache[i])
-
-            val filterAndId = filterAndIds[i]
-            if (filterAndId == null) {
-                buf.writeBoolean(false)
-            } else {
-                buf.writeBoolean(true)
-                buf.writeResourceLocation(filterAndId.first)
-            }
+            val hasFilter = filterAndIds[i] != null
+            buf.writeBoolean(hasFilter)
         }
         buf.writeVarInt(traitByNetworkId.size)
         for ((id, trait) in traitByNetworkId) {
@@ -299,15 +295,7 @@ abstract class MetaTileEntity(
             _inputModes[i] = MachineIoMode.byId(buf.readByte().toInt())
             _outputModes[i] = MachineIoMode.byId(buf.readByte().toInt())
             _connectionsCache[i] = buf.readBoolean()
-            if (buf.readBoolean()) {
-                val filterId = buf.readResourceLocation()
-                val filterFactory = ItemFilterRegistry.get(filterId)
-                if (filterFactory == null) {
-                    CLog.error("Item Filter {} not found for MTE {} at {} on Initial Sync.", filterId, metaTileEntityId, pos)
-                    continue
-                }
-                this.setFilter(EnumFacing.byIndex(i), filterFactory.get(), filterId)
-            }
+            _clientFilterFlag[i] = buf.readBoolean()
         }
         val numberOfTraits = buf.readVarInt()
         @Suppress("unused")
@@ -338,17 +326,7 @@ abstract class MetaTileEntity(
             }
             UPDATE_FILTER -> {
                 val side = buf.readVarInt()
-                if (buf.readBoolean()) {
-                    val filterId = buf.readResourceLocation()
-                    val filterFactory = ItemFilterRegistry.get(filterId)
-                    if (filterFactory == null) {
-                        CLog.error("Item Filter {} not found for MTE {} at {} on Client.", filterId, metaTileEntityId, pos)
-                        return
-                    }
-                    filterAndIds[side] = Pair(filterId, filterFactory.get())
-                } else {
-                    filterAndIds[side] = null
-                }
+                _clientFilterFlag[side] = buf.readBoolean()
                 this.scheduleRenderUpdate()
             }
             UPDATE_CONNECTIONS -> {
@@ -602,7 +580,6 @@ abstract class MetaTileEntity(
         writeCustomData(UPDATE_FILTER) {
             writeVarInt(side.index)
             writeBoolean(true)
-            writeResourceLocation(id)
         }
     }
 
@@ -690,6 +667,11 @@ abstract class MetaTileEntity(
 
     open val renderingConfig by lazy {
         MteRenderingConfig.builder().noFrontFacing().build()
+    }
+
+    @SideOnly(Side.CLIENT)
+    fun hasFilterClient(side: EnumFacing): Boolean {
+        return _clientFilterFlag[side.index]
     }
 
     @SideOnly(Side.CLIENT)
