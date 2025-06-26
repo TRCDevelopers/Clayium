@@ -6,7 +6,9 @@ open class ItemFilterDamageValue(
     damage: String = "",
 ) : StringItemFilterBase(damage) {
 
-    override val regex = Regex("^$damage$")
+    override fun createRegex(filter: String): Regex {
+        return Regex("^$filter$")
+    }
 
     override fun test(stack: ItemStack): Boolean {
         val damage = stack.itemDamage.toString()

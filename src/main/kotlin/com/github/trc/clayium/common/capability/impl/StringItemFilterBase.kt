@@ -4,15 +4,20 @@ import com.github.trc.clayium.api.capability.IItemFilter
 import net.minecraft.nbt.NBTTagCompound
 
 abstract class StringItemFilterBase(
-    private var filter: String,
+    filter: String,
 ) : IItemFilter {
-    open val regex = filter.toRegex()
+    protected var regex = createRegex(filter)
+
+    protected open fun createRegex(filter: String): Regex {
+        return filter.toRegex()
+    }
 
     override fun serializeNBT(): NBTTagCompound {
-        return NBTTagCompound().apply { setString("filter", filter) }
+        return NBTTagCompound().apply { setString("filter", regex.pattern) }
     }
 
     override fun deserializeNBT(nbt: NBTTagCompound) {
-        this.filter = nbt.getString("filter") ?: ""
+        val filter = nbt.getString("filter") ?: ""
+        this.regex = createRegex(filter)
     }
 }
