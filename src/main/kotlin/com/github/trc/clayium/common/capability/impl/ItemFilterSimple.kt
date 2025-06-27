@@ -10,7 +10,7 @@ class ItemFilterSimple(
     private var whitelist: Boolean = true,
 ) : IItemFilter {
     override fun test(stack: ItemStack): Boolean {
-        return stacks.any { it.isItemEqual(stack) } == whitelist
+        return stacks.any { it.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(it, stack) } == whitelist
     }
 
     override fun serializeNBT(): NBTTagCompound {
