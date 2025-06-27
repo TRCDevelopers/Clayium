@@ -7,8 +7,6 @@ import com.github.trc.clayium.api.block.ItemBlockDamaged
 import com.github.trc.clayium.api.block.ItemBlockTiered
 import com.github.trc.clayium.api.block.VariantItemBlock
 import com.github.trc.clayium.api.capability.SimpleCapabilityManager
-import com.github.trc.clayium.api.capability.impl.OreDictionaryItemFilter
-import com.github.trc.clayium.api.capability.impl.SimpleItemFilter
 import com.github.trc.clayium.api.events.ClayiumFilterRegistrationEvent
 import com.github.trc.clayium.api.events.ClayiumMteRegistryEvent
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
@@ -31,7 +29,9 @@ import com.github.trc.clayium.common.capability.impl.ItemFilterDamageValue
 import com.github.trc.clayium.common.capability.impl.ItemFilterDisplayName
 import com.github.trc.clayium.common.capability.impl.ItemFilterFuzzy
 import com.github.trc.clayium.common.capability.impl.ItemFilterModID
+import com.github.trc.clayium.common.capability.impl.ItemFilterOreDictionary
 import com.github.trc.clayium.common.capability.impl.ItemFilterRegistryName
+import com.github.trc.clayium.common.capability.impl.ItemFilterSimple
 import com.github.trc.clayium.common.capability.impl.ItemFilterUnlocalizedName
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.items.ClayiumItems
@@ -249,9 +249,9 @@ open class CommonProxy {
     @SubscribeEvent
     fun registerFilters(e: ClayiumFilterRegistrationEvent) {
         CLog.info("Registering item filters...")
-        e.registry.register(ClayiumItems.SIMPLE_ITEM_FILTER.filterId, ::SimpleItemFilter)
+        e.registry.register(ClayiumItems.SIMPLE_ITEM_FILTER.filterId, ::ItemFilterSimple)
         e.registry.register(ClayiumItems.FUZZY_ITEM_FILTER.filterId, ::ItemFilterFuzzy)
-        e.registry.register(ClayiumItems.ORE_DICT_ITEM_FILTER.filterId, ::OreDictionaryItemFilter)
+        e.registry.register(ClayiumItems.ORE_DICT_ITEM_FILTER.filterId, ::ItemFilterOreDictionary)
         e.registry.register(ClayiumItems.REGISTRY_NAME_ITEM_FILTER.filterId, ::ItemFilterRegistryName)
         e.registry.register(ClayiumItems.DISPLAY_NAME_ITEM_FILTER.filterId, ::ItemFilterDisplayName)
         e.registry.register(ClayiumItems.UNLOCALIZED_NAME_ITEM_FILTER.filterId, ::ItemFilterUnlocalizedName)

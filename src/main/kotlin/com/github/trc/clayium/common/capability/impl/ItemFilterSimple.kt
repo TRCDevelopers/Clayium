@@ -1,12 +1,11 @@
-package com.github.trc.clayium.api.capability.impl
+package com.github.trc.clayium.common.capability.impl
 
 import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.api.util.CUtils
-import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 
-class SimpleItemFilter(
+class ItemFilterSimple(
     private var stacks: List<ItemStack> = listOf(),
     private var whitelist: Boolean = true,
 ) : IItemFilter {
@@ -28,9 +27,5 @@ class SimpleItemFilter(
 
     override fun toString(): String {
         return "SimpleItemFilter(stacks=$stacks, whitelist=$whitelist)"
-    }
-
-    companion object {
-        val ID = clayiumId("simple")
     }
 }

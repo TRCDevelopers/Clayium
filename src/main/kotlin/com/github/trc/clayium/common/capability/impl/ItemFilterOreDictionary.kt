@@ -1,10 +1,9 @@
-package com.github.trc.clayium.api.capability.impl
+package com.github.trc.clayium.common.capability.impl
 
 import com.github.trc.clayium.api.unification.OreDictUnifier
-import com.github.trc.clayium.common.capability.impl.StringItemFilterBase
 import net.minecraft.item.ItemStack
 
-class OreDictionaryItemFilter(
+class ItemFilterOreDictionary(
     oreName: String = "",
 ) : StringItemFilterBase(oreName) {
     override fun test(stack: ItemStack): Boolean {

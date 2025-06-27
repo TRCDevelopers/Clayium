@@ -15,7 +15,8 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.api.capability.ItemCapabilityProvider
-import com.github.trc.clayium.api.capability.impl.SimpleItemFilter
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.common.capability.impl.ItemFilterSimple
 import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -25,7 +26,7 @@ import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
-class ItemSimpleItemFilter : ItemFilterBase(SimpleItemFilter.ID) {
+class ItemSimpleItemFilter : ItemFilterBase(clayiumId("simple")) {
     override fun buildUI(data: HandGuiData, syncManager: PanelSyncManager): ModularPanel {
         val stack = data.usedItemStack
         val itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable
@@ -84,7 +85,7 @@ class ItemSimpleItemFilter : ItemFilterBase(SimpleItemFilter.ID) {
 
     override fun createItemFilter(stack: ItemStack): IItemFilter {
         val itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable
-        if (itemHandler == null) return SimpleItemFilter()
+        if (itemHandler == null) return ItemFilterSimple()
 
         val stacksMutableList = mutableListOf<ItemStack>()
         for (i in 0..<itemHandler.slots) {
@@ -95,7 +96,7 @@ class ItemSimpleItemFilter : ItemFilterBase(SimpleItemFilter.ID) {
         }
         val tag = stack.tagCompound?.takeIf { it.hasKey("isWhiteList", Constants.NBT.TAG_BYTE) }
         val isWhiteList = tag?.getBoolean("isWhiteList") ?: true
-        return SimpleItemFilter(stacksMutableList, isWhiteList)
+        return ItemFilterSimple(stacksMutableList, isWhiteList)
     }
 
     override fun initCapabilities(stack: ItemStack, nbt: NBTTagCompound?): ICapabilityProvider? {
