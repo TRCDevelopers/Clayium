@@ -7,6 +7,7 @@ import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.client.gui.GuiClayWorkTable
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
+import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.metatileentities.SolarClayFabricatorMetaTileEntity
 import com.github.trc.clayium.common.recipe.CWTRecipes
 import com.github.trc.clayium.common.recipe.ClayWorkTableRecipe
@@ -85,11 +86,17 @@ class JeiPlugin : IModPlugin {
                 }
             }
         }
+        this.registerIngredientInfo(modRegistry)
+    }
 
+    private fun registerIngredientInfo(modRegistry: IModRegistry) {
         modRegistry.addIngredientInfo(listOf(ItemStack(ClayiumBlocks.CLAY_TREE_SAPLING), ItemStack(ClayiumBlocks.CLAY_TREE_LOG), ItemStack(ClayiumBlocks.CLAY_TREE_LEAVES)),
             VanillaTypes.ITEM, "recipe.clayium.clay_tree.description")
         modRegistry.addIngredientInfo(ItemStack(ClayiumBlocks.QUARTZ_CRUCIBLE), VanillaTypes.ITEM, "recipe.clayium.quartz_crucible.description")
         modRegistry.addIngredientInfo(OreDictUnifier.get(OrePrefix.gem, CMaterials.pureAntimatter), VanillaTypes.ITEM, "recipe.clayium.pure_antimatter.description")
+
+        modRegistry.addIngredientInfo(ItemStack(ClayiumItems.DAMAGE_VALUE_ITEM_FILTER), VanillaTypes.ITEM, "item.clayium.item_filter_damage_value.jei_description")
+        modRegistry.addIngredientInfo(ItemStack(ClayiumItems.BLOCK_METADATA_ITEM_FILTER), VanillaTypes.ITEM, "item.clayium.item_filter_block_metadata.jei_description")
     }
 
     companion object {

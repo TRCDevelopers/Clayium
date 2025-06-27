@@ -6,7 +6,9 @@ import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.api.capability.ItemCapabilityProvider
 import com.github.trc.clayium.api.util.getMetaTileEntity
+import com.github.trc.clayium.common.util.UtilLocale
 import com.github.trc.clayium.integration.modularui.IGuiHolderClayium
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.Item
@@ -21,6 +23,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 abstract class ItemFilterBase(val filterId: ResourceLocation) : Item(), IGuiHolderClayium<HandGuiData> {
 
@@ -38,6 +42,11 @@ abstract class ItemFilterBase(val filterId: ResourceLocation) : Item(), IGuiHold
         if (world.isRemote) return EnumActionResult.SUCCESS
         metaTileEntity.setFilter(side, this.createItemFilter(player.getHeldItem(hand)), filterId)
         return EnumActionResult.SUCCESS
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        UtilLocale.formatTooltips(tooltip, "${this.translationKey}.tooltip")
     }
 
     /**
