@@ -48,6 +48,7 @@ import com.github.trc.clayium.common.pan.factories.FurnacePanRecipeFactory
 import com.github.trc.clayium.common.unification.ClayiumOreDictUnifierImpl
 import com.github.trc.clayium.common.util.DebugUtils
 import com.github.trc.clayium.common.worldgen.ClayOreGenerator
+import com.github.trc.clayium.datafix.ClayiumDataFix
 import com.github.trc.clayium.integration.CModIntegration
 import com.github.trc.clayium.integration.gregtech.GTOreDictUnifierAdapter
 import com.github.trc.clayium.network.ClayChunkLoaderCallback
@@ -106,6 +107,7 @@ open class CommonProxy {
 
     open fun init(event: FMLInitializationEvent) {
         CModIntegration.init(event)
+        ClayiumDataFix.init()
     }
 
     open fun postInit(event: FMLPostInitializationEvent) {
