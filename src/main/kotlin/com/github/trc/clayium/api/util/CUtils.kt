@@ -72,7 +72,9 @@ fun IItemHandler.toList(): List<ItemStack> {
 }
 
 fun IBlockState.toItemStack(count: Int = 1): ItemStack {
-    return ItemStack(block, count, block.getMetaFromState(this))
+    val item = block.getAsItem()
+    val meta = if (item.hasSubtypes) block.getMetaFromState(this) else 0
+    return ItemStack(item, count, meta)
 }
 
 fun Block.getAsItem(): Item {
