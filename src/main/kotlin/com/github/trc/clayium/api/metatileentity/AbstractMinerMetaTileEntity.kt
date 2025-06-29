@@ -34,7 +34,6 @@ import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getCapability
 import com.github.trc.clayium.api.util.hasCapability
-import com.github.trc.clayium.api.util.toItemStack
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer.RangeRenderMode
@@ -93,7 +92,8 @@ abstract class AbstractMinerMetaTileEntity(
     abstract fun getNextBlockPos(): BlockPos?
 
     /**
-     * return true if the block is mined, so the next block is searched.
+     * return true if you want to continue mining within the tick.
+     * if false, further blocks will not be mined in this tick.
      * also, if all [maxBlocksPerTick] blocks are mined, [progress] will be reset.
      */
     protected open fun mine(world: World, pos: BlockPos, state: IBlockState): Boolean {
@@ -119,7 +119,7 @@ abstract class AbstractMinerMetaTileEntity(
                 ?: continue
             val state = world.getBlockState(pos)
             val filter = this.filter
-            if (!(filter == null || filter.test(state.toItemStack()))) {
+            if (!(filter == null || filter.testBlock(world, pos))) {
                 this.currentPos = getNextBlockPos()
                 continue
             }
