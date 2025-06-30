@@ -2,7 +2,7 @@ package com.github.trc.clayium.datafix
 
 enum class ClayiumDataVersion {
     V0,
-    V1_FILTER_REGISTRY,
+    V1_MORE_FILTERS,
     ;
 
     companion object {
