@@ -164,7 +164,7 @@ open class CommonProxy {
         registerItem(registry, ClayiumItems.MOD_ID_ITEM_FILTER)
         registerItem(registry, ClayiumItems.DAMAGE_VALUE_ITEM_FILTER)
         registerItem(registry, ClayiumItems.BLOCK_METADATA_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.ITEM_FLTER_DUPLICATOR)
+        registerItem(registry, ClayiumItems.ITEM_FILTER_DUPLICATOR)
 
         registry.register(createItemBlock(ClayiumBlocks.CREATIVE_ENERGY_SOURCE, ::ItemBlock))
 

@@ -47,7 +47,7 @@ object ClayiumItems {
     val MOD_ID_ITEM_FILTER = createItem("item_filter_mod_id", ItemStringItemFilter(::ItemFilterModID, "Example: clayium"))
     val DAMAGE_VALUE_ITEM_FILTER = createItem("item_filter_damage_value", ItemStringItemFilter(::ItemFilterDamageValue))
     val BLOCK_METADATA_ITEM_FILTER = createItem("item_filter_block_metadata", ItemStringItemFilter(::ItemFilterBlockMetadata))
-    val ITEM_FLTER_DUPLICATOR = createItem("item_filter_duplicator", ItemFilterDuplicator())
+    val ITEM_FILTER_DUPLICATOR = createItem("item_filter_duplicator", ItemFilterDuplicator())
 
     fun registerOreDicts() {
         for (metaItem in MetaItemClayium.META_ITEMS) {

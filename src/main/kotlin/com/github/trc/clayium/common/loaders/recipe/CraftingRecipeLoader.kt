@@ -199,7 +199,7 @@ object CraftingRecipeLoader {
         RecipeUtils.addShapelessRecipe("item_filter_block_metadata", ItemStack(ClayiumItems.BLOCK_METADATA_ITEM_FILTER),
             ClayiumItems.DAMAGE_VALUE_ITEM_FILTER, Blocks.CLAY)
 
-        RecipeUtils.addShapelessRecipe("item_filter_duplicator", ItemStack(ClayiumItems.ITEM_FLTER_DUPLICATOR),
+        RecipeUtils.addShapelessRecipe("item_filter_duplicator", ItemStack(ClayiumItems.ITEM_FILTER_DUPLICATOR),
             ClayiumItems.SIMPLE_ITEM_FILTER, ClayiumItems.DISPLAY_NAME_ITEM_FILTER, ClayiumItems.FUZZY_ITEM_FILTER)
     }
 }
