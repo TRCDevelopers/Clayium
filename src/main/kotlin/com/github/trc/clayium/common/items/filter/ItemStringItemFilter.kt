@@ -13,13 +13,11 @@ import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.ResourceLocation
 
 class ItemStringItemFilter(
-    filterTypeId: ResourceLocation,
     private val filterFactory: (String) -> IItemFilter,
     private val hintText: String? = null,
-) : ItemFilterBase(filterTypeId, { filterFactory("") }) {
+) : ItemFilterBase({ filterFactory("") }) {
     override fun createItemFilter(stack: ItemStack): IItemFilter {
         val filterString = stack.tagCompound?.getString("filterString") ?: ""
         return if (filterString.isEmpty()) {

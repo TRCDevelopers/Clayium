@@ -18,7 +18,6 @@ import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
-import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
@@ -28,7 +27,6 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.function.Supplier
 
 abstract class ItemFilterBase(
-    val filterId: ResourceLocation,
     val emptyFilterSupplier: Supplier<IItemFilter>,
 ) : Item(), IGuiHolderClayium<HandGuiData> {
 
@@ -37,7 +35,11 @@ abstract class ItemFilterBase(
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         if (!worldIn.isRemote) {
-            ItemGuiFactory.INSTANCE.open(playerIn as EntityPlayerMP, handIn)
+            if (playerIn.isSneaking && hasCopyFlag(playerIn.getHeldItem(handIn))) {
+                this.clearCopyFlag(playerIn.getHeldItem(handIn))
+            } else {
+                ItemGuiFactory.INSTANCE.open(playerIn as EntityPlayerMP, handIn)
+            }
         }
         return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
     }
@@ -47,14 +49,40 @@ abstract class ItemFilterBase(
         if (world.isRemote) return EnumActionResult.SUCCESS
         val filterApplicatable = tileEntity.getCapability(ClayiumTileCapabilities.ITEM_FILTER_APPLICATABLE, side)
             ?: return EnumActionResult.PASS
-        val filterItem = player.getHeldItem(hand).item as? ItemFilterBase ?: return EnumActionResult.PASS
-        filterApplicatable.setFilter(side, this.createItemFilter(player.getHeldItem(hand)), filterItem)
-        return EnumActionResult.SUCCESS
+
+        val heldItem = player.getHeldItem(hand)
+        if (hasCopyFlag(heldItem)) {
+            val filterItem = filterApplicatable.getFilterItem(side)
+                ?: return EnumActionResult.PASS
+            val filterItemStack = ItemStack(filterItem, 1)
+            player.setHeldItem(hand, filterItemStack)
+            return EnumActionResult.SUCCESS
+        } else {
+            val filterItem = heldItem.item as? ItemFilterBase ?: return EnumActionResult.PASS
+            filterApplicatable.setFilter(side, this.createItemFilter(player.getHeldItem(hand)), filterItem)
+            return EnumActionResult.SUCCESS
+        }
+    }
+
+    override fun getTranslationKey(stack: ItemStack): String {
+        return if (this.hasCopyFlag(stack)) {
+            "${super.getTranslationKey(stack)}.copy"
+        } else {
+            super.getTranslationKey(stack)
+        }
     }
 
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         UtilLocale.formatTooltips(tooltip, "${this.translationKey}.tooltip")
+    }
+
+    protected open fun hasCopyFlag(stack: ItemStack): Boolean {
+        return stack.tagCompound?.hasKey("copy") == true
+    }
+
+    private fun clearCopyFlag(stack: ItemStack) {
+        stack.tagCompound?.removeTag("copy")
     }
 
     /**

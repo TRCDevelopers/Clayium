@@ -11,7 +11,6 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.api.capability.ItemCapabilityProvider
-import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.capability.impl.ItemFilterFuzzy
 import com.github.trc.clayium.common.items.filter.ItemSimpleItemFilter.Companion.FILTER_SIZE_X
 import com.github.trc.clayium.common.items.filter.ItemSimpleItemFilter.Companion.FILTER_SIZE_Y
@@ -23,7 +22,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
-class ItemFuzzyItemFilter : ItemFilterBase(clayiumId("fuzzy"), ::ItemFilterFuzzy) {
+class ItemFuzzyItemFilter : ItemFilterBase(::ItemFilterFuzzy) {
     override fun buildUI(data: HandGuiData, syncManager: PanelSyncManager): ModularPanel {
         val stack = data.usedItemStack
         val itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable

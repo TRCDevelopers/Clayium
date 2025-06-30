@@ -15,7 +15,6 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.api.capability.ItemCapabilityProvider
-import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.capability.impl.ItemFilterSimple
 import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.item.ItemStack
@@ -26,7 +25,7 @@ import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
-class ItemSimpleItemFilter : ItemFilterBase(clayiumId("simple"), :: ItemFilterSimple) {
+class ItemSimpleItemFilter : ItemFilterBase(:: ItemFilterSimple) {
     override fun buildUI(data: HandGuiData, syncManager: PanelSyncManager): ModularPanel {
         val stack = data.usedItemStack
         val itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable

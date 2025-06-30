@@ -7,10 +7,8 @@ import com.github.trc.clayium.api.block.ItemBlockDamaged
 import com.github.trc.clayium.api.block.ItemBlockTiered
 import com.github.trc.clayium.api.block.VariantItemBlock
 import com.github.trc.clayium.api.capability.SimpleCapabilityManager
-import com.github.trc.clayium.api.events.ClayiumFilterRegistrationEvent
 import com.github.trc.clayium.api.events.ClayiumMteRegistryEvent
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
-import com.github.trc.clayium.api.item.filter.ItemFilterRegistry
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
@@ -24,15 +22,6 @@ import com.github.trc.clayium.common.blocks.chunkloader.ChunkLoaderTileEntity
 import com.github.trc.clayium.common.blocks.claycraftingtable.TileClayCraftingTable
 import com.github.trc.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trc.clayium.common.blocks.marker.TileClayMarker
-import com.github.trc.clayium.common.capability.impl.ItemFilterBlockMetadata
-import com.github.trc.clayium.common.capability.impl.ItemFilterDamageValue
-import com.github.trc.clayium.common.capability.impl.ItemFilterDisplayName
-import com.github.trc.clayium.common.capability.impl.ItemFilterFuzzy
-import com.github.trc.clayium.common.capability.impl.ItemFilterModID
-import com.github.trc.clayium.common.capability.impl.ItemFilterOreDictionary
-import com.github.trc.clayium.common.capability.impl.ItemFilterRegistryName
-import com.github.trc.clayium.common.capability.impl.ItemFilterSimple
-import com.github.trc.clayium.common.capability.impl.ItemFilterUnlocalizedName
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.ItemClaySteelPickaxe
@@ -83,7 +72,6 @@ open class CommonProxy {
         NetworkRegistry.INSTANCE.registerGuiHandler(ClayiumMod, GuiHandler)
 
         MinecraftForge.EVENT_BUS.post(ClayiumMteRegistryEvent(ClayiumApi.mteManager))
-        MinecraftForge.EVENT_BUS.post(ClayiumFilterRegistrationEvent(ItemFilterRegistry))
         MetaTileEntities.init()
         CMaterials.init()
         OrePrefix.init()
@@ -176,6 +164,7 @@ open class CommonProxy {
         registerItem(registry, ClayiumItems.MOD_ID_ITEM_FILTER)
         registerItem(registry, ClayiumItems.DAMAGE_VALUE_ITEM_FILTER)
         registerItem(registry, ClayiumItems.BLOCK_METADATA_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.ITEM_FLTER_DUPLICATOR)
 
         registry.register(createItemBlock(ClayiumBlocks.CREATIVE_ENERGY_SOURCE, ::ItemBlock))
 
@@ -246,19 +235,5 @@ open class CommonProxy {
         GameRegistry.registerTileEntity(TileClayMarker.AllHeight::class.java, clayiumId("clayMarkerAllHeight"))
 
         GameRegistry.registerTileEntity(ChunkLoaderTileEntity::class.java, clayiumId("chunkLoader"))
-    }
-
-    @SubscribeEvent
-    fun registerFilters(e: ClayiumFilterRegistrationEvent) {
-        CLog.info("Registering item filters...")
-        e.registry.register(ClayiumItems.SIMPLE_ITEM_FILTER.filterId, ::ItemFilterSimple)
-        e.registry.register(ClayiumItems.FUZZY_ITEM_FILTER.filterId, ::ItemFilterFuzzy)
-        e.registry.register(ClayiumItems.ORE_DICT_ITEM_FILTER.filterId, ::ItemFilterOreDictionary)
-        e.registry.register(ClayiumItems.REGISTRY_NAME_ITEM_FILTER.filterId, ::ItemFilterRegistryName)
-        e.registry.register(ClayiumItems.DISPLAY_NAME_ITEM_FILTER.filterId, ::ItemFilterDisplayName)
-        e.registry.register(ClayiumItems.UNLOCALIZED_NAME_ITEM_FILTER.filterId, ::ItemFilterUnlocalizedName)
-        e.registry.register(ClayiumItems.MOD_ID_ITEM_FILTER.filterId, ::ItemFilterModID)
-        e.registry.register(ClayiumItems.DAMAGE_VALUE_ITEM_FILTER.filterId, ::ItemFilterDamageValue)
-        e.registry.register(ClayiumItems.BLOCK_METADATA_ITEM_FILTER.filterId, ::ItemFilterBlockMetadata)
     }
 }

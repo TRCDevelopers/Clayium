@@ -11,6 +11,7 @@ import com.github.trc.clayium.common.capability.impl.ItemFilterOreDictionary
 import com.github.trc.clayium.common.capability.impl.ItemFilterRegistryName
 import com.github.trc.clayium.common.capability.impl.ItemFilterUnlocalizedName
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
+import com.github.trc.clayium.common.items.filter.ItemFilterDuplicator
 import com.github.trc.clayium.common.items.filter.ItemFuzzyItemFilter
 import com.github.trc.clayium.common.items.filter.ItemSimpleItemFilter
 import com.github.trc.clayium.common.items.filter.ItemStringItemFilter
@@ -39,27 +40,14 @@ object ClayiumItems {
 
     val SIMPLE_ITEM_FILTER = createItem("simple_item_filter", ItemSimpleItemFilter())
     val FUZZY_ITEM_FILTER = createItem("item_filter_fuzzy", ItemFuzzyItemFilter())
-    val ORE_DICT_ITEM_FILTER = createItem("item_filter_ore_dict", ItemStringItemFilter(
-        clayiumId("ore_dictionary"), ::ItemFilterOreDictionary, "Example: ore.*"
-    ))
-    val REGISTRY_NAME_ITEM_FILTER = createItem("item_filter_registry_name", ItemStringItemFilter(
-        clayiumId("registry_name"), ::ItemFilterRegistryName, "Example: minecraft:stone"
-    ))
-    val DISPLAY_NAME_ITEM_FILTER = createItem("item_filter_display_name", ItemStringItemFilter(
-        clayiumId("display_name"), ::ItemFilterDisplayName,
-    ))
-    val UNLOCALIZED_NAME_ITEM_FILTER = createItem("item_filter_unlocalized_name", ItemStringItemFilter(
-        clayiumId("unlocalized_name"), ::ItemFilterUnlocalizedName,
-    ))
-    val MOD_ID_ITEM_FILTER = createItem("item_filter_mod_id", ItemStringItemFilter(
-        clayiumId("mod_id"), ::ItemFilterModID, "Example: clayium"
-    ))
-    val DAMAGE_VALUE_ITEM_FILTER = createItem("item_filter_damage_value", ItemStringItemFilter(
-        clayiumId("damage_value"), ::ItemFilterDamageValue,
-    ))
-    val BLOCK_METADATA_ITEM_FILTER = createItem("item_filter_block_metadata", ItemStringItemFilter(
-        clayiumId("block_metadata"), ::ItemFilterBlockMetadata,
-    ))
+    val ORE_DICT_ITEM_FILTER = createItem("item_filter_ore_dict", ItemStringItemFilter(::ItemFilterOreDictionary, "Example: ore.*"))
+    val REGISTRY_NAME_ITEM_FILTER = createItem("item_filter_registry_name", ItemStringItemFilter(::ItemFilterRegistryName, "Example: minecraft:stone"))
+    val DISPLAY_NAME_ITEM_FILTER = createItem("item_filter_display_name", ItemStringItemFilter(::ItemFilterDisplayName))
+    val UNLOCALIZED_NAME_ITEM_FILTER = createItem("item_filter_unlocalized_name", ItemStringItemFilter(::ItemFilterUnlocalizedName))
+    val MOD_ID_ITEM_FILTER = createItem("item_filter_mod_id", ItemStringItemFilter(::ItemFilterModID, "Example: clayium"))
+    val DAMAGE_VALUE_ITEM_FILTER = createItem("item_filter_damage_value", ItemStringItemFilter(::ItemFilterDamageValue))
+    val BLOCK_METADATA_ITEM_FILTER = createItem("item_filter_block_metadata", ItemStringItemFilter(::ItemFilterBlockMetadata))
+    val ITEM_FLTER_DUPLICATOR = createItem("item_filter_duplicator", ItemFilterDuplicator())
 
     fun registerOreDicts() {
         for (metaItem in MetaItemClayium.META_ITEMS) {
