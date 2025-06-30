@@ -3,9 +3,9 @@ package com.github.trc.clayium.common.items.filter
 import com.cleanroommc.modularui.factory.HandGuiData
 import com.cleanroommc.modularui.factory.ItemGuiFactory
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
+import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.api.capability.ItemCapabilityProvider
-import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.common.util.UtilLocale
 import com.github.trc.clayium.integration.modularui.IGuiHolderClayium
 import net.minecraft.client.util.ITooltipFlag
@@ -25,10 +25,15 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import java.util.function.Supplier
 
-abstract class ItemFilterBase(val filterId: ResourceLocation) : Item(), IGuiHolderClayium<HandGuiData> {
+abstract class ItemFilterBase(
+    val filterId: ResourceLocation,
+    val emptyFilterSupplier: Supplier<IItemFilter>,
+) : Item(), IGuiHolderClayium<HandGuiData> {
 
     abstract fun createItemFilter(stack: ItemStack): IItemFilter
+    fun createItemFilter() = emptyFilterSupplier.get()
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         if (!worldIn.isRemote) {
@@ -38,9 +43,12 @@ abstract class ItemFilterBase(val filterId: ResourceLocation) : Item(), IGuiHold
     }
 
     override fun onItemUseFirst(player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, hand: EnumHand): EnumActionResult {
-        val metaTileEntity = world.getMetaTileEntity(pos) ?: return EnumActionResult.PASS
+        val tileEntity = world.getTileEntity(pos) ?: return EnumActionResult.PASS
         if (world.isRemote) return EnumActionResult.SUCCESS
-        metaTileEntity.setFilter(side, this.createItemFilter(player.getHeldItem(hand)), filterId)
+        val filterApplicatable = tileEntity.getCapability(ClayiumTileCapabilities.ITEM_FILTER_APPLICATABLE, side)
+            ?: return EnumActionResult.PASS
+        val filterItem = player.getHeldItem(hand).item as? ItemFilterBase ?: return EnumActionResult.PASS
+        filterApplicatable.setFilter(side, this.createItemFilter(player.getHeldItem(hand)), filterItem)
         return EnumActionResult.SUCCESS
     }
 

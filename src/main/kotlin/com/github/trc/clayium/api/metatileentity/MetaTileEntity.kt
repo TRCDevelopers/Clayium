@@ -13,7 +13,6 @@ import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.INITIALIZE_MTE
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_CONNECTIONS
-import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FRONT_FACING
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_INPUT_MODE
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_OUTPUT_MODE
@@ -24,7 +23,6 @@ import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.FILTER_
 import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.INSERTION
 import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.PIPING
 import com.github.trc.clayium.api.capability.IConfigurationTool.ToolType.ROTATION
-import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.api.capability.IPipeConnectable
 import com.github.trc.clayium.api.capability.IPipeConnectionLogic
 import com.github.trc.clayium.api.capability.PipeConnectionMode
@@ -33,7 +31,6 @@ import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
-import com.github.trc.clayium.api.item.filter.ItemFilterRegistry
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity.Companion.clearInventory
 import com.github.trc.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import com.github.trc.clayium.api.metatileentity.interfaces.IWorldObject
@@ -56,6 +53,7 @@ import com.github.trc.clayium.api.util.MachineIoMode.NONE
 import com.github.trc.clayium.api.util.MachineIoMode.SECOND
 import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.client.model.ModelTextures
+import com.github.trc.clayium.common.capability.impl.ItemFilterHolderTrait
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.util.SidelessI18n
 import com.github.trc.clayium.common.util.UtilLocale
@@ -146,14 +144,6 @@ abstract class MetaTileEntity(
     val outputModes get() = _outputModes.toList()
     val connectionsCache get() = _connectionsCache.copyOf()
 
-    private val filterAndIds = MutableList<Pair<ResourceLocation, IItemFilter>?>(6) { null }
-    val filters: List<IItemFilter?> = object : AbstractList<IItemFilter?>() {
-        override val size get() = filterAndIds.size
-        override fun get(index: Int) = filterAndIds[index]?.second
-    }
-    // For rendering. The client doesn't need an actual filter instance.
-    private val _clientFilterFlag = BooleanArray(6)
-
     var frontFacing = EnumFacing.NORTH
         set(value) {
             if (isFacingValid(value)) {
@@ -170,6 +160,8 @@ abstract class MetaTileEntity(
 
     val overclockHandler = OverclockHandler(this)
     val overclock: Double get() = overclockHandler.rawOcFactor
+
+    private val filterHolder = ItemFilterHolderTrait(this)
 
     fun addMetaTileEntityTrait(trait: MTETrait) {
         mteTraits[trait.name] = trait
@@ -235,12 +227,6 @@ abstract class MetaTileEntity(
         data.setByteArray("inputModes", ByteArray(6) { _inputModes[it].id.toByte() })
         data.setByteArray("outputModes", ByteArray(6) { _outputModes[it].id.toByte() })
         data.setByteArray("connections", ByteArray(6) { if (_connectionsCache[it]) 1 else 0 })
-        // TODO: Migration. `filterType$i`: Int -> `filterId$i`: ResourceLocation
-        filterAndIds.forEachIndexed { i, filterAndId ->
-            if (filterAndId == null) return@forEachIndexed
-            data.setString("filterId$i", filterAndId.first.toString())
-            data.setTag("filter$i", filterAndId.second.serializeNBT())
-        }
         CUtils.writeItems(importItems, IMPORT_INVENTORY, data)
         CUtils.writeItems(exportItems, EXPORT_INVENTORY, data)
         for ((name, trait) in mteTraits) {
@@ -253,19 +239,6 @@ abstract class MetaTileEntity(
         data.getByteArray("inputModes").forEachIndexed { i, id -> _inputModes[i] = MachineIoMode.byId(id.toInt()) }
         data.getByteArray("outputModes").forEachIndexed { i, id -> _outputModes[i] = MachineIoMode.byId(id.toInt()) }
         data.getByteArray("connections").forEachIndexed { i, b -> _connectionsCache[i] = (b == 1.toByte()) }
-        filterAndIds.forEachIndexed { i, filter ->
-            if (data.hasKey("filterId$i") && data.hasKey("filter$i")) {
-                val rl = ResourceLocation(data.getString("filterId$i"))
-                val filterFactory = ItemFilterRegistry.get(rl)
-                val filter = filterFactory?.get()
-                if (filter == null) {
-                    CLog.error("Item Filter {} not found for MTE {} at {}", rl, metaTileEntityId, pos)
-                    return@forEachIndexed
-                }
-                filter.deserializeNBT(data.getCompoundTag("filter$i"))
-                filterAndIds[i] = Pair(rl, filter)
-            }
-        }
         CUtils.readItems(importItems, "importInventory", data)
         CUtils.readItems(exportItems, "exportInventory", data)
         for ((name, trait) in mteTraits) {
@@ -279,8 +252,6 @@ abstract class MetaTileEntity(
             buf.writeByte(_inputModes[i].id)
             buf.writeByte(_outputModes[i].id)
             buf.writeBoolean(_connectionsCache[i])
-            val hasFilter = filterAndIds[i] != null
-            buf.writeBoolean(hasFilter)
         }
         buf.writeVarInt(traitByNetworkId.size)
         for ((id, trait) in traitByNetworkId) {
@@ -295,7 +266,6 @@ abstract class MetaTileEntity(
             _inputModes[i] = MachineIoMode.byId(buf.readByte().toInt())
             _outputModes[i] = MachineIoMode.byId(buf.readByte().toInt())
             _connectionsCache[i] = buf.readBoolean()
-            _clientFilterFlag[i] = buf.readBoolean()
         }
         val numberOfTraits = buf.readVarInt()
         @Suppress("unused")
@@ -322,11 +292,6 @@ abstract class MetaTileEntity(
             }
             UPDATE_OUTPUT_MODE -> {
                 _outputModes[buf.readByte().toInt()] = MachineIoMode.byId(buf.readByte().toInt())
-                this.scheduleRenderUpdate()
-            }
-            UPDATE_FILTER -> {
-                val side = buf.readVarInt()
-                _clientFilterFlag[side] = buf.readBoolean()
                 this.scheduleRenderUpdate()
             }
             UPDATE_CONNECTIONS -> {
@@ -356,8 +321,9 @@ abstract class MetaTileEntity(
     open fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         if (capability === ClayiumTileCapabilities.PIPE_CONNECTABLE) {
             return capability.cast(this)
-        }
-        if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        } else if (capability === ClayiumTileCapabilities.ITEM_FILTER_APPLICATABLE) {
+            return capability.cast(filterHolder)
+        } else if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (facing == null) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemInventory)
             val i = facing.index
             val inputSlots = when (inputModes[i]) {
@@ -389,7 +355,7 @@ abstract class MetaTileEntity(
      */
     protected fun createFilteredItemHandler(handler: IItemHandler, side: EnumFacing?): IItemHandler {
         if (side == null) return handler
-        val filter = filters[side.index]
+        val filter = filterHolder.getFilter(side)
         return if (filter == null) handler else FilteredItemHandler(handler, filter)
     }
 
@@ -436,7 +402,7 @@ abstract class MetaTileEntity(
                 EnumFacing.entries.forEach(this::refreshConnection)
             }
             FILTER_REMOVER -> {
-                this.removeFilter(clickedSide)
+                this.filterHolder.clearFilter(clickedSide)
             }
         }
     }
@@ -574,23 +540,6 @@ abstract class MetaTileEntity(
         else PipeConnectionMode.NONE
     }
 
-    // TODO: Filter周りはTraitに分離できそう
-    fun setFilter(side: EnumFacing, filter: IItemFilter, id: ResourceLocation) {
-        filterAndIds[side.index] = Pair(id, filter)
-        writeCustomData(UPDATE_FILTER) {
-            writeVarInt(side.index)
-            writeBoolean(true)
-        }
-    }
-
-    fun removeFilter(side: EnumFacing) {
-        filterAndIds[side.index] = null
-        writeCustomData(UPDATE_FILTER) {
-            writeVarInt(side.index)
-            writeBoolean(false)
-        }
-    }
-
     /**
      * Called when the machine is destroyed.
      * @param itemBuffer the buffer to add items to be dropped.
@@ -671,7 +620,7 @@ abstract class MetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     fun hasFilterClient(side: EnumFacing): Boolean {
-        return _clientFilterFlag[side.index]
+        return filterHolder.hasFilterClientOnly(side)
     }
 
     @SideOnly(Side.CLIENT)

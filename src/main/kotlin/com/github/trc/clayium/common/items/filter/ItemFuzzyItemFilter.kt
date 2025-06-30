@@ -23,7 +23,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
-class ItemFuzzyItemFilter : ItemFilterBase(clayiumId("fuzzy")) {
+class ItemFuzzyItemFilter : ItemFilterBase(clayiumId("fuzzy"), ::ItemFilterFuzzy) {
     override fun buildUI(data: HandGuiData, syncManager: PanelSyncManager): ModularPanel {
         val stack = data.usedItemStack
         val itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable

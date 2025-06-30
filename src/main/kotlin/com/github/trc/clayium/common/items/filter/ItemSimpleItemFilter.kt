@@ -26,7 +26,7 @@ import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
-class ItemSimpleItemFilter : ItemFilterBase(clayiumId("simple")) {
+class ItemSimpleItemFilter : ItemFilterBase(clayiumId("simple"), :: ItemFilterSimple) {
     override fun buildUI(data: HandGuiData, syncManager: PanelSyncManager): ModularPanel {
         val stack = data.usedItemStack
         val itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable

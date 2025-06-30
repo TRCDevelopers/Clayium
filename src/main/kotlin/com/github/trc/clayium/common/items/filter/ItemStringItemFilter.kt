@@ -19,7 +19,7 @@ class ItemStringItemFilter(
     filterTypeId: ResourceLocation,
     private val filterFactory: (String) -> IItemFilter,
     private val hintText: String? = null,
-) : ItemFilterBase(filterTypeId) {
+) : ItemFilterBase(filterTypeId, { filterFactory("") }) {
     override fun createItemFilter(stack: ItemStack): IItemFilter {
         val filterString = stack.tagCompound?.getString("filterString") ?: ""
         return if (filterString.isEmpty()) {
