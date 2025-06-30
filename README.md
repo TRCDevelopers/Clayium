@@ -6,7 +6,10 @@
   <a href="https://modrinth.com/mod/clayium-unofficial"><img alt="Modrinth Downloads" src="https://img.shields.io/modrinth/dt/m5ogv9xL?style=for-the-badge&logo=modrinth&logoColor=1c1c1c&label=%20&labelColor=5ca424&color=2d2d2d"></a>
 </h1>
 
-{: align="center"}
+|| <!-- empty table header -->
+|:--:| <!-- table header/body separator with center formatting -->
+| I'm centered! | <!-- cell gets column's alignment -->
+
 English | [日本語](README-JP.md)
 
 An **unofficial** 1.12.2 port of Clayium.
