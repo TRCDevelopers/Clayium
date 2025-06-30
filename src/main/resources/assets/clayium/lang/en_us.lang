@@ -878,7 +878,6 @@ item.clayium.clay_shovel.tooltip=Can dig Clay Ores and increase drops.
 item.clayium.clay_pickaxe.name=Clay Pickaxe
 item.clayium.clay_pickaxe.tooltip=Can harvest Clay Ores so fast and increase drops.
 
-item.clayium.itemFilterDuplicator.copy.name=Item Filter Duplicator
 item.clayium.simple_item_filter.name=Item Filter
 item.clayium.simple_item_filter.tooltip1=You can switch between white/black list.
 item.clayium.simple_item_filter.copy.name=Item Filter (Copy)
@@ -913,11 +912,12 @@ item.clayium.item_filter_block_metadata.name=Block Metadata Item Filter
 item.clayium.item_filter_block_metadata.tooltip1=See JEI for details.
 item.clayium.item_filter_block_metadata.jei_description=This filter interprets the given string as a regex with '^' and '$' at the beginning and end. If the metadata of a placed block (0-15) matches the regex, the filter accepts it. If you simply enter a number, it will only match that value. Note that when filtering items including itemBlocks, this behaves the same as the Damage Value Item Filter. It may be possible to identify the orientation of a block, or a growth stage of a crop.
 item.clayium.item_filter_block_metadata.copy.name=Block Metadata Item Filter (Copy)
-item.clayium.itemFilterDuplicator.tooltip.line1=Copies a filter on a machine or in another
-item.clayium.itemFilterDuplicator.tooltip.line2=filter and see the content.
-item.clayium.itemFilterDuplicator.tooltip.line3=__DETAIL__
-item.clayium.itemFilterDuplicator.tooltip.line4=If you want to append the copied filter
-item.clayium.itemFilterDuplicator.tooltip.line5=to a machine, shift + r-click it.
+item.clayium.item_filter_duplicator.copy.name=Item Filter Duplicator
+item.clayium.item_filter_duplicator.tooltip1=Copies a filter on a machine or in another
+item.clayium.item_filter_duplicator.tooltip2=filter and see the content.
+item.clayium.item_filter_duplicator.tooltip3=__DETAIL__
+item.clayium.item_filter_duplicator.tooltip4=If you want to append the copied filter
+item.clayium.item_filter_duplicator.tooltip5=to a machine, shift + r-click it.
 
 item.clayium.clay_steel_pickaxe.name=Clay Steel Pickaxe
 item.clayium.clay_steel_shovel.name=Clay Steel Shovel
