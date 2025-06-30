@@ -10,7 +10,7 @@ An **unofficial** 1.12.2 port of Clayium.
 The original version was made by deb_rk,
 and published on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/clayium) under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/).
 
-This mod is currently in alpha stage and may contain critical bugs including game crashes.
+If you encounter bugs or crashes, or have feature suggestions, please create an [Issue](https://github.com/TRCDevelopers/Clayium/issues).
 
 ## Required Mods
 
@@ -27,7 +27,7 @@ See [wiki](https://trcdevelopers.github.io/Clayium/) for more information.
 ## Ported Features
 
 - up to tier 13 Clay Fabricator Mk3, except for those listed below.
-- PAN is implemented, but has many bugs.
+- PAN
 
 ## WIP Features
 
