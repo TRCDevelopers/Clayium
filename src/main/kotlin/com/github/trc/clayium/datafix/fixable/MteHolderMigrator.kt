@@ -28,8 +28,6 @@ class MteHolderMigrator : IFixableData {
             val newKey = "filterItemRegistryName$i"
             if (mteData.hasKey(oldKey, Constants.NBT.TAG_INT) && mteData.hasKey(filterDataKey, Constants.NBT.TAG_COMPOUND)) {
                 // **There is only simpleItemFilter on V0 dataVersion**
-                mteData.removeTag(oldKey)
-                mteData.removeTag("filter$i")
 
                 val filterData = mteData.getCompoundTag(filterDataKey)
                 val stacks = CUtils.readItems("stacks", filterData)
@@ -43,6 +41,8 @@ class MteHolderMigrator : IFixableData {
                 newTag.setBoolean("isWhiteList", whitelist)
                 traitTag.setString(newKey, ClayiumItems.SIMPLE_ITEM_FILTER.registryName!!.toString())
                 traitTag.setTag("filterTag$i", newTag)
+                mteData.removeTag(oldKey)
+                mteData.removeTag("filter$i")
             }
         }
         mteData.setTag(clayiumId("item_filter_holder").toString(), traitTag)
