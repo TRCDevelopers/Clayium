@@ -6,6 +6,10 @@
   <a href="https://modrinth.com/mod/clayium-unofficial"><img alt="Modrinth Downloads" src="https://img.shields.io/modrinth/dt/m5ogv9xL?style=for-the-badge&logo=modrinth&logoColor=1c1c1c&label=%20&labelColor=5ca424&color=2d2d2d"></a>
 </h1>
 
+<div align="center">
+  [English](README.md) | 日本語
+</div>
+
 Clayiumの1.12.2向け**非公式**移植版です。
 オリジナルはdeb_rk氏によって作成され、[CurseForge](https://www.curseforge.com/minecraft/mc-mods/clayium)にて[CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/)のもとで公開されています。
 
