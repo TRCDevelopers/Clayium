@@ -24,6 +24,7 @@ class ItemFilterHolderTrait(mte: MetaTileEntity) : MTETrait(mte, clayiumId("item
 
     override fun setFilter(side: EnumFacing, filter: IItemFilter, filterItem: ItemFilterBase) {
         filters[side.index] = Pair(filter, filterItem)
+        metaTileEntity.markDirty()
         writeCustomData(UPDATE_FILTER) {
             writeVarInt(side.index)
             writeBoolean(true)
@@ -81,11 +82,11 @@ class ItemFilterHolderTrait(mte: MetaTileEntity) : MTETrait(mte, clayiumId("item
 
     override fun deserializeNBT(data: NBTTagCompound) {
         for (i in 0..<6) {
-            if (data.hasKey("filter$i", Constants.NBT.TAG_COMPOUND) && data.hasKey("filterItem$i", Constants.NBT.TAG_STRING)) {
+            if (!(data.hasKey("filter$i", Constants.NBT.TAG_COMPOUND) && data.hasKey("filterItemId$i", Constants.NBT.TAG_STRING))) {
                 continue
             }
-            val filterItemRegistryName = ResourceLocation(data.getString("filterItemId$i"))
-            val filterItem = ForgeRegistries.ITEMS.getValue(filterItemRegistryName)
+            val filterItemRegistryName = data.getString("filterItemId$i")
+            val filterItem = ForgeRegistries.ITEMS.getValue(ResourceLocation(filterItemRegistryName))
             if (filterItem == null) {
                 CLog.warn("Item Filter $filterItemRegistryName not found. pos: ${metaTileEntity.pos}, side: ${EnumFacing.byIndex(i)}")
                 continue
