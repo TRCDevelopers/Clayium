@@ -677,6 +677,7 @@ item.clayium.clay_pickaxe.tooltip=粘土鉱石を素早く採掘し、そのド�
 
 item.clayium.simple_item_filter.name=アイテムフィルター
 item.clayium.simple_item_filter.tooltip1=ホワイトリスト・ブラックリストを切り替えられる
+item.clayium.simple_item_filter.tooltip2=また、スロットにフィルターを置くことで入れ子にできる
 item.clayium.simple_item_filter.copy.name=アイテムフィルター (コピー)
 item.clayium.item_filter_fuzzy.name=ファジーアイテムフィルター
 item.clayium.item_filter_fuzzy.tooltip1=よりゆるい条件でマッチする

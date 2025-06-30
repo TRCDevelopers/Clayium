@@ -880,6 +880,7 @@ item.clayium.clay_pickaxe.tooltip=Can harvest Clay Ores so fast and increase dro
 
 item.clayium.simple_item_filter.name=Item Filter
 item.clayium.simple_item_filter.tooltip1=You can switch between white/black list.
+item.clayium.simple_item_filter.tooltip2=You can also nest filters by placing them.
 item.clayium.simple_item_filter.copy.name=Item Filter (Copy)
 item.clayium.item_filter_fuzzy.name=Fuzzy Item Filter
 item.clayium.item_filter_fuzzy.tooltip1=Match with fuzzier rules.
