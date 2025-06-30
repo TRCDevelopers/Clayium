@@ -54,6 +54,7 @@ abstract class ItemFilterBase(
         if (hasCopyFlag(heldItem)) {
             val filterItemStack = filterApplicatable.createFilterStack(side)
                 ?: return EnumActionResult.PASS
+            setCopyFlag(filterItemStack)
             player.setHeldItem(hand, filterItemStack)
             return EnumActionResult.SUCCESS
         } else {
@@ -82,6 +83,12 @@ abstract class ItemFilterBase(
 
     private fun clearCopyFlag(stack: ItemStack) {
         stack.tagCompound?.removeTag("copy")
+    }
+
+    private fun setCopyFlag(stack: ItemStack) {
+        val tag = stack.tagCompound ?: NBTTagCompound()
+        tag.setBoolean("copy", true)
+        stack.tagCompound = tag
     }
 
     /**
