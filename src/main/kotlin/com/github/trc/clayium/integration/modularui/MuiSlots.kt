@@ -8,8 +8,6 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraftforge.items.IItemHandler
 
 object MuiSlots {
-    const val PLAYER = "player"
-
     fun itemSlot(handler: IItemHandler, index: Int): ItemSlot {
         return ItemSlot.create(false).slot(ModularSlot(handler, index))
     }
