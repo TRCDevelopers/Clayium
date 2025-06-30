@@ -13,27 +13,30 @@ and published on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/clayi
 This mod is currently in alpha stage and may contain critical bugs including game crashes.
 
 ## Required Mods
+
 - [ModularUI](https://github.com/CleanroomMC/ModularUI) (v2.5.0-rc5)
 - [CodeChickenLib](https://github.com/TheCBProject/CodeChickenLib)
 - [Forgelin Continuous](https://github.com/ChAoSUnItY/Forgelin-Continuous)
 
 ## Recipe Customization
+
 We have integration with [GroovyScript](https://github.com/CleanroomMC/GroovyScript).
 
 See [wiki](https://trcdevelopers.github.io/Clayium/) for more information.
 
 ## Ported Features
+
 - up to tier 13 Clay Fabricator Mk3, except for those listed below.
 - PAN is implemented, but has many bugs.
 
 ## WIP Features
+
 - Auto Crafter
 - Clay Crafting Board
 - Clay Gadgets
 - Clay Guns
 - ClaySteel Shovel
 - Energetic Clay Decomposer
-- Filters other than black/white list
 - Fluid related features
 - Metal Chests
 - World Interactive Machines
@@ -44,6 +47,7 @@ See [wiki](https://trcdevelopers.github.io/Clayium/) for more information.
 - Other Mod Integrations
 
 ## License
+
 ### Code
 The code is licensed under the [LGPL-3.0](https://github.com/TRCDevelopers/Clayium/blob/develop/LICENSE).
 
