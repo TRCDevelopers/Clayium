@@ -52,14 +52,13 @@ abstract class ItemFilterBase(
 
         val heldItem = player.getHeldItem(hand)
         if (hasCopyFlag(heldItem)) {
-            val filterItem = filterApplicatable.getFilterItem(side)
+            val filterItemStack = filterApplicatable.createFilterStack(side)
                 ?: return EnumActionResult.PASS
-            val filterItemStack = ItemStack(filterItem, 1)
             player.setHeldItem(hand, filterItemStack)
             return EnumActionResult.SUCCESS
         } else {
             val filterItem = heldItem.item as? ItemFilterBase ?: return EnumActionResult.PASS
-            filterApplicatable.setFilter(side, this.createItemFilter(player.getHeldItem(hand)), filterItem)
+            filterApplicatable.setFilter(side, this.createItemFilter(player.getHeldItem(hand)), filterItem, heldItem.tagCompound?.copy())
             return EnumActionResult.SUCCESS
         }
     }

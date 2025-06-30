@@ -9,6 +9,7 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.items.filter.ItemFilterBase
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
@@ -19,11 +20,13 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries
 
 class ItemFilterHolderTrait(mte: MetaTileEntity) : MTETrait(mte, clayiumId("item_filter_holder").toString()), IItemFilterApplicatable {
 
-    private val filters = MutableList<Pair<IItemFilter, ItemFilterBase>?>(6) { null }
+    private val filters = MutableList<IItemFilter?>(6) { null }
+    private val filterData = MutableList<Pair<ItemFilterBase, NBTTagCompound?>?>(6) { null }
     private val clientFilterFlags = BooleanArray(6) { false }
 
-    override fun setFilter(side: EnumFacing, filter: IItemFilter, filterItem: ItemFilterBase) {
-        filters[side.index] = Pair(filter, filterItem)
+    override fun setFilter(side: EnumFacing, filter: IItemFilter, filterItem: ItemFilterBase, stackTag: NBTTagCompound?) {
+        filters[side.index] = filter
+        filterData[side.index] = Pair(filterItem, stackTag)
         metaTileEntity.markDirty()
         writeCustomData(UPDATE_FILTER) {
             writeVarInt(side.index)
@@ -32,12 +35,13 @@ class ItemFilterHolderTrait(mte: MetaTileEntity) : MTETrait(mte, clayiumId("item
     }
 
     override fun getFilter(side: EnumFacing): IItemFilter? {
-        return filters[side.index]?.first
+        return filters[side.index]
     }
 
-    override fun getFilterItem(side: EnumFacing): ItemFilterBase? {
-        val i = side.index
-        return filters[side.index]?.second
+    override fun createFilterStack(side: EnumFacing): ItemStack? {
+        val data = filterData[side.index] ?: return null
+        val stack = ItemStack(data.first).apply { tagCompound = data.second?.copy() }
+        return stack
     }
 
     override fun clearFilter(side: EnumFacing) {
@@ -69,23 +73,21 @@ class ItemFilterHolderTrait(mte: MetaTileEntity) : MTETrait(mte, clayiumId("item
 
     override fun serializeNBT(): NBTTagCompound {
         val data = NBTTagCompound()
-        for ((i, p) in filters.withIndex()) {
+        for ((i, p) in filterData.withIndex()) {
             if (p == null) continue
-            val filter = p.first
-            val filterItem = p.second
+            val filterItem = p.first
+            val filterTag = p.second
             val filterRegName = filterItem.registryName ?: continue
-            data.setTag("filter$i", filter.serializeNBT())
-            data.setString("filterItemId$i", filterRegName.toString())
+            if (filterTag != null) data.setTag("filterTag$i", filterTag)
+            data.setString("filterItemRegistryName$i", filterRegName.toString())
         }
         return data
     }
 
     override fun deserializeNBT(data: NBTTagCompound) {
         for (i in 0..<6) {
-            if (!(data.hasKey("filter$i", Constants.NBT.TAG_COMPOUND) && data.hasKey("filterItemId$i", Constants.NBT.TAG_STRING))) {
-                continue
-            }
-            val filterItemRegistryName = data.getString("filterItemId$i")
+            if (!data.hasKey("filterItemRegistryName$i", Constants.NBT.TAG_STRING)) continue
+            val filterItemRegistryName = data.getString("filterItemRegistryName$i")
             val filterItem = ForgeRegistries.ITEMS.getValue(ResourceLocation(filterItemRegistryName))
             if (filterItem == null) {
                 CLog.warn("Item Filter $filterItemRegistryName not found. pos: ${metaTileEntity.pos}, side: ${EnumFacing.byIndex(i)}")
@@ -94,9 +96,11 @@ class ItemFilterHolderTrait(mte: MetaTileEntity) : MTETrait(mte, clayiumId("item
                 CLog.warn("Item Filter is corrupted. id: $filterItemRegistryName, pos: ${metaTileEntity.pos}, side: ${EnumFacing.byIndex(i)}")
                 continue
             }
-            val filter = filterItem.createItemFilter()
-            filter.deserializeNBT(data.getCompoundTag("filter$i"))
-            filters[i] = Pair(filter, filterItem)
+
+            val filterTag = data.getCompoundTag("filterTag$i")
+            val stack = ItemStack(filterItem).apply { tagCompound = filterTag }
+            this.filters[i] = filterItem.createItemFilter(stack)
+            this.filterData[i] = Pair(filterItem, filterTag)
         }
     }
 

@@ -1,6 +1,8 @@
 package com.github.trc.clayium.api.capability
 
 import com.github.trc.clayium.common.items.filter.ItemFilterBase
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 
 /**
@@ -15,8 +17,19 @@ import net.minecraft.util.EnumFacing
  *
  */
 interface IItemFilterApplicatable {
-    fun setFilter(side: EnumFacing, filter: IItemFilter, filterItem: ItemFilterBase)
+    /**
+     * @param filterItem the filter item used. you can get a registry name from this instance.
+     * @param stackTag the NBTTagCompound of the used ItemStack. you can get a Filter instance by creating an ItemStack, setting the NBTTag, and calling [ItemFilterBase.createItemFilter].
+     * this tag is copied, so you can safely edit this if you want.
+     */
+    fun setFilter(side: EnumFacing, filter: IItemFilter, filterItem: ItemFilterBase, stackTag: NBTTagCompound?)
     fun getFilter(side: EnumFacing): IItemFilter?
-    fun getFilterItem(side: EnumFacing): ItemFilterBase?
+
+    /**
+     * for [com.github.trc.clayium.common.items.filter.ItemFilterDuplicator].
+     *
+     * returned stack must have [ItemFilterBase] as item and appropriate [NBTTagCompound].
+     */
+    fun createFilterStack(side: EnumFacing): ItemStack?
     fun clearFilter(side: EnumFacing)
 }
