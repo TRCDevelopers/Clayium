@@ -6,7 +6,7 @@
   <a href="https://modrinth.com/mod/clayium-unofficial"><img alt="Modrinth Downloads" src="https://img.shields.io/modrinth/dt/m5ogv9xL?style=for-the-badge&logo=modrinth&logoColor=1c1c1c&label=%20&labelColor=5ca424&color=2d2d2d"></a>
 </h1>
 
-<p style="text-align: center;">
+<p align="center">
   English | <a href="https://github.com/TRCDevelopers/Clayium/blob/docs-japanese/README-JP.md">日本語</a>
 </p>
 
