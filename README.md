@@ -48,8 +48,8 @@ See [wiki](https://trcdevelopers.github.io/Clayium/) for more information.
   - Activators
   - Area Replacer
   - Item Collectors
-- Configs (ProgressionRate, HardcoreXXX, etc.)
-- Other Mod Integrations
+- Configs (`ProgressionRate`, `HardcoreXXX`, etc.)
+- Integrations with Other Mods
 
 ## License
 

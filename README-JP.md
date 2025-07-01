@@ -31,21 +31,20 @@ Clayiumの1.12.2向け**非公式**移植版です。
 
 ## 未実装の要素
 
-- Auto Crafter
-- Clay Crafting Board
-- Clay Gadgets
-- Clay Guns
-- ClaySteel Shovel
-- Energetic Clay Decomposer
-- Filters other than black/white list
-- Fluid related features
-- Metal Chests
-- World Interactive Machines
-  - Activators
-  - Area Replacer
-  - Item Collectors
-- Configs (ProgressionRate, HardcoreXXX, etc.)
-- Other Mod Integrations
+- 自動クラフト装置
+- 粘土作業板
+- 粘土ガジェット
+- 粘土銃
+- 粘土鋼ショベル
+- エネルギー粘土分解機 
+- 液体関連の要素
+- 金属チェスト
+- ビルダー系
+  - (範囲)代行機
+  - 範囲置換機
+  - (範囲)収集機
+- コンフィグ (`ProgressionRate`や`HardcoreXXX`など)
+- 他MODとの連携要素
 
 ## ライセンス
 ### Code
