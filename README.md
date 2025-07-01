@@ -1,3 +1,4 @@
+<!--suppress HtmlDeprecatedAttribute -->
 <h1 align="center">Clayium Unofficial</h1>
 <h1 align="center">
   <img alt="Modrinth Game Versions" src="https://img.shields.io/modrinth/game-versions/m5ogv9xL?style=for-the-badge">
