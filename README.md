@@ -8,7 +8,7 @@
 </h1>
 
 <p align="center">
-  English | <a href="https://github.com/TRCDevelopers/Clayium/blob/docs-japanese/README-JP.md">日本語</a>
+  English | <a href="/README-JP.md">日本語</a>
 </p>
 
 An **unofficial** 1.12.2 port of Clayium.
