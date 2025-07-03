@@ -194,6 +194,16 @@ object CUtils {
             }
     }
 
+    fun getFakePlayerWithItem(world: WorldServer, itemStack: ItemStack): FakePlayer {
+        return FakePlayerFactory.get(world, profile)
+            .apply {
+                connection = FakeServerHandler(this)
+                inventory.clear()
+                inventory.setInventorySlotContents(0, itemStack)
+                inventory.currentItem = 0
+            }
+    }
+
     val isClientSide by lazy { FMLCommonHandler.instance().side.isClient }
     val isDeobfEnvironment by lazy { FMLLaunchHandler.isDeobfuscatedEnvironment() }
 }

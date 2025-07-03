@@ -3,7 +3,6 @@ package com.github.trc.clayium.common.metatileentities
 import codechicken.lib.vec.Cuboid6
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.BoolValue
 import com.cleanroommc.modularui.value.EnumValue
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
@@ -26,7 +25,10 @@ import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
+import net.minecraft.entity.Entity
+import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.item.ItemStack
+import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
@@ -43,12 +45,18 @@ class ActivatorMetaTileEntity(
     @Suppress("unused")
     val ioHandler = AutoIoHandler.Exporter(this)
 
-    override val rangeRelative get() = Cuboid6.full.copy().add(BlockPos.ORIGIN.offset(this.frontFacing.opposite))
+    override val rangeRelative: Cuboid6 get() = Cuboid6.full.copy().add(this.pos?.offset(this.frontFacing.opposite) ?: BlockPos.ORIGIN)
     override val maxBlocksPerTick = 1
 
     private var blockEntityMode = BlockEntityMode.BLOCK
+    set(value) {
+        println("Block entity mode changed to $value")
+        field = value
+    }
     private var raytrace = false
     private var sneaking = false
+
+    protected val scannedEntities = mutableListOf<Entity>()
 
     override fun drawEnergy(accelerationRate: Double): Boolean { return true }
 
@@ -57,26 +65,63 @@ class ActivatorMetaTileEntity(
     }
 
     override fun mine(world: World, pos: BlockPos, state: IBlockState): Boolean {
-        val pos = this.pos ?: return false
+        if (this.offsetTimer % 20 != 0L) return false
+
         val clickPos = getNextBlockPos() ?: return false
         val world = this.world as? WorldServer ?: return false
-        val player = CUtils.getFakePlayer(world)
 
         when (blockEntityMode) {
-            BlockEntityMode.BLOCK -> {
-                player.setWorld(world)
-                player.setLocationAndAngles(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), 0f, 0f)
-                player.isSneaking = sneaking
-                player.interactionManager.processRightClickBlock(
-                    player, world, ItemStack.EMPTY, EnumHand.MAIN_HAND, clickPos,
-                    this.frontFacing.opposite, 0.5f, 0.5f, 0.5f
-                )
-            }
-            BlockEntityMode.ENTITY -> {}
+            BlockEntityMode.BLOCK -> this.clickBlock(world, clickPos)
+            BlockEntityMode.ENTITY -> this.interactEntity(world, clickPos)
             BlockEntityMode.BLOCK_AND_ENTITY -> {}
         }
 
         return false
+    }
+
+    private fun clickBlock(world: World, clickPos: BlockPos): Boolean {
+        val pos = this.pos ?: return false
+        val world = this.world as? WorldServer ?: return false
+        val player = CUtils.getFakePlayer(world)
+
+        player.setWorld(world)
+        player.setLocationAndAngles(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), 0f, 0f)
+        player.isSneaking = sneaking
+        player.interactionManager.processRightClickBlock(
+            player, world, ItemStack.EMPTY, EnumHand.MAIN_HAND, clickPos,
+            this.frontFacing.opposite, 0.5f, 0.5f, 0.5f
+        )
+        return false
+    }
+
+    private fun interactEntity(world: World, clickPos: BlockPos): Boolean {
+        val pos = this.pos ?: return false
+        val world = this.world as? WorldServer ?: return false
+
+        var slotNum = -1
+        val heldItem: ItemStack = (0..<this.itemInventory.slots).firstNotNullOfOrNull { i ->
+            val stack = this.itemInventory.getStackInSlot(i)
+            slotNum = i
+            if (stack.isEmpty) null else stack.copy()
+        } ?: ItemStack.EMPTY
+        val withHeldItem = !heldItem.isEmpty
+
+        val player = CUtils.getFakePlayerWithItem(world, heldItem)
+
+        val entities = world.getEntitiesWithinAABB(Entity::class.java, this.rangeRelative.aabb()) { !scannedEntities.contains(it) }
+        if (entities.isEmpty()) {
+            scannedEntities.clear()
+            return false
+        }
+        val result = player.interactOn(entities.first(), EnumHand.MAIN_HAND)
+        if (withHeldItem && result == EnumActionResult.SUCCESS) {
+            this.itemInventory.setStackInSlot(slotNum, player.getHeldItem(EnumHand.MAIN_HAND).copy())
+        }
+        return false
+    }
+
+    private fun toMachineInventory(inventoryPlayer: InventoryPlayer) {
+
     }
 
     override fun getRequiredProgress(state: IBlockState, world: World, pos: BlockPos): Double {
@@ -113,7 +158,7 @@ class ActivatorMetaTileEntity(
 
         val blockEntityButton = CycleButtonWidget()
             .length(3)
-            .value(EnumValue.Dynamic(BlockEntityMode::class.java, ::blockEntityMode, ::blockEntityMode::set))
+            .value(SyncHandlers.enumValue(BlockEntityMode::class.java, ::blockEntityMode, ::blockEntityMode::set))
             .stateBackground(BlockEntityMode.BLOCK, ClayGuiTextures.Clicker.BLOCK)
             .stateHoverBackground(BlockEntityMode.BLOCK, ClayGuiTextures.Clicker.BLOCK_HOVERED)
             .stateBackground(BlockEntityMode.ENTITY, ClayGuiTextures.Clicker.ENTITY)
@@ -124,7 +169,7 @@ class ActivatorMetaTileEntity(
             .tooltip(1) { it.addLine(IKey.lang("gui.clayium.activator.click_mode.entity")) }
             .tooltip(2) { it.addLine(IKey.lang("gui.clayium.activator.click_mode.both")) }
         val raytraceButton = ToggleButton()
-            .value(BoolValue.Dynamic(::raytrace, ::raytrace::set))
+            .value(SyncHandlers.bool(::raytrace, ::raytrace::set))
             .background(ClayGuiTextures.Clicker.FIXED_TARGET)
             .hoverBackground(ClayGuiTextures.Clicker.FIXED_TARGET_HOVERED)
             .selectedBackground(ClayGuiTextures.Clicker.RAYTRACE)
@@ -132,7 +177,7 @@ class ActivatorMetaTileEntity(
             .tooltip(false) { it.addLine(IKey.lang("gui.clayium.activator.raytrace_enabled")) }
             .tooltip(true) { it.addLine(IKey.lang("gui.clayium.activator.raytrace_disabled")) }
         val sneakingButton = ToggleButton()
-            .value(BoolValue.Dynamic(::sneaking, ::sneaking::set))
+            .value(SyncHandlers.bool(::sneaking, ::sneaking::set))
             .background(ClayGuiTextures.Clicker.NO_SNEAK)
             .hoverBackground(ClayGuiTextures.Clicker.NO_SNEAK_HOVERED)
             .selectedBackground(ClayGuiTextures.Clicker.SNEAK)
