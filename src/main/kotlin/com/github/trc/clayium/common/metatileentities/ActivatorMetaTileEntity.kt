@@ -23,12 +23,12 @@ import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.integration.modularui.MuiSlots
+import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.item.ItemStack
-import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
@@ -36,6 +36,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
 import net.minecraftforge.common.property.IExtendedBlockState
+import net.minecraftforge.items.ItemHandlerHelper
 
 class ActivatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -95,16 +96,14 @@ class ActivatorMetaTileEntity(
     }
 
     private fun interactEntity(world: World, clickPos: BlockPos): Boolean {
+        if (inventoryCrowded()) return false
         val pos = this.pos ?: return false
         val world = this.world as? WorldServer ?: return false
 
-        var slotNum = -1
         val heldItem: ItemStack = (0..<this.itemInventory.slots).firstNotNullOfOrNull { i ->
             val stack = this.itemInventory.getStackInSlot(i)
-            slotNum = i
-            if (stack.isEmpty) null else stack.copy()
+            if (stack.isEmpty) null else this.itemInventory.extractItem(i, Int.MAX_VALUE, false)
         } ?: ItemStack.EMPTY
-        val withHeldItem = !heldItem.isEmpty
 
         val player = CUtils.getFakePlayerWithItem(world, heldItem)
 
@@ -113,15 +112,29 @@ class ActivatorMetaTileEntity(
             scannedEntities.clear()
             return false
         }
-        val result = player.interactOn(entities.first(), EnumHand.MAIN_HAND)
-        if (withHeldItem && result == EnumActionResult.SUCCESS) {
-            this.itemInventory.setStackInSlot(slotNum, player.getHeldItem(EnumHand.MAIN_HAND).copy())
-        }
+        player.interactOn(entities.first(), EnumHand.MAIN_HAND)
+        toMachineInventory(player.inventory)
         return false
     }
 
     private fun toMachineInventory(inventoryPlayer: InventoryPlayer) {
+        val world = this.world ?: return
+        val pos = this.pos?.offset(this.frontFacing) ?: return
+        val remains = mutableListOf<ItemStack>()
+        listOf(inventoryPlayer.offHandInventory, inventoryPlayer.mainInventory, inventoryPlayer.armorInventory)
+            .flatten()
+            .filter { !it.isEmpty }
+            .forEach {
+                val remain = ItemHandlerHelper.insertItemStacked(this.itemInventory, it, false)
+                if (!remain.isEmpty) remains.add(remain)
+            }
+        for (stack in remains) {
+            Block.spawnAsEntity(world, pos, stack)
+        }
+    }
 
+    private fun inventoryCrowded(): Boolean {
+        return !(0..<this.itemInventory.slots).any { this.itemInventory.getStackInSlot(it).isEmpty }
     }
 
     override fun getRequiredProgress(state: IBlockState, world: World, pos: BlockPos): Double {
