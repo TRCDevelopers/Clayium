@@ -12,6 +12,7 @@ import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.recipe.RecipeUtils
+import net.minecraft.init.Blocks
 import net.minecraft.init.Items
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
@@ -182,5 +183,23 @@ object CraftingRecipeLoader {
                 'S', UnificationEntry(OrePrefix.stick, m),
                 'B', UnificationEntry(OrePrefix.bearing, m))
         }
+
+        RecipeUtils.addShapelessRecipe("item_filter_translation_key", ItemStack(ClayiumItems.UNLOCALIZED_NAME_ITEM_FILTER),
+            ClayiumItems.DISPLAY_NAME_ITEM_FILTER)
+        RecipeUtils.addShapelessRecipe("item_filter_ore_dict", ItemStack(ClayiumItems.ORE_DICT_ITEM_FILTER),
+            ClayiumItems.UNLOCALIZED_NAME_ITEM_FILTER)
+        RecipeUtils.addShapelessRecipe("item_filter_registry_name", ItemStack(ClayiumItems.REGISTRY_NAME_ITEM_FILTER),
+            ClayiumItems.ORE_DICT_ITEM_FILTER)
+        RecipeUtils.addShapelessRecipe("item_filter_mod_id", ItemStack(ClayiumItems.MOD_ID_ITEM_FILTER),
+            ClayiumItems.REGISTRY_NAME_ITEM_FILTER)
+        RecipeUtils.addShapelessRecipe("item_filter_damage_value", ItemStack(ClayiumItems.DAMAGE_VALUE_ITEM_FILTER),
+            ClayiumItems.MOD_ID_ITEM_FILTER)
+        RecipeUtils.addShapelessRecipe("item_filter_cycle", ItemStack(ClayiumItems.DISPLAY_NAME_ITEM_FILTER),
+            ClayiumItems.DAMAGE_VALUE_ITEM_FILTER)
+        RecipeUtils.addShapelessRecipe("item_filter_block_metadata", ItemStack(ClayiumItems.BLOCK_METADATA_ITEM_FILTER),
+            ClayiumItems.DAMAGE_VALUE_ITEM_FILTER, Blocks.CLAY)
+
+        RecipeUtils.addShapelessRecipe("item_filter_duplicator", ItemStack(ClayiumItems.ITEM_FILTER_DUPLICATOR),
+            ClayiumItems.SIMPLE_ITEM_FILTER, ClayiumItems.DISPLAY_NAME_ITEM_FILTER, ClayiumItems.FUZZY_ITEM_FILTER)
     }
 }

@@ -40,4 +40,7 @@ object ClayiumTileCapabilities {
 
     @CapabilityInject(IPipeConnectable::class)
     lateinit var PIPE_CONNECTABLE: Capability<IPipeConnectable>
+
+    @CapabilityInject(IItemFilterApplicatable::class)
+    lateinit var ITEM_FILTER_APPLICATABLE: Capability<IItemFilterApplicatable>
 }

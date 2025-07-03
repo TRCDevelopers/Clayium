@@ -10,7 +10,6 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getCapability
 import com.github.trc.clayium.api.util.hasCapability
-import com.github.trc.clayium.api.util.toItemStack
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.reflect.BlockReflect
 import com.github.trc.clayium.common.util.TransferUtils
@@ -35,16 +34,17 @@ class AdvancedRangedMinerMetaTileEntity(
     private val silkTouchFilter get() = extraFilters.getStackInSlot(1).getCapability(ClayiumCapabilities.ITEM_FILTER)
 
     override fun mine(world: World, pos: BlockPos, state: IBlockState): Boolean {
+        if (filter?.testBlock(world, pos) == true) return true
         val silkFilter = silkTouchFilter
         val fortuneFilter = fortuneFilter
         val drops = NonNullList.create<ItemStack>()
-        if (silkFilter != null && silkFilter.test(state.toItemStack())
+        if (silkFilter != null && silkFilter.testBlock(world, pos)
             && world is WorldServer
             && state.block.canSilkHarvest(world, pos, state, FakePlayerFactory.getMinecraft(world)))
         {
             drops.add(BlockReflect.getSilkTouchDrop(state.block, state))
         } else {
-            val fortune = if (fortuneFilter != null && fortuneFilter.test(state.toItemStack())) 3 else 0
+            val fortune = if (fortuneFilter != null && fortuneFilter.testBlock(world, pos)) 3 else 0
             state.block.getDrops(drops, world, pos, state, fortune)
         }
         if (!TransferUtils.insertToHandler(itemInventory, drops, true)) return false
