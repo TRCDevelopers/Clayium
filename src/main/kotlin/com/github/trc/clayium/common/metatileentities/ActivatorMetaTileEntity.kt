@@ -54,6 +54,8 @@ class ActivatorMetaTileEntity(
     private var raytrace = false
     private var sneaking = false
 
+    private var isBlockForBlockAndEntityMode = true
+
     protected val scannedEntities = mutableListOf<Entity>()
 
     override fun drawEnergy(accelerationRate: Double): Boolean { return true }
@@ -73,16 +75,24 @@ class ActivatorMetaTileEntity(
         when (blockEntityMode) {
             BlockEntityMode.BLOCK -> this.clickBlock(world, clickPos)
             BlockEntityMode.ENTITY -> this.interactEntity(world, clickPos)
-            BlockEntityMode.BLOCK_AND_ENTITY -> {}
+            BlockEntityMode.BLOCK_AND_ENTITY -> {
+                if (this.isBlockForBlockAndEntityMode) {
+                    this.clickBlock(world, clickPos)
+                    this.isBlockForBlockAndEntityMode = false
+                } else {
+                    this.interactEntity(world, clickPos)
+                    this.isBlockForBlockAndEntityMode = true
+                }
+            }
         }
-
         return false
     }
 
     private fun clickBlock(world: World, clickPos: BlockPos): Boolean {
         val pos = this.pos ?: return false
         val world = world as? WorldServer ?: return false
-        if (filter?.testBlock(world, clickPos) != true) return false
+        val filterMatches = filter?.testBlock(world, clickPos) ?: true
+        if (!filterMatches) return false
         val player = CUtils.getFakePlayer(world)
 
         player.setWorld(world)
@@ -219,6 +229,7 @@ class ActivatorMetaTileEntity(
         data.setInteger("blockEntityMode", blockEntityMode.ordinal)
         data.setBoolean("raytrace", raytrace)
         data.setBoolean("sneaking", sneaking)
+        data.setBoolean("isBlockForBlockAndEntityMode", isBlockForBlockAndEntityMode)
     }
 
     override fun readFromNBT(data: NBTTagCompound) {
@@ -226,6 +237,7 @@ class ActivatorMetaTileEntity(
         blockEntityMode = BlockEntityMode.entries.getOrElse(data.getInteger("blockEntityMode")) { BlockEntityMode.BLOCK }
         raytrace = data.getBoolean("raytrace")
         sneaking = data.getBoolean("sneaking")
+        isBlockForBlockAndEntityMode = data.getBoolean("isBlockForBlockAndEntityMode")
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
