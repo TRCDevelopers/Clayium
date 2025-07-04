@@ -29,6 +29,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
@@ -50,10 +51,6 @@ class ActivatorMetaTileEntity(
     override val maxBlocksPerTick = 1
 
     private var blockEntityMode = BlockEntityMode.BLOCK
-    set(value) {
-        println("Block entity mode changed to $value")
-        field = value
-    }
     private var raytrace = false
     private var sneaking = false
 
@@ -215,6 +212,20 @@ class ActivatorMetaTileEntity(
                 .minElementMargin(1, 1)
                 .right(4).top(12)
             )
+    }
+
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        data.setInteger("blockEntityMode", blockEntityMode.ordinal)
+        data.setBoolean("raytrace", raytrace)
+        data.setBoolean("sneaking", sneaking)
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        blockEntityMode = BlockEntityMode.entries.getOrElse(data.getInteger("blockEntityMode")) { BlockEntityMode.BLOCK }
+        raytrace = data.getBoolean("raytrace")
+        sneaking = data.getBoolean("sneaking")
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
