@@ -62,9 +62,11 @@ class ActivatorMetaTileEntity(
         return this.pos?.offset(this.frontFacing.opposite)
     }
 
-    override fun mine(world: World, pos: BlockPos, state: IBlockState): Boolean {
-        if (this.offsetTimer % 20 != 0L) return false
+    override fun getRequiredProgress(state: IBlockState, world: World, pos: BlockPos): Double {
+        return 400.0
+    }
 
+    override fun mine(world: World, pos: BlockPos, state: IBlockState): Boolean {
         val clickPos = getNextBlockPos() ?: return false
         val world = this.world as? WorldServer ?: return false
 
@@ -132,10 +134,6 @@ class ActivatorMetaTileEntity(
 
     private fun inventoryCrowded(): Boolean {
         return !(0..<this.itemInventory.slots).any { this.itemInventory.getStackInSlot(it).isEmpty }
-    }
-
-    override fun getRequiredProgress(state: IBlockState, world: World, pos: BlockPos): Double {
-        return 0.0
     }
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
