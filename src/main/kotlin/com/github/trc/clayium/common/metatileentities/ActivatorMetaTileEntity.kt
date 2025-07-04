@@ -81,7 +81,8 @@ class ActivatorMetaTileEntity(
 
     private fun clickBlock(world: World, clickPos: BlockPos): Boolean {
         val pos = this.pos ?: return false
-        val world = this.world as? WorldServer ?: return false
+        val world = world as? WorldServer ?: return false
+        if (filter?.testBlock(world, clickPos) != true) return false
         val player = CUtils.getFakePlayer(world)
 
         player.setWorld(world)
@@ -101,7 +102,8 @@ class ActivatorMetaTileEntity(
 
         val heldItem: ItemStack = (0..<this.itemInventory.slots).firstNotNullOfOrNull { i ->
             val stack = this.itemInventory.getStackInSlot(i)
-            if (stack.isEmpty) null else this.itemInventory.extractItem(i, Int.MAX_VALUE, false)
+            val filterMatches = filter?.test(stack) ?: true
+            if (stack.isEmpty || !filterMatches) null else this.itemInventory.extractItem(i, Int.MAX_VALUE, false)
         } ?: ItemStack.EMPTY
 
         val player = CUtils.getFakePlayerWithItem(world, heldItem)
