@@ -132,9 +132,14 @@ class ActivatorMetaTileEntity(
             player.setWorld(world)
             player.setLocationAndAngles(playerPos.x, playerPos.y, playerPos.z, memory.yaw.toFloat(), memory.pitch.toFloat())
             player.isSneaking = sneaking
+            // memory.side is the side of the ray traced block. processRightClickBlock expects the side of the ray trace direction.
+            // Example: If you pass the `memory.side` as the side, it will try to right-click the block "from" `memory.side`.
+            // NORTH | air - block - air - activator ; If you pass memory.side, and activator uses flint-and-steel in this case,
+            // NORTH | fire - block - air - activator ; fire will appear at the unexpected position. i.e. opposite side of the block.
+            val interactionSide = memory.side.opposite
             player.interactionManager.processRightClickBlock(
                 player, world, heldItem, EnumHand.MAIN_HAND, result.blockPos,
-                memory.side, memory.hit.x.toFloat(), memory.hit.y.toFloat(), memory.hit.z.toFloat()
+                interactionSide, memory.hit.x.toFloat(), memory.hit.y.toFloat(), memory.hit.z.toFloat()
             )
             toMachineInventory(player.inventory)
         }
