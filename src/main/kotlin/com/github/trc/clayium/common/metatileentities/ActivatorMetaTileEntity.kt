@@ -22,6 +22,7 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer
 import com.github.trc.clayium.common.gui.ClayGuiTextures
+import com.github.trc.clayium.common.util.RayTraceMemory
 import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
@@ -50,6 +51,8 @@ class ActivatorMetaTileEntity(
     override val rangeRelative: Cuboid6 get() = Cuboid6.full.copy().add(this.pos?.offset(this.frontFacing.opposite) ?: BlockPos.ORIGIN)
     override val maxBlocksPerTick = 1
 
+    private var rayTraceMemory: RayTraceMemory? = null
+
     private var blockEntityMode = BlockEntityMode.BLOCK
     private var raytrace = false
     private var sneaking = false
@@ -73,7 +76,8 @@ class ActivatorMetaTileEntity(
         val world = this.world as? WorldServer ?: return false
 
         when (blockEntityMode) {
-            BlockEntityMode.BLOCK -> this.clickBlock(world, clickPos)
+            BlockEntityMode.BLOCK ->
+                if (this.raytrace) this.clickBlock(world, clickPos) else this.rayTraceBlock(world, clickPos)
             BlockEntityMode.ENTITY -> this.interactEntity(world, clickPos)
             BlockEntityMode.BLOCK_AND_ENTITY -> {
                 if (this.isBlockForBlockAndEntityMode) {
@@ -93,16 +97,46 @@ class ActivatorMetaTileEntity(
         val world = world as? WorldServer ?: return false
         val filterMatches = filter?.testBlock(world, clickPos) ?: true
         if (!filterMatches) return false
-        val player = CUtils.getFakePlayer(world)
+
+        val heldItem = extractHeldItem()
+
+        val player = CUtils.getFakePlayerWithItem(world, heldItem)
 
         player.setWorld(world)
         player.setLocationAndAngles(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), 0f, 0f)
         player.isSneaking = sneaking
+
         player.interactionManager.processRightClickBlock(
-            player, world, ItemStack.EMPTY, EnumHand.MAIN_HAND, clickPos,
+            player, world, heldItem, EnumHand.MAIN_HAND, clickPos,
             this.frontFacing.opposite, 0.5f, 0.5f, 0.5f
         )
+
+        toMachineInventory(player.inventory)
         return false
+    }
+
+    private fun rayTraceBlock(world: World, from: BlockPos) {
+        val world = world as? WorldServer ?: return
+        val memory = RayTraceMemory.getByFacing(this.frontFacing)
+        val result = memory.rayTraceBlockFrom(
+            world, from,
+            stopOnLiquid = false,
+            ignoreBlockWithoutBoundingBox = false,
+            returnLastUncollidableBlock = false
+        )
+        if (result != null && filter?.testBlock(world, result.blockPos) == true) {
+            val heldItem = extractHeldItem()
+            val player = CUtils.getFakePlayerWithItem(world, heldItem)
+            val playerPos = memory.entityRelPos.add(from.x.toDouble(), from.y.toDouble(), from.z.toDouble())
+            player.setWorld(world)
+            player.setLocationAndAngles(playerPos.x, playerPos.y, playerPos.z, memory.yaw.toFloat(), memory.pitch.toFloat())
+            player.isSneaking = sneaking
+            player.interactionManager.processRightClickBlock(
+                player, world, heldItem, EnumHand.MAIN_HAND, result.blockPos,
+                memory.side, memory.hit.x.toFloat(), memory.hit.y.toFloat(), memory.hit.z.toFloat()
+            )
+            toMachineInventory(player.inventory)
+        }
     }
 
     private fun interactEntity(world: World, clickPos: BlockPos): Boolean {
@@ -110,11 +144,7 @@ class ActivatorMetaTileEntity(
         val pos = this.pos ?: return false
         val world = this.world as? WorldServer ?: return false
 
-        val heldItem: ItemStack = (0..<this.itemInventory.slots).firstNotNullOfOrNull { i ->
-            val stack = this.itemInventory.getStackInSlot(i)
-            val filterMatches = filter?.test(stack) ?: true
-            if (stack.isEmpty || !filterMatches) null else this.itemInventory.extractItem(i, Int.MAX_VALUE, false)
-        } ?: ItemStack.EMPTY
+        val heldItem = extractHeldItem()
 
         val player = CUtils.getFakePlayerWithItem(world, heldItem)
 
@@ -126,6 +156,13 @@ class ActivatorMetaTileEntity(
         player.interactOn(entities.first(), EnumHand.MAIN_HAND)
         toMachineInventory(player.inventory)
         return false
+    }
+
+    protected fun extractHeldItem(): ItemStack {
+        return (0..<this.itemInventory.slots).firstNotNullOfOrNull { i ->
+            val stack = this.itemInventory.getStackInSlot(i)
+            if (stack.isEmpty) null else this.itemInventory.extractItem(i, Int.MAX_VALUE, false)
+        } ?: ItemStack.EMPTY
     }
 
     private fun toMachineInventory(inventoryPlayer: InventoryPlayer) {

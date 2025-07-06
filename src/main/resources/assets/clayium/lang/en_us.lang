@@ -872,9 +872,10 @@ item.clayium.memory_card.tooltip1=Stores machine IO settings.
 item.clayium.memory_card.tooltip2=Right Click \: Load from memory
 item.clayium.memory_card.tooltip3=Shift + Right Click \: Save to memory
 
-item.clayium.itemDirectionMemory.name=Direction Memory Card
-item.clayium.itemDirectionMemory.tooltip.line1=Used to configure in what direction
-item.clayium.itemDirectionMemory.tooltip.line2=an Area Activator aims while using items.
+item.clayium.direction_memory.name=Direction Memory Card
+item.clayium.direction_memory.tooltip1=Used to configure in what direction
+item.clayium.direction_memory.tooltip2=an Area Activator aims while using items.
+item.clayium.direction_memory.saved=Direction saved.
 
 item.clayium.compressed_clay_shard.name=Compressed Clay Shard
 item.clayium.industrial_clay_shard.name=Industrial Clay Shard

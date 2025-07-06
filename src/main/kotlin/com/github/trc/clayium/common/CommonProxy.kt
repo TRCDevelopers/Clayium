@@ -154,7 +154,9 @@ open class CommonProxy {
         registerItem(registry, ClayiumItems.CLAY_STEEL_PICKAXE)
 
         registerItem(registry, ClayiumItems.MEMORY_CARD)
+        registerItem(registry, ClayiumItems.DIRECTION_MEMORY)
         registerItem(registry, ClayiumItems.SYNCHRONIZER)
+
         registerItem(registry, ClayiumItems.SIMPLE_ITEM_FILTER)
         registerItem(registry, ClayiumItems.FUZZY_ITEM_FILTER)
         registerItem(registry, ClayiumItems.ORE_DICT_ITEM_FILTER)
