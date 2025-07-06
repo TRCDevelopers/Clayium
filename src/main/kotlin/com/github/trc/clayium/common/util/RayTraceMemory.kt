@@ -138,7 +138,6 @@ class RayTraceMemory(
         private val standardMemories = EnumFacing.entries.map { facing ->
             val reach = 3.0
             val entity = Vec3d(getBoundary(-facing.xOffset, 0.999), getBoundary(-facing.yOffset, 0.999), getBoundary(-facing.zOffset, 0.999))
-            val relativeHit = Vec3d(facing.xOffset * reach, facing.yOffset * reach, facing.zOffset * reach)
             val hit = Vec3d(getBoundary(-facing.xOffset, 1.0), getBoundary(-facing.yOffset, 1.0), getBoundary(-facing.zOffset, 1.0))
                 .add(facing.xOffset * reach, facing.yOffset * reach, facing.zOffset * reach)
             RayTraceMemory(entity, hit, facing)

@@ -117,14 +117,15 @@ class ActivatorMetaTileEntity(
 
     private fun rayTraceBlock(world: World, from: BlockPos) {
         val world = world as? WorldServer ?: return
-        val memory = RayTraceMemory.getByFacing(this.frontFacing)
+        val memory = RayTraceMemory.getByFacing(this.frontFacing.opposite)
         val result = memory.rayTraceBlockFrom(
             world, from,
             stopOnLiquid = false,
             ignoreBlockWithoutBoundingBox = false,
             returnLastUncollidableBlock = false
         )
-        if (result != null && filter?.testBlock(world, result.blockPos) == true) {
+        val passFilter = filter == null || filter?.testBlock(world, from) == true
+        if (result != null && passFilter) {
             val heldItem = extractHeldItem()
             val player = CUtils.getFakePlayerWithItem(world, heldItem)
             val playerPos = memory.entityRelPos.add(from.x.toDouble(), from.y.toDouble(), from.z.toDouble())
