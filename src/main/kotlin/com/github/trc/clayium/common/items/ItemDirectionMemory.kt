@@ -29,7 +29,6 @@ class ItemDirectionMemory : Item() {
             hitPositionAbsolute = hitVec,
             side = facing
         )
-        println("Direction Memory: $rayTraceMemory")
 
         player.sendMessage(TextComponentTranslation("item.clayium.direction_memory.saved"))
         return EnumActionResult.PASS

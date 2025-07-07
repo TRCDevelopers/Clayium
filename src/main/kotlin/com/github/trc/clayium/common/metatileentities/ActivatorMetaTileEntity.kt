@@ -79,11 +79,11 @@ class ActivatorMetaTileEntity(
 
         when (blockEntityMode) {
             BlockEntityMode.BLOCK ->
-                if (this.raytrace) this.clickBlock(world, clickPos) else this.rayTraceBlock(world, clickPos)
+                if (this.raytrace) this.clickBlock(world, clickPos, RayTraceMemory.getByFacing(this.frontFacing.opposite)) else this.rayTraceBlock(world, clickPos)
             BlockEntityMode.ENTITY -> this.interactEntity(world, clickPos)
             BlockEntityMode.BLOCK_AND_ENTITY -> {
                 if (this.isBlockForBlockAndEntityMode) {
-                    this.clickBlock(world, clickPos)
+                    this.clickBlock(world, clickPos, RayTraceMemory.getByFacing(this.frontFacing.opposite))
                     this.isBlockForBlockAndEntityMode = false
                 } else {
                     this.interactEntity(world, clickPos)
@@ -94,7 +94,7 @@ class ActivatorMetaTileEntity(
         return false
     }
 
-    private fun clickBlock(world: World, clickPos: BlockPos): Boolean {
+    private fun clickBlock(world: World, clickPos: BlockPos, memory: RayTraceMemory): Boolean {
         val pos = this.pos ?: return false
         val world = world as? WorldServer ?: return false
         val filterMatches = filter?.testBlock(world, clickPos) ?: true
@@ -110,7 +110,7 @@ class ActivatorMetaTileEntity(
 
         player.interactionManager.processRightClickBlock(
             player, world, heldItem, EnumHand.MAIN_HAND, clickPos,
-            this.frontFacing.opposite, 0.5f, 0.5f, 0.5f
+            memory.side.opposite, memory.hit.x.toFloat(), memory.hit.y.toFloat(), memory.hit.z.toFloat(),
         )
 
         toMachineInventory(player.inventory)
@@ -142,14 +142,9 @@ class ActivatorMetaTileEntity(
                 player, world, heldItem, EnumHand.MAIN_HAND,
             )
             if (itemUseResult == null || itemUseResult == EnumActionResult.PASS || itemUseResult == EnumActionResult.FAIL) {
-                // memory.side is the side of the ray traced block. processRightClickBlock expects the side of the ray trace direction.
-                // Example: If you pass the `memory.side` as the side, it will try to right-click the block "from" `memory.side`.
-                // NORTH | air - block - air - activator ; If you pass memory.side, and activator uses flint-and-steel in this case,
-                // NORTH | fire - block - air - activator ; fire will appear at the unexpected position. i.e. opposite side of the block.
-                val interactionSide = memory.side.opposite
-                val actionResult = player.interactionManager.processRightClickBlock(
+                player.interactionManager.processRightClickBlock(
                     player, world, heldItem, EnumHand.MAIN_HAND, result.blockPos,
-                    interactionSide, memory.hit.x.toFloat(), memory.hit.y.toFloat(), memory.hit.z.toFloat(),
+                    memory.side, memory.hit.x.toFloat(), memory.hit.y.toFloat(), memory.hit.z.toFloat(),
                 )
             }
             toMachineInventory(player.inventory)
