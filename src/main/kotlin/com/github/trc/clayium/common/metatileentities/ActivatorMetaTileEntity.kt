@@ -31,10 +31,12 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
+import net.minecraft.world.GameType
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
 import net.minecraftforge.common.property.IExtendedBlockState
@@ -128,19 +130,28 @@ class ActivatorMetaTileEntity(
         if (result != null && passFilter) {
             val heldItem = extractHeldItem()
             val player = CUtils.getFakePlayerWithItem(world, heldItem)
-            val playerPos = memory.entityRelPos.add(from.x.toDouble(), from.y.toDouble(), from.z.toDouble())
+                .apply { this.interactionManager.gameType = GameType.SURVIVAL }
+            // subtract eyeHeight because the player is "standing" on the block.
+            // If you don't subtract eyeHeight, then it will be higher than this activator block's y coordinate.
+            val playerY = from.y.toDouble() - player.eyeHeight
+            val playerPos = memory.entityRelPos.add(from.x.toDouble(), from.y.toDouble() - player.eyeHeight, from.z.toDouble())
             player.setWorld(world)
             player.setLocationAndAngles(playerPos.x, playerPos.y, playerPos.z, memory.yaw.toFloat(), memory.pitch.toFloat())
             player.isSneaking = sneaking
-            // memory.side is the side of the ray traced block. processRightClickBlock expects the side of the ray trace direction.
-            // Example: If you pass the `memory.side` as the side, it will try to right-click the block "from" `memory.side`.
-            // NORTH | air - block - air - activator ; If you pass memory.side, and activator uses flint-and-steel in this case,
-            // NORTH | fire - block - air - activator ; fire will appear at the unexpected position. i.e. opposite side of the block.
-            val interactionSide = memory.side.opposite
-            player.interactionManager.processRightClickBlock(
-                player, world, heldItem, EnumHand.MAIN_HAND, result.blockPos,
-                interactionSide, memory.hit.x.toFloat(), memory.hit.y.toFloat(), memory.hit.z.toFloat()
+            val itemUseResult = player.interactionManager.processRightClick(
+                player, world, heldItem, EnumHand.MAIN_HAND,
             )
+            if (itemUseResult == null || itemUseResult == EnumActionResult.PASS || itemUseResult == EnumActionResult.FAIL) {
+                // memory.side is the side of the ray traced block. processRightClickBlock expects the side of the ray trace direction.
+                // Example: If you pass the `memory.side` as the side, it will try to right-click the block "from" `memory.side`.
+                // NORTH | air - block - air - activator ; If you pass memory.side, and activator uses flint-and-steel in this case,
+                // NORTH | fire - block - air - activator ; fire will appear at the unexpected position. i.e. opposite side of the block.
+                val interactionSide = memory.side.opposite
+                val actionResult = player.interactionManager.processRightClickBlock(
+                    player, world, heldItem, EnumHand.MAIN_HAND, result.blockPos,
+                    interactionSide, memory.hit.x.toFloat(), memory.hit.y.toFloat(), memory.hit.z.toFloat(),
+                )
+            }
             toMachineInventory(player.inventory)
         }
     }
