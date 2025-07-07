@@ -9,6 +9,7 @@ import com.github.trc.clayium.common.metatileentities.ActivatorMetaTileEntity.Bl
 import com.github.trc.clayium.common.metatileentities.ActivatorMetaTileEntity.BlockEntityMode.ENTITY
 import com.github.trc.clayium.common.util.RayTraceMemory
 import net.minecraft.block.state.IBlockState
+import net.minecraft.util.EnumActionResult
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
@@ -34,7 +35,7 @@ class RangedActivatorMetaTileEntity(
         return if (iter.hasNext()) iter.next().toImmutable() else null
     }
 
-    override fun mine(world: World, pos: BlockPos, state: IBlockState): Boolean {
+    override fun actionOnBlock(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
         val memory = this.rayTraceMemory
             ?: RayTraceMemory.getByFacing(this.frontFacing.opposite)
         when (this.blockEntityMode) {
@@ -43,6 +44,6 @@ class RangedActivatorMetaTileEntity(
             BLOCK_AND_ENTITY -> TODO()
         }
 
-        return true
+        return EnumActionResult.SUCCESS
     }
 }

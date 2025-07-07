@@ -47,7 +47,7 @@ abstract class AbstractBuilderMetaTileEntity(
     name: String,
     validInputModes: List<MachineIoMode> = validInputModesLists[0],
     validOutputModes: List<MachineIoMode> = validOutputModesLists[1],
-    renderMinerBack: Boolean = true,
+    val renderMinerBack: Boolean = true,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, name) {
 
     override val itemInventory = ClayiumItemStackHandler(this, 3 * 3)
@@ -232,7 +232,7 @@ abstract class AbstractBuilderMetaTileEntity(
     override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
         super.overlayQuads(quads, state, side, rand)
         if (state == null || side == null || state !is IExtendedBlockState) return
-        if (side == this.frontFacing.opposite) {
+        if (renderMinerBack && side == this.frontFacing.opposite) {
             quads.add(MINER_BACK[side.index])
         }
     }

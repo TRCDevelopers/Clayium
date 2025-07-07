@@ -62,7 +62,7 @@ abstract class AbstractMinerMetaTileEntity(
         return this.mine(state, world, pos)
     }
 
-    protected fun mine(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
+    protected open fun mine(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
         val drops = NonNullList.create<ItemStack>()
         state.block.getDrops(drops, world, pos, state, 0)
         if (!TransferUtils.insertToHandler(itemInventory, drops, true)) return EnumActionResult.FAIL

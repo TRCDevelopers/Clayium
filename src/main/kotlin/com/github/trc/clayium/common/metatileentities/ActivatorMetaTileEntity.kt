@@ -8,13 +8,17 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.CycleButtonWidget
 import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Grid
-import com.github.trc.clayium.api.metatileentity.AbstractMinerMetaTileEntity
+import com.github.trc.clayium.api.capability.ClayiumCapabilities
+import com.github.trc.clayium.api.capability.IItemFilter
+import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
+import com.github.trc.clayium.api.metatileentity.AbstractBuilderMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.api.util.getCapability
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.util.RayTraceMemory
 import net.minecraft.block.Block
@@ -38,13 +42,21 @@ import net.minecraftforge.items.ItemHandlerHelper
 open class ActivatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier
-) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, "activator", bufferValidInputModes) {
+) : AbstractBuilderMetaTileEntity(metaTileEntityId, tier, "activator", bufferValidInputModes) {
 
     @Suppress("unused")
     val ioHandler = AutoIoHandler.Exporter(this)
 
     override val rangeRelative: Cuboid6 get() = Cuboid6.full.copy().add(this.pos?.offset(this.frontFacing.opposite) ?: BlockPos.ORIGIN)
     override val maxBlocksPerTick = 1
+
+    protected val blockFilterSlot = ClayiumItemStackHandler(this, 1)
+    protected val blockFilter: IItemFilter?
+        get() = blockFilterSlot.getStackInSlot(0).getCapability(ClayiumCapabilities.ITEM_FILTER)
+    protected val itemFilterSlot = ClayiumItemStackHandler(this, 1)
+    protected val itemFilter: IItemFilter?
+        get() = itemFilterSlot.getStackInSlot(0).getCapability(ClayiumCapabilities.ITEM_FILTER)
+
 
     protected var blockEntityMode = BlockEntityMode.BLOCK
     protected var raytrace = false
@@ -95,7 +107,7 @@ open class ActivatorMetaTileEntity(
     protected fun clickBlock(world: World, clickPos: BlockPos, memory: RayTraceMemory) {
         val pos = this.pos ?: return
         val world = world as? WorldServer ?: return
-        val filterMatches = filter?.testBlock(world, clickPos) ?: true
+        val filterMatches = blockFilter?.testBlock(world, clickPos) ?: true
         if (!filterMatches) return
 
         val heldItem = extractHeldItem()
@@ -123,7 +135,7 @@ open class ActivatorMetaTileEntity(
             ignoreBlockWithoutBoundingBox = false,
             returnLastUncollidableBlock = false
         )
-        val passFilter = filter == null || filter?.testBlock(world, from) == true
+        val passFilter = blockFilter == null || blockFilter?.testBlock(world, from) == true
         if (result != null && passFilter) {
             val heldItem = extractHeldItem()
             val player = CUtils.getFakePlayerWithItem(world, heldItem)
