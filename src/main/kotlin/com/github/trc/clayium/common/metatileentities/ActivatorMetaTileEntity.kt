@@ -2,15 +2,10 @@ package com.github.trc.clayium.common.metatileentities
 
 import codechicken.lib.vec.Cuboid6
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.EnumValue
-import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.CycleButtonWidget
-import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Grid
 import com.github.trc.clayium.api.metatileentity.AbstractMinerMetaTileEntity
@@ -20,10 +15,8 @@ import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.client.renderer.AreaMarkerRenderer
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.util.RayTraceMemory
-import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -42,7 +35,7 @@ import net.minecraft.world.WorldServer
 import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.items.ItemHandlerHelper
 
-class ActivatorMetaTileEntity(
+open class ActivatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier
 ) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, "activator", bufferValidInputModes) {
@@ -53,11 +46,9 @@ class ActivatorMetaTileEntity(
     override val rangeRelative: Cuboid6 get() = Cuboid6.full.copy().add(this.pos?.offset(this.frontFacing.opposite) ?: BlockPos.ORIGIN)
     override val maxBlocksPerTick = 1
 
-    private var rayTraceMemory: RayTraceMemory? = null
-
-    private var blockEntityMode = BlockEntityMode.BLOCK
-    private var raytrace = false
-    private var sneaking = false
+    protected var blockEntityMode = BlockEntityMode.BLOCK
+    protected var raytrace = false
+    protected var sneaking = false
 
     private var isBlockForBlockAndEntityMode = true
 
@@ -73,13 +64,20 @@ class ActivatorMetaTileEntity(
         return 400.0
     }
 
-    override fun mine(world: World, pos: BlockPos, state: IBlockState): Boolean {
-        val clickPos = getNextBlockPos() ?: return false
-        val world = this.world as? WorldServer ?: return false
+    override fun getAccelerationRate(): Double {
+        return 1.0
+    }
+
+    override fun actionOnBlock(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
+        val clickPos = getNextBlockPos() ?: return EnumActionResult.FAIL
+        val world = this.world as? WorldServer ?: return EnumActionResult.FAIL
 
         when (blockEntityMode) {
             BlockEntityMode.BLOCK ->
-                if (this.raytrace) this.clickBlock(world, clickPos, RayTraceMemory.getByFacing(this.frontFacing.opposite)) else this.rayTraceBlock(world, clickPos)
+                if (this.raytrace)
+                    this.clickBlock(world, clickPos, RayTraceMemory.getByFacing(this.frontFacing.opposite))
+                else
+                    this.rayTraceBlock(world, clickPos, RayTraceMemory.getByFacing(this.frontFacing.opposite))
             BlockEntityMode.ENTITY -> this.interactEntity(world, clickPos)
             BlockEntityMode.BLOCK_AND_ENTITY -> {
                 if (this.isBlockForBlockAndEntityMode) {
@@ -91,14 +89,14 @@ class ActivatorMetaTileEntity(
                 }
             }
         }
-        return false
+        return EnumActionResult.SUCCESS
     }
 
-    private fun clickBlock(world: World, clickPos: BlockPos, memory: RayTraceMemory): Boolean {
-        val pos = this.pos ?: return false
-        val world = world as? WorldServer ?: return false
+    protected fun clickBlock(world: World, clickPos: BlockPos, memory: RayTraceMemory) {
+        val pos = this.pos ?: return
+        val world = world as? WorldServer ?: return
         val filterMatches = filter?.testBlock(world, clickPos) ?: true
-        if (!filterMatches) return false
+        if (!filterMatches) return
 
         val heldItem = extractHeldItem()
 
@@ -114,12 +112,11 @@ class ActivatorMetaTileEntity(
         )
 
         toMachineInventory(player.inventory)
-        return false
+        return
     }
 
-    private fun rayTraceBlock(world: World, from: BlockPos) {
+    protected fun rayTraceBlock(world: World, from: BlockPos, memory: RayTraceMemory) {
         val world = world as? WorldServer ?: return
-        val memory = RayTraceMemory.getByFacing(this.frontFacing.opposite)
         val result = memory.rayTraceBlockFrom(
             world, from,
             stopOnLiquid = false,
@@ -151,10 +148,10 @@ class ActivatorMetaTileEntity(
         }
     }
 
-    private fun interactEntity(world: World, clickPos: BlockPos): Boolean {
-        if (inventoryCrowded()) return false
-        val pos = this.pos ?: return false
-        val world = this.world as? WorldServer ?: return false
+    protected fun interactEntity(world: World, clickPos: BlockPos) {
+        if (inventoryCrowded()) return
+        val pos = this.pos ?: return
+        val world = this.world as? WorldServer ?: return
 
         val heldItem = extractHeldItem()
 
@@ -163,11 +160,11 @@ class ActivatorMetaTileEntity(
         val entities = world.getEntitiesWithinAABB(Entity::class.java, this.rangeRelative.aabb()) { !scannedEntities.contains(it) }
         if (entities.isEmpty()) {
             scannedEntities.clear()
-            return false
+            return
         }
         player.interactOn(entities.first(), EnumHand.MAIN_HAND)
         toMachineInventory(player.inventory)
-        return false
+        return
     }
 
     protected fun extractHeldItem(): ItemStack {
@@ -198,33 +195,6 @@ class ActivatorMetaTileEntity(
     }
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
-        syncManager.registerSlotGroup("breaker_inv", 3)
-        val columnStr = "I".repeat(3)
-        val matrixStr = (0..<3).map { columnStr }
-
-        val startButton = ToggleButton()
-            .value(SyncHandlers.bool(::workingEnabled, ::workingEnabled::set))
-            .background(ClayGuiTextures.START_BUTTON)
-            .hoverBackground(ClayGuiTextures.START_BUTTON_HOVERED)
-            .selectedBackground(ClayGuiTextures.START_BUTTON_DISABLED)
-        val stopButton = ToggleButton()
-            .value(SyncHandlers.bool({ !workingEnabled }, { workingEnabled = false }))
-            .background(ClayGuiTextures.STOP_BUTTON)
-            .hoverBackground(ClayGuiTextures.STOP_BUTTON_HOVERED)
-            .selectedBackground(ClayGuiTextures.STOP_BUTTON_DISABLED)
-        val displayRange = CycleButtonWidget()
-            .background(ClayGuiTextures.DISPLAY_RANGE)
-            .hoverBackground(ClayGuiTextures.DISPLAY_RANGE_HOVERED)
-            .length(3)
-            .value(EnumValue.Dynamic(AreaMarkerRenderer.RangeRenderMode::class.java, ::rangeRenderMode, ::rangeRenderMode::set))
-            .tooltip(0) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.disabled")) }
-            .tooltip(1) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled")) }
-            .tooltip(2) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled_xray")) }
-        val resetButton = ButtonWidget()
-            .syncHandler(InteractionSyncHandler().setOnMousePressed { if (!it.isClient) resetButtonPressed() })
-            .background(ClayGuiTextures.RESET)
-            .hoverBackground(ClayGuiTextures.RESET_HOVERED)
-
         val blockEntityButton = CycleButtonWidget()
             .length(3)
             .value(SyncHandlers.enumValue(BlockEntityMode::class.java, ::blockEntityMode, ::blockEntityMode::set))
@@ -253,17 +223,6 @@ class ActivatorMetaTileEntity(
             .selectedHoverBackground(ClayGuiTextures.Clicker.SNEAK_HOVERED)
 
         return super.buildMainParentWidget(syncManager)
-            .child(Grid().coverChildren()
-                .row(startButton, stopButton)
-                .row(displayRange, resetButton)
-                .minElementMargin(1, 1)
-                .left(4).top(12)
-            )
-            .child(SlotGroupWidget.builder()
-                .matrix(*matrixStr.toTypedArray())
-                .key('I') { MuiSlots.itemSlotBuilder(itemInventory, it).slotGroup("breaker_inv").build() }
-                .build().alignX(Alignment.TopCenter.x).top(12)
-            )
             .child(Grid().coverChildren()
                 .row(blockEntityButton)
                 .row(raytraceButton)

@@ -86,9 +86,9 @@ object ClayGuiTextures {
     val DISPLAY_RANGE = button(48, 16)
     val DISPLAY_RANGE_HOVERED = button(48, 32)
 
-    val RESET_DISABLED = button(64, 0)
-    val RESET = button(64, 16)
-    val RESET_HOVERED = button(64, 32)
+    val REPEAT_DISABLED = button(64, 0)
+    val REPEAT = button(64, 16)
+    val REPEAT_HOVERED = button(64, 32)
     //endregion
 
     object Clicker {

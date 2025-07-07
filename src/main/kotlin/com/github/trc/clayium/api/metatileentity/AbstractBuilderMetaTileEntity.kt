@@ -1,8 +1,22 @@
 package com.github.trc.clayium.api.metatileentity
 
 import codechicken.lib.vec.Cuboid6
+import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.EnumValue
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.ParentWidget
+import com.cleanroommc.modularui.widgets.CycleButtonWidget
+import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.ToggleButton
+import com.cleanroommc.modularui.widgets.layout.Grid
+import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
+import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
+import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
@@ -10,6 +24,8 @@ import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer.RangeRenderMode
 import com.github.trc.clayium.common.config.ConfigCore
+import com.github.trc.clayium.common.gui.ClayGuiTextures
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -33,6 +49,7 @@ abstract class AbstractBuilderMetaTileEntity(
     validOutputModes: List<MachineIoMode> = validOutputModesLists[1],
     renderMinerBack: Boolean = true,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, name) {
+
     override val itemInventory = ClayiumItemStackHandler(this, 3 * 3)
     override val importItems = EmptyItemStackHandler
     override val exportItems = itemInventory
@@ -85,7 +102,7 @@ abstract class AbstractBuilderMetaTileEntity(
         val world = world ?: return
         val r = getAccelerationRate()
         if (!drawEnergy(r)) return
-        progress += AbstractMinerMetaTileEntity.Companion.PROGRESS_PER_TICK_BASE * getAccelerationRate()
+        progress += PROGRESS_PER_TICK_BASE * getAccelerationRate()
 
         var remainingBlocks = maxBlocksPerTick
         for (i in 0..<maxSearchBlockPerTick) {
@@ -106,6 +123,9 @@ abstract class AbstractBuilderMetaTileEntity(
                 EnumActionResult.FAIL -> break
             }
         }
+
+        // If all blocks are processed, reset progress.
+        if (remainingBlocks <= 0) progress = 0.0
     }
 
     /**
@@ -141,6 +161,60 @@ abstract class AbstractBuilderMetaTileEntity(
         super.readFromNBT(data)
         workingEnabled = data.getBoolean("workingEnabled")
         repeatEnabled = data.getBoolean("repeatEnabled")
+    }
+
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
+        syncManager.registerSlotGroup("builder_inventory", 3)
+        val columnStr = "I".repeat(3)
+        val matrixStr = (0..<3).map { columnStr }
+
+        return super.buildMainParentWidget(syncManager)
+            .child(this.createButtonGrid(syncManager)
+                .minElementMargin(1, 1)
+                .left(4).top(12)
+            )
+            .child(SlotGroupWidget.builder()
+                .matrix(*matrixStr.toTypedArray())
+                .key('I') { MuiSlots.itemSlotBuilder(itemInventory, it).slotGroup("builder_inventory").build() }
+                .build().alignX(Alignment.TopCenter.x).top(12)
+            )
+    }
+
+    protected open fun createButtonGrid(syncManager: PanelSyncManager): Grid {
+        val startButton = ToggleButton()
+            .value(SyncHandlers.bool(::workingEnabled, ::workingEnabled::set))
+            .background(ClayGuiTextures.START_BUTTON)
+            .hoverBackground(ClayGuiTextures.START_BUTTON_HOVERED)
+            .selectedBackground(ClayGuiTextures.START_BUTTON_DISABLED)
+        val stopButton = ToggleButton()
+            .value(SyncHandlers.bool({ !workingEnabled }, { workingEnabled = false }))
+            .background(ClayGuiTextures.STOP_BUTTON)
+            .hoverBackground(ClayGuiTextures.STOP_BUTTON_HOVERED)
+            .selectedBackground(ClayGuiTextures.STOP_BUTTON_DISABLED)
+        val displayRange = CycleButtonWidget()
+            .background(ClayGuiTextures.DISPLAY_RANGE)
+            .hoverBackground(ClayGuiTextures.DISPLAY_RANGE_HOVERED)
+            .length(3)
+            .value(EnumValue.Dynamic(RangeRenderMode::class.java, ::rangeRenderMode, ::rangeRenderMode::set))
+            .tooltip(0) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.disabled")) }
+            .tooltip(1) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled")) }
+            .tooltip(2) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled_xray")) }
+        val resetButton = ToggleButton()
+            .value(SyncHandlers.bool({ !repeatEnabled }, { repeatEnabled = false }))
+            .background(ClayGuiTextures.REPEAT)
+            .hoverBackground(ClayGuiTextures.REPEAT_HOVERED)
+            .selectedBackground(ClayGuiTextures.REPEAT_DISABLED)
+
+        return Grid().coverChildren()
+            .row(startButton, stopButton)
+            .row(displayRange, resetButton)
+    }
+
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
+        return ModularPanel.defaultPanel("builder", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 20)
+            .columnWithPlayerInv {
+                child(buildMainParentWidget(syncManager))
+            }
     }
 
     @SideOnly(Side.CLIENT)

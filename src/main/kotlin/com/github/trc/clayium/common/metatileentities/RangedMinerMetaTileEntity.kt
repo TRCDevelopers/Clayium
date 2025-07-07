@@ -46,16 +46,14 @@ open class RangedMinerMetaTileEntity(
                 return pos.toImmutable()
             }
         }
+        if (this.repeatEnabled) {
+            iterator.restart()
+        }
         return null
     }
 
     override fun drawEnergy(accelerationRate: Double): Boolean {
         return clayEnergyHolder.drawEnergy(CE_CONSUMPTION * getAccelerationRate(), false)
-    }
-
-    override fun resetButtonPressed(): Boolean {
-        this.posIter?.restart()
-        return true
     }
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
