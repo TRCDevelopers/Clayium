@@ -19,8 +19,10 @@ import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getCapability
+import com.github.trc.clayium.api.util.hasCapability
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.util.RayTraceMemory
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -50,12 +52,11 @@ open class ActivatorMetaTileEntity(
     override val rangeRelative: Cuboid6 get() = Cuboid6.full.copy().add(this.pos?.offset(this.frontFacing.opposite) ?: BlockPos.ORIGIN)
     override val maxBlocksPerTick = 1
 
-    protected val blockFilterSlot = ClayiumItemStackHandler(this, 1)
+    protected val filtersHandler = ClayiumItemStackHandler(this, 2)
     protected val blockFilter: IItemFilter?
-        get() = blockFilterSlot.getStackInSlot(0).getCapability(ClayiumCapabilities.ITEM_FILTER)
-    protected val itemFilterSlot = ClayiumItemStackHandler(this, 1)
+        get() = filtersHandler.getStackInSlot(0).getCapability(ClayiumCapabilities.ITEM_FILTER)
     protected val itemFilter: IItemFilter?
-        get() = itemFilterSlot.getStackInSlot(0).getCapability(ClayiumCapabilities.ITEM_FILTER)
+        get() = filtersHandler.getStackInSlot(1).getCapability(ClayiumCapabilities.ITEM_FILTER)
 
 
     protected var blockEntityMode = BlockEntityMode.BLOCK
@@ -241,6 +242,16 @@ open class ActivatorMetaTileEntity(
                 .row(sneakingButton)
                 .minElementMargin(1, 1)
                 .right(4).top(12)
+            )
+            .child(MuiSlots.phantomSlotBuilder(filtersHandler, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) }.build()
+                .background(ClayGuiTextures.FILTER_SLOT)
+                .top(12 + 2).right(24)
+                .tooltipBuilder { it.addLine(IKey.lang("gui.clayium.activator.block_filter")) }
+            )
+            .child(MuiSlots.phantomSlotBuilder(filtersHandler, 1).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) }.build()
+                .background(ClayGuiTextures.FILTER_SLOT)
+                .top(12 + 18 + 2 * 2).right(24)
+                .tooltipBuilder { it.addLine(IKey.lang("gui.clayium.activator.item_filter")) }
             )
     }
 
