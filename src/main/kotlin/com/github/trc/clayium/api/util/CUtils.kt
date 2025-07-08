@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagList
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
+import net.minecraft.world.GameType
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.WorldServer
 import net.minecraftforge.common.capabilities.Capability
@@ -196,10 +197,11 @@ object CUtils {
             }
     }
 
-    fun getFakePlayerWithItem(world: WorldServer, itemStack: ItemStack): FakePlayer {
+    fun getFakeSurvivalPlayerWithItem(world: WorldServer, itemStack: ItemStack): FakePlayer {
         return FakePlayerFactory.get(world, profile)
             .apply {
                 connection = FakeServerHandler(this)
+                setGameType(GameType.SURVIVAL)
                 inventory.clear()
                 inventory.setInventorySlotContents(0, itemStack)
                 inventory.currentItem = 0

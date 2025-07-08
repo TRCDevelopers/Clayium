@@ -76,7 +76,7 @@ class RayTraceMemory(
     }
 
     fun interactBlock(stack: ItemStack, world: WorldServer, pos: BlockPos, sneak: Boolean): InventoryPlayer {
-        val player = CUtils.getFakePlayerWithItem(world, stack)
+        val player = CUtils.getFakeSurvivalPlayerWithItem(world, stack)
         player.world = world
         player.setPositionAndRotation(
             entityRelPos.x + pos.x.toDouble(), entityRelPos.y + pos.y.toDouble(), entityRelPos.z + pos.z.toDouble(),

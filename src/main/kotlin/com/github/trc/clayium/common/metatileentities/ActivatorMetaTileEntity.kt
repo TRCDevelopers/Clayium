@@ -83,6 +83,7 @@ open class ActivatorMetaTileEntity(
     }
 
     override fun actionOnBlock(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
+        if (inventoryCrowded()) return EnumActionResult.FAIL
         val clickPos = getNextBlockPos() ?: return EnumActionResult.FAIL
         val world = this.world as? WorldServer ?: return EnumActionResult.FAIL
 
@@ -114,7 +115,7 @@ open class ActivatorMetaTileEntity(
 
         val heldItem = extractHeldItem()
 
-        val player = CUtils.getFakePlayerWithItem(world, heldItem)
+        val player = CUtils.getFakeSurvivalPlayerWithItem(world, heldItem)
 
         player.setWorld(world)
         player.setLocationAndAngles(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), 0f, 0f)
@@ -140,7 +141,7 @@ open class ActivatorMetaTileEntity(
         val passFilter = blockFilter == null || blockFilter?.testBlock(world, from) == true
         if (result != null && passFilter) {
             val heldItem = extractHeldItem()
-            val player = CUtils.getFakePlayerWithItem(world, heldItem)
+            val player = CUtils.getFakeSurvivalPlayerWithItem(world, heldItem)
                 .apply { this.interactionManager.gameType = GameType.SURVIVAL }
             // subtract eyeHeight because the player is "standing" on the block.
             // If you don't subtract eyeHeight, then it will be higher than this activator block's y coordinate.
@@ -163,23 +164,30 @@ open class ActivatorMetaTileEntity(
     }
 
     protected fun interactEntity(world: World, clickPos: BlockPos) {
-        if (inventoryCrowded()) return
-        val pos = this.pos ?: return
-        val world = this.world as? WorldServer ?: return
+        val world = world as? WorldServer ?: return
 
-        val heldItem = extractHeldItem()
-
-        val player = CUtils.getFakePlayerWithItem(world, heldItem)
-
-        val aabb = AxisAlignedBB(this.pos?.offset(this.frontFacing.opposite) ?: BlockPos.ORIGIN)
+        val aabb = AxisAlignedBB(clickPos)
         val entities = world.getEntitiesWithinAABB(Entity::class.java, aabb) { !scannedEntities.contains(it) }
         if (entities.isEmpty()) {
             scannedEntities.clear()
             return
         }
-        player.interactOn(entities.first(), EnumHand.MAIN_HAND)
+        interactEntity(world, clickPos)
+    }
+
+    protected fun rayTraceEntity(world: World, from: BlockPos, memory: RayTraceMemory) {
+        val world = world as? WorldServer ?: return
+        val result = memory.rayTraceEntityFrom(world, from)
+        if (result == null || result.entityHit == null) return
+        val entity: Entity = result.entityHit
+        interactOn(world, entity)
+    }
+
+    protected fun interactOn(world: WorldServer, entity: Entity) {
+        val heldItem = extractHeldItem()
+        val player = CUtils.getFakeSurvivalPlayerWithItem(world, heldItem)
+        player.interactOn(entity, EnumHand.MAIN_HAND)
         toMachineInventory(player.inventory)
-        return
     }
 
     protected fun extractHeldItem(): ItemStack {
