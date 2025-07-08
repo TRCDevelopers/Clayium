@@ -2,6 +2,7 @@ package com.github.trc.clayium.common.metatileentities
 
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IRayTraceMemoryApplicable
+import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.ClayMarkerHandler
 import com.github.trc.clayium.api.util.Cuboid6BlockPosIterator
 import com.github.trc.clayium.api.util.ITier
@@ -37,7 +38,6 @@ class RangedActivatorMetaTileEntity(
 
     override fun getNextBlockPos(): BlockPos? {
         val iter = posIter ?: return null
-        val world = world ?: return null
         if (iter.hasNext()) return iter.next().toImmutable()
 
         if (this.repeatEnabled) {
@@ -52,8 +52,8 @@ class RangedActivatorMetaTileEntity(
             ?: RayTraceMemory.getByFacing(this.frontFacing.opposite)
         when (this.blockEntityMode) {
             BLOCK -> if (this.enableRayTrace) this.rayTraceBlock(world, pos, memory) else this.clickBlock(world, pos, memory)
-            ENTITY -> TODO()
-            BLOCK_AND_ENTITY -> TODO()
+            ENTITY -> {}
+            BLOCK_AND_ENTITY -> {}
         }
 
         return EnumActionResult.SUCCESS
@@ -69,5 +69,9 @@ class RangedActivatorMetaTileEntity(
             return capability.cast(this)
         }
         return super.getCapability(capability, facing)
+    }
+
+    override fun createMetaTileEntity(): MetaTileEntity {
+        return RangedActivatorMetaTileEntity(metaTileEntityId, tier, "ranged_activator")
     }
 }
