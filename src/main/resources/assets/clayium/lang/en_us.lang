@@ -876,6 +876,7 @@ item.clayium.direction_memory.name=Direction Memory Card
 item.clayium.direction_memory.tooltip1=Used to configure in what direction
 item.clayium.direction_memory.tooltip2=an Area Activator aims while using items.
 item.clayium.direction_memory.saved=Direction saved.
+item.clayium.direction_memory.applied=Applied direction memory.
 
 item.clayium.compressed_clay_shard.name=Compressed Clay Shard
 item.clayium.industrial_clay_shard.name=Industrial Clay Shard

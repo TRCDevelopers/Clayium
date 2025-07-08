@@ -43,4 +43,7 @@ object ClayiumTileCapabilities {
 
     @CapabilityInject(IItemFilterApplicatable::class)
     lateinit var ITEM_FILTER_APPLICATABLE: Capability<IItemFilterApplicatable>
+
+    @CapabilityInject(IRayTraceMemoryApplicable::class)
+    lateinit var RAY_TRACE_MEMORY_APPLICABLE: Capability<IRayTraceMemoryApplicable>
 }

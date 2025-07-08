@@ -673,6 +673,7 @@ item.clayium.direction_memory.name=方向メモリー
 item.clayium.direction_memory.tooltip1=クリック方向・位置を保存し、
 item.clayium.direction_memory.tooltip2=範囲代行機に設定を適用する
 item.clayium.direction_memory.saved=方向を記録しました。
+item.clayium.direction_memory.applied=方向メモリーを適用しました。
 
 item.clayium.compressed_clay_shard.name=圧縮粘土片
 item.clayium.industrial_clay_shard.name=工業用粘土片

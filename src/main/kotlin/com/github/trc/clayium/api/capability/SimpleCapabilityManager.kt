@@ -35,6 +35,7 @@ object SimpleCapabilityManager {
         registerCapabilityWithNoDefault(MultiblockLogic::class.java)
         registerCapabilityWithNoDefault(IPipeConnectable::class.java)
         registerCapabilityWithNoDefault(IItemFilterApplicatable::class.java)
+        registerCapabilityWithNoDefault(IRayTraceMemoryApplicable::class.java)
 
         registerCapabilityWithNoDefault(ISynchronizedInterface::class.java)
         registerCapabilityWithNoDefault(IItemFilter::class.java)

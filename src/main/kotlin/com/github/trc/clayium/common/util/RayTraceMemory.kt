@@ -143,7 +143,8 @@ class RayTraceMemory(
             RayTraceMemory(entity, hit, facing.opposite) // hit side is opposite of raytrace direction
         }
 
-        fun from(nbt: NBTTagCompound): RayTraceMemory {
+        fun from(nbt: NBTTagCompound?): RayTraceMemory? {
+            if (nbt == null) return null
             val entityPos = Vec3d(
                 nbt.getDouble("ex"),
                 nbt.getDouble("ey"),
