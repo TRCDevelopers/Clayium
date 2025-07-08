@@ -60,7 +60,7 @@ open class ActivatorMetaTileEntity(
         get() = filtersHandler.getStackInSlot(1).getCapability(ClayiumCapabilities.ITEM_FILTER)
 
     protected var blockEntityMode = BlockEntityMode.BLOCK
-    protected var raytrace = false
+    protected var enableRayTrace = false
     protected var sneaking = false
 
     private var isBlockForBlockAndEntityMode = true
@@ -87,7 +87,7 @@ open class ActivatorMetaTileEntity(
 
         when (blockEntityMode) {
             BlockEntityMode.BLOCK ->
-                if (this.raytrace)
+                if (this.enableRayTrace)
                     this.clickBlock(world, clickPos, RayTraceMemory.getByFacing(this.frontFacing.opposite))
                 else
                     this.rayTraceBlock(world, clickPos, RayTraceMemory.getByFacing(this.frontFacing.opposite))
@@ -224,7 +224,7 @@ open class ActivatorMetaTileEntity(
             .tooltip(1) { it.addLine(IKey.lang("gui.clayium.activator.click_mode.entity")) }
             .tooltip(2) { it.addLine(IKey.lang("gui.clayium.activator.click_mode.both")) }
         val raytraceButton = ToggleButton()
-            .value(SyncHandlers.bool(::raytrace, ::raytrace::set))
+            .value(SyncHandlers.bool(::enableRayTrace, ::enableRayTrace::set))
             .background(ClayGuiTextures.Clicker.FIXED_TARGET)
             .hoverBackground(ClayGuiTextures.Clicker.FIXED_TARGET_HOVERED)
             .selectedBackground(ClayGuiTextures.Clicker.RAYTRACE)
@@ -261,7 +261,7 @@ open class ActivatorMetaTileEntity(
     override fun writeToNBT(data: NBTTagCompound) {
         super.writeToNBT(data)
         data.setInteger("blockEntityMode", blockEntityMode.ordinal)
-        data.setBoolean("raytrace", raytrace)
+        data.setBoolean("raytrace", enableRayTrace)
         data.setBoolean("sneaking", sneaking)
         data.setBoolean("isBlockForBlockAndEntityMode", isBlockForBlockAndEntityMode)
     }
@@ -269,7 +269,7 @@ open class ActivatorMetaTileEntity(
     override fun readFromNBT(data: NBTTagCompound) {
         super.readFromNBT(data)
         blockEntityMode = BlockEntityMode.entries.getOrElse(data.getInteger("blockEntityMode")) { BlockEntityMode.BLOCK }
-        raytrace = data.getBoolean("raytrace")
+        enableRayTrace = data.getBoolean("raytrace")
         sneaking = data.getBoolean("sneaking")
         isBlockForBlockAndEntityMode = data.getBoolean("isBlockForBlockAndEntityMode")
     }

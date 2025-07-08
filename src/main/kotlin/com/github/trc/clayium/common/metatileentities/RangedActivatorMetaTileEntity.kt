@@ -46,7 +46,7 @@ class RangedActivatorMetaTileEntity(
         val memory = this.rayTraceMemory
             ?: RayTraceMemory.getByFacing(this.frontFacing.opposite)
         when (this.blockEntityMode) {
-            BLOCK -> if (this.raytrace) this.rayTraceBlock(world, pos, memory) else this.clickBlock(world, pos, memory)
+            BLOCK -> if (this.enableRayTrace) this.rayTraceBlock(world, pos, memory) else this.clickBlock(world, pos, memory)
             ENTITY -> TODO()
             BLOCK_AND_ENTITY -> TODO()
         }
