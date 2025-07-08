@@ -1,6 +1,5 @@
 package com.github.trc.clayium.common.metatileentities
 
-import codechicken.lib.vec.Cuboid6
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
@@ -69,13 +68,7 @@ open class RangedMinerMetaTileEntity(
         super.onPlacement()
     }
 
-    // clayMarkerHandler.markedRangeAbsolute is absolute, so we need to convert it to relative.
-    // However, creating a new instance every time is costly, so we use backingRange.
-    private val backingRange = Cuboid6(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
-    override val rangeRelativeClient: Cuboid6?
-        get() {
-            return clayMarkerHandler.markedRangeAbsolute?.let { backingRange.set(it).subtract(pos) }
-        }
+    override val rangeRelativeClient get() = clayMarkerHandler.markedRangeRelative
 
     override fun createMetaTileEntity() = RangedMinerMetaTileEntity(metaTileEntityId, tier)
 

@@ -22,6 +22,11 @@ class ClayMarkerHandler(
     var markedRangeAbsolute: Cuboid6? = null
         private set
 
+    // MetaTileEntity.pos is mutable. So we need to set it every time.
+    // But creating a new instance every time is expensive, thus we use a backing field.
+    private val backingRange: Cuboid6 = Cuboid6.full.copy()
+    val markedRangeRelative get() = markedRangeAbsolute?.let { backingRange.set(it).subtract(metaTileEntity.pos) }
+
     override fun onPlacement() {
         this.markedRangeAbsolute = this.getRangeFromNeighborMarker()
         writeMarkedRange()

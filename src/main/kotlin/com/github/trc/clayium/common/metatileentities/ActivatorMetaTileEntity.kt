@@ -49,7 +49,7 @@ open class ActivatorMetaTileEntity(
     @Suppress("unused")
     val ioHandler = AutoIoHandler.Exporter(this)
 
-    override val rangeRelativeClient: Cuboid6 get() = Cuboid6.full.copy().add(this.pos?.offset(this.frontFacing.opposite) ?: BlockPos.ORIGIN)
+    override val rangeRelativeClient: Cuboid6? get() = Cuboid6.full.copy().add(this.pos?.offset(this.frontFacing.opposite) ?: BlockPos.ORIGIN)
     override val maxBlocksPerTick = 1
 
     protected val filtersHandler = ClayiumItemStackHandler(this, 2)

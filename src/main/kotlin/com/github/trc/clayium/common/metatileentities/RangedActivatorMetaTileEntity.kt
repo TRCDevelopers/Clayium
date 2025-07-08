@@ -21,6 +21,7 @@ class RangedActivatorMetaTileEntity(
     private val clayMarkerHandler = ClayMarkerHandler(this)
 
     override val maxBlocksPerTick: Int = ConfigCore.misc.rangedMinerMaxBlocksPerTick
+    override val rangeRelativeClient get() = clayMarkerHandler.markedRangeRelative
 
     private val posIter: Cuboid6BlockPosIterator? by lazy {
         val range = clayMarkerHandler.markedRangeAbsolute?.copy() ?: return@lazy null
