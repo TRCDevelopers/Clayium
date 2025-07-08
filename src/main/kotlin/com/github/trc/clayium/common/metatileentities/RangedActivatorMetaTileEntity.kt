@@ -1,5 +1,7 @@
 package com.github.trc.clayium.common.metatileentities
 
+import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
+import com.github.trc.clayium.api.capability.IRayTraceMemoryApplicable
 import com.github.trc.clayium.api.metatileentity.trait.ClayMarkerHandler
 import com.github.trc.clayium.api.util.Cuboid6BlockPosIterator
 import com.github.trc.clayium.api.util.ITier
@@ -10,14 +12,17 @@ import com.github.trc.clayium.common.metatileentities.ActivatorMetaTileEntity.Bl
 import com.github.trc.clayium.common.util.RayTraceMemory
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.EnumActionResult
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import net.minecraftforge.common.capabilities.Capability
 
 class RangedActivatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : ActivatorMetaTileEntity(metaTileEntityId, tier) {
+    machineName: String,
+) : ActivatorMetaTileEntity(metaTileEntityId, tier, machineName), IRayTraceMemoryApplicable {
     private val clayMarkerHandler = ClayMarkerHandler(this)
 
     override val maxBlocksPerTick: Int = ConfigCore.misc.rangedMinerMaxBlocksPerTick
@@ -52,5 +57,17 @@ class RangedActivatorMetaTileEntity(
         }
 
         return EnumActionResult.SUCCESS
+    }
+
+    override fun acceptRayTraceMemory(rayTraceMemory: RayTraceMemory): Boolean {
+        this.rayTraceMemory = rayTraceMemory
+        return true
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === ClayiumTileCapabilities.RAY_TRACE_MEMORY_APPLICABLE) {
+            return capability.cast(this)
+        }
+        return super.getCapability(capability, facing)
     }
 }

@@ -44,8 +44,9 @@ import net.minecraftforge.items.ItemHandlerHelper
 
 open class ActivatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
-    tier: ITier
-) : AbstractBuilderMetaTileEntity(metaTileEntityId, tier, "activator", bufferValidInputModes) {
+    tier: ITier,
+    machineName: String,
+) : AbstractBuilderMetaTileEntity(metaTileEntityId, tier, machineName, bufferValidInputModes) {
 
     @Suppress("unused")
     val ioHandler = AutoIoHandler.Exporter(this)
@@ -275,11 +276,11 @@ open class ActivatorMetaTileEntity(
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
-        return ActivatorMetaTileEntity(metaTileEntityId, tier)
+        return ActivatorMetaTileEntity(metaTileEntityId, tier, "activator")
     }
 
     override val renderingConfig by lazy {
-        MteRenderingConfig.face(clayiumId("blocks/areaactivator"))
+        MteRenderingConfig.face(clayiumId("blocks/activator"))
     }
 
     override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {

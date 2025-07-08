@@ -8,9 +8,9 @@
   },
   "variants": {
     "tier": {
-      "az91d": {
+      "zk60a": {
         "textures": {
-          "base": "clayium:blocks/az91d_hull"
+          "base": "clayium:blocks/zk60a_hull"
         },
         "model": "clayium:machine"
       }

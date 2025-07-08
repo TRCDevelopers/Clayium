@@ -21,13 +21,18 @@ class ItemDirectionMemory : Item() {
         maxStackSize = 1
     }
 
-    override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
-        if (worldIn.isRemote) return EnumActionResult.PASS
+    override fun onItemUseFirst(player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, hand: EnumHand): EnumActionResult {
+        if (world.isRemote) return EnumActionResult.PASS
 
-        if (tryApplyDirectionMemory(player, hand, worldIn, pos, facing)) {
+        if (tryApplyDirectionMemory(player, hand, world, pos, side)) {
             player.sendMessage(TextComponentTranslation("item.clayium.direction_memory.applied"))
             return EnumActionResult.SUCCESS
         }
+        return EnumActionResult.PASS
+    }
+
+    override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
+        if (worldIn.isRemote) return EnumActionResult.PASS
 
         val eyeHeight = player.eyeHeight
         val playerVector = player.positionVector.add(0.0, eyeHeight.toDouble(), 0.0)
