@@ -182,7 +182,7 @@ abstract class AbstractBuilderMetaTileEntity(
 
     protected open fun createButtonGrid(syncManager: PanelSyncManager): Grid {
         val startButton = ToggleButton()
-            .value(SyncHandlers.bool(::workingEnabled, ::workingEnabled::set))
+            .value(SyncHandlers.bool(::workingEnabled, { workingEnabled = true }))
             .background(ClayGuiTextures.START_BUTTON)
             .hoverBackground(ClayGuiTextures.START_BUTTON_HOVERED)
             .selectedBackground(ClayGuiTextures.START_BUTTON_DISABLED)
@@ -199,15 +199,15 @@ abstract class AbstractBuilderMetaTileEntity(
             .tooltip(0) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.disabled")) }
             .tooltip(1) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled")) }
             .tooltip(2) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled_xray")) }
-        val resetButton = ToggleButton()
-            .value(SyncHandlers.bool({ !repeatEnabled }, { repeatEnabled = false }))
+        val repeatButton = ToggleButton()
+            .value(SyncHandlers.bool(::repeatEnabled, ::repeatEnabled::set))
             .background(ClayGuiTextures.REPEAT)
             .hoverBackground(ClayGuiTextures.REPEAT_HOVERED)
             .selectedBackground(ClayGuiTextures.REPEAT_DISABLED)
 
         return Grid().coverChildren()
             .row(startButton, stopButton)
-            .row(displayRange, resetButton)
+            .row(displayRange, repeatButton)
     }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
