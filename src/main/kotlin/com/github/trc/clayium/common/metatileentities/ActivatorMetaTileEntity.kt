@@ -21,6 +21,9 @@ import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getCapability
 import com.github.trc.clayium.api.util.hasCapability
 import com.github.trc.clayium.common.gui.ClayGuiTextures
+import com.github.trc.clayium.common.metatileentities.ActivatorMetaTileEntity.BlockEntityMode.BLOCK
+import com.github.trc.clayium.common.metatileentities.ActivatorMetaTileEntity.BlockEntityMode.BLOCK_AND_ENTITY
+import com.github.trc.clayium.common.metatileentities.ActivatorMetaTileEntity.BlockEntityMode.ENTITY
 import com.github.trc.clayium.common.util.RayTraceMemory
 import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.Block
@@ -36,7 +39,8 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
-import net.minecraft.world.GameType
+import net.minecraft.util.math.RayTraceResult
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
 import net.minecraftforge.common.property.IExtendedBlockState
@@ -84,26 +88,32 @@ open class ActivatorMetaTileEntity(
 
     override fun actionOnBlock(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
         if (inventoryCrowded()) return EnumActionResult.FAIL
-        val clickPos = getNextBlockPos() ?: return EnumActionResult.FAIL
         val world = this.world as? WorldServer ?: return EnumActionResult.FAIL
 
-        when (blockEntityMode) {
-            BlockEntityMode.BLOCK ->
-                if (this.enableRayTrace)
-                    this.clickBlock(world, clickPos, RayTraceMemory.getByFacing(this.frontFacing.opposite))
-                else
-                    this.rayTraceBlock(world, clickPos, RayTraceMemory.getByFacing(this.frontFacing.opposite))
-            BlockEntityMode.ENTITY -> this.interactEntity(world, clickPos)
-            BlockEntityMode.BLOCK_AND_ENTITY -> {
-                if (this.isBlockForBlockAndEntityMode) {
-                    this.clickBlock(world, clickPos, RayTraceMemory.getByFacing(this.frontFacing.opposite))
-                    this.isBlockForBlockAndEntityMode = false
-                } else {
-                    this.interactEntity(world, clickPos)
-                    this.isBlockForBlockAndEntityMode = true
+        val memory = RayTraceMemory.getByFacing(this.frontFacing.opposite)
+
+        if (this.enableRayTrace) {
+            when (blockEntityMode) {
+                BLOCK -> this.rayTraceBlock(world, pos, memory)
+                ENTITY -> this.rayTraceEntity(world, pos, memory)
+                BLOCK_AND_ENTITY -> this.rayTraceAny(world, pos, memory)
+            }
+        } else {
+            when (blockEntityMode) {
+                BLOCK -> this.clickBlock(world, pos, memory)
+                ENTITY -> this.clickEntity(world, pos)
+                BLOCK_AND_ENTITY -> {
+                    if (this.isBlockForBlockAndEntityMode) {
+                        this.clickBlock(world, pos, memory)
+                        this.isBlockForBlockAndEntityMode = false
+                    } else {
+                        this.clickEntity(world, pos)
+                        this.isBlockForBlockAndEntityMode = true
+                    }
                 }
             }
         }
+
         return EnumActionResult.SUCCESS
     }
 
@@ -130,6 +140,35 @@ open class ActivatorMetaTileEntity(
         return
     }
 
+    protected fun rayTraceAny(world: World, from: BlockPos, memory: RayTraceMemory) {
+        val world = world as? WorldServer ?: return
+        val entityRayTraceResult = memory.rayTraceEntityFrom(world, from)
+        val blockRayTraceResult = memory.rayTraceBlockFrom(
+            world, from,
+            stopOnLiquid = false,
+            ignoreBlockWithoutBoundingBox = false,
+            returnLastUncollidableBlock = false
+        )
+        val bothNotNull = entityRayTraceResult != null && blockRayTraceResult != null
+        val fromVec3d = Vec3d(from)
+        val result = if (bothNotNull) {
+            val entityDistance = fromVec3d.distanceTo(entityRayTraceResult.hitVec)
+            val blockDistance = fromVec3d.distanceTo(blockRayTraceResult.hitVec)
+            if (entityDistance < blockDistance) {
+                entityRayTraceResult
+            } else {
+                blockRayTraceResult
+            }
+        } else {
+            entityRayTraceResult ?: blockRayTraceResult ?: return
+        }
+        when (result.typeOfHit) {
+            RayTraceResult.Type.MISS -> {}
+            RayTraceResult.Type.BLOCK -> this.clickBlockUsingRayTraceResult(world, from, memory, result)
+            RayTraceResult.Type.ENTITY -> this.interactOn(world, result.entityHit)
+        }
+    }
+
     protected fun rayTraceBlock(world: World, from: BlockPos, memory: RayTraceMemory) {
         val world = world as? WorldServer ?: return
         val result = memory.rayTraceBlockFrom(
@@ -138,32 +177,40 @@ open class ActivatorMetaTileEntity(
             ignoreBlockWithoutBoundingBox = false,
             returnLastUncollidableBlock = false
         )
-        val passFilter = blockFilter == null || blockFilter?.testBlock(world, from) == true
-        if (result != null && passFilter) {
-            val heldItem = extractHeldItem()
-            val player = CUtils.getFakeSurvivalPlayerWithItem(world, heldItem)
-                .apply { this.interactionManager.gameType = GameType.SURVIVAL }
-            // subtract eyeHeight because the player is "standing" on the block.
-            // If you don't subtract eyeHeight, then it will be higher than this activator block's y coordinate.
-            val playerY = from.y.toDouble() - player.eyeHeight
-            val playerPos = memory.entityRelPos.add(from.x.toDouble(), from.y.toDouble() - player.eyeHeight, from.z.toDouble())
-            player.setWorld(world)
-            player.setLocationAndAngles(playerPos.x, playerPos.y, playerPos.z, memory.yaw.toFloat(), memory.pitch.toFloat())
-            player.isSneaking = sneaking
-            val itemUseResult = player.interactionManager.processRightClick(
-                player, world, heldItem, EnumHand.MAIN_HAND,
-            )
-            if (itemUseResult == null || itemUseResult == EnumActionResult.PASS || itemUseResult == EnumActionResult.FAIL) {
-                player.interactionManager.processRightClickBlock(
-                    player, world, heldItem, EnumHand.MAIN_HAND, result.blockPos,
-                    memory.side, memory.hit.x.toFloat(), memory.hit.y.toFloat(), memory.hit.z.toFloat(),
-                )
-            }
-            toMachineInventory(player.inventory)
+        if (result != null) {
+            this.clickBlockUsingRayTraceResult(world, from, memory, result)
         }
     }
 
-    protected fun interactEntity(world: World, clickPos: BlockPos) {
+    protected fun clickBlockUsingRayTraceResult(world: World, from: BlockPos, memory: RayTraceMemory, result: RayTraceResult) {
+        val world = world as? WorldServer ?: return
+        val pos: BlockPos = result.blockPos
+        val blockFilter = this.blockFilter
+        val passFilter = blockFilter == null || blockFilter.testBlock(world, pos)
+        if (!passFilter) return
+
+        val heldItem = extractHeldItem()
+        val player = CUtils.getFakeSurvivalPlayerWithItem(world, heldItem)
+        // subtract eyeHeight because the player is "standing" on the block.
+        // If you don't subtract eyeHeight, then it will be higher than this activator block's y coordinate.
+        val playerY = from.y.toDouble() - player.eyeHeight
+        val playerPos = memory.entityRelPos.add(from.x.toDouble(), from.y.toDouble() - player.eyeHeight, from.z.toDouble())
+        player.setWorld(world)
+        player.setLocationAndAngles(playerPos.x, playerPos.y, playerPos.z, memory.yaw.toFloat(), memory.pitch.toFloat())
+        player.isSneaking = sneaking
+        val itemUseResult = player.interactionManager.processRightClick(
+            player, world, heldItem, EnumHand.MAIN_HAND,
+        )
+        if (itemUseResult == null || itemUseResult == EnumActionResult.PASS || itemUseResult == EnumActionResult.FAIL) {
+            player.interactionManager.processRightClickBlock(
+                player, world, heldItem, EnumHand.MAIN_HAND, result.blockPos,
+                memory.side, memory.hit.x.toFloat(), memory.hit.y.toFloat(), memory.hit.z.toFloat(),
+            )
+        }
+        toMachineInventory(player.inventory)
+    }
+
+    protected fun clickEntity(world: World, clickPos: BlockPos) {
         val world = world as? WorldServer ?: return
 
         val aabb = AxisAlignedBB(clickPos)
@@ -172,7 +219,7 @@ open class ActivatorMetaTileEntity(
             scannedEntities.clear()
             return
         }
-        interactEntity(world, clickPos)
+        interactOn(world, entities.first())
     }
 
     protected fun rayTraceEntity(world: World, from: BlockPos, memory: RayTraceMemory) {
@@ -223,12 +270,12 @@ open class ActivatorMetaTileEntity(
         val blockEntityButton = CycleButtonWidget()
             .length(3)
             .value(SyncHandlers.enumValue(BlockEntityMode::class.java, ::blockEntityMode, ::blockEntityMode::set))
-            .stateBackground(BlockEntityMode.BLOCK, ClayGuiTextures.Clicker.BLOCK)
-            .stateHoverBackground(BlockEntityMode.BLOCK, ClayGuiTextures.Clicker.BLOCK_HOVERED)
-            .stateBackground(BlockEntityMode.ENTITY, ClayGuiTextures.Clicker.ENTITY)
-            .stateHoverBackground(BlockEntityMode.ENTITY, ClayGuiTextures.Clicker.ENTITY_HOVERED)
-            .stateBackground(BlockEntityMode.BLOCK_AND_ENTITY, ClayGuiTextures.Clicker.BLOCK_AND_ENTITY)
-            .stateHoverBackground(BlockEntityMode.BLOCK_AND_ENTITY, ClayGuiTextures.Clicker.BLOCK_AND_ENTITY_HOVERED)
+            .stateBackground(BLOCK, ClayGuiTextures.Clicker.BLOCK)
+            .stateHoverBackground(BLOCK, ClayGuiTextures.Clicker.BLOCK_HOVERED)
+            .stateBackground(ENTITY, ClayGuiTextures.Clicker.ENTITY)
+            .stateHoverBackground(ENTITY, ClayGuiTextures.Clicker.ENTITY_HOVERED)
+            .stateBackground(BLOCK_AND_ENTITY, ClayGuiTextures.Clicker.BLOCK_AND_ENTITY)
+            .stateHoverBackground(BLOCK_AND_ENTITY, ClayGuiTextures.Clicker.BLOCK_AND_ENTITY_HOVERED)
             .tooltip(0) { it.addLine(IKey.lang("gui.clayium.activator.click_mode.block")) }
             .tooltip(1) { it.addLine(IKey.lang("gui.clayium.activator.click_mode.entity")) }
             .tooltip(2) { it.addLine(IKey.lang("gui.clayium.activator.click_mode.both")) }
@@ -238,8 +285,8 @@ open class ActivatorMetaTileEntity(
             .hoverBackground(ClayGuiTextures.Clicker.FIXED_TARGET_HOVERED)
             .selectedBackground(ClayGuiTextures.Clicker.RAYTRACE)
             .selectedHoverBackground(ClayGuiTextures.Clicker.RAYTRACE_HOVERED)
-            .tooltip(false) { it.addLine(IKey.lang("gui.clayium.activator.raytrace_enabled")) }
-            .tooltip(true) { it.addLine(IKey.lang("gui.clayium.activator.raytrace_disabled")) }
+            .tooltip(false) { it.addLine(IKey.lang("gui.clayium.activator.raytrace_disabled")) }
+            .tooltip(true) { it.addLine(IKey.lang("gui.clayium.activator.raytrace_enabled")) }
         val sneakingButton = ToggleButton()
             .value(SyncHandlers.bool(::sneaking, ::sneaking::set))
             .background(ClayGuiTextures.Clicker.NO_SNEAK)
