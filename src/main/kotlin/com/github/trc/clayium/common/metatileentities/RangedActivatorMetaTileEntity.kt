@@ -32,7 +32,13 @@ class RangedActivatorMetaTileEntity(
     override fun getNextBlockPos(): BlockPos? {
         val iter = posIter ?: return null
         val world = world ?: return null
-        return if (iter.hasNext()) iter.next().toImmutable() else null
+        if (iter.hasNext()) return iter.next().toImmutable()
+
+        if (this.repeatEnabled) {
+            iter.restart()
+            if (iter.hasNext()) return iter.next().toImmutable()
+        }
+        return null
     }
 
     override fun actionOnBlock(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
