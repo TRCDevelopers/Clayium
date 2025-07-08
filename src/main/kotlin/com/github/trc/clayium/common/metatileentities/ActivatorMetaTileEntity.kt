@@ -59,7 +59,6 @@ open class ActivatorMetaTileEntity(
     protected val itemFilter: IItemFilter?
         get() = filtersHandler.getStackInSlot(1).getCapability(ClayiumCapabilities.ITEM_FILTER)
 
-
     protected var blockEntityMode = BlockEntityMode.BLOCK
     protected var raytrace = false
     protected var sneaking = false
@@ -185,7 +184,9 @@ open class ActivatorMetaTileEntity(
     protected fun extractHeldItem(): ItemStack {
         return (0..<this.itemInventory.slots).firstNotNullOfOrNull { i ->
             val stack = this.itemInventory.getStackInSlot(i)
-            if (stack.isEmpty) null else this.itemInventory.extractItem(i, Int.MAX_VALUE, false)
+            val itemFilter = this.itemFilter
+            val filterPass = itemFilter == null || itemFilter.test(stack)
+            if (stack.isEmpty || !filterPass) null else this.itemInventory.extractItem(i, Int.MAX_VALUE, false)
         } ?: ItemStack.EMPTY
     }
 
