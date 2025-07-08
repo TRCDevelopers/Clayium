@@ -49,7 +49,7 @@ open class ActivatorMetaTileEntity(
     @Suppress("unused")
     val ioHandler = AutoIoHandler.Exporter(this)
 
-    override val rangeRelative: Cuboid6 get() = Cuboid6.full.copy().add(this.pos?.offset(this.frontFacing.opposite) ?: BlockPos.ORIGIN)
+    override val rangeRelativeClient: Cuboid6 get() = Cuboid6.full.copy().add(this.pos?.offset(this.frontFacing.opposite) ?: BlockPos.ORIGIN)
     override val maxBlocksPerTick = 1
 
     protected val filtersHandler = ClayiumItemStackHandler(this, 2)
@@ -170,7 +170,7 @@ open class ActivatorMetaTileEntity(
 
         val player = CUtils.getFakePlayerWithItem(world, heldItem)
 
-        val entities = world.getEntitiesWithinAABB(Entity::class.java, this.rangeRelative.aabb()) { !scannedEntities.contains(it) }
+        val entities = world.getEntitiesWithinAABB(Entity::class.java, this.rangeRelativeClient.aabb()) { !scannedEntities.contains(it) }
         if (entities.isEmpty()) {
             scannedEntities.clear()
             return

@@ -75,10 +75,12 @@ abstract class AbstractBuilderMetaTileEntity(
     abstract fun getNextBlockPos(): BlockPos?
 
     /**
-     * used for rendering.
+     * used for rendering ONLY.
      * null for disable range rendering.
+     *
+     * This value is invalid on the server side.
      */
-    abstract val rangeRelative: Cuboid6?
+    abstract val rangeRelativeClient: Cuboid6?
 
     abstract val maxBlocksPerTick: Int
     open val maxSearchBlockPerTick = ConfigCore.misc.builderMaxSearchBlocksPerTick
@@ -225,7 +227,7 @@ abstract class AbstractBuilderMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
-        AreaMarkerRenderer.render(Cuboid6.full, rangeRelative, x, y, z, rangeRenderMode)
+        AreaMarkerRenderer.render(Cuboid6.full, rangeRelativeClient, x, y, z, rangeRenderMode)
     }
 
     @SideOnly(Side.CLIENT)
