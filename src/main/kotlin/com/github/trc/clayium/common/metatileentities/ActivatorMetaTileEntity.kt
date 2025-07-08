@@ -34,6 +34,7 @@ import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.GameType
 import net.minecraft.world.World
@@ -170,7 +171,8 @@ open class ActivatorMetaTileEntity(
 
         val player = CUtils.getFakePlayerWithItem(world, heldItem)
 
-        val entities = world.getEntitiesWithinAABB(Entity::class.java, this.rangeRelativeClient.aabb()) { !scannedEntities.contains(it) }
+        val aabb = AxisAlignedBB(this.pos?.offset(this.frontFacing.opposite) ?: BlockPos.ORIGIN)
+        val entities = world.getEntitiesWithinAABB(Entity::class.java, aabb) { !scannedEntities.contains(it) }
         if (entities.isEmpty()) {
             scannedEntities.clear()
             return
