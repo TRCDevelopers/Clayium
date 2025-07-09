@@ -54,7 +54,7 @@ class ItemDirectionMemory : Item() {
 
     private fun tryApplyDirectionMemory(player: EntityPlayer, hand: EnumHand, world: World, pos: BlockPos, facing: EnumFacing): Boolean {
         if (world.isRemote) return false
-        val memory = RayTraceMemory.from(player.getHeldItem(hand).tagCompound)
+        val memory = RayTraceMemory.from(player.getHeldItem(hand).tagCompound?.getCompoundTag("direction_memory"))
             ?: return false
         return world.getTileEntity(pos)
             ?.getCapability(ClayiumTileCapabilities.RAY_TRACE_MEMORY_APPLICABLE, facing)
