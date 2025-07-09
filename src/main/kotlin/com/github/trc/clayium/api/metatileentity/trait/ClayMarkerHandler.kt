@@ -26,6 +26,7 @@ class ClayMarkerHandler(
 
     val renderingRangeRelative get() = markedRangeAbsolute?.let { (minPos, maxPos) ->
         Cuboid6(minPos, maxPos.add(1.0, 1.0, 1.0))
+            .subtract(metaTileEntity.pos)
     }
 
     override fun onPlacement() {
