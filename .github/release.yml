@@ -1,6 +1,7 @@
 changelog:
   exclude:
     labels:
+      - "documentation"
       - "ignore changelog"
       - "type: ci"
 

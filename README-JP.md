@@ -8,62 +8,56 @@
 </h1>
 
 <p align="center">
-  English | <a href="/README-JP.md">日本語</a>
+  <a href="/README.md">English</a> | 日本語
 </p>
 
-An **unofficial** 1.12.2 port of Clayium.
-The original version was made by deb_rk,
-and published on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/clayium) under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/).
+Clayiumの1.12.2向け**非公式**移植版です。
+オリジナルはdeb_rk氏によって作成され、[CurseForge](https://www.curseforge.com/minecraft/mc-mods/clayium)にて[CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/)のもとで公開されています。
 
-If you encounter bugs or crashes, or have feature suggestions, please create an [Issue](https://github.com/TRCDevelopers/Clayium/issues).
+バグやクラッシュに遭遇した場合、また機能の提案などがあるときには、[Issue](https://github.com/TRCDevelopers/Clayium/issues)を作成してください。
 
-## Required Mods
-
+## 前提Mod
 - [ModularUI](https://github.com/CleanroomMC/ModularUI) (v2.5.0-rc5)
 - [CodeChickenLib](https://github.com/TheCBProject/CodeChickenLib)
 - [Forgelin Continuous](https://github.com/ChAoSUnItY/Forgelin-Continuous)
 
-## Recipe Customization
+## レシピのカスタマイズ
+[GroovyScript](https://github.com/CleanroomMC/GroovyScript)を用いて行うことができます。
+詳細は[wiki](https://trcdevelopers.github.io/Clayium/)を参照してください。
 
-We have integration with [GroovyScript](https://github.com/CleanroomMC/GroovyScript).
+## 実装済みの要素
 
-See [wiki](https://trcdevelopers.github.io/Clayium/) for more information.
+下記のものを除き、Tier 13まで、またPANを実装済みです。
 
-## Ported Features
+## 未実装の要素
 
-- up to tier 13 Clay Fabricator Mk3, except for those listed below.
-- PAN
+- 自動クラフト装置
+- 粘土作業板
+- 粘土ガジェット
+- 粘土銃
+- 粘土鋼ショベル
+- エネルギー粘土分解機 
+- 液体関連の要素
+- 金属チェスト
+- ビルダー系
+  - (範囲)代行機
+  - 範囲置換機
+  - (範囲)収集機
+- コンフィグ (`ProgressionRate`や`HardcoreXXX`など)
+- 他MODとの連携要素
 
-## WIP Features
-
-- Auto Crafter
-- Clay Crafting Board
-- Clay Gadgets
-- Clay Guns
-- ClaySteel Shovel
-- Energetic Clay Decomposer
-- Fluid related features
-- Metal Chests
-- World Interactive Machines
-  - Activators
-  - Area Replacer
-  - Item Collectors
-- Configs (`ProgressionRate`, `HardcoreXXX`, etc.)
-- Integrations with Other Mods
-
-## License
-
+## ライセンス
 ### Code
-The code is licensed under the [LGPL-3.0](https://github.com/TRCDevelopers/Clayium/blob/develop/LICENSE).
+コードは[LGPL-3.0](https://github.com/TRCDevelopers/Clayium/blob/develop/LICENSE)でライセンスされています。
 
 ### Textures
-The textures used are from the original Clayium mod.
+テクスチャはオリジナルのものをそのまま利用しています。
 
 Clayium © deb_rk (Licensed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/))
 
 ## Credits
 
-Clayium Unofficial would not have been possible without the following OSS:
+Clayium Unofficialは以下のOSSを利用、または参照しています。
 
 |                                   Name                                   |                                      License                                      |
 |:------------------------------------------------------------------------:|:---------------------------------------------------------------------------------:|
