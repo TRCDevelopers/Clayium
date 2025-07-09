@@ -38,11 +38,11 @@ class RangedActivatorMetaTileEntity(
 
     override fun getNextBlockPos(): BlockPos? {
         val iter = posIter ?: return null
-        if (iter.hasNext()) return iter.next().toImmutable()
+        if (iter.hasNext()) return iter.next()
 
         if (this.repeatEnabled) {
             iter.restart()
-            if (iter.hasNext()) return iter.next().toImmutable()
+            if (iter.hasNext()) return iter.next()
         }
         return null
     }

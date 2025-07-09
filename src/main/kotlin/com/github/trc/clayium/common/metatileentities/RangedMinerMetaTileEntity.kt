@@ -42,13 +42,14 @@ open class RangedMinerMetaTileEntity(
         while (iterator.hasNext()) {
             val pos = iterator.next()
             if (!world.isAirBlock(pos)) {
-                return pos.toImmutable()
+                return pos
             }
         }
         if (this.repeatEnabled) {
             iterator.restart()
-            return if (iterator.hasNext()) iterator.next().toImmutable() else null
+            return if (iterator.hasNext()) iterator.next() else null
         }
+        return null
     }
 
     override fun drawEnergy(accelerationRate: Double): Boolean {
