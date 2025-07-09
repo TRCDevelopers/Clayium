@@ -47,8 +47,8 @@ open class RangedMinerMetaTileEntity(
         }
         if (this.repeatEnabled) {
             iterator.restart()
+            return if (iterator.hasNext()) iterator.next().toImmutable() else null
         }
-        return null
     }
 
     override fun drawEnergy(accelerationRate: Double): Boolean {
