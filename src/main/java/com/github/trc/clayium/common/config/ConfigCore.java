@@ -97,7 +97,7 @@ public class ConfigCore {
         @Config.RangeInt(min = 1, max = 512)
         public int clayMarkerMaxRange = 64;
 
-        @Config.Comment({"The max blocks mined.", "Default: 10"})
+        @Config.Comment({"Maximum blocks mined per tick.", "Default: 10"})
         @Config.RangeInt(min = 1, max = 64)
         public int rangedMinerMaxBlocksPerTick = 10;
 
