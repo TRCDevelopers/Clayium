@@ -24,13 +24,8 @@ class ClayMarkerHandler(
     var markedRangeAbsolute: Pair<BlockPos, BlockPos>? = null
         private set
 
-    // MetaTileEntity.pos is var, not val. So we need to set it every time.
-    // But creating a new instance every time is expensive, thus we use a backing field.
-    private val backingRange: Cuboid6 = Cuboid6.full.copy()
     val renderingRangeRelative get() = markedRangeAbsolute?.let { (minPos, maxPos) ->
-        backingRange.set(minPos, maxPos)
-            .add(1.0, 1.0, 1.0) // inclusive range
-            .subtract(metaTileEntity.pos)
+        Cuboid6(minPos, maxPos.add(1.0, 1.0, 1.0))
     }
 
     override fun onPlacement() {
