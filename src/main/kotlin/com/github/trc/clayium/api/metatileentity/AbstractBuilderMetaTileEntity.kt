@@ -110,22 +110,19 @@ abstract class AbstractBuilderMetaTileEntity(
         for (i in 0..<maxSearchBlockPerTick) {
             if (remainingBlocks <= 0) break
             val pos = this.currentPos ?: getNextBlockPos() ?: return
+            this.currentPos = pos
 
             val state = world.getBlockState(pos)
             val requiredProgress = getRequiredProgress(state, world, pos)
-            if (progress < requiredProgress) {
-                this.currentPos = pos
-                return
-            }
+            if (progress < requiredProgress) return
             val result = this.actionOnBlock(state, world, pos)
-            // We should proceed to the next block
-            this.currentPos = null
             when (result) {
                 EnumActionResult.SUCCESS -> {
+                    this.currentPos = null
                     progress -= requiredProgress
                     remainingBlocks--
                 }
-                EnumActionResult.PASS -> {}
+                EnumActionResult.PASS -> this.currentPos = null
                 EnumActionResult.FAIL -> break
             }
         }
@@ -142,7 +139,10 @@ abstract class AbstractBuilderMetaTileEntity(
      * [maxBlocksPerTick] is consumed (subtracted by 1). Then it will search for the next block.
      * - [EnumActionResult.PASS] if the block is air or something like that.
      * [maxBlocksPerTick] is not consumed, but then it will search for the next block.
+     * Example: Air, Unbreakable block, etc.
      * - [EnumActionResult.FAIL] if the work should be stopped. It will skip further working on this tick.
+     * The block tried to process is not consumed, and it will try to process the same block again on the next tick.
+     * Example: Inventory full
      */
     protected abstract fun actionOnBlock(state: IBlockState, world: World, pos: BlockPos): EnumActionResult
 
