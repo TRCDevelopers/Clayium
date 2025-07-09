@@ -276,9 +276,6 @@ open class ActivatorMetaTileEntity(
             .stateHoverBackground(ENTITY, ClayGuiTextures.Clicker.ENTITY_HOVERED)
             .stateBackground(BLOCK_AND_ENTITY, ClayGuiTextures.Clicker.BLOCK_AND_ENTITY)
             .stateHoverBackground(BLOCK_AND_ENTITY, ClayGuiTextures.Clicker.BLOCK_AND_ENTITY_HOVERED)
-            .tooltip(0) { it.addLine(IKey.lang("gui.clayium.activator.click_mode.block")) }
-            .tooltip(1) { it.addLine(IKey.lang("gui.clayium.activator.click_mode.entity")) }
-            .tooltip(2) { it.addLine(IKey.lang("gui.clayium.activator.click_mode.both")) }
         val raytraceButton = ToggleButton()
             .value(SyncHandlers.bool(::enableRayTrace, ::enableRayTrace::set))
             .background(ClayGuiTextures.Clicker.FIXED_TARGET)
@@ -304,12 +301,12 @@ open class ActivatorMetaTileEntity(
             )
             .child(MuiSlots.phantomSlotBuilder(filtersHandler, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) }.build()
                 .background(ClayGuiTextures.FILTER_SLOT)
-                .top(12 + 2).right(24)
+                .top(12).right(32)
                 .tooltipBuilder { it.addLine(IKey.lang("gui.clayium.activator.block_filter")) }
             )
             .child(MuiSlots.phantomSlotBuilder(filtersHandler, 1).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) }.build()
                 .background(ClayGuiTextures.FILTER_SLOT)
-                .top(12 + 18 + 2 * 2).right(24)
+                .top(12 + 18).right(32)
                 .tooltipBuilder { it.addLine(IKey.lang("gui.clayium.activator.item_filter")) }
             )
     }

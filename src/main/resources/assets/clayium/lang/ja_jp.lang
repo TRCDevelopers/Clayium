@@ -566,13 +566,10 @@ machine.clayium.ranged_replacer=範囲置換機
 
 machine.clayium.activator=代行機
 machine.clayium.activator.tooltip1=右クリックを代行
-gui.clayium.activator.click_mode.block=Block
-gui.clayium.activator.click_mode.entity=Entity
-gui.clayium.activator.click_mode.both=Block and Entity
-gui.clayium.activator.sneak=Sneak
-gui.clayium.activator.no_sneak=No Sneak
-gui.clayium.activator.raytrace_enabled=Raytrace
-gui.clayium.activator.raytrace_disabled=No Raytrace
+gui.clayium.activator.raytrace_enabled=レイトレース有効
+gui.clayium.activator.raytrace_disabled=レイトレース無効
+gui.clayium.activator.block_filter=ブロックフィルター
+gui.clayium.activator.item_filter=アイテムフィルター
 machine.clayium.ranged_activator=範囲代行機
 machine.clayium.ranged_activator.tooltip1=右クリックを代行
 
