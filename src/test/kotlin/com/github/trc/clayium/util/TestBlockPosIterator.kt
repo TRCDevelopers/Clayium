@@ -21,6 +21,31 @@ class TestBlockPosIterator : StringSpec({
         iter.hasNext() shouldBe false
     }
 
+    "test 1 layer, 3x3" {
+        val first = BlockPos.ORIGIN
+        val last = BlockPos(2, 0, 2)
+        val iter = BlockPosIterator(first, last)
+        iter.hasNext() shouldBe true
+        iter.next() shouldBe BlockPos(0, 0, 0)
+        iter.hasNext() shouldBe true
+        iter.next() shouldBe BlockPos(1, 0, 0)
+        iter.hasNext() shouldBe true
+        iter.next() shouldBe BlockPos(2, 0, 0)
+        iter.hasNext() shouldBe true
+        iter.next() shouldBe BlockPos(0, 0, 1)
+        iter.hasNext() shouldBe true
+        iter.next() shouldBe BlockPos(1, 0, 1)
+        iter.hasNext() shouldBe true
+        iter.next() shouldBe BlockPos(2, 0, 1)
+        iter.hasNext() shouldBe true
+        iter.next() shouldBe BlockPos(0, 0, 2)
+        iter.hasNext() shouldBe true
+        iter.next() shouldBe BlockPos(1, 0, 2)
+        iter.hasNext() shouldBe true
+        iter.next() shouldBe BlockPos(2, 0, 2)
+        iter.hasNext() shouldBe false
+    }
+
     "iterates from the sky" {
         val first = BlockPos(0, 0, 0)
         val last = BlockPos(1, 1, 1)

@@ -9,7 +9,7 @@ import com.github.trc.clayium.api.metatileentity.AbstractMinerMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.metatileentity.trait.ClayMarkerHandler
-import com.github.trc.clayium.api.util.Cuboid6BlockPosIterator
+import com.github.trc.clayium.api.util.BlockPosIterator
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
@@ -31,9 +31,9 @@ open class RangedMinerMetaTileEntity(
 
     override val maxBlocksPerTick: Int = ConfigCore.misc.rangedMinerMaxBlocksPerTick
 
-    private val posIter: Cuboid6BlockPosIterator? by lazy {
+    private val posIter by lazy {
         val range = clayMarkerHandler.markedRangeAbsolute?.copy() ?: return@lazy null
-        Cuboid6BlockPosIterator(range)
+        BlockPosIterator(range)
     }
 
     override fun getNextBlockPos(): BlockPos? {
@@ -68,7 +68,7 @@ open class RangedMinerMetaTileEntity(
         super.onPlacement()
     }
 
-    override val rangeRelativeClient get() = clayMarkerHandler.markedRangeRelative
+    override val rangeRelativeClient get() = clayMarkerHandler.renderingRangeRelative
 
     override fun createMetaTileEntity() = RangedMinerMetaTileEntity(metaTileEntityId, tier)
 

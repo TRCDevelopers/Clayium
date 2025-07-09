@@ -9,6 +9,8 @@ import com.github.trc.clayium.common.blocks.marker.TileClayMarker
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.math.BlockPos
+import net.minecraftforge.common.util.Constants
 
 class ClayMarkerHandler(
     metaTileEntity: MetaTileEntity
@@ -19,13 +21,17 @@ class ClayMarkerHandler(
      * null if no neighbor marker.
      * once set, never change (on the serve side).
      */
-    var markedRangeAbsolute: Cuboid6? = null
+    var markedRangeAbsolute: Pair<BlockPos, BlockPos>? = null
         private set
 
-    // MetaTileEntity.pos is mutable. So we need to set it every time.
+    // MetaTileEntity.pos is var, not val. So we need to set it every time.
     // But creating a new instance every time is expensive, thus we use a backing field.
     private val backingRange: Cuboid6 = Cuboid6.full.copy()
-    val markedRangeRelative get() = markedRangeAbsolute?.let { backingRange.set(it).subtract(metaTileEntity.pos) }
+    val renderingRangeRelative get() = markedRangeAbsolute?.let { (minPos, maxPos) ->
+        backingRange.set(minPos, maxPos)
+            .add(1.0, 1.0, 1.0) // inclusive range
+            .subtract(metaTileEntity.pos)
+    }
 
     override fun onPlacement() {
         this.markedRangeAbsolute = this.getRangeFromNeighborMarker()
@@ -44,17 +50,22 @@ class ClayMarkerHandler(
                 writeBoolean(false)
             } else {
                 writeBoolean(true)
-                writeCompoundTag(range.writeToNBT(NBTTagCompound()))
+                val (minPos, maxPos) = range
+                writeLong(minPos.toLong())
+                writeLong(maxPos.toLong())
             }
         }
     }
 
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
         if (discriminator == UPDATE_AREA_RANGE) {
-            markedRangeAbsolute = if (buf.readBoolean()) {
-                Cuboid6(buf.readCompoundTag())
+            val hasRange = buf.readBoolean()
+            if (hasRange) {
+                val minPos = BlockPos.fromLong(buf.readLong())
+                val maxPos = BlockPos.fromLong(buf.readLong())
+                this.markedRangeAbsolute = Pair(minPos, maxPos)
             } else {
-                null
+                this.markedRangeAbsolute = null
             }
         }
     }
@@ -62,7 +73,7 @@ class ClayMarkerHandler(
     /**
      * null if no neighbor marker.
      */
-    private fun getRangeFromNeighborMarker(): Cuboid6? {
+    private fun getRangeFromNeighborMarker(): Pair<BlockPos, BlockPos>? {
         val world = this.metaTileEntity.world ?: return null
         if (world.isRemote) return null
         for (side in EnumFacing.entries) {
@@ -70,11 +81,11 @@ class ClayMarkerHandler(
             val tileEntity = world.getTileEntity(pos)
             if (tileEntity !is TileClayMarker) continue
 
-            val relativeRange = tileEntity.rangeRelative ?: continue
+            val absRange = tileEntity.rangeAbs ?: continue
             for (markerPos in tileEntity.markerPoses) {
                 world.destroyBlock(markerPos, true)
             }
-            return relativeRange.add(pos)
+            return absRange
         }
         return null
     }
@@ -83,15 +94,18 @@ class ClayMarkerHandler(
         val data = super.serializeNBT()
         val range = this.markedRangeAbsolute
         if (range != null) {
-            data.setTag("markedRange", range.writeToNBT(NBTTagCompound()))
+            data.setLong("minPos", range.first.toLong())
+            data.setLong("maxPos", range.second.toLong())
         }
         return data
     }
 
     override fun deserializeNBT(data: NBTTagCompound) {
         super.deserializeNBT(data)
-        if (data.hasKey("markedRange")) {
-            this.markedRangeAbsolute = Cuboid6(data.getCompoundTag("markedRange"))
+        if (data.hasKey("minPos", Constants.NBT.TAG_LONG) && data.hasKey("maxPos", Constants.NBT.TAG_LONG)) {
+            val minPos = BlockPos.fromLong(data.getLong("minPos"))
+            val maxPos = BlockPos.fromLong(data.getLong("maxPos"))
+            this.markedRangeAbsolute = Pair(minPos, maxPos)
         }
     }
 }

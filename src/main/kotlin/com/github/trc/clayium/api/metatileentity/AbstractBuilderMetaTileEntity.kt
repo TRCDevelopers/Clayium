@@ -61,8 +61,6 @@ abstract class AbstractBuilderMetaTileEntity(
 
     var rangeRenderMode = RangeRenderMode.DISABLED
 
-    protected var currentPos: BlockPos? = null
-
     /**
      * Called every tick. [accelerationRate] is obtained from [getAccelerationRate] method.
      */
@@ -84,6 +82,8 @@ abstract class AbstractBuilderMetaTileEntity(
 
     abstract val maxBlocksPerTick: Int
     open val maxSearchBlockPerTick = ConfigCore.misc.builderMaxSearchBlocksPerTick
+
+    private var currentPos: BlockPos? = null
 
     /**
      * [progress] is multiplied by this per tick.
@@ -109,13 +109,17 @@ abstract class AbstractBuilderMetaTileEntity(
         var remainingBlocks = maxBlocksPerTick
         for (i in 0..<maxSearchBlockPerTick) {
             if (remainingBlocks <= 0) break
-            val pos = getNextBlockPos()
-            if (pos == null) return
+            val pos = this.currentPos ?: getNextBlockPos() ?: return
 
             val state = world.getBlockState(pos)
             val requiredProgress = getRequiredProgress(state, world, pos)
-            if (progress < requiredProgress) return
+            if (progress < requiredProgress) {
+                this.currentPos = pos
+                return
+            }
             val result = this.actionOnBlock(state, world, pos)
+            // We should proceed to the next block
+            this.currentPos = null
             when (result) {
                 EnumActionResult.SUCCESS -> {
                     progress -= requiredProgress
