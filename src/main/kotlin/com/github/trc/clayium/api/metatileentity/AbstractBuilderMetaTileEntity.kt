@@ -231,6 +231,7 @@ abstract class AbstractBuilderMetaTileEntity(
 
     @SideOnly(Side.CLIENT)
     override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
+        if (rangeRenderMode == RangeRenderMode.DISABLED) return
         AreaMarkerRenderer.render(Cuboid6.full, rangeRelativeClient, x, y, z, rangeRenderMode)
     }
 
