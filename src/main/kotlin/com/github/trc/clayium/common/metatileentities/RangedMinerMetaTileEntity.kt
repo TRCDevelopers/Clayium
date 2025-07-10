@@ -29,7 +29,7 @@ open class RangedMinerMetaTileEntity(
     val ioHandler = AutoIoHandler.Exporter(this)
     val clayEnergyHolder = ClayEnergyHolder(this)
 
-    override val maxBlocksPerTick: Int = ConfigCore.misc.rangedMinerMaxBlocksPerTick
+    override val maxBlocksPerTick: Int = ConfigCore.misc.rangedMachineMaxBlocksPerTick
 
     private val posIter by lazy {
         val range = clayMarkerHandler.markedRangeAbsolute?.copy() ?: return@lazy null

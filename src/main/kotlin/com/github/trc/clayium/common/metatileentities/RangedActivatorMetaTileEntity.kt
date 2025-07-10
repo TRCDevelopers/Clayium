@@ -24,7 +24,7 @@ class RangedActivatorMetaTileEntity(
 ) : ActivatorMetaTileEntity(metaTileEntityId, tier, machineName), IRayTraceMemoryApplicable {
     private val clayMarkerHandler = ClayMarkerHandler(this)
 
-    override val maxBlocksPerTick: Int = ConfigCore.misc.rangedMinerMaxBlocksPerTick
+    override val maxBlocksPerTick: Int = ConfigCore.misc.rangedMachineMaxBlocksPerTick
     override val rangeRelativeClient get() = clayMarkerHandler.renderingRangeRelative
 
     private val posIter by lazy {
