@@ -68,7 +68,7 @@ open class ActivatorMetaTileEntity(
     protected var enableRayTrace = false
     protected var sneaking = false
 
-    private var isBlockForBlockAndEntityMode = true
+    protected var isBlockForBlockAndEntityMode = true
 
     protected val scannedEntities = mutableListOf<Entity>()
 
