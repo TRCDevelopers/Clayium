@@ -59,4 +59,15 @@ class TestBlockPosIterator : StringSpec({
         iter.next() shouldBe BlockPos(0, 0, 1)
         iter.next() shouldBe BlockPos(1, 0, 1)
     }
+
+    "restart" {
+        val iter = BlockPosIterator(BlockPos.ORIGIN, BlockPos.ORIGIN)
+        iter.hasNext() shouldBe true
+        iter.next() shouldBe BlockPos.ORIGIN
+        iter.hasNext() shouldBe false
+        iter.restart()
+        iter.hasNext() shouldBe true
+        iter.next() shouldBe BlockPos.ORIGIN
+        iter.hasNext() shouldBe false
+    }
 })
