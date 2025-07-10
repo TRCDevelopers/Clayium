@@ -12,6 +12,7 @@ import com.github.trc.clayium.api.metatileentity.SimpleMachineMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.ClayBlastFurnaceMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.ClayReactorMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.LaserProxyMetaTileEntity
+import com.github.trc.clayium.api.util.ClayTier
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
@@ -239,13 +240,13 @@ object MetaTileEntities {
     val BLOCK_BREAKER = registerMetaTileEntity(1001,
         BlockBreakerMetaTileEntity(clayiumId("block_breaker"), ClayTiers.AZ91D))
     val RANGED_MINER = registerMetaTileEntity(1002,
-        RangedMinerMetaTileEntity(clayiumId("ranged_miner"), ClayTiers.ZK60A))
+        RangedMinerMetaTileEntity(clayiumId("ranged_miner"), ClayTier.zk60a(8)))
     val ADV_RANGED_MINER = registerMetaTileEntity(1003,
-        AdvancedRangedMinerMetaTileEntity(clayiumId("adv_ranged_miner"), ClayTiers.ZK60A))
+        AdvancedRangedMinerMetaTileEntity(clayiumId("adv_ranged_miner"), ClayTier.zk60a(9)))
     val ACTIVATOR = registerMetaTileEntity(1010,
         ActivatorMetaTileEntity(clayiumId("activator"), ClayTiers.AZ91D, "activator"))
     val RANGED_ACTIVATOR = registerMetaTileEntity(1011,
-        RangedActivatorMetaTileEntity(clayiumId("ranged_activator"), ClayTiers.ZK60A, "ranged_activator"))
+        RangedActivatorMetaTileEntity(clayiumId("ranged_activator"), ClayTier.zk60a(8), "ranged_activator"))
 
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)
