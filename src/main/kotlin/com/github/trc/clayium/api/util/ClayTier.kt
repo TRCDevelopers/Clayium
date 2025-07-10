@@ -17,7 +17,7 @@ data class ClayTier(
             return when (num) {
                 in 0..3 -> EnumRarity.COMMON
                 in 4..7 -> EnumRarity.UNCOMMON
-                in 7..11 -> EnumRarity.RARE
+                in 8..11 -> EnumRarity.RARE
                 in 12..13 -> EnumRarity.EPIC
                 else -> EnumRarity.COMMON
             }
