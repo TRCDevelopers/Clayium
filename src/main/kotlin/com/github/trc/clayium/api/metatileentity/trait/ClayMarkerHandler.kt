@@ -9,6 +9,7 @@ import com.github.trc.clayium.common.blocks.marker.TileClayMarker
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.util.Constants
 
@@ -23,6 +24,8 @@ class ClayMarkerHandler(
      */
     var markedRangeAbsolute: Pair<BlockPos, BlockPos>? = null
         private set
+    var markedRangeAbsoluteAabb: AxisAlignedBB? = null
+        private set
 
     val renderingRangeRelative get() = markedRangeAbsolute?.let { (minPos, maxPos) ->
         Cuboid6(minPos, maxPos.add(1.0, 1.0, 1.0))
@@ -30,7 +33,12 @@ class ClayMarkerHandler(
     }
 
     override fun onPlacement() {
-        this.markedRangeAbsolute = this.getRangeFromNeighborMarker()
+        val range = this.getRangeFromNeighborMarker()
+        if (range != null) {
+            this.markedRangeAbsolute = range
+            val (min, max) = range
+            this.markedRangeAbsoluteAabb = AxisAlignedBB(min, max.add(1.0, 1.0, 1.0))
+        }
         writeMarkedRange()
     }
 
@@ -102,6 +110,7 @@ class ClayMarkerHandler(
             val minPos = BlockPos.fromLong(data.getLong("minPos"))
             val maxPos = BlockPos.fromLong(data.getLong("maxPos"))
             this.markedRangeAbsolute = Pair(minPos, maxPos)
+            this.markedRangeAbsoluteAabb = AxisAlignedBB(minPos, maxPos.add(1.0, 1.0, 1.0))
         }
     }
 }

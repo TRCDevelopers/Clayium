@@ -17,7 +17,9 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.GameType
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.WorldServer
@@ -85,6 +87,12 @@ fun Block.getAsItem(): Item {
 
 fun TileEntity?.takeIfValid(): TileEntity? {
     return this?.takeUnless { it.isInvalid }
+}
+
+fun AxisAlignedBB.containsEq(vec: Vec3d): Boolean {
+    return vec.x >= this.minX && vec.x <= this.maxX &&
+           vec.y >= this.minY && vec.y <= this.maxY &&
+           vec.z >= this.minZ && vec.z <= this.maxZ
 }
 
 fun IKey.asWidgetResizing(): ResizingTextWidget {
