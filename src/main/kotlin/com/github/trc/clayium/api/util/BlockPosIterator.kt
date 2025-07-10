@@ -47,6 +47,7 @@ class BlockPosIterator(first: BlockPos, last: BlockPos) : AbstractIterator<Block
         this.x = min.x
         this.y = max.y
         this.z = min.z
+        this.init = true
         this.computeNext()
     }
 }
