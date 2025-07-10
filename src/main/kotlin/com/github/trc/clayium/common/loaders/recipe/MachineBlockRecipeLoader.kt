@@ -491,6 +491,30 @@ object MachineBlockRecipeLoader {
             .output(MetaTileEntities.ADV_RANGED_MINER)
             .buildAndRegister()
 
+        /* Item Collector */
+        CRecipes.ASSEMBLER.builder()
+            .input(MACHINE_HULL.getItem(ZK60A))
+            .input(MetaItemClayParts.IntegratedCircuit, 64)
+            .tier(6).CEt(ClayEnergy.of(1)).duration(6000)
+            .output(MetaTileEntities.ITEM_COLLECTOR)
+            .buildAndRegister()
+
+        /* Activator */
+        CRecipes.ASSEMBLER.builder()
+            .input(MACHINE_HULL.getItem(AZ91D))
+            .input(MetaItemClayParts.AdvancedCircuit)
+            .tier(6).CEt(ClayEnergy.milli(100)).duration(60)
+            .output(MetaTileEntities.ACTIVATOR)
+            .buildAndRegister()
+
+        /* Ranged Activator */
+        CRecipes.ASSEMBLER.builder()
+            .input(MetaTileEntities.ITEM_COLLECTOR)
+            .input(MetaItemClayParts.ClayCore)
+            .tier(6).CEt(ClayEnergy.of(10)).duration(6000)
+            .output(MetaTileEntities.RANGED_ACTIVATOR)
+            .buildAndRegister()
+
         /* Chunk Loader */
         RecipeUtils.addShapedRecipe("chunk_loader", ItemStack(ClayiumBlocks.CHUNK_LOADER),
             "cCc", "CHC", "cCc",
