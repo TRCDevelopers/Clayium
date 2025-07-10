@@ -13,16 +13,11 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
+import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.blocks.BlockQuartzCrucible
-import com.github.trc.clayium.common.blocks.ClayiumBlocks
-import com.github.trc.clayium.common.blocks.ItemBlockClayLaserReflector
-import com.github.trc.clayium.common.blocks.ItemBlockEnergizedClay
-import com.github.trc.clayium.common.blocks.ItemBlockMaterial
-import com.github.trc.clayium.common.blocks.TileEntityClayLaserReflector
-import com.github.trc.clayium.common.blocks.TileEntityCreativeEnergySource
+import com.github.trc.clayium.common.blocks.*
 import com.github.trc.clayium.common.blocks.chunkloader.ChunkLoaderTileEntity
 import com.github.trc.clayium.common.blocks.claycraftingtable.TileClayCraftingTable
 import com.github.trc.clayium.common.blocks.clayworktable.TileClayWorkTable
@@ -42,6 +37,7 @@ import com.github.trc.clayium.common.pan.factories.FurnacePanRecipeFactory
 import com.github.trc.clayium.common.unification.ClayiumOreDictUnifierImpl
 import com.github.trc.clayium.common.util.DebugUtils
 import com.github.trc.clayium.common.worldgen.ClayOreGenerator
+import com.github.trc.clayium.datafix.ClayiumDataFix
 import com.github.trc.clayium.integration.CModIntegration
 import com.github.trc.clayium.integration.gregtech.GTOreDictUnifierAdapter
 import com.github.trc.clayium.network.ClayChunkLoaderCallback
@@ -99,6 +95,7 @@ open class CommonProxy {
 
     open fun init(event: FMLInitializationEvent) {
         CModIntegration.init(event)
+        ClayiumDataFix.init()
     }
 
     open fun postInit(event: FMLPostInitializationEvent) {
@@ -118,6 +115,7 @@ open class CommonProxy {
     @Suppress("unused")
     @SubscribeEvent
     fun registerBlocks(event: RegistryEvent.Register<Block>) {
+        CLog.info("Registering blocks...")
         val registry: IForgeRegistry<Block> = event.registry
 
         ClayiumBlocks.registerBlocks(event)
@@ -132,6 +130,7 @@ open class CommonProxy {
     @Suppress("unused")
     @SubscribeEvent
     fun registerItems(event: RegistryEvent.Register<Item>) {
+        CLog.info("Registering items...")
         val registry = event.registry
 
         ClayiumBlocks.registerItemBlocks(event)
@@ -157,7 +156,16 @@ open class CommonProxy {
 
         registerItem(registry, ClayiumItems.MEMORY_CARD)
         registerItem(registry, ClayiumItems.SYNCHRONIZER)
-        registerItem(registry, ClayiumItems.simpleItemFilter)
+        registerItem(registry, ClayiumItems.SIMPLE_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.FUZZY_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.ORE_DICT_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.REGISTRY_NAME_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.DISPLAY_NAME_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.UNLOCALIZED_NAME_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.MOD_ID_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.DAMAGE_VALUE_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.BLOCK_METADATA_ITEM_FILTER)
+        registerItem(registry, ClayiumItems.ITEM_FILTER_DUPLICATOR)
 
         registry.register(createItemBlock(ClayiumBlocks.CREATIVE_ENERGY_SOURCE, ::ItemBlock))
 

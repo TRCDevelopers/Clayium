@@ -24,7 +24,7 @@ public class DebugUtils {
         if (oreDictIds.length == 0) return;
         e.getToolTip().add("OreDicts:");
         for (int id : oreDictIds) {
-            e.getToolTip().add("  " + OreDictionary.getOreName(id));
+            e.getToolTip().add("- " + OreDictionary.getOreName(id));
         }
     }
 }

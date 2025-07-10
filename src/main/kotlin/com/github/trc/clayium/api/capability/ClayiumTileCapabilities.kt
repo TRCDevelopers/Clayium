@@ -1,6 +1,7 @@
 package com.github.trc.clayium.api.capability
 
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
+import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.pan.IPanAdapter
 import com.github.trc.clayium.api.pan.IPanCable
@@ -20,13 +21,15 @@ object ClayiumTileCapabilities {
     @CapabilityInject(IClayLaserAcceptor::class)
     lateinit var CLAY_LASER_ACCEPTOR: Capability<IClayLaserAcceptor>
 
-    @CapabilityInject(IControllable::class)
-    lateinit var CONTROLLABLE: Capability<IControllable>
+    @CapabilityInject(IWorkingControllable::class)
+    lateinit var CONTROLLABLE: Capability<IWorkingControllable>
 
     @CapabilityInject(AbstractWorkable::class)
     lateinit var WORKABLE: Capability<AbstractWorkable>
     @CapabilityInject(AbstractRecipeLogic::class)
     lateinit var RECIPE_LOGIC: Capability<AbstractRecipeLogic>
+    @CapabilityInject(MultiblockLogic::class)
+    lateinit var MULTIBLOCK: Capability<MultiblockLogic>
 
     @CapabilityInject(IPanCable::class)
     lateinit var PAN_CABLE: Capability<IPanCable>
@@ -37,4 +40,7 @@ object ClayiumTileCapabilities {
 
     @CapabilityInject(IPipeConnectable::class)
     lateinit var PIPE_CONNECTABLE: Capability<IPipeConnectable>
+
+    @CapabilityInject(IItemFilterApplicatable::class)
+    lateinit var ITEM_FILTER_APPLICATABLE: Capability<IItemFilterApplicatable>
 }

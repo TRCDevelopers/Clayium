@@ -3,8 +3,8 @@ package com.github.trc.clayium.common.metatileentities.multiblock
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.IntSyncValue
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.CycleButtonWidget
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
@@ -13,10 +13,11 @@ import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.multiblock.ProxyMetaTileEntityBase
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
-import net.minecraft.client.resources.I18n
+import com.github.trc.clayium.common.util.SidelessI18n
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -33,8 +34,12 @@ class RedstoneProxyMetaTileEntity(
         this.hasSynchroParts = true
     }
 
-    override val faceTexture: ResourceLocation = clayiumId("blocks/redstone_proxy")
-    override val useFaceForAllSides: Boolean = true
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder()
+            .face(clayiumId("blocks/redstone_proxy"))
+            .useFaceForAllSides()
+            .build()
+    }
 
     private var mode = Mode.NONE
         set(value) {
@@ -90,18 +95,18 @@ class RedstoneProxyMetaTileEntity(
         return super.canLink(target) && target.getCapability(ClayiumTileCapabilities.CONTROLLABLE, null) != null
     }
 
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("redstone_proxy.$tier", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT - 20)
             .columnWithPlayerInv { child(buildMainParentWidget(syncManager)) }
     }
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(CycleButtonWidget()
                 .align(Alignment.Center).widthRel(0.7f).height(24)
                 .length(Mode.entries.size)
-                .value(IntSyncValue({ mode.ordinal }, { mode = Mode.entries[it] }))
-                .overlay(IKey.dynamic { I18n.format(mode.translationKey) })
+                .value(IntSyncValue({ mode.ordinal }, { i: Int -> mode = Mode.entries[i] }))
+                .overlay(IKey.dynamic { SidelessI18n.format(mode.translationKey) })
             )
     }
 

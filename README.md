@@ -1,3 +1,4 @@
+<!--suppress HtmlDeprecatedAttribute -->
 <h1 align="center">Clayium Unofficial</h1>
 <h1 align="center">
   <img alt="Modrinth Game Versions" src="https://img.shields.io/modrinth/game-versions/m5ogv9xL?style=for-the-badge">
@@ -6,40 +7,52 @@
   <a href="https://modrinth.com/mod/clayium-unofficial"><img alt="Modrinth Downloads" src="https://img.shields.io/modrinth/dt/m5ogv9xL?style=for-the-badge&logo=modrinth&logoColor=1c1c1c&label=%20&labelColor=5ca424&color=2d2d2d"></a>
 </h1>
 
+<p align="center">
+  English | <a href="/README-JP.md">日本語</a>
+</p>
+
 An **unofficial** 1.12.2 port of Clayium.
 The original version was made by deb_rk,
 and published on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/clayium) under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/).
 
-This mod is currently in alpha stage and may contain critical bugs including game crashes.
+If you encounter bugs or crashes, or have feature suggestions, please create an [Issue](https://github.com/TRCDevelopers/Clayium/issues).
 
 ## Required Mods
-- [ModularUI](https://github.com/CleanroomMC/ModularUI) (currently incompatible with `v2.5.0-rc1`, please use `v2.4.3` instead)
+
+- [ModularUI](https://github.com/CleanroomMC/ModularUI) (v2.5.0-rc5)
 - [CodeChickenLib](https://github.com/TheCBProject/CodeChickenLib)
 - [Forgelin Continuous](https://github.com/ChAoSUnItY/Forgelin-Continuous)
 
+## Recipe Customization
+
+We have integration with [GroovyScript](https://github.com/CleanroomMC/GroovyScript).
+
+See [wiki](https://trcdevelopers.github.io/Clayium/) for more information.
+
 ## Ported Features
-Features have been ported up to tier 13 Clay Fabricator Mk3, 
-including PAN, except for those listed below.
+
+- up to tier 13 Clay Fabricator Mk3, except for those listed below.
+- PAN
 
 ## WIP Features
+
 - Auto Crafter
-- Auto Trader
 - Clay Crafting Board
 - Clay Gadgets
 - Clay Guns
 - ClaySteel Shovel
 - Energetic Clay Decomposer
-- Filters other than black/white list
 - Fluid related features
 - Metal Chests
 - World Interactive Machines
   - Activators
   - Area Replacer
   - Item Collectors
-- Configs (ProgressionRate, HardcoreXXX, etc.)
-- Other Mod Integrations
+- Configs (`ProgressionRate`, `HardcoreXXX`, etc.)
+- Integrations with Other Mods
 
 ## License
+
 ### Code
 The code is licensed under the [LGPL-3.0](https://github.com/TRCDevelopers/Clayium/blob/develop/LICENSE).
 
@@ -58,6 +71,7 @@ Clayium Unofficial would not have been possible without the following OSS:
 |     [CodeChickenLib](https://github.com/TheCBProject/CodeChickenLib)     |  [LGPL-2.1](https://github.com/TheCBProject/CodeChickenLib/blob/master/LICENSE)   |
 | [Forgelin Continuous](https://github.com/ChAoSUnItY/Forgelin-Continuous) | [LGPL-3.0](https://github.com/ChAoSUnItY/Forgelin-Continuous/blob/master/LICENSE) |
 |    [GTCEu Buildscripts](https://github.com/GregTechCEu/Buildscripts)     |      [MIT](https://github.com/GregTechCEu/Buildscripts/blob/master/LICENSE)       |
+|     [GTExpert-Core](https://github.com/GTModpackTeam/GTExpert-Core)      |  [LGPL-3.0](https://github.com/GTModpackTeam/GTExpert-Core/blob/master/LICENSE)   |
 |          [GregTechCEu](https://github.com/GregTechCEu/GregTech)          |      [LGPL-3.0](https://github.com/GregTechCEu/GregTech/blob/master/LICENSE)      |
 |          [ModularUI](https://github.com/CleanroomMC/ModularUI)           |     [LGPL-3.0](https://github.com/CleanroomMC/ModularUI/blob/master/LICENSE)      |
 |        [RFTools](https://github.com/McJtyMods/RFTools/tree/1.12)         |         [MIT](https://github.com/McJtyMods/RFTools/blob/1.12/LICENSE.md)          |

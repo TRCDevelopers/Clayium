@@ -3,7 +3,6 @@ package com.github.trc.clayium.api
 import net.minecraft.network.PacketBuffer
 import kotlin.math.abs
 import kotlin.math.pow
-import kotlin.text.format
 
 fun PacketBuffer.writeClayEnergy(energy: ClayEnergy) {
     writeLong(energy.energy)
@@ -67,5 +66,8 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
         fun of(energy: Long): ClayEnergy {
             return ClayEnergy(energy * 1000_00)
         }
+
+        fun min(a: ClayEnergy, b: ClayEnergy) = if (a < b) a else b
+        fun max(a: ClayEnergy, b: ClayEnergy) = if (a > b) a else b
     }
 }

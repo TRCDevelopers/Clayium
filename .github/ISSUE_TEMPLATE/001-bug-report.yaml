@@ -1,0 +1,95 @@
+name: Bug Report
+description: Report a bug where something is not working as expected, which does not crash the game. / クラッシュはしないが、想定通りに動かないバグ。
+labels: [ "status: unverified", "bug" ]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Mod Version
+      description: |
+        The version of Clayium Unofficial you were using when this bug was encountered. If you do not know where to find this, look for the mod jar file in the mods folder, or in the mods viewer in-game.<br>
+        バグに遭遇したときに利用していたClayium Unofficialのバージョンを入力してください。modsフォルダの中にあるModのjarファイルや、ゲーム内の「Mods」から確認できます。
+      placeholder: "vX.Y.Z"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: |
+        How you were playing on the world. Typical answers include: Singleplayer, Open to LAN, Forge Server, Sponge Server, or Mohist Server.<br>
+        どのような環境でプレイしていたかを入力してください。例: シングルプレイ、LANに公開、Forgeサーバー、Spongeサーバー、Mohistサーバー。
+      placeholder: "Example: Singleplayer"
+    validations:
+      required: true
+  - type: dropdown
+    id: world
+    attributes:
+      label: New Worlds
+      description: |
+        Does this bug occur on a newly generated world?<br>
+        新しく生成したワールドでも、同じバグが発生しますか？
+      options:
+        - "Yes"
+        - "No"
+        - "Unsure"
+    validations:
+      required: true
+  - type: dropdown
+    id: cross-mod
+    attributes:
+      label: Cross-Mod Interaction
+      description: |
+        Does this bug occur because of another mod installed alongside Clayium Unofficial?<br>
+        このバグは、Clayium Unofficial以外にインストールされているModが原因で発生していますか？
+      options:
+        - "Yes"
+        - "No"
+        - "Unsure"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: |
+        What you expected to happen. Attach screenshots here as necessary.<br>
+        想定していた正常な動作を入力してください。必要に応じてスクリーンショットを添付してください。
+      placeholder: "Example: Expected to produce X by consuming Y. / 例: Yを消費してXが生成される。"
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Actual Behavior
+      description: |
+        What happened despite your expectations. Attach screenshots here as necessary.<br>
+        実際の動作を入力してください。必要に応じてスクリーンショットを添付してください。
+      placeholder: "Example: Produced one X but Y was not consumed. / 例: Xが1つ生成されたがYは消費されなかった。"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: |
+        How to reproduce the bug.<br>
+        バグの再現手順を入力してください。
+      placeholder: "Example: 1) I did X... / 例: 1) まず、Xを行い..."
+    validations:
+      required: true
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional Information
+      description: |
+        Any additional information you wish to provide. Please add anything which did not fit into the other sections here.<br>
+        追加情報や、他のセクションに収まらなかった情報があれば入力してください。
+      placeholder: "Example: This is likely caused by X because... / 例: おそらくXが原因で..."
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to fill out this bug report.<br>
+        ご記入いただきありがとうございます。

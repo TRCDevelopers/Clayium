@@ -1,5 +1,8 @@
 package com.github.trc.clayium.api.capability
 
+/**
+ * Retrieves 2 [PipeConnectionMode]s and determines whether they can connect.
+ */
 interface IPipeConnectionLogic {
     fun canConnect(thisMode: PipeConnectionMode, neighborMode: PipeConnectionMode): Boolean
 

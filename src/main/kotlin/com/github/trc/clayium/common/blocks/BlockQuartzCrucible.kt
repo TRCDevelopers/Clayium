@@ -6,7 +6,6 @@ import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
-import com.github.trc.clayium.common.blocks.BlockQuartzCrucible.QuartzCrucibleTileEntity
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.properties.PropertyInteger

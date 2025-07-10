@@ -1,0 +1,10 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "tier": {
+      "az91d": {
+        "model": "clayium:auto_trader"
+      }
+    }
+  }
+}

@@ -8,7 +8,22 @@ import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.ClayTiers
-import com.github.trc.clayium.api.util.ClayTiers.*
+import com.github.trc.clayium.api.util.ClayTiers.ADVANCED
+import com.github.trc.clayium.api.util.ClayTiers.ANTIMATTER
+import com.github.trc.clayium.api.util.ClayTiers.AZ91D
+import com.github.trc.clayium.api.util.ClayTiers.BASIC
+import com.github.trc.clayium.api.util.ClayTiers.CLAY
+import com.github.trc.clayium.api.util.ClayTiers.CLAYIUM
+import com.github.trc.clayium.api.util.ClayTiers.CLAY_STEEL
+import com.github.trc.clayium.api.util.ClayTiers.DEFAULT
+import com.github.trc.clayium.api.util.ClayTiers.DENSE_CLAY
+import com.github.trc.clayium.api.util.ClayTiers.OEC
+import com.github.trc.clayium.api.util.ClayTiers.OPA
+import com.github.trc.clayium.api.util.ClayTiers.PRECISION
+import com.github.trc.clayium.api.util.ClayTiers.PURE_ANTIMATTER
+import com.github.trc.clayium.api.util.ClayTiers.SIMPLE
+import com.github.trc.clayium.api.util.ClayTiers.ULTIMATE
+import com.github.trc.clayium.api.util.ClayTiers.ZK60A
 import com.github.trc.clayium.common.blocks.BlockCaReactorCoil
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.blocks.ClayiumBlocks.MACHINE_HULL
@@ -237,8 +252,8 @@ object MachineBlockRecipeLoader {
         for (metaTileEntity in MetaTileEntities.CLAY_INTERFACE) {
             CRecipes.ASSEMBLER.builder()
                 .input(MACHINE_HULL.getItem(metaTileEntity.tier as ClayTiers))
-                .input(MetaTileEntities.CLAY_BUFFER[metaTileEntity.tier.numeric - 4])
-                .output(metaTileEntity.getStackForm())
+                .input(MetaTileEntities.CLAY_BUFFER[2] /* Tier 6 */)
+                .output(metaTileEntity.asStackForm())
                 .tier(4).CEt(ClayEnergy(10.0.pow(metaTileEntity.tier.numeric - 3).toLong())).duration(40)
                 .buildAndRegister()
         }
@@ -247,7 +262,7 @@ object MachineBlockRecipeLoader {
             CRecipes.ASSEMBLER.builder()
                 .input(MetaTileEntities.CLAY_INTERFACE[metaTileEntity.tier.numeric - 5])
                 .input(MetaItemClayParts.EnergizedClayDust, 16)
-                .output(metaTileEntity.getStackForm())
+                .output(metaTileEntity.asStackForm())
                 .tier(4).CEt(ClayEnergy(10.0.pow(metaTileEntity.tier.numeric - 3).toLong())).duration(40)
                 .buildAndRegister()
         }
@@ -296,7 +311,7 @@ object MachineBlockRecipeLoader {
         }
         registerLowTierRecipe(MetaTileEntities.COBBLESTONE_GENERATOR, " g ", "OHO", " g ")
         registerMachineRecipeBuffer(MetaTileEntities.SALT_EXTRACTOR) {
-            input(MetaItemClayParts.SimpleCircuit)
+            input(MetaItemClayParts.BasicCircuit)
         }
 
         /* Storage Container */
@@ -306,7 +321,7 @@ object MachineBlockRecipeLoader {
             .output(MetaTileEntities.STORAGE_CONTAINER, 4)
             .tier(4).CEt(ClayEnergy.milli(100)).duration(120)
             .buildAndRegister()
-        RecipeUtils.addShapelessRecipe("upgrade_storage_container", MetaTileEntities.STORAGE_CONTAINER_UPGRADED.getStackForm(),
+        RecipeUtils.addShapelessRecipe("upgrade_storage_container", MetaTileEntities.STORAGE_CONTAINER_UPGRADED.asStackForm(),
             MetaTileEntities.STORAGE_CONTAINER, MetaItemClayParts.ClayCore)
 
         /* Distributor */
@@ -341,7 +356,7 @@ object MachineBlockRecipeLoader {
         for ((i, e) in wheelHulls.zip(wheels).withIndex()) {
             val (block, item) = e
             RecipeUtils.addShapelessRecipe("$MOD_ID.waterwheel_$i",
-                MetaTileEntities.WATERWHEEL[i].getStackForm(), block, item)
+                MetaTileEntities.WATERWHEEL[i].asStackForm(), block, item)
         }
         /* Chemical Metal Separator */
         assembler.builder()
@@ -508,7 +523,7 @@ object MachineBlockRecipeLoader {
             val clay = if (mte.tier.numeric == 1) CMaterials.clay else CMaterials.denseClay
             val ingMap = mutableMapOf(
                 'p' to UnificationEntry(OrePrefix.plate, clay), 'P' to UnificationEntry(OrePrefix.largePlate, clay),
-                'g' to UnificationEntry(OrePrefix.gear, clay), 'G' to UnificationEntry(OrePrefix.cuttingHead, clay),
+                'g' to UnificationEntry(OrePrefix.gear, clay), 'G' to UnificationEntry(OrePrefix.grindingHead, clay),
                 's' to UnificationEntry(OrePrefix.stick, clay), 'S' to UnificationEntry(OrePrefix.stick, clay),
                 'M' to UnificationEntry(OrePrefix.spindle, clay),
                 'c' to circuits[mte.tier.numeric], 'C' to UnificationEntry(OrePrefix.cuttingHead, clay),
@@ -525,7 +540,7 @@ object MachineBlockRecipeLoader {
                     }
                 }
             }
-            RecipeUtils.addShapedRecipe("${mte.metaTileEntityId}.workbench", mte.getStackForm(),
+            RecipeUtils.addShapedRecipe("${mte.metaTileEntityId}.workbench", mte.asStackForm(),
                 *recipe,
                 'H', MACHINE_HULL.getItem(mte.tier),
                 *recipeExtra.toTypedArray()
@@ -541,7 +556,7 @@ object MachineBlockRecipeLoader {
             }
             CRecipes.ASSEMBLER.builder()
                 .input(MACHINE_HULL.getItem(mte.tier))
-                .output(mte.getStackForm())
+                .output(mte.asStackForm())
                 .tier(4).CEtFactor(1.0).duration(60)
                 .inputProvider(i)
                 .buildAndRegister()
@@ -554,7 +569,7 @@ object MachineBlockRecipeLoader {
             val i = mte.tier.numeric - 4
             CRecipes.ASSEMBLER.builder()
                 .input(MetaTileEntities.CLAY_BUFFER[i])
-                .output(mte.getStackForm())
+                .output(mte.asStackForm())
                 .tier(4).CEtFactor(1.0).duration(60)
                 .inputProvider()
                 .buildAndRegister()
@@ -590,11 +605,11 @@ object MachineBlockRecipeLoader {
         val ingotMaterials = listOf(CMaterials.rubidium, CMaterials.lanthanum, CMaterials.caesium, CMaterials.francium,
             CMaterials.radium, CMaterials.tantalum, CMaterials.bismuth, CMaterials.actinium, CMaterials.vanadium)
         for ((i, duplicator) in MetaTileEntities.PAN_DUPLICATOR.slice(1..9).withIndex()) {
-            RecipeUtils.addShapedRecipe("pan_duplicator_rank${i + 1}", duplicator.getStackForm(),
+            RecipeUtils.addShapedRecipe("pan_duplicator_rank${i + 1}", duplicator.asStackForm(),
                 "PIP", "DHD", "PIP",
                 'P', UnificationEntry(OrePrefix.gem, CMaterials.PURE_ANTIMATTERS[i]),
                 'I', UnificationEntry(OrePrefix.ingot, ingotMaterials[i]),
-                'D', MetaTileEntities.PAN_DUPLICATOR[i].getStackForm(),
+                'D', MetaTileEntities.PAN_DUPLICATOR[i].asStackForm(),
                 'H', MACHINE_HULL.getItem(ClayTiers.entries[i + 5]))
         }
     }

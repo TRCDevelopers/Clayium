@@ -3,9 +3,8 @@ package com.github.trc.clayium.common.metatileentities.multiblock
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.utils.NumberFormat
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
@@ -14,6 +13,7 @@ import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.WorkableMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.multiblock.IMultiblockPart
 import com.github.trc.clayium.api.metatileentity.multiblock.MultiblockLogic
@@ -29,6 +29,8 @@ import com.github.trc.clayium.common.blocks.BlockCaReactorCoil
 import com.github.trc.clayium.common.blocks.BlockCaReactorHull
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.registry.CaReactorRecipeRegistry
+import com.github.trc.clayium.common.util.SidelessI18n
+import com.github.trc.clayium.integration.modularui.CNumFormat
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import net.minecraft.client.resources.I18n
 import net.minecraft.util.EnumFacing
@@ -46,10 +48,14 @@ class CaReactorMetaTileEntity(
     @Suppress("Unused") private val ioHandler = AutoIoHandler.Combined(this)
     private val multiblockLogic = MultiblockLogic(this, ::checkStructure)
 
-    fun getFaceInvalid(): ResourceLocation = clayiumId("blocks/ca_reactor_core_invalid")
-    fun getFaceValid() = clayiumId("blocks/ca_reactor_core_valid")
-    override val faceTexture get() = if (multiblockLogic.structureFormed) getFaceValid() else getFaceInvalid()
-    override val requiredTextures get() = listOf(getFaceValid(), getFaceInvalid())
+    override val renderingConfig by lazy {
+        val whenValid = clayiumId("blocks/ca_reactor_core_valid")
+        val whenInvalid = clayiumId("blocks/ca_reactor_core_invalid")
+        MteRenderingConfig.builder()
+            .dynFace { if (multiblockLogic.structureFormed) whenValid else whenInvalid }
+            .addRequiredTextures(whenValid, whenInvalid)
+            .build()
+    }
 
     override val importItems = NotifiableItemStackHandler(this, 1, this, isExport = false)
     override val exportItems = NotifiableItemStackHandler(this, 1, this, isExport = true)
@@ -182,7 +188,7 @@ class CaReactorMetaTileEntity(
 
     override fun createMetaTileEntity() = CaReactorMetaTileEntity(metaTileEntityId, tier)
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         syncManager.syncValue("caReactorEfficiency", SyncHandlers.doubleNumber(::efficiency, ::efficiency::set))
         syncManager.syncValue("caReactorAvgHullRank", SyncHandlers.intNumber(::avgHullRank, ::avgHullRank::set))
         syncManager.syncValue("caReactorHullCount", SyncHandlers.intNumber(::hullCount, ::hullCount::set))
@@ -203,10 +209,10 @@ class CaReactorMetaTileEntity(
                     syncManager.player.sendMessage(err)
                 })
             )
-            .child(IKey.dynamic { I18n.format("gui.clayium.ca_reactor.efficiency", NumberFormat.formatWithMaxDigits(efficiency)) }
+            .child(IKey.dynamic { SidelessI18n.format("gui.clayium.ca_reactor.efficiency", CNumFormat.format(efficiency)) }
                 .asWidgetResizing().alignment(Alignment.CenterRight).alignX(Alignment.BottomRight.x).bottom(14)
             )
-            .child(IKey.dynamic { I18n.format("gui.clayium.ca_reactor.rank_size", avgHullRank, hullCount) }
+            .child(IKey.dynamic { SidelessI18n.format("gui.clayium.ca_reactor.rank_size", avgHullRank, hullCount) }
                 .asWidgetResizing().left(0).top(10))
     }
 

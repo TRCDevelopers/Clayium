@@ -2,11 +2,12 @@ package com.github.trc.clayium.common.metatileentities
 
 import codechicken.lib.vec.Cuboid6
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.metatileentity.AbstractMinerMetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.metatileentity.trait.ClayMarkerHandler
 import com.github.trc.clayium.api.util.Cuboid6BlockPosIterator
@@ -23,8 +24,6 @@ open class RangedMinerMetaTileEntity(
     tier: ITier,
     machineName: String = "ranged_miner",
 ) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, machineName) {
-
-    override val faceTexture: ResourceLocation = clayiumId("blocks/miner")
 
     private val clayMarkerHandler = ClayMarkerHandler(this)
     @Suppress("unused")
@@ -59,7 +58,7 @@ open class RangedMinerMetaTileEntity(
         return true
     }
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .left(0).bottom(12))
@@ -81,6 +80,10 @@ open class RangedMinerMetaTileEntity(
         }
 
     override fun createMetaTileEntity() = RangedMinerMetaTileEntity(metaTileEntityId, tier)
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/miner"))
+    }
 
     companion object {
         val CE_CONSUMPTION = ClayEnergy.milli(10)

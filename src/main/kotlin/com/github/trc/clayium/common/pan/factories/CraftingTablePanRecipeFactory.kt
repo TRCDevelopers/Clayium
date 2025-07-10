@@ -36,6 +36,6 @@ object CraftingTablePanRecipeFactory : IPanRecipeFactory {
             CItemRecipeInput(stacks.map { it.copyWithSize(1) }, 1)
         }
 
-        return PanRecipe(inputs, listOf(output), ENERGY)
+        return PanRecipe(inputs.filter { it.stacks.isNotEmpty() }, listOf(output), ENERGY)
     }
 }

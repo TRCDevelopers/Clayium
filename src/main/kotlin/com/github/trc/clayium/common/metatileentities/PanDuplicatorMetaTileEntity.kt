@@ -1,38 +1,40 @@
 package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
-import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.capability.AbstractWorkable
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
-import com.github.trc.clayium.api.capability.impl.RecipeLogicEnergy
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.pan.IPan
 import com.github.trc.clayium.api.pan.IPanCable
 import com.github.trc.clayium.api.pan.IPanUser
-import com.github.trc.clayium.api.recipe.IRecipeProvider
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.ItemAndMeta
 import com.github.trc.clayium.api.util.ClayTiers
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
+import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.copyWithSize
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.gui.ClayGuiTextures
-import com.github.trc.clayium.common.recipe.Recipe
-import com.github.trc.clayium.common.recipe.builder.SimpleRecipeBuilder
 import com.github.trc.clayium.common.recipe.ingredient.COreRecipeInput
+import com.github.trc.clayium.common.util.TransferUtils
+import com.github.trc.clayium.integration.modularui.MuiSlots
+import mcjty.theoneprobe.api.IProbeHitData
+import mcjty.theoneprobe.api.IProbeInfo
+import mcjty.theoneprobe.api.NumberFormat
+import mcjty.theoneprobe.api.ProbeMode
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
@@ -40,6 +42,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
@@ -48,11 +51,11 @@ import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.property.IExtendedBlockState
+import net.minecraftforge.fml.common.Optional
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
 import java.util.function.Function
-import kotlin.math.max
 import kotlin.math.pow
 
 class PanDuplicatorMetaTileEntity(
@@ -62,9 +65,7 @@ class PanDuplicatorMetaTileEntity(
     private val machineHullTier: ITier = ClayTiers.entries[duplicatorRank + 3]
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[2], validOutputModesLists[1], "pan_duplicator"), IPanUser {
 
-    override val faceTexture = clayiumId("blocks/pan_duplicator")
-
-    private val ceConsumption = ClayEnergy(10_000 * 10.0.pow(duplicatorRank - 1).toLong())
+    val maxCeConsumptionRate = ClayEnergy(10_000 * 10.0.pow(duplicatorRank - 1).toLong())
 
     private val antimatterSlot = NotifiableItemStackHandler(this, 1, this, isExport = false)
     private val duplicationTargetSlot = NotifiableItemStackHandler(this, 1, this, isExport = false)
@@ -75,7 +76,7 @@ class PanDuplicatorMetaTileEntity(
 
     @Suppress("unused") private val ioHandler = AutoIoHandler.Combined(this)
     private val clayEnergyHolder = ClayEnergyHolder(this)
-    private val recipeLogic = RecipeLogicEnergy(this, PanRecipeProvider(), clayEnergyHolder)
+    private val recipeLogic = PanDuplicatorRecipeLogic()
 
     private var pan: IPan? = null
 
@@ -94,8 +95,8 @@ class PanDuplicatorMetaTileEntity(
         }
     }
 
-    override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
-        super.clearMachineInventory(itemBuffer)
+    override fun itemsDroppedOnDestroy(itemBuffer: MutableList<ItemStack>) {
+        super.itemsDroppedOnDestroy(itemBuffer)
         clearInventory(itemBuffer, clayEnergyHolder.energizedClayItemHandler)
     }
 
@@ -103,7 +104,7 @@ class PanDuplicatorMetaTileEntity(
         return PanDuplicatorMetaTileEntity(metaTileEntityId, tier, duplicatorRank)
     }
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .bottom(12).left(0))
@@ -112,19 +113,18 @@ class PanDuplicatorMetaTileEntity(
             .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
                 .child(SlotGroupWidget.builder()
                     .row("AD")
-                    .key('A', ItemSlot().slot(SyncHandlers.itemSlot(antimatterSlot, 0).singletonSlotGroup())
+                    .key('A', MuiSlots.itemSlotBuilder(antimatterSlot, 0).singletonSlotGroup().build()
                         .background(ClayGuiTextures.IMPORT_1_SLOT))
-                    .key('D', ItemSlot().slot(SyncHandlers.itemSlot(duplicationTargetSlot, 0).singletonSlotGroup())
+                    .key('D', MuiSlots.itemSlotBuilder(duplicationTargetSlot, 0).singletonSlotGroup().build()
                         .background(ClayGuiTextures.IMPORT_2_SLOT))
                     .build()
                     .align(Alignment.CenterLeft)
                 )
-                .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).singletonSlotGroup().accessibility(false, true))
+                .child(MuiSlots.itemSlotBuilder(exportItems, 0).singletonSlotGroup().takeOnly().buildLarge()
                     .align(Alignment.CenterRight))
-                .child(ProgressWidget()
-                    .progress(0.0)
-                    .size(22, 17).align(Alignment.Center)
-                    .texture(ClayGuiTextures.PROGRESS_BAR, 22)
+                .child(recipeLogic.getProgressBar(syncManager, showRecipes = false)
+                    .progress(recipeLogic::getNormalizedProgress)
+                    .align(Alignment.Center)
                 )
             )
     }
@@ -151,7 +151,7 @@ class PanDuplicatorMetaTileEntity(
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
-        tooltip.add("CE Consumption Rate: ${ceConsumption.format()}/t")
+        tooltip.add("CE Consumption Rate: ${maxCeConsumptionRate.format()}/t")
     }
 
     override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
@@ -159,27 +159,75 @@ class PanDuplicatorMetaTileEntity(
         panCasingQuads = EnumFacing.entries.map { ModelTextures.createQuad(it, sprite) }
     }
 
-    override fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+    override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
         if (state == null || side == null || state !is IExtendedBlockState) return
-        quads.add(ModelTextures.getHullQuads(this.machineHullTier)?.get(side) ?: return)
         if (side != this.frontFacing) quads.add(panCasingQuads[side.index])
     }
 
-    private inner class PanRecipeProvider : IRecipeProvider {
-        override val jeiCategory = null
-        override fun searchRecipe(machineTier: Int, inputs: List<ItemStack>): Recipe? {
-            if (!antimatterInput.testItemStackAndAmount(antimatterSlot.getStackInSlot(0))) return null
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/pan_duplicator"))
+    }
+
+    private inner class PanDuplicatorRecipeLogic : AbstractWorkable(this@PanDuplicatorMetaTileEntity) {
+        override fun trySearchNewRecipe() {
+            val hasAntimatter = antimatterInput.testItemStackAndAmount(antimatterSlot.getStackInSlot(0))
+            if (!hasAntimatter) return
             val targetStack = duplicationTargetSlot.getStackInSlot(0)
-            if (targetStack.isEmpty) return null
-            val dupTarget = duplicationTargetSlot.getStackInSlot(0).copyWithSize(1)
-            val energy = pan?.getDuplicationEntries()[ItemAndMeta(dupTarget)] ?: return null
-            val duration = max(1, (energy.energy / ceConsumption.energy).toLong())
-            return SimpleRecipeBuilder()
-                .inputs(antimatterInput)
-                .notConsumable(dupTarget)
-                .output(dupTarget)
-                .tier(0).CEt(ceConsumption).duration(duration)
-                .build()
+            if (targetStack.isEmpty) return
+            val duplicationTarget = targetStack.copyWithSize(1)
+            val duplicationCost: ClayEnergy = pan?.getDuplicationEntries()[ItemAndMeta(duplicationTarget)] ?: return
+
+            if (!TransferUtils.insertToHandler(metaTileEntity.exportItems, listOf(duplicationTarget), true)) {
+                this.outputsFull = true
+                return
+            }
+
+            antimatterSlot.extractItem(0, 1, false)
+            this.requiredProgress = duplicationCost.energy
+            this.currentProgress = 1
+            this.itemOutputs = listOf(duplicationTarget)
+        }
+
+        override fun updateWorkingProgress() {
+            val requiredEnergyRemaining = ClayEnergy(requiredProgress - currentProgress + 1) // +1 because we start progress at 1
+            val maxConsumption = applyOverclock(maxCeConsumptionRate) * ocHandler.accelerationFactor
+            val actualConsumption = ClayEnergy.min(requiredEnergyRemaining, maxConsumption)
+            if (!clayEnergyHolder.drawEnergy(actualConsumption, simulate = true)) return
+
+            clayEnergyHolder.drawEnergy(actualConsumption, simulate = false)
+            currentProgress += actualConsumption.energy
+            if (currentProgress > requiredProgress) {
+                completeWork()
+            }
+        }
+
+        private fun applyOverclock(baseConsumption: ClayEnergy): ClayEnergy {
+            // C Factor reduces the crafting time by 1/C,
+            // and multiplies the CE Consumption by C^1.5.
+            // [!] PAN Duplicators have 100% OC efficiency, so this is the formula for the overclocking.
+            val c = ocHandler.compensatedFactor
+            return baseConsumption * c * c.pow(1.5)
+        }
+
+
+        @Optional.Method(modid = Mods.Names.THE_ONE_PROBE)
+        override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
+            if (!isWorking) return
+            val energy = ClayEnergy(currentProgress)
+            val maxEnergy = ClayEnergy(requiredProgress)
+
+            val color = if (isWorkingEnabled) COLOR_ENABLED_ARGB else COLOR_DISABLED_ARGB
+            if (requiredProgress > 0) {
+                probeInfo.progress(
+                    currentProgress, requiredProgress, probeInfo.defaultProgressStyle()
+                        .numberFormat(NumberFormat.NONE)
+                        .prefix(energy.format())
+                        .suffix(" / ${maxEnergy.format()}")
+                        .filledColor(color)
+                        .alternateFilledColor(color)
+                        .borderColor(BORDER_COLOR)
+                )
+            }
         }
     }
 
@@ -189,3 +237,9 @@ class PanDuplicatorMetaTileEntity(
         private lateinit var panCasingQuads: List<BakedQuad>
     }
 }
+
+// TOP Info Colors
+//TODO: put these variables in somewhere public
+private const val COLOR_ENABLED_ARGB: Int = 0xFF4CBB17.toInt()
+private const val COLOR_DISABLED_ARGB: Int = 0xFFBB1C28.toInt()
+private const val BORDER_COLOR: Int = 0xFF555555.toInt()

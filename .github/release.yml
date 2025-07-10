@@ -1,7 +1,9 @@
 changelog:
   exclude:
     labels:
+      - "documentation"
       - "ignore changelog"
+      - "type: ci"
 
   categories:
     - title: Added

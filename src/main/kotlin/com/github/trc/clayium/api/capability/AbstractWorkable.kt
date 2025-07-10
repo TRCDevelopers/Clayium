@@ -2,7 +2,7 @@ package com.github.trc.clayium.api.capability
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.api.widget.IGuiAction
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.github.trc.clayium.api.metatileentity.MTETrait
@@ -23,13 +23,12 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.common.Optional
-import org.jetbrains.annotations.MustBeInvokedByOverriders
 import kotlin.math.round
 
 //todo cleanup
 abstract class AbstractWorkable(
     metaTileEntity: MetaTileEntity,
-) : MTETrait(metaTileEntity, ClayiumDataCodecs.RECIPE_LOGIC), IControllable {
+) : MTETrait(metaTileEntity, ClayiumDataCodecs.RECIPE_LOGIC), IWorkingControllable {
     var requiredProgress = 0L
         protected set
     var currentProgress = 0L
@@ -65,7 +64,7 @@ abstract class AbstractWorkable(
      * Show recipes in JEI.
      * Not called if Jei isn't loaded.
      */
-    protected abstract fun showRecipesInJei()
+    protected open fun showRecipesInJei() {}
 
     protected open fun getTier(): Int = metaTileEntity.tier.numeric
 
@@ -128,7 +127,7 @@ abstract class AbstractWorkable(
         return canWorkWithInputs() && canFitNewOutputs()
     }
 
-    private fun canWorkWithInputs(): Boolean {
+    protected fun canWorkWithInputs(): Boolean {
         if (invalidInputsForRecipes && !metaTileEntity.hasNotifiedInputs) return false
 
         invalidInputsForRecipes = false
@@ -136,7 +135,7 @@ abstract class AbstractWorkable(
         return true
     }
 
-    private fun canFitNewOutputs(): Boolean {
+    protected fun canFitNewOutputs(): Boolean {
         return true
         
         // currently, NotifiableItemStackHandler.onContentsChanged isn't called
@@ -166,7 +165,7 @@ abstract class AbstractWorkable(
         itemOutputs = CUtils.readItems("itemOutputs", data)
     }
 
-    fun getProgressBar(syncManager: GuiSyncManager): ProgressWidget {
+    fun getProgressBar(syncManager: PanelSyncManager, showRecipes: Boolean = true): ProgressWidget {
         syncManager.syncValue("requiredProgress", SyncHandlers.longNumber(::requiredProgress, ::requiredProgress::set))
         syncManager.syncValue("craftingProgress", SyncHandlers.longNumber(::currentProgress, ::currentProgress::set))
 
@@ -174,7 +173,7 @@ abstract class AbstractWorkable(
             .size(22, 17)
             .progress(this::getNormalizedProgress)
             .texture(ClayGuiTextures.PROGRESS_BAR, 22)
-        if (Mods.JustEnoughItems.isModLoaded) {
+        if (showRecipes && Mods.JustEnoughItems.isModLoaded) {
             widget.addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
                 .listenGuiAction(IGuiAction.MousePressed { _ ->
                     if (!widget.isBelowMouse) return@MousePressed false
@@ -186,7 +185,7 @@ abstract class AbstractWorkable(
         return widget
     }
 
-    fun getNormalizedProgress(): Double {
+    open fun getNormalizedProgress(): Double {
         if (currentProgress == 0L || requiredProgress == 0L) return 0.0
         return (currentProgress.toDouble() - 1.0) / requiredProgress.toDouble()
     }
@@ -200,7 +199,6 @@ abstract class AbstractWorkable(
     }
 
     @Optional.Method(modid = Mods.Names.THE_ONE_PROBE)
-    @MustBeInvokedByOverriders
     /**
      * must be annotated with `@Optional.Method(modid = Mods.Names.THE_ONE_PROBE)`
      */

@@ -2,11 +2,8 @@ package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.utils.NumberFormat
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.block.BlockMachine
 import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER_ITEM
@@ -16,6 +13,8 @@ import com.github.trc.clayium.api.capability.ClayiumDataCodecs.UPDATE_STORED_ITE
 import com.github.trc.clayium.api.capability.IPipeConnectionLogic
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
+import com.github.trc.clayium.api.metatileentity.interfaces.IHasItemStackNbt
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
@@ -23,6 +22,8 @@ import com.github.trc.clayium.api.util.copyWithSize
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.util.transferTo
+import com.github.trc.clayium.integration.modularui.CNumFormat
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
@@ -58,15 +59,8 @@ class StorageContainerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     isUpgraded: Boolean,
-) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, validOutputModesLists[1], "storage_container") {
-
-    override val faceTexture = clayiumId("blocks/storage_container")
-    override val requiredTextures get() = listOf(
-        faceTexture,
-        clayiumId("blocks/storage_container_side_composed"), clayiumId("blocks/storage_container_side_upgraded"),
-        clayiumId("blocks/storage_container_top_composed"), clayiumId("blocks/storage_container_top_upgraded"),
-        clayiumId("blocks/storage_container_upgraded_base")
-    )
+) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, validOutputModesLists[1], "storage_container"),
+    IHasItemStackNbt {
 
     override val pipeConnectionLogic: IPipeConnectionLogic = IPipeConnectionLogic.ItemPipe
 
@@ -119,7 +113,7 @@ class StorageContainerMetaTileEntity(
         }
     }
 
-    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+    override fun onRightClickServerSide(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         val stack = player.getHeldItem(hand)
         val clayCore = MetaItemClayParts.ClayCore.getStackForm()
         //todo use capability
@@ -127,14 +121,14 @@ class StorageContainerMetaTileEntity(
             val world = this.world
             val pos = this.pos
             if (!(world == null || pos == null)) {
-                val upgradedStorageContainerStack = MetaTileEntities.STORAGE_CONTAINER_UPGRADED.getStackForm()
+                val upgradedStorageContainerStack = MetaTileEntities.STORAGE_CONTAINER_UPGRADED.asStackForm()
                 upgradedStorageContainerStack.tagCompound = NBTTagCompound().apply { writeItemStackNbt(this) }
                 this.blockMachine.onBlockPlacedBy(world, pos, world.getBlockState(pos), player, upgradedStorageContainerStack)
                 stack.shrink(1)
                 return true
             }
         }
-        return super.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)
+        return super.onRightClickServerSide(player, hand, clickedSide, hitX, hitY, hitZ)
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
@@ -229,24 +223,36 @@ class StorageContainerMetaTileEntity(
         writeCustomData(UPDATE_FILTER_ITEM) { writeCompoundTag(filterSlot.serializeNBT()) }
     }
 
-    override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {}
+    override fun itemsDroppedOnDestroy(itemBuffer: MutableList<ItemStack>) {}
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder()
+            .face(clayiumId("blocks/storage_container"))
+            .addRequiredTextures(
+                clayiumId("blocks/storage_container_side_composed"), clayiumId("blocks/storage_container_side_upgraded"),
+                clayiumId("blocks/storage_container_top_composed"), clayiumId("blocks/storage_container_top_upgraded"),
+                clayiumId("blocks/storage_container_upgraded_base")
+            )
+            .build()
+
+    }
 
     @SideOnly(Side.CLIENT)
     override fun registerItemModel(item: Item, meta: Int) {
         ModelLoader.setCustomModelResourceLocation(item, meta, ModelResourceLocation(this.metaTileEntityId, "inventory"))
     }
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic { "$itemsStored / $maxStoredItems" }.asWidget()
                 .widthRel(0.5f).align(Alignment.BottomRight))
             .child(Column().widthRel(0.6f).height(26)
-                .child(largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
+                .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().buildLarge()
                     .align(Alignment.CenterLeft))
-                .child(largeSlot(SyncHandlers.itemSlot(exportItems, 0).accessibility(/* canPut = */ false, /* canTake = */ true))
+                .child(MuiSlots.itemSlotBuilder(exportItems, 0).takeOnly().buildLarge()
                     .align(Alignment.CenterRight))
                 .align(Alignment.Center))
-            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0))
+            .child(MuiSlots.phantomSlot(filterSlot, 0)
                 .right(10).top(15))
     }
 
@@ -321,7 +327,7 @@ class StorageContainerMetaTileEntity(
             }
 
             GlStateManager.pushMatrix()
-            val amountText: String = NumberFormat.formatWithMaxDigits(itemsStored.toDouble(), 3)
+            val amountText: String = CNumFormat.format(itemsStored.toDouble())
             val fRenderer = mc.fontRenderer
             GlStateManager.rotate(180.0f, 0.0f, 1.0f, 0.0f)
             GlStateManager.translate(0.0, -0.15, -0.55)

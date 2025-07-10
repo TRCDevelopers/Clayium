@@ -7,6 +7,7 @@ import com.github.trc.clayium.api.block.ItemBlockMachine
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.common.gui.ResizingTextWidget
+import com.mojang.authlib.GameProfile
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.item.Item
@@ -17,13 +18,17 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
+import net.minecraft.world.WorldServer
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
+import net.minecraftforge.common.util.FakePlayer
+import net.minecraftforge.common.util.FakePlayerFactory
 import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
-import java.util.EnumMap
+import java.util.*
+import kotlin.collections.AbstractList
 import kotlin.enums.EnumEntries
 import kotlin.enums.enumEntries
 
@@ -67,7 +72,9 @@ fun IItemHandler.toList(): List<ItemStack> {
 }
 
 fun IBlockState.toItemStack(count: Int = 1): ItemStack {
-    return ItemStack(block, count, block.getMetaFromState(this))
+    val item = block.getAsItem()
+    val meta = if (item.hasSubtypes) block.getMetaFromState(this) else 0
+    return ItemStack(item, count, meta)
 }
 
 fun Block.getAsItem(): Item {
@@ -111,6 +118,11 @@ fun clayiumId(path: String): ResourceLocation {
 }
 
 object CUtils {
+
+    private val profile by lazy {
+        val mcid = "[Clayium]"
+        GameProfile(UUID.nameUUIDFromBytes(mcid.toByteArray(Charsets.UTF_8)), mcid)
+    }
 
     fun writeItems(handler: IItemHandler, tagName: String, tag: NBTTagCompound) {
         val tagList = NBTTagList()
@@ -174,6 +186,10 @@ object CUtils {
         } else {
             null
         }
+    }
+
+    fun getFakePlayer(world: WorldServer): FakePlayer {
+        return FakePlayerFactory.get(world, profile)
     }
 
     val isClientSide by lazy { FMLCommonHandler.instance().side.isClient }

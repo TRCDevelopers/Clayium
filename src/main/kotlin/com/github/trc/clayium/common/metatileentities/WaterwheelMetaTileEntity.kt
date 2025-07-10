@@ -3,10 +3,9 @@ package com.github.trc.clayium.common.metatileentities
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
@@ -15,12 +14,14 @@ import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.common.config.ConfigCore
+import com.github.trc.clayium.common.util.SidelessI18n
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.BlockLiquid
-import net.minecraft.client.resources.I18n
 import net.minecraft.init.Blocks
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -29,8 +30,8 @@ import kotlin.math.pow
 class WaterwheelMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "waterwheel",) {
-    override val faceTexture = clayiumId("blocks/waterwheel")
+) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "waterwheel") {
+
     override val importItems = EmptyItemStackHandler
     override val exportItems = EmptyItemStackHandler
     override val itemInventory = EmptyItemStackHandler
@@ -78,7 +79,7 @@ class WaterwheelMetaTileEntity(
         }
     }
 
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         syncManager.syncValue("waterCount", SyncHandlers.intNumber({ waterCount }, { waterCount = it }))
         syncManager.syncValue("progress", SyncHandlers.intNumber({ progress }, { progress = it }))
         return ModularPanel.defaultPanel("waterwheel", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT - 50)
@@ -88,11 +89,11 @@ class WaterwheelMetaTileEntity(
                         .align(Alignment.TopLeft))
                     .child(IKey.lang("container.inventory").asWidget()
                         .align(Alignment.BottomLeft))
-                    .child(IKey.dynamic { I18n.format("gui.clayium.waterwheel.waters", waterCount) }.asWidget()
+                    .child(IKey.dynamic { SidelessI18n.format("gui.clayium.waterwheel.waters", waterCount) }.asWidget()
                         .widthRel(0.3f).align(Alignment.CenterRight))
-                    .child(IKey.dynamic { I18n.format("gui.clayium.waterwheel.progress", progress) }.asWidget()
+                    .child(IKey.dynamic { SidelessI18n.format("gui.clayium.waterwheel.progress", progress) }.asWidget()
                         .widthRel(0.6f).align(Alignment.CenterLeft)))
-                .child(SlotGroupWidget.playerInventory(0)))
+                .child(MuiSlots.playerInventory(0)))
     }
 
     private fun getWaterFlowsCount(): Int {
@@ -111,6 +112,10 @@ class WaterwheelMetaTileEntity(
             }
         }
         return waterFlows
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/waterwheel"))
     }
 
     companion object {

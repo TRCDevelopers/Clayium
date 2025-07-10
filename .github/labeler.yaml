@@ -1,0 +1,12 @@
+feature:
+  - head-branch: ['^feature']
+bug:
+  - head-branch: ['^fix']
+refactoring:
+  - head-branch: ['^refactor']
+documentation:
+  - head-branch: ['^docs', '^documentation']
+"type: ci":
+  - head-branch: ['^ci']
+"ignore changelog":
+  - head-branch: ['^ignorec']

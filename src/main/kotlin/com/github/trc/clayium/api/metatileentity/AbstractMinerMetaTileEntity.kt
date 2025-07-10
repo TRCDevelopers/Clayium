@@ -1,19 +1,17 @@
 package com.github.trc.clayium.api.metatileentity
 
 import codechicken.lib.vec.Cuboid6
-import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.BoolValue
 import com.cleanroommc.modularui.value.EnumValue
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.CycleButtonWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.ToggleButton
 import com.cleanroommc.modularui.widgets.layout.Grid
@@ -36,19 +34,18 @@ import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getCapability
 import com.github.trc.clayium.api.util.hasCapability
-import com.github.trc.clayium.api.util.toItemStack
 import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer.RangeRenderMode
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.util.TransferUtils
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.tileentity.TileEntityBeacon
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.NonNullList
 import net.minecraft.util.ResourceLocation
@@ -95,7 +92,8 @@ abstract class AbstractMinerMetaTileEntity(
     abstract fun getNextBlockPos(): BlockPos?
 
     /**
-     * return true if the block is mined, so the next block is searched.
+     * return true if you want to continue mining within the tick.
+     * if false, further blocks will not be mined in this tick.
      * also, if all [maxBlocksPerTick] blocks are mined, [progress] will be reset.
      */
     protected open fun mine(world: World, pos: BlockPos, state: IBlockState): Boolean {
@@ -115,12 +113,13 @@ abstract class AbstractMinerMetaTileEntity(
         if (!drawEnergy(r)) return
         progress += PROGRESS_PER_TICK_BASE * getAccelerationRate()
 
+        @Suppress("unused")
         for (i in 0..<maxBlocksPerTick) {
             val pos = this.currentPos ?: getNextBlockPos()
                 ?: continue
             val state = world.getBlockState(pos)
             val filter = this.filter
-            if (!(filter == null || filter.test(state.toItemStack()))) {
+            if (!(filter == null || filter.testBlock(world, pos))) {
                 this.currentPos = getNextBlockPos()
                 continue
             }
@@ -167,7 +166,7 @@ abstract class AbstractMinerMetaTileEntity(
         this.laser = laser
     }
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         syncManager.registerSlotGroup("breaker_inv", INV_ROW)
         val workingEnabledSync = SyncHandlers.bool(::workingEnabled, ::workingEnabled::set)
         syncManager.syncValue("working_enabled", workingEnabledSync)
@@ -193,7 +192,6 @@ abstract class AbstractMinerMetaTileEntity(
             .tooltip(0) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.disabled")) }
             .tooltip(1) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled")) }
             .tooltip(2) { it.addLine(IKey.lang("gui.clayium.range_visualization_mode.enabled_xray")) }
-            .textureGetter { IDrawable.EMPTY }
         val resetButton = ButtonWidget()
             .syncHandler(InteractionSyncHandler()
                 .setOnMousePressed { if (!it.isClient) resetButtonPressed() })
@@ -209,20 +207,20 @@ abstract class AbstractMinerMetaTileEntity(
             )
             .child(SlotGroupWidget.builder()
                 .matrix(*matrixStr.toTypedArray())
-                .key('I') { ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, it).slotGroup("breaker_inv")) }
+                .key('I') { MuiSlots.itemSlotBuilder(itemInventory, it).slotGroup("breaker_inv").build() }
                 .build().alignX(Alignment.TopCenter.x).top(12)
             )
             .child(IKey.dynamic { "Laser : ${laser?.let { LaserEnergy(it.energy).format() } ?: 0}" }.asWidgetResizing()
                 .alignX(Alignment.Center.x).bottom(12)
             )
-            .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(filterSlot, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) })
+            .child(MuiSlots.phantomSlotBuilder(filterSlot, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) }.build()
                 .background(ClayGuiTextures.FILTER_SLOT)
                 .top(12).right(24)
                 .tooltipBuilder { it.addLine(IKey.lang("gui.clayium.miner.filter")) }
             )
     }
 
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("breaker", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 20)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager))
@@ -265,13 +263,6 @@ abstract class AbstractMinerMetaTileEntity(
         MINER_BACK = EnumFacing.entries.map { ModelTextures.createQuad(it, atlas) }
     }
 
-    @SideOnly(Side.CLIENT)
-    override fun getMaxRenderDistanceSquared() = Double.POSITIVE_INFINITY
-
-    @SideOnly(Side.CLIENT)
-    override fun getRenderBoundingBox() = TileEntityBeacon.INFINITE_EXTENT_AABB
-    @SideOnly(Side.CLIENT)
-    override fun useGlobalRenderer() = true
     @SideOnly(Side.CLIENT)
     override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
         AreaMarkerRenderer.render(Cuboid6.full, rangeRelative, x, y, z, rangeRenderMode)

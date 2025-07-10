@@ -11,13 +11,14 @@ import net.minecraftforge.items.IItemHandlerModifiable
 data class Recipe(
     val inputs: List<CRecipeInput>,
     val outputs: List<ItemStack>,
-    val chancedOutputs: ChancedOutputList<ItemStack>?,
+    val chancedOutputs: ChancedOutputList<ItemStack>? = null,
     val duration: Long,
     val cePerTick: ClayEnergy,
     /**
      * if `machine.tier.numeric < recipe.tier`, then the recipe is not matched
      */
     val recipeTier: Int,
+    val priority: Int = 0,
 ) {
     fun matches(consumeOnMatch: Boolean, inputsIn: IItemHandlerModifiable, machineTier: Int): Boolean {
 
@@ -75,6 +76,7 @@ data class Recipe(
     }
 
     override fun toString(): String {
-        return "Recipe(inputs=$inputs, outputs=$outputs, duration=$duration, cePerTick=$cePerTick, tierNumeric=$recipeTier)"
+        return "Recipe(inputs=$inputs, outputs=$outputs, chancedOutputs=$chancedOutputs, duration=$duration, cePerTick=$cePerTick, recipeTier=$recipeTier, priority=$priority)"
     }
+
 }

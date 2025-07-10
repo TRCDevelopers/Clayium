@@ -7,7 +7,12 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.EnumFacing.*
+import net.minecraft.util.EnumFacing.DOWN
+import net.minecraft.util.EnumFacing.EAST
+import net.minecraft.util.EnumFacing.NORTH
+import net.minecraft.util.EnumFacing.SOUTH
+import net.minecraft.util.EnumFacing.UP
+import net.minecraft.util.EnumFacing.WEST
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.GL11
 

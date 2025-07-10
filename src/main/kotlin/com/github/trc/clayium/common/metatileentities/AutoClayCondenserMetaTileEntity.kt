@@ -2,9 +2,7 @@ package com.github.trc.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
-import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.GUI_DEFAULT_HEIGHT
@@ -16,6 +14,7 @@ import com.github.trc.clayium.api.capability.impl.NotifiableItemStackHandler
 import com.github.trc.clayium.api.capability.impl.RangedItemHandlerProxy
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
@@ -27,6 +26,7 @@ import com.github.trc.clayium.api.util.canStackWith
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.ItemBlockMaterial
 import com.github.trc.clayium.common.gui.ClayGuiTextures
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
@@ -44,8 +44,6 @@ class AutoClayCondenserMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[1], validOutputModesLists[1], name = "auto_clay_condenser") {
-
-    override val faceTexture = clayiumId("blocks/auto_clay_condenser")
 
     override val itemInventory = object : NotifiableItemStackHandler(this, ROWS * COLS, this, isExport = false) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
@@ -75,7 +73,7 @@ class AutoClayCondenserMetaTileEntity(
         sortInv()
     }
 
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         syncManager.registerSlotGroup("compressor_inventory", 4)
         val matrix = (0..<ROWS).map { "I".repeat(COLS) }.toTypedArray()
         return ModularPanel.defaultPanel("auto_clay_condenser", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 20)
@@ -86,13 +84,13 @@ class AutoClayCondenserMetaTileEntity(
                         .child(SlotGroupWidget.builder()
                             .matrix(*matrix)
                             .key('I') {
-                                ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, it)
+                                MuiSlots.itemSlotBuilder(itemInventory, it)
                                     .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null }
-                                    .slotGroup("compressor_inventory"))
+                                    .slotGroup("compressor_inventory").build()
                             }
                             .build().align(Alignment.Center))
-                        .child(ItemSlot().slot(SyncHandlers.phantomItemSlot(maxCompressedClay, 0)
-                            .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null })
+                        .child(MuiSlots.phantomSlotBuilder(maxCompressedClay, 0)
+                            .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null }.build()
                             .align(Alignment.TopRight)
                             .background(ClayGuiTextures.CLAY_SLOT))
                     )
@@ -219,5 +217,9 @@ class AutoClayCondenserMetaTileEntity(
     override fun readFromNBT(data: NBTTagCompound) {
         super.readFromNBT(data)
         maxCompressedClay.deserializeNBT(data.getCompoundTag("maxCompressedClay"))
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/auto_clay_condenser"))
     }
 }

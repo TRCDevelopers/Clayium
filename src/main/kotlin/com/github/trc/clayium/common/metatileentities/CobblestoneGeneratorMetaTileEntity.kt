@@ -2,6 +2,7 @@ package com.github.trc.clayium.common.metatileentities
 
 import com.github.trc.clayium.api.metatileentity.AbstractItemGeneratorMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.block.material.Material
@@ -16,10 +17,7 @@ class CobblestoneGeneratorMetaTileEntity(
 ) : AbstractItemGeneratorMetaTileEntity(
     metaTileEntityId, tier,
     validInputModes = onlyNoneList, validOutputModes = validOutputModesLists[1],
-    "cobblestone_generator",
-) {
-
-    override val faceTexture = clayiumId("blocks/cobblestone_generator")
+    "cobblestone_generator") {
 
     override val generatingItem: ItemStack = ItemStack(Blocks.COBBLESTONE)
     override val progressPerItem = 100
@@ -49,5 +47,9 @@ class CobblestoneGeneratorMetaTileEntity(
             if (hasWaterNeighbor && hasLavaNeighbor) return true
         }
         return false
+    }
+
+    override val renderingConfig: MteRenderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/cobblestone_generator"))
     }
 }

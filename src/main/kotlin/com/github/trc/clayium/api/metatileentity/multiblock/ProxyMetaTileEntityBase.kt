@@ -28,9 +28,7 @@ abstract class ProxyMetaTileEntityBase(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     translationKey: String,
-) : MetaTileEntity(
-    metaTileEntityId, tier, onlyNoneList, onlyNoneList, translationKey
-), IMultiblockPart, ISynchronizedInterface {
+) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, translationKey), IMultiblockPart, ISynchronizedInterface {
 
     final override var isAttachedToMultiblock = false
         private set
@@ -110,8 +108,8 @@ abstract class ProxyMetaTileEntityBase(
         }
     }
 
-    override fun onRightClick(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        if (super.onRightClick(player, hand, clickedSide, hitX, hitY, hitZ)) {
+    override fun onRightClickServerSide(player: EntityPlayer, hand: EnumHand, clickedSide: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        if (super.onRightClickServerSide(player, hand, clickedSide, hitX, hitY, hitZ)) {
             return true
         } else if (!this.hasSynchroParts) {
             val stack = player.getHeldItem(hand)
@@ -125,7 +123,7 @@ abstract class ProxyMetaTileEntityBase(
         return false
     }
 
-    override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
+    override fun itemsDroppedOnDestroy(itemBuffer: MutableList<ItemStack>) {
         // no-op, this block is a proxy
     }
 
@@ -192,7 +190,7 @@ abstract class ProxyMetaTileEntityBase(
             writeBoolean(true)
             writeBlockPos(pos)
             writeVarInt(world.provider.dimension)
-            writeItemStack(target.getStackForm())
+            writeItemStack(target.asStackForm())
         }
     }
 

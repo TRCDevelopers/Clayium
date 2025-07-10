@@ -1,12 +1,10 @@
 package com.github.trc.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
-import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.github.trc.clayium.api.ClayEnergy
@@ -19,6 +17,7 @@ import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.common.gui.ClayGuiTextures
 import com.github.trc.clayium.common.recipe.registry.RecipeRegistry
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
@@ -33,8 +32,9 @@ abstract class WorkableMetaTileEntity(
     val outputSize: Int = recipeRegistry.maxOutputs,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, recipeRegistry.category.categoryName) {
 
-    constructor(metaTileEntityId: ResourceLocation, tier: ITier, recipeRegistry: RecipeRegistry<*>)
-            : this(metaTileEntityId, tier, validInputModesLists[recipeRegistry.maxInputs], validOutputModesLists[recipeRegistry.maxOutputs], recipeRegistry)
+    constructor(metaTileEntityId: ResourceLocation, tier: ITier, recipeRegistry: RecipeRegistry<*>) : this(
+        metaTileEntityId, tier, validInputModesLists[recipeRegistry.maxInputs],
+        validOutputModesLists[recipeRegistry.maxOutputs], recipeRegistry)
 
     override val importItems = NotifiableItemStackHandler(this, inputSize, this, false)
     override val exportItems = NotifiableItemStackHandler(this, outputSize, this, true)
@@ -51,28 +51,27 @@ abstract class WorkableMetaTileEntity(
         super.onPlacement()
     }
 
-    override fun clearMachineInventory(itemBuffer: MutableList<ItemStack>) {
-        super.clearMachineInventory(itemBuffer)
+    override fun itemsDroppedOnDestroy(itemBuffer: MutableList<ItemStack>) {
+        super.itemsDroppedOnDestroy(itemBuffer)
         clearInventory(itemBuffer, clayEnergyHolder.energizedClayItemHandler)
     }
 
-    override fun buildMainParentWidget(syncManager: GuiSyncManager): ParentWidget<*> {
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         val slotsAndProgressBar = Row()
             .widthRel(0.7f).height(26)
             .align(Alignment.Center)
             .child(workable.getProgressBar(syncManager).align(Alignment.Center))
 
         if (importItems.slots == 1) {
-            slotsAndProgressBar.child(largeSlot(SyncHandlers.itemSlot(importItems, 0).singletonSlotGroup())
-                .align(Alignment.CenterLeft))
+            slotsAndProgressBar.child(
+                MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().build().align(Alignment.CenterLeft)
+            )
         } else if (importItems.slots == 2) {
             syncManager.registerSlotGroup("input_inv", 1)
             slotsAndProgressBar.child(
                 SlotGroupWidget.builder()
                     .matrix("II").key('I') { index ->
-                        ItemSlot().slot(
-                            SyncHandlers.itemSlot(importItems, index)
-                                .slotGroup("input_inv"))
+                        MuiSlots.itemSlotBuilder(importItems, index).slotGroup("input_inv").build()
                             .apply {
                                 if (index == 0) background(ClayGuiTextures.IMPORT_1_SLOT) else background(ClayGuiTextures.IMPORT_2_SLOT)
                             }}
@@ -81,22 +80,21 @@ abstract class WorkableMetaTileEntity(
         }
         if (exportItems.slots == 1) {
             slotsAndProgressBar.child(
-                largeSlot(SyncHandlers.itemSlot(exportItems, 0)
-                    .singletonSlotGroup()
-                    .accessibility(false, true)
-                ).align(Alignment.CenterRight))
+                MuiSlots.itemSlotBuilder(exportItems, 0).singletonSlotGroup().takeOnly().buildLarge()
+            .align(Alignment.CenterRight))
         } else if (exportItems.slots == 2) {
             syncManager.registerSlotGroup("output_inv", 1)
             slotsAndProgressBar.child(
                 SlotGroupWidget.builder()
                     .matrix("II").key('I') { index ->
-                        ItemSlot().slot(
-                            SyncHandlers.itemSlot(exportItems, index)
-                                .accessibility(false, true)
-                                .slotGroup("output_inv"))
+                        MuiSlots.itemSlotBuilder(exportItems, index)
+                            .slotGroup("output_inv")
+                            .takeOnly()
+                            .build()
                             .apply {
                                 if (index == 0) background(ClayGuiTextures.EXPORT_1_SLOT) else background(ClayGuiTextures.EXPORT_2_SLOT)
-                            }}
+                            }
+                    }
                     .build()
                     .align(Alignment.CenterRight)
             )

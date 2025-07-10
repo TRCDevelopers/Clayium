@@ -1,6 +1,6 @@
 package com.github.trc.clayium.api.metatileentity.multiblock
 
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.IClayLaserAcceptor
 import com.github.trc.clayium.api.capability.IConfigurationTool
@@ -8,6 +8,7 @@ import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.laser.ClayLaser
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import net.minecraft.entity.player.EntityPlayer
@@ -24,7 +25,6 @@ class LaserProxyMetaTileEntity(
 ) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "laser_proxy"), IClayLaserAcceptor {
 
     private var laser: ClayLaser? = null
-    override val faceTexture: ResourceLocation = clayiumId("blocks/laser_proxy")
 
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val exportItems: IItemHandlerModifiable = EmptyItemStackHandler
@@ -55,7 +55,7 @@ class LaserProxyMetaTileEntity(
     }
 
     override fun canOpenGui() = false
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): Nothing {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): Nothing {
         throw UnsupportedOperationException()
     }
 
@@ -78,5 +78,9 @@ class LaserProxyMetaTileEntity(
             return ClayiumTileCapabilities.CLAY_LASER_ACCEPTOR.cast(this)
         }
         return super.getCapability(capability, facing)
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/laser_proxy"))
     }
 }

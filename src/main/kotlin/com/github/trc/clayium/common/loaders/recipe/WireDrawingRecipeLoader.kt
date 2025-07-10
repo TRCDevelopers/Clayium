@@ -5,7 +5,6 @@ import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import net.minecraft.init.Items
-import kotlin.collections.withIndex
 
 object WireDrawingRecipeLoader {
     fun registerRecipes() {

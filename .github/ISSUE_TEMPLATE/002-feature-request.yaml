@@ -1,0 +1,49 @@
+name: Request a Feature
+description: Request a new feature or a change to an existing one. / 新たな機能の提案や、既存の機能に対する変更の提案。
+labels: [ "feature" ]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Mod Version
+      description: |
+        The version of Clayium Unofficial you are using for suggesting a new feature. If you do not know where to find this, look for the mod jar file in the mods folder, or in the mods viewer in-game.<br>
+        あなたが今利用しているClayium Unofficialのバージョンを入力してください。modsフォルダの中にあるModのjarファイルや、ゲーム内の「Mods」から確認できます。
+      placeholder: "vX.Y.Z"
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Related Problem
+      description: |
+        If the feature you wish to change is related to a problem, please describe it. Leave this field blank if it is not related to a problem.<br>
+        もし、希望する機能が何かしらプレイするときに生じる問題に関連している場合は、その問題を入力してください。問題に関連していない場合は、この項目は空欄のままで構いません。
+      placeholder: "Example: I'm always frustrated when... / 例: Aを行うのが非常に面倒で..."
+    validations:
+      required: false
+  - type: textarea
+    id: solution
+    attributes:
+      label: Your Solution
+      description: |
+        Describe the solution you would like to have happen.<br>
+        どのような機能の実装を希望しますか?
+      placeholder: "Example: If I could... / 例: Bができれば..."
+    validations:
+      required: true
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional Information
+      description: |
+        Any additional information you wish to provide. Please add anything which did not fit into the other sections here.<br>
+        追加情報や、他のセクションに収まらなかった情報があれば入力してください。
+      placeholder: "Example: This is likely achievable by doing X because... / 例: おそらくXを行うことで実現できると思います。"
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to fill out this feature request.<br>
+        ご記入いただきありがとうございます。

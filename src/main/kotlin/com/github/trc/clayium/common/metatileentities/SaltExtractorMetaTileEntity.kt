@@ -4,6 +4,7 @@ import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.impl.ClayEnergyHolder
 import com.github.trc.clayium.api.metatileentity.AbstractItemGeneratorMetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.ore.OrePrefix
@@ -19,10 +20,7 @@ class SaltExtractorMetaTileEntity(
 ) : AbstractItemGeneratorMetaTileEntity(
     metaTileEntityId, tier,
     validInputModes = energyAndNone, validOutputModes = validOutputModesLists[1],
-    name = "salt_extractor",
-) {
-
-    override val faceTexture = clayiumId("blocks/salt_extractor")
+    name = "salt_extractor") {
 
     override val progressPerItem: Int = 100
     override val progressPerTick = when (tier.numeric) {
@@ -37,7 +35,12 @@ class SaltExtractorMetaTileEntity(
     override val generatingItem by lazy { OreDictUnifier.get(OrePrefix.dust, CMaterials.salt) }
 
     private val clayEnergyHolder = ClayEnergyHolder(this)
-    private val energyPerProgress = ClayEnergy.of(30)
+    /*
+    5(Efficiency)*300uCE=1500uCE(energy per tick)
+    energy per item = 100/(water*5(efficiency))*1500uCE = 15mCE (when 2 water)
+    energyPerProgress = 15mCE/100(progressMax)=150uCE
+     */
+    private val energyPerProgress = ClayEnergy.micro(150)
 
     override fun createMetaTileEntity(): MetaTileEntity {
         return SaltExtractorMetaTileEntity(this.metaTileEntityId, this.tier)
@@ -61,6 +64,10 @@ class SaltExtractorMetaTileEntity(
     }
 
     override fun canProgress(): Boolean {
-        return super.canProgress() && this.clayEnergyHolder.drawEnergy(energyPerProgress, simulate = false)
+        return super.canProgress() && this.clayEnergyHolder.drawEnergy(energyPerProgress.times(progressPerTick), simulate = false)
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/salt_extractor"))
     }
 }

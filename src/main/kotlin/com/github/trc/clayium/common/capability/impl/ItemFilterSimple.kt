@@ -1,16 +1,26 @@
-package com.github.trc.clayium.api.capability.impl
+package com.github.trc.clayium.common.capability.impl
 
+import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.IItemFilter
 import com.github.trc.clayium.api.util.CUtils
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 
-class SimpleItemFilter(
+class ItemFilterSimple(
     private var stacks: List<ItemStack> = listOf(),
     private var whitelist: Boolean = true,
 ) : IItemFilter {
     override fun test(stack: ItemStack): Boolean {
-        return stacks.any { it.isItemEqual(stack) } == whitelist
+        @Suppress("IfThenToElvis") // simple if-then is more readable imo
+        val match = stacks.any {
+            val nestedFilter = it.getCapability(ClayiumCapabilities.ITEM_FILTER, null)
+            if (nestedFilter != null) {
+                nestedFilter.test(stack)
+            } else {
+                it.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(it, stack)
+            }
+        }
+        return match == whitelist
     }
 
     override fun serializeNBT(): NBTTagCompound {

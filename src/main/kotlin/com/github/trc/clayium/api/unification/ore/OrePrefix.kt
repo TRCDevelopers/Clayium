@@ -9,12 +9,12 @@ import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.material.IMaterial
 import com.github.trc.clayium.api.unification.material.MaterialAmount
-import com.github.trc.clayium.common.util.BothSideI18n
+import com.github.trc.clayium.common.util.SidelessI18n
 import com.google.common.base.CaseFormat
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap
 import java.util.function.Predicate
 
-private val Long.M get() = MaterialAmount.of(this)
+private val Int.M get() = MaterialAmount.of(this.toLong())
 
 class OrePrefix(
     val camel: String,
@@ -49,6 +49,10 @@ class OrePrefix(
                 && itemGenerationLogic.test(material))
     }
 
+    /**
+     * If a material is ignored, a material item (prefixItem e.g. ingotClayium) nor recipes will not be generated for it,
+     *
+     */
     fun ignore(material: CMaterial) {
         ignoredMaterials.add(material)
     }
@@ -59,10 +63,10 @@ class OrePrefix(
 
     fun getLocalizedName(material: CMaterial): String {
         val specialKey = "${material.translationKey}.${this.snake}"
-        if (BothSideI18n.hasKey(specialKey)) {
-            return BothSideI18n.format(specialKey)
+        if (SidelessI18n.hasKey(specialKey)) {
+            return SidelessI18n.format(specialKey)
         }
-        return BothSideI18n.format("${MOD_ID}.ore_prefix.${snake}", BothSideI18n.format(material.translationKey))
+        return SidelessI18n.format("${MOD_ID}.ore_prefix.${snake}", SidelessI18n.format(material.translationKey))
     }
 
     override fun toString(): String {
@@ -126,6 +130,12 @@ class OrePrefix(
                 block.ignore(it)
             }
 
+            // vanilla
+            block.ignore(CMaterials.lapis)
+            block.ignore(CMaterials.gold)
+            block.ignore(CMaterials.iron)
+            block.ignore(CMaterials.coal)
+            block.ignore(CMaterials.quartz)
             // silicone has 16 colored deco blocks, so disable auto-gen
             block.ignore(CMaterials.silicone)
 

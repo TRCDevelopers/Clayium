@@ -78,7 +78,7 @@ object ModelTextures {
         for (registry in ClayiumApi.mteManager.allRegistries()) {
             for (metaTileEntity in registry) {
                 metaTileEntity.bakeQuads(getter, faceBakery)
-                metaTileEntity.requiredTextures.filterNotNull().forEach { faceTexture ->
+                metaTileEntity.renderingConfig.requiredTextures.forEach { faceTexture ->
                     _faceQuads.computeIfAbsent(faceTexture) {
                         EnumFacing.entries.associateWith { side ->
                             createQuad(side, getter.apply(faceTexture))

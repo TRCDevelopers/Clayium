@@ -1,7 +1,6 @@
 package com.github.trc.clayium.api.util
 
 import net.minecraft.util.IStringSerializable
-import kotlin.text.lowercase
 
 enum class MachineIoMode(
     val id: Int,

@@ -6,10 +6,9 @@ import com.cleanroommc.modularui.drawable.Rectangle
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.Color
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData
-import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Grid
 import com.github.trc.clayium.api.ClayEnergy
@@ -20,6 +19,7 @@ import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.pan.IPan
 import com.github.trc.clayium.api.pan.IPanCable
 import com.github.trc.clayium.api.pan.IPanRecipe
@@ -33,20 +33,15 @@ import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.ItemAndMeta
 import com.github.trc.clayium.api.unification.stack.readItemAndMeta
 import com.github.trc.clayium.api.unification.stack.writeItemAndMeta
-import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.writeClayEnergy
-import com.github.trc.clayium.client.model.ModelTextures
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.recipe.ingredient.CRecipeInput
 import com.github.trc.clayium.common.recipe.registry.CRecipes
-import net.minecraft.block.state.IBlockState
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.block.model.BakedQuad
-import net.minecraft.client.renderer.block.model.FaceBakery
-import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.init.Blocks
 import net.minecraft.network.PacketBuffer
@@ -54,9 +49,6 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.capabilities.Capability
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
-import java.util.function.Function
 import kotlin.math.min
 
 class PanCoreMetaTileEntity(
@@ -119,10 +111,20 @@ class PanCoreMetaTileEntity(
         }
     }
 
+    // TODO: 機械の稼働コストを考慮する
     private fun refreshDuplicationEntries() {
         duplicationEntries.clear()
         duplicationEntries.putAll(defaultDuplicationEntries)
 
+        // --- Algorithm ---
+        // 1. Gather all PanRecipes from PanAdapters.
+        // 2. Traverse entries from defaultDuplicationEntries. Create queue.
+        // 2-1. If all ingredients of a recipe are verified (already duplicatable), add the result to the queue.
+        // 2-2. Calculate the cost etc.
+        // 2-3. repeat while the queue is not empty.
+        // 3. done.
+
+        // -- PART 1: Gather all PanRecipes from PanAdapters --
         // [PanRecipeInternal] has [PanIngredient]s.
         // PanIngredient has a flag that indicates whether the ingredient is duplicatable or not.
         val internalRecipes = panRecipes.map { PanRecipeInternal(it) }
@@ -148,36 +150,34 @@ class PanCoreMetaTileEntity(
             }
         }
 
+        // -- PART 2, 3 --
         val duplicatablesQueue = ArrayDeque<ItemAndMeta>()
         val walked = mutableSetOf<ItemAndMeta>()
         duplicatablesQueue.addAll(defaultDuplicationEntries.keys)
         while (duplicatablesQueue.isNotEmpty()) {
             val parent: ItemAndMeta = duplicatablesQueue.removeFirst()
-            if (parent in walked) {
-                CLog.warn("Tried to walk a node that has already been walked: $parent")
-                continue
-            }
+            if (parent in walked) continue
             walked.add(parent)
             val childRecipes = result2Dependants[parent] ?: continue
             for (childRecipe in childRecipes) {
                 var allVerified = true
-                var totalCost = ClayEnergy.ZERO
+                var totalCostOfChildren = ClayEnergy.ZERO
                 for (ing in childRecipe.ingsWithFlag) {
                     val ingIsChild = ing.ingredient.testIgnoringAmount(parent)
                     if (ingIsChild) {
                         ing.verified = true
-                        val costByThis = duplicationEntries[parent]!!.ce
-                        val currentCostOfIng = ing.cost
-                        val newCost = ClayEnergy(min(costByThis.energy, currentCostOfIng.energy))
-                        totalCost += newCost
+                        val costThisTime = duplicationEntries[parent]!!.ce
+                        val currentCostOfIngredient = ing.cost
+                        val newCost = ClayEnergy(min(costThisTime.energy, currentCostOfIngredient.energy))
+                        totalCostOfChildren += newCost
                     }
                     allVerified = allVerified && ing.verified
                 }
                 if (allVerified) {
                     val panRecipe = childRecipe.panRecipe
-                    for (result in panRecipe.results.map(::ItemAndMeta)) {
+                    for ((result, count) in panRecipe.results.map { Pair(ItemAndMeta(it), it.count) }) {
                         duplicatablesQueue.add(result)
-                        val cost = (totalCost / panRecipe.results.sumOf { it.count }) + panRecipe.requiredClayEnergy
+                        val cost = (totalCostOfChildren + panRecipe.requiredClayEnergy) / count
                         duplicationEntries[result] = PanDuplicationEntry(cost)
                     }
                 }
@@ -232,19 +232,7 @@ class PanCoreMetaTileEntity(
         return super.getCapability(capability, facing)
     }
 
-    @SideOnly(Side.CLIENT)
-    override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
-        val tex = getter.apply(clayiumId("blocks/pan_core"))
-        panCoreQuads = EnumFacing.entries.map { ModelTextures.createQuad(it, tex) }.toMutableList()
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
-        if (state == null || side == null) return
-        quads.add(panCoreQuads[side.index])
-    }
-
-    override fun buildUI(data: MetaTileEntityGuiData, syncManager: GuiSyncManager): ModularPanel {
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         if (!isRemote) {
             refreshNetworkAndThenEntries()
         }
@@ -256,7 +244,7 @@ class PanCoreMetaTileEntity(
                         val flag = if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips) ITooltipFlag.TooltipFlags.ADVANCED else ITooltipFlag.TooltipFlags.NORMAL
                         tooltip.addStringLines(stack.getTooltip(data.player, flag))
                     }
-                    tooltip.addLine(entry.ce.format())
+                    tooltip.add(entry.ce.format())
                 }
                 .also {
                     if (!entry.isAllowedToDuplicate) {
@@ -284,7 +272,7 @@ class PanCoreMetaTileEntity(
                             .background(Rectangle().setColor(Color.rgb(0, 0x1E, 0))))
                     )
                 )
-                .child(SlotGroupWidget.playerInventory(0)))
+                .child(MuiSlots.playerInventory(0)))
     }
 
     class PanDuplicationEntry(
@@ -298,6 +286,13 @@ class PanCoreMetaTileEntity(
     )
     private class PanRecipeInternal(val panRecipe: IPanRecipe) {
         val ingsWithFlag = panRecipe.ingredients.map(::PanIngredient)
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder()
+            .face(clayiumId("blocks/pan_core"))
+            .useFaceForAllSides()
+            .build()
     }
 
     companion object {
@@ -327,7 +322,7 @@ class PanCoreMetaTileEntity(
             // impure dusts from Chemical Metal Separator
             for (recipe in CRecipes.CHEMICAL_METAL_SEPARATOR.getAllRecipes()) {
                 if (recipe.chancedOutputs == null) continue
-                val totalWeight: Double = recipe.chancedOutputs.map { it.chance }.sum().toDouble()
+                val totalWeight: Double = recipe.chancedOutputs.sumOf { it.chance }.toDouble()
                 val baseCeCost = recipe.cePerTick * recipe.duration
                 for (chanced in recipe.chancedOutputs) {
                     val rate = chanced.chance.toDouble() / totalWeight
@@ -338,7 +333,5 @@ class PanCoreMetaTileEntity(
             put(ItemAndMeta(OrePrefix.dust, CMaterials.salt), PanDuplicationEntry(ClayEnergy.milli(5), true))
             put(ItemAndMeta(OrePrefix.gem, CMaterials.antimatter), PanDuplicationEntry(ClayEnergy.of(1), false))
         }.toMap() }
-
-        private lateinit var panCoreQuads: MutableList<BakedQuad>
     }
 }

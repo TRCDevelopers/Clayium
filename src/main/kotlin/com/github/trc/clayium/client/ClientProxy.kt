@@ -1,8 +1,12 @@
 package com.github.trc.clayium.client
 
+import codechicken.lib.colour.ColourRGBA
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.client.gui.TextureExtra
 import com.github.trc.clayium.client.model.LaserReflectorModelLoader
 import com.github.trc.clayium.client.model.MetaTileEntityModelLoader
+import com.github.trc.clayium.client.model.MetalBlockModelLoader
 import com.github.trc.clayium.client.renderer.ClayLaserReflectorRenderer
 import com.github.trc.clayium.client.renderer.ClayMarkerTESR
 import com.github.trc.clayium.client.renderer.MetaTileEntityRenderDispatcher
@@ -18,6 +22,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraftforge.client.event.ColorHandlerEvent
 import net.minecraftforge.client.event.ModelRegistryEvent
+import net.minecraftforge.client.event.TextureStitchEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.client.model.ModelLoaderRegistry
 import net.minecraftforge.common.MinecraftForge
@@ -39,6 +44,7 @@ class ClientProxy : CommonProxy() {
 
         ModelLoaderRegistry.registerLoader(MetaTileEntityModelLoader)
         ModelLoaderRegistry.registerLoader(LaserReflectorModelLoader)
+        ModelLoaderRegistry.registerLoader(MetalBlockModelLoader)
 
         ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, MetaTileEntityRenderDispatcher)
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayLaserReflector::class.java, ClayLaserReflectorRenderer)
@@ -57,6 +63,26 @@ class ClientProxy : CommonProxy() {
             item.registerModels()
         }
         ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(item.registryName!!, "inventory"))
+    }
+
+    @SubscribeEvent
+    fun onTextureStitchPre(event: TextureStitchEvent.Pre) {
+        val compressedBlockTextures = listOf("metalblock_base", "metalblock_dark", "metalblock_light")
+        for (block in ClayiumBlocks.COMPRESSED_BLOCKS) {
+            for (material in block.mapping.values) {
+                val colorsRaw = material.colors ?: return
+                val name = material.upperCamelName
+
+                val colors = colorsRaw.map { color ->
+                    ColourRGBA(color shl 8).apply { a = 255.toByte() }
+                }
+
+                val sprite = TextureExtra(clayiumId("blocks/compressed_$name").toString(), compressedBlockTextures, colors)
+                if (event.map.getTextureExtry(sprite.iconName) == null) {
+                    event.map.setTextureEntry(sprite)
+                }
+            }
+        }
     }
 
     @SubscribeEvent

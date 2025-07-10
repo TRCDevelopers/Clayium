@@ -117,6 +117,14 @@ public class ConfigCore {
         @Config.Comment("Default: 10000")
         @Config.RangeInt(min = 1)
         public int claySteelToolsDurability = 10000;
+
+        @Config.Comment("Default: 100")
+        @Config.RangeInt(min = 1)
+        public int autoTraderEnergyConsumption = 100;
+
+        @Config.Comment("Default: 1")
+        @Config.RangeInt(min = 1)
+        public int autoTraderRecipeDurationTick = 1;
     }
 
     public static class FeGen {

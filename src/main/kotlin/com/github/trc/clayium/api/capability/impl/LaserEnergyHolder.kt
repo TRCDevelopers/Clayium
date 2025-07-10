@@ -1,7 +1,7 @@
 package com.github.trc.clayium.api.capability.impl
 
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.github.trc.clayium.api.LaserEnergy
@@ -56,7 +56,7 @@ class LaserEnergyHolder(
         return super.getCapability(capability, facing)
     }
 
-    fun createLpTextWidget(syncManager: GuiSyncManager): TextWidget {
+    fun createLpTextWidget(syncManager: PanelSyncManager): TextWidget {
         syncManager.syncValue("laser_power", SyncHandlers.doubleNumber(
             { storedPower.energy },
             { storedPower = LaserEnergy(it) }

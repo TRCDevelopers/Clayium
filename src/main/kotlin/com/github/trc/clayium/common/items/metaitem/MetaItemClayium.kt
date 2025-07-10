@@ -7,7 +7,12 @@ import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.items.ItemClayium
-import com.github.trc.clayium.common.items.metaitem.component.*
+import com.github.trc.clayium.common.items.metaitem.component.IItemBehavior
+import com.github.trc.clayium.common.items.metaitem.component.IItemCapabilityProvider
+import com.github.trc.clayium.common.items.metaitem.component.IItemColorHandler
+import com.github.trc.clayium.common.items.metaitem.component.IItemComponent
+import com.github.trc.clayium.common.items.metaitem.component.ISubItemHandler
+import com.github.trc.clayium.common.items.metaitem.component.TooltipBehavior
 import com.github.trc.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.shorts.Short2ObjectAVLTreeMap
 import net.minecraft.client.renderer.block.model.ModelResourceLocation

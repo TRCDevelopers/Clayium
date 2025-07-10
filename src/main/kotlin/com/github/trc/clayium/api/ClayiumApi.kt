@@ -11,6 +11,7 @@ object ClayiumApi {
     val materialRegistry = MaterialRegistry<CMaterial>(Short.MAX_VALUE.toInt())
     val markerMaterials = CMarkerMaterialRegistry()
 
+    //TODO mutableがそのままpublicになっているのは直す
     val PAN_RECIPE_FACTORIES = mutableListOf<IPanRecipeFactory>()
 
     /**

@@ -2,10 +2,10 @@ package com.github.trc.clayium.api.capability.impl
 
 import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.TextWidget
+import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.block.IEnergyStorageUpgradeBlock
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
@@ -16,6 +16,7 @@ import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.asWidgetResizing
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
@@ -81,14 +82,12 @@ class ClayEnergyHolder(
     }
 
     fun createSlotWidget(): ItemSlot {
-        return ItemSlot()
-            .slot(SyncHandlers.itemSlot(energizedClayItemHandler, 0)
-                .accessibility(false, false))
+        return MuiSlots.itemSlotBuilder(energizedClayItemHandler, 0).lock().build()
             .setEnabledIf { GuiScreen.isShiftKeyDown() }
             .background(IDrawable.EMPTY)
     }
 
-    fun createCeTextWidget(syncManager: GuiSyncManager): TextWidget {
+    fun createCeTextWidget(syncManager: PanelSyncManager): TextWidget {
         syncManager.syncValue("${this.name}.text", SyncHandlers.longNumber(
             { clayEnergy.energy },
             { clayEnergy = ClayEnergy(it) }

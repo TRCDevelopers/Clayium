@@ -26,7 +26,7 @@ class MetaTileEntityBakedModel : IModelParticleProvider {
         mte.overlayQuads(quads, state, side, rand)
         ModelTextures.getInputQuad(mte.inputModes[side.index], side)?.let { quads.add(it) }
         ModelTextures.getOutputQuad(mte.outputModes[side.index], side)?.let { quads.add(it) }
-        mte.filters[side.index]?.let { quads.add(ModelTextures.getFilterQuad(side)) }
+        if (mte.hasFilterClient(side)) quads.add(ModelTextures.getFilterQuad(side))
         return quads
     }
 
