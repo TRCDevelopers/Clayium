@@ -7,14 +7,12 @@ import com.github.trc.clayium.api.metatileentity.trait.ClayMarkerHandler
 import com.github.trc.clayium.api.util.BlockPosIterator
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.common.config.ConfigCore
-import com.github.trc.clayium.common.metatileentities.ActivatorMetaTileEntity.BlockEntityMode.BLOCK
-import com.github.trc.clayium.common.metatileentities.ActivatorMetaTileEntity.BlockEntityMode.BLOCK_AND_ENTITY
-import com.github.trc.clayium.common.metatileentities.ActivatorMetaTileEntity.BlockEntityMode.ENTITY
 import com.github.trc.clayium.common.util.RayTraceMemory
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
@@ -41,6 +39,7 @@ class RangedActivatorMetaTileEntity(
         if (iter.hasNext()) return iter.next()
 
         if (this.repeatEnabled) {
+            this.allBlocksProcessed = true
             iter.restart()
             if (iter.hasNext()) return iter.next()
         }
@@ -50,36 +49,10 @@ class RangedActivatorMetaTileEntity(
     override fun actionOnBlock(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
         val memory = this.rayTraceMemory
             ?: RayTraceMemory.getByFacing(this.frontFacing.opposite)
-        when (this.blockEntityMode) {
-            BLOCK -> {
-                if (this.enableRayTrace) {
-                    this.rayTraceBlock(world, pos, memory)
-                } else {
-                    this.clickBlock(world, pos, memory)
-                }
-            }
-            ENTITY -> {
-                if (this.enableRayTrace) {
-                    this.rayTraceEntity(world, pos, memory)
-                } else {
-                    this.clickEntity(world, pos)
-                }
-            }
-            BLOCK_AND_ENTITY -> {
-                if (this.enableRayTrace) {
-                    this.rayTraceAny(world, pos, memory)
-                } else {
-                    if (this.isBlockForBlockAndEntityMode) {
-                        this.clickBlock(world, pos, memory)
-                        this.isBlockForBlockAndEntityMode = false
-                    } else {
-                        this.clickEntity(world, pos)
-                        this.isBlockForBlockAndEntityMode = true
-                    }
-                }
-            }
-        }
-
+        val (minPos, maxPos) = this.clayMarkerHandler.markedRangeAbsolute
+            ?: return EnumActionResult.FAIL
+        val rangeAabb = AxisAlignedBB(minPos, maxPos.add(1, 1, 1))
+        this.doWork(world, pos, memory, rangeAabb)
         return EnumActionResult.SUCCESS
     }
 

@@ -69,12 +69,14 @@ open class ActivatorMetaTileEntity(
     protected var sneaking = false
 
     protected var isBlockForBlockAndEntityMode = true
+    protected var allBlocksProcessed = false
 
-    protected val scannedEntities = mutableListOf<Entity>()
+    protected val scannedEntities = mutableSetOf<Entity>()
 
     override fun drawEnergy(accelerationRate: Double): Boolean { return true }
 
     override fun getNextBlockPos(): BlockPos? {
+        this.allBlocksProcessed = true
         return this.pos?.offset(this.frontFacing.opposite)
     }
 
@@ -88,10 +90,13 @@ open class ActivatorMetaTileEntity(
 
     override fun actionOnBlock(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
         if (inventoryCrowded()) return EnumActionResult.FAIL
-        val world = this.world as? WorldServer ?: return EnumActionResult.FAIL
-
         val memory = RayTraceMemory.getByFacing(this.frontFacing.opposite)
+        val range = AxisAlignedBB(pos)
+        this.doWork(world, pos, memory, range)
+        return EnumActionResult.SUCCESS
+    }
 
+    protected fun doWork(world: World, pos: BlockPos, memory: RayTraceMemory, rangeAabb: AxisAlignedBB) {
         if (this.enableRayTrace) {
             when (blockEntityMode) {
                 BLOCK -> this.rayTraceBlock(world, pos, memory)
@@ -101,20 +106,23 @@ open class ActivatorMetaTileEntity(
         } else {
             when (blockEntityMode) {
                 BLOCK -> this.clickBlock(world, pos, memory)
-                ENTITY -> this.clickEntity(world, pos)
+                ENTITY -> this.clickEntity(world, rangeAabb)
                 BLOCK_AND_ENTITY -> {
                     if (this.isBlockForBlockAndEntityMode) {
                         this.clickBlock(world, pos, memory)
-                        this.isBlockForBlockAndEntityMode = false
+                        if (this.allBlocksProcessed) {
+                            this.isBlockForBlockAndEntityMode = false
+                        }
                     } else {
-                        this.clickEntity(world, pos)
-                        this.isBlockForBlockAndEntityMode = true
+                        this.clickEntity(world, rangeAabb)
+                        val allEntitiesProcessed = this.scannedEntities.isEmpty()
+                        if (allEntitiesProcessed) {
+                            this.isBlockForBlockAndEntityMode = true
+                        }
                     }
                 }
             }
         }
-
-        return EnumActionResult.SUCCESS
     }
 
     protected fun clickBlock(world: World, clickPos: BlockPos, memory: RayTraceMemory) {
@@ -210,16 +218,17 @@ open class ActivatorMetaTileEntity(
         toMachineInventory(player.inventory)
     }
 
-    protected fun clickEntity(world: World, clickPos: BlockPos) {
+    protected fun clickEntity(world: World, aabb: AxisAlignedBB) {
         val world = world as? WorldServer ?: return
 
-        val aabb = AxisAlignedBB(clickPos)
         val entities = world.getEntitiesWithinAABB(Entity::class.java, aabb) { !scannedEntities.contains(it) }
         if (entities.isEmpty()) {
-            scannedEntities.clear()
-            return
+            this.scannedEntities.clear()
+        } else {
+            val entity = entities.first()
+            this.scannedEntities.add(entity)
+            interactOn(world, entity)
         }
-        interactOn(world, entities.first())
     }
 
     protected fun rayTraceEntity(world: World, from: BlockPos, memory: RayTraceMemory) {
