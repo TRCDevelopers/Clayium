@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 class BlockBreakerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier
-) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, "block_breaker") {
+) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, "block_breaker", renderMinerBack = true) {
 
     @Suppress("unused")
     val ioHandler = AutoIoHandler.Exporter(this)

@@ -17,6 +17,7 @@ import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.AutoIoHandler
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getCapability
 import com.github.trc.clayium.api.util.hasCapability
@@ -50,7 +51,8 @@ open class ActivatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     machineName: String,
-) : AbstractBuilderMetaTileEntity(metaTileEntityId, tier, machineName, bufferValidInputModes) {
+    renderMinerBack: Boolean = true,
+) : AbstractBuilderMetaTileEntity(metaTileEntityId, tier, machineName, bufferValidInputModes, renderMinerBack = renderMinerBack) {
 
     @Suppress("unused")
     val ioHandler = AutoIoHandler.Exporter(this)
@@ -72,6 +74,11 @@ open class ActivatorMetaTileEntity(
     protected var allBlocksProcessed = false
 
     protected val scannedEntities = mutableSetOf<Entity>()
+
+    override fun onPlacement() {
+        this.setInput(EnumFacing.UP, MachineIoMode.ALL)
+        super.onPlacement()
+    }
 
     override fun drawEnergy(accelerationRate: Double): Boolean { return true }
 
@@ -337,7 +344,7 @@ open class ActivatorMetaTileEntity(
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
-        return ActivatorMetaTileEntity(metaTileEntityId, tier, "activator")
+        return ActivatorMetaTileEntity(metaTileEntityId, tier, "activator", renderMinerBack = true)
     }
 
     override val renderingConfig by lazy {

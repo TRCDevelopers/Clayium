@@ -7,6 +7,7 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.metatileentity.trait.ClayMarkerHandler
 import com.github.trc.clayium.api.util.ITier
+import com.github.trc.clayium.api.util.MachineIoMode
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.containsEq
 import com.github.trc.clayium.api.util.copyWithSize
@@ -14,6 +15,7 @@ import com.github.trc.clayium.common.config.ConfigCore
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.util.EnumActionResult
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
@@ -22,7 +24,13 @@ import net.minecraftforge.items.ItemHandlerHelper
 class ItemCollectorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, "item_collector", validInputModesLists[1], validOutputModesLists[1]) {
+) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, "item_collector", validInputModesLists[1], validOutputModesLists[1],
+    renderMinerBack = false) {
+
+    override fun onPlacement() {
+        this.setInput(EnumFacing.UP, MachineIoMode.CE)
+        super.onPlacement()
+    }
 
     override fun drawEnergy(accelerationRate: Double): Boolean {
         return clayEnergyHolder.drawEnergy(ClayEnergy.milli(1), false)

@@ -39,7 +39,8 @@ abstract class AbstractMinerMetaTileEntity(
     name: String,
     validInputModes: List<MachineIoMode> = validInputModesLists[0],
     validOutputModes: List<MachineIoMode> = validOutputModesLists[1],
-) : AbstractBuilderMetaTileEntity(metaTileEntityId, tier, name, validInputModes, validOutputModes), IClayLaserAcceptor {
+    renderMinerBack: Boolean,
+) : AbstractBuilderMetaTileEntity(metaTileEntityId, tier, name, validInputModes, validOutputModes, renderMinerBack), IClayLaserAcceptor {
 
     protected val filterSlot = ClayiumItemStackHandler(this, 1)
     protected val filter: IItemFilter?

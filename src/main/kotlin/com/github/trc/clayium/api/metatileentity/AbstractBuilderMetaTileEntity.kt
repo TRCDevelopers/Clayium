@@ -47,7 +47,7 @@ abstract class AbstractBuilderMetaTileEntity(
     name: String,
     validInputModes: List<MachineIoMode> = validInputModesLists[0],
     validOutputModes: List<MachineIoMode> = validOutputModesLists[1],
-    val renderMinerBack: Boolean = true,
+    val renderMinerBack: Boolean = false,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, name) {
 
     override val itemInventory = ClayiumItemStackHandler(this, 3 * 3)
