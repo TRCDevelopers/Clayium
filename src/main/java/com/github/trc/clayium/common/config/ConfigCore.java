@@ -107,7 +107,7 @@ public class ConfigCore {
                 "maxSearchBlocks is consumed regardless of the search result.",
                 "Default: 1000"
         })
-        @Config.RangeInt(min = 1, max = 64)
+        @Config.RangeInt(min = 1, max = 10000)
         public int builderMaxSearchBlocksPerTick = 1000;
 
         @Config.Comment("Default: 32")
