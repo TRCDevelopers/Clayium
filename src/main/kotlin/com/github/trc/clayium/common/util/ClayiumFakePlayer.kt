@@ -1,33 +1,42 @@
 package com.github.trc.clayium.common.util
 
-import com.mojang.authlib.GameProfile
 import net.minecraft.network.EnumPacketDirection
 import net.minecraft.network.NetHandlerPlayServer
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.Packet
-import net.minecraft.network.play.client.*
+import net.minecraft.network.play.client.CPacketAnimation
+import net.minecraft.network.play.client.CPacketChatMessage
+import net.minecraft.network.play.client.CPacketClickWindow
+import net.minecraft.network.play.client.CPacketClientSettings
+import net.minecraft.network.play.client.CPacketClientStatus
+import net.minecraft.network.play.client.CPacketCloseWindow
+import net.minecraft.network.play.client.CPacketConfirmTeleport
+import net.minecraft.network.play.client.CPacketConfirmTransaction
+import net.minecraft.network.play.client.CPacketCreativeInventoryAction
+import net.minecraft.network.play.client.CPacketCustomPayload
+import net.minecraft.network.play.client.CPacketEnchantItem
+import net.minecraft.network.play.client.CPacketEntityAction
+import net.minecraft.network.play.client.CPacketHeldItemChange
+import net.minecraft.network.play.client.CPacketInput
+import net.minecraft.network.play.client.CPacketKeepAlive
+import net.minecraft.network.play.client.CPacketPlaceRecipe
+import net.minecraft.network.play.client.CPacketPlayer
+import net.minecraft.network.play.client.CPacketPlayerAbilities
+import net.minecraft.network.play.client.CPacketPlayerDigging
+import net.minecraft.network.play.client.CPacketPlayerTryUseItem
+import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock
+import net.minecraft.network.play.client.CPacketRecipeInfo
+import net.minecraft.network.play.client.CPacketResourcePackStatus
+import net.minecraft.network.play.client.CPacketSeenAdvancements
+import net.minecraft.network.play.client.CPacketSpectate
+import net.minecraft.network.play.client.CPacketSteerBoat
+import net.minecraft.network.play.client.CPacketTabComplete
+import net.minecraft.network.play.client.CPacketUpdateSign
+import net.minecraft.network.play.client.CPacketUseEntity
+import net.minecraft.network.play.client.CPacketVehicleMove
 import net.minecraft.network.play.server.SPacketPlayerPosLook
 import net.minecraft.util.text.ITextComponent
-import net.minecraft.world.WorldServer
 import net.minecraftforge.common.util.FakePlayer
-
-//TODO: is this really needed?
-class ClayiumFakePlayer(
-    world: WorldServer,
-    profile: GameProfile,
-) : FakePlayer(world, profile) {
-    init {
-        // to avoid NPE
-        this.connection = FakeServerHandler(this)
-    }
-
-    companion object {
-        private val fakePlayers = mutableMapOf<GameProfile, ClayiumFakePlayer>()
-        fun get(world: WorldServer, profile: GameProfile): ClayiumFakePlayer {
-            return ClayiumFakePlayer(world, profile)
-        }
-    }
-}
 
 /**
  * all methods are empty
