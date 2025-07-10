@@ -22,7 +22,7 @@ open class RangedMinerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     machineName: String = "ranged_miner",
-) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, machineName, renderMinerBack = true) {
+) : AbstractMinerMetaTileEntity(metaTileEntityId, tier, machineName, renderMinerBack = false) {
 
     private val clayMarkerHandler = ClayMarkerHandler(this)
     @Suppress("unused")

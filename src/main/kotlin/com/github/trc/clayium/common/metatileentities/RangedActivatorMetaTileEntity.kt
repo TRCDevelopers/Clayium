@@ -34,6 +34,8 @@ class RangedActivatorMetaTileEntity(
 
     private var rayTraceMemory: RayTraceMemory? = null
 
+    override fun isFacingValid(facing: EnumFacing) = facing.axis.isHorizontal
+
     override fun getNextBlockPos(): BlockPos? {
         val iter = posIter ?: return null
         if (iter.hasNext()) return iter.next()

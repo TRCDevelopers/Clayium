@@ -47,7 +47,7 @@ abstract class AbstractBuilderMetaTileEntity(
     name: String,
     validInputModes: List<MachineIoMode> = validInputModesLists[0],
     validOutputModes: List<MachineIoMode> = validOutputModesLists[1],
-    val renderMinerBack: Boolean = false,
+    val renderMinerBack: Boolean,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, name) {
 
     override val itemInventory = ClayiumItemStackHandler(this, 3 * 3)
@@ -151,8 +151,8 @@ abstract class AbstractBuilderMetaTileEntity(
             this.setOutput(this.frontFacing.rotateY(), MachineIoMode.ALL)
             this.setOutput(this.frontFacing.rotateYCCW(), MachineIoMode.ALL)
         } else {
-            this.setOutput(EnumFacing.NORTH, MachineIoMode.ALL)
-            this.setOutput(EnumFacing.SOUTH, MachineIoMode.ALL)
+            this.setOutput(EnumFacing.WEST, MachineIoMode.ALL)
+            this.setOutput(EnumFacing.EAST, MachineIoMode.ALL)
         }
         super.onPlacement()
     }

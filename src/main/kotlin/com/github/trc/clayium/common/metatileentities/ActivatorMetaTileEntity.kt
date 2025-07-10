@@ -29,7 +29,6 @@ import com.github.trc.clayium.common.util.RayTraceMemory
 import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
-import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.item.ItemStack
@@ -44,14 +43,13 @@ import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
-import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.items.ItemHandlerHelper
 
 open class ActivatorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
     machineName: String,
-    renderMinerBack: Boolean = true,
+    renderMinerBack: Boolean,
 ) : AbstractBuilderMetaTileEntity(metaTileEntityId, tier, machineName, bufferValidInputModes, renderMinerBack = renderMinerBack) {
 
     @Suppress("unused")
@@ -66,7 +64,7 @@ open class ActivatorMetaTileEntity(
     protected val itemFilter: IItemFilter?
         get() = filtersHandler.getStackInSlot(1).getCapability(ClayiumCapabilities.ITEM_FILTER)
 
-    protected var blockEntityMode = BlockEntityMode.BLOCK
+    protected var blockEntityMode = BLOCK
     protected var enableRayTrace = false
     protected var sneaking = false
 
@@ -76,9 +74,15 @@ open class ActivatorMetaTileEntity(
     protected val scannedEntities = mutableSetOf<Entity>()
 
     override fun onPlacement() {
-        this.setInput(EnumFacing.UP, MachineIoMode.ALL)
+        if (this.frontFacing.axis == EnumFacing.Axis.Y) {
+            this.setInput(EnumFacing.SOUTH, MachineIoMode.ALL)
+        } else {
+            this.setInput(EnumFacing.UP, MachineIoMode.ALL)
+        }
         super.onPlacement()
     }
+
+    override fun isFacingValid(facing: EnumFacing) = true
 
     override fun drawEnergy(accelerationRate: Double): Boolean { return true }
 
@@ -209,7 +213,7 @@ open class ActivatorMetaTileEntity(
         // subtract eyeHeight because the player is "standing" on the block.
         // If you don't subtract eyeHeight, then it will be higher than this activator block's y coordinate.
         val playerY = from.y.toDouble() - player.eyeHeight
-        val playerPos = memory.entityRelPos.add(from.x.toDouble(), from.y.toDouble() - player.eyeHeight, from.z.toDouble())
+        val playerPos = memory.entityRelPos.add(from.x.toDouble(), playerY, from.z.toDouble())
         player.setWorld(world)
         player.setLocationAndAngles(playerPos.x, playerPos.y, playerPos.z, memory.yaw.toFloat(), memory.pitch.toFloat())
         player.isSneaking = sneaking
@@ -337,7 +341,7 @@ open class ActivatorMetaTileEntity(
 
     override fun readFromNBT(data: NBTTagCompound) {
         super.readFromNBT(data)
-        blockEntityMode = BlockEntityMode.entries.getOrElse(data.getInteger("blockEntityMode")) { BlockEntityMode.BLOCK }
+        blockEntityMode = BlockEntityMode.entries.getOrElse(data.getInteger("blockEntityMode")) { BLOCK }
         enableRayTrace = data.getBoolean("raytrace")
         sneaking = data.getBoolean("sneaking")
         isBlockForBlockAndEntityMode = data.getBoolean("isBlockForBlockAndEntityMode")
@@ -349,14 +353,6 @@ open class ActivatorMetaTileEntity(
 
     override val renderingConfig by lazy {
         MteRenderingConfig.face(clayiumId("blocks/activator"))
-    }
-
-    override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
-        super.overlayQuads(quads, state, side, rand)
-        if (state == null || side == null || state !is IExtendedBlockState) return
-        if (side == this.frontFacing.opposite) {
-            quads.add(MINER_BACK[side.index])
-        }
     }
 
     enum class BlockEntityMode {
