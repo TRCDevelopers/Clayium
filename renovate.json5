@@ -8,7 +8,7 @@
   addLabels: ["renovate"],
   packageRules: [
     {
-      matchBaseBranches: ["*"],
+      matchFileNames: ["*"],
       enabled: false
     },
     {
