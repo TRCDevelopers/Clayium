@@ -1,6 +1,15 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
     "config:recommended"
-  ]
+  ],
+  addLabels: ["renovate"],
+  packageRules: [
+    {
+      matchFileNames: ["dependencies.gradle"]
+    },
+    {
+      matchCategories: ["github-actions", "npm"]
+    },
+  ],
 }
