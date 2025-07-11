@@ -30,6 +30,10 @@ jobs:
           filters: |
             src_or_gradle_changed:
               - 'src/**'
+              - 'gradle/**'
+              - '**.gradle'
+              - 'gradlew.bat'
+              - 'gradlew'
 
       - name: Setup Build
         if: steps.filter.outputs.src_or_gradle_changed == 'true'
