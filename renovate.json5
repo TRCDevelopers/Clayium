@@ -3,23 +3,25 @@
   extends: [
     "config:recommended"
   ],
+  prConcurrentLimit: 3,
+  prHourlyLimit: 6,
   addLabels: ["renovate"],
   enabled: false,
   packageRules: [
     {
       matchFileNames: ["dependencies.gradle"],
       enabled: true,
-      groupName: "Gradle Dependencies",
+      groupName: "Gradle Dependencies"
     },
     {
       matchCategories: ["github-actions"],
       enabled: true,
-      groupName: "GitHub Actions",
+      groupName: "GitHub Actions"
     },
     {
       matchCategories: ["npm"],
       enabled: true,
-      groupName: "NPM Dependencies",
-    },
+      groupName: "NPM Dependencies"
+    }
   ]
 }
