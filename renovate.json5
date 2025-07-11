@@ -6,8 +6,11 @@
   prConcurrentLimit: 3,
   prHourlyLimit: 6,
   addLabels: ["renovate"],
-  enabled: false,
   packageRules: [
+    {
+      matchBaseBranches: ["*"],
+      enabled: false
+    },
     {
       matchFileNames: ["dependencies.gradle"],
       enabled: true,
