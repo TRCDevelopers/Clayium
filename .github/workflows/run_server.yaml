@@ -19,7 +19,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # if there is no changes in src/, skip the tests.
+      # if there are no changes in src/, skip the tests.
       - name: Check for changes in src
         uses: dorny/paths-filter@v3
         id: filter # このステップの出力を後で参照できるようにidを設定
