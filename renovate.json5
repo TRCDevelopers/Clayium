@@ -9,10 +9,17 @@
     {
       matchFileNames: ["dependencies.gradle"],
       enabled: true,
+      groupName: "Gradle Dependencies",
     },
     {
-      matchCategories: ["github-actions", "npm"],
+      matchCategories: ["github-actions"],
       enabled: true,
-    }
+      groupName: "GitHub Actions",
+    },
+    {
+      matchCategories: ["npm"],
+      enabled: true,
+      groupName: "NPM Dependencies",
+    },
   ]
 }
