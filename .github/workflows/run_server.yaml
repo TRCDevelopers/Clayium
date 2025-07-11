@@ -21,7 +21,7 @@ jobs:
 
       # if there are no changes in src/, skip the tests.
       - name: Check for changes in src
-        uses: dorny/paths-filter@v3
+        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36
         id: filter # このステップの出力を後で参照できるようにidを設定
         with:
           filters: |
