@@ -4,12 +4,15 @@
     "config:recommended"
   ],
   addLabels: ["renovate"],
+  enabled: false,
   packageRules: [
     {
-      matchFileNames: ["dependencies.gradle"]
+      matchFileNames: ["dependencies.gradle"],
+      enabled: true,
     },
     {
-      matchCategories: ["github-actions", "npm"]
-    },
-  ],
+      matchCategories: ["github-actions", "npm"],
+      enabled: true,
+    }
+  ]
 }
