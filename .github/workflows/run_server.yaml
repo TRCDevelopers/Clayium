@@ -57,7 +57,7 @@ jobs:
           chmod +x ./.github/actions/test_no_error_reports.sh
           ./.github/actions/test_no_error_reports.sh
 
-      - name: Skip tests (no changes in src/)
+      - name: Skip server run (no changes in src/ or Gradle)
         if: steps.filter.outputs.src_or_gradle_changed == 'false'
         run: |
-          echo "No changes detected in src/. Tests are not required for this PR."
+          echo "No changes detected in src/ or Gradle. Server run is not required for this PR."

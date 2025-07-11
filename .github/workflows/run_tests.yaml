@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v4
 
       # if there are no changes in src/ or Gradle, skip the tests.
-      - name: Check for changes in src
+      - name: Check for changes in src and gradle files
         uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36
         id: filter # このステップの出力を後で参照できるようにidを設定
         with:
@@ -43,7 +43,7 @@ jobs:
         if: steps.filter.outputs.src_or_gradle_changed == 'true'
         run: ./gradlew test --warning-mode all --build-cache
 
-      - name: Skip tests (no changes in src/)
+      - name: Skip tests (no changes in src/ or Gradle)
         if: steps.filter.outputs.src_or_gradle_changed == 'false'
         run: |
-          echo "No changes detected in src/. Tests are not required for this PR."
+          echo "No changes detected in src/ or Gradle. Tests are not required for this PR."
