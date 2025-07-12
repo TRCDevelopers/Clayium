@@ -19,9 +19,11 @@ import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.capability.impl.EmptyItemStackHandler
 import com.github.trc.clayium.api.gui.data.MetaTileEntityGuiData
+import com.github.trc.clayium.api.metatileentity.MteRenderingConfig
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.ITier
 import com.github.trc.clayium.api.util.asWidgetResizing
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.hasCapability
 import com.github.trc.clayium.client.renderer.AreaMarkerRenderer.RangeRenderMode
 import com.github.trc.clayium.common.gui.ClayGuiTextures
@@ -178,5 +180,9 @@ class RangedReplacerMetaTileEntity(
                         )
                 )
             }
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/ranged_replacer"))
     }
 }
