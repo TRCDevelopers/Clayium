@@ -25,12 +25,13 @@ import net.minecraft.world.World
 import net.minecraft.world.WorldServer
 import net.minecraftforge.common.util.FakePlayerFactory
 
-class AdvancedRangedMinerMetaTileEntity(
+open class AdvancedRangedMinerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
-    tier: ITier
-) : RangedMinerMetaTileEntity(metaTileEntityId, tier, "advanced_ranged_miner") {
+    tier: ITier,
+    name: String = "advanced_ranged_miner",
+) : RangedMinerMetaTileEntity(metaTileEntityId, tier, name) {
 
-    private val extraFilters = ClayiumItemStackHandler(this, 2)
+    protected val extraFilters = ClayiumItemStackHandler(this, 2)
     private val fortuneFilter get() = extraFilters.getStackInSlot(0).getCapability(ClayiumCapabilities.ITEM_FILTER)
     private val silkTouchFilter get() = extraFilters.getStackInSlot(1).getCapability(ClayiumCapabilities.ITEM_FILTER)
 

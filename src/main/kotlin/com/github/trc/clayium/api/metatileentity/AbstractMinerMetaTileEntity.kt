@@ -46,7 +46,7 @@ abstract class AbstractMinerMetaTileEntity(
     protected val filter: IItemFilter?
         get() = filterSlot.getStackInSlot(0).getCapability(ClayiumCapabilities.ITEM_FILTER)
 
-    private var laser: ClayLaser? = null
+    protected var laser: ClayLaser? = null
 
     /**
      * return true if you want to continue mining within the tick.
