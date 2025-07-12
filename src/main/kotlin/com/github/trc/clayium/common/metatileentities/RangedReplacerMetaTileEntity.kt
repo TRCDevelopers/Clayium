@@ -106,8 +106,8 @@ class RangedReplacerMetaTileEntity(
     }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
-        syncManager.registerSlotGroup("builder_inventory", 2)
-        syncManager.registerSlotGroup("replace_inventory", 2)
+        syncManager.registerSlotGroup("builder_inventory", 4)
+        syncManager.registerSlotGroup("replace_inventory", 4)
 
         val startButton = ToggleButton()
             .value(SyncHandlers.bool(::workingEnabled, { workingEnabled = true }))
