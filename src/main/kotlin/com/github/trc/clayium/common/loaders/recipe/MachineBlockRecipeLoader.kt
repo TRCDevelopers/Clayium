@@ -491,6 +491,14 @@ object MachineBlockRecipeLoader {
             .output(MetaTileEntities.ADV_RANGED_MINER)
             .buildAndRegister()
 
+        /* Ranged Replacer */
+        CRecipes.ASSEMBLER.builder()
+            .input(MetaTileEntities.ADV_RANGED_MINER)
+            .input(MetaItemClayParts.ClaySpirit, 64)
+            .tier(6).CEt(ClayEnergy.of(1000)).duration(6000)
+            .output(MetaTileEntities.RANGED_REPLACER)
+            .buildAndRegister()
+
         /* Item Collector */
         CRecipes.ASSEMBLER.builder()
             .input(MACHINE_HULL.getItem(ZK60A))
