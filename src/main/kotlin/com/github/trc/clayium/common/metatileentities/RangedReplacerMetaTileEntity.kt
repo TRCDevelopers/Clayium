@@ -148,7 +148,8 @@ class RangedReplacerMetaTileEntity(
                         .child(Column().coverChildren().top(12).alignX(Alignment.Center)
                             .child(SlotGroupWidget.builder()
                                 .matrix("IIII", "IIII")
-                                .key('I') { MuiSlots.itemSlotBuilder(itemInventory, it).slotGroup("builder_inventory").build() }
+                                .key('I') { MuiSlots.itemSlotBuilder(itemInventory, it)
+                                    .slotGroup("builder_inventory").takeOnly().build() }
                                 .build())
                             .child(SlotGroupWidget.builder()
                                 .matrix("IIII", "IIII")
