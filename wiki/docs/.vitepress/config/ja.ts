@@ -27,6 +27,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
             collapsed: true,
             items: [
                 { text: "粘土レーザー", link: "clay-laser" },
+                { text: "機械", link: "machines"},
             ],
         },
         {
