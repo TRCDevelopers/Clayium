@@ -90,13 +90,13 @@ class RangedReplacerMetaTileEntity(
         val player = fakePlayer ?: return EnumActionResult.FAIL
         val block = itemBlock.block
         val metadata = itemBlock.getMetadata(stack.metadata)
-        val state = block.getStateForPlacement(
+        val newState = block.getStateForPlacement(
             world, pos, EnumFacing.UP, 0.5f, 0.5f, 0.5f, metadata, player, EnumHand.MAIN_HAND
         )
-        val succeed = world.setBlockState(pos, state)
+        val succeed = world.setBlockState(pos, newState)
         if (succeed) {
             replaceBlockInventory.extractItem(itemBlockIndex, 1, false)
-            block.onBlockPlacedBy(world, pos, state, player, stack)
+            block.onBlockPlacedBy(world, pos, newState, player, stack)
         }
         return EnumActionResult.SUCCESS
     }
