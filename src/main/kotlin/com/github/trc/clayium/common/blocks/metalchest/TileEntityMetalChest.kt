@@ -8,12 +8,15 @@ import com.cleanroommc.modularui.screen.UISettings
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
+import com.cleanroommc.modularui.widgets.PagedWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.util.toList
+import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.inventory.ItemStackHelper
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -28,27 +31,28 @@ import kotlin.math.max
 class TileEntityMetalChest(
     val inventoryRowSize: Int,
     val inventoryColumnSize: Int,
-    val inventoryPage: Int
-
+    val inventoryPage: Int,
 ) : TileEntity(), IGuiHolder<PosGuiData> {
-    var customName: String? = null
 
-    val itemInventory = ItemStackHandler(inventoryRowSize*inventoryColumnSize*inventoryPage)
-    fun hasCustomName() : Boolean {
+    private var customName: String? = null
+    private val itemInventory = ItemStackHandler(inventoryRowSize * inventoryColumnSize * inventoryPage)
+
+    fun hasCustomName(): Boolean {
         return customName != null
     }
-    fun getName() : String {
-        return this.customName?: "container.chest"
+
+    fun getName(): String {
+        return this.customName ?: "container.chest"
     }
+
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
-        val list = NonNullList.withSize(inventoryRowSize*inventoryColumnSize*inventoryPage, ItemStack.EMPTY)
+        val list = NonNullList.withSize(inventoryRowSize * inventoryColumnSize * inventoryPage, ItemStack.EMPTY)
         ItemStackHelper.loadAllItems(compound, list)
         list.forEachIndexed { slot, stack ->
             this.itemInventory.insertItem(slot, stack, false)
         }
-        if (compound.hasKey("CustomName", 8))
-        {
+        if (compound.hasKey("CustomName", 8)) {
             this.customName = compound.getString("CustomName")
         }
     }
@@ -57,8 +61,7 @@ class TileEntityMetalChest(
         super.writeToNBT(compound)
         val list = itemInventory.toList()
         ItemStackHelper.saveAllItems(compound, NonNullList.from<ItemStack>(ItemStack.EMPTY, *list.toTypedArray()))
-        if (this.hasCustomName())
-        {
+        if (this.hasCustomName()) {
             compound.setString("CustomName", this.customName!!)
         }
 
@@ -78,50 +81,58 @@ class TileEntityMetalChest(
         }
         return super.hasCapability(capability, facing)
     }
+
     override fun buildUI(data: PosGuiData, syncManager: PanelSyncManager, settings: UISettings): ModularPanel {
         syncManager.registerSlotGroup("metal_chest_inv", inventoryRowSize)
+
         val columnStr = "I".repeat(inventoryColumnSize)
         val matrixStr = (0..<inventoryRowSize).map { columnStr }
-        return ModularPanel.defaultPanel("metal_chest_inv", 18 * max(inventoryColumnSize,9) + 14, 18 + inventoryRowSize * 18 + 94 + 2)
-            .child(
-                TextWidget(if (hasCustomName()) IKey.str(customName!!) else IKey.lang("metal_chest"))
-                    .margin(6)
-                    .align(Alignment.TopLeft))
-            .child(Column()
-                .marginTop(18)
-                .child(SlotGroupWidget.builder()
+
+        val pageController = PagedWidget.Controller()
+        val pagedWidget = PagedWidget()
+            .controller(pageController)
+        for (pageIndex in 0..<inventoryPage) {
+            pagedWidget.addPage(
+                SlotGroupWidget.builder()
                     .matrix(*matrixStr.toTypedArray())
-                    .key('I') { index ->
-                        ItemSlot().slot(
-                            SyncHandlers.itemSlot(itemInventory, index)
-                                .slotGroup("metal_chest_inv")
-                        )
+                    .key('I') { slotIndex ->
+                        ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, slotIndex + (pageIndex * (inventoryRowSize * inventoryColumnSize))))
+                    }.build()
+            )
+        }
+
+        return ModularPanel.defaultPanel("metal_chest_inv", 18 * max(inventoryColumnSize, 9) + 14, 18 + inventoryRowSize * 18 + 94 + 2)
+            .child(Column().margin(7).sizeRel(1f)
+                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
+                    .child(IKey.str("clayium.metal_chest").asWidget().align(Alignment.TopLeft))
+                    .child(pagedWidget.alignX(Alignment.Center)
+                        .margin(0, 9).height(18 * inventoryRowSize).width(inventoryColumnSize * 18))
+                    .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft)))
+                .child(ButtonWidget()
+                    .onMousePressed {
+                        pagedWidget.previousPage()
+                        true
                     }
-                    .build())
-                .child(
-                    TextWidget(IKey.lang("container.inventory"))
-                        .paddingTop(1)
-                        .paddingBottom(1)
-                        .left(6)))
-            .child(ButtonWidget()
-                .child(TextWidget(IKey.str("<")).align(Alignment.Center))
-                .marginTop(18 * inventoryRowSize + 30 + 2/* For centering */)
-                .marginLeft(18 * 9 + 9 * max(-1,inventoryColumnSize-10) + 18)
-                .size(14,14)
-            )
-            .child(ButtonWidget()
-                .child(TextWidget(IKey.str(">")).align(Alignment.Center))
-                .marginTop(18 * inventoryRowSize + 30 + 2/* For centering */)
-                .marginLeft(18 * 9 + 9 * max(-1,inventoryColumnSize-10) + 18 + 15)
-                .size(14,14)
-            )
-            .child(TextWidget(IKey.str("1 / $inventoryPage"))
-                .marginTop(18 * inventoryRowSize + 30 + 2 + 15)
-                .marginLeft(18 * 9 + 9 * max(-1,inventoryColumnSize-10) + 18)
-            )
-            .bindPlayerInventory()
+                    .child(TextWidget(IKey.str("<")).align(Alignment.Center))
+                    .right(14 + 4).bottom(28)
+                    .size(14, 14)
+                )
+                .child(ButtonWidget()
+                    .onMousePressed {
+                        println("Next page pressed")
+                        pagedWidget.nextPage()
+                        println("${pagedWidget.currentPageIndex}")
+                        true
+                    }
+                    .child(TextWidget(IKey.str(">")).align(Alignment.Center))
+                    .right(4).bottom(28)
+                    .size(14, 14)
+                )
+                .child(TextWidget(IKey.str("1 / $inventoryPage"))
+                    .right(4).bottom(14)
+                )
+                .child(MuiSlots.playerInventory(0))
+                )
+
     }
-
-
-
 }
