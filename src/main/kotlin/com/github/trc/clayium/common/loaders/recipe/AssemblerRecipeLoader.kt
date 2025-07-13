@@ -36,6 +36,19 @@ object AssemblerRecipeLoader {
             .output(ClayiumItems.SYNCHRONIZER)
             .tier(6).duration(20)
             .buildAndRegister()
+
+        registry.builder()
+            .input(ClayiumItems.CLAY_IO_CONFIGURATOR)
+            .input(MetaItemClayParts.PrecisionCircuit, 2)
+            .output(ClayiumItems.MEMORY_CARD)
+            .tier(6).CEt(ClayEnergy.milli(100)).duration(20)
+            .buildAndRegister()
+        registry.builder()
+            .input(OrePrefix.spindle, CMaterials.denseClay)
+            .input(MetaItemClayParts.PrecisionCircuit, 2)
+            .output(ClayiumItems.DIRECTION_MEMORY)
+            .tier(6).CEt(ClayEnergy.milli(100)).duration(20)
+            .buildAndRegister()
         //endregion
 
         registry.builder()

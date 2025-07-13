@@ -17,6 +17,7 @@ import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumActionResult
 import net.minecraft.util.NonNullList
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
@@ -24,17 +25,19 @@ import net.minecraft.world.World
 import net.minecraft.world.WorldServer
 import net.minecraftforge.common.util.FakePlayerFactory
 
-class AdvancedRangedMinerMetaTileEntity(
+open class AdvancedRangedMinerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
-    tier: ITier
-) : RangedMinerMetaTileEntity(metaTileEntityId, tier, "advanced_ranged_miner") {
+    tier: ITier,
+    name: String = "advanced_ranged_miner",
+) : RangedMinerMetaTileEntity(metaTileEntityId, tier, name) {
 
-    private val extraFilters = ClayiumItemStackHandler(this, 2)
+    protected val extraFilters = ClayiumItemStackHandler(this, 2)
     private val fortuneFilter get() = extraFilters.getStackInSlot(0).getCapability(ClayiumCapabilities.ITEM_FILTER)
     private val silkTouchFilter get() = extraFilters.getStackInSlot(1).getCapability(ClayiumCapabilities.ITEM_FILTER)
 
-    override fun mine(world: World, pos: BlockPos, state: IBlockState): Boolean {
-        if (filter?.testBlock(world, pos) == true) return true
+    override fun mine(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
+        // Already filtered in super.actionOnBlock
+
         val silkFilter = silkTouchFilter
         val fortuneFilter = fortuneFilter
         val drops = NonNullList.create<ItemStack>()
@@ -47,10 +50,10 @@ class AdvancedRangedMinerMetaTileEntity(
             val fortune = if (fortuneFilter != null && fortuneFilter.testBlock(world, pos)) 3 else 0
             state.block.getDrops(drops, world, pos, state, fortune)
         }
-        if (!TransferUtils.insertToHandler(itemInventory, drops, true)) return false
+        if (!TransferUtils.insertToHandler(itemInventory, drops, true)) return EnumActionResult.FAIL
         TransferUtils.insertToHandler(itemInventory, drops, false)
         world.destroyBlock(pos, false)
-        return true
+        return EnumActionResult.SUCCESS
     }
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {

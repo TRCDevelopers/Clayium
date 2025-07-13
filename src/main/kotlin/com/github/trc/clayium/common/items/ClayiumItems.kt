@@ -30,6 +30,7 @@ object ClayiumItems {
     val CLAY_PIPING_TOOL = createItem("clay_piping_tool", ItemClayConfigTool(maxDamage = 0, type = IConfigurationTool.ToolType.PIPING, typeWhenSneak = IConfigurationTool.ToolType.ROTATION))
 
     val MEMORY_CARD = createItem("memory_card", ItemMemoryCard())
+    val DIRECTION_MEMORY = createItem("direction_memory", ItemDirectionMemory())
     val SYNCHRONIZER = createItem("synchronizer", ItemSynchronizer())
     //endregion
 

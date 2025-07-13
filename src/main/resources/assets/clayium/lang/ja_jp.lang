@@ -559,15 +559,19 @@ gui.clayium.range_visualization_mode.enabled=範囲表示: 有効
 gui.clayium.range_visualization_mode.enabled_xray=範囲表示: 有効 (X-Ray)
 gui.clayium.miner.filter=フィルター
 machine.clayium.block_breaker=採掘機
-machine.clayium.ranged_collector=範囲収集機
+machine.clayium.item_collector=範囲収集機
 machine.clayium.ranged_miner=範囲採掘機
 machine.clayium.advanced_ranged_miner=発展型範囲採掘機
 machine.clayium.ranged_replacer=範囲置換機
 
-tile.clayium.blockActivator.name=代行機
-tile.clayium.blockActivator.tooltip.line1=右クリックを代行
-tile.clayium.blockAreaActivator.name=範囲代行機
-tile.clayium.blockAreaActivator.tooltip.line1=右クリックを代行
+machine.clayium.activator=代行機
+machine.clayium.activator.tooltip1=右クリックを代行
+gui.clayium.activator.raytrace_enabled=レイトレース有効
+gui.clayium.activator.raytrace_disabled=レイトレース無効
+gui.clayium.activator.block_filter=ブロックフィルター
+gui.clayium.activator.item_filter=アイテムフィルター
+machine.clayium.ranged_activator=範囲代行機
+machine.clayium.ranged_activator.tooltip1=右クリックを代行
 
 tile.clayium.blockAdvancedAutoCrafter.name=自動クラフト装置
 tile.clayium.blockPrecisionAutoCrafter.name=精密自動クラフト装置
@@ -662,9 +666,11 @@ item.clayium.memory_card.tooltip1=搬入出口などの設定を保存する
 item.clayium.memory_card.tooltip2=右クリック: メモリーから読み込み
 item.clayium.memory_card.tooltip3=Shift + 右クリック: メモリーに保存
 
-item.clayium.itemDirectionMemory.name=方向メモリー
-item.clayium.itemDirectionMemory.tooltip.line1=クリック方向・位置を保存し、
-item.clayium.itemDirectionMemory.tooltip.line2=範囲代行機に設定を適用する
+item.clayium.direction_memory.name=方向メモリー
+item.clayium.direction_memory.tooltip1=クリック方向・位置を保存し、
+item.clayium.direction_memory.tooltip2=範囲代行機に設定を適用する
+item.clayium.direction_memory.saved=方向を記録しました。
+item.clayium.direction_memory.applied=方向メモリーを適用しました。
 
 item.clayium.compressed_clay_shard.name=圧縮粘土片
 item.clayium.industrial_clay_shard.name=工業用粘土片

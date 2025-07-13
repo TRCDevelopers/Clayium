@@ -595,15 +595,19 @@ gui.clayium.range_visualization_mode.enabled=Range Display: Enabled
 gui.clayium.range_visualization_mode.enabled_xray=Range Display: Enabled (X-Ray)
 gui.clayium.miner.filter=Filter
 machine.clayium.block_breaker=Block Breaker
-machine.clayium.ranged_collector=Ranged Item Collector
+machine.clayium.item_collector=Ranged Item Collector
 machine.clayium.ranged_miner=Ranged Miner
 machine.clayium.advanced_ranged_miner=Advanced Ranged Miner
 machine.clayium.ranged_replacer=Area Replacer
 
-tile.clayium.blockActivator.name=Activator
-tile.clayium.blockActivator.tooltip.line1=Automatic right-clicker.
-tile.clayium.blockAreaActivator.name=Area Activator
-tile.clayium.blockAreaActivator.tooltip.line1=Automatic right-clicker.
+machine.clayium.activator=Activator
+machine.clayium.activator.tooltip1=Automatic right-clicker.
+gui.clayium.activator.raytrace_enabled=Raytrace Enabled
+gui.clayium.activator.raytrace_disabled=Raytrace Disabled
+gui.clayium.activator.block_filter=Block Filter
+gui.clayium.activator.item_filter=Item Filter
+machine.clayium.ranged_activator=Ranged Activator
+machine.clayium.ranged_activator.tooltip1=Automatic right-clicker.
 
 tile.clayium.blockAdvancedAutoCrafter.name=Auto Crafter
 tile.clayium.blockPrecisionAutoCrafter.name=Precision Auto Crafter
@@ -865,9 +869,11 @@ item.clayium.memory_card.tooltip1=Stores machine IO settings.
 item.clayium.memory_card.tooltip2=Right Click \: Load from memory
 item.clayium.memory_card.tooltip3=Shift + Right Click \: Save to memory
 
-item.clayium.itemDirectionMemory.name=Direction Memory Card
-item.clayium.itemDirectionMemory.tooltip.line1=Used to configure in what direction
-item.clayium.itemDirectionMemory.tooltip.line2=an Area Activator aims while using items.
+item.clayium.direction_memory.name=Direction Memory Card
+item.clayium.direction_memory.tooltip1=Used to configure in what direction
+item.clayium.direction_memory.tooltip2=an Area Activator aims while using items.
+item.clayium.direction_memory.saved=Direction saved.
+item.clayium.direction_memory.applied=Applied direction memory.
 
 item.clayium.compressed_clay_shard.name=Compressed Clay Shard
 item.clayium.industrial_clay_shard.name=Industrial Clay Shard

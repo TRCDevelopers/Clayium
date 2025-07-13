@@ -4,6 +4,7 @@ changelog:
       - "documentation"
       - "ignore changelog"
       - "type: ci"
+      - "renovate"
 
   categories:
     - title: Added

@@ -86,10 +86,40 @@ object ClayGuiTextures {
     val DISPLAY_RANGE = button(48, 16)
     val DISPLAY_RANGE_HOVERED = button(48, 32)
 
-    val RESET_DISABLED = button(64, 0)
-    val RESET = button(64, 16)
-    val RESET_HOVERED = button(64, 32)
+    val REPEAT_DISABLED = button(64, 0)
+    val REPEAT = button(64, 16)
+    val REPEAT_HOVERED = button(64, 32)
     //endregion
+
+    object Clicker {
+        val BLOCK_DISABLED = button(80, 0)
+        val BLOCK = button(80, 16)
+        val BLOCK_HOVERED = button(80, 32)
+
+        val ENTITY_DISABLED = button(96, 0)
+        val ENTITY = button(96, 16)
+        val ENTITY_HOVERED = button(96, 32)
+
+        val BLOCK_AND_ENTITY_DISABLED = button(112, 0)
+        val BLOCK_AND_ENTITY = button(112, 16)
+        val BLOCK_AND_ENTITY_HOVERED = button(112, 32)
+
+        val FIXED_TARGET_DISABLED = button(128, 0)
+        val FIXED_TARGET = button(128, 16)
+        val FIXED_TARGET_HOVERED = button(128, 32)
+
+        val RAYTRACE_DISABLED = button(144, 0)
+        val RAYTRACE = button(144, 16)
+        val RAYTRACE_HOVERED = button(144, 32)
+
+        val NO_SNEAK_DISABLED = button(160, 0)
+        val NO_SNEAK = button(160, 16)
+        val NO_SNEAK_HOVERED = button(160, 32)
+
+        val SNEAK_DISABLED = button(176, 0)
+        val SNEAK = button(176, 16)
+        val SNEAK_HOVERED = button(176, 32)
+    }
 
     private fun slotTexture() = UITexture.builder()
         .location(MOD_ID, "gui/slot")

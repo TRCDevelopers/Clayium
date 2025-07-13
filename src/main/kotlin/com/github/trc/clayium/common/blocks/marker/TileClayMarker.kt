@@ -12,10 +12,18 @@ import net.minecraft.util.math.BlockPos
 abstract class TileClayMarker : TileEntity() {
 
     /**
-     * range of this marker.
+     * A Cuboid6 instance for rendering. Inclusive. null if not marked yet.
+     * Use [rangeAbs] if you want to write a server-side logic.
+     */
+    var renderingRangeRelative: Cuboid6? = null
+        private set
+
+    /**
+     * absolute range of this marker.
+     * represented by two BlockPoses, the first is the minimum corner and the second is the maximum corner.
      * null if not marked yet.
      */
-    var rangeRelative: Cuboid6? = null
+    var rangeAbs: Pair<BlockPos, BlockPos>? = null
         private set
 
     val markerPoses = mutableListOf<BlockPos>()
@@ -38,8 +46,10 @@ abstract class TileClayMarker : TileEntity() {
                 }
             }
         }
-        this.rangeRelative = constructRange(markerPoses)
-            .subtract(pos)
+        val rangeAbsolute = constructRange(markerPoses)
+        this.rangeAbs = rangeAbsolute
+        this.renderingRangeRelative = Cuboid6(rangeAbsolute.first, rangeAbsolute.second.add(1, 1, 1))
+            .subtract(this.pos)
         this.markerPoses.clear()
         this.markerPoses.addAll(markerPoses)
     }
@@ -47,43 +57,50 @@ abstract class TileClayMarker : TileEntity() {
     /**
      * @return Absolute.
      */
-    abstract fun constructRange(markerPoses: List<BlockPos>): Cuboid6
+    abstract fun constructRange(markerPoses: List<BlockPos>): Pair<BlockPos, BlockPos>
 
     override fun getRenderBoundingBox(): AxisAlignedBB {
         return INFINITE_EXTENT_AABB
     }
 
     open class NoExtend : TileClayMarker() {
-        override fun constructRange(markerPoses: List<BlockPos>): Cuboid6 {
-            return Cuboid6(
-                    markerPoses.minOf { it.x }.toDouble(),
-                    markerPoses.minOf { it.y }.toDouble(),
-                    markerPoses.minOf { it.z }.toDouble(),
-                    markerPoses.maxOf { it.x }.toDouble() + 1.0,
-                    markerPoses.maxOf { it.y }.toDouble() + 1.0,
-                    markerPoses.maxOf { it.z }.toDouble() + 1.0
+        override fun constructRange(markerPoses: List<BlockPos>): Pair<BlockPos, BlockPos> {
+            val min = BlockPos(
+                markerPoses.minOf { it.x },
+                markerPoses.minOf { it.y },
+                markerPoses.minOf { it.z }
             )
+            val max = BlockPos(
+                markerPoses.maxOf { it.x },
+                markerPoses.maxOf { it.y },
+                markerPoses.maxOf { it.z }
+            )
+            return Pair(min, max)
         }
     }
 
     class ExtendToGround : NoExtend() {
-        override fun constructRange(markerPoses: List<BlockPos>): Cuboid6 {
-            return super.constructRange(markerPoses)
-                .apply { min.y = 0.0 }
+        override fun constructRange(markerPoses: List<BlockPos>): Pair<BlockPos, BlockPos> {
+            val superVal = super.constructRange(markerPoses)
+            val min = BlockPos(superVal.first.x, 0, superVal.first.z)
+            return Pair(min, superVal.second)
         }
     }
 
     class ExtendToSky : NoExtend() {
-        override fun constructRange(markerPoses: List<BlockPos>): Cuboid6 {
-            return super.constructRange(markerPoses)
-                .apply { max.y = 255.0 }
+        override fun constructRange(markerPoses: List<BlockPos>): Pair<BlockPos, BlockPos> {
+            val superVal = super.constructRange(markerPoses)
+            val max = BlockPos(superVal.second.x, 255, superVal.second.z)
+            return Pair(superVal.first, max)
         }
     }
 
     class AllHeight : NoExtend() {
-        override fun constructRange(markerPoses: List<BlockPos>): Cuboid6 {
-            return super.constructRange(markerPoses)
-                .apply { min.y = 0.0; max.y = 255.0 }
+        override fun constructRange(markerPoses: List<BlockPos>): Pair<BlockPos, BlockPos> {
+            val superVal = super.constructRange(markerPoses)
+            val min = BlockPos(superVal.first.x, 0, superVal.first.z)
+            val max = BlockPos(superVal.second.x, 255, superVal.second.z)
+            return Pair(min, max)
         }
     }
 }

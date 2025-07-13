@@ -97,9 +97,18 @@ public class ConfigCore {
         @Config.RangeInt(min = 1, max = 512)
         public int clayMarkerMaxRange = 64;
 
-        @Config.Comment("Default: 10")
+        @Config.Comment({"Maximum blocks processed (mined, clicked etc.) per tick.", "Default: 10"})
         @Config.RangeInt(min = 1, max = 64)
-        public int rangedMinerMaxBlocksPerTick = 10;
+        public int rangedMachineMaxBlocksPerTick = 10;
+
+        @Config.Comment({
+                "The max blocks searched for mining.",
+                "maxBlocks is not consumed if the search is not successful (like it was an air block or so).",
+                "maxSearchBlocks is consumed regardless of the search result.",
+                "Default: 1000"
+        })
+        @Config.RangeInt(min = 1, max = 10000)
+        public int builderMaxSearchBlocksPerTick = 1000;
 
         @Config.Comment("Default: 32")
         @Config.RangeInt(min = 1, max = 64)
