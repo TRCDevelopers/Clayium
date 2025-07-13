@@ -4,14 +4,15 @@ import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.screen.UISettings
 import com.cleanroommc.modularui.utils.Alignment
-import com.cleanroommc.modularui.value.sync.GuiSyncManager
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ButtonWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.util.toList
 import net.minecraft.inventory.ItemStackHelper
 import net.minecraft.item.ItemStack
@@ -40,7 +41,7 @@ class TileEntityMetalChest(
         return this.customName?: "container.chest"
     }
     override fun readFromNBT(compound: NBTTagCompound) {
-        super.readFromNBT(compound);
+        super.readFromNBT(compound)
         val list = NonNullList.withSize(inventoryRowSize*inventoryColumnSize*inventoryPage, ItemStack.EMPTY)
         ItemStackHelper.loadAllItems(compound, list)
         list.forEachIndexed { slot, stack ->
@@ -48,20 +49,20 @@ class TileEntityMetalChest(
         }
         if (compound.hasKey("CustomName", 8))
         {
-            this.customName = compound.getString("CustomName");
+            this.customName = compound.getString("CustomName")
         }
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         super.writeToNBT(compound)
-        var list = itemInventory.toList()
+        val list = itemInventory.toList()
         ItemStackHelper.saveAllItems(compound, NonNullList.from<ItemStack>(ItemStack.EMPTY, *list.toTypedArray()))
         if (this.hasCustomName())
         {
-            compound.setString("CustomName", this.customName!!);
+            compound.setString("CustomName", this.customName!!)
         }
 
-        return compound;
+        return compound
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
@@ -77,8 +78,7 @@ class TileEntityMetalChest(
         }
         return super.hasCapability(capability, facing)
     }
-    override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager
-    ): ModularPanel {
+    override fun buildUI(data: PosGuiData, syncManager: PanelSyncManager, settings: UISettings): ModularPanel {
         syncManager.registerSlotGroup("metal_chest_inv", inventoryRowSize)
         val columnStr = "I".repeat(inventoryColumnSize)
         val matrixStr = (0..<inventoryRowSize).map { columnStr }
@@ -104,22 +104,16 @@ class TileEntityMetalChest(
                         .paddingBottom(1)
                         .left(6)))
             .child(ButtonWidget()
+                .child(TextWidget(IKey.str("<")).align(Alignment.Center))
                 .marginTop(18 * inventoryRowSize + 30 + 2/* For centering */)
                 .marginLeft(18 * 9 + 9 * max(-1,inventoryColumnSize-10) + 18)
                 .size(14,14)
             )
-            .child(TextWidget(IKey.str("<"))
-                .marginTop(18 * inventoryRowSize + 30 + 2 + 4)
-                .marginLeft(18 * 9 + 9 * max(-1,inventoryColumnSize-10) + 18 + 4)
-            )
             .child(ButtonWidget()
+                .child(TextWidget(IKey.str(">")).align(Alignment.Center))
                 .marginTop(18 * inventoryRowSize + 30 + 2/* For centering */)
                 .marginLeft(18 * 9 + 9 * max(-1,inventoryColumnSize-10) + 18 + 15)
                 .size(14,14)
-            )
-            .child(TextWidget(IKey.str(">"))
-                .marginTop(18 * inventoryRowSize + 30 + 2 + 4)
-                .marginLeft(18 * 9 + 9 * max(-1,inventoryColumnSize-10) + 18 + 15 + 6)
             )
             .child(TextWidget(IKey.str("1 / $inventoryPage"))
                 .marginTop(18 * inventoryRowSize + 30 + 2 + 15)
