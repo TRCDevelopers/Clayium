@@ -27,6 +27,7 @@ object MetalChestRenderer : TileEntitySpecialRenderer<TileEntityMetalChest>() {
 
         GlStateManager.pushMatrix()
         GlStateManager.enableRescaleNormal()
+        GlStateManager.color(1f, 1f, 1f, alpha)
         run {
             GlStateManager.translate(x, y + 1, z + 1)
             GlStateManager.scale(1f, -1f, -1f)

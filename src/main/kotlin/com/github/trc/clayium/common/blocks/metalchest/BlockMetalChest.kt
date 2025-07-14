@@ -27,6 +27,7 @@ import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
+@Suppress("OVERRIDE_DEPRECATION")
 abstract class BlockMetalChest(
     mapping: Map<Int, CMaterial>
 ) : BlockMaterialBase(BlockMaterial.WOOD, mapping) {
@@ -60,8 +61,8 @@ abstract class BlockMetalChest(
 
     @SideOnly(Side.CLIENT)
     override fun registerModels() {
-        val blockLoc = ModelResourceLocation(clayiumId("material/metal_chest"), "variant=block")
-        val itemLoc = ModelResourceLocation(clayiumId("material/metal_chest"), "variant=item")
+        val blockLoc = ModelResourceLocation(clayiumId("metal_chest"), "variant=block")
+        val itemLoc = ModelResourceLocation("chest", "inventory")
         ModelLoader.setCustomStateMapper(this,
             object : StateMapperBase() { override fun getModelResourceLocation(state: IBlockState) = blockLoc }
         )
