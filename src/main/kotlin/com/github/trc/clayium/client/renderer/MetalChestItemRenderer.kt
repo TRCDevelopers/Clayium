@@ -13,11 +13,11 @@ object MetalChestItemRenderer : TileEntityItemStackRenderer() {
         val material = block.getCMaterial(itemStackIn)
 
         GlStateManager.pushMatrix()
-        GlStateManager.translate(0.5, 0.45, 0.5)
-        GlStateManager.scale(0.65f, 0.65f, 0.65f)
-        GlStateManager.rotate(30f, 1f, 0f, 0f)
-        GlStateManager.rotate(-45f, 0f, 1f, 0f)
-        MetalChestRenderer.render(EnumFacing.EAST, material, 0f, 0f, 0.0, 0.0, 0.0, 0f)
+//        GlStateManager.rotate(30f, 1f, 0f, 0f)
+//        GlStateManager.rotate(45f, 0f, 1f, 0f)
+//        GlStateManager.translate(0.0, 0.25, 0.0)
+//        GlStateManager.scale(0.65f, 0.65f, 0.65f)
+        MetalChestRenderer.render(EnumFacing.NORTH, material, 0f, 0f, 0.0, 0.0, 0.0, 0f, 0, 1f)
         GlStateManager.popMatrix()
     }
 }

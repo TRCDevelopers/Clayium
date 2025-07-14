@@ -17,10 +17,14 @@ object MetalChestRenderer : TileEntitySpecialRenderer<TileEntityMetalChest>() {
     private val modelChest = ModelChest()
 
     override fun render(te: TileEntityMetalChest, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
-        this.render(te.facing, te.material, te.prevLidAngle, te.lidAngle, x, y, z, partialTicks)
+        this.render(te.facing, te.material, te.prevLidAngle, te.lidAngle, x, y, z, partialTicks, destroyStage, alpha)
     }
 
-    fun render(facing: EnumFacing, material: CMaterial, prevLidAngle: Float, lidAngle: Float, x: Double, y: Double, z: Double, partialTicks: Float) {
+    fun render(facing: EnumFacing, material: CMaterial, prevLidAngle: Float, lidAngle: Float, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
+        GlStateManager.enableDepth()
+        GlStateManager.depthFunc(GL11.GL_LEQUAL)
+        GlStateManager.depthMask(true)
+
         GlStateManager.pushMatrix()
         GlStateManager.enableRescaleNormal()
         run {
@@ -47,10 +51,9 @@ object MetalChestRenderer : TileEntitySpecialRenderer<TileEntityMetalChest>() {
             GlStateManager.disableBlend()
             val colors = material.colors ?: intArrayOf(0xFFFFFF, 0xFFFFFF, 0xFFFFFF)
             this.bindTexture(base)
-            this.glColorRGB(colors[0])
+            this.glColorRGB(colors[0], alpha)
             modelChest.renderAll()
 
-            GlStateManager.disableAlpha()
             GlStateManager.enableBlend()
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
             GlStateManager.depthMask(false)
@@ -58,12 +61,12 @@ object MetalChestRenderer : TileEntitySpecialRenderer<TileEntityMetalChest>() {
             GlStateManager.enablePolygonOffset()
             GlStateManager.doPolygonOffset(-0.1f, -1.0f)
             this.bindTexture(dark)
-            this.glColorRGB(colors[1])
+            this.glColorRGB(colors[1], alpha)
             modelChest.renderAll()
 
             GlStateManager.doPolygonOffset(-0.2f, -2.0f)
             this.bindTexture(light)
-            this.glColorRGB(colors[2])
+            this.glColorRGB(colors[2], alpha)
             modelChest.renderAll()
 
             GlStateManager.depthMask(true)
@@ -77,11 +80,12 @@ object MetalChestRenderer : TileEntitySpecialRenderer<TileEntityMetalChest>() {
         GlStateManager.popMatrix()
     }
 
-    private fun glColorRGB(color: Int) {
+    private fun glColorRGB(color: Int, alpha: Float) {
         GlStateManager.color(
             (color shr 16 and 0xFF) / 255.0f,
             (color shr 8 and 0xFF) / 255.0f,
-            (color and 0xFF) / 255.0f
+            (color and 0xFF) / 255.0f,
+            alpha
         )
     }
 }
