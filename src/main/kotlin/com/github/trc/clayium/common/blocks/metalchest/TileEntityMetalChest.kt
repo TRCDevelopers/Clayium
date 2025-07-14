@@ -33,6 +33,7 @@ class TileEntityMetalChest(
     val inventoryRowSize: Int,
     val inventoryColumnSize: Int,
     val inventoryPage: Int,
+    val materialTranslationKey: String,
 ) : TileEntity(), IGuiHolder<PosGuiData> {
 
     private var customName: String? = null
@@ -107,7 +108,7 @@ class TileEntityMetalChest(
         return ModularPanel.defaultPanel("metal_chest_inv", width, 18 + inventoryRowSize * 18 + 94 + 2)
             .child(Column().margin(7).sizeRel(1f)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.str("clayium.metal_chest").asWidget().align(Alignment.TopLeft))
+                    .child(IKey.lang("gui.clayium.metal_chest", IKey.lang(materialTranslationKey)).asWidget().align(Alignment.TopLeft))
                     .child(pagedWidget.alignX(Alignment.Center)
                         .margin(0, 9).height(18 * inventoryRowSize).width(inventoryColumnSize * 18))
                     .child(IKey.lang("container.inventory").asWidget()

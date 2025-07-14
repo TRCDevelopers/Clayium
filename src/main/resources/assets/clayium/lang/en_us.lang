@@ -743,6 +743,7 @@ tile.clayium.blockMetalChest.Brass.name=Brass Chest
 tile.clayium.blockMetalChest.Electrum.name=Electrum Chest
 tile.clayium.blockMetalChest.Invar.name=Invar Chest
 
+gui.clayium.metal_chest=%s Chest
 tooltip.clayium.MetalChest.capacity1=Capacity\: %1$d x %2$d = %3$d Slots
 tooltip.clayium.MetalChest.capacity2=Capacity\: %1$d x %2$d x %3$d = %4$d Slots
 

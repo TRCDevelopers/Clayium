@@ -35,7 +35,9 @@ abstract class BlockMetalChest(
     }
 
     override fun createTileEntity(world: World, state: IBlockState): TileEntity? {
-        return TileEntityMetalChest(6,11,2)
+        val meta = this.getMetaFromState(state)
+        val material = mapping[meta]
+        return TileEntityMetalChest(6, 11, 2, material?.translationKey ?: "invalid")
     }
 
     @SideOnly(Side.CLIENT)

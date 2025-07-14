@@ -640,6 +640,7 @@ machine.clayium.energy_converter.tooltip5=コンフィグでこれを作成す�
 machine.clayium.energy_converter.tooltip.rate=%1$s/t -> %2$sFE/t
 machine.clayium.energy_converter.tooltip.output=出力: %1$sFE/t
 
+gui.clayium.metal_chest=%sチェスト
 tooltip.clayium.MetalChest.capacity1=容量: %1$d x %2$d = %3$d スロット
 tooltip.clayium.MetalChest.capacity2=容量: %1$d x %2$d x %3$d = %4$d スロット
 
