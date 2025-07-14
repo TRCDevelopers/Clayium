@@ -35,6 +35,7 @@ clayium.ore_prefix.small_ring=%s小リング
 clayium.ore_prefix.spindle=%s主軸
 clayium.ore_prefix.stick=%s棒
 clayium.ore_prefix.wheel=%s水車パーツ
+clayium.ore_prefix.chest=%sチェスト
 
 clayium.material.clay=粘土
 clayium.material.dense_clay=高密度粘土

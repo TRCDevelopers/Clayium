@@ -9,6 +9,7 @@ import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.common.blocks.BlockMaterialBase
 import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
+import net.minecraft.block.state.BlockFaceShape
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.block.statemap.StateMapperBase
@@ -18,7 +19,9 @@ import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
+import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
@@ -42,9 +45,12 @@ abstract class BlockMetalChest(
         return TileEntityMetalChest(6, 11, 2, material)
     }
 
+    override fun getBlockFaceShape(worldIn: IBlockAccess, state: IBlockState, pos: BlockPos, face: EnumFacing) =  BlockFaceShape.UNDEFINED
+
     @SideOnly(Side.CLIENT)
     override fun getRenderLayer() = BlockRenderLayer.TRANSLUCENT
-    override fun getRenderType(state: IBlockState) = EnumBlockRenderType.INVISIBLE
+    @SideOnly(Side.CLIENT)
+    override fun getRenderType(state: IBlockState) = EnumBlockRenderType.ENTITYBLOCK_ANIMATED
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         if (worldIn.isRemote) return true
@@ -54,16 +60,24 @@ abstract class BlockMetalChest(
 
     @SideOnly(Side.CLIENT)
     override fun registerModels() {
-        val loc = ModelResourceLocation(clayiumId("material/compressed_material"), "variant=basic")
+        val blockLoc = ModelResourceLocation(clayiumId("material/metal_chest"), "variant=block")
+        val itemLoc = ModelResourceLocation(clayiumId("material/metal_chest"), "variant=item")
         ModelLoader.setCustomStateMapper(this,
-            object : StateMapperBase() {
-                override fun getModelResourceLocation(state: IBlockState) = loc
-            }
+            object : StateMapperBase() { override fun getModelResourceLocation(state: IBlockState) = blockLoc }
         )
         for (state in blockState.validStates) {
-            ModelLoader.setCustomModelResourceLocation(this.getAsItem(), this.getMetaFromState(state), loc)
+            ModelLoader.setCustomModelResourceLocation(this.getAsItem(), this.getMetaFromState(state), itemLoc)
         }
     }
+
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
+        return AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 0.875, 0.9375)
+    }
+
+    override fun isFullBlock(state: IBlockState) = false
+    override fun isFullCube(state: IBlockState) = isFullBlock(state)
+    override fun isOpaqueCube(state: IBlockState) = isFullBlock(state)
+    override fun causesSuffocation(state: IBlockState) = isFullBlock(state)
 
     companion object {
         fun create(mapping: Map<Int, CMaterial>): BlockMetalChest {

@@ -11,6 +11,7 @@ import com.github.trc.clayium.api.unification.material.CPropertyKey
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
+import com.github.trc.clayium.client.renderer.MetalChestItemRenderer
 import com.github.trc.clayium.common.blocks.chunkloader.ChunkLoaderBlock
 import com.github.trc.clayium.common.blocks.claycraftingtable.BlockClayCraftingBoard
 import com.github.trc.clayium.common.blocks.claytree.BlockClayLeaves
@@ -264,6 +265,9 @@ object ClayiumBlocks {
                     }
                 }
             }
+        }
+        METAL_CHEST_ITEM_BLOCKS.forEach { item ->
+            item.tileEntityItemStackRenderer = MetalChestItemRenderer
         }
     }
 

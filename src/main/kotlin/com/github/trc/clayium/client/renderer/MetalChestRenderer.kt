@@ -20,7 +20,7 @@ object MetalChestRenderer : TileEntitySpecialRenderer<TileEntityMetalChest>() {
         this.render(te.facing, te.material, te.prevLidAngle, te.lidAngle, x, y, z, partialTicks)
     }
 
-    private fun render(facing: EnumFacing, material: CMaterial, prevLidAngle: Float, lidAngle: Float, x: Double, y: Double, z: Double, partialTicks: Float) {
+    fun render(facing: EnumFacing, material: CMaterial, prevLidAngle: Float, lidAngle: Float, x: Double, y: Double, z: Double, partialTicks: Float) {
         GlStateManager.pushMatrix()
         GlStateManager.enableRescaleNormal()
         run {

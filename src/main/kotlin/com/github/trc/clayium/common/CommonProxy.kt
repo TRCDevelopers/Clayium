@@ -22,6 +22,7 @@ import com.github.trc.clayium.common.blocks.chunkloader.ChunkLoaderTileEntity
 import com.github.trc.clayium.common.blocks.claycraftingtable.TileClayCraftingTable
 import com.github.trc.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trc.clayium.common.blocks.marker.TileClayMarker
+import com.github.trc.clayium.common.blocks.metalchest.TileEntityMetalChest
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.ItemClaySteelPickaxe
@@ -238,5 +239,7 @@ open class CommonProxy {
         GameRegistry.registerTileEntity(TileClayMarker.AllHeight::class.java, clayiumId("clayMarkerAllHeight"))
 
         GameRegistry.registerTileEntity(ChunkLoaderTileEntity::class.java, clayiumId("chunkLoader"))
+
+        GameRegistry.registerTileEntity(TileEntityMetalChest::class.java, clayiumId("metalChest"))
     }
 }

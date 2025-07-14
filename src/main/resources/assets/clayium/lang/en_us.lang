@@ -38,6 +38,7 @@ clayium.ore_prefix.small_ring=%s Small Ring
 clayium.ore_prefix.spindle=%s Spindle
 clayium.ore_prefix.stick=%s Stick
 clayium.ore_prefix.wheel=%s Wheel
+clayium.ore_prefix.chest=%s Chest
 
 clayium.material.clay=Clay
 clayium.material.dense_clay=Dense Clay

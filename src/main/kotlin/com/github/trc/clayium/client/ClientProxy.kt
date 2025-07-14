@@ -7,6 +7,7 @@ import com.github.trc.clayium.client.gui.TextureExtra
 import com.github.trc.clayium.client.model.LaserReflectorModelLoader
 import com.github.trc.clayium.client.model.MetaTileEntityModelLoader
 import com.github.trc.clayium.client.model.MetalBlockModelLoader
+import com.github.trc.clayium.client.model.MetalChestModelLoader
 import com.github.trc.clayium.client.renderer.ClayLaserReflectorRenderer
 import com.github.trc.clayium.client.renderer.ClayMarkerTESR
 import com.github.trc.clayium.client.renderer.MetaTileEntityRenderDispatcher
@@ -47,6 +48,7 @@ class ClientProxy : CommonProxy() {
         ModelLoaderRegistry.registerLoader(MetaTileEntityModelLoader)
         ModelLoaderRegistry.registerLoader(LaserReflectorModelLoader)
         ModelLoaderRegistry.registerLoader(MetalBlockModelLoader)
+        ModelLoaderRegistry.registerLoader(MetalChestModelLoader)
 
         ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, MetaTileEntityRenderDispatcher)
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayLaserReflector::class.java, ClayLaserReflectorRenderer)
