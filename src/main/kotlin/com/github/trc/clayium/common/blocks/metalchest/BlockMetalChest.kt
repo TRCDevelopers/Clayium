@@ -2,6 +2,7 @@ package com.github.trc.clayium.common.blocks.metalchest
 
 import com.cleanroommc.modularui.factory.TileEntityGuiFactory
 import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.util.BlockMaterial
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.block.statemap.StateMapperBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockRenderLayer
+import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
@@ -36,12 +38,13 @@ abstract class BlockMetalChest(
 
     override fun createTileEntity(world: World, state: IBlockState): TileEntity? {
         val meta = this.getMetaFromState(state)
-        val material = mapping[meta]
-        return TileEntityMetalChest(6, 11, 2, material?.translationKey ?: "invalid")
+        val material = mapping[meta] ?: CMaterials.aluminum
+        return TileEntityMetalChest(6, 11, 2, material)
     }
 
     @SideOnly(Side.CLIENT)
     override fun getRenderLayer() = BlockRenderLayer.TRANSLUCENT
+    override fun getRenderType(state: IBlockState) = EnumBlockRenderType.INVISIBLE
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         if (worldIn.isRemote) return true

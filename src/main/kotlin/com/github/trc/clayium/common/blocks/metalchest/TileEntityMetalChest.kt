@@ -15,6 +15,7 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
+import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.integration.modularui.MuiSlots
@@ -33,11 +34,18 @@ class TileEntityMetalChest(
     val inventoryRowSize: Int,
     val inventoryColumnSize: Int,
     val inventoryPage: Int,
-    val materialTranslationKey: String,
+    val material: CMaterial,
 ) : TileEntity(), IGuiHolder<PosGuiData> {
 
     private var customName: String? = null
     private val itemInventory = ItemStackHandler(inventoryRowSize * inventoryColumnSize * inventoryPage)
+
+    var prevLidAngle = 0f
+        private set
+    var lidAngle = 0f
+        private set
+    var facing: EnumFacing = EnumFacing.NORTH
+        private set
 
     fun hasCustomName(): Boolean {
         return customName != null
@@ -109,7 +117,7 @@ class TileEntityMetalChest(
         return ModularPanel.defaultPanel("metal_chest_inv", width, 18 + inventoryRowSize * 18 + 94 + 2)
             .child(Column().margin(7).sizeRel(1f)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.lang("gui.clayium.metal_chest", IKey.lang(materialTranslationKey)).asWidget()
+                    .child(IKey.lang("gui.clayium.metal_chest", IKey.lang(material.translationKey)).asWidget()
                         .top(0).left(((width - 7 * 2) - chestInventoryWidth) / 2))
                     .child(pagedWidget.alignX(Alignment.Center)
                         .margin(0, 9).height(18 * inventoryRowSize).width(inventoryColumnSize * 18))
