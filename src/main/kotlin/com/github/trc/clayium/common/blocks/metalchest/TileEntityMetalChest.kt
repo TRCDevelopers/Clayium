@@ -12,9 +12,10 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.PagedWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
+import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
+import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.inventory.ItemStackHelper
@@ -101,38 +102,34 @@ class TileEntityMetalChest(
             )
         }
 
-        return ModularPanel.defaultPanel("metal_chest_inv", 18 * max(inventoryColumnSize, 9) + 14, 18 + inventoryRowSize * 18 + 94 + 2)
+        val width = max(max(inventoryColumnSize, 9) * 18 + 14, GUI_DEFAULT_WIDTH + 56)
+        val playerInventoryWidth = 162
+        return ModularPanel.defaultPanel("metal_chest_inv", width, 18 + inventoryRowSize * 18 + 94 + 2)
             .child(Column().margin(7).sizeRel(1f)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.str("clayium.metal_chest").asWidget().align(Alignment.TopLeft))
                     .child(pagedWidget.alignX(Alignment.Center)
                         .margin(0, 9).height(18 * inventoryRowSize).width(inventoryColumnSize * 18))
-                    .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft)))
+                    .child(IKey.lang("container.inventory").asWidget()
+                        .bottom(0).left(((width - 7 * 2) - playerInventoryWidth) / 2)))
                 .child(ButtonWidget()
                     .onMousePressed {
                         pagedWidget.previousPage()
                         true
                     }
-                    .child(TextWidget(IKey.str("<")).align(Alignment.Center))
-                    .right(14 + 4).bottom(28)
-                    .size(14, 14)
-                )
+                    .overlay(IKey.str("<").shadow(false))
+                    .right(14).bottom(28)
+                    .size(12, 12))
                 .child(ButtonWidget()
                     .onMousePressed {
-                        println("Next page pressed")
                         pagedWidget.nextPage()
-                        println("${pagedWidget.currentPageIndex}")
                         true
                     }
-                    .child(TextWidget(IKey.str(">")).align(Alignment.Center))
-                    .right(4).bottom(28)
-                    .size(14, 14)
-                )
-                .child(TextWidget(IKey.str("1 / $inventoryPage"))
-                    .right(4).bottom(14)
-                )
-                .child(MuiSlots.playerInventory(0))
-                )
-
+                    .overlay(IKey.str(">").shadow(false))
+                    .right(0).bottom(28)
+                    .size(12, 12))
+                .child(IKey.dynamic { "${pagedWidget.currentPageIndex + 1} / $inventoryPage" }.asWidgetResizing()
+                    .right(0).bottom(14))
+                .child(MuiSlots.playerInventory(0)))
     }
 }
