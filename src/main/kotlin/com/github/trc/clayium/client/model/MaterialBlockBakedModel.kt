@@ -5,6 +5,7 @@ import codechicken.lib.render.particle.IModelParticleProvider
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.blocks.material.BlockCompressed
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.renderer.block.model.ItemOverrideList
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
@@ -16,6 +17,9 @@ import net.minecraftforge.common.property.IExtendedBlockState
  * handles particle for [com.github.trc.clayium.common.blocks.BlockMaterialBase].
  *
  * This class uses [IModelParticleProvider], so you have to call CCLib's [CustomParticleHandler].
+ *
+ * @see com.github.trc.clayium.client.gui.TextureExtra
+ * @see com.github.trc.clayium.client.ClientProxy.onTextureStitchPre
  */
 abstract class MaterialBlockBakedModel(
     private val texGetter: java.util.function.Function<ResourceLocation, TextureAtlasSprite>
@@ -33,5 +37,13 @@ abstract class MaterialBlockBakedModel(
         val materialName = state.getValue(BlockCompressed.MATERIAL_NAME)
         val atlas = texGetter.apply(clayiumId("blocks/compressed_$materialName"))
         return setOf(atlas)
+    }
+
+    override fun isAmbientOcclusion() = true
+    override fun isGui3d() = true
+    override fun isBuiltInRenderer() = false
+
+    override fun getOverrides(): ItemOverrideList {
+        return ItemOverrideList.NONE
     }
 }
