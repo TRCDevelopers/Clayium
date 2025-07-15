@@ -11,6 +11,7 @@ import com.github.trc.clayium.common.blocks.BlockMaterialBase
 import com.github.trc.clayium.common.blocks.material.BlockCompressed.Companion.MATERIAL_NAME
 import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
+import net.minecraft.block.SoundType
 import net.minecraft.block.state.BlockFaceShape
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
@@ -43,6 +44,7 @@ abstract class BlockMetalChest(
 
     init {
         setCreativeTab(ClayiumCTabs.decorations)
+        setSoundType(SoundType.METAL)
     }
 
     override fun hasTileEntity(state: IBlockState): Boolean {
