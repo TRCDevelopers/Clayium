@@ -12,7 +12,9 @@ object MetalBlockModelLoader : ICustomModelLoader {
     }
 
     override fun accepts(modelLocation: ResourceLocation): Boolean {
-        return getModel(modelLocation) != null
+        if (modelLocation !is ModelResourceLocation) return false
+        return modelLocation.path.contains("metal_chest")
+                || (modelLocation.path.contains("compressed_material") && modelLocation.variant == "variant=block")
     }
 
     override fun loadModel(modelLocation: ResourceLocation): IModel {
