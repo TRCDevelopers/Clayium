@@ -16,27 +16,31 @@ import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.util.CLog
+import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.asWidgetResizing
-import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.entity.EntityLivingBase
-import net.minecraft.inventory.ItemStackHelper
-import net.minecraft.item.ItemStack
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.SoundEvents
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.NonNullList
+import net.minecraft.util.ITickable
+import net.minecraft.util.SoundCategory
 import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
 import net.minecraftforge.items.ItemStackHandler
 import kotlin.math.max
+import kotlin.math.min
 
 class TileEntityMetalChest(
     val inventoryRowSize: Int,
     val inventoryColumnSize: Int,
     val inventoryPage: Int,
     val material: CMaterial,
-) : TileEntity(), IGuiHolder<PosGuiData> {
+) : TileEntity(), ITickable, IGuiHolder<PosGuiData> {
 
     private var customName: String? = null
     private val itemInventory = ItemStackHandler(inventoryRowSize * inventoryColumnSize * inventoryPage)
@@ -47,6 +51,7 @@ class TileEntityMetalChest(
         private set
     var facing: EnumFacing = EnumFacing.NORTH
         private set
+    private var numPlayersUsing = 0
 
     fun hasCustomName(): Boolean {
         return customName != null
@@ -60,26 +65,70 @@ class TileEntityMetalChest(
         this.facing = placer.horizontalFacing.opposite
     }
 
+    override fun update() {
+        this.prevLidAngle = this.lidAngle
+        val open = this.numPlayersUsing > 0 && this.lidAngle == 0.0f
+        if (open) {
+            this.world.playSound(null, this.pos, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS,
+                0.5f, this.world.rand.nextFloat() * 0.1f + 0.9f)
+        }
+        val opening = this.numPlayersUsing > 0 && this.lidAngle < 1.0f
+        if (opening) {
+            this.lidAngle = min(this.lidAngle + 0.1f, 1.0f)
+        }
+        val closing = this.numPlayersUsing == 0 && this.lidAngle > 0.0f
+        if (closing) {
+            this.lidAngle = max(this.lidAngle - 0.1f, 0.0f)
+        }
+        if (this.lidAngle < 0.5f && this.prevLidAngle >= 0.5f) {
+            this.world.playSound(null, this.pos, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS,
+                0.5f, this.world.rand.nextFloat() * 0.1f + 0.9f)
+        }
+    }
+
+    // same as the Vanilla TileEntityChest
+    override fun receiveClientEvent(id: Int, type: Int): Boolean {
+        CLog.info("ClientEvent $id $type")
+        if (id == 1) {
+            this.numPlayersUsing = type
+            return true
+        }
+        return super.receiveClientEvent(id, type)
+    }
+
+    fun onInventoryOpen(player: EntityPlayer) {
+        CLog.info("InventoryOpen $numPlayersUsing")
+        if (!player.isSpectator()) {
+            if (this.numPlayersUsing < 0) this.numPlayersUsing = 0
+            ++this.numPlayersUsing
+            this.world.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing)
+            this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType(), false)
+        }
+    }
+
+    fun onInventoryClose(player: EntityPlayer) {
+        CLog.info("InventoryClose $numPlayersUsing")
+        if (!player.isSpectator()) {
+            --this.numPlayersUsing
+            this.world.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing)
+            this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType(), false)
+        }
+    }
+
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
-        val list = NonNullList.withSize(inventoryRowSize * inventoryColumnSize * inventoryPage, ItemStack.EMPTY)
-        ItemStackHelper.loadAllItems(compound, list)
-        list.forEachIndexed { slot, stack ->
-            this.itemInventory.insertItem(slot, stack, false)
-        }
-        if (compound.hasKey("CustomName", 8)) {
+        CUtils.readItems(itemInventory, "itemInventory", compound)
+        if (compound.hasKey("CustomName", Constants.NBT.TAG_STRING)) {
             this.customName = compound.getString("CustomName")
         }
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         super.writeToNBT(compound)
-        val list = itemInventory.toList()
-        ItemStackHelper.saveAllItems(compound, NonNullList.from<ItemStack>(ItemStack.EMPTY, *list.toTypedArray()))
+        CUtils.writeItems(itemInventory, "itemInventory", compound)
         if (this.hasCustomName()) {
             compound.setString("CustomName", this.customName!!)
         }
-
         return compound
     }
 
@@ -119,10 +168,17 @@ class TileEntityMetalChest(
         val width = max(max(inventoryColumnSize, 9) * 18 + 14, GUI_DEFAULT_WIDTH + 56)
         val chestInventoryWidth = inventoryColumnSize * 18
         val playerInventoryWidth = 162
+        val titleTextWidget = if (this.customName != null) {
+            IKey.str(this.customName!!)
+        } else {
+            IKey.lang("gui.clayium.metal_chest", IKey.lang(material.translationKey))
+        }
+        syncManager.addOpenListener { this.onInventoryOpen(it) }
+        syncManager.addCloseListener { this.onInventoryClose(it) }
         return ModularPanel.defaultPanel("metal_chest_inv", width, 18 + inventoryRowSize * 18 + 94 + 2)
             .child(Column().margin(7).sizeRel(1f)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
-                    .child(IKey.lang("gui.clayium.metal_chest", IKey.lang(material.translationKey)).asWidget()
+                    .child(titleTextWidget.asWidget()
                         .top(0).left(((width - 7 * 2) - chestInventoryWidth) / 2))
                     .child(pagedWidget.alignX(Alignment.Center)
                         .margin(0, 9).height(18 * inventoryRowSize).width(inventoryColumnSize * 18))

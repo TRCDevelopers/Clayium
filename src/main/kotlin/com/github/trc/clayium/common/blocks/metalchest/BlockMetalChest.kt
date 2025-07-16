@@ -86,6 +86,11 @@ abstract class BlockMetalChest(
         }
     }
 
+    override fun eventReceived(state: IBlockState, worldIn: World, pos: BlockPos, id: Int, param: Int): Boolean {
+        @Suppress("DEPRECATION")
+        return worldIn.getTileEntity(pos)?.receiveClientEvent(id, param) ?: super.eventReceived(state, worldIn, pos, id, param)
+    }
+
     companion object {
         fun create(mapping: Map<Int, CMaterial>): BlockMetalChest {
             val materials = mapping.values
