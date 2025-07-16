@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.block.statemap.StateMapperBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
@@ -50,8 +49,6 @@ abstract class BlockMetalChest(
 
     override fun getBlockFaceShape(worldIn: IBlockAccess, state: IBlockState, pos: BlockPos, face: EnumFacing) =  BlockFaceShape.UNDEFINED
 
-    @SideOnly(Side.CLIENT)
-    override fun getRenderLayer() = BlockRenderLayer.TRANSLUCENT
     @SideOnly(Side.CLIENT)
     override fun getRenderType(state: IBlockState) = EnumBlockRenderType.ENTITYBLOCK_ANIMATED
 
