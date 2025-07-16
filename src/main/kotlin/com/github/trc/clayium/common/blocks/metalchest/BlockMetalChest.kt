@@ -14,7 +14,9 @@ import net.minecraft.block.state.BlockFaceShape
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.block.statemap.StateMapperBase
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
@@ -49,14 +51,28 @@ abstract class BlockMetalChest(
 
     override fun getBlockFaceShape(worldIn: IBlockAccess, state: IBlockState, pos: BlockPos, face: EnumFacing) =  BlockFaceShape.UNDEFINED
 
-    @SideOnly(Side.CLIENT)
-    override fun getRenderType(state: IBlockState) = EnumBlockRenderType.ENTITYBLOCK_ANIMATED
+    override fun onBlockPlacedBy(worldIn: World, pos: BlockPos, state: IBlockState, placer: EntityLivingBase, stack: ItemStack) {
+        val te = worldIn.getTileEntity(pos) as? TileEntityMetalChest ?: return
+        te.onBlockPlacedBy(placer)
+    }
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         if (worldIn.isRemote) return true
         TileEntityGuiFactory.INSTANCE.open(playerIn, pos)
         return true
     }
+
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
+        return AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 0.875, 0.9375)
+    }
+
+    override fun isFullBlock(state: IBlockState) = false
+    override fun isFullCube(state: IBlockState) = isFullBlock(state)
+    override fun isOpaqueCube(state: IBlockState) = isFullBlock(state)
+    override fun causesSuffocation(state: IBlockState) = isFullBlock(state)
+
+    @SideOnly(Side.CLIENT)
+    override fun getRenderType(state: IBlockState) = EnumBlockRenderType.ENTITYBLOCK_ANIMATED
 
     @SideOnly(Side.CLIENT)
     override fun registerModels() {
@@ -69,15 +85,6 @@ abstract class BlockMetalChest(
             ModelLoader.setCustomModelResourceLocation(this.getAsItem(), this.getMetaFromState(state), itemLoc)
         }
     }
-
-    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
-        return AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 0.875, 0.9375)
-    }
-
-    override fun isFullBlock(state: IBlockState) = false
-    override fun isFullCube(state: IBlockState) = isFullBlock(state)
-    override fun isOpaqueCube(state: IBlockState) = isFullBlock(state)
-    override fun causesSuffocation(state: IBlockState) = isFullBlock(state)
 
     companion object {
         fun create(mapping: Map<Int, CMaterial>): BlockMetalChest {

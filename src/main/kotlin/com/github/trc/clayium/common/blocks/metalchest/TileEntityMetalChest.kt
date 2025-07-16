@@ -19,6 +19,7 @@ import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.toList
 import com.github.trc.clayium.integration.modularui.MuiSlots
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.inventory.ItemStackHelper
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -53,6 +54,10 @@ class TileEntityMetalChest(
 
     fun getName(): String {
         return this.customName ?: "container.chest"
+    }
+
+    fun onBlockPlacedBy(placer: EntityLivingBase) {
+        this.facing = placer.horizontalFacing.opposite
     }
 
     override fun readFromNBT(compound: NBTTagCompound) {
