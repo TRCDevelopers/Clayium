@@ -1,7 +1,7 @@
 package com.github.trc.clayium.client.model
 
 import com.github.trc.clayium.api.unification.material.CMaterial
-import com.github.trc.clayium.common.blocks.BlockMaterialBase
+import com.github.trc.clayium.common.blocks.material.BlockMaterialBase
 import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState

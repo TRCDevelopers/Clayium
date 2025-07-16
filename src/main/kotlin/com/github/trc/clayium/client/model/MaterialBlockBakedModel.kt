@@ -3,7 +3,7 @@ package com.github.trc.clayium.client.model
 import codechicken.lib.render.particle.CustomParticleHandler
 import codechicken.lib.render.particle.IModelParticleProvider
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.blocks.material.BlockCompressed
+import com.github.trc.clayium.common.blocks.material.BlockMaterialWithDynModel
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.ItemOverrideList
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
@@ -14,7 +14,7 @@ import net.minecraft.world.IBlockAccess
 import net.minecraftforge.common.property.IExtendedBlockState
 
 /**
- * handles particle for [com.github.trc.clayium.common.blocks.BlockMaterialBase].
+ * handles particle for [com.github.trc.clayium.common.blocks.material.BlockMaterialBase].
  *
  * This class uses [IModelParticleProvider], so you have to call CCLib's [CustomParticleHandler].
  *
@@ -34,7 +34,7 @@ abstract class MaterialBlockBakedModel(
 
     fun getParticle(state: IBlockState?): Set<TextureAtlasSprite> {
         val state = state as? IExtendedBlockState ?: return emptySet()
-        val materialName = state.getValue(BlockCompressed.MATERIAL_NAME)
+        val materialName = state.getValue(BlockMaterialWithDynModel.MATERIAL_NAME)
         val atlas = texGetter.apply(clayiumId("blocks/compressed_$materialName"))
         return setOf(atlas)
     }

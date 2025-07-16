@@ -1,7 +1,7 @@
 package com.github.trc.clayium.client.model
 
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.blocks.material.BlockCompressed
+import com.github.trc.clayium.common.blocks.material.BlockMaterialWithDynModel
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.IBakedModel
@@ -29,7 +29,7 @@ class MetalBlockModel : IModel {
         override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long): List<BakedQuad> {
             if (state == null || side == null) return emptyList()
             val exState = state as? IExtendedBlockState ?: return emptyList()
-            val materialName = exState.getValue(BlockCompressed.MATERIAL_NAME)
+            val materialName = exState.getValue(BlockMaterialWithDynModel.MATERIAL_NAME)
             val quads = mutableListOf<BakedQuad>()
             val allSideQuads = cache.getOrPut(materialName) {
                 val atlas = texGetter.apply(clayiumId("blocks/compressed_$materialName"))

@@ -1,4 +1,4 @@
-package com.github.trc.clayium.common.blocks
+package com.github.trc.clayium.common.blocks.material
 
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.util.getAsItem
@@ -6,6 +6,7 @@ import com.github.trc.clayium.api.util.toItemStack
 import com.github.trc.clayium.client.model.MaterialStateMapper
 import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
 import net.minecraft.block.Block
+import net.minecraft.block.material.Material
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.resources.I18n
@@ -19,8 +20,14 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 @Suppress("OVERRIDE_DEPRECATION")
+/**
+ * Base class for blocks that are associated with a [CMaterial].
+ * See [com.github.trc.clayium.common.blocks.ClayiumBlocks.createMaterialBlock] for usage.
+ *
+ * The Model Location will be `("$modId:material/$blockName", "material=${materialName}")`
+ */
 abstract class BlockMaterialBase(
-    blockMaterial: net.minecraft.block.material.Material,
+    blockMaterial: Material,
     val mapping: Map<Int, CMaterial>,
 ) : Block(blockMaterial) {
 
@@ -32,7 +39,7 @@ abstract class BlockMaterialBase(
 
     fun getCMaterial(meta: Int) = mapping[meta] ?: mapping.values.first()
     fun getCMaterial(stack: ItemStack) = getCMaterial(stack.metadata)
-    fun getCMaterial(state: IBlockState) = state.getValue(getMaterialProperty())
+    fun getCMaterial(state: IBlockState): CMaterial = state.getValue(getMaterialProperty())
 
     override fun createBlockState(): BlockStateContainer {
         return BlockStateContainer(this, getMaterialProperty())

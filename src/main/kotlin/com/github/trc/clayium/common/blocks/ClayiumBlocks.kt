@@ -192,7 +192,7 @@ object ClayiumBlocks {
     }
 
     fun createEnergizedClayBlock(metaMaterialMap: Map<Int, CMaterial>, index: Int) {
-        val block = BlockEnergizedClay.Companion.create(metaMaterialMap)
+        val block = BlockEnergizedClay.create(metaMaterialMap)
         block.registryName = clayiumId("energized_clay_$index")
         ENERGIZED_CLAY_BLOCKS.add(block)
         metaMaterialMap.values.forEach { energizedClay[it] = block }

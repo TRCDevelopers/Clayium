@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.github.trc.clayium.client.model
 
 import net.minecraft.block.state.IBlockState
@@ -43,7 +45,6 @@ class MetalChestModel : IModel {
             val v = Vector3f(0f, 2.5f, 0f).apply { scale(0.0625F) }
             val zero = Vector3f(0f, 0f, 0f)
             val one = Vector3f(1f, 1f, 1f)
-            @Suppress("DEPRECATION")
             // XXX person left is the same as right if not specified in the model json. [net.minecraft.client.renderer.block.model.ItemCameraTransforms.Deserializer.deserialize]
             // In the vanilla chest model, left is not specified, so it is the same as right.
             ItemCameraTransforms(
