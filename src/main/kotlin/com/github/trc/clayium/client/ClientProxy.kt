@@ -5,7 +5,7 @@ import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.gui.TextureExtra
 import com.github.trc.clayium.client.model.MetaTileEntityModelLoader
-import com.github.trc.clayium.client.model.MetalBlockModelLoader
+import com.github.trc.clayium.client.model.MetalModelLoader
 import com.github.trc.clayium.client.renderer.ClayLaserReflectorRenderer
 import com.github.trc.clayium.client.renderer.ClayMarkerTESR
 import com.github.trc.clayium.client.renderer.MetaTileEntityRenderDispatcher
@@ -44,7 +44,7 @@ class ClientProxy : CommonProxy() {
         MinecraftForge.EVENT_BUS.register(KeyInput)
 
         ModelLoaderRegistry.registerLoader(MetaTileEntityModelLoader)
-        ModelLoaderRegistry.registerLoader(MetalBlockModelLoader)
+        ModelLoaderRegistry.registerLoader(MetalModelLoader)
 
         ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, MetaTileEntityRenderDispatcher)
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayLaserReflector::class.java, ClayLaserReflectorRenderer)
