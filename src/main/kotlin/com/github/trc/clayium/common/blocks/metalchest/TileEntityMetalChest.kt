@@ -111,21 +111,23 @@ class TileEntityMetalChest(
         }
     }
 
-    override fun readFromNBT(compound: NBTTagCompound) {
-        super.readFromNBT(compound)
-        CUtils.readItems(itemInventory, "itemInventory", compound)
-        if (compound.hasKey("CustomName", Constants.NBT.TAG_STRING)) {
-            this.customName = compound.getString("CustomName")
-        }
-    }
-
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         super.writeToNBT(compound)
         CUtils.writeItems(itemInventory, "itemInventory", compound)
+        compound.setInteger("facing", this.facing.index)
         if (this.customName != null) {
             compound.setString("CustomName", this.customName!!)
         }
         return compound
+    }
+
+    override fun readFromNBT(compound: NBTTagCompound) {
+        super.readFromNBT(compound)
+        CUtils.readItems(itemInventory, "itemInventory", compound)
+        this.facing = EnumFacing.byIndex(compound.getInteger("facing"))
+        if (compound.hasKey("CustomName", Constants.NBT.TAG_STRING)) {
+            this.customName = compound.getString("CustomName")
+        }
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
