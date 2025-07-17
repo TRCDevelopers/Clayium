@@ -42,12 +42,14 @@ abstract class SyncedTileEntityBase : TileEntity(), ISyncedTileEntity {
         val backedBuf = Unpooled.buffer()
         writeInitialSyncData(PacketBuffer(backedBuf))
         val updateData = backedBuf.array().copyOf(backedBuf.writerIndex())
-        @Suppress("UsePropertyAccessSyntax") // `super.updateTag` errors with "unresolved reference"
         return super.getUpdateTag().also { it.setByteArray("d", updateData) }
     }
 
     override fun handleUpdateTag(tag: NBTTagCompound) {
         receiveInitialSyncData(PacketBuffer(Unpooled.wrappedBuffer(tag.getByteArray("d"))))
-        super.handleUpdateTag(tag)
+    }
+
+    fun scheduleRenderUpdate() {
+        world?.markBlockRangeForRenderUpdate(pos, pos)
     }
 }

@@ -14,8 +14,13 @@ import com.cleanroommc.modularui.widgets.PagedWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
+import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
+import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
+import com.github.trc.clayium.api.metatileentity.SyncedTileEntityBase
+import com.github.trc.clayium.api.metatileentity.interfaces.IMarkDirty
 import com.github.trc.clayium.api.unification.material.CMaterial
+import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.asWidgetResizing
@@ -25,26 +30,27 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.tileentity.TileEntity
+import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ITickable
+import net.minecraft.util.ResourceLocation
 import net.minecraft.util.SoundCategory
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-import net.minecraftforge.items.ItemStackHandler
+import net.minecraftforge.items.IItemHandlerModifiable
 import kotlin.math.max
 import kotlin.math.min
 
-class TileEntityMetalChest(
-    val inventoryRowSize: Int,
-    val inventoryColumnSize: Int,
-    val inventoryPage: Int,
-    val material: CMaterial,
-) : TileEntity(), ITickable, IGuiHolder<PosGuiData> {
+class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGuiData>, IMarkDirty {
 
+    var inventoryRowSize: Int = 0
+    var inventoryColumnSize: Int = 0
+    var inventoryPage: Int = 0
+    var material: CMaterial = CMaterials.aluminum
+
+    private lateinit var itemInventory: IItemHandlerModifiable
     private var customName: String? = null
-    private val itemInventory = ItemStackHandler(inventoryRowSize * inventoryColumnSize * inventoryPage)
 
     var prevLidAngle = 0f
         private set
@@ -54,11 +60,20 @@ class TileEntityMetalChest(
         private set
     private var numPlayersUsing = 0
 
+    fun init(row: Int, column: Int, page: Int, material: CMaterial) {
+        this.inventoryRowSize = row
+        this.inventoryColumnSize = column
+        this.inventoryPage = page
+        this.material = material
+        this.itemInventory = ClayiumItemStackHandler(this, row * column * page)
+    }
+
     fun onBlockPlacedBy(placer: EntityLivingBase, stack: ItemStack) {
         this.facing = placer.horizontalFacing.opposite
         if (stack.hasDisplayName()) {
             this.customName = stack.displayName
         }
+        if (!this.world.isRemote) this.markDirty()
     }
 
     override fun update() {
@@ -111,10 +126,28 @@ class TileEntityMetalChest(
         }
     }
 
+    override fun writeInitialSyncData(buf: PacketBuffer) {
+        buf.writeResourceLocation(material.materialId)
+        buf.writeVarInt(this.facing.index)
+    }
+
+    override fun receiveInitialSyncData(buf: PacketBuffer) {
+        this.material = ClayiumApi.materialRegistry.getObject(buf.readResourceLocation())
+            ?: CMaterials.aluminum
+        this.facing = EnumFacing.byIndex(buf.readVarInt())
+        this.scheduleRenderUpdate()
+    }
+
+    override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {}
+
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         super.writeToNBT(compound)
-        CUtils.writeItems(itemInventory, "itemInventory", compound)
+        compound.setInteger("inventoryRowSize", this.inventoryRowSize)
+        compound.setInteger("inventoryColumnSize", this.inventoryColumnSize)
+        compound.setInteger("inventoryPage", this.inventoryPage)
+        compound.setString("material", this.material.materialId.toString())
         compound.setInteger("facing", this.facing.index)
+        CUtils.writeItems(itemInventory, "itemInventory", compound)
         if (this.customName != null) {
             compound.setString("CustomName", this.customName!!)
         }
@@ -123,6 +156,12 @@ class TileEntityMetalChest(
 
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
+        this.inventoryRowSize = compound.getInteger("inventoryRowSize")
+        this.inventoryColumnSize = compound.getInteger("inventoryColumnSize")
+        this.inventoryPage = compound.getInteger("inventoryPage")
+        this.itemInventory = ClayiumItemStackHandler(this, this.inventoryRowSize * this.inventoryColumnSize * this.inventoryPage)
+        this.material = ClayiumApi.materialRegistry.getObject(ResourceLocation(compound.getString("material")))
+            ?: CMaterials.aluminum
         CUtils.readItems(itemInventory, "itemInventory", compound)
         this.facing = EnumFacing.byIndex(compound.getInteger("facing"))
         if (compound.hasKey("CustomName", Constants.NBT.TAG_STRING)) {

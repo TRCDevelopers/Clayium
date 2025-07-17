@@ -46,7 +46,9 @@ abstract class BlockMetalChest(
     override fun createTileEntity(world: World, state: IBlockState): TileEntity? {
         val meta = this.getMetaFromState(state)
         val material = mapping[meta] ?: CMaterials.aluminum
-        return TileEntityMetalChest(6, 11, 2, material)
+        val tileEntity = TileEntityMetalChest()
+        tileEntity.init(6, 11, 2, material)
+        return tileEntity
     }
 
     override fun getBlockFaceShape(worldIn: IBlockAccess, state: IBlockState, pos: BlockPos, face: EnumFacing) =  BlockFaceShape.UNDEFINED
