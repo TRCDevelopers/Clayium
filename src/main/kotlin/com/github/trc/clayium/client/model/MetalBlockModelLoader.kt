@@ -26,9 +26,9 @@ object MetalBlockModelLoader : ICustomModelLoader {
         if (modelLocation.namespace != MOD_ID) return null
 
         return if (modelLocation.path.contains("metal_chest")) {
-            MetalChestModel()
+            MetalChestModel
         } else if (modelLocation.path.contains("compressed_material") && modelLocation.variant == "variant=block") {
-            MetalBlockModel()
+            MetalBlockModel
         } else {
             null // Unsupported model location
         }

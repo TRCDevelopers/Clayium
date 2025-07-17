@@ -26,6 +26,10 @@ object MetaTileEntityModelLoader : ICustomModelLoader {
         if (modelLocation !is ModelResourceLocation) return ModelLoaderRegistry.getMissingModel()
 
         val isPipe = modelLocation.variant.split("=").last().toBooleanStrict()
-        return MetaTileEntityModel(isPipe)
+        return if (isPipe) {
+            MetaTileEntityModels.Pipe
+        } else {
+            MetaTileEntityModels.FullBlock
+        }
     }
 }

@@ -14,9 +14,12 @@ import net.minecraftforge.common.model.IModelState
 import net.minecraftforge.common.property.IExtendedBlockState
 import java.util.function.Function
 
-class MetalBlockModel : IModel {
+object MetalBlockModel : IModel {
+
+    private var bakedModel: MetalBlockBakedModel? = null
+
     override fun bake(state: IModelState, format: VertexFormat, bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>): IBakedModel {
-        return MetalBlockBakedModel(bakedTextureGetter)
+        return bakedModel ?: MetalBlockBakedModel(bakedTextureGetter).also { bakedModel = it }
     }
 
     class MetalBlockBakedModel(

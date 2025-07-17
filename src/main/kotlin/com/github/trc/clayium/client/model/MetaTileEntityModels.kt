@@ -10,12 +10,32 @@ import net.minecraftforge.client.model.IModel
 import net.minecraftforge.common.model.IModelState
 import java.util.function.Function
 
-class MetaTileEntityModel(
-    private val isPipe: Boolean,
-) : IModel {
+object MetaTileEntityModels {
 
-    override fun getTextures(): Collection<ResourceLocation> {
-        return mutableSetOf<ResourceLocation>().apply {
+    object Pipe : IModel {
+        private val baked by lazy { MetaTileEntityPipeBakedModel() }
+
+        override fun getTextures(): Collection<ResourceLocation?> = requiredTextures
+
+        override fun bake(state: IModelState, format: VertexFormat, bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>): IBakedModel {
+            if (!ModelTextures.isInitialized) ModelTextures.initialize(bakedTextureGetter)
+            return baked
+        }
+    }
+
+    object FullBlock : IModel {
+        private val baked by lazy { MetaTileEntityPipeBakedModel() }
+
+        override fun getTextures(): Collection<ResourceLocation?> = requiredTextures
+
+        override fun bake(state: IModelState, format: VertexFormat, bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>): IBakedModel {
+            if (!ModelTextures.isInitialized) ModelTextures.initialize(bakedTextureGetter)
+            return baked
+        }
+    }
+
+    val requiredTextures by lazy {
+        mutableSetOf<ResourceLocation>().apply {
             // machine face textures
             ClayiumApi.mteManager.allRegistries().forEach {
                 it.forEach { metaTileEntity ->
@@ -64,19 +84,6 @@ class MetaTileEntityModel(
             add(clayiumId("blocks/machinehull_tier12"))
             add(clayiumId("blocks/machinehull_tier13"))
             add(clayiumId("blocks/az91d_hull"))
-        }
-    }
-
-    override fun bake(
-        state: IModelState,
-        format: VertexFormat,
-        bakedTextureGetter: Function<ResourceLocation, TextureAtlasSprite>
-    ): IBakedModel {
-        if (!ModelTextures.isInitialized) ModelTextures.initialize(bakedTextureGetter)
-        return if (isPipe) {
-            MetaTileEntityPipeBakedModel()
-        } else {
-            MetaTileEntityBakedModel()
         }
     }
 }
