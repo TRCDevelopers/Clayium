@@ -24,7 +24,7 @@ object MetaTileEntityModels {
     }
 
     object FullBlock : IModel {
-        private val baked by lazy { MetaTileEntityPipeBakedModel() }
+        private val baked by lazy { MetaTileEntityBakedModel() }
 
         override fun getTextures(): Collection<ResourceLocation?> = requiredTextures
 
