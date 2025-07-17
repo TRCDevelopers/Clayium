@@ -224,6 +224,7 @@ object ClayiumBlocks {
         setStateMapper(CLAY_TREE_LEAVES, StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build())
         setStateMapper(CLAY_TREE_SAPLING, StateMap.Builder().ignore(BlockSapling.STAGE).build())
         setStateMapper(COLORED_SILICONE, StateMap.Builder().ignore(COLORED_SILICONE.variantProperty).build())
+        setStateMapper(LASER_REFLECTOR, StateMap.Builder().ignore(BlockClayLaserReflector.FACING).build())
     }
 
     @SideOnly(Side.CLIENT)
@@ -248,8 +249,9 @@ object ClayiumBlocks {
         val item = block.getAsItem()
         val defaultStateMapper = DefaultStateMapper()
         when (block) {
-            CLAY_TREE_SAPLING -> ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(clayiumId("clay_tree_sapling"), "inventory"))
-            PAN_CABLE -> ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(clayiumId("pan_cable"), "inventory"))
+            CLAY_TREE_SAPLING, PAN_CABLE, LASER_REFLECTOR -> {
+                ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(block.registryName!!, "inventory"))
+            }
             else -> {
                 val customStateMapper = stateMapperCache[block]
                 if (customStateMapper != null) {

@@ -70,7 +70,7 @@ class BlockClayLaserReflector : Block(Material.IRON) {
     }
 
     override fun getRenderLayer() = BlockRenderLayer.TRANSLUCENT
-    override fun getRenderType(state: IBlockState) = EnumBlockRenderType.INVISIBLE
+    override fun getRenderType(state: IBlockState) = EnumBlockRenderType.MODEL
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
         val direction = state.getValue(FACING)

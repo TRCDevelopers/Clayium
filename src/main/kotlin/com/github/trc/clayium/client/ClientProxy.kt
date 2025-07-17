@@ -4,7 +4,6 @@ import codechicken.lib.colour.ColourRGBA
 import com.github.trc.clayium.api.metatileentity.MetaTileEntityHolder
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.client.gui.TextureExtra
-import com.github.trc.clayium.client.model.LaserReflectorModelLoader
 import com.github.trc.clayium.client.model.MetaTileEntityModelLoader
 import com.github.trc.clayium.client.model.MetalBlockModelLoader
 import com.github.trc.clayium.client.renderer.ClayLaserReflectorRenderer
@@ -45,7 +44,6 @@ class ClientProxy : CommonProxy() {
         MinecraftForge.EVENT_BUS.register(KeyInput)
 
         ModelLoaderRegistry.registerLoader(MetaTileEntityModelLoader)
-        ModelLoaderRegistry.registerLoader(LaserReflectorModelLoader)
         ModelLoaderRegistry.registerLoader(MetalBlockModelLoader)
 
         ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, MetaTileEntityRenderDispatcher)
