@@ -23,6 +23,7 @@ import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
@@ -53,16 +54,11 @@ class TileEntityMetalChest(
         private set
     private var numPlayersUsing = 0
 
-    fun hasCustomName(): Boolean {
-        return customName != null
-    }
-
-    fun getName(): String {
-        return this.customName ?: "container.chest"
-    }
-
-    fun onBlockPlacedBy(placer: EntityLivingBase) {
+    fun onBlockPlacedBy(placer: EntityLivingBase, stack: ItemStack) {
         this.facing = placer.horizontalFacing.opposite
+        if (stack.hasDisplayName()) {
+            this.customName = stack.displayName
+        }
     }
 
     override fun update() {
@@ -126,7 +122,7 @@ class TileEntityMetalChest(
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         super.writeToNBT(compound)
         CUtils.writeItems(itemInventory, "itemInventory", compound)
-        if (this.hasCustomName()) {
+        if (this.customName != null) {
             compound.setString("CustomName", this.customName!!)
         }
         return compound

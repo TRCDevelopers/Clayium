@@ -53,7 +53,7 @@ abstract class BlockMetalChest(
 
     override fun onBlockPlacedBy(worldIn: World, pos: BlockPos, state: IBlockState, placer: EntityLivingBase, stack: ItemStack) {
         val te = worldIn.getTileEntity(pos) as? TileEntityMetalChest ?: return
-        te.onBlockPlacedBy(placer)
+        te.onBlockPlacedBy(placer, stack)
     }
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
