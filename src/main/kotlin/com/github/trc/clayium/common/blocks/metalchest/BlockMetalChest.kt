@@ -21,6 +21,7 @@ import net.minecraft.client.particle.ParticleManager
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
+import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
@@ -29,6 +30,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
+import net.minecraft.util.NonNullList
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
@@ -57,6 +59,16 @@ class BlockMetalChest : Block(BlockMaterial.IRON) {
         val te = world.getTileEntity(pos) as? TileEntityMetalChest ?: return state
         return (super.getExtendedState(state, world, pos) as IExtendedBlockState)
             .withProperty(MATERIAL_ID, te.material.materialId)
+    }
+
+    override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
+        // NOTE: JEI calls getSubBlocks. So, even if you override ItemBlock.getSubItems, you must also override Block.getSubBlocks.
+        // ItemBlock.getSubItems calls Block.getSubBlocks, so simply overring Block.getSubBlocks is enough.
+        for (material in ClayiumApi.materialRegistry) {
+            if (metalChestConfig[material.materialId] != null) {
+                items.add(ItemStack(this, 1, material.metaItemSubId))
+            }
+        }
     }
 
     override fun hasTileEntity(state: IBlockState) = true
