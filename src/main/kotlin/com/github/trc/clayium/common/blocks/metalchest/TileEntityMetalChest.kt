@@ -21,7 +21,6 @@ import com.github.trc.clayium.api.metatileentity.SyncedTileEntityBase
 import com.github.trc.clayium.api.metatileentity.interfaces.IMarkDirty
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CMaterials
-import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.integration.modularui.MuiSlots
@@ -105,7 +104,6 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
 
     // same as the Vanilla TileEntityChest
     override fun receiveClientEvent(id: Int, type: Int): Boolean {
-        CLog.info("ClientEvent $id $type")
         if (id == NUM_PLAYERS_USING_EVENT_ID) {
             this.numPlayersUsing = type
             return true
@@ -114,7 +112,6 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
     }
 
     fun onInventoryOpen(player: EntityPlayer) {
-        CLog.info("InventoryOpen $numPlayersUsing")
         if (!player.isSpectator()) {
             if (this.numPlayersUsing < 0) this.numPlayersUsing = 0
             ++this.numPlayersUsing
@@ -124,7 +121,6 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
     }
 
     fun onInventoryClose(player: EntityPlayer) {
-        CLog.info("InventoryClose $numPlayersUsing")
         if (!player.isSpectator()) {
             --this.numPlayersUsing
             this.world.addBlockEvent(this.pos, this.getBlockType(), NUM_PLAYERS_USING_EVENT_ID, this.numPlayersUsing)
