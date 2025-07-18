@@ -59,6 +59,21 @@ object CraftingRecipeLoader {
             )
         }
 
+        for (blockMetalChest in ClayiumBlocks.METAL_CHEST) {
+            for ((offset, material) in blockMetalChest.mapping) {
+                val id = material.materialId
+                val prefix = when {
+                    OreDictUnifier.exists(OrePrefix.ingot, material) -> OrePrefix.ingot
+                    OreDictUnifier.exists(OrePrefix.gem, material) -> OrePrefix.gem
+                    else -> continue
+                }
+                RecipeUtils.addShapedRecipe("metal_chest_${id.namespace}_${id.path}", ItemStack(blockMetalChest, 1, offset),
+                    "MMM", "MCM", "MMM",
+                    'M', UnificationEntry(prefix, material),
+                    'C', Blocks.CHEST)
+            }
+        }
+
         for (material in ClayiumApi.materialRegistry) {
             if (!OrePrefix.block.isIgnored(material)
                 && OreDictUnifier.exists(OrePrefix.block, material)
