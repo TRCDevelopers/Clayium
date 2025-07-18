@@ -16,6 +16,8 @@ import net.minecraft.block.state.BlockFaceShape
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.block.statemap.StateMapperBase
+import net.minecraft.client.resources.I18n
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -78,6 +80,18 @@ abstract class BlockMetalChest(
     override fun isFullCube(state: IBlockState) = isFullBlock(state)
     override fun isOpaqueCube(state: IBlockState) = isFullBlock(state)
     override fun causesSuffocation(state: IBlockState) = isFullBlock(state)
+
+    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        super.addInformation(stack, worldIn, tooltip, flagIn)
+        val config = metalChestConfig[this.getCMaterial(stack).materialId]
+            ?: return
+        val (row, column, pages) = config
+        if (pages == 1) {
+            tooltip.add(I18n.format("tile.clayium.metal_chest.tooltip_sp", row, column, row * column))
+        } else {
+            tooltip.add(I18n.format("tile.clayium.metal_chest.tooltip_mp", row, column, pages, row * column * pages))
+        }
+    }
 
     @SideOnly(Side.CLIENT)
     override fun getRenderType(state: IBlockState) = EnumBlockRenderType.ENTITYBLOCK_ANIMATED

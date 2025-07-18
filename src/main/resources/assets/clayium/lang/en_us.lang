@@ -38,7 +38,6 @@ clayium.ore_prefix.small_ring=%s Small Ring
 clayium.ore_prefix.spindle=%s Spindle
 clayium.ore_prefix.stick=%s Stick
 clayium.ore_prefix.wheel=%s Wheel
-clayium.ore_prefix.chest=%s Chest
 
 clayium.material.clay=Clay
 clayium.material.dense_clay=Dense Clay
@@ -675,78 +674,9 @@ machine.clayium.energy_converter.tooltip5=Edit clayium.cfg to enable recipes for
 machine.clayium.energy_converter.tooltip.rate=%1$s/t -> %2$sFE/t
 machine.clayium.energy_converter.tooltip.output=Output\: %1$sFE/t
 
-tile.clayium.blockMetalChest.Silicon.name=Silicon Chest
-tile.clayium.blockMetalChest.Aluminium.name=Aluminium Chest
-tile.clayium.blockMetalChest.ClaySteel.name=Clay Steel Chest
-tile.clayium.blockMetalChest.Clayium.name=Clayium Chest
-tile.clayium.blockMetalChest.UltimateAlloy.name=Ultimate Alloy Chest
-
-tile.clayium.blockMetalChest.Magnesium.name=Magnesium Chest
-tile.clayium.blockMetalChest.Sodium.name=Sodium Chest
-tile.clayium.blockMetalChest.Lithium.name=Lithium Chest
-tile.clayium.blockMetalChest.Zirconium.name=Zirconium Chest
-tile.clayium.blockMetalChest.Zinc.name=Zinc Chest
-
-tile.clayium.blockMetalChest.Manganese.name=Manganese Chest
-tile.clayium.blockMetalChest.Calcium.name=Calcium Chest
-tile.clayium.blockMetalChest.Potassium.name=Potassium Chest
-tile.clayium.blockMetalChest.Nickel.name=Nickel Chest
-tile.clayium.blockMetalChest.Beryllium.name=Beryllium Chest
-tile.clayium.blockMetalChest.Lead.name=Lead Chest
-tile.clayium.blockMetalChest.Hafnium.name=Hafnium Chest
-tile.clayium.blockMetalChest.Chrome.name=Chrome Chest
-tile.clayium.blockMetalChest.Titanium.name=Titanium Chest
-tile.clayium.blockMetalChest.Strontium.name=Strontium Chest
-tile.clayium.blockMetalChest.Barium.name=Barium Chest
-
-tile.clayium.blockMetalChest.AZ91D.name=AZ91D Alloy Chest
-tile.clayium.blockMetalChest.ZK60A.name=ZK60A Alloy Chest
-
-tile.clayium.blockMetalChest.Rubidium.name=Rubidium Chest
-tile.clayium.blockMetalChest.Caesium.name=Caesium Chest
-tile.clayium.blockMetalChest.Francium.name=Francium Chest
-tile.clayium.blockMetalChest.Radium.name=Radium Chest
-tile.clayium.blockMetalChest.Actinium.name=Actinium Chest
-tile.clayium.blockMetalChest.Thorium.name=Thorium Chest
-tile.clayium.blockMetalChest.Protactinium.name=Protactinium Chest
-tile.clayium.blockMetalChest.Uranium.name=Uranium Chest
-tile.clayium.blockMetalChest.Neptunium.name=Neptunium Chest
-tile.clayium.blockMetalChest.Plutonium.name=Plutonium Chest
-tile.clayium.blockMetalChest.Americium.name=Americium Chest
-tile.clayium.blockMetalChest.Curium.name=Curium Chest
-
-tile.clayium.blockMetalChest.Lanthanum.name=Lanthanum Chest
-tile.clayium.blockMetalChest.Cerium.name=Cerium Chest
-tile.clayium.blockMetalChest.Praseodymium.name=Praseodymium Chest
-tile.clayium.blockMetalChest.Neodymium.name=Neodymium Chest
-tile.clayium.blockMetalChest.Promethium.name=Promethium Chest
-tile.clayium.blockMetalChest.Samarium.name=Samarium Chest
-tile.clayium.blockMetalChest.Europium.name=Europium Chest
-
-tile.clayium.blockMetalChest.Vanadium.name=Vanadium Chest
-
-tile.clayium.blockMetalChest.Cobalt.name=Cobalt Chest
-tile.clayium.blockMetalChest.Palladium.name=Palladium Chest
-
-tile.clayium.blockMetalChest.Platinum.name=Platinum Chest
-tile.clayium.blockMetalChest.Iridium.name=Iridium Chest
-tile.clayium.blockMetalChest.Osmium.name=Osmium Chest
-tile.clayium.blockMetalChest.Rhenium.name=Rhenium Chest
-
-tile.clayium.blockMetalChest.Tantalum.name=Tantalum Chest
-tile.clayium.blockMetalChest.Tungsten.name=Tungsten Chest
-tile.clayium.blockMetalChest.Molybdenum.name=Molybdenum Chest
-
-tile.clayium.blockMetalChest.Antimony.name=Antimony Chest
-tile.clayium.blockMetalChest.Bismuth.name=Bismuth Chest
-
-tile.clayium.blockMetalChest.Brass.name=Brass Chest
-tile.clayium.blockMetalChest.Electrum.name=Electrum Chest
-tile.clayium.blockMetalChest.Invar.name=Invar Chest
-
-gui.clayium.metal_chest=%s Chest
-tooltip.clayium.MetalChest.capacity1=Capacity\: %1$d x %2$d = %3$d Slots
-tooltip.clayium.MetalChest.capacity2=Capacity\: %1$d x %2$d x %3$d = %4$d Slots
+tile.clayium.metal_chest=%s Chest
+tile.clayium.metal_chest.tooltip_sp=Capacity\: %1$d x %2$d = %3$d Slots
+tile.clayium.metal_chest.tooltip_mp=Capacity\: %1$d x %2$d x %3$d = %4$d Slots
 
 tile.clayium.blockMetal.Magnesium.name=Magnesium Block
 tile.clayium.blockMetal.Sodium.name=Sodium Block

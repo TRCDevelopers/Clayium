@@ -26,6 +26,7 @@ import com.github.trc.clayium.common.blocks.metalchest.BlockMetalChest
 import com.github.trc.clayium.common.blocks.ores.BlockClayOre
 import com.github.trc.clayium.common.blocks.ores.BlockDenseClayOre
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
+import com.github.trc.clayium.common.items.ItemBlockMetalChest
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import net.minecraft.block.Block
 import net.minecraft.block.BlockLeaves
@@ -97,7 +98,7 @@ object ClayiumBlocks {
 
     private val stateMapperCache = mutableMapOf<Block, IStateMapper>()
     private val COMPRESSED_ITEM_BLOCKS = mutableListOf<ItemBlockMaterial>()
-    private val METAL_CHEST_ITEM_BLOCKS = mutableListOf<ItemBlockMaterial>()
+    private val METAL_CHEST_ITEM_BLOCKS = mutableListOf<ItemBlockMetalChest>()
 
     init {
         createMaterialBlock(
@@ -152,7 +153,7 @@ object ClayiumBlocks {
             COMPRESSED_ITEM_BLOCKS.add(ib)
         }
         for (block in METAL_CHEST) {
-            val ib = createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.chest) }
+            val ib = createItemBlock(block) { ItemBlockMetalChest(it) }
             registry.register(ib)
             METAL_CHEST_ITEM_BLOCKS.add(ib)
         }

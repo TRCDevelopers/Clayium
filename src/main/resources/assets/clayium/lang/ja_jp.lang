@@ -35,7 +35,6 @@ clayium.ore_prefix.small_ring=%s小リング
 clayium.ore_prefix.spindle=%s主軸
 clayium.ore_prefix.stick=%s棒
 clayium.ore_prefix.wheel=%s水車パーツ
-clayium.ore_prefix.chest=%sチェスト
 
 clayium.material.clay=粘土
 clayium.material.dense_clay=高密度粘土
@@ -641,9 +640,9 @@ machine.clayium.energy_converter.tooltip5=コンフィグでこれを作成す�
 machine.clayium.energy_converter.tooltip.rate=%1$s/t -> %2$sFE/t
 machine.clayium.energy_converter.tooltip.output=出力: %1$sFE/t
 
-gui.clayium.metal_chest=%sチェスト
-tooltip.clayium.MetalChest.capacity1=容量: %1$d x %2$d = %3$d スロット
-tooltip.clayium.MetalChest.capacity2=容量: %1$d x %2$d x %3$d = %4$d スロット
+tile.clayium.metal_chest=%sチェスト
+tile.clayium.metal_chest.tooltip_sp=容量: %1$d x %2$d = %3$d スロット
+tile.clayium.metal_chest.tooltip_mp=容量: %1$d x %2$d x %3$d = %4$d スロット
 
 item.clayium.large_clay_ball.name=大粘土玉
 

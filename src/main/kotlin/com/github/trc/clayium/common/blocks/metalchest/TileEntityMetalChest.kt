@@ -208,7 +208,7 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
         val titleTextWidget = if (this.customName != null) {
             IKey.str(this.customName!!)
         } else {
-            IKey.lang("gui.clayium.metal_chest", IKey.lang(material.translationKey))
+            IKey.lang("tile.clayium.metal_chest", IKey.lang(material.translationKey))
         }
         syncManager.addOpenListener { this.onInventoryOpen(it) }
         syncManager.addCloseListener { this.onInventoryClose(it) }
