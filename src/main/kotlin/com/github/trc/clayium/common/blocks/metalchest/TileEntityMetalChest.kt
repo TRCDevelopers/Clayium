@@ -186,7 +186,7 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
     }
 
     override fun buildUI(data: PosGuiData, syncManager: PanelSyncManager, settings: UISettings): ModularPanel {
-        syncManager.registerSlotGroup("metal_chest_inv", inventoryHeight)
+        syncManager.registerSlotGroup("metal_chest_inventory", inventoryHeight)
 
         val columnStr = "I".repeat(inventoryWidth)
         val matrixStr = (0..<inventoryHeight).map { columnStr }
@@ -199,7 +199,8 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
                 SlotGroupWidget.builder()
                     .matrix(*matrixStr.toTypedArray())
                     .key('I') { slotIndex ->
-                        ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, slotIndex + (pageIndex * (inventoryHeight * inventoryWidth))))
+                        ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, slotIndex + (pageIndex * (inventoryHeight * inventoryWidth)))
+                            .slotGroup("metal_chest_inventory"))
                     }.build()
             )
         }
