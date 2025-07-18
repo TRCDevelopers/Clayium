@@ -22,6 +22,7 @@ import com.github.trc.clayium.common.blocks.chunkloader.ChunkLoaderTileEntity
 import com.github.trc.clayium.common.blocks.claycraftingtable.TileClayCraftingTable
 import com.github.trc.clayium.common.blocks.clayworktable.TileClayWorkTable
 import com.github.trc.clayium.common.blocks.marker.TileClayMarker
+import com.github.trc.clayium.common.blocks.metalchest.BlockMetalChest
 import com.github.trc.clayium.common.blocks.metalchest.TileEntityMetalChest
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.items.ClayiumItems
@@ -76,6 +77,8 @@ open class CommonProxy {
         MetaTileEntities.init()
         CMaterials.init()
         OrePrefix.init()
+
+        BlockMetalChest.loadMetalChestConfig()
 
         GuiManager.registerFactory(MetaTileEntityGuiFactory)
 

@@ -113,8 +113,7 @@ object ClayiumBlocks {
                 && (it.hasProperty(CPropertyKey.INGOT) || it.hasProperty(CPropertyKey.MATTER)) },
             this::createCompressedBock)
         createMaterialBlock(
-            { !OrePrefix.block.isIgnored(it)
-                    && (it.hasProperty(CPropertyKey.INGOT) || it.hasProperty(CPropertyKey.MATTER)) },
+            { BlockMetalChest.metalChestConfig[it.materialId] != null },
             this::createMetalChest)
     }
 

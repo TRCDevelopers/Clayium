@@ -44,8 +44,8 @@ import kotlin.math.min
 
 class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGuiData>, IMarkDirty {
 
-    var inventoryRowSize: Int = 0
-    var inventoryColumnSize: Int = 0
+    var inventoryHeight: Int = 0
+    var inventoryWidth: Int = 0
     var inventoryPage: Int = 0
     var material: CMaterial = CMaterials.aluminum
 
@@ -61,8 +61,8 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
     private var numPlayersUsing = 0
 
     fun init(row: Int, column: Int, page: Int, material: CMaterial) {
-        this.inventoryRowSize = row
-        this.inventoryColumnSize = column
+        this.inventoryWidth = row
+        this.inventoryHeight = column
         this.inventoryPage = page
         this.material = material
         this.itemInventory = ClayiumItemStackHandler(this, row * column * page)
@@ -142,8 +142,8 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         super.writeToNBT(compound)
-        compound.setInteger("inventoryRowSize", this.inventoryRowSize)
-        compound.setInteger("inventoryColumnSize", this.inventoryColumnSize)
+        compound.setInteger("inventoryRowSize", this.inventoryHeight)
+        compound.setInteger("inventoryColumnSize", this.inventoryWidth)
         compound.setInteger("inventoryPage", this.inventoryPage)
         compound.setString("material", this.material.materialId.toString())
         compound.setInteger("facing", this.facing.index)
@@ -156,10 +156,10 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
 
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
-        this.inventoryRowSize = compound.getInteger("inventoryRowSize")
-        this.inventoryColumnSize = compound.getInteger("inventoryColumnSize")
+        this.inventoryHeight = compound.getInteger("inventoryRowSize")
+        this.inventoryWidth = compound.getInteger("inventoryColumnSize")
         this.inventoryPage = compound.getInteger("inventoryPage")
-        this.itemInventory = ClayiumItemStackHandler(this, this.inventoryRowSize * this.inventoryColumnSize * this.inventoryPage)
+        this.itemInventory = ClayiumItemStackHandler(this, this.inventoryHeight * this.inventoryWidth * this.inventoryPage)
         this.material = ClayiumApi.materialRegistry.getObject(ResourceLocation(compound.getString("material")))
             ?: CMaterials.aluminum
         CUtils.readItems(itemInventory, "itemInventory", compound)
@@ -184,10 +184,10 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
     }
 
     override fun buildUI(data: PosGuiData, syncManager: PanelSyncManager, settings: UISettings): ModularPanel {
-        syncManager.registerSlotGroup("metal_chest_inv", inventoryRowSize)
+        syncManager.registerSlotGroup("metal_chest_inv", inventoryHeight)
 
-        val columnStr = "I".repeat(inventoryColumnSize)
-        val matrixStr = (0..<inventoryRowSize).map { columnStr }
+        val columnStr = "I".repeat(inventoryWidth)
+        val matrixStr = (0..<inventoryHeight).map { columnStr }
 
         val pageController = PagedWidget.Controller()
         val pagedWidget = PagedWidget()
@@ -197,13 +197,13 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
                 SlotGroupWidget.builder()
                     .matrix(*matrixStr.toTypedArray())
                     .key('I') { slotIndex ->
-                        ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, slotIndex + (pageIndex * (inventoryRowSize * inventoryColumnSize))))
+                        ItemSlot().slot(SyncHandlers.itemSlot(itemInventory, slotIndex + (pageIndex * (inventoryHeight * inventoryWidth))))
                     }.build()
             )
         }
 
-        val width = max(max(inventoryColumnSize, 9) * 18 + 14, GUI_DEFAULT_WIDTH + 56)
-        val chestInventoryWidth = inventoryColumnSize * 18
+        val width = max(max(inventoryWidth, 9) * 18 + 14, GUI_DEFAULT_WIDTH + 56)
+        val chestInventoryWidth = inventoryWidth * 18
         val playerInventoryWidth = 162
         val titleTextWidget = if (this.customName != null) {
             IKey.str(this.customName!!)
@@ -212,13 +212,13 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
         }
         syncManager.addOpenListener { this.onInventoryOpen(it) }
         syncManager.addCloseListener { this.onInventoryClose(it) }
-        return ModularPanel.defaultPanel("metal_chest_inv", width, 18 + inventoryRowSize * 18 + 94 + 2)
+        return ModularPanel.defaultPanel("metal_chest_inv", width, 18 + inventoryHeight * 18 + 94 + 2)
             .child(Column().margin(7).sizeRel(1f)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(titleTextWidget.asWidget()
                         .top(0).left(((width - 7 * 2) - chestInventoryWidth) / 2))
                     .child(pagedWidget.alignX(Alignment.Center)
-                        .margin(0, 9).height(18 * inventoryRowSize).width(inventoryColumnSize * 18))
+                        .margin(0, 9).height(18 * inventoryHeight).width(inventoryWidth * 18))
                     .child(IKey.lang("container.inventory").asWidget()
                         .bottom(0).left(((width - 7 * 2) - playerInventoryWidth) / 2)))
                 .child(ParentWidget().right(0).bottom(14).width(12 + 2 + 12).height(12 + 4 + 9)

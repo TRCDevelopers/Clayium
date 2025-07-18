@@ -4,10 +4,12 @@ import com.cleanroommc.modularui.factory.TileEntityGuiFactory
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.util.BlockMaterial
+import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
 import com.github.trc.clayium.common.blocks.material.BlockMaterialWithDynModel
 import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
+import com.github.trc.clayium.common.config.ConfigMetalChest
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import net.minecraft.block.SoundType
 import net.minecraft.block.state.BlockFaceShape
@@ -21,6 +23,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
+import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
@@ -46,8 +49,11 @@ abstract class BlockMetalChest(
     override fun createTileEntity(world: World, state: IBlockState): TileEntity? {
         val meta = this.getMetaFromState(state)
         val material = mapping[meta] ?: CMaterials.aluminum
+        val config = metalChestConfig[material.materialId]
+            ?: intArrayOf(9, 6, 1)
+        val (row, column, pages) = config
         val tileEntity = TileEntityMetalChest()
-        tileEntity.init(6, 11, 2, material)
+        tileEntity.init(row, column, pages, material)
         return tileEntity
     }
 
@@ -94,11 +100,39 @@ abstract class BlockMetalChest(
     }
 
     companion object {
+
+        val metalChestConfig = mutableMapOf<ResourceLocation, IntArray>()
+
         fun create(mapping: Map<Int, CMaterial>): BlockMetalChest {
             val materials = mapping.values
             val prop = CMaterialProperty(materials, "material")
             return object : BlockMetalChest(mapping) {
                 override fun getMaterialProperty() = prop
+            }
+        }
+
+        fun loadMetalChestConfig() {
+            for (raw: String in ConfigMetalChest.metalChestConfig) {
+                val (rlStr, cfg) = raw.split(";", limit = 2)
+                val rl = ResourceLocation(rlStr)
+                val (w, h, pages) = cfg.split(",").map { it.toInt() }
+                if (w < 1 || h < 1 || pages < 1) {
+                    CLog.error("Row, Column, and Pages must be >= 1. Material: $rl")
+                    continue
+                }
+                if (w > 50) {
+                    CLog.error("Inventory Width must be <= 50. Material: $rl")
+                    continue
+                }
+                if (h > 20) {
+                    CLog.error("Inventory Height be <= 20. Material: $rl")
+                    continue
+                }
+                if (pages > 100) {
+                    CLog.error("Inventory Pages must be <= 100. Material: $rl")
+                    continue
+                }
+                metalChestConfig[rl] = intArrayOf(w, h, pages)
             }
         }
     }
