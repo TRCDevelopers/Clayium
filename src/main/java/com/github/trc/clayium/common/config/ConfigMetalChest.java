@@ -14,7 +14,7 @@ public class ConfigMetalChest {
     })
     public static String[] metalChestConfig = {
             "clayium:actinium;13,5,1",
-            "clayium:aluminium;9,6,1",
+            "clayium:aluminum;9,6,1",
             "clayium:americium;13,6,5",
             "clayium:antimony;9,6,1",
             "clayium:az91d_alloy;13,8,1",
