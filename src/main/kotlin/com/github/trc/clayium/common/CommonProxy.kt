@@ -26,6 +26,7 @@ import com.github.trc.clayium.common.blocks.metalchest.BlockMetalChest
 import com.github.trc.clayium.common.blocks.metalchest.TileEntityMetalChest
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.items.ClayiumItems
+import com.github.trc.clayium.common.items.ItemBlockMetalChest
 import com.github.trc.clayium.common.items.ItemClaySteelPickaxe
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
@@ -127,7 +128,6 @@ open class CommonProxy {
         for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) registry.register(block)
         for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) registry.register(block)
         for (block in ClayiumBlocks.COMPRESSED_BLOCKS) registry.register(block)
-        for (block in ClayiumBlocks.METAL_CHEST) registry.register(block)
     }
 
     //todo move to ClayiumBlocks/Items
@@ -203,6 +203,8 @@ open class CommonProxy {
         registry.register(createItemBlock(ClayiumBlocks.CHUNK_LOADER, ItemBlockTiered<*>::noSubTypes))
 
         registry.register(createItemBlock(ClayiumBlocks.LASER_REFLECTOR, ::ItemBlockClayLaserReflector))
+
+        registry.register(createItemBlock(ClayiumBlocks.METAL_CHEST, ::ItemBlockMetalChest))
 
         for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) {
             registry.register(createItemBlock(block) { ItemBlockEnergizedClay(it, OrePrefix.block) })

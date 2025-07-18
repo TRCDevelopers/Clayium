@@ -1,23 +1,27 @@
 package com.github.trc.clayium.common.blocks.metalchest
 
+import codechicken.lib.block.property.unlisted.UnlistedResourceLocationProperty
+import codechicken.lib.render.particle.CustomParticleHandler
 import com.cleanroommc.modularui.factory.TileEntityGuiFactory
+import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.util.BlockMaterial
 import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getAsItem
-import com.github.trc.clayium.common.blocks.material.BlockMaterialWithDynModel
-import com.github.trc.clayium.common.blocks.properties.CMaterialProperty
 import com.github.trc.clayium.common.config.ConfigMetalChest
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
+import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.state.BlockFaceShape
+import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.particle.ParticleManager
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.client.renderer.block.statemap.StateMapperBase
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
+import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -28,34 +32,37 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
+import net.minecraft.world.WorldServer
 import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 @Suppress("OVERRIDE_DEPRECATION")
-abstract class BlockMetalChest(
-    mapping: Map<Int, CMaterial>
-) : BlockMaterialWithDynModel(BlockMaterial.WOOD, mapping) {
+class BlockMetalChest : Block(BlockMaterial.IRON) {
 
     init {
         setCreativeTab(ClayiumCTabs.main)
         setSoundType(SoundType.METAL)
     }
 
-    override fun hasTileEntity(state: IBlockState): Boolean {
-        return true
+    override fun createBlockState(): BlockStateContainer {
+        return BlockStateContainer.Builder(this).add(MATERIAL_ID).build()
     }
 
+    override fun getExtendedState(state: IBlockState, world: IBlockAccess, pos: BlockPos): IBlockState {
+        val te = world.getTileEntity(pos) as? TileEntityMetalChest ?: return state
+        return (super.getExtendedState(state, world, pos) as IExtendedBlockState)
+            .withProperty(MATERIAL_ID, te.material.materialId)
+    }
+
+    override fun hasTileEntity(state: IBlockState) = true
+
     override fun createTileEntity(world: World, state: IBlockState): TileEntity? {
-        val meta = this.getMetaFromState(state)
-        val material = mapping[meta] ?: CMaterials.aluminum
-        val config = metalChestConfig[material.materialId]
-            ?: intArrayOf(9, 6, 1)
-        val (row, column, pages) = config
         val tileEntity = TileEntityMetalChest()
-        tileEntity.init(row, column, pages, material)
         return tileEntity
     }
 
@@ -63,6 +70,9 @@ abstract class BlockMetalChest(
 
     override fun onBlockPlacedBy(worldIn: World, pos: BlockPos, state: IBlockState, placer: EntityLivingBase, stack: ItemStack) {
         val te = worldIn.getTileEntity(pos) as? TileEntityMetalChest ?: return
+        val meta = stack.metadata
+        val material = ClayiumApi.materialRegistry.getObjectById(meta) ?: CMaterials.aluminum
+        te.init(material)
         te.onBlockPlacedBy(placer, stack)
     }
 
@@ -93,19 +103,9 @@ abstract class BlockMetalChest(
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    override fun getRenderType(state: IBlockState) = EnumBlockRenderType.ENTITYBLOCK_ANIMATED
-
-    @SideOnly(Side.CLIENT)
-    override fun registerModels() {
-        val blockLoc = ModelResourceLocation(clayiumId("metal_chest"), "variant=block")
-        val itemLoc = ModelResourceLocation(clayiumId("metal_chest"), "inventory")
-        ModelLoader.setCustomStateMapper(this,
-            object : StateMapperBase() { override fun getModelResourceLocation(state: IBlockState) = blockLoc }
-        )
-        for (state in blockState.validStates) {
-            ModelLoader.setCustomModelResourceLocation(this.getAsItem(), this.getMetaFromState(state), itemLoc)
-        }
+    fun getCMaterial(stack: ItemStack): CMaterial {
+        val meta = stack.metadata
+        return ClayiumApi.materialRegistry.getObjectById(meta) ?: CMaterials.aluminum
     }
 
     override fun eventReceived(state: IBlockState, worldIn: World, pos: BlockPos, id: Int, param: Int): Boolean {
@@ -113,17 +113,46 @@ abstract class BlockMetalChest(
         return worldIn.getTileEntity(pos)?.receiveClientEvent(id, param) ?: super.eventReceived(state, worldIn, pos, id, param)
     }
 
+    @SideOnly(Side.CLIENT)
+    override fun getRenderType(state: IBlockState) = EnumBlockRenderType.ENTITYBLOCK_ANIMATED
+
+    @SideOnly(Side.CLIENT)
+    fun registerModels() {
+        val itemLoc = ModelResourceLocation(clayiumId("metal_chest"), "inventory")
+        for (material in ClayiumApi.materialRegistry) {
+            ModelLoader.setCustomModelResourceLocation(this.getAsItem(), material.metaItemSubId, itemLoc)
+        }
+    }
+
+    /* BoilerPlate for custom particle handling */
+    @SideOnly(Side.CLIENT)
+    override fun addHitEffects(state: IBlockState, world: World, target: RayTraceResult, manager: ParticleManager): Boolean {
+        CustomParticleHandler.handleHitEffects(state, world, target, manager)
+        return true
+    }
+
+    @SideOnly(Side.CLIENT)
+    override fun addDestroyEffects(world: World, pos: BlockPos, manager: ParticleManager): Boolean {
+        CustomParticleHandler.handleDestroyEffects(world, pos, manager)
+        return true
+    }
+
+    override fun addRunningEffects(state: IBlockState, world: World, pos: BlockPos, entity: Entity): Boolean {
+        if (world.isRemote) {
+            CustomParticleHandler.handleRunningEffects(world, pos, state, entity)
+        }
+        return true
+    }
+
+    override fun addLandingEffects(state: IBlockState, worldObj: WorldServer, blockPosition: BlockPos, iblockstate: IBlockState, entity: EntityLivingBase, numberOfParticles: Int): Boolean {
+        CustomParticleHandler.handleLandingEffects(worldObj, blockPosition, entity, numberOfParticles)
+        return true
+    }
+
     companion object {
 
+        val MATERIAL_ID = UnlistedResourceLocationProperty("material_id")
         val metalChestConfig = mutableMapOf<ResourceLocation, IntArray>()
-
-        fun create(mapping: Map<Int, CMaterial>): BlockMetalChest {
-            val materials = mapping.values
-            val prop = CMaterialProperty(materials, "material")
-            return object : BlockMetalChest(mapping) {
-                override fun getMaterialProperty() = prop
-            }
-        }
 
         fun loadMetalChestConfig() {
             for (raw: String in ConfigMetalChest.metalChestConfig) {

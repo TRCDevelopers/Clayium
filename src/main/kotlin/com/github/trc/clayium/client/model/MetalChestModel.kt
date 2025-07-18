@@ -2,17 +2,25 @@
 
 package com.github.trc.clayium.client.model
 
+import codechicken.lib.render.particle.IModelParticleProvider
+import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.common.blocks.metalchest.BlockMetalChest
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.IBakedModel
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms
+import net.minecraft.client.renderer.block.model.ItemOverrideList
 import net.minecraft.client.renderer.block.model.ItemTransformVec3f
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.renderer.vertex.VertexFormat
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.RayTraceResult
+import net.minecraft.world.IBlockAccess
 import net.minecraftforge.client.model.IModel
 import net.minecraftforge.common.model.IModelState
+import net.minecraftforge.common.property.IExtendedBlockState
 import org.lwjgl.util.vector.Vector3f
 import java.util.function.Function
 
@@ -25,7 +33,7 @@ object MetalChestModel : IModel {
      */
     val chestItemCameraTransforms = run {
         /**
-         * scale 0.0625 is found at deserialization: [net.minecraft.client.renderer.block.model.ItemTransformVec3f.Deserializer.deserialize]
+         * scale 0.0625 is found at deserialization: [ItemTransformVec3f.Deserializer.deserialize]
          */
         val v = Vector3f(0f, 2.5f, 0f).apply { scale(0.0625F) }
         val zero = Vector3f(0f, 0f, 0f)
@@ -57,15 +65,33 @@ object MetalChestModel : IModel {
     }
 
     class MetalChestBakedModel(
-        texGetter: Function<ResourceLocation, TextureAtlasSprite>
-    ) : MaterialBlockBakedModel(texGetter) {
+        val texGetter: Function<ResourceLocation, TextureAtlasSprite>
+    ) : IModelParticleProvider {
         override fun getQuads(state: IBlockState?, side: EnumFacing?, rand: Long) = emptyList<BakedQuad>()
-
+        override fun isAmbientOcclusion() = true
+        override fun isGui3d() = true
         override fun isBuiltInRenderer() = true
 
         @Suppress("OVERRIDE_DEPRECATION")
         override fun getItemCameraTransforms(): ItemCameraTransforms {
             return chestItemCameraTransforms
+        }
+
+        override fun getOverrides(): ItemOverrideList = ItemOverrideList.NONE
+
+        override fun getHitEffects(traceResult: RayTraceResult, state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite?>? {
+            return getParticle(state)
+        }
+
+        override fun getDestroyEffects(state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite?>? {
+            return getParticle(state)
+        }
+
+        fun getParticle(state: IBlockState?): Set<TextureAtlasSprite> {
+            val state = state as? IExtendedBlockState ?: return emptySet()
+            val materialId = state.getValue(BlockMetalChest.MATERIAL_ID)
+            val atlas = texGetter.apply(clayiumId("blocks/compressed_${materialId.path}"))
+            return setOf(atlas)
         }
     }
 }

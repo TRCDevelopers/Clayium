@@ -2,6 +2,7 @@ package com.github.trc.clayium.common.loaders.recipe
 
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.unification.OreDictUnifier
+import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.unification.material.CMaterials.clay
 import com.github.trc.clayium.api.unification.material.CMaterials.denseClay
@@ -9,6 +10,7 @@ import com.github.trc.clayium.api.unification.material.MaterialAmount
 import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.unification.stack.UnificationEntry
 import com.github.trc.clayium.common.blocks.ClayiumBlocks
+import com.github.trc.clayium.common.blocks.metalchest.BlockMetalChest
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.recipe.RecipeUtils
@@ -59,22 +61,9 @@ object CraftingRecipeLoader {
             )
         }
 
-        for (blockMetalChest in ClayiumBlocks.METAL_CHEST) {
-            for ((offset, material) in blockMetalChest.mapping) {
-                val id = material.materialId
-                val prefix = when {
-                    OreDictUnifier.exists(OrePrefix.ingot, material) -> OrePrefix.ingot
-                    OreDictUnifier.exists(OrePrefix.gem, material) -> OrePrefix.gem
-                    else -> continue
-                }
-                RecipeUtils.addShapedRecipe("metal_chest_${id.namespace}_${id.path}", ItemStack(blockMetalChest, 1, offset),
-                    "MMM", "MCM", "MMM",
-                    'M', UnificationEntry(prefix, material),
-                    'C', Blocks.CHEST)
-            }
-        }
+        for (material: CMaterial in ClayiumApi.materialRegistry) {
+            registerChestRecipeIfExists(material)
 
-        for (material in ClayiumApi.materialRegistry) {
             if (!OrePrefix.block.isIgnored(material)
                 && OreDictUnifier.exists(OrePrefix.block, material)
                 && OrePrefix.block.getMaterialAmount(material) == MaterialAmount.of(9)
@@ -216,5 +205,26 @@ object CraftingRecipeLoader {
 
         RecipeUtils.addShapelessRecipe("item_filter_duplicator", ItemStack(ClayiumItems.ITEM_FILTER_DUPLICATOR),
             ClayiumItems.SIMPLE_ITEM_FILTER, ClayiumItems.DISPLAY_NAME_ITEM_FILTER, ClayiumItems.FUZZY_ITEM_FILTER)
+    }
+
+    private fun registerChestRecipeIfExists(material: CMaterial) {
+        if (BlockMetalChest.metalChestConfig[material.materialId] == null) {
+            return
+        }
+        val prefix = when {
+            OreDictUnifier.exists(OrePrefix.ingot, material) -> OrePrefix.ingot
+            OreDictUnifier.exists(OrePrefix.gem, material) -> OrePrefix.gem
+            else -> return
+        }
+        RecipeUtils.addShapedRecipe("metal_chest_${material.materialId.namespace}_${material.materialId.path}",
+            ItemStack(ClayiumBlocks.METAL_CHEST, 1, material.metaItemSubId),
+            "MMM", "MCM", "MMM",
+            'M', UnificationEntry(prefix, material),
+            'C', Blocks.CHEST)
+        RecipeUtils.addShapedRecipe("metal_chest_${material.materialId.namespace}_${material.materialId.path}_recraft",
+            ItemStack(ClayiumBlocks.METAL_CHEST, 1, material.metaItemSubId),
+            "MMM", "MCM", "MMM",
+            'M', UnificationEntry(prefix, material),
+            'C', ClayiumBlocks.METAL_CHEST)
     }
 }

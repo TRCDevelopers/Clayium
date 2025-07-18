@@ -62,7 +62,9 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
         private set
     private var numPlayersUsing = 0
 
-    fun init(row: Int, column: Int, page: Int, material: CMaterial) {
+    fun init(material: CMaterial) {
+        val (row, column, page) = BlockMetalChest.metalChestConfig[material.materialId]
+            ?: intArrayOf(9, 6, 1)
         this.inventoryWidth = row
         this.inventoryHeight = column
         this.inventoryPage = page
