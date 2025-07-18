@@ -42,6 +42,8 @@ import net.minecraftforge.items.IItemHandlerModifiable
 import kotlin.math.max
 import kotlin.math.min
 
+private const val NUM_PLAYERS_USING_EVENT_ID = 1
+
 class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGuiData>, IMarkDirty {
 
     var inventoryHeight: Int = 0
@@ -100,7 +102,7 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
     // same as the Vanilla TileEntityChest
     override fun receiveClientEvent(id: Int, type: Int): Boolean {
         CLog.info("ClientEvent $id $type")
-        if (id == 1) {
+        if (id == NUM_PLAYERS_USING_EVENT_ID) {
             this.numPlayersUsing = type
             return true
         }
@@ -112,7 +114,7 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
         if (!player.isSpectator()) {
             if (this.numPlayersUsing < 0) this.numPlayersUsing = 0
             ++this.numPlayersUsing
-            this.world.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing)
+            this.world.addBlockEvent(this.pos, this.getBlockType(), NUM_PLAYERS_USING_EVENT_ID, this.numPlayersUsing)
             this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType(), false)
         }
     }
@@ -121,7 +123,7 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
         CLog.info("InventoryClose $numPlayersUsing")
         if (!player.isSpectator()) {
             --this.numPlayersUsing
-            this.world.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing)
+            this.world.addBlockEvent(this.pos, this.getBlockType(), NUM_PLAYERS_USING_EVENT_ID, this.numPlayersUsing)
             this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType(), false)
         }
     }
