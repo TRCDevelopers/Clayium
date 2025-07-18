@@ -46,19 +46,21 @@ private const val NUM_PLAYERS_USING_EVENT_ID = 1
 
 class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGuiData>, IMarkDirty {
 
+    var material: CMaterial = CMaterials.aluminum
+
     var inventoryHeight: Int = 0
     var inventoryWidth: Int = 0
     var inventoryPage: Int = 0
-    var material: CMaterial = CMaterials.aluminum
 
     private lateinit var itemInventory: IItemHandlerModifiable
     private var customName: String? = null
 
+    var facing: EnumFacing = EnumFacing.NORTH
+        private set
+
     var prevLidAngle = 0f
         private set
     var lidAngle = 0f
-        private set
-    var facing: EnumFacing = EnumFacing.NORTH
         private set
     private var numPlayersUsing = 0
 
@@ -133,12 +135,28 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
     override fun writeInitialSyncData(buf: PacketBuffer) {
         buf.writeResourceLocation(material.materialId)
         buf.writeVarInt(this.facing.index)
+        buf.writeVarInt(this.inventoryHeight)
+        buf.writeVarInt(this.inventoryWidth)
+        buf.writeVarInt(this.inventoryPage)
+        if (this.customName != null) {
+            buf.writeBoolean(true)
+            buf.writeString(this.customName!!)
+        } else {
+            buf.writeBoolean(false)
+        }
     }
 
     override fun receiveInitialSyncData(buf: PacketBuffer) {
         this.material = ClayiumApi.materialRegistry.getObject(buf.readResourceLocation())
             ?: CMaterials.aluminum
         this.facing = EnumFacing.byIndex(buf.readVarInt())
+        this.inventoryHeight = buf.readVarInt()
+        this.inventoryWidth = buf.readVarInt()
+        this.inventoryPage = buf.readVarInt()
+        this.itemInventory = ClayiumItemStackHandler(this, this.inventoryHeight * this.inventoryWidth * this.inventoryPage)
+        if (buf.readBoolean()) {
+            this.customName = buf.readString(32767)
+        }
         this.scheduleRenderUpdate()
     }
 
