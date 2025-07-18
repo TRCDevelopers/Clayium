@@ -166,6 +166,10 @@ class BlockMetalChest : Block(BlockMaterial.IRON) {
         val MATERIAL_ID = UnlistedResourceLocationProperty("material_id")
         val metalChestConfig = mutableMapOf<ResourceLocation, IntArray>()
 
+        private const val MAX_WIDTH = 50
+        private const val MAX_HEIGHT = 20
+        private const val MAX_PAGES = 100
+
         fun loadMetalChestConfig() {
             for (raw: String in ConfigMetalChest.metalChestConfig) {
                 val (rlStr, cfg) = raw.split(";", limit = 2)
@@ -175,15 +179,15 @@ class BlockMetalChest : Block(BlockMaterial.IRON) {
                     CLog.error("Row, Column, and Pages must be >= 1. Material: $rl")
                     continue
                 }
-                if (w > 50) {
+                if (w > MAX_WIDTH) {
                     CLog.error("Inventory Width must be <= 50. Material: $rl")
                     continue
                 }
-                if (h > 20) {
+                if (h > MAX_HEIGHT) {
                     CLog.error("Inventory Height be <= 20. Material: $rl")
                     continue
                 }
-                if (pages > 100) {
+                if (pages > MAX_PAGES) {
                     CLog.error("Inventory Pages must be <= 100. Material: $rl")
                     continue
                 }
