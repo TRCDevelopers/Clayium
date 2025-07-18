@@ -38,7 +38,7 @@
  * For more details, see https://docs.gradle.org/8.4/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 dependencies {
-    runtimeOnly('io.github.chaosunity.forgelin:Forgelin-Continuous:2.1.21.0') { transitive = false }
+    runtimeOnly('io.github.chaosunity.forgelin:Forgelin-Continuous:2.2.0.0') { transitive = false }
 
     api("com.cleanroommc:modularui:2.5.0-rc5")
     api("codechicken:codechickenlib:3.2.3.358")
@@ -49,5 +49,5 @@ dependencies {
     compileOnly("gregtech:gregtech:2.8.10-beta")
 
     testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
-    testImplementation("io.mockk:mockk:1.14.4")
+    testImplementation("io.mockk:mockk:1.14.5")
 }
