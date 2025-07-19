@@ -151,7 +151,8 @@ class BlockMetalChest : Block(BlockMaterial.IRON) {
         if (te != null) {
             drops.add(ItemStack(this, 1, te.material.metaItemSubId))
         } else {
-            drops.add(ItemStack(this, 1, beingBrokenMeta.get()))
+            val meta = beingBrokenMeta.get() ?: 0 // Use default value if beingBrokenMeta.get() is null
+            drops.add(ItemStack(this, 1, meta))
         }
     }
 
