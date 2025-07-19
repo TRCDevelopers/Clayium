@@ -156,6 +156,15 @@ class BlockMetalChest : Block(BlockMaterial.IRON) {
         }
     }
 
+    override fun getPickBlock(state: IBlockState, target: RayTraceResult, world: World, pos: BlockPos, player: EntityPlayer): ItemStack {
+        val te = world.getTileEntity(pos) as? TileEntityMetalChest
+        return if (te != null) {
+            ItemStack(this, 1, te.material.metaItemSubId)
+        } else {
+            ItemStack(this, 1, 0)
+        }
+    }
+
     @SideOnly(Side.CLIENT)
     override fun getRenderType(state: IBlockState) = EnumBlockRenderType.ENTITYBLOCK_ANIMATED
 
