@@ -81,6 +81,15 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
         if (!this.world.isRemote) this.markDirty()
     }
 
+    fun itemDroppedOnDestroy(): List<ItemStack> {
+        val stacks = mutableListOf<ItemStack>()
+        for (i in 0..<this.itemInventory.slots) {
+            val stack = this.itemInventory.extractItem(i, Int.MAX_VALUE, false)
+            if (!stack.isEmpty) { stacks.add(stack) }
+        }
+        return stacks
+    }
+
     override fun update() {
         this.prevLidAngle = this.lidAngle
         val open = this.numPlayersUsing > 0 && this.lidAngle == 0.0f

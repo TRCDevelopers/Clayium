@@ -125,6 +125,16 @@ class BlockMetalChest : Block(BlockMaterial.IRON) {
         return worldIn.getTileEntity(pos)?.receiveClientEvent(id, param) ?: super.eventReceived(state, worldIn, pos, id, param)
     }
 
+    override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
+        val te = worldIn.getTileEntity(pos) as? TileEntityMetalChest
+        if (te != null) {
+            for (stack in te.itemDroppedOnDestroy()) {
+                spawnAsEntity(worldIn, pos, stack)
+            }
+        }
+        super.breakBlock(worldIn, pos, state)
+    }
+
     @SideOnly(Side.CLIENT)
     override fun getRenderType(state: IBlockState) = EnumBlockRenderType.ENTITYBLOCK_ANIMATED
 
