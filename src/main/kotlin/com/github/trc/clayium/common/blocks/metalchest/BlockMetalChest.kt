@@ -127,7 +127,7 @@ class BlockMetalChest : Block(BlockMaterial.IRON) {
         return worldIn.getTileEntity(pos)?.receiveClientEvent(id, param) ?: super.eventReceived(state, worldIn, pos, id, param)
     }
 
-    private val beingBrokenMeta = ThreadLocal<Int>();
+    private val beingBrokenMeta = ThreadLocal<Int>()
 
     override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
         val te = worldIn.getTileEntity(pos) as? TileEntityMetalChest
@@ -164,6 +164,10 @@ class BlockMetalChest : Block(BlockMaterial.IRON) {
         for (material in ClayiumApi.materialRegistry) {
             ModelLoader.setCustomModelResourceLocation(this.getAsItem(), material.metaItemSubId, itemLoc)
         }
+    }
+
+    override fun hasCustomBreakingProgress(state: IBlockState): Boolean {
+        return true
     }
 
     /* BoilerPlate for custom particle handling */

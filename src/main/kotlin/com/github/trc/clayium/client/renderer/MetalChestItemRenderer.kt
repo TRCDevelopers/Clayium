@@ -11,6 +11,13 @@ object MetalChestItemRenderer : TileEntityItemStackRenderer() {
         val block = item.blockMetalChest
         val material = block.getCMaterial(itemStackIn)
 
-        MetalChestRenderer.render(EnumFacing.SOUTH, material, 0f, 0f, 0.0, 0.0, 0.0, 0f, 0, 1f)
+        MetalChestRenderer.render(
+            facing = EnumFacing.SOUTH,
+            material = material,
+            prevLidAngle = 0f,
+            lidAngle = 0f,
+            x = 0.0, y = 0.0, z = 0.0,
+            partialTicks = 0f, destroyStage = -1,
+            alpha = 1f)
     }
 }

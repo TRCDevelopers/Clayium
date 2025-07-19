@@ -49,34 +49,48 @@ object MetalChestRenderer : TileEntitySpecialRenderer<TileEntityMetalChest>() {
 
             modelChest.chestLid.rotateAngleX = -(f * (Math.PI.toFloat() / 2f))
 
-            GlStateManager.disableBlend()
-            val colors = material.colors ?: intArrayOf(0xFFFFFF, 0xFFFFFF, 0xFFFFFF)
-            this.bindTexture(base)
-            this.glColorRGB(colors[0], alpha)
-            modelChest.renderAll()
+            if (destroyStage >= 0) {
+                this.bindTexture(DESTROY_STAGES[destroyStage])
+                GlStateManager.matrixMode(GL11.GL_TEXTURE)
+                GlStateManager.pushMatrix()
+                GlStateManager.scale(4.0f, 4.0f, 1.0f)
+                GlStateManager.translate(0.0625f, 0.0625f, 0.0625f)
+                GlStateManager.matrixMode(GL11.GL_MODELVIEW)
 
-            GlStateManager.enableBlend()
-            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
-            GlStateManager.depthMask(false)
+                modelChest.renderAll()
 
-            GlStateManager.enablePolygonOffset()
-            GlStateManager.doPolygonOffset(-0.1f, -1.0f)
-            this.bindTexture(dark)
-            this.glColorRGB(colors[1], alpha)
-            modelChest.renderAll()
+                GlStateManager.matrixMode(GL11.GL_TEXTURE)
+                GlStateManager.popMatrix()
+                GlStateManager.matrixMode(GL11.GL_MODELVIEW)
+            } else {
+                GlStateManager.disableBlend()
+                val colors = material.colors ?: intArrayOf(0xFFFFFF, 0xFFFFFF, 0xFFFFFF)
+                this.bindTexture(base)
+                this.glColorRGB(colors[0], alpha)
+                modelChest.renderAll()
 
-            GlStateManager.doPolygonOffset(-0.2f, -2.0f)
-            this.bindTexture(light)
-            this.glColorRGB(colors[2], alpha)
-            modelChest.renderAll()
+                GlStateManager.enableBlend()
+                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+                GlStateManager.depthMask(false)
 
-            GlStateManager.depthMask(true)
-            GlStateManager.disablePolygonOffset()
-            GlStateManager.enableAlpha()
-            GlStateManager.disableBlend()
+                GlStateManager.enablePolygonOffset()
+                GlStateManager.doPolygonOffset(-0.1f, -1.0f)
+                this.bindTexture(dark)
+                this.glColorRGB(colors[1], alpha)
+                modelChest.renderAll()
 
-            GlStateManager.color(1f, 1f, 1f, 1f)
+                GlStateManager.doPolygonOffset(-0.2f, -2.0f)
+                this.bindTexture(light)
+                this.glColorRGB(colors[2], alpha)
+                modelChest.renderAll()
+
+                GlStateManager.depthMask(true)
+                GlStateManager.disablePolygonOffset()
+                GlStateManager.enableAlpha()
+                GlStateManager.disableBlend()
+            }
         }
+        GlStateManager.color(1f, 1f, 1f, 1f)
         GlStateManager.disableRescaleNormal()
         GlStateManager.popMatrix()
     }
