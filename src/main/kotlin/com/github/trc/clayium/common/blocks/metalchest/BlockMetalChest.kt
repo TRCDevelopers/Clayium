@@ -125,14 +125,32 @@ class BlockMetalChest : Block(BlockMaterial.IRON) {
         return worldIn.getTileEntity(pos)?.receiveClientEvent(id, param) ?: super.eventReceived(state, worldIn, pos, id, param)
     }
 
+    private val beingBrokenMeta = ThreadLocal<Int>();
+
     override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
         val te = worldIn.getTileEntity(pos) as? TileEntityMetalChest
         if (te != null) {
             for (stack in te.itemDroppedOnDestroy()) {
                 spawnAsEntity(worldIn, pos, stack)
             }
+            beingBrokenMeta.set(te.material.metaItemSubId)
         }
         super.breakBlock(worldIn, pos, state)
+    }
+
+    override fun harvestBlock(worldIn: World, player: EntityPlayer, pos: BlockPos, state: IBlockState, te: TileEntity?, stack: ItemStack) {
+        if (te as? TileEntityMetalChest != null) beingBrokenMeta.set(te.material.metaItemSubId)
+        super.harvestBlock(worldIn, player, pos, state, te, stack)
+        beingBrokenMeta.remove()
+    }
+
+    override fun getDrops(drops: NonNullList<ItemStack?>, world: IBlockAccess, pos: BlockPos, state: IBlockState, fortune: Int) {
+        val te = world.getTileEntity(pos) as? TileEntityMetalChest
+        if (te != null) {
+            drops.add(ItemStack(this, 1, te.material.metaItemSubId))
+        } else {
+            drops.add(ItemStack(this, 1, beingBrokenMeta.get()))
+        }
     }
 
     @SideOnly(Side.CLIENT)
