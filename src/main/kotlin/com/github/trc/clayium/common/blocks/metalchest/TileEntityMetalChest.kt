@@ -221,7 +221,8 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
             )
         }
 
-        val width = max(max(inventoryWidth, 9) * 18 + 14, GUI_DEFAULT_WIDTH + 56)
+        val paddingForPageButtons = if (inventoryPage > 1) 56 else 0
+        val width = max(max(inventoryWidth, 9) * 18 + 14, GUI_DEFAULT_WIDTH + paddingForPageButtons)
         val chestInventoryWidth = inventoryWidth * 18
         val playerInventoryWidth = 162
         val titleTextWidget = if (this.customName != null) {
