@@ -54,7 +54,7 @@ object MetalChestModel : IModel {
             /* gui */
             ItemTransformVec3f(Vector3f(30f, 45f, 0f), zero, Vector3f(0.625f, 0.625f, 0.625f)),
             /* ground */
-            ItemTransformVec3f(zero, Vector3f(0f, 3f, 0f), Vector3f(0.25f, 0.25f, 0.25f)),
+            ItemTransformVec3f(zero, Vector3f(0f, 3f, 0f).apply { scale(0.0625f) }, Vector3f(0.25f, 0.25f, 0.25f)),
             /* fixed */
             ItemTransformVec3f(Vector3f(0f, 180f, 0f), zero, one)
         )
