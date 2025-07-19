@@ -49,6 +49,8 @@ class BlockMetalChest : Block(BlockMaterial.IRON) {
     init {
         setCreativeTab(ClayiumCTabs.main)
         setSoundType(SoundType.METAL)
+        setHardness(2.0f)
+        setResistance(2.0f)
     }
 
     override fun createBlockState(): BlockStateContainer {
