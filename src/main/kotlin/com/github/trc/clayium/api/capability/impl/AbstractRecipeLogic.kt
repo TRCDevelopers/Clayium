@@ -29,8 +29,10 @@ abstract class AbstractRecipeLogic(
     override var isWorking: Boolean = false
         protected set(value) {
             field = value
-            writeCustomData(WORKABLE_IS_WORKING) {
-                writeBoolean(value)
+            if (field != value) {
+                writeCustomData(WORKABLE_IS_WORKING) {
+                    writeBoolean(value)
+                }
             }
         }
 
