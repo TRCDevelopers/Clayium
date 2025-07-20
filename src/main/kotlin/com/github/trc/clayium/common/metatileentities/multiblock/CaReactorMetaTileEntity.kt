@@ -164,6 +164,7 @@ class CaReactorMetaTileEntity(
         this.cePerTickMultiplier = getCEPerTickMultiplier(avgHullRank.toDouble(), hullRanks.size)
 
         writeCustomData(CA_REACTOR_HULL_POSES) {
+            writeVarInt(avgHullRank)
             writeVarInt(hullPoses.size)
             for (hullPos in hullPoses) {
                 writeBlockPos(hullPos)
@@ -208,6 +209,7 @@ class CaReactorMetaTileEntity(
 
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
         if (discriminator == CA_REACTOR_HULL_POSES) {
+            this.avgHullRank = buf.readVarInt()
             hullPoses.clear()
             val size = buf.readVarInt()
             for (i in 0..<size) {
@@ -270,7 +272,7 @@ class CaReactorMetaTileEntity(
 
                 val r = 1f
                 val g = 1f
-                val b = (0.3f + 0.05f + (2.0f * r - r * r) * j).toFloat()
+                val b = (0.3f + 0.05f + (2.0f * k - k * k) * j).toFloat()
                 val a = 0.11f
 
                 bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR)
