@@ -30,6 +30,11 @@ public class ConfigCore {
         })
         @Config.RangeInt(min = 1, max = 32)
         public int laserQuality = 8;
+
+        @Config.Comment({
+                "Display the CA Reactor glittering effect.",
+        })
+        public boolean caReactorGlittering = true;
     }
 
     public static class SubCategoryWorldGen {

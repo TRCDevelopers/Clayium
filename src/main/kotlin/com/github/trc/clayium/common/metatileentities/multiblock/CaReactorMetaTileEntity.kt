@@ -9,6 +9,7 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.github.trc.clayium.api.ClayEnergy
+import com.github.trc.clayium.api.capability.ClayiumDataCodecs.CA_REACTOR_HULL_POSES
 import com.github.trc.clayium.api.capability.impl.AbstractRecipeLogic
 import com.github.trc.clayium.api.capability.impl.ItemHandlerProxy
 import com.github.trc.clayium.api.capability.impl.MultiblockRecipeLogic
@@ -25,19 +26,27 @@ import com.github.trc.clayium.api.util.asWidgetResizing
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.api.util.getMetaTileEntity
 import com.github.trc.clayium.api.util.toList
+import com.github.trc.clayium.client.renderer.CRenderUtils
 import com.github.trc.clayium.common.blocks.BlockCaReactorCoil
 import com.github.trc.clayium.common.blocks.BlockCaReactorHull
+import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.recipe.registry.CaReactorRecipeRegistry
 import com.github.trc.clayium.common.util.SidelessI18n
 import com.github.trc.clayium.integration.modularui.CNumFormat
 import it.unimi.dsi.fastutil.ints.IntArrayList
+import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.Tessellator
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.client.resources.I18n
+import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.ITextComponent
 import net.minecraft.util.text.TextComponentTranslation
+import org.lwjgl.opengl.GL11
 import kotlin.math.pow
 
 class CaReactorMetaTileEntity(
@@ -65,6 +74,7 @@ class CaReactorMetaTileEntity(
     private var hullCount = 0
     private var efficiency = 0.0
     private var cePerTickMultiplier = 0.0
+    private val hullPoses = mutableListOf<BlockPos>()
 
     /**
      * if the structure is invalid, the reason should be stored here.
@@ -83,6 +93,7 @@ class CaReactorMetaTileEntity(
 
     @Suppress("unused") // to use as a method reference in MultiblockTrait
     private fun checkStructure(handler: MultiblockLogic): StructureValidationResult {
+        hullPoses.clear()
         val hullRanks = IntArrayList()
 
         val pos = pos ?: return Invalid
@@ -127,6 +138,7 @@ class CaReactorMetaTileEntity(
                             return Invalid
                         }
                         hullRanks.add(hullRank)
+                        hullPoses.add(pos)
                     }
                     block is BlockCaReactorCoil -> {
                         if (block.getTier(world, pos).numeric < this.tier.numeric) {
@@ -149,6 +161,13 @@ class CaReactorMetaTileEntity(
 
         this.efficiency = getEfficiency(avgHullRank.toDouble(), hullRanks.size)
         this.cePerTickMultiplier = getCEPerTickMultiplier(avgHullRank.toDouble(), hullRanks.size)
+
+        writeCustomData(CA_REACTOR_HULL_POSES) {
+            writeVarInt(hullPoses.size)
+            for (hullPos in hullPoses) {
+                writeBlockPos(hullPos)
+            }
+        }
 
         return StructureValidationResult.Valid(parts, emptyList())
     }
@@ -186,6 +205,18 @@ class CaReactorMetaTileEntity(
         return valid
     }
 
+    override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
+        if (discriminator == CA_REACTOR_HULL_POSES) {
+            hullPoses.clear()
+            val size = buf.readVarInt()
+            for (i in 0..<size) {
+                hullPoses.add(buf.readBlockPos())
+            }
+            return
+        }
+        super.receiveCustomData(discriminator, buf)
+    }
+
     override fun createMetaTileEntity() = CaReactorMetaTileEntity(metaTileEntityId, tier)
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
@@ -216,6 +247,62 @@ class CaReactorMetaTileEntity(
                 .asWidgetResizing().left(0).top(10))
     }
 
+    override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
+        if (!(this.workable.isWorking && ConfigCore.rendering.caReactorGlittering)) return
+        for (j in 1..<(avgHullRank + 2)) {
+            for (hullPos in hullPoses) {
+                val pos = hullPos.subtract(this.pos ?: return)
+                val s = 1.0
+                val i = avgHullRank + 1.0 - j
+                val k = j / (avgHullRank + 1.0)
+                val d = 0.01f * (i.pow(1.6) + 1.0)
+
+                val tessellator = Tessellator.getInstance()
+                val bufferBuilder = tessellator.buffer
+
+                val aabb = AxisAlignedBB(pos.x - d, pos.y - d, pos.z - d, pos.x + s + d, pos.y + s + d, pos.z + s + d)
+
+                GlStateManager.pushMatrix()
+                CRenderUtils.enableTranslucent()
+
+                GlStateManager.translate(x, y, z)
+
+                GlStateManager.color(1f, 1f, (0.3f + 0.05f + (2.0f * k - k * k) * j).toFloat(), 0.11f)
+
+                bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION)
+                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex()
+                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex()
+                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex()
+                tessellator.draw()
+                GlStateManager.color(1f, 1f, 1f, 1f)
+
+                CRenderUtils.disableTranslucent()
+                GlStateManager.popMatrix()
+            }
+        }
+    }
+
     companion object {
         const val MAX_COILS = 128
         const val REQUIRED_HULLS = 50
@@ -244,7 +331,7 @@ class CaReactorMetaTileEntity(
             val cePerTick = ClayEnergy((recipe.cePerTick.energy * cePerTickMultiplier).toLong())
             val multipliedRecipe = Recipe(recipe.inputs, recipe.outputs, recipe.chancedOutputs,
                 duration, cePerTick, recipe.recipeTier)
-            prepareRecipe(multipliedRecipe)
+            this.isWorking = prepareRecipe(multipliedRecipe)
         }
     }
 }
