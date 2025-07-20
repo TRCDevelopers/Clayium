@@ -5,6 +5,7 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.slot.IOnSlotChanged
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
+import com.cleanroommc.modularui.widgets.slot.ModularCraftingSlot
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
@@ -15,11 +16,11 @@ import java.util.function.Predicate
 
 class ItemSlotBuilder(
     private val phantom: Boolean,
-    itemHandler: IItemHandler,
-    index: Int,
+    private val itemHandler: IItemHandler,
+    private val index: Int,
 ) {
 
-    private val modularSlot = ModularSlot(itemHandler, index)
+    private var modularSlot = ModularSlot(itemHandler, index)
 
     fun build(): ItemSlot {
         return ItemSlot.create(phantom).slot(modularSlot)
@@ -38,6 +39,11 @@ class ItemSlotBuilder(
     @ApiStatus.Experimental
     fun ignoreMaxStackSize(): ItemSlotBuilder {
         modularSlot.ignoreMaxStackSize(true)
+        return this
+    }
+
+    fun craftingSlot(): ItemSlotBuilder {
+        this.modularSlot = ModularCraftingSlot(itemHandler, index)
         return this
     }
 
