@@ -9,6 +9,13 @@ open class MultiblockRecipeLogic(
     recipeRegistry: RecipeRegistry<*>,
     private val multiblockLogic: MultiblockLogic,
 ) : RecipeLogicEnergy(metaTileEntity, recipeRegistry, metaTileEntity.clayEnergyHolder) {
+
+    override var isWorking: Boolean
+        get() = super.isWorking && multiblockLogic.structureFormed
+        set(value) {
+            super.isWorking = value
+        }
+
     override fun getTier(): Int {
         return multiblockLogic.recipeLogicTier
     }

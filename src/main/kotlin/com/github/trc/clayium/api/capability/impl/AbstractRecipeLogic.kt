@@ -2,6 +2,7 @@ package com.github.trc.clayium.api.capability.impl
 
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.AbstractWorkable
+import com.github.trc.clayium.api.capability.ClayiumDataCodecs.WORKABLE_IS_WORKING
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.recipe.IRecipeProvider
@@ -10,6 +11,7 @@ import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.util.TransferUtils
 import com.github.trc.clayium.integration.jei.JeiPlugin
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 import kotlin.math.pow
@@ -25,6 +27,12 @@ abstract class AbstractRecipeLogic(
     protected val inputInventory = metaTileEntity.importItems
 
     override var isWorking: Boolean = false
+        protected set(value) {
+            field = value
+            writeCustomData(WORKABLE_IS_WORKING) {
+                writeBoolean(value)
+            }
+        }
 
     var recipeCEt = ClayEnergy.ZERO
         protected set
@@ -106,5 +114,13 @@ abstract class AbstractRecipeLogic(
         } else {
             super.getCapability(capability, facing)
         }
+    }
+
+    override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
+        if (discriminator == WORKABLE_IS_WORKING) {
+            this.isWorking = buf.readBoolean()
+            return
+        }
+        super.receiveCustomData(discriminator, buf)
     }
 }

@@ -34,6 +34,10 @@ object ClayiumDataCodecs {
 
     val UPDATE_AREA_RANGE = assignId()
 
+    val WORKABLE_IS_WORKING = assignId()
+
+    val CA_REACTOR_HULL_POSES = assignId()
+
     const val AUTO_IO_HANDLER = "autoIoHandler"
     const val RECIPE_LOGIC = "recipeLogic"
     const val CLAY_ENERGY_HOLDER = "clayEnergyHolder"
