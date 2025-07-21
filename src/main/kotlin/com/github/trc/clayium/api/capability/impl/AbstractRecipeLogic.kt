@@ -28,12 +28,13 @@ abstract class AbstractRecipeLogic(
 
     override var isWorking: Boolean = false
         protected set(value) {
-            field = value
-            if (field != value) {
+            val syncFlag = field != value && !metaTileEntity.isRemote
+            if (syncFlag) {
                 writeCustomData(WORKABLE_IS_WORKING) {
                     writeBoolean(value)
                 }
             }
+            field = value
         }
 
     var recipeCEt = ClayEnergy.ZERO
@@ -95,6 +96,16 @@ abstract class AbstractRecipeLogic(
         val rawCEt = cePt.energy * compensatedFactor.pow(1.5)
         val durationOCed = (duration / compensatedFactor)
         return longArrayOf(rawCEt.toLong(), durationOCed.toLong())
+    }
+
+    override fun writeInitialSyncData(buf: PacketBuffer) {
+        super.writeInitialSyncData(buf)
+        buf.writeBoolean(isWorking)
+    }
+
+    override fun receiveInitialSyncData(buf: PacketBuffer) {
+        super.receiveInitialSyncData(buf)
+        this.isWorking = buf.readBoolean()
     }
 
     override fun serializeNBT(): NBTTagCompound {
