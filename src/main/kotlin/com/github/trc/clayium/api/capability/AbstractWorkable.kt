@@ -47,7 +47,8 @@ abstract class AbstractWorkable(
      * used for Redstone Interfaces.
      * should be overridden if the machine has 1 tick recipe.
      */
-    override val isWorking: Boolean get() = isProcessingRecipe
+    override var isWorking: Boolean = false
+        protected set
     override var isWorkingEnabled: Boolean = true
     private var canProgress = false
 
@@ -69,7 +70,9 @@ abstract class AbstractWorkable(
     protected open fun getTier(): Int = metaTileEntity.tier.numeric
 
     override fun update() {
-        if (metaTileEntity.isRemote || !isWorkingEnabled) return
+        if (metaTileEntity.isRemote) return
+        this.isWorking = isWorkingEnabled && canProgress && isProcessingRecipe
+        if (!isWorkingEnabled) return
         if (metaTileEntity.offsetTimer % 20 == 0L) {
             this.canProgress = canProgress()
         }
