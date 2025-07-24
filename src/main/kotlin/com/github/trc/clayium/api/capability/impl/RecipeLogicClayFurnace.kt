@@ -19,10 +19,10 @@ class RecipeLogicClayFurnace(
     clayEnergyHolder: ClayEnergyHolder,
 ) : RecipeLogicEnergy(metaTileEntity, registry, clayEnergyHolder) {
 
-    override fun trySearchNewRecipe() {
+    override fun trySearchNewRecipe(): Boolean {
         val smeltingResult = FurnaceRecipes.instance().getSmeltingResult(inputInventory.getStackInSlot(0)).copy()
         if (smeltingResult.isEmpty) return super.trySearchNewRecipe()
-        prepareVanillaFurnaceRecipe(smeltingResult)
+        return prepareVanillaFurnaceRecipe(smeltingResult)
     }
 
     override fun applyOverclock(cePt: ClayEnergy, duration: Long, compensatedFactor: Double): LongArray {
@@ -55,11 +55,11 @@ class RecipeLogicClayFurnace(
         return true
     }
 
-    private fun prepareVanillaFurnaceRecipe(smeltingResult: ItemStack) {
+    private fun prepareVanillaFurnaceRecipe(smeltingResult: ItemStack): Boolean {
         require(!smeltingResult.isEmpty)
         if (!TransferUtils.insertToHandler(metaTileEntity.exportItems, listOf(smeltingResult), true)) {
             this.outputsFull = true
-            return
+            return false
         }
         this.inputInventory.extractItem(0, 1, false)
 
@@ -68,6 +68,7 @@ class RecipeLogicClayFurnace(
         this.recipeCEt = ClayEnergy(cet)
         this.requiredProgress = duration
         this.currentProgress = 1
+        return true
     }
 
     private companion object {

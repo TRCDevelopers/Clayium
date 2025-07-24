@@ -5,6 +5,7 @@ import com.cleanroommc.modularui.api.widget.IGuiAction
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ProgressWidget
+import com.github.trc.clayium.api.capability.ClayiumDataCodecs.WORKABLE_STATE
 import com.github.trc.clayium.api.metatileentity.MTETrait
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.util.CUtils
@@ -19,6 +20,7 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
@@ -29,6 +31,18 @@ import kotlin.math.round
 abstract class AbstractWorkable(
     metaTileEntity: MetaTileEntity,
 ) : MTETrait(metaTileEntity, ClayiumDataCodecs.RECIPE_LOGIC), IWorkingControllable {
+
+    var state: State = State.IDLE
+        protected set(value) {
+            val syncFlag = !metaTileEntity.isRemote && field != value
+            if (syncFlag) {
+                writeCustomData(WORKABLE_STATE) {
+                    writeEnumValue(value)
+                }
+            }
+            field = value
+        }
+
     var requiredProgress = 0L
         protected set
     var currentProgress = 0L
@@ -43,13 +57,20 @@ abstract class AbstractWorkable(
      */
     private val isProcessingRecipe: Boolean get() = currentProgress != 0L
 
-    /**
-     * used for Redstone Interfaces.
-     * should be overridden if the machine has 1 tick recipe.
-     */
-    override var isWorking: Boolean = false
-        protected set
-    override var isWorkingEnabled: Boolean = true
+    override val isWorking get() = this.state == State.WORKING
+    override var isWorkingEnabled get() = this.state != State.DISABLED
+        set(value) {
+            if (value) {
+                if (isProcessingRecipe) {
+                    this.state = State.WORKING
+                } else {
+                    this.state = State.IDLE
+                }
+            } else {
+                this.state = State.DISABLED
+            }
+        }
+
     private var canProgress = false
 
     // item stacks that will be produced when the recipe is done
@@ -58,8 +79,10 @@ abstract class AbstractWorkable(
     /**
      * try to search for a new recipe.
      * you should mutate [invalidInputsForRecipes] or [outputsFull] here.
+     *
+     * @return true if a new recipe is found and ready to work, false otherwise.
      */
-    protected abstract fun trySearchNewRecipe()
+    protected abstract fun trySearchNewRecipe(): Boolean
 
     /**
      * Show recipes in JEI.
@@ -71,18 +94,25 @@ abstract class AbstractWorkable(
 
     override fun update() {
         if (metaTileEntity.isRemote) return
-        this.isWorking = isWorkingEnabled && canProgress && isProcessingRecipe
-        if (!isWorkingEnabled) return
-        if (metaTileEntity.offsetTimer % 20 == 0L) {
-            this.canProgress = canProgress()
+        if (this.state == State.DISABLED) return
+
+        if (metaTileEntity.offsetTimer % 20 == 0L) this.canProgress = canProgress()
+
+        if (!canProgress) {
+            this.state = State.IDLE
+            return
         }
-        if (!canProgress) return
 
         // if you updateProgress then searchRecipe, it practically increases recipe duration by 1 tick.
         // this is because when the (recipe output > half of the max stack size),
         // next recipe output cannot fit in the output slot and thus will not match.
         if (!isProcessingRecipe && shouldSearchForRecipe()) {
-            trySearchNewRecipe()
+            val readyToWork = trySearchNewRecipe()
+            if (readyToWork) {
+                this.state = State.WORKING
+            } else {
+                this.state = State.IDLE
+            }
         }
         if (isProcessingRecipe) {
             updateWorkingProgress()
@@ -151,6 +181,24 @@ abstract class AbstractWorkable(
 //        outputsFull = false
 //        metaTileEntity.hasNotifiedOutputs = false
 //        return true
+    }
+
+    override fun writeInitialSyncData(buf: PacketBuffer) {
+        super.writeInitialSyncData(buf)
+        buf.writeEnumValue(state)
+    }
+
+    override fun receiveInitialSyncData(buf: PacketBuffer) {
+        super.receiveInitialSyncData(buf)
+        this.state = buf.readEnumValue(State::class.java)
+    }
+
+    override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
+        if (discriminator == WORKABLE_STATE) {
+            this.state = buf.readEnumValue(State::class.java)
+            return
+        }
+        super.receiveCustomData(discriminator, buf)
     }
 
     override fun serializeNBT(): NBTTagCompound {
@@ -234,6 +282,10 @@ abstract class AbstractWorkable(
                     .numberFormat(NumberFormat.COMMAS)
             )
         }
+    }
+
+    enum class State {
+        IDLE, WORKING, DISABLED
     }
 }
 

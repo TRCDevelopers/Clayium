@@ -84,40 +84,48 @@ class ClayFabricatorMetaTileEntity(
     private inner class ClayFabricatorRecipeLogic : AbstractWorkable(this@ClayFabricatorMetaTileEntity) {
         private var cePerTick = ClayEnergy.ZERO
         var currentCe = ClayEnergy.ZERO
-        override fun trySearchNewRecipe() {
+        override fun trySearchNewRecipe(): Boolean {
             val inputStack = importItems.getStackInSlot(0)
-            if (inputStack.isEmpty) return invalidateInput()
+            if (inputStack.isEmpty) {
+                invalidateInput()
+                return false
+            }
 
             val inputItem = inputStack.item
             if (inputItem == Blocks.CLAY.getAsItem()) {
-                prepareVanillaClay(inputStack.count)
-                return
+                return prepareVanillaClay(inputStack.count)
             }
 
             if (inputItem is ItemBlockMaterial) {
                 val material = inputItem.blockMaterial.getCMaterial(inputStack)
                 val clayProperty = material.getPropOrNull(CPropertyKey.CLAY)
-                if (clayProperty == null || clayProperty.compressionLevel > maxClayCompressionLevel) return invalidateInput()
-                prepareCMaterialClay(material, clayProperty, inputStack.count)
+                if (clayProperty == null || clayProperty.compressionLevel > maxClayCompressionLevel) {
+                    invalidateInput()
+                    return false
+                }
+                return prepareCMaterialClay(material, clayProperty, inputStack.count)
             }
+            invalidateInput()
+            return false
         }
 
-        private fun prepareVanillaClay(count: Int) {
+        private fun prepareVanillaClay(count: Int): Boolean {
             val outputs = listOf(ItemStack(Blocks.CLAY, count))
             if (!TransferUtils.insertToHandler(metaTileEntity.exportItems, outputs, true)) {
                 this.outputsFull = true
-                return
+                return false
             }
             this.itemOutputs = outputs
             this.requiredProgress = 1
             this.currentProgress = 1
+            return true
         }
 
-        private fun prepareCMaterialClay(material: CMaterial, clayProperty: Clay, count: Int) {
+        private fun prepareCMaterialClay(material: CMaterial, clayProperty: Clay, count: Int): Boolean {
             val outputs = listOf(OreDictUnifier.get(OrePrefix.block, material, count))
             if (!TransferUtils.insertToHandler(metaTileEntity.exportItems, outputs, true)) {
                 this.outputsFull = true
-                return
+                return false
             }
             this.itemOutputs = outputs
             this.requiredProgress = (craftTimeLogic(clayProperty.compressionLevel, count) / overclockHandler.compensatedFactor).toLong()
@@ -125,6 +133,7 @@ class ClayFabricatorMetaTileEntity(
             if (clayProperty.energy != null) {
                 this.cePerTick = ClayEnergy((clayProperty.energy * count).energy / this.requiredProgress)
             }
+            return true
         }
 
         override fun updateWorkingProgress() {

@@ -262,15 +262,14 @@ class AutoTraderMetaTileEntity(
             return canFitNewOutputs()
         }
 
-        override fun trySearchNewRecipe() {
+        override fun trySearchNewRecipe(): Boolean {
             // don't use a cached recipe because it may run out of stock
             val recipe = recipeProvider.searchRecipe(getTier(), inputInventory.toList())
             if (recipe == null) {
                 invalidInputsForRecipes = true
-                this.isWorking = false
-                return
+                return false
             }
-            this.isWorking = prepareRecipe(recipe)
+            return prepareRecipe(recipe)
         }
 
         override fun completeWork() {
