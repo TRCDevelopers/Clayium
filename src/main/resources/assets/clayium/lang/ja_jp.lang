@@ -5,6 +5,8 @@ itemGroup.clayium.clayiumcapsule=Clayium 液体カプセル
 
 tooltip.clayium.HoldShiftForDetails=--§f詳細は§lShift§rキー§7--
 
+gui.clayium.working_paused=停止中
+
 gui.clayium.laser_energy=レーザー %1$s
 gui.clayium.resonance=共鳴率 %1$s
 gui.clayium.overclock=オーバークロック x%1$s

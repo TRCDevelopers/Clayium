@@ -16,6 +16,7 @@ import mcjty.theoneprobe.api.IProbeHitData
 import mcjty.theoneprobe.api.IProbeInfo
 import mcjty.theoneprobe.api.NumberFormat
 import mcjty.theoneprobe.api.ProbeMode
+import mcjty.theoneprobe.api.TextStyleClass
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -254,7 +255,8 @@ abstract class AbstractWorkable(
      * must be annotated with `@Optional.Method(modid = Mods.Names.THE_ONE_PROBE)`
      */
     open fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
-        if (!isWorking) return
+        // Explicitly Display PAUSED (Change the color of the progress bar) if not isWorkingEnabled
+        if (!isWorking && isWorkingEnabled) return
 
         var progress = currentProgress
         var maxProgress = requiredProgress
@@ -281,6 +283,10 @@ abstract class AbstractWorkable(
                     .borderColor(BORDER_COLOR)
                     .numberFormat(NumberFormat.COMMAS)
             )
+        }
+
+        if (!isWorkingEnabled) {
+            probeInfo.text("${TextStyleClass.WARNING}${IProbeInfo.STARTLOC}gui.clayium.working_paused${IProbeInfo.ENDLOC}")
         }
     }
 
