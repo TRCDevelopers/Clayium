@@ -40,5 +40,5 @@ jobs:
         with:
           mode: minimum
           count: 1
-          labels: 'feature, bug, refactoring, translation, type: ci, ignore changelog, renovate'
+          labels: 'feature, bug, refactoring, translation, type: ci, ignore changelog, documentation, other, renovate'
           exit_type: failure
