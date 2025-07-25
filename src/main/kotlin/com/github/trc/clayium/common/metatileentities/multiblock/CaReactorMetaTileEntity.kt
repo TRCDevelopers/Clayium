@@ -327,17 +327,17 @@ class CaReactorMetaTileEntity(
     }
 
     private inner class CaReactorRecipeLogic : MultiblockRecipeLogic(this@CaReactorMetaTileEntity, caReactorRegistry, multiblockLogic) {
-        override fun trySearchNewRecipe() {
+        override fun trySearchNewRecipe(): Boolean {
             val recipe = caReactorRegistry.findRecipeWithRank(tier.numeric, avgHullRank, inputInventory.toList())
             if (recipe == null) {
                 invalidInputsForRecipes = true
-                return
+                return false
             }
             val duration = (recipe.duration / efficiency).toLong()
             val cePerTick = ClayEnergy((recipe.cePerTick.energy * cePerTickMultiplier).toLong())
             val multipliedRecipe = Recipe(recipe.inputs, recipe.outputs, recipe.chancedOutputs,
                 duration, cePerTick, recipe.recipeTier)
-            this.isWorking = prepareRecipe(multipliedRecipe)
+            return prepareRecipe(multipliedRecipe)
         }
     }
 }

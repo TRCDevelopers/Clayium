@@ -169,23 +169,24 @@ class PanDuplicatorMetaTileEntity(
     }
 
     private inner class PanDuplicatorRecipeLogic : AbstractWorkable(this@PanDuplicatorMetaTileEntity) {
-        override fun trySearchNewRecipe() {
+        override fun trySearchNewRecipe(): Boolean {
             val hasAntimatter = antimatterInput.testItemStackAndAmount(antimatterSlot.getStackInSlot(0))
-            if (!hasAntimatter) return
+            if (!hasAntimatter) return false
             val targetStack = duplicationTargetSlot.getStackInSlot(0)
-            if (targetStack.isEmpty) return
+            if (targetStack.isEmpty) return false
             val duplicationTarget = targetStack.copyWithSize(1)
-            val duplicationCost: ClayEnergy = pan?.getDuplicationEntries()[ItemAndMeta(duplicationTarget)] ?: return
+            val duplicationCost: ClayEnergy = pan?.getDuplicationEntries()[ItemAndMeta(duplicationTarget)] ?: return false
 
             if (!TransferUtils.insertToHandler(metaTileEntity.exportItems, listOf(duplicationTarget), true)) {
                 this.outputsFull = true
-                return
+                return false
             }
 
             antimatterSlot.extractItem(0, 1, false)
             this.requiredProgress = duplicationCost.energy
             this.currentProgress = 1
             this.itemOutputs = listOf(duplicationTarget)
+            return true
         }
 
         override fun updateWorkingProgress() {

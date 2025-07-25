@@ -2,7 +2,6 @@ package com.github.trc.clayium.api.capability.impl
 
 import com.github.trc.clayium.api.ClayEnergy
 import com.github.trc.clayium.api.capability.AbstractWorkable
-import com.github.trc.clayium.api.capability.ClayiumDataCodecs.WORKABLE_IS_WORKING
 import com.github.trc.clayium.api.capability.ClayiumTileCapabilities
 import com.github.trc.clayium.api.metatileentity.MetaTileEntity
 import com.github.trc.clayium.api.recipe.IRecipeProvider
@@ -11,7 +10,6 @@ import com.github.trc.clayium.common.recipe.Recipe
 import com.github.trc.clayium.common.util.TransferUtils
 import com.github.trc.clayium.integration.jei.JeiPlugin
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 import kotlin.math.pow
@@ -25,16 +23,6 @@ abstract class AbstractRecipeLogic(
 ) : AbstractWorkable(metaTileEntity) {
 
     protected val inputInventory = metaTileEntity.importItems
-
-    override var isWorking: Boolean = false
-        protected set(value) {
-            field = value
-            if (field != value) {
-                writeCustomData(WORKABLE_IS_WORKING) {
-                    writeBoolean(value)
-                }
-            }
-        }
 
     var recipeCEt = ClayEnergy.ZERO
         protected set
@@ -60,15 +48,14 @@ abstract class AbstractRecipeLogic(
         super.updateWorkingProgress()
     }
 
-    override fun trySearchNewRecipe() {
+    override fun trySearchNewRecipe(): Boolean {
         val currentRecipe = recipeProvider.searchRecipe(getTier(), inputInventory.toList())
 
         if (currentRecipe == null) {
             invalidInputsForRecipes = true
-            this.isWorking = false
-            return
+            return false
         }
-        this.isWorking = prepareRecipe(currentRecipe)
+        return prepareRecipe(currentRecipe)
     }
 
     protected open fun prepareRecipe(recipe: Recipe): Boolean {
@@ -100,14 +87,12 @@ abstract class AbstractRecipeLogic(
     override fun serializeNBT(): NBTTagCompound {
         val data = super.serializeNBT()
         data.setLong("recipeCEt", recipeCEt.energy)
-        data.setBoolean("isWorking", isWorking)
         return data
     }
 
     override fun deserializeNBT(data: NBTTagCompound) {
         super.deserializeNBT(data)
         recipeCEt = ClayEnergy(data.getLong("recipeCEt"))
-        isWorking = data.getBoolean("isWorking")
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
@@ -116,13 +101,5 @@ abstract class AbstractRecipeLogic(
         } else {
             super.getCapability(capability, facing)
         }
-    }
-
-    override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {
-        if (discriminator == WORKABLE_IS_WORKING) {
-            this.isWorking = buf.readBoolean()
-            return
-        }
-        super.receiveCustomData(discriminator, buf)
     }
 }

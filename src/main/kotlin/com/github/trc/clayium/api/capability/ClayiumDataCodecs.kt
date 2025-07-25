@@ -34,7 +34,7 @@ object ClayiumDataCodecs {
 
     val UPDATE_AREA_RANGE = assignId()
 
-    val WORKABLE_IS_WORKING = assignId()
+    val WORKABLE_STATE = assignId()
 
     val CA_REACTOR_HULL_POSES = assignId()
 
