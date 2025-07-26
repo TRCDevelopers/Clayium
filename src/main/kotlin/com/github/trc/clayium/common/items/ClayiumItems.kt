@@ -10,12 +10,14 @@ import com.github.trc.clayium.common.capability.impl.ItemFilterModID
 import com.github.trc.clayium.common.capability.impl.ItemFilterOreDictionary
 import com.github.trc.clayium.common.capability.impl.ItemFilterRegistryName
 import com.github.trc.clayium.common.capability.impl.ItemFilterUnlocalizedName
+import com.github.trc.clayium.common.constants.ToolConstants
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.items.filter.ItemFilterDuplicator
 import com.github.trc.clayium.common.items.filter.ItemFuzzyItemFilter
 import com.github.trc.clayium.common.items.filter.ItemSimpleItemFilter
 import com.github.trc.clayium.common.items.filter.ItemStringItemFilter
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
+import com.github.trc.clayium.common.util.ToolClasses
 import net.minecraft.item.Item
 
 object ClayiumItems {
@@ -37,7 +39,12 @@ object ClayiumItems {
     val CLAY_PICKAXE = createItem("clay_pickaxe", ItemClayPickaxe())
     val CLAY_SHOVEL = createItem("clay_shovel", ItemClayShovel())
 
-    val CLAY_STEEL_PICKAXE = createItem("clay_steel_pickaxe", ItemClaySteelPickaxe())
+    val CLAY_STEEL_PICKAXE = createItem("clay_steel_pickaxe", ItemClaySteelTool(
+        ToolConstants.PICKAXE_ATTACK_DAMAGE_SCALE, ToolConstants.PICKAXE_ATTACK_SPEED_SCALE, ToolClasses.PICKAXE)
+    )
+    val CLAY_STEEL_SHOVEL = createItem("clay_steel_shovel", ItemClaySteelTool(
+        ToolConstants.SHOVEL_ATTACK_DAMAGE_SCALE, ToolConstants.SHOVEL_ATTACK_SPEED_SCALE, ToolClasses.SHOVEL)
+    )
 
     val SIMPLE_ITEM_FILTER = createItem("simple_item_filter", ItemSimpleItemFilter())
     val FUZZY_ITEM_FILTER = createItem("item_filter_fuzzy", ItemFuzzyItemFilter())

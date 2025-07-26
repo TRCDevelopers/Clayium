@@ -3,9 +3,9 @@ package com.github.trc.clayium.common.items
 import com.github.trc.clayium.api.HARDNESS_UNBREAKABLE
 import com.github.trc.clayium.api.util.next
 import com.github.trc.clayium.common.config.ConfigCore
-import com.github.trc.clayium.common.items.ItemClaySteelPickaxe.Mode.CUSTOM
-import com.github.trc.clayium.common.items.ItemClaySteelPickaxe.Mode.RANGED
-import com.github.trc.clayium.common.items.ItemClaySteelPickaxe.Mode.SINGLE
+import com.github.trc.clayium.common.items.ItemClaySteelTool.Mode.CUSTOM
+import com.github.trc.clayium.common.items.ItemClaySteelTool.Mode.RANGED
+import com.github.trc.clayium.common.items.ItemClaySteelTool.Mode.SINGLE
 import com.github.trc.clayium.common.reflect.BlockReflect
 import com.github.trc.clayium.common.util.UtilLocale
 import it.unimi.dsi.fastutil.ints.IntArrayList
@@ -18,8 +18,8 @@ import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
 import net.minecraft.init.Enchantments
-import net.minecraft.item.ItemPickaxe
 import net.minecraft.item.ItemStack
+import net.minecraft.item.ItemTool
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumActionResult
@@ -58,10 +58,18 @@ private fun IntArray.toBlockPosList(mapper: ((BlockPos) -> BlockPos)? = null): L
     }
 }
 
-class ItemClaySteelPickaxe : ItemPickaxe(ToolMaterial.DIAMOND) {
+class ItemClaySteelTool(
+    attackDamage: Float,
+    attackSpeed: Float,
+    toolClass: String,
+    material: ToolMaterial = ToolMaterial.DIAMOND
+) : ItemTool(attackDamage, attackSpeed, material, emptySet<Block>()) {
+
+    val toolClassSet = setOf(toolClass)
 
     init {
         maxDamage = ConfigCore.misc.claySteelToolsDurability
+        this.setHarvestLevel(toolClass, material.harvestLevel)
     }
 
     private val rangeBlock: IBlockState = run {
@@ -77,6 +85,10 @@ class ItemClaySteelPickaxe : ItemPickaxe(ToolMaterial.DIAMOND) {
             @Suppress("DEPRECATION")
             if (block != null && meta != null) block.getStateFromMeta(meta) else Blocks.CLAY.defaultState
         }
+    }
+
+    override fun getToolClasses(stack: ItemStack): Set<String> {
+        return this.toolClassSet
     }
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack?> {
@@ -200,7 +212,7 @@ class ItemClaySteelPickaxe : ItemPickaxe(ToolMaterial.DIAMOND) {
             val stack = e.entityPlayer.getHeldItem(EnumHand.MAIN_HAND)
             val world = e.entityPlayer.world
             val item = stack.item
-            if (item !is ItemClaySteelPickaxe) return
+            if (item !is ItemClaySteelTool) return
             if (!stack.hasTagCompound()) return
             val tag = stack.tagCompound!!
             val mode = Mode.entries[tag.getInteger("mode")]

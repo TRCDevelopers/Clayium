@@ -27,7 +27,7 @@ import com.github.trc.clayium.common.blocks.metalchest.TileEntityMetalChest
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.ItemBlockMetalChest
-import com.github.trc.clayium.common.items.ItemClaySteelPickaxe
+import com.github.trc.clayium.common.items.ItemClaySteelTool
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trc.clayium.common.loaders.OreDictionaryLoader
@@ -64,7 +64,7 @@ open class CommonProxy {
 
     open fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(ClayiumMod.proxy)
-        MinecraftForge.EVENT_BUS.register(ItemClaySteelPickaxe)
+        MinecraftForge.EVENT_BUS.register(ItemClaySteelTool)
         if (CUtils.isDeobfEnvironment) { MinecraftForge.EVENT_BUS.register(DebugUtils::class.java) }
 
         ClayiumCTabs.init()
@@ -157,6 +157,7 @@ open class CommonProxy {
         registerItem(registry, ClayiumItems.CLAY_PICKAXE)
         registerItem(registry, ClayiumItems.CLAY_SHOVEL)
         registerItem(registry, ClayiumItems.CLAY_STEEL_PICKAXE)
+        registerItem(registry, ClayiumItems.CLAY_STEEL_SHOVEL)
 
         registerItem(registry, ClayiumItems.MEMORY_CARD)
         registerItem(registry, ClayiumItems.DIRECTION_MEMORY)
