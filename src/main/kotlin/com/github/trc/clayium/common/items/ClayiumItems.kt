@@ -2,6 +2,7 @@ package com.github.trc.clayium.common.items
 
 import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.IConfigurationTool
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.capability.impl.ItemFilterBlockMetadata
@@ -17,7 +18,9 @@ import com.github.trc.clayium.common.items.filter.ItemFilterDuplicator
 import com.github.trc.clayium.common.items.filter.ItemFuzzyItemFilter
 import com.github.trc.clayium.common.items.filter.ItemSimpleItemFilter
 import com.github.trc.clayium.common.items.filter.ItemStringItemFilter
+import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
+import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trc.clayium.common.util.ToolClasses
 import net.minecraft.item.Item
 import net.minecraftforge.registries.IForgeRegistry
@@ -75,6 +78,15 @@ object ClayiumItems {
 
     fun registerItems(registry: IForgeRegistry<Item>) {
         val proxy = ClayiumMod.proxy
+
+        for (orePrefix in OrePrefix.metaItemPrefixes) {
+            val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
+            metaPrefixItem.registerSubItems()
+            proxy.registerItem(registry, metaPrefixItem)
+        }
+
+        proxy.registerItem(registry, MetaItemClayParts)
+
         proxy.registerItem(registry, CLAY_ROLLING_PIN)
         proxy.registerItem(registry, CLAY_SLICER)
         proxy.registerItem(registry, CLAY_SPATULA)
