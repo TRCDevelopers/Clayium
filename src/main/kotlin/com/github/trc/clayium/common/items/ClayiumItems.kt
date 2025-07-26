@@ -3,6 +3,7 @@ package com.github.trc.clayium.common.items
 import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.IConfigurationTool
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.capability.impl.ItemFilterBlockMetadata
 import com.github.trc.clayium.common.capability.impl.ItemFilterDamageValue
 import com.github.trc.clayium.common.capability.impl.ItemFilterDisplayName
@@ -19,6 +20,7 @@ import com.github.trc.clayium.common.items.filter.ItemStringItemFilter
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trc.clayium.common.util.ToolClasses
 import net.minecraft.item.Item
+import net.minecraftforge.registries.IForgeRegistry
 
 object ClayiumItems {
 
@@ -69,5 +71,35 @@ object ClayiumItems {
             setRegistryName(clayiumId(name))
             setTranslationKey("${MOD_ID}.$name")
         }
+    }
+
+    fun registerItems(registry: IForgeRegistry<Item>) {
+        val proxy = ClayiumMod.proxy
+        proxy.registerItem(registry, CLAY_ROLLING_PIN)
+        proxy.registerItem(registry, CLAY_SLICER)
+        proxy.registerItem(registry, CLAY_SPATULA)
+        proxy.registerItem(registry, CLAY_WRENCH)
+        proxy.registerItem(registry, CLAY_IO_CONFIGURATOR)
+        proxy.registerItem(registry, CLAY_PIPING_TOOL)
+
+        proxy.registerItem(registry, CLAY_PICKAXE)
+        proxy.registerItem(registry, CLAY_SHOVEL)
+        proxy.registerItem(registry, CLAY_STEEL_PICKAXE)
+        proxy.registerItem(registry, CLAY_STEEL_SHOVEL)
+
+        proxy.registerItem(registry, MEMORY_CARD)
+        proxy.registerItem(registry, DIRECTION_MEMORY)
+        proxy.registerItem(registry, SYNCHRONIZER)
+
+        proxy.registerItem(registry, SIMPLE_ITEM_FILTER)
+        proxy.registerItem(registry, FUZZY_ITEM_FILTER)
+        proxy.registerItem(registry, ORE_DICT_ITEM_FILTER)
+        proxy.registerItem(registry, REGISTRY_NAME_ITEM_FILTER)
+        proxy.registerItem(registry, DISPLAY_NAME_ITEM_FILTER)
+        proxy.registerItem(registry, UNLOCALIZED_NAME_ITEM_FILTER)
+        proxy.registerItem(registry, MOD_ID_ITEM_FILTER)
+        proxy.registerItem(registry, DAMAGE_VALUE_ITEM_FILTER)
+        proxy.registerItem(registry, BLOCK_METADATA_ITEM_FILTER)
+        proxy.registerItem(registry, ITEM_FILTER_DUPLICATOR)
     }
 }

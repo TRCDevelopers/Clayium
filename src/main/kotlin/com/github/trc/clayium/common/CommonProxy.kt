@@ -137,7 +137,8 @@ open class CommonProxy {
         CLog.info("Registering items...")
         val registry = event.registry
 
-        ClayiumBlocks.registerItemBlocks(event)
+        ClayiumItems.registerItems(registry)
+        ClayiumBlocks.registerItemBlocks(registry)
 
         //todo: move to somewhere else
         registry.register(MetaItemClayParts)
@@ -146,33 +147,6 @@ open class CommonProxy {
             registry.register(metaPrefixItem)
             metaPrefixItem.registerSubItems()
         }
-
-        registerItem(registry, ClayiumItems.CLAY_ROLLING_PIN)
-        registerItem(registry, ClayiumItems.CLAY_SLICER)
-        registerItem(registry, ClayiumItems.CLAY_SPATULA)
-        registerItem(registry, ClayiumItems.CLAY_WRENCH)
-        registerItem(registry, ClayiumItems.CLAY_IO_CONFIGURATOR)
-        registerItem(registry, ClayiumItems.CLAY_PIPING_TOOL)
-
-        registerItem(registry, ClayiumItems.CLAY_PICKAXE)
-        registerItem(registry, ClayiumItems.CLAY_SHOVEL)
-        registerItem(registry, ClayiumItems.CLAY_STEEL_PICKAXE)
-        registerItem(registry, ClayiumItems.CLAY_STEEL_SHOVEL)
-
-        registerItem(registry, ClayiumItems.MEMORY_CARD)
-        registerItem(registry, ClayiumItems.DIRECTION_MEMORY)
-        registerItem(registry, ClayiumItems.SYNCHRONIZER)
-
-        registerItem(registry, ClayiumItems.SIMPLE_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.FUZZY_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.ORE_DICT_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.REGISTRY_NAME_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.DISPLAY_NAME_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.UNLOCALIZED_NAME_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.MOD_ID_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.DAMAGE_VALUE_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.BLOCK_METADATA_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.ITEM_FILTER_DUPLICATOR)
 
         registry.register(createItemBlock(ClayiumBlocks.CREATIVE_ENERGY_SOURCE, ::ItemBlock))
 

@@ -43,6 +43,7 @@ import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.registries.IForgeRegistry
 
 object ClayiumBlocks {
 
@@ -136,8 +137,7 @@ object ClayiumBlocks {
         }
     }
 
-    fun registerItemBlocks(event: RegistryEvent.Register<Item>) {
-        val registry = event.registry
+    fun registerItemBlocks(registry: IForgeRegistry<Item>) {
         ClayiumApi.mteManager.allRegistries().forEach {
             val itemBlock = it.itemBlockMachine
             registry.register(itemBlock)
