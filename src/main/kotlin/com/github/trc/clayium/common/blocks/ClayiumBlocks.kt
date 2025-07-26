@@ -3,6 +3,7 @@ package com.github.trc.clayium.common.blocks
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.W
+import com.github.trc.clayium.api.block.ITieredBlock
 import com.github.trc.clayium.api.block.ItemBlockDamaged
 import com.github.trc.clayium.api.block.ItemBlockTiered
 import com.github.trc.clayium.api.block.VariantItemBlock
@@ -178,25 +179,27 @@ object ClayiumBlocks {
         registry.register(createItemBlock(CA_REACTOR_HULL, ::ItemBlockDamaged))
         registry.register(createItemBlock(CA_REACTOR_COIL, ::ItemBlockTiered))
 
-        registry.register(createItemBlock(QUARTZ_CRUCIBLE, ItemBlockTiered<*>::noSubTypes))
+        registry.register(createItemBlock(QUARTZ_CRUCIBLE, ::itemBlockTieredWithoutSubTypes))
 
-        registry.register(createItemBlock(PAN_CABLE, ItemBlockTiered<*>::noSubTypes))
+        registry.register(createItemBlock(PAN_CABLE, ::itemBlockTieredWithoutSubTypes))
 
-        registry.register(createItemBlock(CLAY_TREE_LOG, ItemBlockTiered<*>::noSubTypes))
-        registry.register(createItemBlock(CLAY_TREE_LEAVES, ItemBlockTiered<*>::noSubTypes))
-        registry.register(createItemBlock(CLAY_TREE_SAPLING, ItemBlockTiered<*>::noSubTypes))
+        registry.register(createItemBlock(CLAY_TREE_LOG, ::itemBlockTieredWithoutSubTypes))
+        registry.register(createItemBlock(CLAY_TREE_LEAVES, ::itemBlockTieredWithoutSubTypes))
+        registry.register(createItemBlock(CLAY_TREE_SAPLING, ::itemBlockTieredWithoutSubTypes))
 
         registry.register(createItemBlock(OVERCLOCKER, ::ItemBlockTiered))
         registry.register(createItemBlock(ENERGY_STORAGE_UPGRADE, ::ItemBlockTiered))
 
         registry.register(createItemBlock(CLAY_MARKER, ::VariantItemBlock))
 
-        registry.register(createItemBlock(CHUNK_LOADER, ItemBlockTiered<*>::noSubTypes))
+        registry.register(createItemBlock(CHUNK_LOADER, ::itemBlockTieredWithoutSubTypes))
 
         registry.register(createItemBlock(LASER_REFLECTOR, ::ItemBlockClayLaserReflector))
 
         registry.register(createItemBlock(METAL_CHEST, ::ItemBlockMetalChest))
     }
+    
+    private fun <T> itemBlockTieredWithoutSubTypes(tieredBlock: T) where T : Block, T : ITieredBlock = ItemBlockTiered(tieredBlock, false)
 
     fun registerOreDictionaries() {
         OreDictUnifier.registerOre(ItemStack(COLORED_SILICONE, 1, W), OrePrefix.block, CMaterials.silicone)
