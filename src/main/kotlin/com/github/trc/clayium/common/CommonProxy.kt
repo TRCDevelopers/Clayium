@@ -28,6 +28,7 @@ import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.ItemBlockMetalChest
 import com.github.trc.clayium.common.items.ItemClaySteelPickaxe
+import com.github.trc.clayium.common.items.metaitem.MetaItemClayGadget
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
 import com.github.trc.clayium.common.loaders.OreDictionaryLoader
@@ -141,6 +142,7 @@ open class CommonProxy {
 
         //todo: move to somewhere else
         registry.register(MetaItemClayParts)
+        registry.register(MetaItemClayGadget)
         for (orePrefix in OrePrefix.metaItemPrefixes) {
             val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
             registry.register(metaPrefixItem)

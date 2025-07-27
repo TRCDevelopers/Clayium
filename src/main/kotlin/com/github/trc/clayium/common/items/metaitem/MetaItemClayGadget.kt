@@ -1,16 +1,27 @@
 package com.github.trc.clayium.common.items.metaitem
 
+import com.github.trc.clayium.common.util.UtilLocale
+import net.minecraft.client.util.ITooltipFlag
+import net.minecraft.item.ItemStack
+import net.minecraft.world.World
+
 object MetaItemClayGadget : MetaItemClayium("clay_gadget") {
-    val OverclockMk1 = addItem(0, "overclock_mk1").tier(10)
-    val OverclockMk2 = addItem(1, "overclock_mk2").tier(11)
-    val OverclockMk3 = addItem(2, "overclock_mk3").tier(12)
-    val OverclockMk4 = addItem(3, "overclock_mk4").tier(13)
+    val OverclockMk1 = addItem(0, "gadget_overclocker_mk1").tier(10)
+    val OverclockMk2 = addItem(1, "gadget_overclocker_mk2").tier(11)
+    val OverclockMk3 = addItem(2, "gadget_overclocker_mk3").tier(12)
+    val OverclockMk4 = addItem(3, "gadget_overclocker_mk4").tier(13)
 
-    val FlightMk1 = addItem(100, "flight_mk1").tier(12)
-    val FlightMk2 = addItem(101, "flight_mk2").tier(13)
-    val FlightMk3 = addItem(102, "flight_mk3").tier(13)
+    val FlightMk1 = addItem(100, "gadget_flight_mk1").tier(12)
+    val FlightMk2 = addItem(101, "gadget_flight_mk2").tier(13)
+    val FlightMk3 = addItem(102, "gadget_flight_mk3").tier(13)
 
-    val HealthMk1 = addItem(200, "health_mk1").tier(6)
-    val HealthMk2 = addItem(201, "health_mk2").tier(10)
-    val HealthMk3 = addItem(202, "health_mk3").tier(12)
+    val HealthMk1 = addItem(200, "gadget_health_mk1").tier(6)
+    val HealthMk2 = addItem(201, "gadget_health_mk2").tier(10)
+    val HealthMk3 = addItem(202, "gadget_health_mk3").tier(12)
+
+    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        super.addInformation(stack, worldIn, tooltip, flagIn)
+        val a = "${this.getTranslationKey(stack)}.tooltip"
+        UtilLocale.formatTooltips(tooltip, "${this.getTranslationKey(stack)}.tooltip")
+    }
 }
