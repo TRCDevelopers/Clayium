@@ -1,6 +1,7 @@
 package com.github.trc.clayium.common.items
 
 import com.github.trc.clayium.api.HARDNESS_UNBREAKABLE
+import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.util.next
 import com.github.trc.clayium.common.config.ConfigCore
 import com.github.trc.clayium.common.items.ItemClaySteelTool.Mode.CUSTOM
@@ -180,6 +181,10 @@ class ItemClaySteelTool(
 
     override fun getDestroySpeed(stack: ItemStack, state: IBlockState): Float {
         return super.getDestroySpeed(stack, state) * SPEED_MULTIPLIER
+    }
+
+    override fun getIsRepairable(toRepair: ItemStack, repair: ItemStack): Boolean {
+        return OreDictUnifier.has(repair, "ingotClaySteel")
     }
 
     private fun getMode(stack: ItemStack): Mode? {

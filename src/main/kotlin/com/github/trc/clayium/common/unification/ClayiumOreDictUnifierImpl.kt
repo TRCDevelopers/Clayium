@@ -72,4 +72,19 @@ object ClayiumOreDictUnifierImpl : IOreDictUnifier {
     override fun getAll(oreDict: String, amount: Int): List<ItemStack> {
         return OreDictionary.getOres(oreDict).map { it.copyWithSize(amount) }
     }
+
+    override fun has(stack: ItemStack, oreDict: String): Boolean {
+        val item = stack.item
+        val meta = stack.itemDamage
+        val variantMap = item2OreNames[item] ?: return false
+
+        val damage = meta.toShort()
+        val names = variantMap[damage]
+        if (names != null && names.contains(oreDict)) return true
+
+        if (meta == W) return false
+
+        val wildcardNames = variantMap[W.toShort()]
+        return wildcardNames != null && wildcardNames.contains(oreDict)
+    }
 }
