@@ -91,7 +91,6 @@ class ClientProxy : CommonProxy() {
     fun registerModels(event: ModelRegistryEvent) {
         ClayiumBlocks.registerStateMappers()
         ClayiumBlocks.registerModels()
-//        MetaItemClayium.registerModels()
         MetaTileEntities.registerItemModels()
     }
 
