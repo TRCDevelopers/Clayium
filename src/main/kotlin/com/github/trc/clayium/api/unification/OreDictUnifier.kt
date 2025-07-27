@@ -26,4 +26,8 @@ object OreDictUnifier : IOreDictUnifier {
     override fun getAll(oreDict: String, amount: Int): List<ItemStack> {
         return delegate.getAll(oreDict, amount)
     }
+
+    override fun has(stack: ItemStack, oreDict: String): Boolean {
+        return delegate.has(stack, oreDict)
+    }
 }

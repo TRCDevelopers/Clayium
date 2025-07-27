@@ -29,15 +29,15 @@ open class ItemBlockTiered<T>(
         val tieredKey = "$translationKey.${this.getTier(stack).lowerName}"
         // first search for tiered
         return if (I18n.hasKey(tieredKey)) {
-            return I18n.format(tieredKey)
+            I18n.format(tieredKey)
         }
         // then search for tier-less
         else if (I18n.hasKey(translationKey)) {
-            return I18n.format(translationKey, I18n.format(this.getTier(stack).prefixTranslationKey))
+            I18n.format(translationKey, I18n.format(this.getTier(stack).prefixTranslationKey))
         }
         // fallback to super
         else {
-            return super.getItemStackDisplayName(stack)
+            super.getItemStackDisplayName(stack)
         }
     }
 

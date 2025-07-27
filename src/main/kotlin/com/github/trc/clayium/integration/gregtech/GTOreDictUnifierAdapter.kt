@@ -21,4 +21,8 @@ object GTOreDictUnifierAdapter : IOreDictUnifier {
     override fun getAll(oreDict: String, amount: Int): List<ItemStack> {
         return gregtech.api.unification.OreDictUnifier.getAllWithOreDictionaryName(oreDict)
     }
+
+    override fun has(stack: ItemStack, oreDict: String): Boolean {
+        return gregtech.api.unification.OreDictUnifier.hasOreDictionary(stack, oreDict)
+    }
 }

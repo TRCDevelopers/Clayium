@@ -3,6 +3,9 @@ package com.github.trc.clayium.common.blocks
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.W
+import com.github.trc.clayium.api.block.ITieredBlock
+import com.github.trc.clayium.api.block.ItemBlockDamaged
+import com.github.trc.clayium.api.block.ItemBlockTiered
 import com.github.trc.clayium.api.block.VariantItemBlock
 import com.github.trc.clayium.api.unification.OreDictUnifier
 import com.github.trc.clayium.api.unification.material.CMaterial
@@ -26,6 +29,7 @@ import com.github.trc.clayium.common.blocks.metalchest.BlockMetalChest
 import com.github.trc.clayium.common.blocks.ores.BlockClayOre
 import com.github.trc.clayium.common.blocks.ores.BlockDenseClayOre
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
+import com.github.trc.clayium.common.items.ItemBlockMetalChest
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import net.minecraft.block.Block
 import net.minecraft.block.BlockLeaves
@@ -40,9 +44,9 @@ import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
 import net.minecraftforge.client.event.ColorHandlerEvent
 import net.minecraftforge.client.model.ModelLoader
-import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.registries.IForgeRegistry
 
 object ClayiumBlocks {
 
@@ -128,27 +132,74 @@ object ClayiumBlocks {
         }
     }
 
-    fun registerBlocks(event: RegistryEvent.Register<Block>) {
-        blocks.values.forEach(event.registry::register)
+    fun registerBlocks(registry: IForgeRegistry<Block>) {
+        blocks.values.forEach(registry::register)
         ClayiumApi.mteManager.allRegistries().forEach {
             val block = it.blockMachine
-            event.registry.register(block)
+            registry.register(block)
         }
+
+        for (block in ENERGIZED_CLAY_BLOCKS) registry.register(block)
+        for (block in COMPRESSED_CLAY_BLOCKS) registry.register(block)
+        for (block in COMPRESSED_BLOCKS) registry.register(block)
     }
 
-    fun registerItemBlocks(event: RegistryEvent.Register<Item>) {
-        val registry = event.registry
+    fun registerItemBlocks(registry: IForgeRegistry<Item>) {
         ClayiumApi.mteManager.allRegistries().forEach {
             val itemBlock = it.itemBlockMachine
             registry.register(itemBlock)
         }
+
         for (block in COMPRESSED_BLOCKS) {
             val ib = createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.block) }
             registry.register(ib)
             COMPRESSED_ITEM_BLOCKS.add(ib)
         }
+
+        for (block in ENERGIZED_CLAY_BLOCKS) {
+            registry.register(createItemBlock(block) { ItemBlockEnergizedClay(it, OrePrefix.block) })
+        }
+        for (block in COMPRESSED_CLAY_BLOCKS) {
+            registry.register(createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.block) })
+        }
+
         registry.register(createItemBlock(COLORED_SILICONE, ::VariantItemBlock))
+
+        registry.register(createItemBlock(CREATIVE_ENERGY_SOURCE, ::ItemBlock))
+
+        registry.register(createItemBlock(CLAY_CRAFTING_BOARD, ::ItemBlockTiered))
+        registry.register(createItemBlock(CLAY_WORK_TABLE, ::ItemBlockTiered))
+
+        registry.register(createItemBlock(CLAY_ORE, ::ItemBlock))
+        registry.register(createItemBlock(DENSE_CLAY_ORE, ::ItemBlock))
+        registry.register(createItemBlock(LARGE_DENSE_CLAY_ORE, ::ItemBlock))
+
+        registry.register(createItemBlock(MACHINE_HULL, ::ItemBlockTiered))
+        registry.register(createItemBlock(RESONATOR, ::ItemBlockTiered))
+        registry.register(createItemBlock(CA_REACTOR_HULL, ::ItemBlockDamaged))
+        registry.register(createItemBlock(CA_REACTOR_COIL, ::ItemBlockTiered))
+
+        registry.register(createItemBlock(QUARTZ_CRUCIBLE, ::itemBlockTieredWithoutSubTypes))
+
+        registry.register(createItemBlock(PAN_CABLE, ::itemBlockTieredWithoutSubTypes))
+
+        registry.register(createItemBlock(CLAY_TREE_LOG, ::itemBlockTieredWithoutSubTypes))
+        registry.register(createItemBlock(CLAY_TREE_LEAVES, ::itemBlockTieredWithoutSubTypes))
+        registry.register(createItemBlock(CLAY_TREE_SAPLING, ::itemBlockTieredWithoutSubTypes))
+
+        registry.register(createItemBlock(OVERCLOCKER, ::ItemBlockTiered))
+        registry.register(createItemBlock(ENERGY_STORAGE_UPGRADE, ::ItemBlockTiered))
+
+        registry.register(createItemBlock(CLAY_MARKER, ::VariantItemBlock))
+
+        registry.register(createItemBlock(CHUNK_LOADER, ::itemBlockTieredWithoutSubTypes))
+
+        registry.register(createItemBlock(LASER_REFLECTOR, ::ItemBlockClayLaserReflector))
+
+        registry.register(createItemBlock(METAL_CHEST, ::ItemBlockMetalChest))
     }
+    
+    private fun <T> itemBlockTieredWithoutSubTypes(tieredBlock: T) where T : Block, T : ITieredBlock = ItemBlockTiered(tieredBlock, false)
 
     fun registerOreDictionaries() {
         OreDictUnifier.registerOre(ItemStack(COLORED_SILICONE, 1, W), OrePrefix.block, CMaterials.silicone)

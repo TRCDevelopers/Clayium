@@ -3,9 +3,6 @@ package com.github.trc.clayium.common
 import com.cleanroommc.modularui.factory.GuiManager
 import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.MOD_ID
-import com.github.trc.clayium.api.block.ItemBlockDamaged
-import com.github.trc.clayium.api.block.ItemBlockTiered
-import com.github.trc.clayium.api.block.VariantItemBlock
 import com.github.trc.clayium.api.capability.SimpleCapabilityManager
 import com.github.trc.clayium.api.events.ClayiumMteRegistryEvent
 import com.github.trc.clayium.api.gui.MetaTileEntityGuiFactory
@@ -17,7 +14,10 @@ import com.github.trc.clayium.api.util.CLog
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.blocks.*
+import com.github.trc.clayium.common.blocks.BlockQuartzCrucible
+import com.github.trc.clayium.common.blocks.ClayiumBlocks
+import com.github.trc.clayium.common.blocks.TileEntityClayLaserReflector
+import com.github.trc.clayium.common.blocks.TileEntityCreativeEnergySource
 import com.github.trc.clayium.common.blocks.chunkloader.ChunkLoaderTileEntity
 import com.github.trc.clayium.common.blocks.claycraftingtable.TileClayCraftingTable
 import com.github.trc.clayium.common.blocks.clayworktable.TileClayWorkTable
@@ -26,10 +26,7 @@ import com.github.trc.clayium.common.blocks.metalchest.BlockMetalChest
 import com.github.trc.clayium.common.blocks.metalchest.TileEntityMetalChest
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.items.ClayiumItems
-import com.github.trc.clayium.common.items.ItemBlockMetalChest
-import com.github.trc.clayium.common.items.ItemClaySteelPickaxe
-import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
-import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
+import com.github.trc.clayium.common.items.ItemClaySteelTool
 import com.github.trc.clayium.common.loaders.OreDictionaryLoader
 import com.github.trc.clayium.common.loaders.recipe.CRecipeLoader
 import com.github.trc.clayium.common.metatileentities.MetaTileEntities
@@ -64,7 +61,7 @@ open class CommonProxy {
 
     open fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(ClayiumMod.proxy)
-        MinecraftForge.EVENT_BUS.register(ItemClaySteelPickaxe)
+        MinecraftForge.EVENT_BUS.register(ItemClaySteelTool)
         if (CUtils.isDeobfEnvironment) { MinecraftForge.EVENT_BUS.register(DebugUtils::class.java) }
 
         ClayiumCTabs.init()
@@ -121,13 +118,7 @@ open class CommonProxy {
     @SubscribeEvent
     fun registerBlocks(event: RegistryEvent.Register<Block>) {
         CLog.info("Registering blocks...")
-        val registry: IForgeRegistry<Block> = event.registry
-
-        ClayiumBlocks.registerBlocks(event)
-
-        for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) registry.register(block)
-        for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) registry.register(block)
-        for (block in ClayiumBlocks.COMPRESSED_BLOCKS) registry.register(block)
+        ClayiumBlocks.registerBlocks(event.registry)
     }
 
     //todo move to ClayiumBlocks/Items
@@ -137,81 +128,8 @@ open class CommonProxy {
         CLog.info("Registering items...")
         val registry = event.registry
 
-        ClayiumBlocks.registerItemBlocks(event)
-
-        //todo: move to somewhere else
-        registry.register(MetaItemClayParts)
-        for (orePrefix in OrePrefix.metaItemPrefixes) {
-            val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
-            registry.register(metaPrefixItem)
-            metaPrefixItem.registerSubItems()
-        }
-
-        registerItem(registry, ClayiumItems.CLAY_ROLLING_PIN)
-        registerItem(registry, ClayiumItems.CLAY_SLICER)
-        registerItem(registry, ClayiumItems.CLAY_SPATULA)
-        registerItem(registry, ClayiumItems.CLAY_WRENCH)
-        registerItem(registry, ClayiumItems.CLAY_IO_CONFIGURATOR)
-        registerItem(registry, ClayiumItems.CLAY_PIPING_TOOL)
-
-        registerItem(registry, ClayiumItems.CLAY_PICKAXE)
-        registerItem(registry, ClayiumItems.CLAY_SHOVEL)
-        registerItem(registry, ClayiumItems.CLAY_STEEL_PICKAXE)
-
-        registerItem(registry, ClayiumItems.MEMORY_CARD)
-        registerItem(registry, ClayiumItems.DIRECTION_MEMORY)
-        registerItem(registry, ClayiumItems.SYNCHRONIZER)
-
-        registerItem(registry, ClayiumItems.SIMPLE_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.FUZZY_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.ORE_DICT_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.REGISTRY_NAME_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.DISPLAY_NAME_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.UNLOCALIZED_NAME_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.MOD_ID_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.DAMAGE_VALUE_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.BLOCK_METADATA_ITEM_FILTER)
-        registerItem(registry, ClayiumItems.ITEM_FILTER_DUPLICATOR)
-
-        registry.register(createItemBlock(ClayiumBlocks.CREATIVE_ENERGY_SOURCE, ::ItemBlock))
-
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_CRAFTING_BOARD, ::ItemBlockTiered))
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_WORK_TABLE, ::ItemBlockTiered))
-
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_ORE, ::ItemBlock))
-        registry.register(createItemBlock(ClayiumBlocks.DENSE_CLAY_ORE, ::ItemBlock))
-        registry.register(createItemBlock(ClayiumBlocks.LARGE_DENSE_CLAY_ORE, ::ItemBlock))
-
-        registry.register(createItemBlock(ClayiumBlocks.MACHINE_HULL, ::ItemBlockTiered))
-        registry.register(createItemBlock(ClayiumBlocks.RESONATOR, ::ItemBlockTiered))
-        registry.register(createItemBlock(ClayiumBlocks.CA_REACTOR_HULL, ::ItemBlockDamaged))
-        registry.register(createItemBlock(ClayiumBlocks.CA_REACTOR_COIL, ::ItemBlockTiered))
-
-        registry.register(createItemBlock(ClayiumBlocks.QUARTZ_CRUCIBLE, ItemBlockTiered<*>::noSubTypes))
-
-        registry.register(createItemBlock(ClayiumBlocks.PAN_CABLE, ItemBlockTiered<*>::noSubTypes))
-
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_TREE_LOG, ItemBlockTiered<*>::noSubTypes))
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_TREE_LEAVES, ItemBlockTiered<*>::noSubTypes))
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_TREE_SAPLING, ItemBlockTiered<*>::noSubTypes))
-
-        registry.register(createItemBlock(ClayiumBlocks.OVERCLOCKER, ::ItemBlockTiered))
-        registry.register(createItemBlock(ClayiumBlocks.ENERGY_STORAGE_UPGRADE, ::ItemBlockTiered))
-
-        registry.register(createItemBlock(ClayiumBlocks.CLAY_MARKER, ::VariantItemBlock))
-
-        registry.register(createItemBlock(ClayiumBlocks.CHUNK_LOADER, ItemBlockTiered<*>::noSubTypes))
-
-        registry.register(createItemBlock(ClayiumBlocks.LASER_REFLECTOR, ::ItemBlockClayLaserReflector))
-
-        registry.register(createItemBlock(ClayiumBlocks.METAL_CHEST, ::ItemBlockMetalChest))
-
-        for (block in ClayiumBlocks.ENERGIZED_CLAY_BLOCKS) {
-            registry.register(createItemBlock(block) { ItemBlockEnergizedClay(it, OrePrefix.block) })
-        }
-        for (block in ClayiumBlocks.COMPRESSED_CLAY_BLOCKS) {
-            registry.register(createItemBlock(block) { ItemBlockMaterial(it, OrePrefix.block) })
-        }
+        ClayiumItems.registerItems(registry)
+        ClayiumBlocks.registerItemBlocks(registry)
     }
 
     @SubscribeEvent

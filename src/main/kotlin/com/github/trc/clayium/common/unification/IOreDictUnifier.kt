@@ -18,6 +18,8 @@ interface IOreDictUnifier {
     fun getAll(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1) = getAll(UnificationEntry(orePrefix, material), amount)
     fun getAll(oreDict: UnificationEntry, amount: Int = 1) = getAll(oreDict.toString(), amount)
 
+    fun has(stack: ItemStack, oreDict: String): Boolean
+
     fun exists(oreDict: String): Boolean = !get(oreDict).isEmpty
     fun exists(orePrefix: OrePrefix, material: IMaterial): Boolean = exists(UnificationEntry(orePrefix, material).toString())
 }
