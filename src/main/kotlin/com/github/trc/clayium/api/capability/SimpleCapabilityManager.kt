@@ -39,8 +39,10 @@ object SimpleCapabilityManager {
 
         registerCapabilityWithNoDefault(ISynchronizedInterface::class.java)
         registerCapabilityWithNoDefault(IItemFilter::class.java)
+        registerCapabilityWithNoDefault(IItemGadget::class.java)
         registerCapabilityWithNoDefault(IClayEnergyProvider::class.java)
         registerCapabilityWithNoDefault(IConfigurationTool::class.java)
+
         registerCapabilityWithNoDefault(IPanCable::class.java)
         registerCapabilityWithNoDefault(IPanUser::class.java)
         registerCapabilityWithNoDefault(IPanAdapter::class.java)
