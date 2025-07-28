@@ -2,6 +2,7 @@ package com.github.trc.clayium.common.items.metaitem
 
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.IItemGadget
+import com.github.trc.clayium.common.capability.impl.ClayGadgetHealth
 import com.github.trc.clayium.common.items.metaitem.component.IItemCapabilityProvider
 import com.github.trc.clayium.common.util.UtilLocale
 import net.minecraft.client.util.ITooltipFlag
@@ -20,8 +21,11 @@ object MetaItemClayGadget : MetaItemClayium("clay_gadget") {
     val FlightMk3 = addItem(102, "gadget_flight_mk3").tier(13)
 
     val HealthMk1 = addItem(200, "gadget_health_mk1").tier(6)
+        .gadget(ClayGadgetHealth(20.0))
     val HealthMk2 = addItem(201, "gadget_health_mk2").tier(10)
+        .gadget(ClayGadgetHealth(80.0))
     val HealthMk3 = addItem(202, "gadget_health_mk3").tier(12)
+        .gadget(ClayGadgetHealth(180.0))
 
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)

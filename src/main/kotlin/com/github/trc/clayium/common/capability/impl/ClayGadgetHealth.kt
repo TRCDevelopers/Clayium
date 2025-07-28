@@ -7,7 +7,6 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.SharedMonsterAttributes
 import net.minecraft.entity.ai.attributes.AttributeModifier
-import net.minecraft.item.ItemStack
 import net.minecraftforge.common.util.Constants
 
 class ClayGadgetHealth(
@@ -18,13 +17,13 @@ class ClayGadgetHealth(
         put(SharedMonsterAttributes.MAX_HEALTH.name, modifier)
     }
 
-    override fun putInHolder(player: Entity, gadgetStack: ItemStack) {
+    override fun putInHolder(player: Entity) {
         if (player is EntityLivingBase) {
             player.attributeMap.applyAttributeModifiers(this.map)
         }
     }
 
-    override fun removeFromHolder(player: Entity, gadgetStack: ItemStack) {
+    override fun removeFromHolder(player: Entity) {
         if (player is EntityLivingBase) {
             player.attributeMap.removeAttributeModifiers(this.map)
         }
