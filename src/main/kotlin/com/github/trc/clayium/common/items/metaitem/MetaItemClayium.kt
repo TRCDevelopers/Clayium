@@ -39,6 +39,11 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         _metaItems.add(this)
     }
 
+    @Deprecated("Use getTranslationKey(stack: ItemStack) whenever possible. This getter returns same key for all subItems.", ReplaceWith("getTranslationKey(stack)"))
+    override fun getTranslationKey(): String {
+        return super.getTranslationKey()
+    }
+
     protected val metaValueItems = mutableMapOf<Short, MetaValueItem>()
     protected val metaOreDicts = Short2ObjectAVLTreeMap<String>()
 
