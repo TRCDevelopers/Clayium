@@ -18,6 +18,7 @@ import com.github.trc.clayium.common.items.filter.ItemFilterDuplicator
 import com.github.trc.clayium.common.items.filter.ItemFuzzyItemFilter
 import com.github.trc.clayium.common.items.filter.ItemSimpleItemFilter
 import com.github.trc.clayium.common.items.filter.ItemStringItemFilter
+import com.github.trc.clayium.common.items.metaitem.MetaItemClayGadget
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
 import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
@@ -85,6 +86,7 @@ object ClayiumItems {
             proxy.registerItem(registry, metaPrefixItem)
         }
 
+        proxy.registerItem(registry, MetaItemClayGadget)
         proxy.registerItem(registry, MetaItemClayParts)
 
         proxy.registerItem(registry, CLAY_ROLLING_PIN)
