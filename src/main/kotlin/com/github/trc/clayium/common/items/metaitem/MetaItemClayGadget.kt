@@ -1,9 +1,13 @@
 package com.github.trc.clayium.common.items.metaitem
 
+import com.github.trc.clayium.api.capability.ClayiumCapabilities
+import com.github.trc.clayium.api.capability.IItemGadget
+import com.github.trc.clayium.common.items.metaitem.component.IItemCapabilityProvider
 import com.github.trc.clayium.common.util.UtilLocale
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
+import net.minecraftforge.common.capabilities.Capability
 
 object MetaItemClayGadget : MetaItemClayium("clay_gadget") {
     val OverclockMk1 = addItem(0, "gadget_overclocker_mk1").tier(10)
@@ -21,7 +25,17 @@ object MetaItemClayGadget : MetaItemClayium("clay_gadget") {
 
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
-        val a = "${this.getTranslationKey(stack)}.tooltip"
         UtilLocale.formatTooltips(tooltip, "${this.getTranslationKey(stack)}.tooltip")
+    }
+
+    private fun MetaValueItem.gadget(clayGadget: IItemGadget): MetaValueItem {
+        return this.addComponent(object: IItemCapabilityProvider {
+            override fun <T : Any> getCapability(capability: Capability<T>): T? {
+                if (capability === ClayiumCapabilities.CLAY_GADGET) {
+                    return capability.cast(clayGadget)
+                }
+                return null
+            }
+        })
     }
 }

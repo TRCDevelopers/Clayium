@@ -2,6 +2,7 @@ package com.github.trc.clayium.common.items.metaitem.component
 
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.entity.Entity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.NonNullList
@@ -17,6 +18,7 @@ fun interface ISubItemHandler : IItemComponent {
 
 interface IItemBehavior : IItemComponent {
     fun addInformation(stack: ItemStack, world: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {}
+    fun onUpdate(itemStack: ItemStack, entity: Entity) {}
 }
 
 fun interface IItemColorHandler : IItemComponent {

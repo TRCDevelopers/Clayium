@@ -134,6 +134,10 @@ object CUtils {
         GameProfile(UUID.nameUUIDFromBytes(mcid.toByteArray(Charsets.UTF_8)), mcid)
     }
 
+    val cUuid by lazy {
+        this.profile.id
+    }
+
     fun writeItems(handler: IItemHandler, tagName: String, tag: NBTTagCompound) {
         val tagList = NBTTagList()
         for (i in 0..<handler.slots) {
