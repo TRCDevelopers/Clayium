@@ -5,6 +5,5 @@
 
 ## Minor changes
 * More items now have tiers.
-* The tiers of some items (such as Ranged Miner) have been changed due to the internal data structure.
 * The CE/t display for Solar Clay Fabricator is now calculated based on the CE difference between the recipe input and output.
 * The size and widget positions of some GUIs are changed.
