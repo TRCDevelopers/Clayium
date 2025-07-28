@@ -62,8 +62,9 @@ class ClientProxy : CommonProxy() {
         registry.register(item)
         if (item is MetaItemClayium) {
             item.registerModels()
+        } else {
+            ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(item.registryName!!, "inventory"))
         }
-        ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(item.registryName!!, "inventory"))
     }
 
     @SubscribeEvent
@@ -90,7 +91,6 @@ class ClientProxy : CommonProxy() {
     fun registerModels(event: ModelRegistryEvent) {
         ClayiumBlocks.registerStateMappers()
         ClayiumBlocks.registerModels()
-        MetaItemClayium.registerModels()
         MetaTileEntities.registerItemModels()
     }
 

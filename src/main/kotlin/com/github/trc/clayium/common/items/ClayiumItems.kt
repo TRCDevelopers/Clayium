@@ -2,7 +2,9 @@ package com.github.trc.clayium.common.items
 
 import com.github.trc.clayium.api.MOD_ID
 import com.github.trc.clayium.api.capability.IConfigurationTool
+import com.github.trc.clayium.api.unification.ore.OrePrefix
 import com.github.trc.clayium.api.util.clayiumId
+import com.github.trc.clayium.common.ClayiumMod
 import com.github.trc.clayium.common.capability.impl.ItemFilterBlockMetadata
 import com.github.trc.clayium.common.capability.impl.ItemFilterDamageValue
 import com.github.trc.clayium.common.capability.impl.ItemFilterDisplayName
@@ -10,13 +12,18 @@ import com.github.trc.clayium.common.capability.impl.ItemFilterModID
 import com.github.trc.clayium.common.capability.impl.ItemFilterOreDictionary
 import com.github.trc.clayium.common.capability.impl.ItemFilterRegistryName
 import com.github.trc.clayium.common.capability.impl.ItemFilterUnlocalizedName
+import com.github.trc.clayium.common.constants.ToolConstants
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
 import com.github.trc.clayium.common.items.filter.ItemFilterDuplicator
 import com.github.trc.clayium.common.items.filter.ItemFuzzyItemFilter
 import com.github.trc.clayium.common.items.filter.ItemSimpleItemFilter
 import com.github.trc.clayium.common.items.filter.ItemStringItemFilter
+import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayium
+import com.github.trc.clayium.common.items.metaitem.MetaPrefixItem
+import com.github.trc.clayium.common.util.ToolClasses
 import net.minecraft.item.Item
+import net.minecraftforge.registries.IForgeRegistry
 
 object ClayiumItems {
 
@@ -37,7 +44,12 @@ object ClayiumItems {
     val CLAY_PICKAXE = createItem("clay_pickaxe", ItemClayPickaxe())
     val CLAY_SHOVEL = createItem("clay_shovel", ItemClayShovel())
 
-    val CLAY_STEEL_PICKAXE = createItem("clay_steel_pickaxe", ItemClaySteelPickaxe())
+    val CLAY_STEEL_PICKAXE = createItem("clay_steel_pickaxe", ItemClaySteelTool(
+        ToolConstants.PICKAXE_ATTACK_DAMAGE_SCALE, ToolConstants.PICKAXE_ATTACK_SPEED_SCALE, ToolClasses.PICKAXE)
+    )
+    val CLAY_STEEL_SHOVEL = createItem("clay_steel_shovel", ItemClaySteelTool(
+        ToolConstants.SHOVEL_ATTACK_DAMAGE_SCALE, ToolConstants.SHOVEL_ATTACK_SPEED_SCALE, ToolClasses.SHOVEL)
+    )
 
     val SIMPLE_ITEM_FILTER = createItem("simple_item_filter", ItemSimpleItemFilter())
     val FUZZY_ITEM_FILTER = createItem("item_filter_fuzzy", ItemFuzzyItemFilter())
@@ -62,5 +74,44 @@ object ClayiumItems {
             setRegistryName(clayiumId(name))
             setTranslationKey("${MOD_ID}.$name")
         }
+    }
+
+    fun registerItems(registry: IForgeRegistry<Item>) {
+        val proxy = ClayiumMod.proxy
+
+        for (orePrefix in OrePrefix.metaItemPrefixes) {
+            val metaPrefixItem = MetaPrefixItem.create("meta_${orePrefix.snake}", orePrefix)
+            metaPrefixItem.registerSubItems()
+            proxy.registerItem(registry, metaPrefixItem)
+        }
+
+        proxy.registerItem(registry, MetaItemClayParts)
+
+        proxy.registerItem(registry, CLAY_ROLLING_PIN)
+        proxy.registerItem(registry, CLAY_SLICER)
+        proxy.registerItem(registry, CLAY_SPATULA)
+        proxy.registerItem(registry, CLAY_WRENCH)
+        proxy.registerItem(registry, CLAY_IO_CONFIGURATOR)
+        proxy.registerItem(registry, CLAY_PIPING_TOOL)
+
+        proxy.registerItem(registry, CLAY_PICKAXE)
+        proxy.registerItem(registry, CLAY_SHOVEL)
+        proxy.registerItem(registry, CLAY_STEEL_PICKAXE)
+        proxy.registerItem(registry, CLAY_STEEL_SHOVEL)
+
+        proxy.registerItem(registry, MEMORY_CARD)
+        proxy.registerItem(registry, DIRECTION_MEMORY)
+        proxy.registerItem(registry, SYNCHRONIZER)
+
+        proxy.registerItem(registry, SIMPLE_ITEM_FILTER)
+        proxy.registerItem(registry, FUZZY_ITEM_FILTER)
+        proxy.registerItem(registry, ORE_DICT_ITEM_FILTER)
+        proxy.registerItem(registry, REGISTRY_NAME_ITEM_FILTER)
+        proxy.registerItem(registry, DISPLAY_NAME_ITEM_FILTER)
+        proxy.registerItem(registry, UNLOCALIZED_NAME_ITEM_FILTER)
+        proxy.registerItem(registry, MOD_ID_ITEM_FILTER)
+        proxy.registerItem(registry, DAMAGE_VALUE_ITEM_FILTER)
+        proxy.registerItem(registry, BLOCK_METADATA_ITEM_FILTER)
+        proxy.registerItem(registry, ITEM_FILTER_DUPLICATOR)
     }
 }
