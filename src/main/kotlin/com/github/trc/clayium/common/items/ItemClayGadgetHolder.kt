@@ -76,7 +76,18 @@ class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData> {
                     .matrix("IIIII", "IIIII")
                     .key('I') {
                         MuiSlots.itemSlotBuilder(itemHandler, it).slotGroup("clayium_gadget_holder")
-                            .filter { it.hasCapability(ClayiumCapabilities.CLAY_GADGET, null) }
+                            .filter { target ->
+                                val gadget = target.getCapability(ClayiumCapabilities.CLAY_GADGET, null)
+                                if (gadget == null) return@filter false
+                                for (slot in 0..<itemHandler.slots) {
+                                    if (itemHandler.getStackInSlot(slot).isEmpty) continue
+                                    val otherGadget = itemHandler.getStackInSlot(slot).getCapability(ClayiumCapabilities.CLAY_GADGET, null)
+                                    if (otherGadget != null && otherGadget.category == gadget.category) {
+                                        return@filter false
+                                    }
+                                }
+                                return@filter true
+                            }
                             .changeListener { newStack, onlyAmountChanged, client, init ->
                                 if (client) return@changeListener
                                 if (newStack.isEmpty) {
