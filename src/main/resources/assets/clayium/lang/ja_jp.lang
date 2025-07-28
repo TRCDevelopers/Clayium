@@ -766,9 +766,9 @@ item.clayium.itemCapsule0025.name=粘土液体カプセル (25mB)
 item.clayium.itemCapsule0005.name=粘土液体カプセル (5mB)
 item.clayium.itemCapsule0001.name=粘土液体カプセル (1mB)
 
-item.clayium.itemGadgetHolder.name=粘土ガジェットホルダー
-item.clayium.itemGadgetHolder.tooltip.line1=粘土ガジェットはこのホルダーに
-item.clayium.itemGadgetHolder.tooltip.line2=入れて使用すること
+item.clayium.clay_gadget_holder.name=粘土ガジェットホルダー
+item.clayium.clay_gadget_holder.tooltip1=粘土ガジェットはこのホルダーに
+item.clayium.clay_gadget_holder.tooltip2=入れて使用すること
 item.clayium.clay_gadget_parts.name=粘土ガジェットテンプレート
 item.clayium.gadget_overclocker_mk1.name=粘土ガジェット [オーバークロック I]
 item.clayium.gadget_overclocker_mk1.tooltip1=採掘のディレイタイムを短縮

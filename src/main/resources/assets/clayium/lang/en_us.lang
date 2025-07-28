@@ -900,9 +900,9 @@ item.clayium.itemCapsule0025.name=Clay Fluid Capsule (25mB)
 item.clayium.itemCapsule0005.name=Clay Fluid Capsule (5mB)
 item.clayium.itemCapsule0001.name=Clay Fluid Capsule (1mB)
 
-item.clayium.itemGadgetHolder.name=Clay Gadget Holder
-item.clayium.itemGadgetHolder.tooltip.line1=Clay Gadgets give effects
-item.clayium.itemGadgetHolder.tooltip.line2=when they are put in this.
+item.clayium.clay_gadget_holder.name=Clay Gadget Holder
+item.clayium.clay_gadget_holder.tooltip1=Clay Gadgets give effects
+item.clayium.clay_gadget_holder.tooltip2=when they are put in this.
 item.clayium.clay_gadget_parts.name=Clay Gadget Template
 item.clayium.gadget_overclocker_mk1.name=Clay Gadget [Overclock I]
 item.clayium.gadget_overclocker_mk1.tooltip1=Shortens each interval time of digging.

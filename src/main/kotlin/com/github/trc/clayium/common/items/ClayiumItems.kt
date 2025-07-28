@@ -63,6 +63,8 @@ object ClayiumItems {
     val BLOCK_METADATA_ITEM_FILTER = createItem("item_filter_block_metadata", ItemStringItemFilter(::ItemFilterBlockMetadata))
     val ITEM_FILTER_DUPLICATOR = createItem("item_filter_duplicator", ItemFilterDuplicator())
 
+    val CLAY_GADGET_HOLDER = createItem("clay_gadget_holder", ItemClayGadgetHolder())
+
     fun registerOreDicts() {
         for (metaItem in MetaItemClayium.META_ITEMS) {
             metaItem.registerOreDicts()
@@ -88,6 +90,8 @@ object ClayiumItems {
 
         proxy.registerItem(registry, MetaItemClayGadget)
         proxy.registerItem(registry, MetaItemClayParts)
+
+        proxy.registerItem(registry, CLAY_GADGET_HOLDER)
 
         proxy.registerItem(registry, CLAY_ROLLING_PIN)
         proxy.registerItem(registry, CLAY_SLICER)
