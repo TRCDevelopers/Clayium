@@ -38,16 +38,9 @@ See [wiki](https://trcdevelopers.github.io/Clayium/) for more information.
 
 - Auto Crafter
 - Clay Crafting Board
-- Clay Gadgets
 - Clay Guns
-- ClaySteel Shovel
 - Energetic Clay Decomposer
 - Fluid related features
-- Metal Chests
-- World Interactive Machines
-  - Activators
-  - Area Replacer
-  - Item Collectors
 - Configs (`ProgressionRate`, `HardcoreXXX`, etc.)
 - Integrations with Other Mods
 
