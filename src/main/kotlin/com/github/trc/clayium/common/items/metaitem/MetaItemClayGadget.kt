@@ -11,6 +11,11 @@ import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 
 object MetaItemClayGadget : MetaItemClayium("clay_gadget") {
+
+    init {
+        maxStackSize = 1
+    }
+
     val OverclockMk1 = addItem(0, "gadget_overclocker_mk1").tier(10)
     val OverclockMk2 = addItem(1, "gadget_overclocker_mk2").tier(11)
     val OverclockMk3 = addItem(2, "gadget_overclocker_mk3").tier(12)
