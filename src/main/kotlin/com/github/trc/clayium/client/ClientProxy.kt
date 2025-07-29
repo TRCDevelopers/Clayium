@@ -21,6 +21,7 @@ import com.github.trc.clayium.common.util.KeyInput
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
+import net.minecraft.util.math.MathHelper
 import net.minecraftforge.client.event.ColorHandlerEvent
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.client.event.TextureStitchEvent
@@ -34,6 +35,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.registries.IForgeRegistry
+
+private const val mode1velocity: Float = 0.7f
+private const val mode2acceleration: Float = 0.9f
+private const val mode2division: Float = 1.1f
 
 @Suppress("unused")
 @SideOnly(Side.CLIENT)
@@ -103,5 +108,92 @@ class ClientProxy : CommonProxy() {
     fun registerItemColors(e: ColorHandlerEvent.Item) {
         ClayiumBlocks.registerItemColors(e)
         MetaItemClayium.registerColors(e)
+    }
+
+    override fun updateFlightStatus(mode: Int) {
+        val mc = Minecraft.getMinecraft()
+        val player = mc.player
+            ?: return
+        if (mode > 0 && player.capabilities.isFlying) {
+            val mi = player.movementInput
+            val settings = mc.gameSettings
+
+            val sin = MathHelper.sin(player.rotationYaw * Math.PI.toFloat() / 180.0f)
+            val cos = MathHelper.cos(player.rotationYaw * Math.PI.toFloat() / 180.0f)
+
+            mi.moveForward = (player.motionZ * cos.toDouble() - player.motionX * sin.toDouble()).toFloat()
+            mi.moveStrafe = (player.motionZ * sin.toDouble() + player.motionX * cos.toDouble()).toFloat()
+
+            val disableInertia = mode >= 2
+
+            if (mi.sneak) {
+                if (disableInertia) {
+                    player.motionY -= mode2acceleration.toDouble()
+                    player.motionY /= mode2division.toDouble()
+                } else {
+                    player.motionY = (-mode1velocity).toDouble()
+                }
+            }
+
+            if (mi.jump) {
+                if (disableInertia) {
+                    player.motionY += mode2acceleration.toDouble()
+                    player.motionY /= mode2division.toDouble()
+                } else {
+                    player.motionY = mode1velocity.toDouble()
+                }
+            }
+
+            if (mi.jump == mi.sneak) {
+                player.motionY = 0.0
+            }
+
+            if (settings.keyBindForward.isPressed) {
+                if (disableInertia) {
+                    mi.moveForward += mode2acceleration
+                    mi.moveForward /= mode2division
+                } else {
+                    mi.moveForward = mode1velocity
+                }
+            }
+
+            if (settings.keyBindBack.isPressed) {
+                if (disableInertia) {
+                    mi.moveForward -= mode2acceleration
+                    mi.moveForward /= mode2division
+                } else {
+                    mi.moveForward = -mode1velocity
+                }
+            }
+
+            if (!settings.keyBindForward.isPressed && !settings.keyBindBack.isPressed) {
+                mi.moveForward = 0.0f
+            }
+
+            if (settings.keyBindLeft.isPressed) {
+                if (disableInertia) {
+                    mi.moveStrafe += mode2acceleration
+                    mi.moveStrafe /= mode2division
+                } else {
+                    mi.moveStrafe = mode1velocity
+                }
+            }
+
+            if (settings.keyBindRight.isPressed) {
+                if (disableInertia) {
+                    mi.moveStrafe -= mode2acceleration
+                    mi.moveStrafe /= mode2division
+                } else {
+                    mi.moveStrafe = -mode1velocity
+                }
+            }
+
+            if (!settings.keyBindLeft.isPressed && !settings.keyBindRight.isPressed) {
+                mi.moveStrafe = 0.0f
+            }
+
+            player.motionX = (mi.moveStrafe * cos - mi.moveForward * sin).toDouble()
+            player.motionZ = (mi.moveForward * cos + mi.moveStrafe * sin).toDouble()
+        }
     }
 }
