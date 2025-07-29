@@ -114,86 +114,43 @@ class ClientProxy : CommonProxy() {
         val mc = Minecraft.getMinecraft()
         val player = mc.player
             ?: return
-        if (mode > 0 && player.capabilities.isFlying) {
-            val mi = player.movementInput
-            val settings = mc.gameSettings
+        if (!(mode > 0 && player.capabilities.isFlying)) return
 
-            val sin = MathHelper.sin(player.rotationYaw * Math.PI.toFloat() / 180.0f)
-            val cos = MathHelper.cos(player.rotationYaw * Math.PI.toFloat() / 180.0f)
+        val mi = player.movementInput
+        val settings = mc.gameSettings
+        val supersonic = mode >= 2
 
-            mi.moveForward = (player.motionZ * cos.toDouble() - player.motionX * sin.toDouble()).toFloat()
-            mi.moveStrafe = (player.motionZ * sin.toDouble() + player.motionX * cos.toDouble()).toFloat()
+        val yawRad = Math.toRadians(player.rotationYaw.toDouble()).toFloat()
+        val sinYaw = MathHelper.sin(yawRad)
+        val cosYaw = MathHelper.cos(yawRad)
 
-            val disableInertia = mode >= 2
+        mi.moveForward = (player.motionZ * cosYaw - player.motionX * sinYaw).toFloat()
+        mi.moveStrafe = (player.motionZ * sinYaw + player.motionX * cosYaw).toFloat()
 
-            if (mi.sneak) {
-                if (disableInertia) {
-                    player.motionY -= mode2acceleration.toDouble()
-                    player.motionY /= mode2division.toDouble()
-                } else {
-                    player.motionY = (-mode1velocity).toDouble()
-                }
-            }
-
-            if (mi.jump) {
-                if (disableInertia) {
-                    player.motionY += mode2acceleration.toDouble()
-                    player.motionY /= mode2division.toDouble()
-                } else {
-                    player.motionY = mode1velocity.toDouble()
-                }
-            }
-
-            if (mi.jump == mi.sneak) {
-                player.motionY = 0.0
-            }
-
-            if (settings.keyBindForward.isKeyDown) {
-                if (disableInertia) {
-                    mi.moveForward += mode2acceleration
-                    mi.moveForward /= mode2division
-                } else {
-                    mi.moveForward = mode1velocity
-                }
-            }
-
-            if (settings.keyBindBack.isKeyDown) {
-                if (disableInertia) {
-                    mi.moveForward -= mode2acceleration
-                    mi.moveForward /= mode2division
-                } else {
-                    mi.moveForward = -mode1velocity
-                }
-            }
-
-            if (!settings.keyBindForward.isKeyDown && !settings.keyBindBack.isKeyDown) {
-                mi.moveForward = 0.0f
-            }
-
-            if (settings.keyBindLeft.isKeyDown) {
-                if (disableInertia) {
-                    mi.moveStrafe += mode2acceleration
-                    mi.moveStrafe /= mode2division
-                } else {
-                    mi.moveStrafe = mode1velocity
-                }
-            }
-
-            if (settings.keyBindRight.isKeyDown) {
-                if (disableInertia) {
-                    mi.moveStrafe -= mode2acceleration
-                    mi.moveStrafe /= mode2division
-                } else {
-                    mi.moveStrafe = -mode1velocity
-                }
-            }
-
-            if (!settings.keyBindLeft.isKeyDown && !settings.keyBindRight.isKeyDown) {
-                mi.moveStrafe = 0.0f
-            }
-
-            player.motionX = (mi.moveStrafe * cos - mi.moveForward * sin).toDouble()
-            player.motionZ = (mi.moveForward * cos + mi.moveStrafe * sin).toDouble()
+        val verticalDir = (if (mi.jump) 1 else 0) - (if (mi.sneak) 1 else 0)
+        player.motionY = when {
+            verticalDir == 0 -> 0.0
+            supersonic -> (player.motionY + verticalDir * mode2acceleration) / mode2division
+            else -> (verticalDir * mode1velocity).toDouble()
         }
+
+        val forwardDir = (if (settings.keyBindForward.isKeyDown) 1 else 0) - (if (settings.keyBindBack.isKeyDown) 1 else 0)
+        val strafeDir = (if (settings.keyBindLeft.isKeyDown) 1 else 0) - (if (settings.keyBindRight.isKeyDown) 1 else 0)
+
+        mi.moveForward = when {
+            forwardDir == 0 -> 0f
+            supersonic -> (mi.moveForward + forwardDir * mode2acceleration) / mode2division
+            else -> forwardDir * mode1velocity
+        }
+
+        mi.moveStrafe = when {
+            strafeDir == 0 -> 0f
+            supersonic -> (mi.moveStrafe + strafeDir * mode2acceleration) / mode2division
+            else -> strafeDir * mode1velocity
+        }
+
+        player.motionX = (mi.moveStrafe * cosYaw - mi.moveForward * sinYaw).toDouble()
+        player.motionZ = (mi.moveForward * cosYaw + mi.moveStrafe * sinYaw).toDouble()
     }
+
 }
