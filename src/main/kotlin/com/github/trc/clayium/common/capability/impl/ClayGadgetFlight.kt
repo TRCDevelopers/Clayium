@@ -31,6 +31,7 @@ class ClayGadgetFlight(
         if (player is EntityPlayer) {
             if (player.isCreative || player.isSpectator) return
             player.capabilities.allowFlying = true
+            player.sendPlayerAbilities()
         }
     }
 
@@ -39,6 +40,7 @@ class ClayGadgetFlight(
             if (player.isCreative || player.isSpectator) return
             player.capabilities.allowFlying = false
             player.capabilities.isFlying = false
+            player.sendPlayerAbilities()
         }
     }
 }
