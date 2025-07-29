@@ -148,7 +148,7 @@ class ClientProxy : CommonProxy() {
                 player.motionY = 0.0
             }
 
-            if (settings.keyBindForward.isPressed) {
+            if (settings.keyBindForward.isKeyDown) {
                 if (disableInertia) {
                     mi.moveForward += mode2acceleration
                     mi.moveForward /= mode2division
@@ -157,7 +157,7 @@ class ClientProxy : CommonProxy() {
                 }
             }
 
-            if (settings.keyBindBack.isPressed) {
+            if (settings.keyBindBack.isKeyDown) {
                 if (disableInertia) {
                     mi.moveForward -= mode2acceleration
                     mi.moveForward /= mode2division
@@ -166,11 +166,11 @@ class ClientProxy : CommonProxy() {
                 }
             }
 
-            if (!settings.keyBindForward.isPressed && !settings.keyBindBack.isPressed) {
+            if (!settings.keyBindForward.isKeyDown && !settings.keyBindBack.isKeyDown) {
                 mi.moveForward = 0.0f
             }
 
-            if (settings.keyBindLeft.isPressed) {
+            if (settings.keyBindLeft.isKeyDown) {
                 if (disableInertia) {
                     mi.moveStrafe += mode2acceleration
                     mi.moveStrafe /= mode2division
@@ -179,7 +179,7 @@ class ClientProxy : CommonProxy() {
                 }
             }
 
-            if (settings.keyBindRight.isPressed) {
+            if (settings.keyBindRight.isKeyDown) {
                 if (disableInertia) {
                     mi.moveStrafe -= mode2acceleration
                     mi.moveStrafe /= mode2division
@@ -188,7 +188,7 @@ class ClientProxy : CommonProxy() {
                 }
             }
 
-            if (!settings.keyBindLeft.isPressed && !settings.keyBindRight.isPressed) {
+            if (!settings.keyBindLeft.isKeyDown && !settings.keyBindRight.isKeyDown) {
                 mi.moveStrafe = 0.0f
             }
 
