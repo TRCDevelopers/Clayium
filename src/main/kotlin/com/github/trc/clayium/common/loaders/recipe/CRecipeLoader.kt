@@ -34,5 +34,7 @@ object CRecipeLoader {
         PipeDrawingRecipeLoader.registerRecipes()
         SolarClayFabricatorRecipeLoader.registerRecipes()
         WireDrawingRecipeLoader.registerRecipes()
+
+        ClayGadgetsRecipeLoader.registerRecipes()
     }
 }
