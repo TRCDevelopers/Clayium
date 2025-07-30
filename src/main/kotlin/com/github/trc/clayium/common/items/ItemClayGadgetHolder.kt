@@ -27,6 +27,8 @@ import net.minecraft.util.EnumHand
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.common.gameevent.PlayerEvent
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
@@ -113,6 +115,25 @@ class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData> {
                     return capability.cast(ItemStackItemHandler(stack, 5 * 2))
                 } else {
                     superProvider?.getCapability(capability, null)
+                }
+            }
+        }
+    }
+
+    companion object {
+        @SubscribeEvent
+        fun onPlayerLogin(event: PlayerEvent.PlayerLoggedInEvent) {
+            val player = event.player
+            val playerInventory = player.inventory
+            for (i in 0..<playerInventory.sizeInventory) {
+                val stack =  playerInventory.getStackInSlot(i)
+                if (stack.item != ClayiumItems.CLAY_GADGET_HOLDER) continue
+
+                val handler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
+                    ?: continue
+                for (j in 0..<handler.slots) {
+                    handler.getStackInSlot(j).getCapability(ClayiumCapabilities.CLAY_GADGET, null)
+                        ?.putInHolder(player)
                 }
             }
         }
