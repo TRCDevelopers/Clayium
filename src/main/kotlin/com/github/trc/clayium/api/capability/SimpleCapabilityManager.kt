@@ -46,5 +46,7 @@ object SimpleCapabilityManager {
         registerCapabilityWithNoDefault(IPanCable::class.java)
         registerCapabilityWithNoDefault(IPanUser::class.java)
         registerCapabilityWithNoDefault(IPanAdapter::class.java)
+
+        registerCapabilityWithNoDefault(ClayiumPlayerData::class.java)
     }
 }

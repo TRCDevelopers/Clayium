@@ -1,5 +1,6 @@
 package com.github.trc.clayium.common.capability.impl
 
+import com.github.trc.clayium.api.capability.ClayiumPlayerData
 import com.github.trc.clayium.api.capability.IItemGadget
 import com.github.trc.clayium.api.util.CUtils
 import com.github.trc.clayium.api.util.clayiumId
@@ -27,10 +28,27 @@ class ClayGadgetFlight(
         if (isRemote) ClayiumMod.proxy.updateFlightStatus(mode)
     }
 
+    override fun onLogin(player: Entity) {
+        putInHolder(player)
+        if (player is EntityPlayer) {
+            val wasFlying = player.getCapability(ClayiumPlayerData.CAPABILITY, null)?.wasFlying ?: false
+            player.capabilities.isFlying = wasFlying
+        }
+    }
+
+    override fun onLogout(player: Entity) {
+        if (player is EntityPlayer) {
+            player.getCapability(ClayiumPlayerData.CAPABILITY, null)?.let { data ->
+                data.wasFlying = player.capabilities.isFlying
+            }
+        }
+    }
+
     override fun putInHolder(player: Entity) {
         if (player is EntityPlayer) {
             if (player.isCreative || player.isSpectator) return
             player.capabilities.allowFlying = true
+
             player.sendPlayerAbilities()
         }
     }

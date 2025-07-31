@@ -11,7 +11,10 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Flow
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
+import com.github.trc.clayium.api.capability.ClayiumPlayerData
+import com.github.trc.clayium.api.capability.IItemGadget
 import com.github.trc.clayium.api.capability.ItemCapabilityProvider
+import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.util.UtilLocale
 import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.client.util.ITooltipFlag
@@ -27,6 +30,7 @@ import net.minecraft.util.EnumHand
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
+import net.minecraftforge.event.AttachCapabilitiesEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.PlayerEvent
 import net.minecraftforge.items.CapabilityItemHandler
@@ -124,7 +128,18 @@ class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData> {
         @SubscribeEvent
         fun onPlayerLogin(event: PlayerEvent.PlayerLoggedInEvent) {
             val player = event.player
+            getGadgets(player).forEach { it.onLogin(player) }
+        }
+
+        @SubscribeEvent
+        fun onPlayerLogout(event: PlayerEvent.PlayerLoggedOutEvent) {
+            val player = event.player
+            getGadgets(player).forEach { it.onLogout(player) }
+        }
+
+        private fun getGadgets(player: EntityPlayer): List<IItemGadget> {
             val playerInventory = player.inventory
+            val gadgets = mutableListOf<IItemGadget>()
             for (i in 0..<playerInventory.sizeInventory) {
                 val stack =  playerInventory.getStackInSlot(i)
                 if (stack.item != ClayiumItems.CLAY_GADGET_HOLDER) continue
@@ -133,8 +148,17 @@ class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData> {
                     ?: continue
                 for (j in 0..<handler.slots) {
                     handler.getStackInSlot(j).getCapability(ClayiumCapabilities.CLAY_GADGET, null)
-                        ?.putInHolder(player)
+                        ?.let { gadgets.add(it) }
                 }
+            }
+            return gadgets
+        }
+
+        @SubscribeEvent
+        fun onAttachCapabilityEntity(e: AttachCapabilitiesEvent<Entity>) {
+            val player = e.`object`
+            if (player is EntityPlayer) {
+                e.addCapability(clayiumId("player_data"), ClayiumPlayerData())
             }
         }
     }

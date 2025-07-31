@@ -10,8 +10,28 @@ interface IItemGadget {
      */
     val category: ResourceLocation
 
+    /**
+     * Called every tick when the gadget is in the holder.
+     */
     fun updateInventory(player: Entity, isRemote: Boolean) {}
 
+    /**
+     * Called on [net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent].
+     */
+    fun onLogin(player: Entity) {}
+
+    /**
+     * Called on [net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent].
+     */
+    fun onLogout(player: Entity) {}
+
+    /**
+     * Called when the gadget is put in the holder.
+     */
     fun putInHolder(player: Entity)
+
+    /**
+     * Called when the gadget is taken out of the holder.
+     */
     fun removeFromHolder(player: Entity)
 }
