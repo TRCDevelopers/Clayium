@@ -1,5 +1,7 @@
 package com.github.trc.clayium.common.items
 
+import baubles.api.BaubleType
+import baubles.api.IBauble
 import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.HandGuiData
@@ -14,11 +16,14 @@ import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.ClayiumPlayerData
 import com.github.trc.clayium.api.capability.IItemGadget
 import com.github.trc.clayium.api.capability.ItemCapabilityProvider
+import com.github.trc.clayium.api.util.Mods
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.util.UtilLocale
+import com.github.trc.clayium.integration.baubles.BaubleClayGadgets
 import com.github.trc.clayium.integration.modularui.MuiSlots
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.Item
@@ -31,12 +36,16 @@ import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.event.AttachCapabilitiesEvent
+import net.minecraftforge.event.entity.EntityJoinWorldEvent
+import net.minecraftforge.fml.common.Optional
+import net.minecraftforge.fml.common.eventhandler.EventPriority
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.PlayerEvent
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
-class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData> {
+@Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES)
+class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData>, IBauble {
     init {
         maxStackSize = 1
     }
@@ -124,11 +133,29 @@ class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData> {
         }
     }
 
+    @Optional.Method(modid = Mods.Names.BAUBLES)
+    override fun getBaubleType(itemstack: ItemStack?): BaubleType? {
+        return BaubleType.TRINKET
+    }
+
+    @Optional.Method(modid = Mods.Names.BAUBLES)
+    override fun onWornTick(itemstack: ItemStack, player: EntityLivingBase) {
+        val handler = itemstack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
+            ?: return
+        for (i in 0..<handler.slots) {
+            val stack = handler.getStackInSlot(i)
+            val gadget = stack.getCapability(ClayiumCapabilities.CLAY_GADGET, null)
+            gadget?.updateInventory(player, player.world.isRemote)
+        }
+    }
+
     companion object {
-        @SubscribeEvent
-        fun onPlayerLogin(event: PlayerEvent.PlayerLoggedInEvent) {
-            val player = event.player
-            getGadgets(player).forEach { it.onLogin(player) }
+        @SubscribeEvent(priority = EventPriority.LOW) // execute after the baubles' one, so baubles slots are synced
+        fun onPlayerLogin(event: EntityJoinWorldEvent) {
+            val entity = event.entity
+            if (entity is EntityPlayer) {
+                getGadgets(entity).forEach { it.onLogin(entity) }
+            }
         }
 
         @SubscribeEvent
@@ -140,6 +167,10 @@ class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData> {
         private fun getGadgets(player: EntityPlayer): List<IItemGadget> {
             val playerInventory = player.inventory
             val gadgets = mutableListOf<IItemGadget>()
+            if (Mods.Baubles.isModLoaded) {
+                BaubleClayGadgets.getBaubleGadgets(gadgets, player)
+                println("gadgets: ${gadgets.size} from baubles")
+            }
             for (i in 0..<playerInventory.sizeInventory) {
                 val stack =  playerInventory.getStackInSlot(i)
                 if (stack.item != ClayiumItems.CLAY_GADGET_HOLDER) continue

@@ -7,6 +7,7 @@ enum class Mods(
 ) {
 
     AE2(Names.AE2),
+    Baubles(Names.BAUBLES),
     EnderIO(Names.ENDER_IO),
     GregTech(Names.GREG_TECH),
     GroovyScript(Names.GROOVY_SCRIPT),
@@ -19,6 +20,7 @@ enum class Mods(
 
     object Names {
         const val AE2 = "appliedenergistics2"
+        const val BAUBLES = "baubles"
         const val ENDER_IO = "enderio"
         const val GREG_TECH = "gregtech"
         const val GROOVY_SCRIPT = "groovyscript"
