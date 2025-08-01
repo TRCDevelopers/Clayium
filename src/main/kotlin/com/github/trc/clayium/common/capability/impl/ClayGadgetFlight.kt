@@ -25,14 +25,17 @@ class ClayGadgetFlight(
     }
 
     override fun updateInventory(player: Entity, isRemote: Boolean) {
-        if (isRemote) ClayiumMod.proxy.updateFlightStatus(mode)
+        if (isRemote) {
+            ClayiumMod.proxy.updateFlightStatus(mode)
+        }
     }
 
     override fun onLogin(player: Entity) {
-        putInHolder(player)
         if (player is EntityPlayer) {
             val wasFlying = player.getCapability(ClayiumPlayerData.CAPABILITY, null)?.wasFlying ?: false
+            player.capabilities.allowFlying = true
             player.capabilities.isFlying = wasFlying
+            player.sendPlayerAbilities()
         }
     }
 
