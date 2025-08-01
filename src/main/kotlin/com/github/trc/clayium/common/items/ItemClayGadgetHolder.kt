@@ -169,7 +169,6 @@ class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData>, IBauble {
             val gadgets = mutableListOf<IItemGadget>()
             if (Mods.Baubles.isModLoaded) {
                 BaubleClayGadgets.getBaubleGadgets(gadgets, player)
-                println("gadgets: ${gadgets.size} from baubles")
             }
             for (i in 0..<playerInventory.sizeInventory) {
                 val stack =  playerInventory.getStackInSlot(i)
