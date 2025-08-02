@@ -135,7 +135,7 @@ class TileEntityClayLaserReflector : SyncedTileEntityBase(), ITickable, IClayLas
         }
     }
 
-    override fun markDirty() { // IMarkDirty
+    override fun markAsDirty() { // IMarkDirty
         super.markDirty()
     }
 

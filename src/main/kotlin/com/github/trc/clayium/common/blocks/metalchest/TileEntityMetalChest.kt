@@ -18,7 +18,6 @@ import com.github.trc.clayium.api.ClayiumApi
 import com.github.trc.clayium.api.GUI_DEFAULT_WIDTH
 import com.github.trc.clayium.api.capability.impl.ClayiumItemStackHandler
 import com.github.trc.clayium.api.metatileentity.SyncedTileEntityBase
-import com.github.trc.clayium.api.metatileentity.interfaces.IMarkDirty
 import com.github.trc.clayium.api.unification.material.CMaterial
 import com.github.trc.clayium.api.unification.material.CMaterials
 import com.github.trc.clayium.api.util.CUtils
@@ -43,7 +42,7 @@ import kotlin.math.min
 
 private const val NUM_PLAYERS_USING_EVENT_ID = 1
 
-class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGuiData>, IMarkDirty {
+class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGuiData> {
 
     var material: CMaterial = CMaterials.aluminum
 
@@ -78,7 +77,7 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
         if (stack.hasDisplayName()) {
             this.customName = stack.displayName
         }
-        if (!this.world.isRemote) this.markDirty()
+        if (!this.world.isRemote) this.markAsDirty()
     }
 
     fun itemDroppedOnDestroy(): List<ItemStack> {

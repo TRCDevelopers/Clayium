@@ -159,13 +159,13 @@ abstract class ProxyMetaTileEntityBase(
         this.targetDimensionId = world.provider?.dimension ?: -1
         writeTargetData(target)
         teAccess = TileEntityAccess(world, pos)
-        markDirty()
+        markAsDirty()
     }
 
     @MustBeInvokedByOverriders
     open fun unlink() {
         writeTargetRemoved()
-        markDirty()
+        markAsDirty()
     }
 
     /**

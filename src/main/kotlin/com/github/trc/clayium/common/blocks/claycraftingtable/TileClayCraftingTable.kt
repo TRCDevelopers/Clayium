@@ -106,7 +106,7 @@ class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolderClayium<PosGui
             val output = recipe.getCraftingResult(matrix)
             outputInventory.setStackInSlot(0, output)
         }
-        markDirty()
+        markAsDirty()
     }
 
     private fun onOutputSlotTake() {
@@ -116,5 +116,9 @@ class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolderClayium<PosGui
         recipe.getRemainingItems(matrix).forEachIndexed { i, stack ->
             inputInventory.setStackInSlot(i, stack)
         }
+    }
+
+    override fun markAsDirty() {
+        this.markDirty()
     }
 }

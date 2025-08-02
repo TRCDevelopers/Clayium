@@ -27,7 +27,7 @@ class ItemFilterHolderTrait(mte: MetaTileEntity) : MTETrait(mte, clayiumId("item
     override fun setFilter(side: EnumFacing, filter: IItemFilter, filterItem: ItemFilterBase, stackTag: NBTTagCompound?) {
         filters[side.index] = filter
         filterData[side.index] = Pair(filterItem, stackTag)
-        metaTileEntity.markDirty()
+        metaTileEntity.markAsDirty()
         writeCustomData(UPDATE_FILTER) {
             writeVarInt(side.index)
             writeBoolean(true)

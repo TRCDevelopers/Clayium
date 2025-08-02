@@ -67,7 +67,7 @@ class PanAdapterMetaTileEntity(
     private val currentEntries = mutableSetOf<IPanRecipe>()
 
     private fun onSlotChanged(slot: Int) {
-        markDirty()
+        markAsDirty()
         refreshEntries()
     }
 
