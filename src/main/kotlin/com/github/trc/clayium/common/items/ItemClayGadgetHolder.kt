@@ -13,11 +13,9 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Flow
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
-import com.github.trc.clayium.api.capability.ClayiumPlayerData
 import com.github.trc.clayium.api.capability.IItemGadget
 import com.github.trc.clayium.api.capability.ItemCapabilityProvider
 import com.github.trc.clayium.api.util.Mods
-import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.util.UtilLocale
 import com.github.trc.clayium.integration.baubles.BaubleClayGadgets
 import com.github.trc.clayium.integration.modularui.MuiSlots
@@ -35,14 +33,10 @@ import net.minecraft.util.EnumHand
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
-import net.minecraftforge.event.AttachCapabilitiesEvent
-import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.fml.common.Optional
-import net.minecraftforge.fml.common.eventhandler.EventPriority
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
-import net.minecraftforge.fml.common.gameevent.PlayerEvent
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
+import java.util.*
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES)
 class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData>, IBauble {
@@ -150,46 +144,62 @@ class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData>, IBauble {
     }
 
     companion object {
-        @SubscribeEvent(priority = EventPriority.LOW) // execute after the baubles' one, so baubles slots are synced
-        fun onPlayerLogin(event: EntityJoinWorldEvent) {
-            val entity = event.entity
-            if (entity is EntityPlayer) {
-                getGadgets(entity).forEach { it.onLogin(entity) }
-            }
+        private val playerToGadgets = mutableMapOf<UUID, Set<IItemGadget>>()
+
+        fun onPlayerLogin(player: EntityPlayer) {
+            getGadgets(player).forEach { it.onLogin(player) }
         }
 
-        @SubscribeEvent
-        fun onPlayerLogout(event: PlayerEvent.PlayerLoggedOutEvent) {
-            val player = event.player
+        fun onPlayerLogout(player: EntityPlayer) {
             getGadgets(player).forEach { it.onLogout(player) }
         }
 
-        private fun getGadgets(player: EntityPlayer): List<IItemGadget> {
-            val playerInventory = player.inventory
-            val gadgets = mutableListOf<IItemGadget>()
-            if (Mods.Baubles.isModLoaded) {
-                BaubleClayGadgets.getBaubleGadgets(gadgets, player)
-            }
-            for (i in 0..<playerInventory.sizeInventory) {
-                val stack =  playerInventory.getStackInSlot(i)
-                if (stack.item != ClayiumItems.CLAY_GADGET_HOLDER) continue
+        fun onTick(player: EntityPlayer) {
+            if (player is EntityPlayerMP) {
+                val previous = playerToGadgets[player.uniqueID]
+                    ?: emptySet()
+                val current = getGadgets(player).toSet()
 
-                val handler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
-                    ?: continue
+                val newGadgets = current - previous
+                val removedGadgets = previous - current
+                for (gadget in newGadgets) {
+                    gadget.putInHolder(player)
+                }
+
+                for (gadget in removedGadgets) {
+                    gadget.removeFromHolder(player)
+                }
+                playerToGadgets[player.uniqueID] = current
+            }
+        }
+
+        private fun getGadgets(player: EntityPlayer): List<IItemGadget> {
+            val gadgets = mutableListOf<IItemGadget>()
+            searchGadgetHolder(player).forEach { holder ->
+                val handler = holder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
+                    ?: return@forEach
                 for (j in 0..<handler.slots) {
-                    handler.getStackInSlot(j).getCapability(ClayiumCapabilities.CLAY_GADGET, null)
-                        ?.let { gadgets.add(it) }
+                    val gadget = handler.getStackInSlot(j).getCapability(ClayiumCapabilities.CLAY_GADGET, null)
+                        ?: continue
+                    gadgets.add(gadget)
                 }
             }
             return gadgets
         }
 
-        @SubscribeEvent
-        fun onAttachCapabilityEntity(e: AttachCapabilitiesEvent<Entity>) {
-            val player = e.`object`
-            if (player is EntityPlayer) {
-                e.addCapability(clayiumId("player_data"), ClayiumPlayerData())
+        private fun searchGadgetHolder(player: EntityPlayer): List<ItemStack> {
+            val gadgetHolders = mutableListOf<ItemStack>()
+            if (Mods.Baubles.isModLoaded) {
+                val maybeHolder = BaubleClayGadgets.searchGadgetHolderInBaubles(player)
+                if (!maybeHolder.isEmpty) gadgetHolders.add(maybeHolder)
             }
+            for (i in 0..<player.inventory.sizeInventory) {
+                val stack = player.inventory.getStackInSlot(i)
+                if (stack.item == ClayiumItems.CLAY_GADGET_HOLDER) {
+                    gadgetHolders.add(stack)
+                }
+            }
+            return gadgetHolders
         }
     }
 }

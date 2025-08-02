@@ -25,8 +25,8 @@ import com.github.trc.clayium.common.blocks.marker.TileClayMarker
 import com.github.trc.clayium.common.blocks.metalchest.BlockMetalChest
 import com.github.trc.clayium.common.blocks.metalchest.TileEntityMetalChest
 import com.github.trc.clayium.common.creativetab.ClayiumCTabs
+import com.github.trc.clayium.common.event.EntityEventListener
 import com.github.trc.clayium.common.items.ClayiumItems
-import com.github.trc.clayium.common.items.ItemClayGadgetHolder
 import com.github.trc.clayium.common.items.ItemClaySteelTool
 import com.github.trc.clayium.common.loaders.OreDictionaryLoader
 import com.github.trc.clayium.common.loaders.recipe.CRecipeLoader
@@ -63,7 +63,7 @@ open class CommonProxy {
     open fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(ClayiumMod.proxy)
         MinecraftForge.EVENT_BUS.register(ItemClaySteelTool)
-        MinecraftForge.EVENT_BUS.register(ItemClayGadgetHolder)
+        MinecraftForge.EVENT_BUS.register(EntityEventListener)
         if (CUtils.isDeobfEnvironment) { MinecraftForge.EVENT_BUS.register(DebugUtils::class.java) }
 
         ClayiumCTabs.init()
