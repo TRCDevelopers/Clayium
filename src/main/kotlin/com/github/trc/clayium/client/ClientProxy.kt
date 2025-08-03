@@ -154,5 +154,13 @@ class ClientProxy : CommonProxy() {
     }
 
     override fun overclockPlayer(delay: Int) {
+        val mc = Minecraft.getMinecraft()
+        if (mc.playerController.blockHitDelay > delay) {
+            mc.playerController.blockHitDelay = delay
+        }
+
+        if (mc.rightClickDelayTimer > delay + 1) {
+            mc.rightClickDelayTimer = delay + 1
+        }
     }
 }

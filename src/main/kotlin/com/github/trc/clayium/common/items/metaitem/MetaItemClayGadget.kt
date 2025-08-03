@@ -4,6 +4,7 @@ import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.IItemGadget
 import com.github.trc.clayium.common.capability.impl.ClayGadgetFlight
 import com.github.trc.clayium.common.capability.impl.ClayGadgetHealth
+import com.github.trc.clayium.common.capability.impl.ClayGadgetOverclock
 import com.github.trc.clayium.common.items.metaitem.component.IItemCapabilityProvider
 import com.github.trc.clayium.common.util.UtilLocale
 import net.minecraft.client.util.ITooltipFlag
@@ -18,9 +19,13 @@ object MetaItemClayGadget : MetaItemClayium("clay_gadget") {
     }
 
     val OverclockMk1 = addItem(0, "gadget_overclocker_mk1").tier(10)
+        .gadget(ClayGadgetOverclock(3))
     val OverclockMk2 = addItem(1, "gadget_overclocker_mk2").tier(11)
+        .gadget(ClayGadgetOverclock(2))
     val OverclockMk3 = addItem(2, "gadget_overclocker_mk3").tier(12)
+        .gadget(ClayGadgetOverclock(1))
     val OverclockMk4 = addItem(3, "gadget_overclocker_mk4").tier(13)
+        .gadget(ClayGadgetOverclock(0))
 
     val FlightMk1 = addItem(100, "gadget_flight_mk1").tier(12)
         .gadget(ClayGadgetFlight(0.05, 0))
