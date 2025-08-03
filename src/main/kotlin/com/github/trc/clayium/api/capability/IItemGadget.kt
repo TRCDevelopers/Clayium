@@ -36,10 +36,10 @@ interface IItemGadget {
     /**
      * Called when the gadget is put in the holder.
      */
-    fun putInHolder(player: Entity)
+    fun putInHolder(player: Entity) {}
 
     /**
      * Called when the gadget is taken out of the holder.
      */
-    fun removeFromHolder(player: Entity)
+    fun removeFromHolder(player: Entity) {}
 }

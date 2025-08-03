@@ -8,6 +8,7 @@ import com.github.trc.clayium.common.blocks.ClayiumBlocks
 import com.github.trc.clayium.common.items.ClayiumItems
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayGadget
 import com.github.trc.clayium.common.items.metaitem.MetaItemClayParts
+import com.github.trc.clayium.common.recipe.RecipeUtils
 import com.github.trc.clayium.common.recipe.registry.CRecipes
 import net.minecraft.init.Items
 
@@ -95,6 +96,23 @@ object ClayGadgetsRecipeLoader {
             .output(MetaItemClayGadget.HealthMk3)
             .tier(10).CEt(ClayEnergy.of(100_000)).duration(120)
             .buildAndRegister()
+        //endregion
+
+        // region AutoEat
+        asm.builder()
+            .input(MetaItemClayParts.ClayGadgetParts)
+            .input(MetaItemClayParts.IntegratedCircuit, 2)
+            .output(MetaItemClayGadget.AutoEatEconomical)
+            .tier(4).CEt(ClayEnergy.of(1)).duration(120)
+            .buildAndRegister()
+        RecipeUtils.addShapelessRecipe("clay_gadget_auto_eat",
+            MetaItemClayGadget.AutoEat.getStackForm(),
+            MetaItemClayGadget.AutoEatEconomical,
+        )
+        RecipeUtils.addShapelessRecipe("clay_gadget_auto_eat_thrifty",
+            MetaItemClayGadget.AutoEatEconomical.getStackForm(),
+            MetaItemClayGadget.AutoEat,
+        )
         //endregion
     }
 }

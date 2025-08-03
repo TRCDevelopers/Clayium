@@ -2,6 +2,7 @@ package com.github.trc.clayium.common.items.metaitem
 
 import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.IItemGadget
+import com.github.trc.clayium.common.capability.impl.ClayGadgetAutoEat
 import com.github.trc.clayium.common.capability.impl.ClayGadgetFlight
 import com.github.trc.clayium.common.capability.impl.ClayGadgetHealth
 import com.github.trc.clayium.common.capability.impl.ClayGadgetOverclock
@@ -40,6 +41,11 @@ object MetaItemClayGadget : MetaItemClayium("clay_gadget") {
         .gadget(ClayGadgetHealth(80.0))
     val HealthMk3 = addItem(202, "gadget_health_mk3").tier(12)
         .gadget(ClayGadgetHealth(180.0))
+
+    val AutoEatEconomical = addItem(300, "gadget_auto_eat_economical").tier(7)
+        .gadget(ClayGadgetAutoEat(economicalMode = true))
+    val AutoEat = addItem(301, "gadget_auto_eat").tier(7)
+        .gadget(ClayGadgetAutoEat(economicalMode = false))
 
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
