@@ -467,6 +467,14 @@ object MachineBlockRecipeLoader {
             }
         }
 
+        /* Auto Trader */
+        CRecipes.ASSEMBLER.builder()
+            .input(MACHINE_HULL.getItem(AZ91D))
+            .input(MetaItemClayParts.ClayCore, 4)
+            .output(MetaTileEntities.AUTO_TRADER)
+            .tier(6).CEt(ClayEnergy.of(10)).duration(120)
+            .buildAndRegister()
+
         /* Block Breaker */
         CRecipes.ASSEMBLER.builder()
             .input(MACHINE_HULL.getItem(AZ91D))
