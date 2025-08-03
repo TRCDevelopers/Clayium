@@ -114,5 +114,12 @@ object ClayGadgetsRecipeLoader {
             MetaItemClayGadget.AutoEat,
         )
         //endregion
+
+        asm.builder()
+            .input(MetaItemClayGadget.OverclockMk1)
+            .input(MetaItemClayParts.ClaySpirit, 4)
+            .output(MetaItemClayGadget.RepeatedlyAttack)
+            .tier(10).CEt(ClayEnergy.of(1000)).duration(120)
+            .buildAndRegister()
     }
 }

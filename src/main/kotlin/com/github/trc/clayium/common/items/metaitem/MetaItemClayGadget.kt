@@ -6,6 +6,7 @@ import com.github.trc.clayium.common.capability.impl.ClayGadgetAutoEat
 import com.github.trc.clayium.common.capability.impl.ClayGadgetFlight
 import com.github.trc.clayium.common.capability.impl.ClayGadgetHealth
 import com.github.trc.clayium.common.capability.impl.ClayGadgetOverclock
+import com.github.trc.clayium.common.capability.impl.GadgetRepeatedlyAttack
 import com.github.trc.clayium.common.items.metaitem.component.IItemCapabilityProvider
 import com.github.trc.clayium.common.util.UtilLocale
 import net.minecraft.client.util.ITooltipFlag
@@ -46,6 +47,9 @@ object MetaItemClayGadget : MetaItemClayium("clay_gadget") {
         .gadget(ClayGadgetAutoEat(economicalMode = true))
     val AutoEat = addItem(301, "gadget_auto_eat").tier(7)
         .gadget(ClayGadgetAutoEat(economicalMode = false))
+
+    val RepeatedlyAttack = addItem(400, "gadget_repeatedly_attack").tier(8)
+        .gadget(GadgetRepeatedlyAttack())
 
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
