@@ -168,7 +168,6 @@ open class CommonProxy {
         GameRegistry.registerTileEntity(TileEntityMetalChest::class.java, clayiumId("metalChest"))
     }
 
-    open fun updateFlightStatus(mode: Int) {
-        // No-op in server
-    }
+    open fun updateFlightStatus(mode: Int) {}
+    open fun overclockPlayer(delay: Int) {}
 }

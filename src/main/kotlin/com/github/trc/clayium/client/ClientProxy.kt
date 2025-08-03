@@ -153,4 +153,6 @@ class ClientProxy : CommonProxy() {
         player.motionZ = (mi.moveForward * cosYaw + mi.moveStrafe * sinYaw).toDouble()
     }
 
+    override fun overclockPlayer(delay: Int) {
+    }
 }
