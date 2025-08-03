@@ -47,7 +47,7 @@ class RedstoneProxyMetaTileEntity(
             field = value
             if (notifyFlag) {
                 notifyNeighbors()
-                markDirty()
+                markAsDirty()
             }
         }
     private var power: Int = 0

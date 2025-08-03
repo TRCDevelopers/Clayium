@@ -1,5 +1,6 @@
 package com.github.trc.clayium.api.metatileentity
 
+import com.github.trc.clayium.api.metatileentity.interfaces.IMarkDirty
 import com.github.trc.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import com.github.trc.clayium.api.network.PacketDataList
 import io.netty.buffer.Unpooled
@@ -10,7 +11,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.tileentity.TileEntity
 import net.minecraftforge.common.util.Constants
 
-abstract class SyncedTileEntityBase : TileEntity(), ISyncedTileEntity {
+abstract class SyncedTileEntityBase : TileEntity(), ISyncedTileEntity, IMarkDirty {
     private val updates = PacketDataList()
 
     override fun writeCustomData(discriminator: Int, dataWriter: PacketBuffer.() -> Unit) {
@@ -47,6 +48,10 @@ abstract class SyncedTileEntityBase : TileEntity(), ISyncedTileEntity {
 
     override fun handleUpdateTag(tag: NBTTagCompound) {
         receiveInitialSyncData(PacketBuffer(Unpooled.wrappedBuffer(tag.getByteArray("d"))))
+    }
+
+    override fun markAsDirty() {
+        this.markDirty()
     }
 
     fun scheduleRenderUpdate() {

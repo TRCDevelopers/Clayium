@@ -87,13 +87,13 @@ class StorageContainerMetaTileEntity(
         set(value) {
             val syncFlag = !isRemote && field != value
             field = value
-            markDirty()
+            markAsDirty()
             if (syncFlag) writeCustomData(UPDATE_MAX_ITEMS_STORED) { writeVarInt(value) }
         }
     val isUpgraded get() = maxStoredItems == UPGRADED_MAX_AMOUNT
 
     private var itemsStored = 0
-        set(value) { field = value; markDirty() }
+        set(value) { field = value; markAsDirty() }
 
     private var previousStoredItems = 0
     override fun update() {

@@ -149,7 +149,7 @@ abstract class MetaTileEntity(
             if (isFacingValid(value)) {
                 val syncFlag = !(isRemote || field == value)
                 field = value
-                markDirty()
+                markAsDirty()
                 if (syncFlag) writeCustomData(UPDATE_FRONT_FACING) { writeByte(value.index) }
             }
         }
@@ -168,7 +168,7 @@ abstract class MetaTileEntity(
         traitByNetworkId[trait.networkId] = trait
     }
 
-    override fun markDirty() { holder?.markDirty() }
+    override fun markAsDirty() { holder?.markDirty() }
 
     @MustBeInvokedByOverriders
     open fun update() {
@@ -211,7 +211,7 @@ abstract class MetaTileEntity(
             newMetaTileEntity.writeInitialSyncData(this)
         }
         world.neighborChanged(pos, holder!!.blockType, pos)
-        markDirty()
+        markAsDirty()
         Block.spawnAsEntity(world, pos, this.asStackForm())
         this.onReplace(world, pos, newMetaTileEntity, data)
         this.scheduleRenderUpdate()

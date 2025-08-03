@@ -9,6 +9,6 @@ open class ClayiumItemStackHandler(
 ) : ItemStackHandler(size) {
     override fun onContentsChanged(slot: Int) {
         super.onContentsChanged(slot)
-        notifiable.markDirty()
+        notifiable.markAsDirty()
     }
 }
