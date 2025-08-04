@@ -2,7 +2,6 @@ package com.github.trc.clayium.common.capability.impl
 
 import com.github.trc.clayium.api.capability.IItemGadget
 import com.github.trc.clayium.api.util.clayiumId
-import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemFood
 import net.minecraft.item.ItemStack
@@ -16,9 +15,9 @@ class ClayGadgetAutoEat(
 ) : IItemGadget {
     override val category: ResourceLocation = clayiumId("gadget_auto_eat")
 
-    override fun updateInventory(player: Entity, isRemote: Boolean) {
+    override fun updateInventory(player: EntityPlayer, isRemote: Boolean) {
         if (isRemote) return
-        if (!(player is EntityPlayer && player.foodStats.needFood())) return
+        if (!player.foodStats.needFood()) return
 
         var mostEfficientFoodStack = ItemStack.EMPTY
         var currentFoodEfficiency = 0.0

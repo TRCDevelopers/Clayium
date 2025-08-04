@@ -1,6 +1,6 @@
 package com.github.trc.clayium.api.capability
 
-import net.minecraft.entity.Entity
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.ResourceLocation
 
 /**
@@ -21,25 +21,25 @@ interface IItemGadget {
     /**
      * Called every tick when the gadget is in the holder.
      */
-    fun updateInventory(player: Entity, isRemote: Boolean) {}
+    fun updateInventory(player: EntityPlayer, isRemote: Boolean) {}
 
     /**
      * Called on [net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent].
      */
-    fun onLogin(player: Entity) {}
+    fun onLogin(player: EntityPlayer) {}
 
     /**
      * Called on [net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent].
      */
-    fun onLogout(player: Entity) {}
+    fun onLogout(player: EntityPlayer) {}
 
     /**
      * Called when the gadget is put in the holder.
      */
-    fun putInHolder(player: Entity) {}
+    fun putInHolder(player: EntityPlayer) {}
 
     /**
      * Called when the gadget is taken out of the holder.
      */
-    fun removeFromHolder(player: Entity) {}
+    fun removeFromHolder(player: EntityPlayer) {}
 }
