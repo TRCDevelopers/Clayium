@@ -787,9 +787,9 @@ item.clayium.gadget_health_mk3.name=粘土ガジェット [体力 III]
 item.clayium.gadget_auto_eat_economical.name=粘土ガジェット [倹約自動摂食]
 item.clayium.gadget_auto_eat.name=粘土ガジェット [自動摂食]
 item.clayium.gadget_repeatedly_attack.name=粘土ガジェット [連続攻撃]
-item.clayium.itemGadget.LongArm0.name=粘土ガジェット [ロングアーム]
-item.clayium.itemGadget.LongArm1.name=粘土ガジェット [超ロングアーム]
-item.clayium.itemGadget.LongArm2.name=粘土ガジェット [超超ロングアーム]
+item.clayium.gadget_long_arm_mk1.name=粘土ガジェット [ロングアーム]
+item.clayium.gadget_long_arm_mk2.name=粘土ガジェット [超ロングアーム]
+item.clayium.gadget_long_arm_mk3.name=粘土ガジェット [超超ロングアーム]
 
 item.clayium.clay_circuit_board.name=粘土回路板
 item.clayium.clay_circuit.name=粘土回路

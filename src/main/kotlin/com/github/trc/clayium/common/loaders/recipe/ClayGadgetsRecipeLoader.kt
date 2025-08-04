@@ -121,5 +121,26 @@ object ClayGadgetsRecipeLoader {
             .output(MetaItemClayGadget.RepeatedlyAttack)
             .tier(10).CEt(ClayEnergy.of(1000)).duration(120)
             .buildAndRegister()
+
+        //region LongArm
+        asm.builder()
+            .input(MetaItemClayParts.ClayGadgetParts)
+            .input(MetaItemClayParts.ManipulatorMk1)
+            .output(MetaItemClayGadget.LongArmMk1)
+            .tier(4).CEt(ClayEnergy.milli(1)).duration(120)
+            .buildAndRegister()
+        asm.builder()
+            .input(MetaItemClayGadget.LongArmMk1)
+            .input(MetaItemClayParts.ManipulatorMk2)
+            .output(MetaItemClayGadget.LongArmMk2)
+            .tier(4).CEt(ClayEnergy.of(10)).duration(120)
+            .buildAndRegister()
+        asm.builder()
+            .input(MetaItemClayGadget.LongArmMk2)
+            .input(MetaItemClayParts.ManipulatorMk3)
+            .output(MetaItemClayGadget.LongArmMk3)
+            .tier(4).CEt(ClayEnergy.of(100_000)).duration(120)
+            .buildAndRegister()
+        //endregion
     }
 }

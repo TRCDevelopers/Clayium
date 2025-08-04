@@ -5,6 +5,7 @@ import com.github.trc.clayium.api.capability.IItemGadget
 import com.github.trc.clayium.common.capability.impl.ClayGadgetAutoEat
 import com.github.trc.clayium.common.capability.impl.ClayGadgetFlight
 import com.github.trc.clayium.common.capability.impl.ClayGadgetHealth
+import com.github.trc.clayium.common.capability.impl.ClayGadgetLongArm
 import com.github.trc.clayium.common.capability.impl.ClayGadgetOverclock
 import com.github.trc.clayium.common.capability.impl.GadgetRepeatedlyAttack
 import com.github.trc.clayium.common.items.metaitem.component.IItemCapabilityProvider
@@ -48,8 +49,15 @@ object MetaItemClayGadget : MetaItemClayium("clay_gadget") {
     val AutoEat = addItem(301, "gadget_auto_eat").tier(7)
         .gadget(ClayGadgetAutoEat(economicalMode = false))
 
-    val RepeatedlyAttack = addItem(400, "gadget_repeatedly_attack").tier(8)
+    val RepeatedlyAttack = addItem(400, "gadget_repeatedly_attack").tier(10)
         .gadget(GadgetRepeatedlyAttack())
+
+    val LongArmMk1 = addItem(500, "gadget_long_arm_mk1").tier(6)
+        .gadget(ClayGadgetLongArm(3.0))
+    val LongArmMk2 = addItem(501, "gadget_long_arm_mk2").tier(8)
+        .gadget(ClayGadgetLongArm(7.0))
+    val LongArmMk3 = addItem(502, "gadget_long_arm_mk3").tier(12)
+        .gadget(ClayGadgetLongArm(20.0))
 
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)

@@ -53,6 +53,7 @@ class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData>, IBauble {
 
     override fun onUpdate(stack: ItemStack, worldIn: World, entityIn: Entity, itemSlot: Int, isSelected: Boolean) {
         super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected)
+        if (entityIn !is EntityPlayer) return
         val handler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
             ?: return
         for (i in 0..<handler.slots) {
@@ -134,6 +135,7 @@ class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData>, IBauble {
 
     @Optional.Method(modid = Mods.Names.BAUBLES)
     override fun onWornTick(itemstack: ItemStack, player: EntityLivingBase) {
+        if (player !is EntityPlayer) return
         val handler = itemstack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
             ?: return
         for (i in 0..<handler.slots) {
