@@ -79,7 +79,7 @@ class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData>, IBauble {
             itemHandler.getStackInSlot(it).getCapability(ClayiumCapabilities.CLAY_GADGET, null)
         }
         MuiSlots.lockHeldItem(syncManager, data.player)
-        return ModularPanel.defaultPanel("clayium:gadget_holder").height(144 + 18 * 2)
+        return ModularPanel.defaultPanel("clayium:gadget_holder", 176, 150)
             .child(Flow.column().margin(7).sizeRel(1f)
                 .child(IKey.str(stack.displayName).asWidget().left(0))
                 .child(SlotGroupWidget.builder()
@@ -110,7 +110,7 @@ class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData>, IBauble {
                             .build()
                     }
                     .build().marginTop(2))
-                .child(IKey.lang("container.inventory").asWidget().left(0).marginTop(2))
+                .child(IKey.lang("container.inventory").asWidget().left(0).marginTop(2).marginBottom(1))
                 .child(MuiSlots.playerInventory(0))
             )
     }
