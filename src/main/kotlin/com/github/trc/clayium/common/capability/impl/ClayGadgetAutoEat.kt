@@ -13,7 +13,7 @@ private const val MAX_FOOD_LEVEL = 20
 class ClayGadgetAutoEat(
     val economicalMode: Boolean,
 ) : IItemGadget {
-    override val category: ResourceLocation = clayiumId("gadget_auto_eat")
+    override val category: ResourceLocation = clayiumId("auto_eat")
 
     override fun updateInventory(player: EntityPlayer, isRemote: Boolean) {
         if (isRemote) return
