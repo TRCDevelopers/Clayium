@@ -31,11 +31,11 @@ object MetaItemClayGadget : MetaItemClayium("clay_gadget") {
         .gadget(ClayGadgetOverclock(0))
 
     val FlightMk1 = addItem(100, "gadget_flight_mk1").tier(12)
-        .gadget(ClayGadgetFlight(0.05, 0))
+        .gadget(ClayGadgetFlight(0))
     val FlightMk2 = addItem(101, "gadget_flight_mk2").tier(13)
-        .gadget(ClayGadgetFlight(0.05, 1))
+        .gadget(ClayGadgetFlight(1))
     val FlightMk3 = addItem(102, "gadget_flight_mk3").tier(13)
-        .gadget(ClayGadgetFlight(0.05, 2))
+        .gadget(ClayGadgetFlight(2))
 
     val HealthMk1 = addItem(200, "gadget_health_mk1").tier(6)
         .gadget(ClayGadgetHealth(20.0))
