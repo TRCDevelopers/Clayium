@@ -1,6 +1,5 @@
 package com.github.trc.clayium.common.event
 
-import com.github.trc.clayium.api.capability.ClayiumCapabilities
 import com.github.trc.clayium.api.capability.ClayiumPlayerData
 import com.github.trc.clayium.api.util.clayiumId
 import com.github.trc.clayium.common.capability.impl.GadgetRepeatedlyAttack
@@ -13,7 +12,6 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.PlayerEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
-import net.minecraftforge.items.CapabilityItemHandler
 
 object EntityEventListener {
     @SubscribeEvent
@@ -52,22 +50,8 @@ object EntityEventListener {
         if (entity is EntityPlayer) {
             val victim = e.entityLiving
                 ?: return
-            for (i in 0..<entity.inventory.sizeInventory) {
-                val stack = entity.inventory.getStackInSlot(i)
-                if (stack.isEmpty) continue
-                if (stack.item is ItemClayGadgetHolder) {
-                    val handler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
-                        ?: continue
-                    for (j in 0..<handler.slots) {
-                        val gadgetStack = handler.getStackInSlot(j)
-                        if (gadgetStack.isEmpty) continue
-                        val gadget = gadgetStack.getCapability(ClayiumCapabilities.CLAY_GADGET, null)
-                            ?: continue
-                        if (gadget is GadgetRepeatedlyAttack) {
-                            victim.hurtResistantTime = 0
-                        }
-                    }
-                }
+            if (ItemClayGadgetHolder.hasGadget(entity.uniqueID, GadgetRepeatedlyAttack)) {
+                victim.hurtResistantTime = 0
             }
         }
     }

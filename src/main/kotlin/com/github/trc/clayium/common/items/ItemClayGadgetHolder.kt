@@ -148,6 +148,10 @@ class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData>, IBauble {
     companion object {
         private val playerToGadgets = mutableMapOf<UUID, Set<IItemGadget>>()
 
+        fun hasGadget(player: UUID, gadget: IItemGadget): Boolean {
+            return playerToGadgets[player]?.contains(gadget) ?: false
+        }
+
         fun onPlayerLogin(player: EntityPlayer) {
             getGadgets(player).forEach { it.onLogin(player) }
         }

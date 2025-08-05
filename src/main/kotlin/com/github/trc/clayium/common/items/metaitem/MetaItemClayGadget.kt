@@ -50,7 +50,7 @@ object MetaItemClayGadget : MetaItemClayium("clay_gadget") {
         .gadget(ClayGadgetAutoEat(economicalMode = false))
 
     val RepeatedlyAttack = addItem(400, "gadget_repeatedly_attack").tier(10)
-        .gadget(GadgetRepeatedlyAttack())
+        .gadget(GadgetRepeatedlyAttack)
 
     val LongArmMk1 = addItem(500, "gadget_long_arm_mk1").tier(6)
         .gadget(ClayGadgetLongArm(3.0))
