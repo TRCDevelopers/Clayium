@@ -15,7 +15,7 @@ class ClayGadgetLongArm(
 
     private val modifier = AttributeModifier(CUtils.cUuid, "ClayiumGadgetLongArm", additionalReach, ADD)
     private val map: HashMultimap<String, AttributeModifier> = HashMultimap.create<String, AttributeModifier>().apply {
-        put("generic.reachDistance", modifier)
+        put(EntityPlayer.REACH_DISTANCE.name, modifier)
     }
 
     override fun putInHolder(player: EntityPlayer) {
