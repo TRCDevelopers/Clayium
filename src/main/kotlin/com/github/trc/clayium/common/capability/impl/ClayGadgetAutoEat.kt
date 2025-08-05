@@ -31,7 +31,7 @@ class ClayGadgetAutoEat(
                 if (actualHealLevel <= 0 || (economicalMode && itemFoodLevel != actualHealLevel)) {
                     continue
                 }
-                val thisFoodEff =  actualHealLevel / itemFoodLevel.toDouble()
+                val thisFoodEff = actualHealLevel / itemFoodLevel.toDouble()
                 if (thisFoodEff > currentFoodEfficiency) {
                     mostEfficientFoodStack = stack
                     currentFoodEfficiency = thisFoodEff
