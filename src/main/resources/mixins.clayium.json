@@ -1,5 +1,5 @@
 {
-  "package": "com.github.trc.clayium.mixins",
+  "package": "io.github.trcdevelopers.clayium.mixins",
   "refmap": "mixins.clayium.refmap.json",
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",

@@ -1,0 +1,244 @@
+package io.github.trcdevelopers.clayium.api.metatileentity
+
+
+import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
+import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Row
+import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
+import io.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
+import io.github.trcdevelopers.clayium.api.capability.IPipeConnectionLogic
+import io.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
+import io.github.trcdevelopers.clayium.api.capability.impl.FilteredItemHandler
+import io.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
+import io.github.trcdevelopers.clayium.api.gui.data.MetaTileEntityGuiData
+import io.github.trcdevelopers.clayium.api.metatileentity.trait.AutoIoHandler
+import io.github.trcdevelopers.clayium.api.util.CUtils
+import io.github.trcdevelopers.clayium.api.util.ITier
+import io.github.trcdevelopers.clayium.api.util.MachineIoMode
+import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_1
+import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_2
+import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_3
+import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_4
+import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_5
+import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_6
+import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_ALL
+import io.github.trcdevelopers.clayium.api.util.MachineIoMode.NONE
+import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
+import io.github.trcdevelopers.clayium.common.util.CNbtUtils
+import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
+import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
+import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.items.CapabilityItemHandler
+import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.items.IItemHandlerModifiable
+import net.minecraftforge.items.wrapper.CombinedInvWrapper
+import kotlin.math.max
+import kotlin.math.min
+
+class MultiTrackBufferMetaTileEntity(
+    metaTileEntityId: ResourceLocation,
+    tier: ITier,
+) : MetaTileEntity(metaTileEntityId, tier,
+    validInputModes = mBufferValidIoModes[getTrackRows(tier.numeric)-2], validOutputModes = mBufferValidIoModes[getTrackRows(tier.numeric)-2],
+    "multi_track_buffer") {
+
+    override val pipeConnectionLogic: IPipeConnectionLogic = IPipeConnectionLogic.ItemPipe
+
+    val trackRow = getTrackRows(tier.numeric)
+
+    val trackInvSize = when (tier.numeric) {
+        4 -> 1
+        5 -> 2
+        in 6..7 -> 4
+        8 -> 6
+        in 9..13 -> 9
+        else -> 1
+    }
+
+    val tracks: Array<ClayiumItemStackHandler> = (0..<trackRow).map {
+        ClayiumItemStackHandler(this, trackInvSize)
+    }.toTypedArray()
+
+    private val filtersHandler = ClayiumItemStackHandler(this, trackRow)
+    private val slotFilters = (0..<filtersHandler.slots).map { slot ->
+        { stack: ItemStack ->
+            val filterStack = filtersHandler.getStackInSlot(slot)
+            val filter = filterStack.getCapability(ClayiumCapabilities.ITEM_FILTER, null)
+            if (filterStack.isEmpty) true
+            else filter?.test(stack) ?: filterStack.isItemEqual(stack)
+        }
+    }
+    override val itemInventory = CombinedInvWrapper(*tracks)
+    override val importItems: IItemHandlerModifiable = itemInventory
+    override val exportItems: IItemHandlerModifiable = itemInventory
+    val autoIoHandler: AutoIoHandler = MultiTrackIoHandler()
+
+    override fun onPlacement() {
+        this.setInput(frontFacing.opposite, M_ALL)
+        super.onPlacement()
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (facing == null) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemInventory)
+
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(
+                ItemHandlerProxy(
+                    getItemHandler(getInput(facing), facing), getItemHandler(getOutput(facing), facing)
+                )
+            )
+        }
+        return super.getCapability(capability, facing)
+    }
+
+    private fun getItemHandler(mode: MachineIoMode, facing: EnumFacing): IItemHandler? {
+        return when (mode) {
+            M_1 -> createFilteredItemHandler(getTrackWithFilter(0), facing)
+            M_2 -> createFilteredItemHandler(getTrackWithFilter(1), facing)
+            M_3 -> createFilteredItemHandler(getTrackWithFilter(2), facing)
+            M_4 -> createFilteredItemHandler(getTrackWithFilter(3), facing)
+            M_5 -> createFilteredItemHandler(getTrackWithFilter(4), facing)
+            M_6 -> createFilteredItemHandler(getTrackWithFilter(5), facing)
+            else -> createFilteredItemHandler(itemInventory, facing)
+        }
+    }
+
+    private fun getTrackWithFilter(track: Int): IItemHandler = FilteredItemHandler(tracks[track], slotFilters[track])
+
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
+        (0..<trackRow).forEach { syncManager.registerSlotGroup("mt_buffer_inv_${it}", 1) }
+        val slotsRowString = "I".repeat(trackInvSize)
+        return ModularPanel("multi_track_buffer")
+            .flex {
+                it.size(max(GUI_DEFAULT_WIDTH, trackInvSize * 18 + 4 + 18 + /* margin*/ 12), 18 + trackRow * 18 + 94 + 2)
+                it.align(Alignment.Center)
+            }
+            .columnWithPlayerInv {
+                child(buildMainParentWidget(syncManager)
+                    .child(Column().width(trackInvSize * 18 + 4 + 18).height(trackRow * 18)
+                        .align(Alignment.Center)
+                        .also { column ->
+                            for ((i, handler) in tracks.withIndex()) {
+                                column.child(Row().width(trackInvSize * 18 + 4 + 18).height(18)
+                                    .child(SlotGroupWidget.builder()
+                                        .matrix(slotsRowString)
+                                        .key('I') { slotIndex ->
+                                            MuiSlots.itemSlotBuilder(handler, slotIndex)
+                                                .slotGroup("mt_buffer_inv_${i}")
+                                                .filter(slotFilters[i]).build()
+                                                .background(ClayGuiTextures.M_TRACK_SLOTS[i])
+                                        }
+                                        .build())
+                                    .child(MuiSlots.phantomSlot(filtersHandler, i)
+                                        .background(ClayGuiTextures.M_TRACK_FILTER_SLOTS[i])
+                                        .align(Alignment.CenterRight)))
+                            }
+                        }
+                    )
+                )
+            }
+    }
+
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        CUtils.writeItems(filtersHandler, "filterSlots", data)
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        CUtils.readItems(filtersHandler, "filterSlots", data)
+    }
+
+    private inner class MultiTrackIoHandler : AutoIoHandler.Combined(this@MultiTrackBufferMetaTileEntity, isBuffer = true) {
+        override fun importFromNeighbors() {
+            var remaining = amountPerAction
+            for (side in EnumFacing.entries) {
+                if (!(remaining > 0 && isImporting(side))) continue
+
+                val neighbor = getNeighborTileEntity(side) ?: continue
+                if (neighbor is MetaTileEntityHolder && neighbor.metaTileEntity is MultiTrackBufferMetaTileEntity) {
+                    val neighborBuffer = neighbor.metaTileEntity as MultiTrackBufferMetaTileEntity
+                    remaining = transferMultiTrack(neighborBuffer, this@MultiTrackBufferMetaTileEntity, remaining)
+                } else {
+                    remaining = transferItemStack(
+                        from = neighbor.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                        to = getImportItems(side) ?: continue,
+                        amount = remaining,
+                    )
+                }
+            }
+        }
+
+        override fun exportToNeighbors() {
+            var remaining = amountPerAction
+            for (side in EnumFacing.entries) {
+                if (!(remaining > 0 && isExporting(side))) continue
+
+                val neighbor = getNeighborTileEntity(side) ?: continue
+                if (neighbor is MetaTileEntityHolder && neighbor.metaTileEntity is MultiTrackBufferMetaTileEntity) {
+                    val neighborBuffer = neighbor.metaTileEntity as MultiTrackBufferMetaTileEntity
+                    remaining = transferMultiTrack(this@MultiTrackBufferMetaTileEntity, neighborBuffer, remaining)
+                } else {
+                    remaining = transferItemStack(
+                        from = getExportItems(side) ?: continue,
+                        to = neighbor.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                        amount = remaining,
+                    )
+                }
+            }
+        }
+
+        /**
+         * returns remaining amount
+         */
+        private fun transferMultiTrack(
+            from: MultiTrackBufferMetaTileEntity,
+            to: MultiTrackBufferMetaTileEntity,
+            maxAmount: Int
+        ): Int {
+            var remain = maxAmount
+            for (i in 0..<min(from.trackRow, to.trackRow)) {
+                val fromHandler = from.tracks[i]
+                val toHandler = to.tracks[i]
+                remain = transferItemStack(from = fromHandler, to = toHandler, amount = remain)
+            }
+            return remain
+        }
+    }
+
+    override fun onReplace(world: World, pos: BlockPos, newMetaTileEntity: MetaTileEntity, oldMteData: NBTTagCompound) {
+        CNbtUtils.handleInvSizeDifference(world, pos, oldMteData, IMPORT_INVENTORY, newMetaTileEntity.itemInventory)
+    }
+
+    override fun createMetaTileEntity(): MetaTileEntity {
+        return MultiTrackBufferMetaTileEntity(this.metaTileEntityId, this.tier)
+    }
+
+    companion object {
+        val mBufferValidIoModes = listOf(
+            listOf(NONE, M_ALL, M_1, M_2),
+            listOf(NONE, M_ALL, M_1, M_2, M_3),
+            listOf(NONE, M_ALL, M_1, M_2, M_3, M_4),
+            listOf(NONE, M_ALL, M_1, M_2, M_3, M_4, M_5),
+            listOf(NONE, M_ALL, M_1, M_2, M_3, M_4, M_5, M_6)
+        )
+
+        fun getTrackRows(tier: Int) = when (tier) {
+            in 4..8 -> tier - 2
+            in 9..13 -> 6
+            else -> 2
+        }
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder().noFrontFacing().build()
+    }
+}

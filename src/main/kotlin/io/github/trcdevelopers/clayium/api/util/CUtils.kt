@@ -1,0 +1,225 @@
+package io.github.trcdevelopers.clayium.api.util
+
+import com.cleanroommc.modularui.api.drawable.IKey
+import com.mojang.authlib.GameProfile
+import io.github.trcdevelopers.clayium.api.ClayiumApi
+import io.github.trcdevelopers.clayium.api.MOD_ID
+import io.github.trcdevelopers.clayium.api.block.ItemBlockMachine
+import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
+import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
+import io.github.trcdevelopers.clayium.common.gui.ResizingTextWidget
+import io.github.trcdevelopers.clayium.common.util.FakeServerHandler
+import net.minecraft.block.Block
+import net.minecraft.block.state.IBlockState
+import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.nbt.NBTTagList
+import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Vec3d
+import net.minecraft.world.GameType
+import net.minecraft.world.IBlockAccess
+import net.minecraft.world.WorldServer
+import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.common.util.Constants
+import net.minecraftforge.common.util.FakePlayer
+import net.minecraftforge.common.util.FakePlayerFactory
+import net.minecraftforge.fml.common.FMLCommonHandler
+import net.minecraftforge.fml.relauncher.FMLLaunchHandler
+import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.items.IItemHandlerModifiable
+import java.util.*
+import kotlin.collections.AbstractList
+import kotlin.enums.EnumEntries
+import kotlin.enums.enumEntries
+
+typealias BlockMaterial = net.minecraft.block.material.Material
+
+// todo move extension functions to (api | common).extensions?
+// 完全なUtil系メソッド(Clayiumが一切関係ない関数)をapiにいれるのは...
+fun IBlockAccess?.getMetaTileEntity(pos: BlockPos?): MetaTileEntity? {
+    if (this == null || pos == null) return null
+    return (this.getTileEntity(pos) as? MetaTileEntityHolder)?.metaTileEntity
+}
+
+fun ItemStack.copyWithSize(size: Int): ItemStack {
+    val stack = copy()
+    stack.count = size
+    return stack
+}
+
+fun ItemStack.canStackWith(other: ItemStack): Boolean {
+    return (this.isEmpty || other.isEmpty) || (isItemEqual(other)
+            && (!item.isDamageable || itemDamage == other.itemDamage)
+            && ItemStack.areItemStackTagsEqual(this, other))
+}
+
+fun <T> ItemStack.getCapability(capability: Capability<T>): T? {
+    return getCapability(capability, null)
+}
+
+fun <T> ItemStack.hasCapability(capability: Capability<T>): Boolean {
+    return hasCapability(capability, null)
+}
+
+fun IItemHandler.toList(): List<ItemStack> {
+    return object : AbstractList<ItemStack>() {
+        override val size = slots
+
+        override fun get(index: Int): ItemStack {
+            return getStackInSlot(index)
+        }
+    }
+}
+
+fun IBlockState.toItemStack(count: Int = 1): ItemStack {
+    val item = block.getAsItem()
+    val meta = if (item.hasSubtypes) block.getMetaFromState(this) else 0
+    return ItemStack(item, count, meta)
+}
+
+fun Block.getAsItem(): Item {
+    return Item.getItemFromBlock(this)
+}
+
+fun TileEntity?.takeIfValid(): TileEntity? {
+    return this?.takeUnless { it.isInvalid }
+}
+
+fun AxisAlignedBB.containsEq(vec: Vec3d): Boolean {
+    return vec.x >= this.minX && vec.x <= this.maxX &&
+           vec.y >= this.minY && vec.y <= this.maxY &&
+           vec.z >= this.minZ && vec.z <= this.maxZ
+}
+
+fun IKey.asWidgetResizing(): ResizingTextWidget {
+    return ResizingTextWidget(this)
+}
+
+inline fun <reified K : Enum<K>, V, T : EnumEntries<K>> T.enumMap(mapper: (K) -> V): EnumMap<K, V> {
+    val map = EnumMap<K, V>(K::class.java)
+    for (key in this) {
+        map[key] = mapper(key)
+    }
+    return map
+}
+
+inline fun <reified K : Enum<K>, V, T : EnumEntries<K>> T.enumMapNotNull(mapper: (K) -> V?): EnumMap<K, V> {
+    val map = EnumMap<K, V>(K::class.java)
+    for (key in this) {
+        val value = mapper(key)
+        if (value != null) {
+            map[key] = value
+        }
+    }
+    return map
+}
+
+inline fun <reified E : Enum<E>> E.next(): E {
+    val values = enumEntries<E>()
+    return values[(ordinal + 1) % values.size]
+}
+
+fun clayiumId(path: String): ResourceLocation {
+    return ResourceLocation(MOD_ID, path)
+}
+
+object CUtils {
+
+    private val profile by lazy {
+        val mcid = "[Clayium]"
+        GameProfile(UUID.nameUUIDFromBytes(mcid.toByteArray(Charsets.UTF_8)), mcid)
+    }
+
+    val cUuid by lazy {
+        this.profile.id
+    }
+
+    fun writeItems(handler: IItemHandler, tagName: String, tag: NBTTagCompound) {
+        val tagList = NBTTagList()
+        for (i in 0..<handler.slots) {
+            val stack = handler.getStackInSlot(i)
+            if (stack.isEmpty) continue
+
+            val stackTag = NBTTagCompound()
+            stackTag.setInteger("Slot", i)
+            stack.writeToNBT(stackTag)
+            tagList.appendTag(stackTag)
+        }
+        tag.setTag(tagName, tagList)
+    }
+
+    fun writeItems(items: List<ItemStack>, tagName: String, tag: NBTTagCompound) {
+        val tagList = NBTTagList()
+        items.forEachIndexed { i, stack ->
+            if (stack.isEmpty) {
+                tagList.appendTag(NBTTagCompound())
+            } else {
+                val stackTag = NBTTagCompound()
+                stackTag.setInteger("Slot", i)
+                stack.writeToNBT(stackTag)
+                tagList.appendTag(stackTag)
+            }
+        }
+        tag.setTag(tagName, tagList)
+    }
+
+    fun readItems(handler: IItemHandlerModifiable, tagName: String, tag: NBTTagCompound) {
+        if (!tag.hasKey(tagName, Constants.NBT.TAG_LIST)) return
+        val tagList = tag.getTagList(tagName, Constants.NBT.TAG_COMPOUND)
+        for (i in 0..<tagList.tagCount()) {
+            val itemTag = tagList.getCompoundTagAt(i)
+            val slot = itemTag.getInteger("Slot").toInt()
+            if (slot in 0..<handler.slots) {
+                handler.setStackInSlot(slot, ItemStack(itemTag))
+            }
+        }
+    }
+
+    fun readItems(tagName: String, tag: NBTTagCompound): List<ItemStack> {
+        val items = mutableListOf<ItemStack>()
+        val tagList = tag.getTagList(tagName, Constants.NBT.TAG_COMPOUND)
+        for (i in 0..<tagList.tagCount()) {
+            val stackTag = tagList.getCompoundTagAt(i)
+            if (stackTag.hasKey("Slot"))  {
+                items.add(ItemStack(stackTag))
+            } else {
+                items.add(ItemStack.EMPTY)
+            }
+        }
+        return items
+    }
+
+    fun getMetaTileEntity(stack: ItemStack): MetaTileEntity? {
+        return if (stack.item is ItemBlockMachine) {
+            ClayiumApi.mteManager.getRegistrySafe(stack.item.registryName!!.namespace)
+                ?.getObjectById(stack.itemDamage)
+        } else {
+            null
+        }
+    }
+
+    fun getFakePlayer(world: WorldServer): FakePlayer {
+        return FakePlayerFactory.get(world, profile)
+            .apply {
+                connection = FakeServerHandler(this)
+            }
+    }
+
+    fun getFakeSurvivalPlayerWithItem(world: WorldServer, itemStack: ItemStack): FakePlayer {
+        return FakePlayerFactory.get(world, profile)
+            .apply {
+                connection = FakeServerHandler(this)
+                setGameType(GameType.SURVIVAL)
+                inventory.clear()
+                inventory.setInventorySlotContents(0, itemStack)
+                inventory.currentItem = 0
+            }
+    }
+
+    val isClientSide by lazy { FMLCommonHandler.instance().side.isClient }
+    val isDeobfEnvironment by lazy { FMLLaunchHandler.isDeobfuscatedEnvironment() }
+}

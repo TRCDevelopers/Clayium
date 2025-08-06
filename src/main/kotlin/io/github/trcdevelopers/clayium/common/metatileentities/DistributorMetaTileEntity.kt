@@ -1,0 +1,270 @@
+package io.github.trcdevelopers.clayium.common.metatileentities
+
+import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
+import com.cleanroommc.modularui.widget.ParentWidget
+import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Row
+import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_HEIGHT
+import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
+import io.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
+import io.github.trcdevelopers.clayium.api.gui.data.MetaTileEntityGuiData
+import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
+import io.github.trcdevelopers.clayium.api.metatileentity.MteRenderingConfig
+import io.github.trcdevelopers.clayium.api.metatileentity.trait.AutoIoHandler
+import io.github.trcdevelopers.clayium.api.util.ITier
+import io.github.trcdevelopers.clayium.api.util.MachineIoMode
+import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.api.util.copyWithSize
+import io.github.trcdevelopers.clayium.api.util.enumMapNotNull
+import io.github.trcdevelopers.clayium.api.util.next
+import io.github.trcdevelopers.clayium.common.util.CNbtUtils
+import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
+import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
+import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.items.CapabilityItemHandler
+import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.items.ItemHandlerHelper
+import net.minecraftforge.items.wrapper.CombinedInvWrapper
+import org.jetbrains.annotations.VisibleForTesting
+import java.util.*
+import kotlin.math.min
+
+class DistributorMetaTileEntity(
+    metaTileEntityId: ResourceLocation,
+    tier: ITier,
+) : MetaTileEntity(metaTileEntityId, tier, bufferValidInputModes, validOutputModesLists[1], "distributor") {
+
+    private val groupX = when (tier.numeric) {
+        7, 8, 9 -> tier.numeric - 5
+        else -> 1
+    }
+    private val groupY = when (tier.numeric) {
+        7, 8 -> 2
+        9 -> 3
+        else -> 1
+    }
+
+    private val groups = List(groupX * groupY) { ClayiumItemStackHandler(this, 4) }
+
+    override val itemInventory = CombinedInvWrapper(*groups.toTypedArray())
+    override val importItems = itemInventory
+    override val exportItems = itemInventory
+
+    private var groupIndex = 0
+
+    @Suppress("unused")
+    @VisibleForTesting
+    val ioHandler = DistributorIoHandler()
+
+    override fun onPlacement() {
+        for (side in EnumFacing.entries) {
+            if (side == this.frontFacing.opposite) {
+                this.setInput(side, MachineIoMode.ALL)
+            } else {
+                this.setOutput(side, MachineIoMode.ALL)
+            }
+        }
+        super.onPlacement()
+    }
+
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
+        val height = GUI_DEFAULT_HEIGHT - 50 + (18*2 * groupY + 2 * (groupY - 1))
+        return ModularPanel.defaultPanel(translationKey, GUI_DEFAULT_WIDTH, height)
+            .columnWithPlayerInv {
+                child(buildMainParentWidget(syncManager))
+            }
+    }
+
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
+        val groups = groups.mapIndexed { i, handler ->
+            syncManager.registerSlotGroup("group$i", 2)
+            val group = SlotGroupWidget.builder()
+                .matrix("II", "II")
+                .key('I') { j ->
+                    MuiSlots.itemSlotBuilder(handler, j).slotGroup("group$i").build()
+                }
+                .build()
+            group
+        }
+        val slotGroupRows = groups.windowed(this.groupX, this.groupX).map { slotGroupList ->
+            val row = Row()
+                .size((18 * 2) * this.groupX + 2 * (this.groupX - 1), 18 * 2)
+            slotGroupList.forEachIndexed { i, g ->
+                row.child(g.marginLeft(2 * min(i, 1)))
+            }
+            row
+        }
+        val column = Column()
+            .width(18 * 2 * this.groupX + 2 * (this.groupX - 1))
+            .height(18 * 2 * this.groupY + 2 * (this.groupY - 1))
+        val w = super.buildMainParentWidget(syncManager)
+        slotGroupRows.forEachIndexed { i, row ->
+            column.child(row.marginTop(2 * min(i, 1)))
+        }
+        return w.child(column.align(Alignment.Center))
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            // don't expose inventory
+            return null
+        }
+        return super.getCapability(capability, facing)
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder()
+            .face(clayiumId("blocks/distributor"))
+            .useFaceForAllSides()
+            .build()
+    }
+
+    override fun onReplace(world: World, pos: BlockPos, newMetaTileEntity: MetaTileEntity, oldMteData: NBTTagCompound) {
+        CNbtUtils.handleInvSizeDifference(world, pos, oldMteData, IMPORT_INVENTORY, newMetaTileEntity.itemInventory)
+    }
+
+    override fun createMetaTileEntity(): MetaTileEntity {
+        return DistributorMetaTileEntity(this.metaTileEntityId, this.tier)
+    }
+
+    /**
+     * imported or exported -> pointer++
+     * if the exportation is one lap behind, stop importing
+     */
+    inner class DistributorIoHandler : AutoIoHandler.Combined(this@DistributorMetaTileEntity, isBuffer = true) {
+        private var oneLapBehind = false
+        private var importPtr = 0
+            set(value) {
+                field = value
+                if (field >= groups.size) field = 0
+                this.oneLapBehind = (field == exportPtr)
+            }
+        private var exportPtr = 0
+            set(value) {
+                field = value
+                if (field >= groups.size) field = 0
+                this.oneLapBehind = false
+            }
+        private var lastDirection = EnumFacing.DOWN
+
+        override fun serializeNBT(): NBTTagCompound {
+            return super.serializeNBT().apply {
+                setInteger("importPtr", importPtr)
+                setInteger("exportPtr", exportPtr)
+                setBoolean("oneLapBehind", oneLapBehind)
+                setInteger("lastDirection", lastDirection.index)
+            }
+        }
+
+        override fun deserializeNBT(data: NBTTagCompound) {
+            super.deserializeNBT(data)
+            importPtr = data.getInteger("importPtr")
+            exportPtr = data.getInteger("exportPtr")
+            oneLapBehind = data.getBoolean("oneLapBehind")
+            lastDirection = EnumFacing.byIndex(data.getInteger("lastDirection"))
+        }
+
+        override fun importFromNeighbors() {
+            if (oneLapBehind) return
+            var remainingImport = amountPerAction
+            val importItems = groups[importPtr]
+            for (side in EnumFacing.entries) {
+                if (!(remainingImport > 0 && isImporting(side))) continue
+                remainingImport = transferItemStack(
+                    from = metaTileEntity.getNeighborTileEntity(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite) ?: continue,
+                    to = importItems,
+                    amount = remainingImport,
+                )
+            }
+            if (remainingImport != amountPerAction) importPtr++
+        }
+
+        override fun exportToNeighbors() {
+            val neighborMap = EnumFacing.entries.enumMapNotNull { side ->
+                if (!isExporting(side)) return@enumMapNotNull null
+                getNeighborTileEntity(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite)
+            }
+            if (neighborMap.isEmpty()) return
+            val currentInv = groups[exportPtr]
+
+            if (distribute(currentInv, neighborMap)) exportPtr++
+        }
+
+        /**
+         * @return true if insertion was proceeded, false if no insertion was proceeded
+         */
+        @VisibleForTesting
+        fun distribute(source: IItemHandler, neighborMap: Map<EnumFacing, IItemHandler>): Boolean {
+            //todo CLEANUP?
+            var remainingExport = amountPerAction
+            for (exportSlot in 0..<source.slots) {
+                val exported = source.extractItem(exportSlot, remainingExport, true)
+                val exportedCount = exported.count
+                if (exported.isEmpty) continue
+
+                // create a copy, so we can safely remove elements from this copied map
+                // if the neighbor inventory is full, we remove it from the map
+                // Why we don't remove from [neighborMap] directory:
+                // even if this stack can't be inserted, another stack may be inserted.
+                val neighbors = EnumMap(neighborMap)
+                val countPerNeighbor = exportedCount / neighbors.size
+
+                var notInserted = 0
+                for ((side, neighbor) in neighbors) {
+                    // try bulk insert first
+                    val toInsert = exported.copyWithSize(countPerNeighbor)
+                    if (countPerNeighbor != 0) {
+                        val remain = ItemHandlerHelper.insertItem(neighbor, toInsert, false)
+                        val inserted = toInsert.count - remain.count
+                        source.extractItem(exportSlot, inserted, false)
+                        remainingExport -= inserted
+                        notInserted += remain.count
+                        if (!remain.isEmpty) {
+                            neighbors.remove(side)
+                        }
+                    }
+                }
+
+                if (neighbors.isEmpty()) continue
+
+                // one by one insertion
+                val nextNeighbor: Iterator<EnumFacing> = generateSequence(lastDirection.next()) { current ->
+                    if (neighbors.isEmpty()) {
+                        return@generateSequence null
+                    }
+                    else {
+                        for (i in 0..<6) {
+                            val next = current.next()
+                            if (neighbors.containsKey(next)) return@generateSequence next
+                        }
+                        return@generateSequence null
+                    }
+                }.iterator()
+
+                notInserted += exportedCount % neighbors.size
+                val toInsertCount1 = exported.copyWithSize(1)
+                while (remainingExport > 0 && notInserted > 0 && nextNeighbor.hasNext()) {
+                    val side = nextNeighbor.next()
+                    lastDirection = side
+                    val handler = neighbors[side] ?: continue
+                    val remain = ItemHandlerHelper.insertItem(handler, toInsertCount1, false)
+                    if (!remain.isEmpty) {
+                        neighbors.remove(side)
+                        continue
+                    }
+                    source.extractItem(exportSlot, 1, false)
+                    notInserted--
+                    remainingExport--
+                }
+            }
+            return remainingExport != amountPerAction
+        }
+    }
+}

@@ -1,0 +1,124 @@
+package io.github.trcdevelopers.clayium.common.metatileentities
+
+import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.ParentWidget
+import com.cleanroommc.modularui.widgets.layout.Column
+import io.github.trcdevelopers.clayium.api.ClayEnergy
+import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_HEIGHT
+import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
+import io.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
+import io.github.trcdevelopers.clayium.api.capability.impl.EmptyItemStackHandler
+import io.github.trcdevelopers.clayium.api.gui.data.MetaTileEntityGuiData
+import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
+import io.github.trcdevelopers.clayium.api.metatileentity.MteRenderingConfig
+import io.github.trcdevelopers.clayium.api.util.ITier
+import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.api.util.getMetaTileEntity
+import io.github.trcdevelopers.clayium.common.config.ConfigCore
+import io.github.trcdevelopers.clayium.common.util.SidelessI18n
+import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
+import net.minecraft.block.BlockLiquid
+import net.minecraft.init.Blocks
+import net.minecraft.util.EnumFacing
+import net.minecraft.util.ResourceLocation
+import kotlin.math.pow
+
+class WaterwheelMetaTileEntity(
+    metaTileEntityId: ResourceLocation,
+    tier: ITier,
+) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "waterwheel") {
+
+    override val importItems = EmptyItemStackHandler
+    override val exportItems = EmptyItemStackHandler
+    override val itemInventory = EmptyItemStackHandler
+
+    val clayEnergyPerWork = ClayEnergy(this.tier.numeric.toDouble().pow(8).toLong())
+    private val maxClayEnergy = clayEnergyPerWork * 5
+    private val progressPerTick = (1000 * this.tier.numeric.toDouble().pow(3)).toInt()
+
+    private var waterCount = 0
+    private var progress = 0
+
+    override fun createMetaTileEntity(): MetaTileEntity {
+        return WaterwheelMetaTileEntity(metaTileEntityId, tier)
+    }
+
+    override fun update() {
+        super.update()
+        if (isRemote) return
+
+        waterCount = getWaterFlowsCount()
+        val world = world ?: return
+        if (world.rand.nextInt(ConfigCore.misc.waterwheelEfficiency) < waterCount) {
+            progress += progressPerTick
+        }
+        if (this.progress >= MAX_PROGRESS) {
+            this.progress = 0
+            emitEnergy()
+        }
+    }
+
+    private fun emitEnergy() {
+        val pos = pos ?: return
+        for (side in EnumFacing.entries) {
+            val energyHolder = world?.getTileEntity(pos.offset(side))?.getCapability(ClayiumTileCapabilities.CLAY_ENERGY_HOLDER, side.opposite)
+                ?: continue
+
+            val mte = world?.getMetaTileEntity(pos.offset(side))
+            if (mte != null && mte.tier.numeric > ConfigCore.misc.waterwheelMaxTier) {
+                continue
+            }
+            val energyStored = energyHolder.getEnergyStored()
+            if (energyStored < maxClayEnergy) {
+                energyHolder.addEnergy(clayEnergyPerWork)
+            }
+        }
+    }
+
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
+        syncManager.syncValue("waterCount", SyncHandlers.intNumber({ waterCount }, { waterCount = it }))
+        syncManager.syncValue("progress", SyncHandlers.intNumber({ progress }, { progress = it }))
+        return ModularPanel.defaultPanel("waterwheel", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT - 50)
+            .child(Column().margin(7)
+                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
+                    .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
+                        .align(Alignment.TopLeft))
+                    .child(IKey.lang("container.inventory").asWidget()
+                        .align(Alignment.BottomLeft))
+                    .child(IKey.dynamic { SidelessI18n.format("gui.clayium.waterwheel.waters", waterCount) }.asWidget()
+                        .widthRel(0.3f).align(Alignment.CenterRight))
+                    .child(IKey.dynamic { SidelessI18n.format("gui.clayium.waterwheel.progress", progress) }.asWidget()
+                        .widthRel(0.6f).align(Alignment.CenterLeft)))
+                .child(MuiSlots.playerInventory(0)))
+    }
+
+    private fun getWaterFlowsCount(): Int {
+        val world = world ?: return 0
+        val pos = pos ?: return 0
+        var waterFlows = 0
+        for (dx in -1..1) {
+            for (dy in -1..1) {
+                for (dz in -1..1) {
+                    val state = world.getBlockState(pos.add(dx, dy, dz))
+                    val block = state.block
+                    if ((block === Blocks.WATER || block === Blocks.FLOWING_WATER) && state.getValue(BlockLiquid.LEVEL) != 0) {
+                        waterFlows++
+                    }
+                }
+            }
+        }
+        return waterFlows
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/waterwheel"))
+    }
+
+    companion object {
+        private const val MAX_PROGRESS = 20_000
+    }
+}

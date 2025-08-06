@@ -1,0 +1,17 @@
+package io.github.trcdevelopers.clayium.common.items
+
+import io.github.trcdevelopers.clayium.api.MOD_ID
+import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.common.creativetab.ClayiumCTabs
+import net.minecraft.item.Item
+
+/**
+ * @param name name without mod id
+ */
+open class ItemClayium(name: String) : Item() {
+    init {
+        this.creativeTab = ClayiumCTabs.main
+        this.registryName = clayiumId(name)
+        this.translationKey = "${MOD_ID}.$name"
+    }
+}

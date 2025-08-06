@@ -1,0 +1,32 @@
+package io.github.trcdevelopers.clayium.common.loaders.recipe
+
+import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
+import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
+import io.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
+
+object SolarClayFabricatorRecipeLoader {
+    fun registerRecipes() {
+        val block = OrePrefix.block
+
+        val clays = mutableListOf(CMaterials.clay, CMaterials.denseClay, CMaterials.compressedClay,
+            CMaterials.industrialClay, CMaterials.advancedIndustrialClay)
+
+        for (clay in clays) CRecipes.SOLAR_1.register { clayInput(block, clay).tier(5) }
+
+        clays.add(CMaterials.energeticClay)
+        clays.add(CMaterials.compressedEnergeticClay)
+
+        for (clay in clays) CRecipes.SOLAR_2.register { clayInput(block, clay).tier(6) }
+
+        clays.add(CMaterials.compressedEnergeticClay2)
+        clays.add(CMaterials.compressedEnergeticClay3)
+        clays.add(CMaterials.compressedEnergeticClay4)
+
+        for (clay in clays) CRecipes.SOLAR_3.register { clayInput(block, clay).tier(7) }
+        CRecipes.SOLAR_3.builder()
+            .input(OrePrefix.ingot, CMaterials.lithium)
+            .output(OrePrefix.block, CMaterials.compressedEnergeticClay4)
+            .tier(7).duration(16699)
+            .buildAndRegister()
+    }
+}
