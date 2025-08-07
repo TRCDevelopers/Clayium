@@ -19,7 +19,7 @@ import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
 import io.github.trcdevelopers.clayium.common.blocks.TileEntityCreativeEnergySource
 import io.github.trcdevelopers.clayium.common.blocks.chunkloader.ChunkLoaderTileEntity
-import io.github.trcdevelopers.clayium.common.blocks.claycraftingtable.TileClayCraftingTable
+import io.github.trcdevelopers.clayium.common.blocks.claycraftingtable.TileClayCraftingBoard
 import io.github.trcdevelopers.clayium.common.blocks.clayworktable.TileClayWorkTable
 import io.github.trcdevelopers.clayium.common.blocks.marker.TileClayMarker
 import io.github.trcdevelopers.clayium.common.blocks.metalchest.BlockMetalChest
@@ -156,7 +156,7 @@ open class CommonProxy {
         GameRegistry.registerTileEntity(TileEntityCreativeEnergySource::class.java, clayiumId("creativeEnergySource"))
         GameRegistry.registerTileEntity(MetaTileEntityHolder::class.java, clayiumId("metaTileEntityHolder"))
         GameRegistry.registerTileEntity(BlockQuartzCrucible.QuartzCrucibleTileEntity::class.java, clayiumId("quartzCrucibleTileEntity"))
-        GameRegistry.registerTileEntity(TileClayCraftingTable::class.java, clayiumId("clayCraftingTable"))
+        GameRegistry.registerTileEntity(TileClayCraftingBoard::class.java, clayiumId("clayCraftingTable"))
 
         GameRegistry.registerTileEntity(TileClayMarker.NoExtend::class.java, clayiumId("clayMarkerNoExtent"))
         GameRegistry.registerTileEntity(TileClayMarker.ExtendToGround::class.java, clayiumId("clayMarkerExtendToGround"))

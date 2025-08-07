@@ -25,7 +25,7 @@ class BlockClayCraftingBoard : Block(Material.CLAY), ITieredBlock {
 
     private val aabb = AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.25, 1.0)
     override fun hasTileEntity(state: IBlockState) = true
-    override fun createTileEntity(world: World, state: IBlockState) = TileClayCraftingTable()
+    override fun createTileEntity(world: World, state: IBlockState) = TileClayCraftingBoard()
     override fun getTier(stack: ItemStack) = ClayTiers.DEFAULT
     override fun getTier(world: IBlockAccess, pos: BlockPos) = ClayTiers.DEFAULT
 

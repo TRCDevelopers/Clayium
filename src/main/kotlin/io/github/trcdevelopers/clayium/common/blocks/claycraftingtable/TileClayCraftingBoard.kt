@@ -26,7 +26,7 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 
-class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
+class TileClayCraftingBoard : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
     private val inventory = ClayiumItemStackHandler(this, 10)
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
