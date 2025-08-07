@@ -3,7 +3,6 @@ package io.github.trcdevelopers.clayium.common.loaders.recipe
 import io.github.trcdevelopers.clayium.common.recipe.handler.MaterialRecipeHandler
 
 object CRecipeLoader {
-    //todo refactoring
     fun load() {
         ClayWorkTableRecipeLoader.registerRecipes()
 
@@ -25,6 +24,7 @@ object CRecipeLoader {
         CondenserRecipeLoader.registerRecipes()
         CuttingMachineRecipeLoader.registerRecipes()
         DecomposerRecipeLoader.registerRecipes()
+        EnergeticClayDecomposerRecipeLoader.registerRecipes()
         GrinderRecipeLoader.registerRecipes()
         InscriberRecipeLoader.registerRecipes()
         LatheRecipeLoader.registerRecipes()

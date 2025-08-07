@@ -107,7 +107,7 @@ object MetaTileEntities {
         SimpleMachineMetaTileEntity(clayiumId("energetic_clay_condenser.${it.lowerName}"), it, CRecipes.ENERGETIC_CLAY_CONDENSER)
     }
 
-    // val ENERGETIC_CLAY_DECOMPOSE = registerMetaTileEntity(249, SimpleMachineMetaTileEntity(clayiumId("energetic_clay_decompose"), ClayTiers.OPA, CRecipes.ENERGETIC_CLAY_DECOMPOSE))
+    val ENERGETIC_CLAY_DECOMPOSER = registerMetaTileEntity(250, SimpleMachineMetaTileEntity(clayiumId("energetic_clay_decomposer"), ClayTiers.OPA, CRecipes.ENERGETIC_CLAY_DECOMPOSER))
 
     val GRINDER = registerMetaTileEntities(251, intArrayOf(2, 3, 4, 5, 6, 10)) { //+6
         SimpleMachineMetaTileEntity(clayiumId("grinder.${it.lowerName}"), it, CRecipes.GRINDER) { mte, reg, ceHolder ->

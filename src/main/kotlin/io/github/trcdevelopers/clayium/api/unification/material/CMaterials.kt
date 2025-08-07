@@ -339,6 +339,7 @@ object CMaterials {
 
     /** 151 - 200 */
     //region Clay Materials
+    val CLAYS: List<CMaterial>
     val clay: CMaterial
     val denseClay: CMaterial
     val compressedClay: CMaterial
@@ -633,6 +634,10 @@ object CMaterials {
             plate(ClayEnergy.micro(10), 1, tier = 0)
             flags(CMaterialFlags.GENERATE_CLAY_PARTS)
         }
+
+        CLAYS = listOf(clay, denseClay, compressedClay, industrialClay, advancedIndustrialClay, energeticClay,
+            compressedEnergeticClay, compressedEnergeticClay2, compressedEnergeticClay3, compressedEnergeticClay4,
+            compressedEnergeticClay5, compressedEnergeticClay6, compressedEnergeticClay7, octupleEnergyClay)
         //endregion
     }
 

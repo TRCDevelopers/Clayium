@@ -1,0 +1,19 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "face": "clayium:blocks/energetic_clay_decomposer"
+    },
+    "model": "clayium:machine"
+  },
+  "variants": {
+    "tier": {
+      "opa": {
+        "textures": {
+          "base": "clayium:blocks/machinehull_tier13"
+        },
+        "model": "clayium:machine"
+      }
+    }
+  }
+}

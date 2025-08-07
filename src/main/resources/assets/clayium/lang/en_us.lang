@@ -541,7 +541,7 @@ tile.clayium.ca_reactor_hull.7.tooltip1=Requires Mk III or higher Core and Coils
 tile.clayium.ca_reactor_hull.8.tooltip1=Requires Mk III or higher Core and Coils.
 tile.clayium.ca_reactor_hull.9.tooltip1=Requires Mk III or higher Core and Coils.
 
-tile.clayium.blockEnergeticClayDecomposer.name=Energetic Clay Decomposer
+machine.clayium.energetic_clay_decomposer.opa=Energetic Clay Decomposer
 
 machine.clayium.waterwheel=%s Water Wheel
 machine.clayium.waterwheel.tooltip1=Supplies energy to adjacent machines.
