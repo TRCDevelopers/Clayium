@@ -4,14 +4,17 @@ import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.common.blocks.claycraftingtable.TileClayCraftingBoard
 import io.github.trcdevelopers.clayium.common.gui.ContainerClayCraftingBoard
 import net.minecraft.client.gui.inventory.GuiContainer
+import net.minecraft.client.resources.I18n
 import net.minecraft.inventory.IInventory
+import net.minecraft.util.ResourceLocation
 
 class GuiClayCraftingBoard(
     playerInv: IInventory,
     val tile: TileClayCraftingBoard,
 ) : GuiContainer(ContainerClayCraftingBoard(playerInv, tile)) {
 
-    private val PLAYER_INVENTORY = clayiumId("textures/gui/player_inventory.png")
+    private val CRAFTING_TABLE = ResourceLocation("textures/gui/container/crafting_table.png")
+    private val PLAYER_INVENTORY = clayiumId("textures/gui/gui_player_inventory.png")
     private val BACK = clayiumId("textures/gui/gui_back.png")
     private val TOP = clayiumId("textures/gui/gui_top.png")
     private val BOTTOM = clayiumId("textures/gui/gui_bottom.png")
@@ -23,6 +26,10 @@ class GuiClayCraftingBoard(
     private val BOTTOM_RIGHT = clayiumId("textures/gui/gui_bottom_right.png")
     private val SLOT = clayiumId("textures/gui/slot.png")
 
+    override fun drawGuiContainerForegroundLayer(mouseX: Int, mouseY: Int) {
+        fontRenderer.drawString(I18n.format("tile.clayium.clay_crafting_board.name"), 6, 6, 0x404040)
+        fontRenderer.drawString(I18n.format("container.inventory"), 8, ySize - 94, 0x404040)
+    }
 
     override fun drawGuiContainerBackgroundLayer(partialTicks: Float, mouseX: Int, mouseY: Int) {
         val x = (width - xSize) / 2
@@ -48,6 +55,19 @@ class GuiClayCraftingBoard(
         drawScaledCustomSizeModalRect(x, y + ySize - 4, 0f, 0f, 4, 4, 4, 4, 4f, 4f)
         this.mc.textureManager.bindTexture(BOTTOM_RIGHT)
         drawScaledCustomSizeModalRect(x + xSize - 4, y + ySize - 4, 0f, 0f, 4, 4, 4, 4, 4f, 4f)
+
+        this.mc.textureManager.bindTexture(PLAYER_INVENTORY)
+        this.drawTexturedModalRect(x + xSize - 176, y + ySize - 94, 0, 0, 176, 94)
+
+        this.mc.textureManager.bindTexture(SLOT)
+        for (i in 0..<3) {
+            for (j in 0..<3) {
+                val slotX = (j * 18) + (x + 29)
+                val slotY = (i * 18) + (y + 16)
+                this.drawTexturedModalRect(slotX, slotY, 0, 0, 18, 18)
+            }
+        }
+        this.drawTexturedModalRect(x + 119, y + 30, 0, 32, 26, 26)
     }
 
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
