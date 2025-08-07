@@ -73,7 +73,7 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
         }
 
         fun M(energy: Long): ClayEnergy {
-            return of(energy * 1_000_000)
+            return ClayEnergy(energy * 1_000_000_000_00)
         }
 
         fun min(a: ClayEnergy, b: ClayEnergy) = if (a < b) a else b
