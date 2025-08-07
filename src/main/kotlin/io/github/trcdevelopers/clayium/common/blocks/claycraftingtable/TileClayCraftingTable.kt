@@ -14,16 +14,13 @@ import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.cleanroommc.modularui.widgets.slot.ItemSlot
-import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import io.github.trcdevelopers.clayium.api.MOD_ID
 import io.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
 import io.github.trcdevelopers.clayium.api.metatileentity.interfaces.IMarkDirty
+import io.github.trcdevelopers.clayium.api.util.CUtils
 import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
-import io.github.trcdevelopers.clayium.common.util.DummyContainer
 import io.github.trcdevelopers.clayium.integration.jei.JeiPlugin
-import io.github.trcdevelopers.clayium.integration.modularui.IGuiHolderClayium
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid
 import net.minecraft.nbt.NBTTagCompound
@@ -42,6 +39,8 @@ class TileClayCraftingTable : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
         super.readFromNBT(compound)
         CUtils.readItems(inventory, "inventory", compound)
     }
+
+    override fun markAsDirty() = this.markDirty()
 
     override fun buildUI(data: PosGuiData, syncManager: PanelSyncManager, uiSettings: UISettings): ModularPanel {
         @Suppress("MISSING_DEPENDENCY_SUPERCLASS_WARNING") // There is no Inventory BogoSorter, but it's fine.
