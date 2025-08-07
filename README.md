@@ -39,7 +39,6 @@ See [wiki](https://trcdevelopers.github.io/Clayium/) for more information.
 - Auto Crafter
 - Clay Crafting Board
 - Clay Guns
-- Energetic Clay Decomposer
 - Fluid related features
 - Configs (`ProgressionRate`, `HardcoreXXX`, etc.)
 - Integrations with Other Mods
