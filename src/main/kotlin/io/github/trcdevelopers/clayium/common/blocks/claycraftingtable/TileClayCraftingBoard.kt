@@ -5,9 +5,13 @@ import io.github.trcdevelopers.clayium.api.metatileentity.interfaces.IMarkDirty
 import io.github.trcdevelopers.clayium.api.util.CUtils
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
+import net.minecraftforge.items.IItemHandler
+import java.lang.ref.WeakReference
 
 class TileClayCraftingBoard : TileEntity(), IMarkDirty {
     private val inventory = ClayiumItemStackHandler(this, 10)
+
+    val neighborItemHandler = WeakReference<IItemHandler>(null)
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         val data = super.writeToNBT(compound)
