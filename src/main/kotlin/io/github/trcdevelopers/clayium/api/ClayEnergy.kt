@@ -44,6 +44,7 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
     operator fun div(value: Double) = ClayEnergy((energy.toDouble() / value).toLong())
     override operator fun compareTo(other: ClayEnergy) = energy.compareTo(other.energy)
 
+    @Suppress("FunctionName")
     companion object {
         val ZERO = ClayEnergy(0)
         val MAX = ClayEnergy(Long.MAX_VALUE)
@@ -65,6 +66,14 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
 
         fun of(energy: Long): ClayEnergy {
             return ClayEnergy(energy * 1000_00)
+        }
+
+        fun k(energy: Long): ClayEnergy {
+            return ClayEnergy(energy * 1_000)
+        }
+
+        fun M(energy: Long): ClayEnergy {
+            return of(energy * 1_000_000)
         }
 
         fun min(a: ClayEnergy, b: ClayEnergy) = if (a < b) a else b

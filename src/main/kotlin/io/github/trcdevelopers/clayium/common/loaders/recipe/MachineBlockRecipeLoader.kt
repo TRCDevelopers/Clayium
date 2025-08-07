@@ -232,6 +232,15 @@ object MachineBlockRecipeLoader {
         registerMachineRecipeHull(MetaTileEntities.SOLAR_CLAY_FABRICATOR) {
             input(OrePrefix.plate, CMaterials.silicon, if (it == 0) 8 else 16)
         }
+
+        /* Energetic Clay Decomposer */
+        CRecipes.ASSEMBLER.builder()
+            .input(MACHINE_HULL.getItem(OPA))
+            .input(ClayiumBlocks.CA_REACTOR_COIL.getItem(BlockCaReactorCoil.BlockType.OPA))
+            .output(MetaTileEntities.ENERGETIC_CLAY_DECOMPOSER)
+            .tier(10).CEt(ClayEnergy.M(1)).duration(120)
+            .buildAndRegister()
+
         /* Clay (MultiTrack) Buffers */
         for (i in 0..9) {
             val materialIndex = i + 4
