@@ -30,7 +30,7 @@ class ContainerClayCraftingBoard(
 
     init {
         // SlotCrafting must be added first because [Container.onCraftMatrixChanged] will use hardcoded index 0 for result slot
-        val slotCrafting = SlotCrafting(player, this.craftMatrix, this.craftResult, 0, 124 + 1, 35 + 1)
+        val slotCrafting = SlotCrafting(player, this.craftMatrix, this.craftResult, 0, 124, 35)
         this.addSlotToContainer(slotCrafting)
 
         for (i in 0..<3) {
