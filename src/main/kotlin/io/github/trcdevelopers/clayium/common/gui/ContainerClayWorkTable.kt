@@ -14,11 +14,12 @@ import net.minecraftforge.items.SlotItemHandler
 class ContainerClayWorkTable(
     playerInv: IInventory,
     private val tile: TileClayWorkTable,
-) : ContainerClayium(playerInv, 84) {
+) : ContainerClayium(playerInv) {
     private var lastCraftingProgress = 0
     private var lastRequiredProgress = 0
 
     init {
+        addPlayerSlots(this, playerInv, playerInvOffsetY = 84)
         val itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
         // Input
         addSlotToContainer(object : SlotItemHandler(itemHandler, 0, 17, 30) {

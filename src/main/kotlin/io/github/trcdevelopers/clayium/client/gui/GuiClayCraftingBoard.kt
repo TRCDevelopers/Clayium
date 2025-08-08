@@ -6,7 +6,6 @@ import io.github.trcdevelopers.clayium.common.gui.ContainerClayCraftingBoard
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.resources.I18n
 import net.minecraft.inventory.IInventory
-import net.minecraft.util.ResourceLocation
 
 class GuiClayCraftingBoard(
     playerInv: IInventory,
@@ -14,7 +13,6 @@ class GuiClayCraftingBoard(
     val container: ContainerClayCraftingBoard = ContainerClayCraftingBoard(playerInv, tile),
 ) : GuiContainer(container) {
 
-    private val CRAFTING_TABLE = ResourceLocation("textures/gui/container/crafting_table.png")
     private val PLAYER_INVENTORY = clayiumId("textures/gui/gui_player_inventory.png")
     private val BACK = clayiumId("textures/gui/gui_back.png")
     private val TOP = clayiumId("textures/gui/gui_top.png")
@@ -26,10 +24,11 @@ class GuiClayCraftingBoard(
     private val BOTTOM_LEFT = clayiumId("textures/gui/gui_bottom_left.png")
     private val BOTTOM_RIGHT = clayiumId("textures/gui/gui_bottom_right.png")
     private val SLOT = clayiumId("textures/gui/slot.png")
+    private val PROGRESS_BAR = clayiumId("textures/gui/progress_bar.png")
 
     init {
         if (container.hasNeighbor) {
-            this.ySize = 137 + 13 + (18*3 + 4) + 25 // (137 + 4 is crafting + neighbor inv + 13 padding), (18*3 + 4 is player inv height), (30 is hotbar + padding)
+            this.ySize = 129 + 13 + (18*3 + 4) + 25 // (137 + 4 is crafting + neighbor inv + 13 padding), (18*3 + 4 is player inv height), (30 is hotbar + padding)
         }
     }
 
@@ -39,27 +38,76 @@ class GuiClayCraftingBoard(
     }
 
     override fun drawGuiContainerBackgroundLayer(partialTicks: Float, mouseX: Int, mouseY: Int) {
-        if (container.hasNeighbor) {
-            drawWithNeighbouringInventory()
-        } else {
-            drawNormal()
+        val x = (width - xSize) / 2
+        val y = (height - ySize) / 2
+
+        this.mc.textureManager.bindTexture(BACK)
+        this.drawTexturedModalRect(x + 4, y + 4, 0, 0, xSize - 8, ySize - 8)
+
+        this.mc.textureManager.bindTexture(TOP)
+        drawScaledCustomSizeModalRect(x + 4, y, 0f, 0f, 1, 4, xSize - 8, 4, 1f, 4f)
+        this.mc.textureManager.bindTexture(LEFT)
+        drawScaledCustomSizeModalRect(x, y + 4, 0f, 0f, 4, 1, 4, ySize - 8, 4f, 1f)
+        this.mc.textureManager.bindTexture(BOTTOM)
+        drawScaledCustomSizeModalRect(x + 4, y + ySize - 4, 0f, 0f, 1, 4, xSize - 8, 4, 1f, 4f)
+        this.mc.textureManager.bindTexture(RIGHT)
+        drawScaledCustomSizeModalRect(x + xSize - 4, y + 4, 0f, 0f, 4, 1, 4, ySize - 8, 4f, 1f)
+
+        this.mc.textureManager.bindTexture(TOP_LEFT)
+        drawScaledCustomSizeModalRect(x, y, 0f, 0f, 4, 4, 4, 4, 4f, 4f)
+        this.mc.textureManager.bindTexture(TOP_RIGHT)
+        drawScaledCustomSizeModalRect(x + xSize - 4, y, 0f, 0f, 4, 4, 4, 4, 4f, 4f)
+        this.mc.textureManager.bindTexture(BOTTOM_LEFT)
+        drawScaledCustomSizeModalRect(x, y + ySize - 4, 0f, 0f, 4, 4, 4, 4, 4f, 4f)
+        this.mc.textureManager.bindTexture(BOTTOM_RIGHT)
+        drawScaledCustomSizeModalRect(x + xSize - 4, y + ySize - 4, 0f, 0f, 4, 4, 4, 4, 4f, 4f)
+
+        this.mc.textureManager.bindTexture(PLAYER_INVENTORY)
+        this.drawTexturedModalRect(x + xSize - 176, y + ySize - 94, 0, 0, 176, 94)
+
+        // Crafting Grid at (29, 16)
+        this.mc.textureManager.bindTexture(SLOT)
+        for (i in 0..<3) {
+            for (j in 0..<3) {
+                val slotX = (j * 18) + (x + 29)
+                val slotY = (i * 18) + (y + 16)
+                this.drawTexturedModalRect(slotX, slotY, 0, 0, 18, 18)
+            }
+        }
+        this.drawTexturedModalRect(x + 119, y + 30, 0, 32, 26, 26)
+
+        // progress bar at (90, 35)
+        this.mc.textureManager.bindTexture(PROGRESS_BAR)
+        this.drawTexturedModalRect(x + 90, y + 35, 1, 1, 22, 15)
+
+        if (container.neighboringItemHandler != null) {
+            this.mc.textureManager.bindTexture(SLOT)
+            val column = container.neighboringItemHandler.slots / 9
+            for (i in 0..<column) {
+                if (column > 3) break
+                for (j in 0..<9) {
+                    val slotX = (j * 18) + (x + 7)
+                    val slotY = (i * 18) + (y + 75)
+                    this.drawTexturedModalRect(slotX, slotY, 0, 0, 18, 18)
+                }
+            }
         }
     }
 
     private fun drawNormal() {
-        val x = (width - xSize) / 2
-        val y = (height - ySize) / 2
-        mc.textureManager.bindTexture(CRAFTING_TABLE)
-        drawTexturedModalRect(x, y, 0, 0, xSize, ySize)
+//        val x = (width - xSize) / 2
+//        val y = (height - ySize) / 2
+//        mc.textureManager.bindTexture(CRAFTING_TABLE)
+//        drawTexturedModalRect(x, y, 0, 0, xSize, ySize)
     }
 
     private fun drawWithNeighbouringInventory() {
-        val x = (width - xSize) / 2
-        val y = (height - ySize) / 2
-
-        mc.textureManager.bindTexture(CRAFTING_TABLE)
-        drawTexturedModalRect(x, y, 0, 0, xSize, 137)
-        drawTexturedModalRect(x, y + 137, 0, 70, xSize, 13 + 18*3 + 4 + 25)
+//        val x = (width - xSize) / 2
+//        val y = (height - ySize) / 2
+//
+//        mc.textureManager.bindTexture(CRAFTING_TABLE)
+//        drawTexturedModalRect(x, y, 0, 0, xSize, 137)
+//        drawTexturedModalRect(x, y + 137, 0, 70, xSize, 13 + 18*3 + 4 + 25)
     }
 
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
