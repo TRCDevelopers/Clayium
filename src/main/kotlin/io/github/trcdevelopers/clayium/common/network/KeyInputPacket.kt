@@ -21,7 +21,7 @@ class KeyInputPacket() : IMessage {
         val size = buf.readInt()
         val updating = mutableListOf<KeyInput>()
         val data = mutableListOf<KeyInput.MutBooleanPairKeyData>()
-        (0..<size).forEach {
+        repeat((0..<size).count()) {
             updating.add(KeyInput.entries[buf.readInt()])
             val isKeyDown = buf.readBoolean()
             val isPressed = buf.readBoolean()
