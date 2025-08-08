@@ -33,8 +33,17 @@ class ContainerClayCraftingBoard(
         val slotCrafting = SlotCrafting(player, this.craftMatrix, this.craftResult, 0, 124 + 1, 35 + 1)
         this.addSlotToContainer(slotCrafting)
 
+        for (i in 0..<3) {
+            for (j in 0..<3) {
+                val slotIndex = i * 3 + j
+                val slotX = (j * 18) + 29 + 1
+                val slotY = (i * 18) + 16 + 1
+                val slot = Slot(this.craftMatrix, slotIndex, slotX, slotY)
+                this.addSlotToContainer(slot)
+            }
+        }
+
         val neighborSlotsY = 75
-        addPlayerSlots(this, player.inventory, if (hasNeighbor) 75 + 18*3 + 13 + 1 else 83 + 1)
         if (this.neighboringItemHandler != null) {
             val rowSize = this.neighboringItemHandler.slots / 9
 
@@ -51,15 +60,7 @@ class ContainerClayCraftingBoard(
             }
         }
 
-        for (i in 0..<3) {
-            for (j in 0..<3) {
-                val slotIndex = i * 3 + j
-                val slotX = (j * 18) + 29 + 1
-                val slotY = (i * 18) + 16 + 1
-                val slot = Slot(this.craftMatrix, slotIndex, slotX, slotY)
-                this.addSlotToContainer(slot)
-            }
-        }
+        addPlayerSlots(this, player.inventory, if (hasNeighbor) 75 + 18*3 + 13 + 1 else 83 + 1)
     }
 
     override fun canInteractWith(playerIn: EntityPlayer): Boolean {
