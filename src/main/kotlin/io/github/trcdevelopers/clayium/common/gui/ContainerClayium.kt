@@ -6,9 +6,7 @@ import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.Slot
 import net.minecraft.item.ItemStack
 
-abstract class ContainerClayium(
-    playerInv: IInventory,
-) : Container() {
+abstract class ContainerClayium : Container() {
 
     override fun canInteractWith(playerIn: EntityPlayer): Boolean {
         return !playerIn.isSpectator

@@ -21,7 +21,7 @@ object GuiHandler : IGuiHandler {
         val tile = world.getTileEntity(BlockPos(x, y, z)) ?: return null
         return when (id) {
             CLAY_WORK_TABLE -> ContainerClayWorkTable(player.inventory, tile as TileClayWorkTable)
-            CLAY_CRAFTING_BOARD -> ContainerClayCraftingBoard(player.inventory, tile as TileClayCraftingBoard)
+            CLAY_CRAFTING_BOARD -> ContainerClayCraftingBoard(player, world, tile as TileClayCraftingBoard)
             else -> null
         }
     }
@@ -30,7 +30,7 @@ object GuiHandler : IGuiHandler {
         val tile = world.getTileEntity(BlockPos(x, y, z)) ?: return null
         return when (id) {
             CLAY_WORK_TABLE -> GuiClayWorkTable(player.inventory, tile as TileClayWorkTable)
-            CLAY_CRAFTING_BOARD -> GuiClayCraftingBoard(player.inventory, tile as TileClayCraftingBoard)
+            CLAY_CRAFTING_BOARD -> GuiClayCraftingBoard(player, world, tile as TileClayCraftingBoard)
             else -> null
         }
     }

@@ -5,12 +5,14 @@ import io.github.trcdevelopers.clayium.common.blocks.claycraftingtable.TileClayC
 import io.github.trcdevelopers.clayium.common.gui.ContainerClayCraftingBoard
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.resources.I18n
-import net.minecraft.inventory.IInventory
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.world.World
 
 class GuiClayCraftingBoard(
-    playerInv: IInventory,
+    player: EntityPlayer,
+    world: World,
     val tile: TileClayCraftingBoard,
-    val container: ContainerClayCraftingBoard = ContainerClayCraftingBoard(playerInv, tile),
+    val container: ContainerClayCraftingBoard = ContainerClayCraftingBoard(player, world, tile),
 ) : GuiContainer(container) {
 
     private val PLAYER_INVENTORY = clayiumId("textures/gui/gui_player_inventory.png")
@@ -41,6 +43,7 @@ class GuiClayCraftingBoard(
         val x = (width - xSize) / 2
         val y = (height - ySize) / 2
 
+        // background
         this.mc.textureManager.bindTexture(BACK)
         this.drawTexturedModalRect(x + 4, y + 4, 0, 0, xSize - 8, ySize - 8)
 
@@ -62,25 +65,19 @@ class GuiClayCraftingBoard(
         this.mc.textureManager.bindTexture(BOTTOM_RIGHT)
         drawScaledCustomSizeModalRect(x + xSize - 4, y + ySize - 4, 0f, 0f, 4, 4, 4, 4, 4f, 4f)
 
-        // Crafting Grid at (29, 16)
+        // Inventory Slots
         this.mc.textureManager.bindTexture(SLOT)
-        for (i in 0..<3) {
-            for (j in 0..<3) {
-                val slotX = (j * 18) + (x + 29)
-                val slotY = (i * 18) + (y + 16)
-                this.drawTexturedModalRect(slotX, slotY, 0, 0, 18, 18)
-            }
+        for (slot in container.inventorySlots) {
+            this.drawTexturedModalRect(x + slot.xPos - 1, y + slot.yPos - 1, 0, 0, 18, 18)
         }
+
+        // Crafting Result
         this.drawTexturedModalRect(x + 119, y + 30, 0, 32, 26, 26)
 
         // progress bar at (90, 35)
         this.mc.textureManager.bindTexture(PROGRESS_BAR)
         this.drawTexturedModalRect(x + 90, y + 35, 1, 1, 22, 15)
 
-        this.mc.textureManager.bindTexture(SLOT)
-        for (slot in container.inventorySlots) {
-            this.drawTexturedModalRect(x + slot.xPos - 1, y + slot.yPos - 1, 0, 0, 18, 18)
-        }
     }
 
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
