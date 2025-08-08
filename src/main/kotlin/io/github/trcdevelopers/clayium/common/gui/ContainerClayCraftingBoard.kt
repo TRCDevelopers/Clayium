@@ -29,6 +29,10 @@ class ContainerClayCraftingBoard(
     private val craftResult = InventoryCraftResult()
 
     init {
+        // SlotCrafting must be added first because [Container.onCraftMatrixChanged] will use hardcoded index 0 for result slot
+        val slotCrafting = SlotCrafting(player, this.craftMatrix, this.craftResult, 0, 124 + 1, 35 + 1)
+        this.addSlotToContainer(slotCrafting)
+
         val neighborSlotsY = 75
         addPlayerSlots(this, player.inventory, if (hasNeighbor) 75 + 18*3 + 13 + 1 else 83 + 1)
         if (this.neighboringItemHandler != null) {
@@ -56,9 +60,6 @@ class ContainerClayCraftingBoard(
                 this.addSlotToContainer(slot)
             }
         }
-
-        val slotCrafting = SlotCrafting(player, this.craftMatrix, this.craftResult, 0, 124 + 1, 35 + 1)
-        this.addSlotToContainer(slotCrafting)
     }
 
     override fun canInteractWith(playerIn: EntityPlayer): Boolean {
@@ -71,5 +72,9 @@ class ContainerClayCraftingBoard(
 
     override fun onCraftMatrixChanged(inventoryIn: IInventory) {
         this.slotChangedCraftingGrid(this.world, this.player, this.craftMatrix, this.craftResult)
+    }
+
+    override fun canMergeSlot(stack: ItemStack, slotIn: Slot): Boolean {
+        return slotIn.inventory != this.craftResult && super.canMergeSlot(stack, slotIn)
     }
 }
