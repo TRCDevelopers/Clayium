@@ -2,6 +2,7 @@ package io.github.trcdevelopers.clayium.common.network
 
 import io.github.trcdevelopers.clayium.api.MOD_ID
 import io.github.trcdevelopers.clayium.common.network.handlers.KeyInputPacketHandler
+import io.github.trcdevelopers.clayium.common.network.handlers.LastRecipePackethandler
 import net.minecraftforge.fml.common.network.NetworkRegistry
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper
 import net.minecraftforge.fml.relauncher.Side
@@ -12,5 +13,6 @@ object CNetwork {
     fun init() {
         var id = 0
         channel.registerMessage(KeyInputPacketHandler, KeyInputPacket::class.java, id++, Side.SERVER)
+        channel.registerMessage(LastRecipePackethandler, LastRecipePacket::class.java, id++, Side.SERVER)
     }
 }

@@ -41,7 +41,7 @@ class ContainerClayCraftingBoard(
     private val craftMatrix = ItemHandlerWrappedInventoryCrafting(tile.inventory, this, 3, 3)
     private val craftResult = InventoryCraftResult()
 
-    private var lastRecipe: IRecipe? = null
+    var lastRecipe: IRecipe? = null
 
     init {
         // SlotCrafting must be added first because [Container.onCraftMatrixChanged] will use hardcoded index 0 for result slot
