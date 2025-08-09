@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.CraftingManager
 import net.minecraft.item.crafting.IRecipe
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.NonNullList
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
 import net.minecraftforge.items.CapabilityItemHandler
@@ -110,14 +109,6 @@ class ContainerClayCraftingBoard(
 
     override fun canMergeSlot(stack: ItemStack, slotIn: Slot): Boolean {
         return slotIn.inventory != this.craftResult && super.canMergeSlot(stack, slotIn)
-    }
-
-    fun getRemainingItems(): NonNullList<ItemStack> {
-        val lastRecipe = this.lastRecipe
-        if (lastRecipe != null && lastRecipe.matches(this.craftMatrix, this.world)) {
-            return lastRecipe.getRemainingItems(this.craftMatrix)
-        }
-        return this.craftMatrix.stackList
     }
 
     private fun getAllPlayersOpeningThisContainer(worldServer: WorldServer): List<EntityPlayerMP> {
