@@ -151,12 +151,13 @@ open class CommonProxy {
     }
 
     fun registerTileEntities() {
+        // TODO: lower snake case is appropriate for ResourceLocation?
         GameRegistry.registerTileEntity(TileClayWorkTable::class.java, clayiumId("clayWorkTable"))
         GameRegistry.registerTileEntity(TileEntityClayLaserReflector::class.java, clayiumId("laser_reflector"))
         GameRegistry.registerTileEntity(TileEntityCreativeEnergySource::class.java, clayiumId("creativeEnergySource"))
         GameRegistry.registerTileEntity(MetaTileEntityHolder::class.java, clayiumId("metaTileEntityHolder"))
         GameRegistry.registerTileEntity(BlockQuartzCrucible.QuartzCrucibleTileEntity::class.java, clayiumId("quartzCrucibleTileEntity"))
-        GameRegistry.registerTileEntity(TileClayCraftingBoard::class.java, clayiumId("clayCraftingTable"))
+        GameRegistry.registerTileEntity(TileClayCraftingBoard::class.java, clayiumId("clay_crafting_board"))
 
         GameRegistry.registerTileEntity(TileClayMarker.NoExtend::class.java, clayiumId("clayMarkerNoExtent"))
         GameRegistry.registerTileEntity(TileClayMarker.ExtendToGround::class.java, clayiumId("clayMarkerExtendToGround"))
