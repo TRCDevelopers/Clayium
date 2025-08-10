@@ -38,8 +38,6 @@ object ClayiumDataCodecs {
 
     val CA_REACTOR_HULL_POSES = assignId()
 
-    val CLAY_CRAFTING_BOARD_RECIPE = assignId()
-
     const val AUTO_IO_HANDLER = "autoIoHandler"
     const val RECIPE_LOGIC = "recipeLogic"
     const val CLAY_ENERGY_HOLDER = "clayEnergyHolder"
