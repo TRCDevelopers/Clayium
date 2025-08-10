@@ -118,6 +118,10 @@ object CraftingRecipeLoader {
             "HHH", " I ", " I ",
             'H', UnificationEntry(OrePrefix.ingot, CMaterials.claySteel),
             'I', UnificationEntry(OrePrefix.stick, denseClay))
+        RecipeUtils.addShapedRecipe("clay_steel_shovel", ItemStack(ClayiumItems.CLAY_STEEL_SHOVEL),
+            "H", "I", "I",
+            'H', UnificationEntry(OrePrefix.ingot, CMaterials.claySteel),
+            'I', UnificationEntry(OrePrefix.stick, denseClay))
     }
 
     private fun registerClayPartsRecipes() {
