@@ -44,7 +44,6 @@ import io.github.trcdevelopers.clayium.integration.gregtech.GTOreDictUnifierAdap
 import io.github.trcdevelopers.clayium.network.ClayChunkLoaderCallback
 import net.minecraft.block.Block
 import net.minecraft.item.Item
-import net.minecraft.item.ItemBlock
 import net.minecraft.item.crafting.IRecipe
 import net.minecraftforge.common.ForgeChunkManager
 import net.minecraftforge.common.MinecraftForge
@@ -142,12 +141,6 @@ open class CommonProxy {
 
     open fun registerItem(registry: IForgeRegistry<Item>, item: Item) {
         registry.register(item)
-    }
-
-    private fun <T: Block> createItemBlock(block: T, producer: (T) -> ItemBlock): ItemBlock {
-        return producer(block).apply {
-            registryName = block.registryName ?: throw IllegalArgumentException("Block ${block.translationKey} has no registry name")
-        }
     }
 
     fun registerTileEntities() {
