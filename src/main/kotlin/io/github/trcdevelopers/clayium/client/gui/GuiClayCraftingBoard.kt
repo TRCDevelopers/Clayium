@@ -8,25 +8,24 @@ import net.minecraft.client.resources.I18n
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.world.World
 
+private val BACK = clayiumId("textures/gui/gui_back.png")
+private val TOP = clayiumId("textures/gui/gui_top.png")
+private val BOTTOM = clayiumId("textures/gui/gui_bottom.png")
+private val LEFT = clayiumId("textures/gui/gui_left.png")
+private val RIGHT = clayiumId("textures/gui/gui_right.png")
+private val TOP_LEFT = clayiumId("textures/gui/gui_top_left.png")
+private val TOP_RIGHT = clayiumId("textures/gui/gui_top_right.png")
+private val BOTTOM_LEFT = clayiumId("textures/gui/gui_bottom_left.png")
+private val BOTTOM_RIGHT = clayiumId("textures/gui/gui_bottom_right.png")
+private val SLOT = clayiumId("textures/gui/slot.png")
+private val PROGRESS_BAR = clayiumId("textures/gui/progress_bar.png")
+
 class GuiClayCraftingBoard(
     player: EntityPlayer,
     world: World,
     val tile: TileClayCraftingBoard,
     val container: ContainerClayCraftingBoard = ContainerClayCraftingBoard(player, world, tile),
 ) : GuiContainer(container) {
-
-    private val PLAYER_INVENTORY = clayiumId("textures/gui/gui_player_inventory.png")
-    private val BACK = clayiumId("textures/gui/gui_back.png")
-    private val TOP = clayiumId("textures/gui/gui_top.png")
-    private val BOTTOM = clayiumId("textures/gui/gui_bottom.png")
-    private val LEFT = clayiumId("textures/gui/gui_left.png")
-    private val RIGHT = clayiumId("textures/gui/gui_right.png")
-    private val TOP_LEFT = clayiumId("textures/gui/gui_top_left.png")
-    private val TOP_RIGHT = clayiumId("textures/gui/gui_top_right.png")
-    private val BOTTOM_LEFT = clayiumId("textures/gui/gui_bottom_left.png")
-    private val BOTTOM_RIGHT = clayiumId("textures/gui/gui_bottom_right.png")
-    private val SLOT = clayiumId("textures/gui/slot.png")
-    private val PROGRESS_BAR = clayiumId("textures/gui/progress_bar.png")
 
     init {
         if (container.hasNeighbor) {
