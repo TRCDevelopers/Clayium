@@ -3,6 +3,8 @@
  */
 package io.github.trcdevelopers.clayium.common.gui
 
+import io.github.trcdevelopers.clayium.api.util.CLog
+import io.github.trcdevelopers.clayium.api.util.CUtils
 import io.github.trcdevelopers.clayium.common.blocks.claycraftingtable.TileClayCraftingBoard
 import io.github.trcdevelopers.clayium.common.inventory.ItemHandlerWrappedInventoryCrafting
 import net.minecraft.entity.player.EntityPlayer
@@ -13,9 +15,8 @@ import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.inventory.Slot
 import net.minecraft.inventory.SlotCrafting
 import net.minecraft.item.ItemStack
-import net.minecraft.item.crafting.CraftingManager
-import net.minecraft.item.crafting.IRecipe
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.NonNullList
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
 import net.minecraftforge.items.CapabilityItemHandler
@@ -39,8 +40,6 @@ class ContainerClayCraftingBoard(
 
     private val craftMatrix = ItemHandlerWrappedInventoryCrafting(tile.inventory, this, 3, 3)
     private val craftResult = InventoryCraftResult()
-
-    var lastRecipe: IRecipe? = null
 
     init {
         // SlotCrafting must be added first because [Container.onCraftMatrixChanged] will use hardcoded index 0 for result slot
@@ -90,25 +89,31 @@ class ContainerClayCraftingBoard(
     }
 
     override fun slotChangedCraftingGrid(world: World, player: EntityPlayer, craftMatrix: InventoryCrafting, craftResult: InventoryCraftResult) {
-        val lastRecipe = this.lastRecipe
+        val lastRecipe = this.tile.currentRecipe
         var itemStack = ItemStack.EMPTY
-        if (lastRecipe == null || !lastRecipe.matches(craftMatrix, world)) {
-            this.lastRecipe = CraftingManager.findMatchingRecipe(craftMatrix, world)
-        }
-        if (lastRecipe != null) {
+        if (lastRecipe != null && lastRecipe.matches(craftMatrix, world)) {
             itemStack = lastRecipe.getCraftingResult(craftMatrix)
         }
+//
+//        if (!world.isRemote) {
+//            val playerMP = player as EntityPlayerMP
+//            val allPlayers = getAllPlayersOpeningThisContainer(world as WorldServer)
+//        }
 
-        if (!world.isRemote) {
-            val playerMP = player as EntityPlayerMP
-            val allPlayers = getAllPlayersOpeningThisContainer(world as WorldServer)
-        }
-
+        CLog.debug("isClient?: {},  Crafting result: {}", CUtils.isClientSide, itemStack)
         craftResult.setInventorySlotContents(RESULT_SLOT_INDEX, itemStack)
     }
 
     override fun canMergeSlot(stack: ItemStack, slotIn: Slot): Boolean {
         return slotIn.inventory != this.craftResult && super.canMergeSlot(stack, slotIn)
+    }
+
+    fun getRemainingItems(): NonNullList<ItemStack> {
+        val lastRecipe = this.tile.currentRecipe
+        if (lastRecipe != null && lastRecipe.matches(this.craftMatrix, this.world)) {
+            return lastRecipe.getRemainingItems(this.craftMatrix)
+        }
+        return this.craftMatrix.stackList
     }
 
     private fun getAllPlayersOpeningThisContainer(worldServer: WorldServer): List<EntityPlayerMP> {
@@ -122,10 +127,6 @@ class ContainerClayCraftingBoard(
     companion object {
         private fun syncResultToAllOpenWindows(result: ItemStack, players: List<EntityPlayerMP>) {
             players.forEach { it.openContainer.putStackInSlot(RESULT_SLOT_INDEX, result) }
-        }
-
-        private fun syncRecipeToAllOpenWindows(recipe: IRecipe, players: List<EntityPlayerMP>) {
-            players.forEach { (it.openContainer as? ContainerClayCraftingBoard)?.lastRecipe = recipe }
         }
     }
 }

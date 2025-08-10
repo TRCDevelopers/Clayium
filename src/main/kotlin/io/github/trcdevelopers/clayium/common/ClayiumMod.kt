@@ -3,12 +3,15 @@ package io.github.trcdevelopers.clayium.common
 import io.github.trcdevelopers.clayium.CTags
 import io.github.trcdevelopers.clayium.api.MOD_ID
 import io.github.trcdevelopers.clayium.api.MOD_NAME
+import io.github.trcdevelopers.clayium.api.util.CUtils
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
+import org.apache.logging.log4j.Level
+import org.apache.logging.log4j.core.config.Configurator
 
 @Mod(
     modid = MOD_ID,
@@ -31,6 +34,7 @@ object ClayiumMod {
     @Mod.EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(this)
+        if (CUtils.isDeobfEnvironment) Configurator.setLevel(MOD_ID, Level.DEBUG)
         proxy.preInit(event)
     }
 

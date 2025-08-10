@@ -1,8 +1,9 @@
 package io.github.trcdevelopers.clayium.common.blocks.claycraftingtable
 
-import com.cleanroommc.modularui.factory.TileEntityGuiFactory
 import io.github.trcdevelopers.clayium.api.block.ITieredBlock
 import io.github.trcdevelopers.clayium.api.util.ClayTiers
+import io.github.trcdevelopers.clayium.common.ClayiumMod
+import io.github.trcdevelopers.clayium.common.GuiHandler
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
@@ -31,8 +32,7 @@ class BlockClayCraftingBoard : Block(Material.CLAY), ITieredBlock {
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         if (!worldIn.isRemote) {
-//            playerIn.openGui(ClayiumMod, GuiHandler.CLAY_CRAFTING_BOARD, worldIn, pos.x, pos.y, pos.z)
-            TileEntityGuiFactory.INSTANCE.open(playerIn, pos)
+            playerIn.openGui(ClayiumMod, GuiHandler.CLAY_CRAFTING_BOARD, worldIn, pos.x, pos.y, pos.z)
         }
         return true
     }

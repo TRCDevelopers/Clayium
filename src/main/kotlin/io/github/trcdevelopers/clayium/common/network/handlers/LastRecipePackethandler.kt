@@ -10,7 +10,6 @@ object LastRecipePackethandler : IMessageHandler<LastRecipePacket, IMessage> {
     override fun onMessage(message: LastRecipePacket, ctx: MessageContext): IMessage? {
         val container = ctx.serverHandler.player.openContainer as? ContainerClayCraftingBoard
             ?: return null
-        container.lastRecipe = message.recipe
         return null
     }
 }
