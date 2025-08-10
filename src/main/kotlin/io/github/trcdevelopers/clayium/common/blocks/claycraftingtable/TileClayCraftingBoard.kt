@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity
 
 class TileClayCraftingBoard : TileEntity(), IMarkDirty {
 
-    val inventory = ClayiumItemStackHandler(this, 10)
+    val inventory = ClayiumItemStackHandler(this, 9)
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         val data = super.writeToNBT(compound)
