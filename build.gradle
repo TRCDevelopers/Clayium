@@ -355,7 +355,7 @@ base {
 minecraft {
     mcVersion = minecraftVersion
     username = developmentEnvironmentUserName.toString()
-    useDependencyAccessTransformers = true
+    useDependencyAccessTransformers = false
 
     // Automatic token injection with RetroFuturaGradle
     if (gradleTokenModId) {

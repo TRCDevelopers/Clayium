@@ -15,8 +15,8 @@ import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.inventory.Slot
 import net.minecraft.inventory.SlotCrafting
 import net.minecraft.item.ItemStack
+import net.minecraft.network.play.server.SPacketSetSlot
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.NonNullList
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
 import net.minecraftforge.items.CapabilityItemHandler
@@ -94,11 +94,14 @@ class ContainerClayCraftingBoard(
         if (lastRecipe != null && lastRecipe.matches(craftMatrix, world)) {
             itemStack = lastRecipe.getCraftingResult(craftMatrix)
         }
-//
-//        if (!world.isRemote) {
-//            val playerMP = player as EntityPlayerMP
-//            val allPlayers = getAllPlayersOpeningThisContainer(world as WorldServer)
-//        }
+
+        if (!world.isRemote) {
+            getAllPlayersOpeningThisContainer(world as WorldServer)
+                .forEach {
+                    it.openContainer.putStackInSlot(RESULT_SLOT_INDEX, itemStack)
+                    it.connection.sendPacket(SPacketSetSlot(this.windowId, RESULT_SLOT_INDEX, itemStack))
+                }
+        }
 
         CLog.debug("isClient?: {},  Crafting result: {}", CUtils.isClientSide, itemStack)
         craftResult.setInventorySlotContents(RESULT_SLOT_INDEX, itemStack)
@@ -108,25 +111,11 @@ class ContainerClayCraftingBoard(
         return slotIn.inventory != this.craftResult && super.canMergeSlot(stack, slotIn)
     }
 
-    fun getRemainingItems(): NonNullList<ItemStack> {
-        val lastRecipe = this.tile.currentRecipe
-        if (lastRecipe != null && lastRecipe.matches(this.craftMatrix, this.world)) {
-            return lastRecipe.getRemainingItems(this.craftMatrix)
-        }
-        return this.craftMatrix.stackList
-    }
-
     private fun getAllPlayersOpeningThisContainer(worldServer: WorldServer): List<EntityPlayerMP> {
         return worldServer.playerEntities.stream()
             .filter { player -> player.openContainer is ContainerClayCraftingBoard }
             .filter { player -> (player.openContainer as ContainerClayCraftingBoard).tile == this.tile }
             .map { player -> player as EntityPlayerMP }
             .collect(Collectors.toList())
-    }
-
-    companion object {
-        private fun syncResultToAllOpenWindows(result: ItemStack, players: List<EntityPlayerMP>) {
-            players.forEach { it.openContainer.putStackInSlot(RESULT_SLOT_INDEX, result) }
-        }
     }
 }
