@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.screen.UISettings
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
@@ -20,14 +21,30 @@ import io.github.trcdevelopers.clayium.api.util.CUtils
 import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import io.github.trcdevelopers.clayium.common.gui.ModularContainerClayCraftingBoard
+import io.github.trcdevelopers.clayium.common.inventory.ItemHandlerWrappedInventoryCrafting
+import io.github.trcdevelopers.clayium.common.util.DummyContainer
 import io.github.trcdevelopers.clayium.integration.jei.JeiPlugin
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid
+import net.minecraft.item.crafting.CraftingManager
+import net.minecraft.item.crafting.IRecipe
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.ResourceLocation
 
 class TileClayCraftingBoard : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
-    val inventory = ClayiumItemStackHandler(this, 9)
+
+    val inventory = object : ClayiumItemStackHandler(this, 10) {
+        override fun onContentsChanged(slot: Int) {
+            super.onContentsChanged(slot)
+            if (world.isRemote) return
+            this@TileClayCraftingBoard.onCraftMatrixChanged()
+        }
+    }
+
+    private val craftMatrix = ItemHandlerWrappedInventoryCrafting(inventory, DummyContainer)
+    var currentRecipe: IRecipe? = null
+        private set
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         val data = super.writeToNBT(compound)
@@ -42,8 +59,18 @@ class TileClayCraftingBoard : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
 
     override fun markAsDirty() = this.markDirty()
 
+    private fun onCraftMatrixChanged() {
+        this.currentRecipe = CraftingManager.findMatchingRecipe(this.craftMatrix, this.world)
+    }
+
     override fun buildUI(data: PosGuiData, syncManager: PanelSyncManager, uiSettings: UISettings): ModularPanel {
-        uiSettings.customContainer { ModularContainerClayCraftingBoard(3, 3, this.inventory) }
+        uiSettings.customContainer { ModularContainerClayCraftingBoard(this, 3, 3, this.inventory) }
+
+        syncManager.syncValue("current_recipe", SyncHandlers.string({
+            this.currentRecipe?.registryName?.toString() ?: ""
+        }, {
+            this.currentRecipe = if (it.isEmpty()) null else CraftingManager.getRecipe(ResourceLocation(it))
+        }))
 
         syncManager.registerSlotGroup("input_inventory", 3)
         return ModularPanel.defaultPanel("clay_crafting_table")
@@ -73,8 +100,8 @@ class TileClayCraftingBoard : TileEntity(), IMarkDirty, IGuiHolder<PosGuiData> {
                                 }
                             }
                         )
-//                        .child(MuiSlots.itemSlotBuilder(inventory, 9).craftingSlot().takeOnly().buildLarge()
-//                            .align(Alignment.CenterRight))
+                        .child(MuiSlots.itemSlotBuilder(inventory, 9).craftingSlot().takeOnly().buildLarge()
+                            .align(Alignment.CenterRight))
                     )
                 )
                 .child(MuiSlots.playerInventory(0))
