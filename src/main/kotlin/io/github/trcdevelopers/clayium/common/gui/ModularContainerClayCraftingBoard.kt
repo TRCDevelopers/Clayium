@@ -6,8 +6,13 @@ import com.cleanroommc.modularui.test.CraftingModularContainer
 import com.cleanroommc.modularui.widgets.slot.InventoryCraftingWrapper
 import com.cleanroommc.modularui.widgets.slot.ModularCraftingSlot
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
+import net.minecraft.inventory.InventoryCraftResult
+import net.minecraft.inventory.InventoryCrafting
+import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.IRecipe
+import net.minecraft.world.World
 import net.minecraftforge.items.IItemHandlerModifiable
 
 /**
@@ -29,8 +34,21 @@ class ModularContainerClayCraftingBoard(
         this.craftMatrix.detectChanges()
     }
 
-    override fun onCraftMatrixChanged(inventoryIn: IInventory) {
-        super.onCraftMatrixChanged(inventoryIn)
+    override fun onCraftMatrixChanged(inventoryIn: IInventory) {}
+
+    override fun slotChangedCraftingGrid(world: World, entityPlayer: EntityPlayer, inventoryCrafting: InventoryCrafting, inventoryCraftResult: InventoryCraftResult) {
+        val lastRecipe = this.lastRecipeUsed
+        var result: ItemStack = ItemStack.EMPTY
+        if (lastRecipe != null && lastRecipe.matches(inventoryCrafting, world)) {
+            result = lastRecipe.getCraftingResult(inventoryCrafting)
+        }
+        if (result.isEmpty) {
+            // invalidate the lastRecipeUsed and sync to clients that opening this container
+        } else {
+            this.lastRecipeUsed = lastRecipe
+            resultSlot.setRecipeUsed(lastRecipe)
+            resultSlot.updateResult(result)
+        }
     }
 
     @Suppress("UnstableApiUsage")
