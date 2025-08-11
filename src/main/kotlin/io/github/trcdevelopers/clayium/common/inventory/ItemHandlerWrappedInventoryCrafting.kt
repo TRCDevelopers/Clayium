@@ -15,11 +15,12 @@ import net.minecraftforge.items.IItemHandlerModifiable
  * **Use [IItemHandler] whenever possible**.
  */
 class ItemHandlerWrappedInventoryCrafting(
-    private val handler: IItemHandlerModifiable,
+    val handler: IItemHandlerModifiable,
     eventHandler: Container,
     width: Int = 3,
     height: Int = 3,
 ) : InventoryCrafting(eventHandler, width, height) {
+
     override fun getSizeInventory(): Int {
         return handler.slots
     }

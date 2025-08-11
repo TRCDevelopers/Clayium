@@ -3,7 +3,9 @@
  */
 package io.github.trcdevelopers.clayium.common.gui
 
+import io.github.trcdevelopers.clayium.api.capability.impl.EmptyItemStackHandler
 import io.github.trcdevelopers.clayium.common.blocks.claycraftingtable.TileClayCraftingBoard
+import io.github.trcdevelopers.clayium.common.gui.slots.SlotCraftingCcb
 import io.github.trcdevelopers.clayium.common.inventory.ItemHandlerWrappedInventoryCrafting
 import io.github.trcdevelopers.clayium.common.network.CNetwork
 import io.github.trcdevelopers.clayium.common.network.LastRecipePacket
@@ -13,7 +15,6 @@ import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.InventoryCraftResult
 import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.inventory.Slot
-import net.minecraft.inventory.SlotCrafting
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.CraftingManager
 import net.minecraft.item.crafting.IRecipe
@@ -47,7 +48,7 @@ class ContainerClayCraftingBoard(
 
     init {
         // SlotCrafting must be added first because [Container.onCraftMatrixChanged] will use hardcoded index 0 for result slot
-        val slotCrafting = SlotCrafting(player, this.craftMatrix, this.craftResult, 0, 124, 35)
+        val slotCrafting = SlotCraftingCcb(player, this.craftMatrix, this.craftResult, 0, 124, 35, neighboringItemHandler ?: EmptyItemStackHandler, this)
         this.addSlotToContainer(slotCrafting)
 
         for (i in 0..<3) {
