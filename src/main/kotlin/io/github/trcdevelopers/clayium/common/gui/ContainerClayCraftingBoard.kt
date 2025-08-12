@@ -45,6 +45,7 @@ class ContainerClayCraftingBoard(
     private val craftResult = InventoryCraftResult()
 
     var lastRecipe: IRecipe? = null
+    private val playerInvIndexStart = if (neighboringItemHandler != null) 1 + 9 + neighboringItemHandler.slots else 1 + 9
 
     init {
         // SlotCrafting must be added first because [Container.onCraftMatrixChanged] will use hardcoded index 0 for result slot
@@ -87,7 +88,52 @@ class ContainerClayCraftingBoard(
     }
 
     override fun transferStackInSlot(playerIn: EntityPlayer, index: Int): ItemStack {
-        return ItemStack.EMPTY
+        val slot = this.inventorySlots[index]
+            ?.takeIf { it.hasStack }
+            ?: return ItemStack.EMPTY
+
+        val neighborInvSize = this.neighboringItemHandler?.slots ?: 0
+
+        val slotStack = slot.stack
+        val slotStackSnapshot = slotStack.copy()
+        when (index) {
+            RESULT_SLOT_INDEX -> {
+                slotStack.item.onCreated(slotStack, this.world, playerIn)
+                if (!this.mergeItemStack(slotStack, 10, this.inventorySlots.size, true)) {
+                    return ItemStack.EMPTY
+                }
+                slot.onSlotChange(slotStack, slotStackSnapshot)
+            }
+            in 10..<(10 + neighborInvSize) -> {
+                if (!(this.mergeItemStack(slotStack, 1, 10, true)
+                    || this.mergeItemStack(slotStack, playerInvIndexStart, playerInvIndexStart + 36, true))) {
+                    return ItemStack.EMPTY
+                }
+            }
+            in playerInvIndexStart..<(playerInvIndexStart + 36) -> {
+                if (!this.mergeItemStack(slotStack, 1, 10, false)) {
+                    return ItemStack.EMPTY
+                }
+            }
+            else -> {
+                if (!this.mergeItemStack(slotStack, 0, this.inventorySlots.size, false)) {
+                    return ItemStack.EMPTY
+                }
+            }
+        }
+        if (slotStack.isEmpty) {
+            slot.putStack(ItemStack.EMPTY)
+        } else {
+            slot.onSlotChanged()
+        }
+        if (slotStack.count == slotStackSnapshot.count) {
+            return ItemStack.EMPTY
+        }
+        val stack2 = slot.onTake(playerIn, slotStack)
+        if (index == RESULT_SLOT_INDEX) {
+            player.dropItem(stack2, false)
+        }
+        return slotStackSnapshot
     }
 
     override fun onCraftMatrixChanged(inventoryIn: IInventory) {
