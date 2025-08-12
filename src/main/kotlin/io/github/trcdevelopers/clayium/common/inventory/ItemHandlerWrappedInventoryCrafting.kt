@@ -40,7 +40,7 @@ class ItemHandlerWrappedInventoryCrafting(
     }
 
     override fun getStackInRowAndColumn(row: Int, column: Int): ItemStack {
-        val index = row * width + column
+        val index = row + column * this.width
         if (index < 0 || index >= handler.slots) return ItemStack.EMPTY
         return this.getStackInSlot(index)
     }
