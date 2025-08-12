@@ -104,14 +104,24 @@ class ContainerClayCraftingBoard(
                 }
                 slot.onSlotChange(slotStack, slotStackSnapshot)
             }
+            in 1..9 -> {
+                // Craft Grid -> neighbor inv? -> player inv
+                if (!(this.mergeItemStack(slotStack, 10, 10 + neighborInvSize, false)
+                            || this.mergeItemStack(slotStack, playerInvIndexStart, playerInvIndexStart + 36, true))) {
+                    return ItemStack.EMPTY
+                }
+            }
             in 10..<(10 + neighborInvSize) -> {
-                if (!(this.mergeItemStack(slotStack, 1, 10, true)
+                // Neighbor inv -> craft grid? -> player inv
+                if (!(this.mergeItemStack(slotStack, 1, 10, false)
                     || this.mergeItemStack(slotStack, playerInvIndexStart, playerInvIndexStart + 36, true))) {
                     return ItemStack.EMPTY
                 }
             }
             in playerInvIndexStart..<(playerInvIndexStart + 36) -> {
-                if (!this.mergeItemStack(slotStack, 1, 10, false)) {
+                // Player inventory -> neighbor inv? -> craft grid
+                if (!(this.mergeItemStack(slotStack, 10, 10 + neighborInvSize, false)
+                            || this.mergeItemStack(slotStack, 1, 10, false))) {
                     return ItemStack.EMPTY
                 }
             }
