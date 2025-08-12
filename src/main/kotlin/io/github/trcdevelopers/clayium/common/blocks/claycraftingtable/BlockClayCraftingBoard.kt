@@ -7,7 +7,6 @@ import io.github.trcdevelopers.clayium.common.GuiHandler
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
-import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
@@ -43,8 +42,4 @@ class BlockClayCraftingBoard : Block(Material.CLAY), ITieredBlock {
     override fun causesSuffocation(state: IBlockState) = false
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = aabb
-
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        tooltip.add("WIP, not functional yet")
-    }
 }

@@ -26,7 +26,12 @@ object CraftingRecipeLoader {
 
         RecipeUtils.addShapedRecipe("clay_work_table",
             ItemStack(ClayiumBlocks.CLAY_WORK_TABLE),
-            "CC", "CC", 'C', UnificationEntry(OrePrefix.block, denseClay))
+            "CC", "CC",
+            'C', UnificationEntry(OrePrefix.block, denseClay))
+        RecipeUtils.addShapedRecipe("clay_crafting_board",
+            ItemStack(ClayiumBlocks.CLAY_CRAFTING_BOARD),
+            "CCC",
+            'C', UnificationEntry(OrePrefix.block, denseClay))
 
         RecipeUtils.addSmeltingRecipe(UnificationEntry(OrePrefix.ingot, CMaterials.impureSilicon),
             OreDictUnifier.get(OrePrefix.ingot, CMaterials.silicone), 0.1f)
