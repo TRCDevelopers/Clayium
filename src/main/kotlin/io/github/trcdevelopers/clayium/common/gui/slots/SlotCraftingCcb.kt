@@ -39,7 +39,7 @@ class SlotCraftingCcb(
         for (remainingStack in remainingItemStacks) {
             val remain = ItemHandlerHelper.insertItem(this.neighboringInventory, remainingStack, false)
             this.player.inventory.addItemStackToInventory(remain)
-            this.player.dropItem(remainingStack, false)
+            this.player.dropItem(remain, false)
         }
 
         matrix@ for ((craftGridIndex, craftGridStack) in this.craftMatrix.handler.toList().withIndex()) {
