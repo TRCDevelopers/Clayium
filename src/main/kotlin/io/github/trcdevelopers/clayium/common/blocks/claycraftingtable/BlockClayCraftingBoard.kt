@@ -2,6 +2,7 @@ package io.github.trcdevelopers.clayium.common.blocks.claycraftingtable
 
 import io.github.trcdevelopers.clayium.api.block.ITieredBlock
 import io.github.trcdevelopers.clayium.api.util.ClayTiers
+import io.github.trcdevelopers.clayium.api.util.toList
 import io.github.trcdevelopers.clayium.common.ClayiumMod
 import io.github.trcdevelopers.clayium.common.GuiHandler
 import net.minecraft.block.Block
@@ -42,4 +43,14 @@ class BlockClayCraftingBoard : Block(Material.CLAY), ITieredBlock {
     override fun causesSuffocation(state: IBlockState) = false
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = aabb
+
+    override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
+        val tileEntity = worldIn.getTileEntity(pos) as? TileClayCraftingBoard
+            ?: return
+        tileEntity.inventory.toList().forEach {
+            if (!it.isEmpty) {
+                spawnAsEntity(worldIn, pos, it)
+            }
+        }
+    }
 }
