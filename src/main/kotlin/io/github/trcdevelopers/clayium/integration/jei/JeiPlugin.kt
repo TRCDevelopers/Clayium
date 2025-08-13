@@ -5,6 +5,7 @@ import io.github.trcdevelopers.clayium.api.metatileentity.WorkableMetaTileEntity
 import io.github.trcdevelopers.clayium.api.unification.OreDictUnifier
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
+import io.github.trcdevelopers.clayium.client.gui.GuiClayCraftingBoard
 import io.github.trcdevelopers.clayium.client.gui.GuiClayWorkTable
 import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
@@ -27,6 +28,7 @@ import mezz.jei.api.JEIPlugin
 import mezz.jei.api.ingredients.VanillaTypes
 import mezz.jei.api.recipe.IRecipeCategoryRegistration
 import mezz.jei.api.recipe.IRecipeWrapperFactory
+import mezz.jei.api.recipe.VanillaRecipeCategoryUid
 import net.minecraft.item.ItemStack
 
 @JEIPlugin
@@ -50,11 +52,17 @@ class JeiPlugin : IModPlugin {
     override fun register(modRegistry: IModRegistry) {
         jeiHelpers = modRegistry.jeiHelpers
 
+        /* Clay Work Table */
         modRegistry.handleRecipes(ClayWorkTableRecipe::class.java, ::ClayWorkTableRecipeWrapper, ClayWorkTableRecipeCategory.UID)
         modRegistry.addRecipeCatalyst(ItemStack(ClayiumBlocks.CLAY_WORK_TABLE), ClayWorkTableRecipeCategory.UID)
         modRegistry.addRecipes(CWTRecipes.CLAY_WORK_TABLE.recipes, ClayWorkTableRecipeCategory.UID)
         modRegistry.addRecipeClickArea(GuiClayWorkTable::class.java, 78, 29, 20, 16, ClayWorkTableRecipeCategory.UID)
 
+        /* Clay Crafting Board */
+        modRegistry.addRecipeCatalyst(ItemStack(ClayiumBlocks.CLAY_CRAFTING_BOARD), VanillaRecipeCategoryUid.CRAFTING)
+        modRegistry.addRecipeClickArea(GuiClayCraftingBoard::class.java, 90, 35, 22, 15, VanillaRecipeCategoryUid.CRAFTING)
+
+        /* CRecipes */
         for (recipeRegistry in CRecipes.ALL_REGISTRIES.values) {
             val specialWrapper = recipeWrappers[recipeRegistry.category.uniqueId]
             if (specialWrapper != null) {
