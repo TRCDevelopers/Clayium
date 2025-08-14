@@ -62,7 +62,7 @@ class TileClayWorkTable : TileEntity() {
             craftingProgress = 0
         }
         craftingProgress++
-        currentTool.damageItem(1, clicker)
+        recipe.method.damageTool(currentTool, clicker)
         if (craftingProgress >= requiredProgress) {
             itemHandler.extractItem(0, recipe.input.amount, false)
             completeRecipe(recipe)
