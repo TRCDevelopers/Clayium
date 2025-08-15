@@ -233,6 +233,22 @@ object MachineBlockRecipeLoader {
             input(OrePrefix.plate, CMaterials.silicon, if (it == 0) 8 else 16)
         }
 
+        /* Auto Crafter */
+        CRecipes.ASSEMBLER.builder()
+            .input(MACHINE_HULL.getItem(ADVANCED))
+            .input(MetaTileEntities.ASSEMBLER[1])
+            .output(MetaTileEntities.AUTO_CRAFTER[0])
+            .tier(4).CEt(ClayEnergy.milli(10)).duration(40)
+            .buildAndRegister()
+        for ((i, tier) in listOf(PRECISION, CLAY_STEEL, CLAYIUM, ULTIMATE).withIndex()) {
+            CRecipes.ASSEMBLER.builder()
+                .input(MetaTileEntities.AUTO_CRAFTER[i])
+                .input(MACHINE_HULL.getItem(tier))
+                .output(MetaTileEntities.AUTO_CRAFTER[i + 1])
+                .tier(4).CEt(ClayEnergy.milli(10 * 10.0.pow(i + 1).toLong())).duration(40)
+                .buildAndRegister()
+        }
+
         /* Energetic Clay Decomposer */
         CRecipes.ASSEMBLER.builder()
             .input(MACHINE_HULL.getItem(OPA))
