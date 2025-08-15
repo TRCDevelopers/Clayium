@@ -146,7 +146,7 @@ object MetaTileEntities {
     }
 
     val AUTO_CRAFTER = registerMetaTileEntities(286, (5..9)) { //+5
-        AutoCrafterMetaTileEntity(clayiumId("auto_crafter.${it.lowerName}"), it)
+        AutoCrafterMetaTileEntity(clayiumId("auto_crafter.${it.lowerName}"), it, it.numeric != 5)
     }
 
 

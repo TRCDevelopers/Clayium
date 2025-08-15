@@ -1,14 +1,20 @@
 package io.github.trcdevelopers.clayium.common.metatileentities
 
+import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.screen.UISettings
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Flow
+import io.github.trcdevelopers.clayium.api.ClayEnergy
+import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_HEIGHT
+import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
 import io.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
 import io.github.trcdevelopers.clayium.api.capability.impl.ClayEnergyHolder
 import io.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
 import io.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
+import io.github.trcdevelopers.clayium.api.gui.data.MetaTileEntityGuiData
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.util.CUtils
 import io.github.trcdevelopers.clayium.api.util.ITier
@@ -60,6 +66,14 @@ class AutoCrafterMetaTileEntity(
         8 -> 64
         9 -> 256
         else -> 1
+    }
+    private val cePerTick = when (tier.numeric) {
+        5 -> ClayEnergy.ZERO
+        6 -> ClayEnergy.micro(100)
+        7 -> ClayEnergy.micro(400)
+        8 -> ClayEnergy.micro(1600)
+        9 -> ClayEnergy.micro(6400)
+        else -> ClayEnergy.ZERO
     }
 
     private val clayEnergyHolder = if (useEnergy) ClayEnergyHolder(this) else null
@@ -153,9 +167,16 @@ class AutoCrafterMetaTileEntity(
             ?: (sampleItem.isItemEqual(itemStack) && ItemStack.areItemStackTagsEqual(sampleItem, itemStack))
     }
 
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager, settings: UISettings): ModularPanel {
+        return ModularPanel.defaultPanel(translationKey, GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 20)
+            .columnWithPlayerInv {
+                child(buildMainParentWidget(syncManager))
+            }
+    }
+
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
-            .child(Flow.row().height(18 * 3).widthRel(1f).align(Alignment.Center)
+            .child(Flow.row().height(18 * 3).widthRel(1f).marginTop(13)
                 .child(SlotGroupWidget.builder()
                     .matrix("SSS", "SSS", "SSS")
                     .key('S') {
@@ -180,6 +201,15 @@ class AutoCrafterMetaTileEntity(
                     .align(Alignment.CenterRight)
                 )
             )
+            // @see clayEnergyHoler declaration, it's not null if useEnergy is true
+            // we must use supplier to avoid NPE
+            // TODO: Low priority. Create empty IClayEnergyHolder for NPE safety?
+            .childIf(this.useEnergy) {
+                clayEnergyHolder!!.createCeTextWidget(syncManager).bottom(12).left(0)
+            }
+            .childIf(this.useEnergy) {
+                clayEnergyHolder!!.createSlotWidget().align(Alignment.BottomRight)
+            }
     }
 
     override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
