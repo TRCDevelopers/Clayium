@@ -16,16 +16,20 @@ import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.api.util.copyWithSize
 import io.github.trcdevelopers.clayium.client.model.ModelTextures
 import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
+import io.github.trcdevelopers.clayium.common.inventory.ItemHandlerWrappedInventoryCrafting
+import io.github.trcdevelopers.clayium.common.util.DummyContainer
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.FaceBakery
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.item.ItemStack
+import net.minecraft.item.crafting.CraftingManager
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.property.IExtendedBlockState
+import net.minecraftforge.items.ItemHandlerHelper
 import java.util.function.Function
 
 class AutoCrafterMetaTileEntity(
@@ -42,6 +46,7 @@ class AutoCrafterMetaTileEntity(
     override val exportItems = ClayiumItemStackHandler(this, 6)
     override val itemInventory = ItemHandlerProxy(importItems, exportItems)
     private val sampleCraftingGrid = ClayiumItemStackHandler(this, 9)
+    private val inventoryCrafting = ItemHandlerWrappedInventoryCrafting(importItems, DummyContainer)
 
     private val clayEnergyHolder = if (useEnergy) ClayEnergyHolder(this) else null
 
@@ -78,7 +83,26 @@ class AutoCrafterMetaTileEntity(
         }
     }
 
-    private fun craft() {}
+    private fun craft() {
+        for (i in 0..<9) {
+            val sampleStack = sampleCraftingGrid.getStackInSlot(i)
+            if (!sampleStack.isEmpty) {
+                val stack = importItems.getStackInSlot(i)
+                if (!isItemValidForCraftingGrid(i, stack)) return
+            }
+        }
+        val recipe = CraftingManager.findMatchingRecipe(this.inventoryCrafting, this.world ?: return)
+            ?: return
+        val result = recipe.getCraftingResult(this.inventoryCrafting)
+            ?: return
+        val remain = ItemHandlerHelper.insertItem(exportItems, result, true)
+        if (remain.isEmpty) {
+            ItemHandlerHelper.insertItem(exportItems, result, false)
+            for (i in 0..<9) {
+                importItems.extractItem(i, 1, false)
+            }
+        }
+    }
 
     override fun writeToNBT(data: NBTTagCompound) {
         super.writeToNBT(data)
@@ -94,8 +118,11 @@ class AutoCrafterMetaTileEntity(
         return AutoCrafterMetaTileEntity(metaTileEntityId, tier, useEnergy)
     }
 
+    /**
+     * Return false for empty.
+     */
     private fun isItemValidForCraftingGrid(index: Int, itemStack: ItemStack): Boolean {
-        if (itemStack.isEmpty) return true
+        if (itemStack.isEmpty) return false
         val sampleItem = sampleCraftingGrid.getStackInSlot(index)
         val filterCapability = sampleItem.getCapability(ClayiumCapabilities.ITEM_FILTER, null)
         return filterCapability?.test(itemStack)
