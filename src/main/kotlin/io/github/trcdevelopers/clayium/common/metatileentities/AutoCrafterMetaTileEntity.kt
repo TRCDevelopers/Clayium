@@ -11,6 +11,7 @@ import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_HEIGHT
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
 import io.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
+import io.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import io.github.trcdevelopers.clayium.api.capability.impl.ClayEnergyHolder
 import io.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
 import io.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
@@ -34,6 +35,7 @@ import net.minecraft.item.crafting.CraftingManager
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.items.ItemHandlerHelper
 import java.util.function.Function
@@ -83,13 +85,25 @@ class AutoCrafterMetaTileEntity(
         if (isRemote) return
         this.distributeItems()
 
-        this.progress++
+        if (this.progress < this.requiredProgress) { // consume energy only if progress is not enough
+            if (this.useEnergy && !this.clayEnergyHolder!!.drawEnergy(this.cePerTick, false)) {
+                return
+            }
+            this.progress += 1
+        }
         if (this.progress >= this.requiredProgress) {
-            this.progress = 0
-            repeat(this.craftAmountPerOperation) {
-                val succeeded = this.craft()
-                this.distributeItems()
-                if (!succeeded) return
+            val succeeded = this.craft()
+            if (succeeded) {
+                // Reset only if actually crafted something
+                // If not crafted it will not reset, so energy consumption will stop
+                this.progress = 0
+            }
+            repeat(this.craftAmountPerOperation - 1) { // already crafted once
+                if (this.craft()) {
+                    this.distributeItems()
+                } else {
+                    return
+                }
             }
         }
     }
@@ -140,6 +154,13 @@ class AutoCrafterMetaTileEntity(
             }
         }
         return true
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        if (capability === ClayiumTileCapabilities.CLAY_ENERGY_HOLDER) {
+            return capability.cast(this.clayEnergyHolder)
+        }
+        return super.getCapability(capability, facing)
     }
 
     override fun writeToNBT(data: NBTTagCompound) {
