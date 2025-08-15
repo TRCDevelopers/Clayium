@@ -5,7 +5,7 @@ on:
     types: [published]
 
 env:
-  VERSION_TYPE: alpha
+  VERSION_TYPE: beta
 
 jobs:
   publish:
