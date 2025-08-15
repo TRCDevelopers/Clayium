@@ -611,11 +611,7 @@ gui.clayium.activator.item_filter=Item Filter
 machine.clayium.ranged_activator=Ranged Activator
 machine.clayium.ranged_activator.tooltip1=Automatic right-clicker.
 
-tile.clayium.blockAdvancedAutoCrafter.name=Auto Crafter
-tile.clayium.blockPrecisionAutoCrafter.name=Precision Auto Crafter
-tile.clayium.blockClaySteelAutoCrafter.name=Clay Steel Auto Crafter
-tile.clayium.blockClayiumAutoCrafter.name=Clayium Auto Crafter
-tile.clayium.blockUltimateAutoCrafter.name=Ultimate Auto Crafter
+machine.clayium.auto_crafter=%s Auto Crafter
 
 tile.clayium.pan_cable=PAN Cable
 machine.clayium.pan_core=PAN Core

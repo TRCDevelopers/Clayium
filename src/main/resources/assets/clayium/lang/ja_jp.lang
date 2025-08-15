@@ -575,11 +575,7 @@ gui.clayium.activator.item_filter=アイテムフィルター
 machine.clayium.ranged_activator=範囲代行機
 machine.clayium.ranged_activator.tooltip1=右クリックを代行
 
-tile.clayium.blockAdvancedAutoCrafter.name=自動クラフト装置
-tile.clayium.blockPrecisionAutoCrafter.name=精密自動クラフト装置
-tile.clayium.blockClaySteelAutoCrafter.name=粘土鋼自動クラフト装置
-tile.clayium.blockClayiumAutoCrafter.name=クレイウム自動クラフト装置
-tile.clayium.blockUltimateAutoCrafter.name=究極自動クラフト装置
+machine.clayium.auto_crafter=%s自動クラフト装置
 
 tile.clayium.pan_cable=PAN ケーブル
 machine.clayium.pan_core=PAN コア
