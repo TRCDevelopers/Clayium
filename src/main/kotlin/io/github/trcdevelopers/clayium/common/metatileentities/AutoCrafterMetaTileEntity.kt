@@ -13,6 +13,7 @@ import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.util.CUtils
 import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.api.util.copyWithSize
 import io.github.trcdevelopers.clayium.client.model.ModelTextures
 import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
@@ -43,6 +44,41 @@ class AutoCrafterMetaTileEntity(
     private val sampleCraftingGrid = ClayiumItemStackHandler(this, 9)
 
     private val clayEnergyHolder = if (useEnergy) ClayEnergyHolder(this) else null
+
+    override fun update() {
+        super.update()
+        if (isRemote) return
+        this.distributeItems()
+        this.craft()
+    }
+
+    /**
+     * Repeat for all grid slots:
+     * 1. Get an item stack (stack A) from the slot.
+     * 2. For the all other slots:
+     *   1. Stack A matches with sample crafting grid item?
+     *   2. If yes, then is the slot's stack empty?
+     *   3. If yes, then the count of Stack A is greater than 1?
+     *   4. If yes, then extract 1 from Stack A and put it into the slot.
+     */
+    private fun distributeItems() {
+        for (i in 0..<9) {
+            val stack = importItems.getStackInSlot(i).copy()
+            if (stack.isEmpty) continue
+            for (j in 0..<9) {
+                if (i == j) continue
+                if (isItemValidForCraftingGrid(j, stack) && importItems.getStackInSlot(j).isEmpty && stack.count > 1) {
+                    stack.shrink(1)
+                    val insert = stack.copyWithSize(1)
+                    importItems.setStackInSlot(j, insert)
+                    if (stack.count <= 1) break
+                }
+            }
+            importItems.setStackInSlot(i, stack)
+        }
+    }
+
+    private fun craft() {}
 
     override fun writeToNBT(data: NBTTagCompound) {
         super.writeToNBT(data)
