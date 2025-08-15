@@ -19,6 +19,7 @@ import io.github.trcdevelopers.clayium.api.gui.data.MetaTileEntityGuiData
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.util.CUtils
 import io.github.trcdevelopers.clayium.api.util.ITier
+import io.github.trcdevelopers.clayium.api.util.MachineIoMode
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.api.util.copyWithSize
 import io.github.trcdevelopers.clayium.client.model.ModelTextures
@@ -79,6 +80,13 @@ class AutoCrafterMetaTileEntity(
     }
 
     private val clayEnergyHolder = if (useEnergy) ClayEnergyHolder(this) else null
+
+    override fun onPlacement() {
+        super.onPlacement()
+        this.setInput(EnumFacing.UP, MachineIoMode.ALL)
+        this.setInput(EnumFacing.DOWN, MachineIoMode.ALL)
+        this.setInput(this.frontFacing.opposite, MachineIoMode.CE)
+    }
 
     override fun update() {
         super.update()
