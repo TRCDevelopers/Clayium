@@ -196,6 +196,7 @@ class AutoCrafterMetaTileEntity(
     }
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
+        syncManager.registerSlotGroup("input_inventory", 3)
         return super.buildMainParentWidget(syncManager)
             .child(Flow.row().height(18 * 3).widthRel(1f).marginTop(13)
                 .child(SlotGroupWidget.builder()
@@ -210,6 +211,7 @@ class AutoCrafterMetaTileEntity(
                     .matrix("III", "III", "III")
                     .key('I') { i ->
                         MuiSlots.itemSlotBuilder(importItems, i)
+                            .slotGroup("input_inventory")
                             .filter { stack -> isItemValidForCraftingGrid(i, stack) }
                             .build()
                     }.build()
