@@ -71,8 +71,10 @@ class AutoCrafterMetaTileEntity(
             .child(Flow.row().height(18 * 3).widthRel(1f).align(Alignment.Center)
                 .child(SlotGroupWidget.builder()
                     .matrix("SSS", "SSS", "SSS")
-                    .key('S') { MuiSlots.phantomSlot(sampleCraftingGrid, it) }.build()
-                    .background(ClayGuiTextures.FILTER_SLOT)
+                    .key('S') {
+                        MuiSlots.phantomSlot(sampleCraftingGrid, it)
+                            .background(ClayGuiTextures.FILTER_SLOT)
+                    }.build()
                     .marginLeft(0)
                 )
                 .child(SlotGroupWidget.builder()
