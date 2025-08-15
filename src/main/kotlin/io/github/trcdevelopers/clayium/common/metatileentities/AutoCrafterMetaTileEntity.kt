@@ -155,13 +155,15 @@ class AutoCrafterMetaTileEntity(
         val result = recipe.getCraftingResult(this.inventoryCrafting)
             ?: return false
         val remain = ItemHandlerHelper.insertItem(exportItems, result, true)
-        if (remain.isEmpty) {
+        if (remain.isEmpty) { // All the crafting results can be inserted without overflow
             ItemHandlerHelper.insertItem(exportItems, result, false)
             for (i in 0..<9) {
                 importItems.extractItem(i, 1, false)
             }
+            return true
+        } else {
+            return false
         }
-        return true
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
