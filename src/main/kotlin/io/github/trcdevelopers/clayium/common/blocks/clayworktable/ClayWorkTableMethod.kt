@@ -1,6 +1,7 @@
 package io.github.trcdevelopers.clayium.common.blocks.clayworktable
 
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 
@@ -18,6 +19,17 @@ enum class ClayWorkTableMethod(
 
     fun isValidTool(tool: ItemStack): Boolean {
         return requiredTools.isEmpty() || tool.item in requiredTools
+    }
+
+    /**
+     * Called when a tool is used (button clicked with this method).
+     * @param tool The tool ItemStack used.
+     * @param clicker The EntityLivingBase that clicked the button.
+     */
+    fun damageTool(tool: ItemStack, clicker: EntityLivingBase) {
+        if (tool.item in requiredTools) {
+            tool.damageItem(1, clicker)
+        }
     }
 
     companion object {
