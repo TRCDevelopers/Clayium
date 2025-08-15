@@ -48,13 +48,36 @@ class AutoCrafterMetaTileEntity(
     private val sampleCraftingGrid = ClayiumItemStackHandler(this, 9)
     private val inventoryCrafting = ItemHandlerWrappedInventoryCrafting(importItems, DummyContainer)
 
+    private val requiredProgress = when (tier.numeric) {
+        5 -> 20
+        in 6..9 -> 1
+        else -> 20
+    }
+    private var progress = 0
+    private val craftAmountPerOperation = when (tier.numeric) {
+        5, 6 -> 1
+        7 -> 16
+        8 -> 64
+        9 -> 256
+        else -> 1
+    }
+
     private val clayEnergyHolder = if (useEnergy) ClayEnergyHolder(this) else null
 
     override fun update() {
         super.update()
         if (isRemote) return
         this.distributeItems()
-        this.craft()
+
+        this.progress++
+        if (this.progress >= this.requiredProgress) {
+            this.progress = 0
+            repeat(this.craftAmountPerOperation) {
+                val succeeded = this.craft()
+                this.distributeItems()
+                if (!succeeded) return
+            }
+        }
     }
 
     /**
@@ -83,18 +106,18 @@ class AutoCrafterMetaTileEntity(
         }
     }
 
-    private fun craft() {
+    private fun craft(): Boolean {
         for (i in 0..<9) {
             val sampleStack = sampleCraftingGrid.getStackInSlot(i)
             if (!sampleStack.isEmpty) {
                 val stack = importItems.getStackInSlot(i)
-                if (!isItemValidForCraftingGrid(i, stack)) return
+                if (!isItemValidForCraftingGrid(i, stack)) return false
             }
         }
-        val recipe = CraftingManager.findMatchingRecipe(this.inventoryCrafting, this.world ?: return)
-            ?: return
+        val recipe = CraftingManager.findMatchingRecipe(this.inventoryCrafting, this.world ?: return false)
+            ?: return false
         val result = recipe.getCraftingResult(this.inventoryCrafting)
-            ?: return
+            ?: return false
         val remain = ItemHandlerHelper.insertItem(exportItems, result, true)
         if (remain.isEmpty) {
             ItemHandlerHelper.insertItem(exportItems, result, false)
@@ -102,6 +125,7 @@ class AutoCrafterMetaTileEntity(
                 importItems.extractItem(i, 1, false)
             }
         }
+        return true
     }
 
     override fun writeToNBT(data: NBTTagCompound) {
