@@ -27,6 +27,7 @@ object TransferUtils {
      * @return true if all stacks are inserted successfully
      */
     fun insertToHandler(handler: IItemHandlerModifiable, stacks: List<ItemStack>, simulate: Boolean = false): Boolean {
+        val stacks = stacks.map(ItemStack::copy)
         if (simulate) {
             val copiedHandler = ItemStackHandler(handler.slots).apply {
                 for (i in 0..<handler.slots) {
