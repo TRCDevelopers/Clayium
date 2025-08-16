@@ -44,6 +44,7 @@ plugins {
     id 'org.jetbrains.kotlin.kapt' version "$kotlinVersion" apply false
     id 'com.google.devtools.ksp' version "$kspVersion" apply false
     id 'de.undercouch.download' version '5.6.0' apply false
+    id "cl.franciscosolis.sonatype-central-upload" version "1.0.2"
 }
 
 def out = services.get(StyledTextOutputFactory).create('an-output')
@@ -1532,4 +1533,42 @@ def getLastTag() {
     def githubTag = providers.environmentVariable('GITHUB_TAG')
     return runShell('git describe --abbrev=0 --tags ' +
             (githubTag.isPresent() ? runShell('git rev-list --tags --skip=1 --max-count=1') : ''))
+}
+
+publishing {
+    publications {
+        create("maven", MavenPublication) {
+            groupId = "io.github.trcdevelopers"
+            artifactId = "Clayium"
+            version = project.modVersion
+
+            from(components["java"])
+
+            pom {
+                name.set(project.name)
+                url.set("https://github.com/TRCDevelopers/Clayium")
+                description.set("Clayium for Minecraft 1.12.2.")
+                licenses {
+                    license {
+                        name.set("LGPL-3.0 license")
+                        url.set("https://github.com/TRCDevelopers/Clayium/blob/develop/LICENSE")
+                        distribution.set("repo")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("bqc0n")
+                        name.set("bqc0n")
+                        email.set("me@bqc0n.com")
+                        timezone.set("Asia/Tokyo")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/TRCDevelopers/Clayium")
+                    developerConnection.set("scm:git:ssh://github.com/TRCDevelopers/Clayium.git")
+                    url.set("https://github.com/TRCDevelopers/Clayium/blob/develop/LICENSE")
+                }
+            }
+        }
+    }
 }
