@@ -14,9 +14,11 @@ import io.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
 import io.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import io.github.trcdevelopers.clayium.api.capability.impl.ClayEnergyHolder
 import io.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
+import io.github.trcdevelopers.clayium.api.capability.impl.FilteredItemHandlerModifiable
 import io.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import io.github.trcdevelopers.clayium.api.gui.data.MetaTileEntityGuiData
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
+import io.github.trcdevelopers.clayium.api.metatileentity.trait.AutoIoHandler
 import io.github.trcdevelopers.clayium.api.util.CUtils
 import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode
@@ -51,11 +53,13 @@ class AutoCrafterMetaTileEntity(
     validOutputModesLists[0],
     "auto_crafter",
 ) {
-    override val importItems = ClayiumItemStackHandler(this, 9)
+    override val importItems = FilteredItemHandlerModifiable(ClayiumItemStackHandler(this, 9), this::isItemValidForCraftingGrid)
     override val exportItems = ClayiumItemStackHandler(this, 6)
     override val itemInventory = ItemHandlerProxy(importItems, exportItems)
     private val sampleCraftingGrid = ClayiumItemStackHandler(this, 9)
     private val inventoryCrafting = ItemHandlerWrappedInventoryCrafting(importItems, DummyContainer)
+
+    private val autoIoHandler = AutoIoHandler.Combined(this)
 
     private val requiredProgress = when (tier.numeric) {
         5 -> 20
