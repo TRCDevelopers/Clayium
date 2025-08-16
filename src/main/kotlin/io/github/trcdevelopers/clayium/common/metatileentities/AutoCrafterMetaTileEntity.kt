@@ -50,7 +50,7 @@ class AutoCrafterMetaTileEntity(
 ) : MetaTileEntity(
     metaTileEntityId, tier,
     if (useEnergy) validInputModesLists[1] else bufferValidInputModes,
-    validOutputModesLists[0],
+    validOutputModesLists[1],
     "auto_crafter",
 ) {
     override val importItems = FilteredItemHandlerModifiable(ClayiumItemStackHandler(this, 9), this::isItemValidForCraftingGrid)
@@ -88,7 +88,7 @@ class AutoCrafterMetaTileEntity(
     override fun onPlacement() {
         super.onPlacement()
         this.setInput(EnumFacing.UP, MachineIoMode.ALL)
-        this.setInput(EnumFacing.DOWN, MachineIoMode.ALL)
+        this.setOutput(EnumFacing.DOWN, MachineIoMode.ALL)
         this.setInput(this.frontFacing.opposite, MachineIoMode.CE)
     }
 
