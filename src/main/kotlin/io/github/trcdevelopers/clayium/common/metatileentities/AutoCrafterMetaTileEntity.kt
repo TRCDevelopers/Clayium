@@ -26,6 +26,7 @@ import io.github.trcdevelopers.clayium.client.model.ModelTextures
 import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import io.github.trcdevelopers.clayium.common.inventory.ItemHandlerWrappedInventoryCrafting
 import io.github.trcdevelopers.clayium.common.util.DummyContainer
+import io.github.trcdevelopers.clayium.common.util.TransferUtils
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -38,7 +39,6 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.property.IExtendedBlockState
-import net.minecraftforge.items.ItemHandlerHelper
 import java.util.function.Function
 
 class AutoCrafterMetaTileEntity(
@@ -155,25 +155,19 @@ class AutoCrafterMetaTileEntity(
             ?: return false
         val result = recipe.getCraftingResult(this.inventoryCrafting)
             ?: return false
-        val remainingItems = CraftingManager.getRemainingItems(this.inventoryCrafting, world)
-            .filterNot { it.isEmpty }
-        for (s in remainingItems) {
-            println(s)
-            if (!ItemHandlerHelper.insertItem(exportItems, s, true).isEmpty) {
-                return false // Cannot insert remaining items (e.g. a bucket) into export inventory
-            }
+        val craftResults = CraftingManager.getRemainingItems(this.inventoryCrafting, world)
+            .toMutableList() // add isn't supported by the original list
+            .also { it.add(result) /* Main Craft Result */ }
+        if (!TransferUtils.insertToHandler(exportItems, craftResults, true)) {
+            return false // Not enough space in export items
         }
-        val notInserted = ItemHandlerHelper.insertItem(exportItems, result, true)
-        if (notInserted.isEmpty) { // All the crafting results can be inserted without overflow
-            ItemHandlerHelper.insertItem(exportItems, result, false)
-            remainingItems.forEach { ItemHandlerHelper.insertItem(exportItems, it, false) }
-            for (i in 0..<9) {
-                importItems.extractItem(i, 1, false)
-            }
-            return true
-        } else {
-            return false
+        // consume items from importItems
+        for (i in 0..<9) {
+            importItems.extractItem(i, 1, false)
         }
+        // insert the craft results to exportItems
+        TransferUtils.insertToHandler(exportItems, craftResults, false)
+        return true
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {

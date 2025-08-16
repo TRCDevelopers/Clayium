@@ -17,7 +17,7 @@ fun ItemStack.isIdenticalTo(other: ItemStack): Boolean {
  *
  * @return A new list of ItemStacks with merged identical stacks.
  */
-fun List<ItemStack>.merge(): List<ItemStack> {
+fun List<ItemStack>.merge(): MutableList<ItemStack> {
     val map = Object2IntOpenHashMap<Pair<ItemAndMeta, NBTTagCompound?>>()
     for (stack in this) {
         if (stack.isEmpty) continue
