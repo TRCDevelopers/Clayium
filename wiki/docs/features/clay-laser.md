@@ -22,7 +22,7 @@ $$
 ただし
 $$
 \begin{aligned}
-C_i=bi^{(1+r)\log_{m_i}(\frac{1+r}{r})} \\\\
+C_i=b_i^{(1+r)\log_{m_i}(\frac{1+r}{r})} \\\\
 a_i = \frac{\ln(\frac{1 + r}{C_i^{-n_i}+r})}{\ln(\frac{1}{r}(1+r))}
 \end{aligned}
 $$
