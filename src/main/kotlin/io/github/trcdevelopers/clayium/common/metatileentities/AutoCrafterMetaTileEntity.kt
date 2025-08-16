@@ -150,13 +150,23 @@ class AutoCrafterMetaTileEntity(
                 if (!isItemValidForCraftingGrid(i, stack)) return false
             }
         }
-        val recipe = CraftingManager.findMatchingRecipe(this.inventoryCrafting, this.world ?: return false)
+        val world = this.world ?: return false
+        val recipe = CraftingManager.findMatchingRecipe(this.inventoryCrafting, world)
             ?: return false
         val result = recipe.getCraftingResult(this.inventoryCrafting)
             ?: return false
-        val remain = ItemHandlerHelper.insertItem(exportItems, result, true)
-        if (remain.isEmpty) { // All the crafting results can be inserted without overflow
+        val remainingItems = CraftingManager.getRemainingItems(this.inventoryCrafting, world)
+            .filterNot { it.isEmpty }
+        for (s in remainingItems) {
+            println(s)
+            if (!ItemHandlerHelper.insertItem(exportItems, s, true).isEmpty) {
+                return false // Cannot insert remaining items (e.g. a bucket) into export inventory
+            }
+        }
+        val notInserted = ItemHandlerHelper.insertItem(exportItems, result, true)
+        if (notInserted.isEmpty) { // All the crafting results can be inserted without overflow
             ItemHandlerHelper.insertItem(exportItems, result, false)
+            remainingItems.forEach { ItemHandlerHelper.insertItem(exportItems, it, false) }
             for (i in 0..<9) {
                 importItems.extractItem(i, 1, false)
             }
