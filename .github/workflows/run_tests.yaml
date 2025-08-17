@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # if there are no changes in src/ or Gradle, skip the tests.
       - name: Check for changes in src and gradle files
