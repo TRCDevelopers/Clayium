@@ -158,8 +158,8 @@ class MultiTrackBufferMetaTileEntity(
     }
 
     private inner class MultiTrackIoHandler : AutoIoHandler.Combined(this@MultiTrackBufferMetaTileEntity, isBuffer = true) {
-        override fun importFromNeighbors() {
-            var remaining = amountPerAction
+        override fun importFromNeighbors(amount: Int) {
+            var remaining = amount
             for (side in EnumFacing.entries) {
                 if (!(remaining > 0 && isImporting(side))) continue
 
@@ -177,8 +177,8 @@ class MultiTrackBufferMetaTileEntity(
             }
         }
 
-        override fun exportToNeighbors() {
-            var remaining = amountPerAction
+        override fun exportToNeighbors(amount: Int) {
+            var remaining = amount
             for (side in EnumFacing.entries) {
                 if (!(remaining > 0 && isExporting(side))) continue
 

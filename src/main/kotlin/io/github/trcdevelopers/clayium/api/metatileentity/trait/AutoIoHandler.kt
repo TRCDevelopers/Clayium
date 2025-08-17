@@ -24,14 +24,14 @@ abstract class AutoIoHandler(
 
     protected var ticked = 0
 
-    protected abstract fun transferItems()
+    protected abstract fun transferItems(amount: Int)
 
     override fun update() {
         super.update()
         if (metaTileEntity.isRemote) return
 
         if (++ticked >= coolTime) {
-            transferItems()
+            transferItems(this.amountPerAction)
             ticked = 0
         }
     }
@@ -42,8 +42,8 @@ abstract class AutoIoHandler(
     protected open fun getImportItems(side: EnumFacing): IItemHandler? = metaTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)
     protected open fun getExportItems(side: EnumFacing): IItemHandler? = metaTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)
 
-    protected open fun importFromNeighbors() {
-        var remainingImport = amountPerAction
+    protected open fun importFromNeighbors(amount: Int) {
+        var remainingImport = amount
         for (side in EnumFacing.entries) {
             if (remainingImport > 0 && isImporting(side)) {
                 remainingImport = transferItemStack(
@@ -55,8 +55,8 @@ abstract class AutoIoHandler(
         }
     }
 
-    protected open fun exportToNeighbors() {
-        var remainingExport = amountPerAction
+    protected open fun exportToNeighbors(amount: Int) {
+        var remainingExport = amount
         for (side in EnumFacing.entries) {
             if (remainingExport > 0 && isExporting(side)) {
                 remainingExport = transferItemStack(
@@ -101,8 +101,8 @@ abstract class AutoIoHandler(
         traitName : String = ClayiumDataCodecs.AUTO_IO_HANDLER,
         tier: Int = metaTileEntity.tier.numeric,
     ) : AutoIoHandler(metaTileEntity, isBuffer, traitName, tier) {
-        override fun transferItems() {
-            importFromNeighbors()
+        override fun transferItems(amount: Int) {
+            importFromNeighbors(amount)
         }
     }
 
@@ -129,8 +129,8 @@ abstract class AutoIoHandler(
         isBuffer: Boolean = false,
         tier: Int = metaTileEntity.tier.numeric,
     ) : AutoIoHandler(metaTileEntity, isBuffer, ClayiumDataCodecs.AUTO_IO_HANDLER, tier) {
-        override fun transferItems() {
-            exportToNeighbors()
+        override fun transferItems(amount: Int) {
+            exportToNeighbors(amount)
         }
     }
 
@@ -139,9 +139,9 @@ abstract class AutoIoHandler(
         isBuffer: Boolean = false,
         tier: Int = metaTileEntity.tier.numeric,
     ) : AutoIoHandler(metaTileEntity, isBuffer, ClayiumDataCodecs.AUTO_IO_HANDLER, tier) {
-        override fun transferItems() {
-            importFromNeighbors()
-            exportToNeighbors()
+        override fun transferItems(amount: Int) {
+            importFromNeighbors(amount)
+            exportToNeighbors(amount)
         }
     }
 }

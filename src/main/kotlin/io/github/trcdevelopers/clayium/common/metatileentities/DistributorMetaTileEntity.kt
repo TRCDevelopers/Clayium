@@ -171,9 +171,9 @@ class DistributorMetaTileEntity(
             lastDirection = EnumFacing.byIndex(data.getInteger("lastDirection"))
         }
 
-        override fun importFromNeighbors() {
+        override fun importFromNeighbors(amount: Int) {
             if (oneLapBehind) return
-            var remainingImport = amountPerAction
+            var remainingImport = amount
             val importItems = groups[importPtr]
             for (side in EnumFacing.entries) {
                 if (!(remainingImport > 0 && isImporting(side))) continue
@@ -186,7 +186,7 @@ class DistributorMetaTileEntity(
             if (remainingImport != amountPerAction) importPtr++
         }
 
-        override fun exportToNeighbors() {
+        override fun exportToNeighbors(amount: Int) {
             val neighborMap = EnumFacing.entries.enumMapNotNull { side ->
                 if (!isExporting(side)) return@enumMapNotNull null
                 getNeighborTileEntity(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite)
