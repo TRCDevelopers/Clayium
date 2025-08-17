@@ -22,15 +22,28 @@ abstract class AutoIoHandler(
     private val coolTime = if (isBuffer) ConfigTierBalance.bufferInterval[tier] else ConfigTierBalance.machineInterval[tier]
     private val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[tier] else ConfigTierBalance.machineAmount[tier]
 
+    private var remainTransferImport = 0
+    private var remainTransferExport = 0
+
     protected var ticked = 0
 
     protected abstract fun transferItems(amount: Int)
+
+    protected fun imported(amount: Int) {
+        this.remainTransferImport -= amount
+    }
+
+    protected fun exported(amount: Int) {
+        this.remainTransferExport -= amount
+    }
 
     override fun update() {
         super.update()
         if (metaTileEntity.isRemote) return
 
         if (++ticked >= coolTime) {
+            this.remainTransferImport = this.amountPerAction
+            this.remainTransferExport = this.amountPerAction
             transferItems(this.amountPerAction)
             ticked = 0
         }
@@ -53,6 +66,9 @@ abstract class AutoIoHandler(
                 )
             }
         }
+        if (remainingImport < amount) {
+            this.imported(amount - remainingImport)
+        }
     }
 
     protected open fun exportToNeighbors(amount: Int) {
@@ -65,6 +81,9 @@ abstract class AutoIoHandler(
                     amount = remainingExport,
                 )
             }
+        }
+        if (remainingExport < amount) {
+            this.exported(amount - remainingExport)
         }
     }
 

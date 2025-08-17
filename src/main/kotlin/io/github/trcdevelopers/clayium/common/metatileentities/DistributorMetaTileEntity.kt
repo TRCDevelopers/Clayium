@@ -183,7 +183,10 @@ class DistributorMetaTileEntity(
                     amount = remainingImport,
                 )
             }
-            if (remainingImport != amount) importPtr++
+            if (remainingImport != amount) {
+                importPtr++
+            }
+            this.imported(amount - remainingImport)
         }
 
         override fun exportToNeighbors(amount: Int) {
@@ -264,6 +267,7 @@ class DistributorMetaTileEntity(
                     remainingExport--
                 }
             }
+            this.exported(amount - remainingExport)
             return remainingExport != amount
         }
     }

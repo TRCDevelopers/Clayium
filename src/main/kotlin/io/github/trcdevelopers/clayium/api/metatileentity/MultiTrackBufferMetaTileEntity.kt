@@ -175,6 +175,7 @@ class MultiTrackBufferMetaTileEntity(
                     )
                 }
             }
+            this.imported(amount - remaining)
         }
 
         override fun exportToNeighbors(amount: Int) {
@@ -194,6 +195,7 @@ class MultiTrackBufferMetaTileEntity(
                     )
                 }
             }
+            this.exported(amount - remaining)
         }
 
         /**
