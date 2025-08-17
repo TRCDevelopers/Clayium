@@ -14,7 +14,6 @@ import io.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
 import io.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import io.github.trcdevelopers.clayium.api.capability.impl.ClayEnergyHolder
 import io.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
-import io.github.trcdevelopers.clayium.api.capability.impl.FilteredItemHandlerModifiable
 import io.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import io.github.trcdevelopers.clayium.api.gui.data.MetaTileEntityGuiData
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
@@ -25,6 +24,7 @@ import io.github.trcdevelopers.clayium.api.util.MachineIoMode
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.api.util.copyWithSize
 import io.github.trcdevelopers.clayium.client.model.ModelTextures
+import io.github.trcdevelopers.clayium.common.capability.impl.OnlyOutputFilteredItemHandlerModifiable
 import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import io.github.trcdevelopers.clayium.common.inventory.ItemHandlerWrappedInventoryCrafting
 import io.github.trcdevelopers.clayium.common.util.DummyContainer
@@ -53,7 +53,7 @@ class AutoCrafterMetaTileEntity(
     validOutputModesLists[1],
     "auto_crafter",
 ) {
-    override val importItems = FilteredItemHandlerModifiable(ClayiumItemStackHandler(this, 9), this::isItemValidForCraftingGrid)
+    override val importItems = OnlyOutputFilteredItemHandlerModifiable(ClayiumItemStackHandler(this, 9), this::isItemValidForCraftingGrid)
     override val exportItems = ClayiumItemStackHandler(this, 6)
     override val itemInventory = ItemHandlerProxy(importItems, exportItems)
     private val sampleCraftingGrid = ClayiumItemStackHandler(this, 9)
