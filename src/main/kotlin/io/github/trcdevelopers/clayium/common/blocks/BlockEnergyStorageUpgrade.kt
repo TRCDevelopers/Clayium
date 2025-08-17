@@ -24,6 +24,7 @@ class BlockEnergyStorageUpgrade : VariantBlock<BlockCaReactorCoil.BlockType>(Mat
     override fun getTier(stack: ItemStack) = getEnum(stack).tier
     override fun getTier(world: IBlockAccess, pos: BlockPos) = getEnum(world.getBlockState(pos)).tier
 
+    // TODO tooltip
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: List<String?>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
     }

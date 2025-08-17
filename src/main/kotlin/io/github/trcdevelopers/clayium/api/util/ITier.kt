@@ -16,6 +16,6 @@ interface ITier : Comparable<ITier> {
 
     companion object {
         @SideOnly(Side.CLIENT)
-        fun tierNumericTooltip(tier: ITier) = I18n.format("tooltip.clayium.tier", tier.numeric)
+        fun tierNumericTooltip(tier: ITier): String = I18n.format("tooltip.clayium.tier", tier.numeric)
     }
 }

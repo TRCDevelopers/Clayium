@@ -9,6 +9,10 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
+/**
+ * An ItemBlock for Tiered blocks.
+ * In addition to ItemBlockTiered, this has a custom display name ($translationKey.$meta) and custom tooltips ($translationKey.$meta.tooltip)
+ */
 class ItemBlockDamaged<T>(
     tieredBlock: T,
 ) : ItemBlockTiered<T>(tieredBlock) where T: Block, T: ITieredBlock {
