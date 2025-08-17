@@ -183,7 +183,7 @@ class DistributorMetaTileEntity(
                     amount = remainingImport,
                 )
             }
-            if (remainingImport != amountPerAction) importPtr++
+            if (remainingImport != amount) importPtr++
         }
 
         override fun exportToNeighbors(amount: Int) {
@@ -194,16 +194,16 @@ class DistributorMetaTileEntity(
             if (neighborMap.isEmpty()) return
             val currentInv = groups[exportPtr]
 
-            if (distribute(currentInv, neighborMap)) exportPtr++
+            if (distribute(currentInv, neighborMap, amount)) exportPtr++
         }
 
         /**
          * @return true if insertion was proceeded, false if no insertion was proceeded
          */
         @VisibleForTesting
-        fun distribute(source: IItemHandler, neighborMap: Map<EnumFacing, IItemHandler>): Boolean {
+        fun distribute(source: IItemHandler, neighborMap: Map<EnumFacing, IItemHandler>, amount: Int): Boolean {
             //todo CLEANUP?
-            var remainingExport = amountPerAction
+            var remainingExport = amount
             for (exportSlot in 0..<source.slots) {
                 val exported = source.extractItem(exportSlot, remainingExport, true)
                 val exportedCount = exported.count
@@ -264,7 +264,7 @@ class DistributorMetaTileEntity(
                     remainingExport--
                 }
             }
-            return remainingExport != amountPerAction
+            return remainingExport != amount
         }
     }
 }
