@@ -19,8 +19,8 @@ abstract class AutoIoHandler(
     tier: Int = metaTileEntity.tier.numeric,
 ) : MTETrait(metaTileEntity, traitName) {
 
-    private val coolTime = if (isBuffer) ConfigTierBalance.bufferInterval[tier] else ConfigTierBalance.machineInterval[tier]
-    private val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[tier] else ConfigTierBalance.machineAmount[tier]
+    val coolTime = if (isBuffer) ConfigTierBalance.bufferInterval[tier] else ConfigTierBalance.machineInterval[tier]
+    val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[tier] else ConfigTierBalance.machineAmount[tier]
 
     private var remainTransferImport = 0
     private var remainTransferExport = 0
