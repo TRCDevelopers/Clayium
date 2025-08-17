@@ -4,6 +4,7 @@ import io.github.trcdevelopers.clayium.Bootstrap
 import io.github.trcdevelopers.clayium.common.util.merge
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.should
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
@@ -24,6 +25,7 @@ class TestItemStackUtils : StringSpec({
         val onlyOne = listOf(ItemStack(Items.CLAY_BALL, 1))
         val result = onlyOne.merge()
         result shouldHaveSize 1
+        result shouldNotContain ItemStack.EMPTY
         result[0] should haveCount(1)
         result[0] should haveItem(Items.CLAY_BALL)
     }
@@ -36,11 +38,12 @@ class TestItemStackUtils : StringSpec({
         )
         val result = stacks.merge()
         result shouldHaveSize 1
+        result shouldNotContain ItemStack.EMPTY
         result[0] should haveCount(6)
         result[0] should haveItem(Items.CLAY_BALL)
     }
 
-    "List<ItemStack>.merge merge with big stacks" {
+    "List<ItemStack>.merge should merge with big stacks" {
         val stacks = listOf(
             ItemStack(Items.CLAY_BALL, 63),
             ItemStack(Items.CLAY_BALL, 63),
@@ -48,6 +51,7 @@ class TestItemStackUtils : StringSpec({
         )
         val result = stacks.merge()
         result shouldHaveSize 3
+        result shouldNotContain ItemStack.EMPTY
         result[0] should haveCount(64)
         result[0] should haveItem(Items.CLAY_BALL)
         result[1] should haveCount(64)
@@ -63,6 +67,7 @@ class TestItemStackUtils : StringSpec({
         )
         val result = stacks.merge()
         result shouldHaveSize 2
+        result shouldNotContain ItemStack.EMPTY
         result should containItemStack(ItemStack(Items.CLAY_BALL, 1))
         result should containItemStack(ItemStack(Items.GOLD_INGOT, 2))
     }
@@ -74,6 +79,7 @@ class TestItemStackUtils : StringSpec({
         )
         val result = original.merge()
         result shouldHaveSize 1
+        result shouldNotContain ItemStack.EMPTY
         original[0] should haveCount(1)
         original[1] should haveCount(2)
     }
