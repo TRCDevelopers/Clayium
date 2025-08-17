@@ -9,6 +9,7 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import io.github.trcdevelopers.clayium.api.ClayEnergy
+import io.github.trcdevelopers.clayium.api.block.ICaReactorHull
 import io.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.CA_REACTOR_HULL_POSES
 import io.github.trcdevelopers.clayium.api.capability.impl.AbstractRecipeLogic
 import io.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
@@ -28,7 +29,6 @@ import io.github.trcdevelopers.clayium.api.util.getMetaTileEntity
 import io.github.trcdevelopers.clayium.api.util.toList
 import io.github.trcdevelopers.clayium.client.renderer.CRenderUtils
 import io.github.trcdevelopers.clayium.common.blocks.BlockCaReactorCoil
-import io.github.trcdevelopers.clayium.common.blocks.BlockCaReactorHull
 import io.github.trcdevelopers.clayium.common.config.ConfigCore
 import io.github.trcdevelopers.clayium.common.recipe.Recipe
 import io.github.trcdevelopers.clayium.common.recipe.registry.CaReactorRecipeRegistry
@@ -132,7 +132,7 @@ class CaReactorMetaTileEntity(
                         parts.add(metaTileEntity)
                     }
                     metaTileEntity === this -> {}
-                    block is BlockCaReactorHull -> {
+                    block is ICaReactorHull -> {
                         val hullRank = block.getCaRank(world, pos)
                         if (hullRank !in supportedHullTierRange) {
                             errorMsg = TextComponentTranslation("message.clayium.ca_reactor.too_high_tier_hull", pos)
