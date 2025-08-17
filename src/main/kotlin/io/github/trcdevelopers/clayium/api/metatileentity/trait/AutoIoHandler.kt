@@ -27,6 +27,13 @@ abstract class AutoIoHandler(
 
     protected var ticked = 0
 
+    /**
+     * Indicates whether the handler is currently transferring items.
+     * It will be true for a tick when the interval is reached.
+     */
+    var transferring = false
+        private set
+
     protected abstract fun transferItems(amount: Int)
 
     protected fun imported(amount: Int) {
@@ -40,13 +47,35 @@ abstract class AutoIoHandler(
     override fun update() {
         super.update()
         if (metaTileEntity.isRemote) return
+        if (this.transferring) {
+            this.transferring = false
+        }
 
         if (++ticked >= coolTime) {
+            this.transferring = true
             this.remainTransferImport = this.amountPerAction
             this.remainTransferExport = this.amountPerAction
             transferItems(this.amountPerAction)
             ticked = 0
         }
+    }
+
+    /**
+     * Re-attempts to transfer items within the current tick.
+     * @return true if more items can be transferred, false otherwise.
+     */
+    fun reTransferWithinTick(): Boolean {
+        if (!this.transferring) return false
+        if (this.remainTransferImport > 0) {
+            this.importFromNeighbors(this.remainTransferImport)
+        }
+        if (this.remainTransferExport > 0) {
+            this.exportToNeighbors(this.remainTransferExport)
+        }
+        // remainTransfer is mutated in import/export methods
+        val canImportMore = this.remainTransferImport > 0
+        val canExportMore = this.remainTransferExport > 0
+        return canImportMore || canExportMore
     }
 
     protected open fun isImporting(side: EnumFacing): Boolean = metaTileEntity.getInput(side) != MachineIoMode.NONE

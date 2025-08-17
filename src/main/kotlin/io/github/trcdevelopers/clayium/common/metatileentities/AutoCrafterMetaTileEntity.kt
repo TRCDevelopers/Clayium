@@ -112,6 +112,7 @@ class AutoCrafterMetaTileEntity(
             }
             repeat(this.craftAmountPerOperation - 1) { // already crafted once
                 if (this.craft()) {
+                    this.autoIoHandler.reTransferWithinTick()
                     this.distributeItems()
                 } else {
                     return
