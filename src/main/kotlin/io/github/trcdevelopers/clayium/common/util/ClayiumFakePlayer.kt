@@ -45,7 +45,7 @@ class FakeServerHandler(
     player: FakePlayer,
 ) : NetHandlerPlayServer(player.server, NetworkManager(EnumPacketDirection.SERVERBOUND), player) {
     override fun update() {}
-    override fun getNetworkManager(): NetworkManager = this.networkManager
+    override fun getNetworkManager(): NetworkManager = super.networkManager
     override fun disconnect(textComponent: ITextComponent) {}
     override fun processInput(packetIn: CPacketInput) { }
     override fun processVehicleMove(packetIn: CPacketVehicleMove) { }
