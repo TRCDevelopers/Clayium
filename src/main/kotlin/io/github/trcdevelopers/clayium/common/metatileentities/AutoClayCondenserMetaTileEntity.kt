@@ -83,8 +83,8 @@ class AutoClayCondenserMetaTileEntity(
                         .align(Alignment.Center)
                         .child(SlotGroupWidget.builder()
                             .matrix(*matrix)
-                            .key('I') {
-                                MuiSlots.itemSlotBuilder(itemInventory, it)
+                            .key('I') { i ->
+                                MuiSlots.itemSlotBuilder(itemInventory, i)
                                     .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null }
                                     .slotGroup("compressor_inventory").build()
                             }

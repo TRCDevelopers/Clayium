@@ -14,8 +14,8 @@ class CMultiOreRecipeInput(
     val oreIds = oreDicts.map { OreDictionary.getOreID(it.toString()) }
 
     override val stacks by lazy {
-        val oreStacks = oreIds.map {
-            OreDictionary.getOres(OreDictionary.getOreName(it)).map { it.copyWithSize(amount) }
+        val oreStacks = oreIds.map { i ->
+            OreDictionary.getOres(OreDictionary.getOreName(i)).map { it.copyWithSize(amount) }
         }.flatten()
         oreStacks
     }
@@ -34,6 +34,6 @@ class CMultiOreRecipeInput(
     }
 
     override fun toString(): String {
-        return "CMultiOreRecipeInput(${oreIds.map { OreDictionary.getOreName(it) }.joinToString(", ")})"
+        return "CMultiOreRecipeInput(${oreIds.joinToString(", ") { OreDictionary.getOreName(it) }})"
     }
 }
