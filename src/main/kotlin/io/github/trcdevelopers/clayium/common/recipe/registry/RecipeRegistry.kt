@@ -62,8 +62,7 @@ open class RecipeRegistry<R: RecipeBuilder<R>>(
     fun findRecipe(machineTier: Int, inputsIn: List<ItemStack>): Recipe? {
         inputsIn.forEach {
             if (it.isEmpty) return@forEach
-            val recipes = recipeSearchMap[ItemAndMeta(it)]
-            if (recipes == null) return@forEach
+            val recipes = recipeSearchMap[ItemAndMeta(it)] ?: return@forEach
             for (recipe in recipes) {
                 if (recipe.matches(inputsIn, machineTier)) return recipe
             }

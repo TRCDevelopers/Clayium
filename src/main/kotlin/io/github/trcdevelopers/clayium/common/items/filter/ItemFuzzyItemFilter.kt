@@ -50,8 +50,9 @@ class ItemFuzzyItemFilter : ItemFilterBase(::ItemFilterFuzzy) {
     }
 
     override fun createItemFilter(stack: ItemStack): IItemFilter {
-        val itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable
-        if (itemHandler == null) return IItemFilter.ALWAYS_FALSE
+        val itemHandler =
+            stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable
+                ?: return IItemFilter.ALWAYS_FALSE
 
         val stacksMutableList = mutableListOf<ItemStack>()
         for (i in 0..<itemHandler.slots) {

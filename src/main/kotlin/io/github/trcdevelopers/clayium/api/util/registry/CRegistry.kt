@@ -10,7 +10,7 @@ open class CRegistry<K, V>(
     private val maxId: Int,
 ) : RegistryNamespaced<K, V>() where K : Any, V : Any {
     override fun register(id: Int, key: K, value: V) {
-        if (id < 0 || id >= maxId)
+        if (id !in 0..<maxId)
             throw IllegalArgumentException("Id is out of range: $id")
         getObjectById(id)?.let {
             throw IllegalArgumentException("Tried to reassign id $id to ($key: $value), but it is already assigned to (${getNameForObject(it)}: $it)") }

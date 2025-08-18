@@ -167,8 +167,7 @@ class AutoTraderMetaTileEntity(
         }
         val next = ToggleButton()
             .value(BoolValue.Dynamic({
-                val trades = trades
-                if (trades == null) return@Dynamic false
+                val trades = trades ?: return@Dynamic false
                 tradeIndex < trades.size - 1
             }, { disabled ->
                 val enabled = !disabled
@@ -179,8 +178,7 @@ class AutoTraderMetaTileEntity(
             }))
         val prev = ToggleButton()
             .value(BoolValue.Dynamic({
-                val trades = trades
-                if (trades == null) return@Dynamic false
+                val trades = trades ?: return@Dynamic false
                 tradeIndex > 0 && trades.isNotEmpty()
             }, { disabled ->
                 val enabled = !disabled
@@ -310,10 +308,12 @@ class AutoTraderMetaTileEntity(
     private inner class TradePreviewItemHandler : IItemHandlerModifiable by EmptyItemStackHandler {
         override fun getSlots() = 3
         override fun getSlotLimit(slot: Int) = 64
+        override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
+            return EmptyItemStackHandler.isItemValid(slot, stack)
+        }
 
         override fun getStackInSlot(slot: Int): ItemStack {
-            val trade = trade
-            if (trade == null) return ItemStack.EMPTY
+            val trade = trade ?: return ItemStack.EMPTY
             return when (slot) {
                 0 -> trade.itemToBuy
                 1 -> trade.secondItemToBuy

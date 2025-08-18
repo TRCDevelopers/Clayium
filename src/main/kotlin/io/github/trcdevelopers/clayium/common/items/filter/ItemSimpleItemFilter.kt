@@ -83,8 +83,9 @@ class ItemSimpleItemFilter : ItemFilterBase(:: ItemFilterSimple) {
     }
 
     override fun createItemFilter(stack: ItemStack): IItemFilter {
-        val itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable
-        if (itemHandler == null) return ItemFilterSimple()
+        val itemHandler =
+            stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable
+                ?: return ItemFilterSimple()
 
         val stacksMutableList = mutableListOf<ItemStack>()
         for (i in 0..<itemHandler.slots) {

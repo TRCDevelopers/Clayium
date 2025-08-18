@@ -50,8 +50,7 @@ class ItemCollectorMetaTileEntity(
     private val scannedItemEntities = mutableListOf<EntityItem>()
 
     override fun actionOnBlock(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
-        val aabb = clayMarkerHandler.markedRangeAbsoluteAabb
-        if (aabb == null) return EnumActionResult.FAIL
+        val aabb = clayMarkerHandler.markedRangeAbsoluteAabb ?: return EnumActionResult.FAIL
         if (scannedItemEntities.isEmpty()) {
             val entities = world.getEntitiesWithinAABB(EntityItem::class.java, aabb)
             if (entities.isEmpty()) return EnumActionResult.FAIL // skip to next tick

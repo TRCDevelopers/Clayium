@@ -16,7 +16,7 @@ class LaserRecipe(
     fun matches(input: IBlockState, energy: Double): Boolean {
         val sameBlock = inputBlock === input.block
         val metaMatches = inputMeta == W || inputMeta == input.block.getMetaFromState(input)
-        val energyOk = energyMin <= energy && energyMax >= energy
+        val energyOk = energy in energyMin..energyMax
         return sameBlock && metaMatches && energyOk
     }
 

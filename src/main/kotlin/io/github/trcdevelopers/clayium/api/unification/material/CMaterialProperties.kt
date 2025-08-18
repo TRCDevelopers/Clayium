@@ -12,8 +12,7 @@ class CMaterialProperties {
     }
 
     fun <T : MaterialProperty> getProperty(key: CPropertyKey<T>): T {
-        val property = properties[key]
-        if (property == null) throw NullPointerException()
+        val property = properties[key] ?: throw NullPointerException()
         return key.cast(property)
     }
 

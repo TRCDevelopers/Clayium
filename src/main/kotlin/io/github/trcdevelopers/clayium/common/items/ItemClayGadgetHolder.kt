@@ -87,8 +87,8 @@ class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData>, IBauble {
                     .key('I') {
                         MuiSlots.itemSlotBuilder(itemHandler, it).slotGroup("clayium_gadget_holder")
                             .filter { target ->
-                                val gadget = target.getCapability(ClayiumCapabilities.CLAY_GADGET, null)
-                                if (gadget == null) return@filter false
+                                val gadget =
+                                    target.getCapability(ClayiumCapabilities.CLAY_GADGET, null) ?: return@filter false
                                 for (slot in 0..<itemHandler.slots) {
                                     if (itemHandler.getStackInSlot(slot).isEmpty) continue
                                     val otherGadget = itemHandler.getStackInSlot(slot).getCapability(ClayiumCapabilities.CLAY_GADGET, null)

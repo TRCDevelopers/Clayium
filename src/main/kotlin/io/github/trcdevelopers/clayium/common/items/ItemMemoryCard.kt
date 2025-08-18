@@ -25,8 +25,7 @@ class ItemMemoryCard : Item() {
     }
 
     override fun onItemUseFirst(player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, hand: EnumHand): EnumActionResult {
-        val metaTileEntity = world.getMetaTileEntity(pos)
-        if (metaTileEntity == null) return EnumActionResult.PASS
+        val metaTileEntity = world.getMetaTileEntity(pos) ?: return EnumActionResult.PASS
         if (world.isRemote) return EnumActionResult.SUCCESS
 
         val itemStack = player.getHeldItem(hand)
