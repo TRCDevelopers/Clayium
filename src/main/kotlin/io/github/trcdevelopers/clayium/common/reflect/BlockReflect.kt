@@ -1,18 +1,13 @@
-@file:Suppress("DEPRECATION")
 package io.github.trcdevelopers.clayium.common.reflect
 
+import io.github.trcdevelopers.clayium.mixins.minecraft.BlockInvoker
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.item.ItemStack
-import net.minecraftforge.fml.relauncher.ReflectionHelper
 
-// TODO use mixin accessor?
+//TODO remove this
 object BlockReflect {
-    private val silkTouchDrop by lazy {
-        ReflectionHelper.findMethod(Block::class.java, "getSilkTouchDrop", "func_180643_i", IBlockState::class.java)
-    }
-
     fun getSilkTouchDrop(block: Block, state: IBlockState): ItemStack {
-        return silkTouchDrop.invoke(block, state) as ItemStack
+        return (block as BlockInvoker).callGetSilkTouchDrop(state)
     }
 }
