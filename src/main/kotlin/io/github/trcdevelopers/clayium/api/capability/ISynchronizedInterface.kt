@@ -4,6 +4,10 @@ import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 
+/**
+ * Capability interface for TileEntities.
+ * TEs that have this capability can be a target of the [io.github.trcdevelopers.clayium.common.items.ItemSynchronizer].
+ */
 interface ISynchronizedInterface {
 
     val target: MetaTileEntity?

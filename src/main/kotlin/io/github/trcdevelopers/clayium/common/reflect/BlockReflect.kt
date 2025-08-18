@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION")
 package io.github.trcdevelopers.clayium.common.reflect
 
 import net.minecraft.block.Block
@@ -5,7 +6,7 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fml.relauncher.ReflectionHelper
 
-@Suppress("DEPRECATION")
+// TODO use mixin accessor?
 object BlockReflect {
     private val silkTouchDrop by lazy {
         ReflectionHelper.findMethod(Block::class.java, "getSilkTouchDrop", "func_180643_i", IBlockState::class.java)

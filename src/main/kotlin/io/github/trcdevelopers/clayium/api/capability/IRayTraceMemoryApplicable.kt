@@ -2,6 +2,9 @@ package io.github.trcdevelopers.clayium.api.capability
 
 import io.github.trcdevelopers.clayium.common.util.RayTraceMemory
 
+/**
+ * Capability interface for TileEntities.
+ */
 interface IRayTraceMemoryApplicable {
 
     /**

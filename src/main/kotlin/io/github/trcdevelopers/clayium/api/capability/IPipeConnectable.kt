@@ -3,7 +3,7 @@ package io.github.trcdevelopers.clayium.api.capability
 import net.minecraft.util.EnumFacing
 
 /**
- * Capability for TileEntities that can be connected to piped machines.
+ * Capability interface for TileEntities that can be connected to piped machines.
  *
  * This interface is used to determine whether a pipe should extend to that direction **during rendering.
  * not used for actual IO handling.**

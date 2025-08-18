@@ -1,7 +1,7 @@
 package io.github.trcdevelopers.clayium.api.capability
 
 /**
- * Capability for workable machines.
+ * Capability interface for TileEntities.
  * Used in [io.github.trcdevelopers.clayium.common.metatileentities.multiblock.RedstoneProxyMetaTileEntity]
  * to determine output Redstone Signal.
  */

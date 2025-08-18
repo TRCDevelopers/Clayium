@@ -6,15 +6,14 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 
 /**
- * Use this capability interface to accept Clayium's item filters.
+ * Capability interface for blocks.
+ * Use this to accept Clayium's item filters.
  *
  * Usage overview:
- * - A [IItemFilter] Instance is given on [setFilter], use this for filtering items. [ItemFilterBase] is also given, store it or its registry name for [getFilterItem].
- *   You can write the registry name to NBT for persistence. Example: [io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity.writeToNBT]
- * - [getFilterItem] returns the [ItemFilterBase] for Filter Duplicator.
+ * - An [IItemFilter] Instance is given on [setFilter], use the given filter for filtering items. [ItemFilterBase] is also given, store it or its registry name for [getFilterItem].
+ *   You can write the registry name to NBT for persistence. Example: [io.github.trcdevelopers.clayium.common.capability.impl.ItemFilterHolderTrait.serializeNBT]
+ * - [getFilterItem] returns the [ItemFilterBase] for the Filter Duplicator.
  * - [clearFilter] just the name implies.
- *
- *
  */
 interface IItemFilterApplicatable {
     /**
@@ -26,9 +25,9 @@ interface IItemFilterApplicatable {
     fun getFilter(side: EnumFacing): IItemFilter?
 
     /**
-     * for [io.github.trcdevelopers.clayium.common.items.filter.ItemFilterDuplicator].
+     * for the [io.github.trcdevelopers.clayium.common.items.filter.ItemFilterDuplicator].
      *
-     * returned stack must have [ItemFilterBase] as item and appropriate [NBTTagCompound].
+     * returned stack must have an [ItemFilterBase] as its item and appropriate [NBTTagCompound].
      */
     fun createFilterStack(side: EnumFacing): ItemStack?
     fun clearFilter(side: EnumFacing)

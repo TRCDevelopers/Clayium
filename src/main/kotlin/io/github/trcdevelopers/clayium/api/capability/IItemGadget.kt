@@ -4,11 +4,12 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.ResourceLocation
 
 /**
- * Capability interface for clay gadgets.
+ * Capability interface for items.
+ * Use this to create a clay gadget.
  * Items that have this capability can be put in the gadget holder.
  *
  * You have to use unique singleton instance for the capability,
- * or override the [equals] and [hashCode] because Sets and Maps are used in logic.
+ * or override the [equals] and [hashCode] because Sets and Maps are used in the logic.
  * See the companion object of [io.github.trcdevelopers.clayium.common.items.ItemClayGadgetHolder] for details.
  */
 interface IItemGadget {

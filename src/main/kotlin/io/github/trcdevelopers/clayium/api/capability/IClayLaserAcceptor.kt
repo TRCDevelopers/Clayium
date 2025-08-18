@@ -3,6 +3,9 @@ package io.github.trcdevelopers.clayium.api.capability
 import io.github.trcdevelopers.clayium.api.laser.ClayLaser
 import net.minecraft.util.EnumFacing
 
+/**
+ * Capability interface for blocks.
+ */
 interface IClayLaserAcceptor {
     /**
      * Called every tick when the laser is irradiating this block.

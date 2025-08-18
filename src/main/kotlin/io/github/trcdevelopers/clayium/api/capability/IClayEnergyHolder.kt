@@ -9,7 +9,7 @@ import net.minecraftforge.items.IItemHandler
 interface IClayEnergyHolder {
 
     /**
-     * CE is generated from Items that has [IClayEnergyProvider] capability.
+     * CE is generated from Items that have [IClayEnergyProvider] capability.
      * This handler is an inventory for that.
      */
     val energizedClayItemHandler: IItemHandler
