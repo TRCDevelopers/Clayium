@@ -49,7 +49,7 @@ abstract class NeighborCacheTileEntityBase : SyncedTileEntityBase() {
         if (world == null || pos == null) return null
         val i = facing.index
         var neighbor = neighborCache[i]
-        if (neighbor == null || neighbor == this || (neighbor.isInvalid == true)) {
+        if (neighbor == null || neighbor == this || neighbor.isInvalid) {
             neighbor = world.getTileEntity(pos.offset(facing))
             neighborCache[i] = neighbor
             neighborsInvalidated = false

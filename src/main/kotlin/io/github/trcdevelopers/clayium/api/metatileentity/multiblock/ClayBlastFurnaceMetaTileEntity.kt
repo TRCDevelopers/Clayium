@@ -37,8 +37,7 @@ class ClayBlastFurnaceMetaTileEntity(
             for (xx in -1..1) {
                 for (zz in 0..2) {
                     val mbPartPos = handler.getControllerRelativeCoord(controllerPos, xx, yy, zz)
-                    val result = handler.isPosValidForMutliblock(world, mbPartPos)
-                    when (result) {
+                    when (val result = handler.isPosValidForMutliblock(world, mbPartPos)) {
                         MultiblockLogic.BlockValidationResult.Invalid ->
                             return StructureValidationResult.Invalid
                         is MultiblockLogic.BlockValidationResult.Matched -> {

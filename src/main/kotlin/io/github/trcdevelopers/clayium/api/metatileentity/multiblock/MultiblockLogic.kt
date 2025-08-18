@@ -40,8 +40,7 @@ class MultiblockLogic(
 
     override fun update() {
         if (metaTileEntity.isRemote || metaTileEntity.offsetTimer % 20 != 0L) return
-        val result = checkStructure(this)
-        when (result) {
+        when (val result = checkStructure(this)) {
             StructureValidationResult.Invalid -> {
                 if (structureFormed) {
                     structureFormed = false

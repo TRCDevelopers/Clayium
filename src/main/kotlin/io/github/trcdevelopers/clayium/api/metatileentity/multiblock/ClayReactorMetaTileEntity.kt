@@ -57,8 +57,7 @@ class ClayReactorMetaTileEntity(
                         mbParts.add(laserProxy)
                         tiers.add(laserProxy.tier)
                     }
-                    val result = handler.isPosValidForMutliblock(world, relPos)
-                    when (result) {
+                    when (val result = handler.isPosValidForMutliblock(world, relPos)) {
                         MultiblockLogic.BlockValidationResult.Invalid ->
                             return StructureValidationResult.Invalid
                         is MultiblockLogic.BlockValidationResult.Matched -> {

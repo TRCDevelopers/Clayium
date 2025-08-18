@@ -31,6 +31,8 @@ object CraftingTablePanRecipeFactory : IPanRecipeFactory {
         val inputs = recipe.ingredients.map { ingredient ->
             // field `matchingStacks` and method `getMatchingStacks` is not the same.
             // `matchingStacks` is an empty list in OreIngredient.
+            // Although `matchingStacks` is the private field, it can be a public field with AT, and we cannot recognize it.
+            @Suppress("UsePropertyAccessSyntax")
             val stacks = ingredient.getMatchingStacks()
             // todo: use cached recipe inputs instead of creating new one
             CItemRecipeInput(stacks.map { it.copyWithSize(1) }, 1)

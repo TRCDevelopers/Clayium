@@ -23,7 +23,7 @@ import java.lang.ref.WeakReference
 class ClayInterfaceMetaTileEntity(
     metaTileEntityId: ResourceLocation,
     tier: ITier,
-) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "clay_interface", ) {
+) : ProxyMetaTileEntityBase(metaTileEntityId, tier, "clay_interface") {
 
     override val importItems: IItemHandlerModifiable get() = targetImportItems.get() ?: EmptyItemStackHandler
     override val exportItems: IItemHandlerModifiable get() = targetExportItems.get() ?: EmptyItemStackHandler

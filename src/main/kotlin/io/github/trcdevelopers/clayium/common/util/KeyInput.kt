@@ -33,7 +33,7 @@ enum class KeyInput(
     }
 
     fun update(player: EntityPlayerMP, isKeyDown: Boolean, isPressed: Boolean) {
-        val pair = mapping.computeIfAbsent(player) { MutBooleanPairKeyData(false, false) }
+        val pair = mapping.computeIfAbsent(player) { MutBooleanPairKeyData(isKeyDown = false, isPressed = false) }
         pair.isKeyDown = isKeyDown
         pair.isPressed = isPressed
     }

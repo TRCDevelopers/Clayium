@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.RayTraceResult
@@ -50,7 +51,7 @@ class BlockClayLeaves : BlockLeaves(), ITieredBlock {
         return ItemStack(this)
     }
 
-    override fun getStateFromMeta(meta: Int) = defaultState.withProperty(CHECK_DECAY, meta and 0b01 != 0).withProperty(DECAYABLE, meta and 0b10 != 0)
+    override fun getStateFromMeta(meta: Int): IBlockState = defaultState.withProperty(CHECK_DECAY, meta and 0b01 != 0).withProperty(DECAYABLE, meta and 0b10 != 0)
     override fun getMetaFromState(state: IBlockState) = (if (state.getValue(CHECK_DECAY)) 0b01 else 0) or (if (state.getValue(DECAYABLE)) 0b10 else 0)
 
     override fun createBlockState() = BlockStateContainer(this, CHECK_DECAY, DECAYABLE)
@@ -58,7 +59,7 @@ class BlockClayLeaves : BlockLeaves(), ITieredBlock {
     override fun getTier(stack: ItemStack) = ClayTiers.CLAY_STEEL
     override fun getTier(world: IBlockAccess, pos: BlockPos) = ClayTiers.CLAY_STEEL
 
-    override fun getRenderLayer() = Blocks.LEAVES.defaultState.block.getRenderLayer()
+    override fun getRenderLayer(): BlockRenderLayer = Blocks.LEAVES.defaultState.block.renderLayer
     override fun isOpaqueCube(state: IBlockState) = Blocks.LEAVES.defaultState.isOpaqueCube
     override fun shouldSideBeRendered(blockState: IBlockState, blockAccess: IBlockAccess, pos: BlockPos, side: EnumFacing) = Blocks.LEAVES.defaultState.shouldSideBeRendered(blockAccess, pos, side)
 }

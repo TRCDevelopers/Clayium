@@ -14,6 +14,7 @@ class RecipeInput(
     constructor(itemStack: ItemStack) : this(Ingredient.fromStacks(itemStack), itemStack.count)
 
     // [Ingredient.matchingStacks] returns an empty list in [OreIngredient], so use [Ingredient.getMatchingStacks] instead.
+    @Suppress("UsePropertyAccessSyntax")
     val inputStacks = stacks.getMatchingStacks().map { it.copy().apply { this@apply.count = this@RecipeInput.amount } }
 
     override fun test(input: ItemStack): Boolean {

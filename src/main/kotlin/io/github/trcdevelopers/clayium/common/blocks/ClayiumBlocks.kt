@@ -120,7 +120,7 @@ object ClayiumBlocks {
     private fun <T: Block> createBlock(key: String, block: T, tab: CreativeTabs = ClayiumCTabs.main): T {
         return block.apply {
             setCreativeTab(tab)
-            setRegistryName(clayiumId(key))
+            registryName = clayiumId(key)
             setTranslationKey("${MOD_ID}.$key")
             blocks[key] = this
         }

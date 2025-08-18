@@ -188,7 +188,7 @@ abstract class AbstractBuilderMetaTileEntity(
 
     protected open fun createButtonGrid(syncManager: PanelSyncManager): Grid {
         val startButton = ToggleButton()
-            .value(SyncHandlers.bool(::workingEnabled, { workingEnabled = true }))
+            .value(SyncHandlers.bool(::workingEnabled) { workingEnabled = true })
             .background(ClayGuiTextures.START_BUTTON)
             .hoverBackground(ClayGuiTextures.START_BUTTON_HOVERED)
             .selectedBackground(ClayGuiTextures.START_BUTTON_DISABLED)

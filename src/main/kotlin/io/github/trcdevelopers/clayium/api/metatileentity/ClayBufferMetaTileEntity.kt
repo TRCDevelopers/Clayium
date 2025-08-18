@@ -39,7 +39,7 @@ class ClayBufferMetaTileEntity(
 
     val inventoryRowSize = when (tier.numeric) {
         in 4..7 -> tier.numeric - 3
-        8, -> 4
+        8 -> 4
         in 9..13 -> 6
         else -> 1
     }

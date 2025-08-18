@@ -74,7 +74,7 @@ object ClayiumItems {
     private fun <T: Item> createItem(name: String, item: T): T {
         return item.apply {
             setCreativeTab(ClayiumCTabs.main)
-            setRegistryName(clayiumId(name))
+            registryName = clayiumId(name)
             setTranslationKey("${MOD_ID}.$name")
         }
     }

@@ -26,7 +26,7 @@ class ClayLaserMetaTileEntity(
     private val laserRed: Int = 0,
     private val laserGreen: Int = 0,
     private val laserBlue: Int = 0,
-) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[0], validOutputModesLists[0], "clay_laser", ) {
+) : MetaTileEntity(metaTileEntityId, tier, validInputModesLists[0], validOutputModesLists[0], "clay_laser") {
 
     override val importItems: IItemHandlerModifiable = EmptyItemStackHandler
     override val exportItems: IItemHandlerModifiable = EmptyItemStackHandler
