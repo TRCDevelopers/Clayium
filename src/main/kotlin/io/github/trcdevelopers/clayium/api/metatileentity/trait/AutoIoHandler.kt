@@ -19,21 +19,63 @@ abstract class AutoIoHandler(
     tier: Int = metaTileEntity.tier.numeric,
 ) : MTETrait(metaTileEntity, traitName) {
 
-    protected val coolTime = if (isBuffer) ConfigTierBalance.bufferInterval[tier] else ConfigTierBalance.machineInterval[tier]
-    protected val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[tier] else ConfigTierBalance.machineAmount[tier]
+    val coolTime = if (isBuffer) ConfigTierBalance.bufferInterval[tier] else ConfigTierBalance.machineInterval[tier]
+    val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[tier] else ConfigTierBalance.machineAmount[tier]
+
+    private var remainTransferImport = 0
+    private var remainTransferExport = 0
 
     protected var ticked = 0
 
-    protected abstract fun transferItems()
+    /**
+     * Indicates whether the handler is currently transferring items.
+     * It will be true for a tick when the interval is reached.
+     */
+    var transferring = false
+        private set
+
+    protected abstract fun transferItems(amount: Int)
+
+    protected fun imported(amount: Int) {
+        this.remainTransferImport -= amount
+    }
+
+    protected fun exported(amount: Int) {
+        this.remainTransferExport -= amount
+    }
 
     override fun update() {
         super.update()
         if (metaTileEntity.isRemote) return
+        if (this.transferring) {
+            this.transferring = false
+        }
 
         if (++ticked >= coolTime) {
-            transferItems()
+            this.transferring = true
+            this.remainTransferImport = this.amountPerAction
+            this.remainTransferExport = this.amountPerAction
+            transferItems(this.amountPerAction)
             ticked = 0
         }
+    }
+
+    /**
+     * Re-attempts to transfer items within the current tick.
+     * @return true if more items can be transferred, false otherwise.
+     */
+    fun reTransferWithinTick(): Boolean {
+        if (!this.transferring) return false
+        if (this.remainTransferImport > 0) {
+            this.importFromNeighbors(this.remainTransferImport)
+        }
+        if (this.remainTransferExport > 0) {
+            this.exportToNeighbors(this.remainTransferExport)
+        }
+        // remainTransfer is mutated in import/export methods
+        val canImportMore = this.remainTransferImport > 0
+        val canExportMore = this.remainTransferExport > 0
+        return canImportMore || canExportMore
     }
 
     protected open fun isImporting(side: EnumFacing): Boolean = metaTileEntity.getInput(side) != MachineIoMode.NONE
@@ -42,8 +84,8 @@ abstract class AutoIoHandler(
     protected open fun getImportItems(side: EnumFacing): IItemHandler? = metaTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)
     protected open fun getExportItems(side: EnumFacing): IItemHandler? = metaTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)
 
-    protected open fun importFromNeighbors() {
-        var remainingImport = amountPerAction
+    protected open fun importFromNeighbors(amount: Int) {
+        var remainingImport = amount
         for (side in EnumFacing.entries) {
             if (remainingImport > 0 && isImporting(side)) {
                 remainingImport = transferItemStack(
@@ -53,10 +95,13 @@ abstract class AutoIoHandler(
                 )
             }
         }
+        if (remainingImport < amount) {
+            this.imported(amount - remainingImport)
+        }
     }
 
-    protected open fun exportToNeighbors() {
-        var remainingExport = amountPerAction
+    protected open fun exportToNeighbors(amount: Int) {
+        var remainingExport = amount
         for (side in EnumFacing.entries) {
             if (remainingExport > 0 && isExporting(side)) {
                 remainingExport = transferItemStack(
@@ -65,6 +110,9 @@ abstract class AutoIoHandler(
                     amount = remainingExport,
                 )
             }
+        }
+        if (remainingExport < amount) {
+            this.exported(amount - remainingExport)
         }
     }
 
@@ -101,8 +149,8 @@ abstract class AutoIoHandler(
         traitName : String = ClayiumDataCodecs.AUTO_IO_HANDLER,
         tier: Int = metaTileEntity.tier.numeric,
     ) : AutoIoHandler(metaTileEntity, isBuffer, traitName, tier) {
-        override fun transferItems() {
-            importFromNeighbors()
+        override fun transferItems(amount: Int) {
+            importFromNeighbors(amount)
         }
     }
 
@@ -129,8 +177,8 @@ abstract class AutoIoHandler(
         isBuffer: Boolean = false,
         tier: Int = metaTileEntity.tier.numeric,
     ) : AutoIoHandler(metaTileEntity, isBuffer, ClayiumDataCodecs.AUTO_IO_HANDLER, tier) {
-        override fun transferItems() {
-            exportToNeighbors()
+        override fun transferItems(amount: Int) {
+            exportToNeighbors(amount)
         }
     }
 
@@ -139,9 +187,9 @@ abstract class AutoIoHandler(
         isBuffer: Boolean = false,
         tier: Int = metaTileEntity.tier.numeric,
     ) : AutoIoHandler(metaTileEntity, isBuffer, ClayiumDataCodecs.AUTO_IO_HANDLER, tier) {
-        override fun transferItems() {
-            importFromNeighbors()
-            exportToNeighbors()
+        override fun transferItems(amount: Int) {
+            importFromNeighbors(amount)
+            exportToNeighbors(amount)
         }
     }
 }

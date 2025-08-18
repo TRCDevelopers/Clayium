@@ -171,9 +171,9 @@ class DistributorMetaTileEntity(
             lastDirection = EnumFacing.byIndex(data.getInteger("lastDirection"))
         }
 
-        override fun importFromNeighbors() {
+        override fun importFromNeighbors(amount: Int) {
             if (oneLapBehind) return
-            var remainingImport = amountPerAction
+            var remainingImport = amount
             val importItems = groups[importPtr]
             for (side in EnumFacing.entries) {
                 if (!(remainingImport > 0 && isImporting(side))) continue
@@ -183,10 +183,13 @@ class DistributorMetaTileEntity(
                     amount = remainingImport,
                 )
             }
-            if (remainingImport != amountPerAction) importPtr++
+            if (remainingImport != amount) {
+                importPtr++
+            }
+            this.imported(amount - remainingImport)
         }
 
-        override fun exportToNeighbors() {
+        override fun exportToNeighbors(amount: Int) {
             val neighborMap = EnumFacing.entries.enumMapNotNull { side ->
                 if (!isExporting(side)) return@enumMapNotNull null
                 getNeighborTileEntity(side)?.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.opposite)
@@ -194,16 +197,16 @@ class DistributorMetaTileEntity(
             if (neighborMap.isEmpty()) return
             val currentInv = groups[exportPtr]
 
-            if (distribute(currentInv, neighborMap)) exportPtr++
+            if (distribute(currentInv, neighborMap, amount)) exportPtr++
         }
 
         /**
          * @return true if insertion was proceeded, false if no insertion was proceeded
          */
         @VisibleForTesting
-        fun distribute(source: IItemHandler, neighborMap: Map<EnumFacing, IItemHandler>): Boolean {
+        fun distribute(source: IItemHandler, neighborMap: Map<EnumFacing, IItemHandler>, amount: Int): Boolean {
             //todo CLEANUP?
-            var remainingExport = amountPerAction
+            var remainingExport = amount
             for (exportSlot in 0..<source.slots) {
                 val exported = source.extractItem(exportSlot, remainingExport, true)
                 val exportedCount = exported.count
@@ -264,7 +267,8 @@ class DistributorMetaTileEntity(
                     remainingExport--
                 }
             }
-            return remainingExport != amountPerAction
+            this.exported(amount - remainingExport)
+            return remainingExport != amount
         }
     }
 }

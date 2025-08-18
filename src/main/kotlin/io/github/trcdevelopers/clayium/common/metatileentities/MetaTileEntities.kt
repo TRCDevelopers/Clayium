@@ -145,6 +145,10 @@ object MetaTileEntities {
         SimpleMachineMetaTileEntity(clayiumId("wire_drawing_machine.${it.lowerName}"), it, CRecipes.WIRE_DRAWING_MACHINE)
     }
 
+    val AUTO_CRAFTER = registerMetaTileEntities(286, (5..9)) { //+5
+        AutoCrafterMetaTileEntity(clayiumId("auto_crafter.${it.lowerName}"), it, it.numeric != 5)
+    }
+
 
     /* Item Generators 501-600 */
     val CA_RESONATING_COLLECTOR = registerMetaTileEntity(501, ResonatingCollectorMetaTileEntity(clayiumId("resonating_collector"), ClayTiers.ANTIMATTER))

@@ -41,7 +41,7 @@ class TestClayDistributor : StringSpec({
             insertItem(1, ItemStack(Items.DIAMOND, 64), false)
         }
 
-        distributor.distribute(source, map)
+        distributor.distribute(source, map, distributor.amountPerAction)
 
         // Clay Steel Distributor has 64/tick throughput, so DIAMOND shouldn't be transferred
         val stack0 = handler0.getStackInSlot(0)
@@ -69,7 +69,7 @@ class TestClayDistributor : StringSpec({
             insertItem(1, ItemStack(Items.DIAMOND, 64), false)
         }
 
-        distributor.distribute(source, map)
+        distributor.distribute(source, map, distributor.amountPerAction)
 
         // 3 ClayBall → 2, 1
         // 61 Diamond → 31, 30

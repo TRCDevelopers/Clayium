@@ -28,3 +28,11 @@ fun beEmpty() = Matcher<ItemStack> { value ->
         { "ItemStack should not be empty" },
     )
 }
+
+fun containItemStack(itemStack: ItemStack) = Matcher<Collection<ItemStack>> { value ->
+    MatcherResult(
+        value.any { ItemStack.areItemStacksEqual(it, itemStack) },
+        { "Collection should contain ItemStack $itemStack, but it does not" },
+        { "Collection should not contain ItemStack $itemStack" },
+    )
+}
