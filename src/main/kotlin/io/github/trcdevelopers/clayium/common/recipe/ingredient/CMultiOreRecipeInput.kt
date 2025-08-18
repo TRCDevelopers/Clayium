@@ -3,6 +3,7 @@ package io.github.trcdevelopers.clayium.common.recipe.ingredient
 import io.github.trcdevelopers.clayium.api.unification.stack.ItemAndMeta
 import io.github.trcdevelopers.clayium.api.unification.stack.UnificationEntry
 import io.github.trcdevelopers.clayium.api.util.copyWithSize
+import it.unimi.dsi.fastutil.ints.IntArrayList
 import net.minecraft.item.ItemStack
 import net.minecraftforge.oredict.OreDictionary
 
@@ -11,7 +12,7 @@ class CMultiOreRecipeInput(
     vararg oreDicts: UnificationEntry,
 ) : CRecipeInput() {
 
-    val oreIds = oreDicts.map { OreDictionary.getOreID(it.toString()) }
+    val oreIds = oreDicts.mapTo(IntArrayList()) { OreDictionary.getOreID(it.toString()) }
 
     override val stacks by lazy {
         val oreStacks = oreIds.map { i ->
