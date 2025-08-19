@@ -52,7 +52,7 @@ class ItemFluidCapsule(
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         val fluidStack = getFluid(stack)
         if (fluidStack != null) {
-            tooltip.add("${fluidStack.localizedName} ${this.capacity}mB")
+            tooltip.add("${this.capacity}mB ${fluidStack.localizedName}")
         } else {
             tooltip.add("${this.capacity}mB")
         }
@@ -65,8 +65,7 @@ class ItemFluidCapsule(
     }
 
     fun getFluid(stack: ItemStack): FluidStack? {
-        return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)
-            ?.drain(Int.MAX_VALUE, false)
+        return (stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null) as? FluidHandlerItemStackSimple)?.fluid
     }
 
     companion object {
