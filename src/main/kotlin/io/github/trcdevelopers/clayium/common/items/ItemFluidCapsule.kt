@@ -13,6 +13,7 @@ import net.minecraft.util.NonNullList
 import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.ICapabilityProvider
+import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
@@ -66,5 +67,23 @@ class ItemFluidCapsule(
     fun getFluid(stack: ItemStack): FluidStack? {
         return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)
             ?.drain(Int.MAX_VALUE, false)
+    }
+
+    companion object {
+        fun from(fluidStack: FluidStack): ItemStack {
+            val itemStack = ItemStack(ClayiumItems.FLUID_CAPSULE_1000MB)
+            val fluidHandler = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)
+                ?: return ItemStack.EMPTY
+            fluidHandler.fill(fluidStack, true)
+            return itemStack
+        }
+
+        fun water(): ItemStack {
+            return from(FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME))
+        }
+
+        fun lava(): ItemStack {
+            return from(FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME))
+        }
     }
 }
