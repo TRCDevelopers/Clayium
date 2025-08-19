@@ -1,7 +1,7 @@
 #PARSE_ESCAPES
 itemGroup.clayium=Clayium
 itemGroup.clayium.decorations=Clayium 装飾ブロック
-itemGroup.clayium.clayiumcapsule=Clayium 液体カプセル
+itemGroup.clayium.fluid_capsules=Clayium 液体カプセル
 
 tooltip.clayium.HoldShiftForDetails=--§f詳細は§lShift§rキー§7--
 

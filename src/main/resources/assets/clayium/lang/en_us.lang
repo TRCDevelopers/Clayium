@@ -4,7 +4,7 @@
 
 itemGroup.clayium=Clayium
 itemGroup.clayium.decorations=Clayium Decoration Blocks
-itemGroup.clayium.clayiumcapsule=Clayium Fluid Capsules
+itemGroup.clayium.fluid_capsules=Clayium Fluid Capsules
 
 tooltip.clayium.HoldShiftForDetails=--§fHold §lShift§r For Details§7--
 
