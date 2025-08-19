@@ -1,6 +1,8 @@
 package io.github.trcdevelopers.clayium.common.items
 
 import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.common.config.ConfigCore
+import io.github.trcdevelopers.clayium.common.config.FluidCapsuleCreativeTabMode
 import io.github.trcdevelopers.clayium.common.creativetab.ClayiumCTabs
 import net.minecraft.client.renderer.block.model.ModelBakery
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -32,15 +34,19 @@ class ItemFluidCapsule(
         if (!this.isInCreativeTab(tab)) return
 
         items.add(ItemStack(this))
-        if (this.addSubItemsToCreativeTab) {
-            for (fluid in FluidRegistry.getRegisteredFluids().values) {
-                val fluidStack = FluidStack(fluid, this.capacity)
-                val itemStack = ItemStack(this)
-                val fluidHandler = FluidHandlerItemStackSimple(itemStack, this.capacity)
-                if (fluidHandler.fill(fluidStack, true) == fluidStack.amount) {
-                    val filled = fluidHandler.container
-                    items.add(filled)
-                }
+        if (ConfigCore.misc.fluidCapsuleCreativeTabMode == FluidCapsuleCreativeTabMode.ONLY_EMPTY) {
+            return
+        }
+        if (ConfigCore.misc.fluidCapsuleCreativeTabMode == FluidCapsuleCreativeTabMode.ONLY_1000MB && !this.addSubItemsToCreativeTab) {
+            return
+        }
+        for (fluid in FluidRegistry.getRegisteredFluids().values) {
+            val fluidStack = FluidStack(fluid, this.capacity)
+            val itemStack = ItemStack(this)
+            val fluidHandler = FluidHandlerItemStackSimple(itemStack, this.capacity)
+            if (fluidHandler.fill(fluidStack, true) == fluidStack.amount) {
+                val filled = fluidHandler.container
+                items.add(filled)
             }
         }
     }
