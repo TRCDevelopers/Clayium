@@ -4,7 +4,6 @@ import codechicken.lib.colour.ColourRGBA
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.client.gui.TextureExtra
-import io.github.trcdevelopers.clayium.client.model.FluidCapsuleModelLoader
 import io.github.trcdevelopers.clayium.client.model.MetaTileEntityModelLoader
 import io.github.trcdevelopers.clayium.client.model.MetalModelLoader
 import io.github.trcdevelopers.clayium.client.renderer.ClayLaserReflectorRenderer
@@ -52,7 +51,6 @@ class ClientProxy : CommonProxy() {
 
         ModelLoaderRegistry.registerLoader(MetaTileEntityModelLoader)
         ModelLoaderRegistry.registerLoader(MetalModelLoader)
-        ModelLoaderRegistry.registerLoader(FluidCapsuleModelLoader)
 
         ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, MetaTileEntityRenderDispatcher)
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayLaserReflector::class.java, ClayLaserReflectorRenderer)

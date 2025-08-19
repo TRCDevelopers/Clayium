@@ -59,7 +59,7 @@ class ItemFluidCapsule(
     }
 
     override fun registerModels() {
-        val loc = ModelResourceLocation(clayiumId("fluid_capsule_$capacity"), "inventory")
+        val loc = ModelResourceLocation(clayiumId("fluid_capsule"), "capacity=${this.capacity}")
         ModelLoader.setCustomMeshDefinition(this) { loc }
         ModelBakery.registerItemVariants(this, loc)
     }
