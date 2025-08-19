@@ -21,6 +21,7 @@ import io.github.trcdevelopers.clayium.api.util.hasCapability
 import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import io.github.trcdevelopers.clayium.common.util.TransferUtils
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
+import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -48,18 +49,15 @@ abstract class AbstractMinerMetaTileEntity(
 
     protected var laser: ClayLaser? = null
 
-    /**
-     * return true if you want to continue mining within the tick.
-     * if false, further blocks will not be mined in this tick.
-     * also, if all [maxBlocksPerTick] blocks are mined, [progress] will be reset.
-     */
     override fun actionOnBlock(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
+        if (state.getBlockHardness(world, pos) == HARDNESS_UNBREAKABLE || state.material.isLiquid || state.material == Material.AIR) {
+            return EnumActionResult.PASS
+        }
+
         val filter = this.filter
         val filterMatches = filter == null || filter.testBlock(world, pos)
-
         if (!filterMatches) return EnumActionResult.PASS
-        val blockHardness = state.getBlockHardness(world, pos)
-        if (blockHardness == HARDNESS_UNBREAKABLE) return EnumActionResult.PASS
+
         return this.mine(state, world, pos)
     }
 
