@@ -33,6 +33,11 @@ object CraftingRecipeLoader {
             "CCC",
             'C', UnificationEntry(OrePrefix.block, denseClay))
 
+        RecipeUtils.addShapedRecipe("fluid_capsule",
+            ItemStack(ClayiumItems.FLUID_CAPSULE_1000MB),
+            " C ", "C C", " C ",
+            'C', UnificationEntry(OrePrefix.block, denseClay))
+
         RecipeUtils.addSmeltingRecipe(UnificationEntry(OrePrefix.ingot, CMaterials.impureSilicon),
             OreDictUnifier.get(OrePrefix.ingot, CMaterials.silicone), 0.1f)
 
