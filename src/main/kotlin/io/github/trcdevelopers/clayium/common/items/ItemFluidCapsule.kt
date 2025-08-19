@@ -51,7 +51,9 @@ class ItemFluidCapsule(
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         val fluidStack = getFluid(stack)
         if (fluidStack != null) {
-            tooltip.add("${fluidStack.localizedName}")
+            tooltip.add("${fluidStack.localizedName} ${this.capacity}mB")
+        } else {
+            tooltip.add("${this.capacity}mB")
         }
     }
 
