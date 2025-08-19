@@ -4,6 +4,7 @@ import codechicken.lib.colour.ColourRGBA
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.client.gui.TextureExtra
+import io.github.trcdevelopers.clayium.client.model.FluidCapsuleModelLoader
 import io.github.trcdevelopers.clayium.client.model.MetaTileEntityModelLoader
 import io.github.trcdevelopers.clayium.client.model.MetalModelLoader
 import io.github.trcdevelopers.clayium.client.renderer.ClayLaserReflectorRenderer
@@ -15,6 +16,7 @@ import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
 import io.github.trcdevelopers.clayium.common.blocks.marker.TileClayMarker
 import io.github.trcdevelopers.clayium.common.blocks.metalchest.TileEntityMetalChest
+import io.github.trcdevelopers.clayium.common.items.ICustomItemModel
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import io.github.trcdevelopers.clayium.common.metatileentities.MetaTileEntities
 import io.github.trcdevelopers.clayium.common.util.KeyInput
@@ -50,6 +52,7 @@ class ClientProxy : CommonProxy() {
 
         ModelLoaderRegistry.registerLoader(MetaTileEntityModelLoader)
         ModelLoaderRegistry.registerLoader(MetalModelLoader)
+        ModelLoaderRegistry.registerLoader(FluidCapsuleModelLoader)
 
         ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, MetaTileEntityRenderDispatcher)
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayLaserReflector::class.java, ClayLaserReflectorRenderer)
@@ -66,6 +69,8 @@ class ClientProxy : CommonProxy() {
     override fun registerItem(registry: IForgeRegistry<Item>, item: Item) {
         registry.register(item)
         if (item is MetaItemClayium) {
+            item.registerModels()
+        } else if (item is ICustomItemModel) {
             item.registerModels()
         } else {
             ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(item.registryName!!, "inventory"))

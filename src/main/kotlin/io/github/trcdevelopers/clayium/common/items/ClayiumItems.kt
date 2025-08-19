@@ -23,6 +23,7 @@ import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaPrefixItem
 import io.github.trcdevelopers.clayium.common.util.ToolClasses
+import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.Item
 import net.minecraftforge.registries.IForgeRegistry
 
@@ -65,6 +66,12 @@ object ClayiumItems {
 
     val CLAY_GADGET_HOLDER = createItem("clay_gadget_holder", ItemClayGadgetHolder())
 
+    val FLUID_CAPSULE_1MB = createItem("fluid_capsule_1mb", ItemFluidCapsule(1), ClayiumCTabs.fluidCapsules)
+    val FLUID_CAPSULE_5MB = createItem("fluid_capsule_5mb", ItemFluidCapsule(5), ClayiumCTabs.fluidCapsules)
+    val FLUID_CAPSULE_25MB = createItem("fluid_capsule_25mb", ItemFluidCapsule(25), ClayiumCTabs.fluidCapsules)
+    val FLUID_CAPSULE_125MB = createItem("fluid_capsule_125mb", ItemFluidCapsule(125), ClayiumCTabs.fluidCapsules)
+    val FLUID_CAPSULE_1000MB = createItem("fluid_capsule_1000mb", ItemFluidCapsule(1000, addSubItemsToCreativeTab = true), ClayiumCTabs.fluidCapsules)
+
     fun registerOreDicts() {
         for (metaItem in MetaItemClayium.META_ITEMS) {
             metaItem.registerOreDicts()
@@ -75,6 +82,14 @@ object ClayiumItems {
         return item.apply {
             setCreativeTab(ClayiumCTabs.main)
             setRegistryName(clayiumId(name))
+            setTranslationKey("${MOD_ID}.$name")
+        }
+    }
+
+    private fun <T: Item> createItem(name: String, item: T, creativeTab: CreativeTabs): T {
+        return item.apply {
+            setCreativeTab(creativeTab)
+            registryName = clayiumId(name)
             setTranslationKey("${MOD_ID}.$name")
         }
     }
@@ -119,5 +134,11 @@ object ClayiumItems {
         proxy.registerItem(registry, DAMAGE_VALUE_ITEM_FILTER)
         proxy.registerItem(registry, BLOCK_METADATA_ITEM_FILTER)
         proxy.registerItem(registry, ITEM_FILTER_DUPLICATOR)
+
+        proxy.registerItem(registry, FLUID_CAPSULE_1MB)
+        proxy.registerItem(registry, FLUID_CAPSULE_5MB)
+        proxy.registerItem(registry, FLUID_CAPSULE_25MB)
+        proxy.registerItem(registry, FLUID_CAPSULE_125MB)
+        proxy.registerItem(registry, FLUID_CAPSULE_1000MB)
     }
 }

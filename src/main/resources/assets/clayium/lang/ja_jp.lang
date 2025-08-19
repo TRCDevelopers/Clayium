@@ -756,11 +756,11 @@ item.clayium.synchronizer.tooltip6=1. シンクロパーツでインターフェ
 item.clayium.synchronizer.tooltip7=2. シンクロナイザーで右クリックして装置の座標を記録
 item.clayium.synchronizer.tooltip8=3. 続いてインターフェースを右クリックして同期させる
 
-item.clayium.itemCapsule.name=粘土液体カプセル
-item.clayium.itemCapsule0125.name=粘土液体カプセル (125mB)
-item.clayium.itemCapsule0025.name=粘土液体カプセル (25mB)
-item.clayium.itemCapsule0005.name=粘土液体カプセル (5mB)
-item.clayium.itemCapsule0001.name=粘土液体カプセル (1mB)
+item.clayium.fluid_capsule_1000mb.name=粘土液体カプセル (1000mB)
+item.clayium.fluid_capsule_125mb.name=粘土液体カプセル (125mB)
+item.clayium.fluid_capsule_25mb.name=粘土液体カプセル (25mB)
+item.clayium.fluid_capsule_5mb.name=粘土液体カプセル (5mB)
+item.clayium.fluid_capsule_1mb.name=粘土液体カプセル (1mB)
 
 item.clayium.clay_gadget_holder.name=粘土ガジェットホルダー
 item.clayium.clay_gadget_holder.tooltip1=粘土ガジェットはこのホルダーに

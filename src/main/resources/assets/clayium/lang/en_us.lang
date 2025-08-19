@@ -890,11 +890,11 @@ item.clayium.synchronizer.tooltip6=1. R-click the interface with Synchronous Par
 item.clayium.synchronizer.tooltip7=2. Record the coord of the machine by R-clicking with this.
 item.clayium.synchronizer.tooltip8=3. Synchronize the interface by R-clicking with it.
 
-item.clayium.itemCapsule.name=Clay Fluid Capsule
-item.clayium.itemCapsule0125.name=Clay Fluid Capsule (125mB)
-item.clayium.itemCapsule0025.name=Clay Fluid Capsule (25mB)
-item.clayium.itemCapsule0005.name=Clay Fluid Capsule (5mB)
-item.clayium.itemCapsule0001.name=Clay Fluid Capsule (1mB)
+item.clayium.fluid_capsule_1000mb.name=Clay Fluid Capsule (1000mB)
+item.clayium.fluid_capsule_125mb.name=Clay Fluid Capsule (125mB)
+item.clayium.fluid_capsule_25mb.name=Clay Fluid Capsule (25mB)
+item.clayium.fluid_capsule_5mb.name=Clay Fluid Capsule (5mB)
+item.clayium.fluid_capsule_1mb.name=Clay Fluid Capsule (1mB)
 
 item.clayium.clay_gadget_holder.name=Clay Gadget Holder
 item.clayium.clay_gadget_holder.tooltip1=Clay Gadgets give effects
