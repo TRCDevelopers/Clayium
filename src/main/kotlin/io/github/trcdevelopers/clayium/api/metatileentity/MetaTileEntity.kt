@@ -2,6 +2,7 @@ package io.github.trcdevelopers.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.screen.ModularScreen
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
@@ -58,6 +59,7 @@ import io.github.trcdevelopers.clayium.common.creativetab.ClayiumCTabs
 import io.github.trcdevelopers.clayium.common.util.SidelessI18n
 import io.github.trcdevelopers.clayium.common.util.UtilLocale
 import io.github.trcdevelopers.clayium.integration.modularui.IGuiHolderClayium
+import io.github.trcdevelopers.clayium.integration.modularui.ModularScreenClayium
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import net.minecraft.block.Block
@@ -678,6 +680,10 @@ abstract class MetaTileEntity(
      */
     @SideOnly(Side.CLIENT)
     open fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {}
+
+    override fun createScreen(data: MetaTileEntityGuiData, mainPanel: ModularPanel): ModularScreen {
+        return ModularScreenClayium(mainPanel)
+    }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         return ModularPanel.defaultPanel(translationKey)
