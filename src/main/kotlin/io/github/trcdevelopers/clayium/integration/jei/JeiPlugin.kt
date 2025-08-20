@@ -106,7 +106,10 @@ class JeiPlugin : IModPlugin {
             listOf(ItemStack(ClayiumBlocks.QUARTZ_CRUCIBLE), OreDictUnifier.get(OrePrefix.ingot, CMaterials.silicon)), VanillaTypes.ITEM,
             "recipe.clayium.quartz_crucible.description"
         )
-        modRegistry.addIngredientInfo(OreDictUnifier.get(OrePrefix.gem, CMaterials.pureAntimatter), VanillaTypes.ITEM, "recipe.clayium.pure_antimatter.description")
+        modRegistry.addIngredientInfo(
+            CMaterials.PURE_ANTIMATTERS.map { OreDictUnifier.get(OrePrefix.gem, it) }, VanillaTypes.ITEM,
+            "recipe.clayium.pure_antimatter.description"
+        )
 
         modRegistry.addIngredientInfo(ItemStack(ClayiumItems.DAMAGE_VALUE_ITEM_FILTER), VanillaTypes.ITEM, "item.clayium.item_filter_damage_value.jei_description")
         modRegistry.addIngredientInfo(ItemStack(ClayiumItems.BLOCK_METADATA_ITEM_FILTER), VanillaTypes.ITEM, "item.clayium.item_filter_block_metadata.jei_description")
