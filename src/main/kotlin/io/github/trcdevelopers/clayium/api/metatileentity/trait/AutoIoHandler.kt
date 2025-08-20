@@ -22,8 +22,8 @@ abstract class AutoIoHandler(
     val coolTime = if (isBuffer) ConfigTierBalance.bufferInterval[tier] else ConfigTierBalance.machineInterval[tier]
     val amountPerAction = if (isBuffer) ConfigTierBalance.bufferAmount[tier] else ConfigTierBalance.machineAmount[tier]
 
-    private var remainTransferImport = 0
-    private var remainTransferExport = 0
+    protected var remainTransferImport = 0
+    protected var remainTransferExport = 0
 
     protected var ticked = 0
 

@@ -16,13 +16,23 @@ import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.metatileentity.trait.AutoIoHandler
 import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode
+import io.github.trcdevelopers.clayium.api.util.copyWithSize
 import io.github.trcdevelopers.clayium.common.capability.impl.ClayiumFluidTank
+import io.github.trcdevelopers.clayium.common.items.ClayiumItems
+import io.github.trcdevelopers.clayium.common.items.ItemFluidCapsule
+import io.github.trcdevelopers.clayium.common.util.FluidStackUtils
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
+import net.minecraft.client.util.ITooltipFlag
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
+import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.items.ItemHandlerHelper
 
 class FluidBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -51,6 +61,8 @@ class FluidBufferMetaTileEntity(
     override val itemInventory = ClayiumItemStackHandler(this, inventoryRowSize * inventoryColumnSize)
     override val importItems = itemInventory
     override val exportItems = itemInventory
+
+    private val autoIoHandler = AutoIoHandlerFluidBuffer(this, isBuffer = true)
 
     private val fluidHandler = ClayiumFluidTank(this, inventoryRowSize * inventoryColumnSize * 64 * 1000)
 
@@ -94,9 +106,14 @@ class FluidBufferMetaTileEntity(
                         MuiSlots.itemSlotBuilder(itemInventory, it).slotGroup("buffer_inv").build()
                     }
                     .build())
-                .child(FluidSlot().syncHandler(FluidSlotSyncHandler(this.fluidHandler))
+                .child(FluidSlot().syncHandler(FluidSlotSyncHandler(this.fluidHandler).canDrainSlot(true))
                     .marginTop(3))
             )
+    }
+
+    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+        super.addInformation(stack, worldIn, tooltip, flagIn)
+        tooltip.add("Beta: Behavior may chane")
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
@@ -112,4 +129,86 @@ class AutoIoHandlerFluidBuffer(
     isBuffer = isBuffer,
 ) {
 
+    override fun transferItems(amount: Int) {
+        super.transferItems(amount)
+        this.importFluid(this.remainTransferImport)
+        this.exportFluid(this.remainTransferExport)
+    }
+
+    private fun importFluid(amount: Int) {
+        var remainingImport = amount
+        for (side in EnumFacing.entries) {
+            if (metaTileEntity.getInput(side) != MachineIoMode.FLUID) {
+                continue
+            }
+            val insertTo = this.getImportItems(side) ?: continue
+
+            val fluidHandler = metaTileEntity.getNeighborTileEntity(side)
+                ?.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.opposite)
+                ?: continue
+            val fluidStack = fluidHandler.drain(Int.MAX_VALUE, false)
+                ?: continue
+            val itemStacks = FluidStackUtils.toCapsules(fluidStack)
+            val (insertedItemCount, insertedFluidCount) = insertCapsulesTo(
+                capsules = itemStacks,
+                to = insertTo,
+                amount = remainingImport,
+                simulate = false,
+            )
+            remainingImport -= insertedItemCount
+            if (insertedFluidCount > 0) {
+                fluidHandler.drain(insertedFluidCount, true)
+            }
+        }
+    }
+
+    /**
+     * @returns amount of fluid inserted
+     */
+    private fun insertCapsulesTo(
+        capsules: List<ItemStack>,
+        to: IItemHandler,
+        amount: Int,
+        simulate: Boolean,
+    ): IntArray {
+        var remainingWork = amount
+        var insertedFluidAmount = 0
+        for (capsule in capsules) {
+            if (remainingWork <= 0) break
+            val count = capsule.count.coerceAtMost(remainingWork)
+            val capsuleItem = capsule.item as? ItemFluidCapsule ?: continue
+            val capsuleCapacity = capsuleToAmount.getInt(capsuleItem)
+            if (capsuleCapacity == capsuleToAmount.defaultReturnValue()) continue
+
+            val extracted = capsule.copyWithSize(count)
+            val remain = ItemHandlerHelper.insertItem(to, extracted, simulate)
+            if (remain.isEmpty) {
+                remainingWork -= extracted.count
+                insertedFluidAmount += extracted.count * capsuleCapacity
+            } else {
+                val inserted = extracted.count - remain.count
+                remainingWork -= inserted
+                insertedFluidAmount += inserted * capsuleCapacity
+            }
+        }
+        return intArrayOf(amount - remainingWork, insertedFluidAmount)
+    }
+
+    private fun exportFluid(amount: Int) {
+
+    }
+
+    companion object {
+        private val capsuleItems = listOf(
+            ClayiumItems.FLUID_CAPSULE_1000MB,
+            ClayiumItems.FLUID_CAPSULE_125MB,
+            ClayiumItems.FLUID_CAPSULE_25MB,
+            ClayiumItems.FLUID_CAPSULE_5MB,
+            ClayiumItems.FLUID_CAPSULE_1MB,
+        )
+        private val capsuleToAmount: Object2IntOpenHashMap<ItemFluidCapsule> = capsuleItems
+            .associateWithTo(Object2IntOpenHashMap()) {
+            it.capacity
+        }
+    }
 }

@@ -22,7 +22,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStackSimple
 
 class ItemFluidCapsule(
-    private val capacity: Int,
+    val capacity: Int,
     private val addSubItemsToCreativeTab: Boolean = false,
 ) : Item(), ICustomItemModel {
 
@@ -72,6 +72,17 @@ class ItemFluidCapsule(
 
     fun getFluid(stack: ItemStack): FluidStack? {
         return (stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null) as? FluidHandlerItemStackSimple)?.fluid
+    }
+
+    /**
+     * returns a new ItemStack with count 1 and the specified fluid filled in it.
+     */
+    fun setFluid(fluid: Fluid): ItemStack {
+        val itemStack = ItemStack(this)
+        val fluidHandler = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)
+            ?: return ItemStack.EMPTY
+        fluidHandler.fill(FluidStack(fluid, this.capacity), true)
+        return itemStack
     }
 
     companion object {
