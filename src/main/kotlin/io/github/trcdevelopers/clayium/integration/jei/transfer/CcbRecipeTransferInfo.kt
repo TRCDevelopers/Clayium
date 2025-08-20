@@ -22,7 +22,7 @@ object CcbRecipeTransferInfo : IRecipeTransferInfo<ContainerClayCraftingBoard> {
         return container.inventorySlots.slice(1..9)
     }
 
-    override fun getInventorySlots(container: ContainerClayCraftingBoard): List<Slot?> {
+    override fun getInventorySlots(container: ContainerClayCraftingBoard): List<Slot> {
         return container.inventorySlots.slice(10..<container.inventorySlots.size)
     }
 }
