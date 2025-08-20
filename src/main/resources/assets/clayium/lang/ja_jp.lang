@@ -587,18 +587,9 @@ machine.clayium.pan_adapter.laser_slot_tooltip=レーザースロット
 
 machine.clayium.pan_duplicator=PAN 複製機 ランク %s
 
-tile.clayium.blockBasicFluidTranslator.name=液体バッファー
-tile.clayium.blockAdvancedFluidTranslator.name=発展液体バッファー
-tile.clayium.blockPrecisionFluidTranslator.name=精密液体バッファー
-tile.clayium.blockClaySteelFluidTranslator.name=粘土鋼液体バッファー
-tile.clayium.blockClayiumFluidTranslator.name=クレイウム液体バッファー
-tile.clayium.blockUltimateFluidTranslator.name=究極液体バッファー
-tile.clayium.blockAntimatterFluidTranslator.name=反物質液体バッファー
-tile.clayium.blockPureAntimatterFluidTranslator.name=純反物質液体バッファー
-tile.clayium.blockOECFluidTranslator.name=OEC 液体バッファー
-tile.clayium.blockOPAFluidTranslator.name=OPA 液体バッファー
-tooltip.clayium.FluidTranslator.line1=液体と粘土液体カプセルを
-tooltip.clayium.FluidTranslator.line2=相互に変換する
+machine.clayium.fluid_buffer=%s液体バッファー
+machine.clayium.fluid_buffer.tooltip1=液体と粘土液体カプセルを
+machine.clayium.fluid_buffer.tooltip2=相互に変換する
 
 tile.clayium.blockAdvancedFluidTransferMachine.name=液体転移装置
 tile.clayium.blockAdvancedFluidTransferMachine.tooltip.line1=液体容器から液体を出し入れする

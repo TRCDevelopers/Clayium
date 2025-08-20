@@ -623,18 +623,9 @@ machine.clayium.pan_adapter.laser_slot_tooltip=Laser Slot
 
 machine.clayium.pan_duplicator=PAN Duplicator Rank %s
 
-tile.clayium.blockBasicFluidTranslator.name=Basic Fluid Buffer
-tile.clayium.blockAdvancedFluidTranslator.name=Advanced Fluid Buffer
-tile.clayium.blockPrecisionFluidTranslator.name=Precision Fluid Buffer
-tile.clayium.blockClaySteelFluidTranslator.name=Clay Steel Fluid Buffer
-tile.clayium.blockClayiumFluidTranslator.name=Clayium Fluid Buffer
-tile.clayium.blockUltimateFluidTranslator.name=Ultimate Fluid Buffer
-tile.clayium.blockAntimatterFluidTranslator.name=Antimatter Fluid Buffer
-tile.clayium.blockPureAntimatterFluidTranslator.name=Pure Antimatter Fluid Buffer
-tile.clayium.blockOECFluidTranslator.name=OEC Fluid Buffer
-tile.clayium.blockOPAFluidTranslator.name=OPA Fluid Buffer
-tooltip.clayium.FluidTranslator.line1=Interconverts between fluid and
-tooltip.clayium.FluidTranslator.line2=stacks of Clay Fluid Capsule.
+machine.clayium.fluid_buffer=%s Fluid Buffer
+machine.clayium.fluid_buffer.tooltip1=Interconverts between fluid and
+machine.clayium.fluid_buffer.tooltip2=stacks of Clay Fluid Capsule.
 
 tile.clayium.blockAdvancedFluidTransferMachine.name=Fluid Transfer Machine
 tile.clayium.blockAdvancedFluidTransferMachine.tooltip.line1=Fills or empties liquid containers.
