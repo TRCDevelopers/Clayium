@@ -20,6 +20,7 @@ import io.github.trcdevelopers.clayium.integration.jei.basic.ClayiumRecipeWrappe
 import io.github.trcdevelopers.clayium.integration.jei.basic.MetalSeparatorRecipeWrapper
 import io.github.trcdevelopers.clayium.integration.jei.clayworktable.ClayWorkTableRecipeCategory
 import io.github.trcdevelopers.clayium.integration.jei.clayworktable.ClayWorkTableRecipeWrapper
+import io.github.trcdevelopers.clayium.integration.jei.transfer.CcbRecipeTransferInfo
 import mezz.jei.api.IJeiHelpers
 import mezz.jei.api.IJeiRuntime
 import mezz.jei.api.IModPlugin
@@ -61,6 +62,7 @@ class JeiPlugin : IModPlugin {
         /* Clay Crafting Board */
         modRegistry.addRecipeCatalyst(ItemStack(ClayiumBlocks.CLAY_CRAFTING_BOARD), VanillaRecipeCategoryUid.CRAFTING)
         modRegistry.addRecipeClickArea(GuiClayCraftingBoard::class.java, 90, 35, 22, 15, VanillaRecipeCategoryUid.CRAFTING)
+        modRegistry.recipeTransferRegistry.addRecipeTransferHandler(CcbRecipeTransferInfo)
 
         /* CRecipes */
         for (recipeRegistry in CRecipes.ALL_REGISTRIES.values) {
