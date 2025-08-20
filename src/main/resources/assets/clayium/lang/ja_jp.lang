@@ -239,8 +239,7 @@ recipe.clayium.SaltExtractor.efficiency=%1$4.2g アイテム/t
 recipe.clayium.SaltExtractor.energyConsumption=%1$s CE/t
 recipe.clayium.SaltExtractor.description=塩析出装置は塩を水から抽出する機械。稼動するには隣に水を置いてエネルギーを供給してあげる必要がある。
 recipe.clayium.quartz_crucible=クォーツるつぼ
-recipe.clayium.quartz_crucible.timeToCraft=%1$st = %2$s秒
-recipe.clayium.quartz_crucible.description=クォーツるつぼは最初のシリコンの入手に使われる。クォーツるつぼの中に不純なシリコンインゴットを投入し、暫く待った後で糸を投入する。
+recipe.clayium.quartz_crucible.description=クォーツるつぼは最初のシリコンの入手に使われる。クォーツるつぼの中に不純なシリコンインゴットを投入し、暫く待った後で糸を投入する。最大で9個同時に処理でき、1つあたり30秒の時間がかかる。
 recipe.clayium.SolarClayFabricator=ソーラー粘土製造機
 recipe.clayium.SolarClayFabricator.timeToCraft=%1$st = %2$s秒 (%3$s CE/t)
 recipe.clayium.SolarClayFabricator.description=上面が空から見える位置に設置すること

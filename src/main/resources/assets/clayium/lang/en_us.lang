@@ -251,8 +251,7 @@ recipe.clayium.SaltExtractor.efficiency=%1$4.2g Items/t
 recipe.clayium.SaltExtractor.energyConsumption=%1$s CE/t
 recipe.clayium.SaltExtractor.description=A Salt Extractor is used to extract Salt from water. To run the machine, place water next to it.
 recipe.clayium.quartz_crucible=Quartz Crucible
-recipe.clayium.quartz_crucible.timeToCraft=%1$st = %2$ssec
-recipe.clayium.quartz_crucible.description=Quartz Crucible is a device to get the first Silicon Ingot. Throw Impure Silicon Ingots in a Quartz Crucible, wait a few seconds, and throw a String in it.
+recipe.clayium.quartz_crucible.description=Quartz Crucible is a device to get the first Silicon Ingot. Throw Impure Silicon Ingots in a Quartz Crucible, wait a while, and throw a String in it. You can process max 9 ingots at once. The process will take 30 seconds per ingot.
 recipe.clayium.SolarClayFabricator=Solar Clay Fabricator
 recipe.clayium.SolarClayFabricator.timeToCraft=%1$st = %2$ssec (%3$s CE/t)
 recipe.clayium.SolarClayFabricator.description=Requires an unobstructed view of the sky.
