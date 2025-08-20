@@ -42,6 +42,7 @@ import io.github.trcdevelopers.clayium.api.util.MachineIoMode
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.ALL
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.CE
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.FIRST
+import io.github.trcdevelopers.clayium.api.util.MachineIoMode.FLUID
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_1
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_2
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_3
@@ -525,13 +526,15 @@ abstract class MetaTileEntity(
         val input = when (getInput(side)) {
             NONE -> false
             FIRST, SECOND, ALL, CE,
-            M_ALL, M_1, M_2, M_3, M_4, M_5, M_6 -> true
+            M_ALL, M_1, M_2, M_3, M_4, M_5, M_6,
+            FLUID -> true
         }
 
         val output = when (getOutput(side)) {
             NONE -> false
             FIRST, SECOND, ALL, CE,
-            M_ALL, M_1, M_2, M_3, M_4, M_5, M_6 -> true
+            M_ALL, M_1, M_2, M_3, M_4, M_5, M_6,
+            FLUID -> true
         }
 
         return if (input && output) PipeConnectionMode.BOTH
