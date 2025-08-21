@@ -152,7 +152,7 @@ class AutoIoHandlerFluidBuffer(
                 ?: continue
             val fluidStack = fluidHandler.drain(Int.MAX_VALUE, false)
                 ?: continue
-            val itemStacks = FluidStackUtils.toCapsules(fluidStack)
+            val itemStacks = FluidStackUtils.toCapsules(fluidStack, remainingImport * ItemFluidCapsule.MAX_CAPACITY)
             val (insertedItemCount, insertedFluidCount) = insertCapsulesTo(
                 capsules = itemStacks,
                 to = insertTo,

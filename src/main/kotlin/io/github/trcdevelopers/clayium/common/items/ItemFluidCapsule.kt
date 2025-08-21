@@ -86,6 +86,9 @@ class ItemFluidCapsule(
     }
 
     companion object {
+
+        const val MAX_CAPACITY = Fluid.BUCKET_VOLUME
+
         fun from(fluidStack: FluidStack): ItemStack {
             val itemStack = ItemStack(ClayiumItems.FLUID_CAPSULE_1000MB)
             val fluidHandler = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)
