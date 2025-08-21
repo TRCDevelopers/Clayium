@@ -223,39 +223,39 @@ object CraftingRecipeLoader {
             " C ", "C C", " C ",
             'C', UnificationEntry(OrePrefix.block, denseClay))
 
-        RecipeUtils.addShapelessRecipe("fluid_capsule_125",
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_125",
             ItemStack(ClayiumItems.FLUID_CAPSULE_125MB, 8),
             ClayiumItems.FLUID_CAPSULE_1000MB)
-        RecipeUtils.addShapelessRecipe("fluid_capsule_25",
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_25",
             ItemStack(ClayiumItems.FLUID_CAPSULE_25MB, 5),
             ClayiumItems.FLUID_CAPSULE_125MB)
-        RecipeUtils.addShapelessRecipe("fluid_capsule_5",
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_5",
             ItemStack(ClayiumItems.FLUID_CAPSULE_5MB, 5),
             ClayiumItems.FLUID_CAPSULE_25MB)
-        RecipeUtils.addShapelessRecipe("fluid_capsule_1",
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_1",
             ItemStack(ClayiumItems.FLUID_CAPSULE_1MB, 5),
             ClayiumItems.FLUID_CAPSULE_5MB)
 
-        RecipeUtils.addShapelessRecipe("fluid_capsule_1000_2",
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_1000_2",
             ItemStack(ClayiumItems.FLUID_CAPSULE_1000MB),
             ClayiumItems.FLUID_CAPSULE_125MB, ClayiumItems.FLUID_CAPSULE_125MB,
             ClayiumItems.FLUID_CAPSULE_125MB, ClayiumItems.FLUID_CAPSULE_125MB,
             ClayiumItems.FLUID_CAPSULE_125MB, ClayiumItems.FLUID_CAPSULE_125MB,
             ClayiumItems.FLUID_CAPSULE_125MB, ClayiumItems.FLUID_CAPSULE_125MB,
         )
-        RecipeUtils.addShapelessRecipe("fluid_capsule_125_2",
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_125_2",
             ItemStack(ClayiumItems.FLUID_CAPSULE_125MB),
             ClayiumItems.FLUID_CAPSULE_25MB, ClayiumItems.FLUID_CAPSULE_25MB,
             ClayiumItems.FLUID_CAPSULE_25MB, ClayiumItems.FLUID_CAPSULE_25MB,
             ClayiumItems.FLUID_CAPSULE_25MB,
         )
-        RecipeUtils.addShapelessRecipe("fluid_capsule_25_2",
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_25_2",
             ItemStack(ClayiumItems.FLUID_CAPSULE_25MB),
             ClayiumItems.FLUID_CAPSULE_5MB, ClayiumItems.FLUID_CAPSULE_5MB,
             ClayiumItems.FLUID_CAPSULE_5MB, ClayiumItems.FLUID_CAPSULE_5MB,
             ClayiumItems.FLUID_CAPSULE_5MB,
         )
-        RecipeUtils.addShapelessRecipe("fluid_capsule_5_2",
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_5_2",
             ItemStack(ClayiumItems.FLUID_CAPSULE_5MB),
             ClayiumItems.FLUID_CAPSULE_1MB, ClayiumItems.FLUID_CAPSULE_1MB,
             ClayiumItems.FLUID_CAPSULE_1MB, ClayiumItems.FLUID_CAPSULE_1MB,
