@@ -20,9 +20,9 @@ fun IItemHandler.transferTo(to: IItemHandler) {
     }
 }
 
-fun IItemHandlerModifiable.copy() = ItemStackHandler(this.slots).apply {
+fun IItemHandlerModifiable.copy() = ItemStackHandler(this.slots).also { other ->
     for (i in 0..<this.slots) {
-        this.setStackInSlot(i, this.getStackInSlot(i).copy())
+        other.setStackInSlot(i, this.getStackInSlot(i).copy())
     }
 }
 
