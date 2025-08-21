@@ -14,12 +14,8 @@ import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.metatileentity.trait.AutoIoHandler
 import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode
-import io.github.trcdevelopers.clayium.api.util.copyWithSize
-import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.ItemFluidCapsule
-import io.github.trcdevelopers.clayium.common.util.FluidStackUtils
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
@@ -28,8 +24,6 @@ import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.items.CapabilityItemHandler
-import net.minecraftforge.items.IItemHandler
-import net.minecraftforge.items.ItemHandlerHelper
 
 class FluidBufferMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -117,95 +111,58 @@ class AutoIoHandlerFluidBuffer(
 ) {
 
     override fun transferItems(amount: Int) {
-        super.transferItems(amount)
         this.importFluid(this.remainTransferImport)
         this.exportFluid(this.remainTransferExport)
+        super.transferItems(amount)
     }
 
     private fun importFluid(amount: Int) {
-        var remainingImport = amount
+        var maxDrain = amount * ItemFluidCapsule.MAX_CAPACITY
         for (side in EnumFacing.entries) {
+            if (maxDrain <= 0) break
             if (metaTileEntity.getInput(side) != MachineIoMode.FLUID) {
                 continue
             }
-            val insertTo = this.getImportItems(side) ?: continue
+            val insertTo = this.metaTileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side)
+                ?: continue
 
             val fluidHandler = metaTileEntity.getNeighborTileEntity(side)
                 ?.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.opposite)
                 ?: continue
-            val fluidStack = fluidHandler.drain(Int.MAX_VALUE, false)
+            val drained = fluidHandler.drain(maxDrain, false)
                 ?: continue
-            val itemStacks = FluidStackUtils.toCapsules(fluidStack, remainingImport * ItemFluidCapsule.MAX_CAPACITY)
-            val (insertedItemCount, insertedFluidCount) = insertCapsulesTo(
-                capsules = itemStacks,
-                to = insertTo,
-                amount = remainingImport,
-                simulate = false,
-            )
-            remainingImport -= insertedItemCount
-            if (insertedFluidCount > 0) {
-                fluidHandler.drain(insertedFluidCount, true)
-            }
+            val inserted = insertTo.fill(drained, false)
+
+            val fluidStack = fluidHandler.drain(inserted, true)
+                ?: continue
+            insertTo.fill(fluidStack, true)
+            maxDrain -= fluidStack.amount
         }
     }
 
     private fun exportFluid(amount: Int) {
-        var remainingExport = amount
+        var maxDrain = amount * ItemFluidCapsule.MAX_CAPACITY
         for (side in EnumFacing.entries) {
+            if (maxDrain <= 0) break
             if (metaTileEntity.getOutput(side) != MachineIoMode.FLUID) {
                 continue
             }
-            val extractFrom = this.getExportItems(side) ?: continue
+            val extractFrom = this.metaTileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side)
+                ?: continue
 
             val fluidHandler = metaTileEntity.getNeighborTileEntity(side)
                 ?.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.opposite)
                 ?: continue
-        }
-    }
 
-    /**
-     * @returns amount of fluid inserted
-     */
-    private fun insertCapsulesTo(
-        capsules: List<ItemStack>,
-        to: IItemHandler,
-        amount: Int,
-        simulate: Boolean,
-    ): IntArray {
-        var remainingWork = amount
-        var insertedFluidAmount = 0
-        for (capsule in capsules) {
-            if (remainingWork <= 0) break
-            val count = capsule.count.coerceAtMost(remainingWork)
-            val capsuleItem = capsule.item as? ItemFluidCapsule ?: continue
-            val capsuleCapacity = capsuleToAmount.getInt(capsuleItem)
-            if (capsuleCapacity == capsuleToAmount.defaultReturnValue()) continue
+            val drained = extractFrom.drain(maxDrain, false)
+                ?: continue
+            val filled = fluidHandler.fill(drained, false)
+            if (filled <= 0) continue
 
-            val extracted = capsule.copyWithSize(count)
-            val remain = ItemHandlerHelper.insertItem(to, extracted, simulate)
-            if (remain.isEmpty) {
-                remainingWork -= extracted.count
-                insertedFluidAmount += extracted.count * capsuleCapacity
-            } else {
-                val inserted = extracted.count - remain.count
-                remainingWork -= inserted
-                insertedFluidAmount += inserted * capsuleCapacity
-            }
-        }
-        return intArrayOf(amount - remainingWork, insertedFluidAmount)
-    }
-
-    companion object {
-        private val capsuleItems = listOf(
-            ClayiumItems.FLUID_CAPSULE_1000MB,
-            ClayiumItems.FLUID_CAPSULE_125MB,
-            ClayiumItems.FLUID_CAPSULE_25MB,
-            ClayiumItems.FLUID_CAPSULE_5MB,
-            ClayiumItems.FLUID_CAPSULE_1MB,
-        )
-        private val capsuleToAmount: Object2IntOpenHashMap<ItemFluidCapsule> = capsuleItems
-            .associateWithTo(Object2IntOpenHashMap()) {
-            it.capacity
+            val actuallyDrained = extractFrom.drain(filled, true)
+                ?: continue
+            fluidHandler.fill(actuallyDrained, true)
+            maxDrain -= actuallyDrained.amount
         }
     }
 }

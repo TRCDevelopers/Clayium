@@ -61,14 +61,14 @@ class ClayFluidCapsuleBackedItemFluidHandler(
     }
 
     override fun drain(resource: FluidStack, doDrain: Boolean): FluidStack? {
-        this.dirty = this.dirty || doDrain
+        this.refreshFluidIfRequired()
         val drained = this.extractFluid(resource.fluid, resource.amount, simulate = !doDrain)
         if (drained <= 0) return null
         return FluidStack(resource.fluid, drained)
     }
 
     override fun drain(maxDrain: Int, doDrain: Boolean): FluidStack? {
-        this.dirty = this.dirty || doDrain
+        this.refreshFluidIfRequired()
         val fluid = this.fluidToAmount.keys.firstOrNull() ?: return null
         return this.drain(FluidStack(fluid, maxDrain), doDrain)
     }
@@ -93,7 +93,6 @@ class ClayFluidCapsuleBackedItemFluidHandler(
         amount: Int,
         simulate: Boolean,
     ) : Int {
-        this.refreshFluidIfRequired()
         val stored = this.fluidToAmount.getInt(fluid)
         if (stored <= 0) return 0
 
