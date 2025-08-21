@@ -39,7 +39,7 @@ class ClayFluidCapsuleBackedItemFluidHandler(
 ) : ClayiumItemStackHandler(notifiable, itemInventorySize), IFluidHandler {
 
     private var dirty: Boolean = false
-    private val fluidName2Amount = Object2IntOpenHashMap<Fluid>()
+    private val fluidToAmount = Object2IntOpenHashMap<Fluid>()
     private val maxFluidCapacity = this.slots * 64 * ItemFluidCapsule.MAX_CAPACITY
 
     override fun onContentsChanged(slot: Int) {
@@ -49,7 +49,7 @@ class ClayFluidCapsuleBackedItemFluidHandler(
 
     override fun getTankProperties(): Array<out IFluidTankProperties> {
         refreshFluidIfRequired()
-        return this.fluidName2Amount.map { (fluid, amount) ->
+        return this.fluidToAmount.map { (fluid, amount) ->
             FluidTankProperties(FluidStack(fluid, amount), amount, true, true)
         }.toTypedArray()
     }
@@ -69,7 +69,7 @@ class ClayFluidCapsuleBackedItemFluidHandler(
 
     override fun drain(maxDrain: Int, doDrain: Boolean): FluidStack? {
         this.dirty = this.dirty || doDrain
-        val fluid = this.fluidName2Amount.keys.firstOrNull() ?: return null
+        val fluid = this.fluidToAmount.keys.firstOrNull() ?: return null
         return this.drain(FluidStack(fluid, maxDrain), doDrain)
     }
 
@@ -84,8 +84,8 @@ class ClayFluidCapsuleBackedItemFluidHandler(
             val amount = fluidStack.amount * stack.count
             fluidToAmount.addTo(fluidStack.fluid, amount)
         }
-        this.fluidName2Amount.clear()
-        this.fluidName2Amount.putAll(fluidToAmount)
+        this.fluidToAmount.clear()
+        this.fluidToAmount.putAll(fluidToAmount)
     }
 
     private fun extractFluid(
@@ -94,7 +94,7 @@ class ClayFluidCapsuleBackedItemFluidHandler(
         simulate: Boolean,
     ) : Int {
         this.refreshFluidIfRequired()
-        val stored = this.fluidName2Amount.getInt(fluid)
+        val stored = this.fluidToAmount.getInt(fluid)
         if (stored <= 0) return 0
 
         if (simulate) {
@@ -108,7 +108,7 @@ class ClayFluidCapsuleBackedItemFluidHandler(
                 this.extractItem(slot, Int.MAX_VALUE, false)
             }
             this.dirty = true
-            this.fluidName2Amount.removeInt(fluid)
+            this.fluidToAmount.removeInt(fluid)
             return amount
         } else {
             val copied = this.copy()
@@ -121,7 +121,7 @@ class ClayFluidCapsuleBackedItemFluidHandler(
             if (!allInserted) return 0
 
             this.dirty = true
-            this.fluidName2Amount.put(fluid, stored - amount)
+            this.fluidToAmount.put(fluid, stored - amount)
             for (i in 0..<this.slots) {
                 this.setStackInSlot(i, copied.getStackInSlot(i))
             }
