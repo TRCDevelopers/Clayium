@@ -3,12 +3,15 @@ package io.github.trcdevelopers.clayium.common.util
 import io.github.trcdevelopers.clayium.api.util.copyWithSize
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.ItemFluidCapsule
+import io.github.trcdevelopers.clayium.common.util.FluidStackUtils.MAX_TO_CAPSULES_PER_OPERATION
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fluids.FluidStack
 import kotlin.math.min
 
 object FluidStackUtils {
+
+    const val MAX_TO_CAPSULES_PER_OPERATION = 6400000 // 6.4KB, max of OPA Fluid Buffer
 
     private val capsuleItems = listOf(
         ClayiumItems.FLUID_CAPSULE_1000MB,
@@ -24,6 +27,11 @@ object FluidStackUtils {
             it.capacity
         }
 
+    /**
+     * Converts a FluidStack to a list of ItemStacks of Fluid Capsules.
+     * @param maxFluidAmount The maximum amount of fluid to convert to capsules. Hard limited at 6.4MB ([MAX_TO_CAPSULES_PER_OPERATION]) per operation
+     * because extremely large FluidStacks can cause performance issues.
+     */
     fun toCapsules(fluidStack: FluidStack, maxFluidAmount: Int): List<ItemStack> {
         val fluid = fluidStack.fluid
         var remainder = min(fluidStack.amount, maxFluidAmount)
