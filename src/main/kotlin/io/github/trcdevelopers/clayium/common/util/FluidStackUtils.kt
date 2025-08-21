@@ -2,12 +2,12 @@ package io.github.trcdevelopers.clayium.common.util
 
 import io.github.trcdevelopers.clayium.api.util.copyWithSize
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
+import io.github.trcdevelopers.clayium.common.items.ItemFluidCapsule
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fluids.FluidStack
+import kotlin.math.min
 
 object FluidStackUtils {
-
-    private val capsuleCapacities = intArrayOf(1, 5, 25, 125, 1000)
 
     private val capsuleItems = listOf(
         ClayiumItems.FLUID_CAPSULE_1000MB,
@@ -16,15 +16,15 @@ object FluidStackUtils {
         ClayiumItems.FLUID_CAPSULE_5MB,
         ClayiumItems.FLUID_CAPSULE_1MB,
     )
+    private val capsuleCapacities = capsuleItems.map(ItemFluidCapsule::capacity).toIntArray()
 
-    // TODO fluidStack.amountが多すぎると処理にとてつもない時間がかかってしまう
-    fun toCapsules(fluidStack: FluidStack): List<ItemStack> {
+    fun toCapsules(fluidStack: FluidStack, maxFluidAmount: Int): List<ItemStack> {
         val fluid = fluidStack.fluid
-        var remainder = fluidStack.amount
+        var remainder = min(fluidStack.amount, maxFluidAmount)
         val capsules = mutableListOf<ItemStack>()
         for (i in capsuleCapacities.indices) {
-            val capacity = capsuleCapacities[i]
             if (remainder <= 0) break
+            val capacity = capsuleCapacities[i]
             val thisCapacityCount = remainder / capacity
             if (thisCapacityCount > 0) {
                 val stack = capsuleItems[i].setFluid(fluid)
