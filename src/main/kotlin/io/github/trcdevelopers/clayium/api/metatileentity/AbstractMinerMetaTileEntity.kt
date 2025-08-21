@@ -52,11 +52,6 @@ abstract class AbstractMinerMetaTileEntity(
 
     protected var laser: ClayLaser? = null
 
-    /**
-     * return true if you want to continue mining within the tick.
-     * if false, further blocks will not be mined in this tick.
-     * also, if all [maxBlocksPerTick] blocks are mined, [progress] will be reset.
-     */
     override fun actionOnBlock(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
         return if (state.material == Material.WATER || state.material == Material.LAVA) {
             this.mineVanillaFluid(state, world, pos)
