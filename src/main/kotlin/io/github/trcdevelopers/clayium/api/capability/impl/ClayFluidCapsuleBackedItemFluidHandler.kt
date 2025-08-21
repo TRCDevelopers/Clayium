@@ -142,7 +142,7 @@ class ClayFluidCapsuleBackedItemFluidHandler(
     }
 
     /**
-     * @returns amount of fluid inserted
+     * @return amount of fluid inserted
      */
     private fun insertCapsulesTo(
         capsules: List<ItemStack>,
