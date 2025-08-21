@@ -116,6 +116,16 @@ class AutoIoHandlerFluidBuffer(
         super.transferItems(amount)
     }
 
+    override fun isImporting(side: EnumFacing): Boolean {
+        val mode = metaTileEntity.getInput(side)
+        return mode != MachineIoMode.NONE && mode != MachineIoMode.FLUID
+    }
+
+    override fun isExporting(side: EnumFacing): Boolean {
+        val mode = metaTileEntity.getOutput(side)
+        return mode != MachineIoMode.NONE && mode != MachineIoMode.FLUID
+    }
+
     private fun importFluid(amount: Int) {
         var maxDrain = amount * ItemFluidCapsule.MAX_CAPACITY
         for (side in EnumFacing.entries) {
