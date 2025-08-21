@@ -11,7 +11,7 @@ import kotlin.math.min
 
 object FluidStackUtils {
 
-    const val MAX_TO_CAPSULES_PER_OPERATION = 6400000 // 6.4KB, max of OPA Fluid Buffer
+    const val MAX_TO_CAPSULES_PER_OPERATION = 64000000 // 64KB, max of OPA Fluid Buffer x 10
 
     private val capsuleItems = listOf(
         ClayiumItems.FLUID_CAPSULE_1000MB,
@@ -29,7 +29,7 @@ object FluidStackUtils {
 
     /**
      * Converts a FluidStack to a list of ItemStacks of Fluid Capsules.
-     * @param maxFluidAmount The maximum amount of fluid to convert to capsules. Hard limited at 6.4MB ([MAX_TO_CAPSULES_PER_OPERATION]) per operation
+     * @param maxFluidAmount The maximum amount of fluid to convert to capsules. Hard limited at 64MB ([MAX_TO_CAPSULES_PER_OPERATION]) per operation
      * because extremely large FluidStacks can cause performance issues.
      */
     fun toCapsules(fluidStack: FluidStack, maxFluidAmount: Int): List<ItemStack> {
