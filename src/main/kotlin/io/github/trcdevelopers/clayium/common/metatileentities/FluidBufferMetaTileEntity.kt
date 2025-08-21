@@ -2,22 +2,19 @@ package io.github.trcdevelopers.clayium.common.metatileentities
 
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.screen.UISettings
-import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Flow
-import com.cleanroommc.modularui.widgets.slot.FluidSlot
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
 import io.github.trcdevelopers.clayium.api.capability.IPipeConnectionLogic
-import io.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
+import io.github.trcdevelopers.clayium.api.capability.impl.ClayFluidCapsuleBackedItemFluidHandler
 import io.github.trcdevelopers.clayium.api.gui.data.MetaTileEntityGuiData
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.metatileentity.trait.AutoIoHandler
 import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode
 import io.github.trcdevelopers.clayium.api.util.copyWithSize
-import io.github.trcdevelopers.clayium.common.capability.impl.ClayiumFluidTank
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.ItemFluidCapsule
 import io.github.trcdevelopers.clayium.common.util.FluidStackUtils
@@ -25,7 +22,6 @@ import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
@@ -59,37 +55,21 @@ class FluidBufferMetaTileEntity(
         else -> 1
     }
 
-    override val itemInventory = ClayiumItemStackHandler(this, inventoryRowSize * inventoryColumnSize)
+    override val itemInventory = ClayFluidCapsuleBackedItemFluidHandler(this, inventoryRowSize * inventoryColumnSize)
     override val importItems = itemInventory
     override val exportItems = itemInventory
 
     private val autoIoHandler = AutoIoHandlerFluidBuffer(this, isBuffer = true)
-
-    private val fluidHandler = ClayiumFluidTank(this, inventoryRowSize * inventoryColumnSize * 64 * 1000)
 
     override fun onPlacement() {
         super.onPlacement()
         this.setInput(this.frontFacing.opposite, MachineIoMode.FLUID)
     }
 
-    override fun writeToNBT(data: NBTTagCompound) {
-        super.writeToNBT(data)
-
-        val fluidCompound = NBTTagCompound()
-        fluidHandler.writeToNBT(fluidCompound)
-        data.setTag("fluid_handler", fluidCompound)
-    }
-
-    override fun readFromNBT(data: NBTTagCompound) {
-        super.readFromNBT(data)
-
-        fluidHandler.readFromNBT(data.getCompoundTag("fluid_handler"))
-    }
-
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         return when {
             capability === CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ->
-                capability.cast(fluidHandler)
+                capability.cast(this.itemInventory)
             capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ->
                 capability.cast(createFilteredItemHandler(itemInventory, facing))
             else -> super.getCapability(capability, facing)
@@ -115,8 +95,6 @@ class FluidBufferMetaTileEntity(
                         MuiSlots.itemSlotBuilder(itemInventory, it).slotGroup("fluid_buffer_inv").build()
                     }
                     .build())
-                .child(FluidSlot().syncHandler(FluidSlotSyncHandler(this.fluidHandler).canDrainSlot(true))
-                    .marginTop(3))
             )
     }
 
@@ -171,6 +149,20 @@ class AutoIoHandlerFluidBuffer(
         }
     }
 
+    private fun exportFluid(amount: Int) {
+        var remainingExport = amount
+        for (side in EnumFacing.entries) {
+            if (metaTileEntity.getOutput(side) != MachineIoMode.FLUID) {
+                continue
+            }
+            val extractFrom = this.getExportItems(side) ?: continue
+
+            val fluidHandler = metaTileEntity.getNeighborTileEntity(side)
+                ?.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.opposite)
+                ?: continue
+        }
+    }
+
     /**
      * @returns amount of fluid inserted
      */
@@ -201,10 +193,6 @@ class AutoIoHandlerFluidBuffer(
             }
         }
         return intArrayOf(amount - remainingWork, insertedFluidAmount)
-    }
-
-    private fun exportFluid(amount: Int) {
-
     }
 
     companion object {

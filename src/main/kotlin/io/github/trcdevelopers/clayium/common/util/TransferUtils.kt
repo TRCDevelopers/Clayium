@@ -20,6 +20,12 @@ fun IItemHandler.transferTo(to: IItemHandler) {
     }
 }
 
+fun IItemHandlerModifiable.copy() = ItemStackHandler(this.slots).apply {
+    for (i in 0..<this.slots) {
+        this.setStackInSlot(i, this.getStackInSlot(i).copy())
+    }
+}
+
 object TransferUtils {
     /**
      * Insert a list of ItemStacks to an IItemHandlerModifiable
