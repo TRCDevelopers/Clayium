@@ -31,6 +31,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
+import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 
@@ -81,10 +82,13 @@ class FluidBufferMetaTileEntity(
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        if (capability === CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            return capability.cast(this.fluidHandler)
+        return when {
+            capability === CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ->
+                capability.cast(fluidHandler)
+            capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ->
+                capability.cast(createFilteredItemHandler(itemInventory, facing))
+            else -> super.getCapability(capability, facing)
         }
-        return super.getCapability(capability, facing)
     }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager, settings: UISettings): ModularPanel {
