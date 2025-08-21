@@ -58,11 +58,11 @@ abstract class AbstractMinerMetaTileEntity(
         } else if (state.block is IFluidBlock) {
             this.mineFluid(state, world, pos)
         } else {
+            val blockHardness = state.getBlockHardness(world, pos)
+            if (blockHardness == HARDNESS_UNBREAKABLE) return EnumActionResult.PASS
             val filter = this.filter
             val filterMatches = filter == null || filter.testBlock(world, pos)
             if (!filterMatches) return EnumActionResult.PASS
-            val blockHardness = state.getBlockHardness(world, pos)
-            if (blockHardness == HARDNESS_UNBREAKABLE) return EnumActionResult.PASS
             this.mine(state, world, pos)
         }
     }
