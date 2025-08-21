@@ -103,7 +103,7 @@ class FluidBufferMetaTileEntity(
                 .child(SlotGroupWidget.builder()
                     .matrix(*matrixStr.toTypedArray())
                     .key('I') {
-                        MuiSlots.itemSlotBuilder(itemInventory, it).slotGroup("buffer_inv").build()
+                        MuiSlots.itemSlotBuilder(itemInventory, it).slotGroup("fluid_buffer_inv").build()
                     }
                     .build())
                 .child(FluidSlot().syncHandler(FluidSlotSyncHandler(this.fluidHandler).canDrainSlot(true))
