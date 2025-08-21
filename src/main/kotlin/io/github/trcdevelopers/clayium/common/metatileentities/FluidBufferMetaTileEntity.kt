@@ -16,11 +16,8 @@ import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode
 import io.github.trcdevelopers.clayium.common.items.ItemFluidCapsule
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
-import net.minecraft.client.util.ITooltipFlag
-import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.items.CapabilityItemHandler
@@ -90,11 +87,6 @@ class FluidBufferMetaTileEntity(
                     }
                     .build())
             )
-    }
-
-    override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        super.addInformation(stack, worldIn, tooltip, flagIn)
-        tooltip.add("Beta: Behavior may chane")
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
