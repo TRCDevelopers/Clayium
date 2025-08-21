@@ -1,5 +1,6 @@
 package io.github.trcdevelopers.clayium.common.items
 
+import io.github.trcdevelopers.clayium.api.item.IClayFluidCapsule
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.common.config.ConfigCore
 import io.github.trcdevelopers.clayium.common.config.FluidCapsuleCreativeTabMode
@@ -22,9 +23,9 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStackSimple
 
 class ItemFluidCapsule(
-    val capacity: Int,
+    override val capacity: Int,
     private val addSubItemsToCreativeTab: Boolean = false,
-) : Item(), ICustomItemModel {
+) : Item(), ICustomItemModel, IClayFluidCapsule {
 
     init {
         setCreativeTab(ClayiumCTabs.fluidCapsules)
@@ -70,7 +71,7 @@ class ItemFluidCapsule(
         ModelBakery.registerItemVariants(this, loc)
     }
 
-    fun getFluid(stack: ItemStack): FluidStack? {
+    override fun getFluid(stack: ItemStack): FluidStack? {
         return (stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null) as? FluidHandlerItemStackSimple)?.fluid
     }
 
