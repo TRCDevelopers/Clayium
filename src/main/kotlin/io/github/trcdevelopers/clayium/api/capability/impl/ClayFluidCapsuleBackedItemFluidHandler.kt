@@ -124,7 +124,7 @@ class ClayFluidCapsuleBackedItemFluidHandler(
             for (i in 0..<this.slots) {
                 this.setStackInSlot(i, copied.getStackInSlot(i))
             }
-            return amount - remainAmount
+            return amount
         }
     }
 
