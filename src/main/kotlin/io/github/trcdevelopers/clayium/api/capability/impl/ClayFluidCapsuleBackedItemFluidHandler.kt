@@ -107,7 +107,7 @@ class ClayFluidCapsuleBackedItemFluidHandler(
             if (!allInserted) return 0
 
             this.dirty = true
-            this.fluidToAmount.put(fluid, stored - amount)
+            this.fluidToAmount.put(fluid, remainAmount)
             for (i in 0..<this.slots) {
                 this.setStackInSlot(i, copied.getStackInSlot(i))
             }
