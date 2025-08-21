@@ -67,6 +67,11 @@ class FluidBufferMetaTileEntity(
 
     private val fluidHandler = ClayiumFluidTank(this, inventoryRowSize * inventoryColumnSize * 64 * 1000)
 
+    override fun onPlacement() {
+        super.onPlacement()
+        this.setInput(this.frontFacing.opposite, MachineIoMode.FLUID)
+    }
+
     override fun writeToNBT(data: NBTTagCompound) {
         super.writeToNBT(data)
 
