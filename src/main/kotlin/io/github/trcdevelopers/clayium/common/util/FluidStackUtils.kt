@@ -34,7 +34,7 @@ object FluidStackUtils {
      */
     fun toCapsules(fluidStack: FluidStack, maxFluidAmount: Int): List<ItemStack> {
         val fluid = fluidStack.fluid
-        var remainder = min(fluidStack.amount, maxFluidAmount)
+        var remainder = min(fluidStack.amount, min(maxFluidAmount, MAX_TO_CAPSULES_PER_OPERATION))
         val capsules = mutableListOf<ItemStack>()
         for (i in capsuleCapacities.indices) {
             if (remainder <= 0) break
