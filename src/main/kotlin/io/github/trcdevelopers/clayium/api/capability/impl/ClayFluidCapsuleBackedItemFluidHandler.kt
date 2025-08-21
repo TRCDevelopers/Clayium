@@ -3,7 +3,6 @@ package io.github.trcdevelopers.clayium.api.capability.impl
 import io.github.trcdevelopers.clayium.api.item.IClayFluidCapsule
 import io.github.trcdevelopers.clayium.api.metatileentity.interfaces.IMarkDirty
 import io.github.trcdevelopers.clayium.api.util.copyWithSize
-import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.ItemFluidCapsule
 import io.github.trcdevelopers.clayium.common.util.FluidStackUtils
 import io.github.trcdevelopers.clayium.common.util.TransferUtils
@@ -20,18 +19,6 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import kotlin.math.min
-
-private val capsuleItems = listOf(
-    ClayiumItems.FLUID_CAPSULE_1000MB,
-    ClayiumItems.FLUID_CAPSULE_125MB,
-    ClayiumItems.FLUID_CAPSULE_25MB,
-    ClayiumItems.FLUID_CAPSULE_5MB,
-    ClayiumItems.FLUID_CAPSULE_1MB,
-)
-private val capsuleToAmount: Object2IntOpenHashMap<ItemFluidCapsule> = capsuleItems
-    .associateWithTo(Object2IntOpenHashMap()) {
-        it.capacity
-    }
 
 class ClayFluidCapsuleBackedItemFluidHandler(
     notifiable: IMarkDirty,
@@ -153,8 +140,8 @@ class ClayFluidCapsuleBackedItemFluidHandler(
         for (capsule in capsules) {
             val count = capsule.count
             val capsuleItem = capsule.item as? ItemFluidCapsule ?: continue
-            val capsuleCapacity = capsuleToAmount.getInt(capsuleItem)
-            if (capsuleCapacity == capsuleToAmount.defaultReturnValue()) continue
+            val capsuleCapacity = FluidStackUtils.capsuleToAmount.getInt(capsuleItem)
+            if (capsuleCapacity == FluidStackUtils.capsuleToAmount.defaultReturnValue()) continue
 
             val extracted = capsule.copyWithSize(count)
             val remain = ItemHandlerHelper.insertItem(to, extracted, simulate)

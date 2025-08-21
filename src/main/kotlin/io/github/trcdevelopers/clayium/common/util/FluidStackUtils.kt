@@ -3,6 +3,7 @@ package io.github.trcdevelopers.clayium.common.util
 import io.github.trcdevelopers.clayium.api.util.copyWithSize
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.ItemFluidCapsule
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fluids.FluidStack
 import kotlin.math.min
@@ -17,6 +18,11 @@ object FluidStackUtils {
         ClayiumItems.FLUID_CAPSULE_1MB,
     )
     private val capsuleCapacities = capsuleItems.map(ItemFluidCapsule::capacity).toIntArray()
+
+    val capsuleToAmount: Object2IntOpenHashMap<ItemFluidCapsule> = capsuleItems
+        .associateWithTo(Object2IntOpenHashMap()) {
+            it.capacity
+        }
 
     fun toCapsules(fluidStack: FluidStack, maxFluidAmount: Int): List<ItemStack> {
         val fluid = fluidStack.fluid
