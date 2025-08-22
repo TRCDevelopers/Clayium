@@ -3,6 +3,7 @@ package io.github.trcdevelopers.clayium.integration.modularui
 import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.factory.GuiData
 import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.screen.ModularScreen
 import com.cleanroommc.modularui.screen.UISettings
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 
@@ -10,6 +11,11 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
  * wraps [IGuiHolder] to absorb changes of MUI API.
  */
 interface IGuiHolderClayium<T: GuiData> : IGuiHolder<T> {
+
+    override fun createScreen(data: T, mainPanel: ModularPanel): ModularScreen {
+        return ModularScreenClayium(mainPanel)
+    }
+
     fun buildUI(data: T, syncManager: PanelSyncManager): ModularPanel
 
     override fun buildUI(data: T, syncManager: PanelSyncManager, settings: UISettings): ModularPanel {

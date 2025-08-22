@@ -2,12 +2,10 @@ package io.github.trcdevelopers.clayium.common.items
 
 import baubles.api.BaubleType
 import baubles.api.IBauble
-import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.HandGuiData
 import com.cleanroommc.modularui.factory.ItemGuiFactory
 import com.cleanroommc.modularui.screen.ModularPanel
-import com.cleanroommc.modularui.screen.UISettings
 import com.cleanroommc.modularui.utils.ItemStackItemHandler
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
@@ -18,6 +16,7 @@ import io.github.trcdevelopers.clayium.api.capability.ItemCapabilityProvider
 import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.common.util.UtilLocale
 import io.github.trcdevelopers.clayium.integration.baubles.BaubleClayGadgets
+import io.github.trcdevelopers.clayium.integration.modularui.IGuiHolderClayium
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
@@ -39,7 +38,7 @@ import net.minecraftforge.items.IItemHandlerModifiable
 import java.util.*
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES)
-class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData>, IBauble {
+class ItemClayGadgetHolder : Item(), IGuiHolderClayium<HandGuiData>, IBauble {
     init {
         maxStackSize = 1
     }
@@ -68,7 +67,7 @@ class ItemClayGadgetHolder : Item(), IGuiHolder<HandGuiData>, IBauble {
         UtilLocale.formatTooltips(tooltip, "clayium.clay_gadget_holder.tooltip")
     }
 
-    override fun buildUI(data: HandGuiData, syncManager: PanelSyncManager, settings: UISettings): ModularPanel {
+    override fun buildUI(data: HandGuiData, syncManager: PanelSyncManager): ModularPanel {
         syncManager.registerSlotGroup("clayium_gadget_holder", 2)
 
         val stack = data.usedItemStack
