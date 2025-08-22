@@ -57,6 +57,7 @@ object MetaTileEntityModels {
             add(clayiumId("blocks/import_m4"))
             add(clayiumId("blocks/import_m5"))
             add(clayiumId("blocks/import_m6"))
+            add(clayiumId("blocks/import_l"))
             add(clayiumId("blocks/export"))
             add(clayiumId("blocks/export_1"))
             add(clayiumId("blocks/export_2"))
@@ -68,8 +69,9 @@ object MetaTileEntityModels {
             add(clayiumId("blocks/export_m4"))
             add(clayiumId("blocks/export_m5"))
             add(clayiumId("blocks/export_m6"))
+            add(clayiumId("blocks/export_l"))
             add(clayiumId("blocks/filter"))
-            // machine hulls)
+            // machine hulls
             add(clayiumId("blocks/machinehull_tier1"))
             add(clayiumId("blocks/machinehull_tier2"))
             add(clayiumId("blocks/machinehull_tier3"))

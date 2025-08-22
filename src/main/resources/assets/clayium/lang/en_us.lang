@@ -4,7 +4,7 @@
 
 itemGroup.clayium=Clayium
 itemGroup.clayium.decorations=Clayium Decoration Blocks
-itemGroup.clayium.clayiumcapsule=Clayium Fluid Capsules
+itemGroup.clayium.fluid_capsules=Clayium Fluid Capsules
 
 tooltip.clayium.HoldShiftForDetails=--§fHold §lShift§r For Details§7--
 
@@ -622,18 +622,9 @@ machine.clayium.pan_adapter.laser_slot_tooltip=Laser Slot
 
 machine.clayium.pan_duplicator=PAN Duplicator Rank %s
 
-tile.clayium.blockBasicFluidTranslator.name=Basic Fluid Buffer
-tile.clayium.blockAdvancedFluidTranslator.name=Advanced Fluid Buffer
-tile.clayium.blockPrecisionFluidTranslator.name=Precision Fluid Buffer
-tile.clayium.blockClaySteelFluidTranslator.name=Clay Steel Fluid Buffer
-tile.clayium.blockClayiumFluidTranslator.name=Clayium Fluid Buffer
-tile.clayium.blockUltimateFluidTranslator.name=Ultimate Fluid Buffer
-tile.clayium.blockAntimatterFluidTranslator.name=Antimatter Fluid Buffer
-tile.clayium.blockPureAntimatterFluidTranslator.name=Pure Antimatter Fluid Buffer
-tile.clayium.blockOECFluidTranslator.name=OEC Fluid Buffer
-tile.clayium.blockOPAFluidTranslator.name=OPA Fluid Buffer
-tooltip.clayium.FluidTranslator.line1=Interconverts between fluid and
-tooltip.clayium.FluidTranslator.line2=stacks of Clay Fluid Capsule.
+machine.clayium.fluid_buffer=%s Fluid Buffer
+machine.clayium.fluid_buffer.tooltip1=Interconverts between fluid and
+machine.clayium.fluid_buffer.tooltip2=stacks of Clay Fluid Capsule.
 
 tile.clayium.blockAdvancedFluidTransferMachine.name=Fluid Transfer Machine
 tile.clayium.blockAdvancedFluidTransferMachine.tooltip.line1=Fills or empties liquid containers.
@@ -889,11 +880,11 @@ item.clayium.synchronizer.tooltip6=1. R-click the interface with Synchronous Par
 item.clayium.synchronizer.tooltip7=2. Record the coord of the machine by R-clicking with this.
 item.clayium.synchronizer.tooltip8=3. Synchronize the interface by R-clicking with it.
 
-item.clayium.itemCapsule.name=Clay Fluid Capsule
-item.clayium.itemCapsule0125.name=Clay Fluid Capsule (125mB)
-item.clayium.itemCapsule0025.name=Clay Fluid Capsule (25mB)
-item.clayium.itemCapsule0005.name=Clay Fluid Capsule (5mB)
-item.clayium.itemCapsule0001.name=Clay Fluid Capsule (1mB)
+item.clayium.fluid_capsule_1000mb.name=Clay Fluid Capsule (1000mB)
+item.clayium.fluid_capsule_125mb.name=Clay Fluid Capsule (125mB)
+item.clayium.fluid_capsule_25mb.name=Clay Fluid Capsule (25mB)
+item.clayium.fluid_capsule_5mb.name=Clay Fluid Capsule (5mB)
+item.clayium.fluid_capsule_1mb.name=Clay Fluid Capsule (1mB)
 
 item.clayium.clay_gadget_holder.name=Clay Gadget Holder
 item.clayium.clay_gadget_holder.tooltip1=Clay Gadgets give effects

@@ -15,6 +15,7 @@ import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
 import io.github.trcdevelopers.clayium.common.blocks.marker.TileClayMarker
 import io.github.trcdevelopers.clayium.common.blocks.metalchest.TileEntityMetalChest
+import io.github.trcdevelopers.clayium.common.items.ICustomItemModel
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import io.github.trcdevelopers.clayium.common.metatileentities.MetaTileEntities
 import io.github.trcdevelopers.clayium.common.util.KeyInput
@@ -66,6 +67,8 @@ class ClientProxy : CommonProxy() {
     override fun registerItem(registry: IForgeRegistry<Item>, item: Item) {
         registry.register(item)
         if (item is MetaItemClayium) {
+            item.registerModels()
+        } else if (item is ICustomItemModel) {
             item.registerModels()
         } else {
             ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(item.registryName!!, "inventory"))

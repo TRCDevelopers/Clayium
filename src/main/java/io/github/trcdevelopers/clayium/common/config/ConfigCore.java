@@ -139,6 +139,8 @@ public class ConfigCore {
         @Config.Comment("Default: 1")
         @Config.RangeInt(min = 1)
         public int autoTraderRecipeDurationTick = 1;
+
+        public FluidCapsuleCreativeTabMode fluidCapsuleCreativeTabMode = FluidCapsuleCreativeTabMode.ONLY_1000MB;
     }
 
     public static class FeGen {
