@@ -15,7 +15,7 @@ object CMaterials {
     val aluminum = CMaterial.create(2, clayiumId("aluminum")) {
         tier(6)
         colors(0xBEC8CA, 0x191919, 0xFFFFFF)
-        ingot().dust().impureDust(0xBEC8CA, 0x78783C, 0xDCDCDC)
+        ingot().dust()
         plate(ClayEnergy.milli(1), 20, tier = 4)
         claySmelting(0.5, 5, 200)
     }
@@ -532,6 +532,13 @@ object CMaterials {
         tier(6).colors(0xE6AA8C, 0x780000, 0xFFFFFF)
         ingot().dust()
         claySmelting(0.2, 6, 400)
+    }
+    val impureAluminium = CMaterial.create(522, clayiumId("impure_aluminum")) {
+        tier(6)
+        colors(0xBEC8CA, 0x78783C, 0xDCDCDC)
+        ingot().dust()
+        plate(ClayEnergy.milli(1), 20, tier = 4)
+        claySmelting(0.5, 5, 200)
     }
     //endregion
 
