@@ -41,8 +41,8 @@ object ClayiumTileCapabilities {
     @CapabilityInject(IPipeConnectable::class)
     lateinit var PIPE_CONNECTABLE: Capability<IPipeConnectable>
 
-    @CapabilityInject(IItemFilterApplicatable::class)
-    lateinit var ITEM_FILTER_APPLICATABLE: Capability<IItemFilterApplicatable>
+    @CapabilityInject(IItemFilterApplicable::class)
+    lateinit var ITEM_FILTER_APPLICATABLE: Capability<IItemFilterApplicable>
 
     @CapabilityInject(IRayTraceMemoryApplicable::class)
     lateinit var RAY_TRACE_MEMORY_APPLICABLE: Capability<IRayTraceMemoryApplicable>

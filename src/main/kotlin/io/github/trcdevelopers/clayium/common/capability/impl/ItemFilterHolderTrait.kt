@@ -3,7 +3,7 @@ package io.github.trcdevelopers.clayium.common.capability.impl
 import io.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER
 import io.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import io.github.trcdevelopers.clayium.api.capability.IItemFilter
-import io.github.trcdevelopers.clayium.api.capability.IItemFilterApplicatable
+import io.github.trcdevelopers.clayium.api.capability.IItemFilterApplicable
 import io.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.util.CLog
@@ -18,7 +18,7 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.fml.common.registry.ForgeRegistries
 
-class ItemFilterHolderTrait(mte: MetaTileEntity) : MTETrait(mte, clayiumId("item_filter_holder").toString()), IItemFilterApplicatable {
+class ItemFilterHolderTrait(mte: MetaTileEntity) : MTETrait(mte, clayiumId("item_filter_holder").toString()), IItemFilterApplicable {
 
     private val filters = MutableList<IItemFilter?>(6) { null }
     private val filterData = MutableList<Pair<ItemFilterBase, NBTTagCompound?>?>(6) { null }

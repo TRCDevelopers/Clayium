@@ -15,7 +15,7 @@ import net.minecraft.util.EnumFacing
  * - [getFilterItem] returns the [ItemFilterBase] for the Filter Duplicator.
  * - [clearFilter] just the name implies.
  */
-interface IItemFilterApplicatable {
+interface IItemFilterApplicable {
     /**
      * @param filterItem the filter item used. you can get a registry name from this instance.
      * @param stackTag the NBTTagCompound of the used ItemStack. you can get a Filter instance by creating an ItemStack, setting the NBTTag, and calling [ItemFilterBase.createItemFilter].
