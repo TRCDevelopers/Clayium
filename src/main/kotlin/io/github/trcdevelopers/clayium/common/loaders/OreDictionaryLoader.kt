@@ -2,7 +2,9 @@ package io.github.trcdevelopers.clayium.common.loaders
 
 import io.github.trcdevelopers.clayium.api.unification.OreDictUnifier
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
+import io.github.trcdevelopers.clayium.api.unification.material.CMaterials.silicon
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
+import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix.Companion.ingot
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
@@ -21,6 +23,9 @@ object OreDictionaryLoader {
 
             registerOre(ItemStack(Items.COAL), OrePrefix.gem, CMaterials.coal)
             registerOre(ItemStack(Items.COAL, 1, 1), OrePrefix.gem, CMaterials.charcoal)
+
+            registerAdditionalOreDict(ingot, silicon, "itemSilicon")
+            registerAdditionalOreDict("impureDustAluminum", "dustImpureAluminum")
 
             val ingot = ForgeRegistries.ITEMS.getValue(clayiumId("meta_ingot"))
             if (ingot != null) {

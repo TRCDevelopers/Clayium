@@ -45,7 +45,7 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
     }
 
     protected val metaValueItems = mutableMapOf<Short, MetaValueItem>()
-    protected val metaOreDicts = Short2ObjectAVLTreeMap<String>()
+    protected val metaOreDicts = Short2ObjectAVLTreeMap<MutableList<String>>()
 
     protected fun addItem(meta: Short, name: String, itemModifier: MetaValueItem.() -> Unit = {}): MetaValueItem {
         val item = MetaValueItem(meta, name)
@@ -91,8 +91,10 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
     }
 
     open fun registerOreDicts() {
-        metaOreDicts.forEach { (meta, oreDict) ->
-            OreDictUnifier.registerOre(ItemStack(this, 1, meta.toInt()), oreDict)
+        metaOreDicts.forEach { (meta, oreDicts) ->
+            oreDicts.forEach { oreDict ->
+                OreDictUnifier.registerOre(ItemStack(this, 1, meta.toInt()), oreDict)
+            }
         }
         metaOreDicts.clear()
     }
@@ -145,13 +147,13 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         }
 
         fun oreDict(name: String): MetaValueItem {
-            metaOreDicts.put(meta, name)
+            metaOreDicts.computeIfAbsent(meta, { mutableListOf() })
+                .add(name)
             return this
         }
 
         fun oreDict(orePrefix: OrePrefix, material: CMaterial): MetaValueItem {
-            metaOreDicts.put(meta, UnificationEntry(orePrefix, material).toString())
-            return this
+            return oreDict(UnificationEntry(orePrefix, material).toString())
         }
 
         fun tooltip(translationKey: String) = apply {
