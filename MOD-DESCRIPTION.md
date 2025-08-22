@@ -3,6 +3,8 @@ README for modrinth & curseforge page
 todo: auto deploy if possible
 --->
 
+日本語版は[こちら](https://github.com/TRCDevelopers/Clayium/blob/develop/MOD-DESCRIPTION-JP.md)
+
 An unofficial continuation of Clayium.
 
 Original mod: [Clayium](https://www.curseforge.com/minecraft/mc-mods/clayium) © deb_rk (Licensed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/))
