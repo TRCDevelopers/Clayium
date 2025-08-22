@@ -6,6 +6,7 @@ import org.jetbrains.annotations.ApiStatus
 
 /**
  * Capability interface for blocks.
+ *
  * TODO: it's internally used ONLY in renderer. No need to be a capability.
  *
  * If you want to render a clay laser, please use [io.github.trcdevelopers.clayium.client.renderer.ClayLaserRenderer].
