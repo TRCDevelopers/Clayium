@@ -1,0 +1,46 @@
+Clayiumの非公式移植版です。
+
+オリジナル: [Clayium](https://www.curseforge.com/minecraft/mc-mods/clayium) © deb_rk (ライセンス: [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/))
+
+バグを見つけた場合は [GitHub](https://github.com/TRCDevelopers/Clayium/issues)へ報告してくださると嬉しいです。
+
+## GUIアニメーションを無効にする
+
+このModはGUIに[ModularUI](https://github.com/CleanroomMC/ModularUI)を利用しています。
+ModularUIはデフォルトでGUIの開閉にアニメーションが実装されていますが、これはConfigで無効化できます (`config/modularui.cfg`):
+
+```
+I:panelOpenCloseAnimationTime=0
+```
+
+またツールチップの位置をバニラに戻すには、同じくModularUIのコンフィグで以下の設定を行います:
+
+```
+S:tooltipPos=NEXT_TO_MOUSE
+```
+
+## Modpack Permission
+Modpackへの同梱は完全に自由です!
+
+## Recipe Customization
+[GroovyScript](https://github.com/CleanroomMC/GroovyScript)を利用してレシピのカスタマイズが可能です。
+
+詳しい情報は[wiki](https://trcdevelopers.github.io/Clayium/)を参照してください。
+
+## Textures
+テクスチャはオリジナルのClayiumからそのまま利用しています。
+
+## Credits
+
+Clayium Unofficialは以下のOSSを利用、または参照しています。
+これらの素晴らしいプロジェクトに感謝します。
+
+|                                   Name                                   |                                      License                                      |
+|:------------------------------------------------------------------------:|:---------------------------------------------------------------------------------:|
+|     [Clayium](https://www.curseforge.com/minecraft/mc-mods/clayium)      |             [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/)             |
+|     [CodeChickenLib](https://github.com/TheCBProject/CodeChickenLib)     |  [LGPL-2.1](https://github.com/TheCBProject/CodeChickenLib/blob/master/LICENSE)   |
+| [Forgelin Continuous](https://github.com/ChAoSUnItY/Forgelin-Continuous) | [LGPL-3.0](https://github.com/ChAoSUnItY/Forgelin-Continuous/blob/master/LICENSE) |
+|    [GTCEu Buildscripts](https://github.com/GregTechCEu/Buildscripts)     |      [MIT](https://github.com/GregTechCEu/Buildscripts/blob/master/LICENSE)       |
+|          [GregTechCEu](https://github.com/GregTechCEu/GregTech)          |      [LGPL-3.0](https://github.com/GregTechCEu/GregTech/blob/master/LICENSE)      |
+|          [ModularUI](https://github.com/CleanroomMC/ModularUI)           |     [LGPL-3.0](https://github.com/CleanroomMC/ModularUI/blob/master/LICENSE)      |
+|        [RFTools](https://github.com/McJtyMods/RFTools/tree/1.12)         |         [MIT](https://github.com/McJtyMods/RFTools/blob/1.12/LICENSE.md)          |
