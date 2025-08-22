@@ -8,7 +8,7 @@ import net.minecraftforge.common.ForgeChunkManager
 object ClayChunkLoaderCallback : ForgeChunkManager.LoadingCallback {
     override fun ticketsLoaded(tickets: List<ForgeChunkManager.Ticket>, world: World) {
         for (ticket in tickets) {
-            val pos = BlockPos.fromLong(ticket.modData.getLong("chunkLoaderPos"))
+            val pos: BlockPos = BlockPos.fromLong(ticket.modData.getLong("chunkLoaderPos"))
             val chunkLoader = world.getTileEntity(pos)
             if (chunkLoader is ChunkLoaderTileEntity) {
                 chunkLoader.ticket = ticket
