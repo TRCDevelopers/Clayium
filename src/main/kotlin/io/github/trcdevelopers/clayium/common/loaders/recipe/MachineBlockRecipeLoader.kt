@@ -52,7 +52,7 @@ object MachineBlockRecipeLoader {
             CMaterials.industrialClay,
             CMaterials.advancedIndustrialClay,
             CMaterials.impureSilicon,
-            CMaterials.aluminum,
+            if (ConfigCore.gameMode.hardcoreAluminium) CMaterials.impureAluminium else CMaterials.aluminum,
             CMaterials.claySteel,
             CMaterials.clayium,
             CMaterials.ultimateAlloy,
