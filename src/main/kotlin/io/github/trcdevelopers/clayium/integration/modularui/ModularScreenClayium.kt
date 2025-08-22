@@ -11,6 +11,10 @@ import mezz.jei.transfer.RecipeTransferErrorTooltip
 class ModularScreenClayium(
     panel: ModularPanel
 ) : ModularScreen(panel), JeiRecipeTransferHandler {
+    init {
+        this.useTheme(ModularUiInit.CLAYIUM_DEFAULT_THEME)
+    }
+
     override fun transferRecipe(recipeLayout: IRecipeLayout, maxTransfer: Boolean, simulate: Boolean): IRecipeTransferError {
         return RecipeTransferErrorTooltip("This feature is WIP for Clayium")
     }
