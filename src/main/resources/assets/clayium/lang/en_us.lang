@@ -4,7 +4,7 @@
 
 itemGroup.clayium=Clayium
 itemGroup.clayium.decorations=Clayium Decoration Blocks
-itemGroup.clayium.clayiumcapsule=Clayium Fluid Capsules
+itemGroup.clayium.fluid_capsules=Clayium Fluid Capsules
 
 tooltip.clayium.HoldShiftForDetails=--§fHold §lShift§r For Details§7--
 
@@ -251,8 +251,7 @@ recipe.clayium.SaltExtractor.efficiency=%1$4.2g Items/t
 recipe.clayium.SaltExtractor.energyConsumption=%1$s CE/t
 recipe.clayium.SaltExtractor.description=A Salt Extractor is used to extract Salt from water. To run the machine, place water next to it.
 recipe.clayium.quartz_crucible=Quartz Crucible
-recipe.clayium.quartz_crucible.timeToCraft=%1$st = %2$ssec
-recipe.clayium.quartz_crucible.description=Quartz Crucible is a device to get the first Silicon Ingot. Throw Impure Silicon Ingots in a Quartz Crucible, wait a few seconds, and throw a String in it.
+recipe.clayium.quartz_crucible.description=Quartz Crucible is a device to get the first Silicon Ingot. Throw Impure Silicon Ingots in a Quartz Crucible, wait a while, and throw a String in it. You can process max 9 ingots at once. The process will take 30 seconds per ingot.
 recipe.clayium.SolarClayFabricator=Solar Clay Fabricator
 recipe.clayium.SolarClayFabricator.timeToCraft=%1$st = %2$ssec (%3$s CE/t)
 recipe.clayium.SolarClayFabricator.description=Requires an unobstructed view of the sky.
@@ -623,18 +622,9 @@ machine.clayium.pan_adapter.laser_slot_tooltip=Laser Slot
 
 machine.clayium.pan_duplicator=PAN Duplicator Rank %s
 
-tile.clayium.blockBasicFluidTranslator.name=Basic Fluid Buffer
-tile.clayium.blockAdvancedFluidTranslator.name=Advanced Fluid Buffer
-tile.clayium.blockPrecisionFluidTranslator.name=Precision Fluid Buffer
-tile.clayium.blockClaySteelFluidTranslator.name=Clay Steel Fluid Buffer
-tile.clayium.blockClayiumFluidTranslator.name=Clayium Fluid Buffer
-tile.clayium.blockUltimateFluidTranslator.name=Ultimate Fluid Buffer
-tile.clayium.blockAntimatterFluidTranslator.name=Antimatter Fluid Buffer
-tile.clayium.blockPureAntimatterFluidTranslator.name=Pure Antimatter Fluid Buffer
-tile.clayium.blockOECFluidTranslator.name=OEC Fluid Buffer
-tile.clayium.blockOPAFluidTranslator.name=OPA Fluid Buffer
-tooltip.clayium.FluidTranslator.line1=Interconverts between fluid and
-tooltip.clayium.FluidTranslator.line2=stacks of Clay Fluid Capsule.
+machine.clayium.fluid_buffer=%s Fluid Buffer
+machine.clayium.fluid_buffer.tooltip1=Interconverts between fluid and
+machine.clayium.fluid_buffer.tooltip2=stacks of Clay Fluid Capsule.
 
 tile.clayium.blockAdvancedFluidTransferMachine.name=Fluid Transfer Machine
 tile.clayium.blockAdvancedFluidTransferMachine.tooltip.line1=Fills or empties liquid containers.
@@ -890,11 +880,11 @@ item.clayium.synchronizer.tooltip6=1. R-click the interface with Synchronous Par
 item.clayium.synchronizer.tooltip7=2. Record the coord of the machine by R-clicking with this.
 item.clayium.synchronizer.tooltip8=3. Synchronize the interface by R-clicking with it.
 
-item.clayium.itemCapsule.name=Clay Fluid Capsule
-item.clayium.itemCapsule0125.name=Clay Fluid Capsule (125mB)
-item.clayium.itemCapsule0025.name=Clay Fluid Capsule (25mB)
-item.clayium.itemCapsule0005.name=Clay Fluid Capsule (5mB)
-item.clayium.itemCapsule0001.name=Clay Fluid Capsule (1mB)
+item.clayium.fluid_capsule_1000mb.name=Clay Fluid Capsule (1000mB)
+item.clayium.fluid_capsule_125mb.name=Clay Fluid Capsule (125mB)
+item.clayium.fluid_capsule_25mb.name=Clay Fluid Capsule (25mB)
+item.clayium.fluid_capsule_5mb.name=Clay Fluid Capsule (5mB)
+item.clayium.fluid_capsule_1mb.name=Clay Fluid Capsule (1mB)
 
 item.clayium.clay_gadget_holder.name=Clay Gadget Holder
 item.clayium.clay_gadget_holder.tooltip1=Clay Gadgets give effects

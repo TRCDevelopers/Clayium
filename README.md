@@ -36,9 +36,7 @@ See [wiki](https://trcdevelopers.github.io/Clayium/) for more information.
 
 ## WIP Features
 
-- Auto Crafter
 - Clay Guns
-- Fluid related features
 - Configs (`ProgressionRate`, `HardcoreXXX`, etc.)
 - Integrations with Other Mods
 

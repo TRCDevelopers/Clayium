@@ -2,6 +2,7 @@ package io.github.trcdevelopers.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.screen.ModularScreen
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
@@ -42,6 +43,7 @@ import io.github.trcdevelopers.clayium.api.util.MachineIoMode
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.ALL
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.CE
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.FIRST
+import io.github.trcdevelopers.clayium.api.util.MachineIoMode.FLUID
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_1
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_2
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_3
@@ -58,6 +60,7 @@ import io.github.trcdevelopers.clayium.common.creativetab.ClayiumCTabs
 import io.github.trcdevelopers.clayium.common.util.SidelessI18n
 import io.github.trcdevelopers.clayium.common.util.UtilLocale
 import io.github.trcdevelopers.clayium.integration.modularui.IGuiHolderClayium
+import io.github.trcdevelopers.clayium.integration.modularui.ModularScreenClayium
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import net.minecraft.block.Block
@@ -525,13 +528,15 @@ abstract class MetaTileEntity(
         val input = when (getInput(side)) {
             NONE -> false
             FIRST, SECOND, ALL, CE,
-            M_ALL, M_1, M_2, M_3, M_4, M_5, M_6 -> true
+            M_ALL, M_1, M_2, M_3, M_4, M_5, M_6,
+            FLUID -> true
         }
 
         val output = when (getOutput(side)) {
             NONE -> false
             FIRST, SECOND, ALL, CE,
-            M_ALL, M_1, M_2, M_3, M_4, M_5, M_6 -> true
+            M_ALL, M_1, M_2, M_3, M_4, M_5, M_6,
+            FLUID -> true
         }
 
         return if (input && output) PipeConnectionMode.BOTH
@@ -678,6 +683,10 @@ abstract class MetaTileEntity(
      */
     @SideOnly(Side.CLIENT)
     open fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {}
+
+    override fun createScreen(data: MetaTileEntityGuiData, mainPanel: ModularPanel): ModularScreen {
+        return ModularScreenClayium(mainPanel)
+    }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         return ModularPanel.defaultPanel(translationKey)
