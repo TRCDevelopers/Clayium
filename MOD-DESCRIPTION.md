@@ -11,20 +11,6 @@ Original mod: [Clayium](https://www.curseforge.com/minecraft/mc-mods/clayium) ©
 
 If you find a bug, please report it on [issue tracker](https://github.com/TRCDevelopers/Clayium/issues).
 
-## Disabling GUI Animation
-
-This mod uses [ModularUI](https://github.com/CleanroomMC/ModularUI) for GUI.
-ModularUI has an animation on opening and closing GUI by default.
-This can be disabled in the config (`config/modularui.cfg`):
-```
-I:panelOpenCloseAnimationTime=0
-```
-
-If you want to fix the tooltip position as well. you can set the following config:
-```
-S:tooltipPos=NEXT_TO_MOUSE
-```
-
 ## Modpack Permission
 You're welcome to include this mod in your modpack.
 

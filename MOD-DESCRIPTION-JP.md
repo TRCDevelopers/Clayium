@@ -4,21 +4,6 @@ Clayiumの非公式移植版です。
 
 バグを見つけた場合は [GitHub](https://github.com/TRCDevelopers/Clayium/issues)へ報告してくださると嬉しいです。
 
-## GUIアニメーションを無効にする
-
-このModはGUIに[ModularUI](https://github.com/CleanroomMC/ModularUI)を利用しています。
-ModularUIはデフォルトでGUIの開閉にアニメーションが実装されていますが、これはConfigで無効化できます (`config/modularui.cfg`):
-
-```
-I:panelOpenCloseAnimationTime=0
-```
-
-またツールチップの位置をバニラに戻すには、同じくModularUIのコンフィグで以下の設定を行います:
-
-```
-S:tooltipPos=NEXT_TO_MOUSE
-```
-
 ## Modpack Permission
 Modpackへの同梱は完全に自由です!
 
