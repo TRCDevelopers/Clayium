@@ -8,6 +8,9 @@ import static io.github.trcdevelopers.clayium.api.CValues.MOD_ID;
 @Config(modid = MOD_ID, name = MOD_ID + "/" + MOD_ID)
 public class ConfigCore {
 
+    @Config.Name("Game Mode Options")
+    public static SubCategoryGameMode gameMode = new SubCategoryGameMode();
+
     @Config.Name("Rendering Options")
     public static SubCategoryRendering rendering = new SubCategoryRendering();
 
@@ -19,6 +22,23 @@ public class ConfigCore {
 
     @Config.Name("CE-FE Converter Options")
     public static FeGen feGen = new FeGen();
+
+    public static class SubCategoryGameMode {
+        private SubCategoryGameMode() {}
+
+        @Config.Comment({
+                "If enabled, Tier 6 will require impure aluminium instead of aluminum.",
+                "Default: false",
+        })
+        @Config.RequiresMcRestart
+        public boolean hardcoreAluminium = false;
+        @Config.Comment({
+                "If enabled, recipes requiring osmium will require impure osmium instead of osmium.",
+                "Default: false",
+        })
+        @Config.RequiresMcRestart
+        public boolean hardcoreOsmium = false;
+    }
 
     public static class SubCategoryRendering {
         private SubCategoryRendering() {}
