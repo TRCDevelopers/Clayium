@@ -32,7 +32,7 @@ Clayiumの1.12.2向け**非公式**移植版です。
 ## 未実装の要素
 
 - 粘土銃
-- コンフィグ (`ProgressionRate`や`HardcoreXXX`など)
+- コンフィグ (`ProgressionRate`など)
 - 他MODとの連携要素
 
 ## ライセンス
