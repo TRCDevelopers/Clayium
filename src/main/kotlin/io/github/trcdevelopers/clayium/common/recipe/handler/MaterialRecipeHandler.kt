@@ -4,10 +4,12 @@ import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.ClayiumApi
 import io.github.trcdevelopers.clayium.api.unification.OreDictUnifier
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterial
+import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.unification.material.CPropertyKey
 import io.github.trcdevelopers.clayium.api.unification.material.MaterialAmount
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.unification.stack.UnificationEntry
+import io.github.trcdevelopers.clayium.common.config.ConfigCore
 import io.github.trcdevelopers.clayium.common.loaders.recipe.CondenserRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.GrinderRecipeLoader
 import io.github.trcdevelopers.clayium.common.recipe.RecipeUtils
@@ -53,6 +55,10 @@ object MaterialRecipeHandler {
         for (markerMaterial in ClayiumApi.markerMaterials) {
             GrinderRecipeLoader.handleOre(markerMaterial)
             CondenserRecipeLoader.handleOre(markerMaterial)
+        }
+
+        if (ConfigCore.gameMode.hardcoreAluminium) {
+            registerRecipesHardcoreAluminium()
         }
     }
 
@@ -174,5 +180,14 @@ object MaterialRecipeHandler {
                 }
             }
         }
+    }
+
+    private fun registerRecipesHardcoreAluminium() {
+        val prop = CMaterials.impureAluminium.getProperty(CPropertyKey.CLAY_SMELTING)
+        CRecipes.SMELTER.builder()
+            .input(OrePrefix.impureDust, CMaterials.aluminum)
+            .output(OrePrefix.ingot, CMaterials.impureAluminium)
+            .CEt(prop.factor, prop.tier).duration(prop.duration).tier(prop.tier)
+            .buildAndRegister()
     }
 }

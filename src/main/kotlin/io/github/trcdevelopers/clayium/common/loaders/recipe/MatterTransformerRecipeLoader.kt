@@ -7,6 +7,7 @@ import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.api.util.VBlocks
 import io.github.trcdevelopers.clayium.api.util.VItems
+import io.github.trcdevelopers.clayium.common.config.ConfigCore
 import io.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraft.block.BlockOldLeaf
 import net.minecraft.block.BlockOldLog
@@ -240,7 +241,8 @@ object MatterTransformerRecipeLoader {
             .chain(CMaterials.gold).tier(9).CEtFactor(50.0)
             .chain(CMaterials.platinum).tier(10).CEtFactor(30.0)
             .chain(CMaterials.iridium).tier(11).CEtFactor(10.0)
-            .chain(CMaterials.osmium).tier(11).CEtFactor(30.0)
+            .chainIf(ConfigCore.gameMode.hardcoreOsmium, CMaterials.impureOsmium).tier(11).CEtFactor(30.0)
+            .chainIf(!ConfigCore.gameMode.hardcoreOsmium, CMaterials.osmium).tier(11).CEtFactor(30.0)
             .chain(CMaterials.rhenium).tier(12).CEtFactor(10.0)
             .buildAndRegister()
 

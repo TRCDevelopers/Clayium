@@ -90,4 +90,14 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
             .output(stack)
         return newBuilder
     }
+
+    fun chainIf(shouldChain: Boolean, oreDict: String): MatterTransformerRecipeBuilder {
+        return if (shouldChain) chain(oreDict) else this
+    }
+    fun chainIf(shouldChain: Boolean, orePrefix: OrePrefix, material: CMaterial): MatterTransformerRecipeBuilder {
+        return if (shouldChain) chain(orePrefix, material) else this
+    }
+    fun chainIf(shouldChain: Boolean, material: CMaterial): MatterTransformerRecipeBuilder {
+        return if (shouldChain) chain(material) else this
+    }
 }

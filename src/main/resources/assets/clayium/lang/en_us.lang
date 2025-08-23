@@ -60,6 +60,7 @@ clayium.material.impure_silicon=Impure Silicon
 clayium.material.silicone=Silicone
 clayium.material.silicon=Silicon
 clayium.material.aluminum=Aluminum
+clayium.material.impure_aluminum=Impure Aluminum
 clayium.material.clay_steel=Clay Steel
 clayium.material.clayium=Clayium
 clayium.material.ultimate_alloy=Ultimate Alloy

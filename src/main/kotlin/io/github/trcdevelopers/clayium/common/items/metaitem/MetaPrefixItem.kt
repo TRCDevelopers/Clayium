@@ -23,6 +23,9 @@ open class MetaPrefixItem private constructor(
             addItem(material.metaItemSubId.toShort(), materialName) {
                 tier(material.tier?.numeric ?: -1)
                 oreDict(orePrefix, material)
+                material.additionalOreName.forEach {
+                    oreDict("${orePrefix.snake}${it}")
+                }
                 if (material.colors != null) {
                     addComponent(IItemColorHandler { _, i -> material.colors[i] })
                 }
