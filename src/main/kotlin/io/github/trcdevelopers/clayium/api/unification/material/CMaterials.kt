@@ -542,6 +542,11 @@ object CMaterials {
         plate(ClayEnergy.milli(1), 20, tier = 4)
         claySmelting(0.5, 5, 200)
     }
+    val impureOsmium = CMaterial.create(523, clayiumId("impure_osmium")) {
+        tier(11)
+        colors(0x464696, 0x78783C, 0xDCDCDC)
+        ingot()
+    }
     //endregion
 
     /** 1001 - 1500 */

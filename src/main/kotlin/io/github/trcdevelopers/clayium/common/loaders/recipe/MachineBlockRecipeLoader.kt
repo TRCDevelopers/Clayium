@@ -161,9 +161,14 @@ object MachineBlockRecipeLoader {
         }
 
         /* Ca Reactor Coils */
-        for ((i, entry) in listOf(CMaterials.antimatter, CMaterials.pureAntimatter, CMaterials.octupleEnergyClay,
-            CMaterials.octuplePureAntimatter).zip(listOf(CMaterials.platinum, CMaterials.iridium, CMaterials.osmium,
-            CMaterials.rhenium)).withIndex()) {
+        val plateMaterials = listOf(CMaterials.antimatter, CMaterials.pureAntimatter, CMaterials.octupleEnergyClay,
+            CMaterials.octuplePureAntimatter)
+        val ingotMaterials = if (ConfigCore.gameMode.hardcoreOsmium) {
+            listOf(CMaterials.platinum, CMaterials.iridium, CMaterials.impureOsmium, CMaterials.rhenium)
+        } else {
+            listOf(CMaterials.platinum, CMaterials.iridium, CMaterials.osmium, CMaterials.rhenium)
+        }
+        for ((i, entry) in plateMaterials.zip(ingotMaterials).withIndex()) {
             val (plateMaterial, ingotMaterial) = entry
             CRecipes.CLAY_REACTOR.builder()
                 .input(OrePrefix.plate, plateMaterial, 6)

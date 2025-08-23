@@ -9,8 +9,10 @@ import io.github.trcdevelopers.clayium.api.unification.material.CMaterials.dense
 import io.github.trcdevelopers.clayium.api.unification.material.MaterialAmount
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.unification.stack.UnificationEntry
+import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.blocks.metalchest.BlockMetalChest
+import io.github.trcdevelopers.clayium.common.config.ConfigCore
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import io.github.trcdevelopers.clayium.common.recipe.RecipeUtils
@@ -20,6 +22,9 @@ import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
 
 object CraftingRecipeLoader {
+
+    private val OSMIUM = clayiumId("osmium")
+
     fun registerRecipes() {
         clayToolRecipes()
         registerClayPartsRecipes()
@@ -263,15 +268,25 @@ object CraftingRecipeLoader {
         )
     }
 
-    private fun registerChestRecipeIfExists(material: CMaterial) {
-        if (BlockMetalChest.metalChestConfig[material.materialId] == null) {
+    private fun registerChestRecipeIfExists(materialIn: CMaterial) {
+        if (BlockMetalChest.metalChestConfig[materialIn.materialId] == null) {
             return
         }
         val prefix = when {
-            OreDictUnifier.exists(OrePrefix.ingot, material) -> OrePrefix.ingot
-            OreDictUnifier.exists(OrePrefix.gem, material) -> OrePrefix.gem
+            OreDictUnifier.exists(OrePrefix.ingot, materialIn) -> OrePrefix.ingot
+            OreDictUnifier.exists(OrePrefix.gem, materialIn) -> OrePrefix.gem
             else -> return
         }
+
+        val material = if (ConfigCore.gameMode.hardcoreOsmium) {
+            when (materialIn.materialId) {
+                OSMIUM -> CMaterials.impureOsmium
+                else -> materialIn
+            }
+        } else {
+            materialIn
+        }
+
         RecipeUtils.addShapedRecipe("metal_chest_${material.materialId.namespace}_${material.materialId.path}",
             ItemStack(ClayiumBlocks.METAL_CHEST, 1, material.metaItemSubId),
             "MMM", "MCM", "MMM",
