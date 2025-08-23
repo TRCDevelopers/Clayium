@@ -7,6 +7,7 @@ import io.github.trcdevelopers.clayium.api.util.MachineIoMode
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.ALL
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.CE
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.FIRST
+import io.github.trcdevelopers.clayium.api.util.MachineIoMode.FLUID
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_1
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_2
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_3
@@ -102,6 +103,7 @@ object ModelTextures {
                 M_4 -> "import_m4"
                 M_5 -> "import_m5"
                 M_6 -> "import_m6"
+                FLUID -> "import_l"
             }
             val atlasSprite = getter.apply(clayiumId("blocks/$textureName"))
             EnumFacing.entries.map { side -> createQuad(side, atlasSprite) }
@@ -121,6 +123,7 @@ object ModelTextures {
                 M_4 -> "export_m4"
                 M_5 -> "export_m5"
                 M_6 -> "export_m6"
+                FLUID -> "export_l"
             }
             val atlasSprite = getter.apply(clayiumId("blocks/$textureName"))
             EnumFacing.entries.map { side -> createQuad(side, atlasSprite) }

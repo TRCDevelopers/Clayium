@@ -50,6 +50,10 @@ object MetaTileEntities {
         DistributorMetaTileEntity(clayiumId("distributor.${it.lowerName}"), it)
     }
 
+    val FLUID_BUFFER = registerMetaTileEntities(107, (4..13)) { //+10
+        FluidBufferMetaTileEntity(clayiumId("fluid_buffer.${it.lowerName}"), it)
+    }
+
     /* Singleblock Item Processing Machines 201-500 */
     val ALLOY_SMELTER = registerMetaTileEntity(201, SimpleMachineMetaTileEntity(clayiumId("alloy_smelter"), ClayTiers.PRECISION, CRecipes.ALLOY_SMELTER))
 

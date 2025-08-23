@@ -20,6 +20,7 @@ import io.github.trcdevelopers.clayium.integration.jei.basic.ClayiumRecipeWrappe
 import io.github.trcdevelopers.clayium.integration.jei.basic.MetalSeparatorRecipeWrapper
 import io.github.trcdevelopers.clayium.integration.jei.clayworktable.ClayWorkTableRecipeCategory
 import io.github.trcdevelopers.clayium.integration.jei.clayworktable.ClayWorkTableRecipeWrapper
+import io.github.trcdevelopers.clayium.integration.jei.transfer.CcbRecipeTransferInfo
 import mezz.jei.api.IJeiHelpers
 import mezz.jei.api.IJeiRuntime
 import mezz.jei.api.IModPlugin
@@ -61,6 +62,7 @@ class JeiPlugin : IModPlugin {
         /* Clay Crafting Board */
         modRegistry.addRecipeCatalyst(ItemStack(ClayiumBlocks.CLAY_CRAFTING_BOARD), VanillaRecipeCategoryUid.CRAFTING)
         modRegistry.addRecipeClickArea(GuiClayCraftingBoard::class.java, 90, 35, 22, 15, VanillaRecipeCategoryUid.CRAFTING)
+        modRegistry.recipeTransferRegistry.addRecipeTransferHandler(CcbRecipeTransferInfo)
 
         /* CRecipes */
         for (recipeRegistry in CRecipes.ALL_REGISTRIES.values) {
@@ -100,8 +102,14 @@ class JeiPlugin : IModPlugin {
     private fun registerIngredientInfo(modRegistry: IModRegistry) {
         modRegistry.addIngredientInfo(listOf(ItemStack(ClayiumBlocks.CLAY_TREE_SAPLING), ItemStack(ClayiumBlocks.CLAY_TREE_LOG), ItemStack(ClayiumBlocks.CLAY_TREE_LEAVES)),
             VanillaTypes.ITEM, "recipe.clayium.clay_tree.description")
-        modRegistry.addIngredientInfo(ItemStack(ClayiumBlocks.QUARTZ_CRUCIBLE), VanillaTypes.ITEM, "recipe.clayium.quartz_crucible.description")
-        modRegistry.addIngredientInfo(OreDictUnifier.get(OrePrefix.gem, CMaterials.pureAntimatter), VanillaTypes.ITEM, "recipe.clayium.pure_antimatter.description")
+        modRegistry.addIngredientInfo(
+            listOf(ItemStack(ClayiumBlocks.QUARTZ_CRUCIBLE), OreDictUnifier.get(OrePrefix.ingot, CMaterials.silicon)), VanillaTypes.ITEM,
+            "recipe.clayium.quartz_crucible.description"
+        )
+        modRegistry.addIngredientInfo(
+            CMaterials.PURE_ANTIMATTERS.map { OreDictUnifier.get(OrePrefix.gem, it) }, VanillaTypes.ITEM,
+            "recipe.clayium.pure_antimatter.description"
+        )
 
         modRegistry.addIngredientInfo(ItemStack(ClayiumItems.DAMAGE_VALUE_ITEM_FILTER), VanillaTypes.ITEM, "item.clayium.item_filter_damage_value.jei_description")
         modRegistry.addIngredientInfo(ItemStack(ClayiumItems.BLOCK_METADATA_ITEM_FILTER), VanillaTypes.ITEM, "item.clayium.item_filter_block_metadata.jei_description")

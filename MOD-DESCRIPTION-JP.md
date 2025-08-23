@@ -1,30 +1,24 @@
-<!--- 
-README for modrinth & curseforge page
-todo: auto deploy if possible
---->
+Clayiumの非公式移植版です。
 
-日本語版は[こちら](https://github.com/TRCDevelopers/Clayium/blob/develop/MOD-DESCRIPTION-JP.md)
+オリジナル: [Clayium](https://www.curseforge.com/minecraft/mc-mods/clayium) © deb_rk (ライセンス: [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/))
 
-An unofficial continuation of Clayium.
-
-Original mod: [Clayium](https://www.curseforge.com/minecraft/mc-mods/clayium) © deb_rk (Licensed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/))
-
-If you find a bug, please report it on [issue tracker](https://github.com/TRCDevelopers/Clayium/issues).
+バグを見つけた場合は [GitHub](https://github.com/TRCDevelopers/Clayium/issues)へ報告してくださると嬉しいです。
 
 ## Modpack Permission
-You're welcome to include this mod in your modpack.
+Modpackへの同梱は完全に自由です!
 
 ## Recipe Customization
-We have integration with [GroovyScript](https://github.com/CleanroomMC/GroovyScript).
+[GroovyScript](https://github.com/CleanroomMC/GroovyScript)を利用してレシピのカスタマイズが可能です。
 
-See [wiki](https://trcdevelopers.github.io/Clayium/) for more information.
+詳しい情報は[wiki](https://trcdevelopers.github.io/Clayium/)を参照してください。
 
 ## Textures
-The textures used are from the original Clayium mod.
+テクスチャはオリジナルのClayiumからそのまま利用しています。
 
 ## Credits
 
-Clayium Unofficial would not have been possible without the following OSS:
+Clayium Unofficialは以下のOSSを利用、または参照しています。
+これらの素晴らしいプロジェクトに感謝します。
 
 |                                   Name                                   |                                      License                                      |
 |:------------------------------------------------------------------------:|:---------------------------------------------------------------------------------:|

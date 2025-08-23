@@ -18,6 +18,7 @@ enum class MachineIoMode(
     M_4(9),
     M_5(10),
     M_6(11),
+    FLUID(12),
     ;
 
     override fun getName(): String {

@@ -19,6 +19,7 @@ import io.github.trcdevelopers.clayium.api.util.asWidgetResizing
 import io.github.trcdevelopers.clayium.api.util.getCapability
 import io.github.trcdevelopers.clayium.api.util.hasCapability
 import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
+import io.github.trcdevelopers.clayium.common.items.ItemFluidCapsule
 import io.github.trcdevelopers.clayium.common.util.TransferUtils
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.material.Material
@@ -32,6 +33,8 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.fluids.IFluidBlock
+import net.minecraftforge.items.ItemHandlerHelper
 import kotlin.math.log10
 
 abstract class AbstractMinerMetaTileEntity(
@@ -50,15 +53,18 @@ abstract class AbstractMinerMetaTileEntity(
     protected var laser: ClayLaser? = null
 
     override fun actionOnBlock(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
-        if (state.getBlockHardness(world, pos) == HARDNESS_UNBREAKABLE || state.material.isLiquid || state.material == Material.AIR) {
-            return EnumActionResult.PASS
+        return if (state.material == Material.WATER || state.material == Material.LAVA) {
+            this.mineVanillaFluid(state, world, pos)
+        } else if (state.block is IFluidBlock) {
+            this.mineFluid(state, world, pos)
+        } else {
+            val blockHardness = state.getBlockHardness(world, pos)
+            if (blockHardness == HARDNESS_UNBREAKABLE) return EnumActionResult.PASS
+            val filter = this.filter
+            val filterMatches = filter == null || filter.testBlock(world, pos)
+            if (!filterMatches) return EnumActionResult.PASS
+            this.mine(state, world, pos)
         }
-
-        val filter = this.filter
-        val filterMatches = filter == null || filter.testBlock(world, pos)
-        if (!filterMatches) return EnumActionResult.PASS
-
-        return this.mine(state, world, pos)
     }
 
     protected open fun mine(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
@@ -68,6 +74,37 @@ abstract class AbstractMinerMetaTileEntity(
         TransferUtils.insertToHandler(itemInventory, drops, false)
         world.destroyBlock(pos, false)
         return EnumActionResult.SUCCESS
+    }
+
+    protected open fun mineFluid(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
+        val fluidBlock = state.block as? IFluidBlock
+            ?: return EnumActionResult.PASS
+        val fluid = fluidBlock.drain(world, pos, false)
+            ?: return EnumActionResult.PASS
+        val itemStack = ItemFluidCapsule.from(fluid)
+        if (itemStack.isEmpty) return EnumActionResult.PASS
+        if (ItemHandlerHelper.insertItemStacked(this.itemInventory, itemStack, true).isEmpty) {
+            fluidBlock.drain(world, pos, /* doDrain */ true)
+            ItemHandlerHelper.insertItemStacked(this.itemInventory, itemStack, /* simulate */ false)
+            return EnumActionResult.SUCCESS
+        } else {
+            return EnumActionResult.FAIL
+        }
+    }
+
+    protected open fun mineVanillaFluid(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
+        val itemStack = when (state.material) {
+            Material.WATER -> ItemFluidCapsule.water()
+            Material.LAVA -> ItemFluidCapsule.lava()
+            else -> return EnumActionResult.PASS
+        }
+        if (ItemHandlerHelper.insertItemStacked(this.itemInventory, itemStack, true).isEmpty) {
+            world.setBlockToAir(pos)
+            ItemHandlerHelper.insertItemStacked(this.itemInventory, itemStack, /* simulate */ false)
+            return EnumActionResult.SUCCESS
+        } else {
+            return EnumActionResult.FAIL
+        }
     }
 
     override fun getAccelerationRate(): Double {
