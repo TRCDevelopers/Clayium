@@ -22,6 +22,7 @@ import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix.Companion.p
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix.Companion.ring
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix.Companion.spindle
 import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
+import io.github.trcdevelopers.clayium.common.config.ConfigCore
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import io.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraft.init.Blocks
@@ -77,6 +78,24 @@ object GrinderRecipeLoader {
                 .input(block, m)
                 .output(OrePrefix.dust, m)
                 .tier(0).defaultCEt().duration(4 * (i + 1))
+                .buildAndRegister()
+        }
+
+        if (ConfigCore.gameMode.hardcoreAluminium) {
+            registry.builder()
+                .input(ingot, CMaterials.impureAluminium)
+                .output(OrePrefix.impureDust, CMaterials.aluminum)
+                .tier(0).CEt(ClayEnergy.micro(250)).duration(80)
+                .buildAndRegister()
+            registry.builder()
+                .input(OrePrefix.plate, CMaterials.impureAluminium)
+                .output(OrePrefix.impureDust, CMaterials.aluminum)
+                .tier(0).CEt(ClayEnergy.micro(250)).duration(80)
+                .buildAndRegister()
+            registry.builder()
+                .input(OrePrefix.largePlate, CMaterials.impureAluminium)
+                .output(OrePrefix.impureDust, CMaterials.aluminum, 4)
+                .tier(0).CEt(ClayEnergy.micro(250)).duration(80)
                 .buildAndRegister()
         }
     }
