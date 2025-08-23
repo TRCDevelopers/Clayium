@@ -68,7 +68,7 @@ class FluidBufferMetaTileEntity(
     }
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager, settings: UISettings): ModularPanel {
-        return ModularPanel.defaultPanel(translationKey, GUI_DEFAULT_WIDTH, 18 + inventoryRowSize * 18 + 94 + 2 + 18 + 6)
+        return ModularPanel.defaultPanel(translationKey, GUI_DEFAULT_WIDTH, 18 + inventoryRowSize * 18 + 94 + 2)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager))
             }
