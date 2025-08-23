@@ -89,11 +89,7 @@ open class CommonProxy {
 
         ForgeChunkManager.setForcedChunkLoadingCallback(ClayiumMod, ClayChunkLoaderCallback)
 
-        if (Mods.GregTech.isModLoaded) {
-            OreDictUnifier.injectImpl(GTOreDictUnifierAdapter)
-        } else {
-            OreDictUnifier.injectImpl(ClayiumOreDictUnifierImpl)
-        }
+        OreDictUnifier.injectImpl(ClayiumOreDictUnifierImpl)
     }
 
     open fun init(event: FMLInitializationEvent) {

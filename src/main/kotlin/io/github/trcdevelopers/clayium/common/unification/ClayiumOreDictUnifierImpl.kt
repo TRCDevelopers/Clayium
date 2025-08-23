@@ -1,5 +1,6 @@
 package io.github.trcdevelopers.clayium.common.unification
 
+import io.github.trcdevelopers.clayium.api.MOD_ID
 import io.github.trcdevelopers.clayium.api.W
 import io.github.trcdevelopers.clayium.api.unification.stack.MultiItemVariantMap
 import io.github.trcdevelopers.clayium.api.unification.stack.MutableItemVariantMap
@@ -38,7 +39,14 @@ object ClayiumOreDictUnifierImpl : IOreDictUnifier {
         val names = variantMap.computeIfAbsent(meta.toShort()) { mutableSetOf() }
         names.add(oreName)
 
-        oreName2Stacks.computeIfAbsent(oreName) { mutableListOf() }.add(stack.copyWithSize(1))
+        oreName2Stacks.computeIfAbsent(oreName) { mutableListOf() }.apply {
+            add(stack.copyWithSize(1))
+            sortWith { s1, s2 ->
+                if (s1.item.registryName?.namespace == MOD_ID) -1
+                else if (s2.item.registryName?.namespace == MOD_ID) 1
+                else 0
+            }
+        }
         //todo
     }
 
