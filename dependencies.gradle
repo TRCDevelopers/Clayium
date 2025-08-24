@@ -40,7 +40,7 @@
 dependencies {
     runtimeOnly('io.github.chaosunity.forgelin:Forgelin-Continuous:2.2.0.0') { transitive = false }
 
-    api("com.cleanroommc:modularui:2.5.0-rc6")
+    api("com.cleanroommc:modularui:2.5.0-rc6") { transitive = false }
     api("codechicken:codechickenlib:3.2.3.358")
     api("com.cleanroommc:groovyscript:1.2.5") { transitive = false }
 
