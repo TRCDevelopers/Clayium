@@ -33,6 +33,7 @@ import io.github.trcdevelopers.clayium.api.capability.impl.RangedItemHandlerProx
 import io.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
 import io.github.trcdevelopers.clayium.api.gui.data.MetaTileEntityGuiData
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity.Companion.clearInventory
+import io.github.trcdevelopers.clayium.api.metatileentity.interfaces.IHasNotifiableInventory
 import io.github.trcdevelopers.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import io.github.trcdevelopers.clayium.api.metatileentity.interfaces.IWorldObject
 import io.github.trcdevelopers.clayium.api.metatileentity.trait.OverclockHandler
@@ -106,7 +107,7 @@ abstract class MetaTileEntity(
      * item model location will be ("${metaTileEntityId.namespace}:machines/${name}", "tier={tier.lowerName}").
      */
     private val name: String,
-) : ISyncedTileEntity, IWorldObject, IGuiHolderClayium<MetaTileEntityGuiData>, IPipeConnectable {
+) : ISyncedTileEntity, IWorldObject, IGuiHolderClayium<MetaTileEntityGuiData>, IPipeConnectable, IHasNotifiableInventory {
 
     val mteRegistry = ClayiumApi.mteManager.getRegistry(metaTileEntityId.namespace)
     val blockMachine get() = mteRegistry.blockMachine
@@ -135,8 +136,8 @@ abstract class MetaTileEntity(
     abstract val exportItems: IItemHandlerModifiable
     abstract val itemInventory: IItemHandler
 
-    var hasNotifiedInputs = false
-    var hasNotifiedOutputs = false
+    override var hasNotifiedInputs = false
+    override var hasNotifiedOutputs = false
 
     abstract fun createMetaTileEntity(): MetaTileEntity
 

@@ -1,6 +1,8 @@
 package io.github.trcdevelopers.clayium.common.recipe.registry
 
+import io.github.trcdevelopers.clayium.api.recipe.IRecipeOutputs
 import io.github.trcdevelopers.clayium.api.util.Mods
+import io.github.trcdevelopers.clayium.common.recipe.SimpleRecipeOutputs
 import io.github.trcdevelopers.clayium.common.recipe.builder.ClayFabricatorRecipeBuilder
 import io.github.trcdevelopers.clayium.common.recipe.builder.MatterTransformerRecipeBuilder
 import io.github.trcdevelopers.clayium.common.recipe.builder.RecipeBuilder
@@ -8,8 +10,12 @@ import io.github.trcdevelopers.clayium.common.recipe.builder.SimpleRecipeBuilder
 import io.github.trcdevelopers.clayium.common.recipe.builder.WeightedRecipeBuilder
 import io.github.trcdevelopers.clayium.integration.jei.JeiPlugin
 import io.github.trcdevelopers.clayium.integration.jei.basic.SolarClayFabricatorRecipeWrapper
+import net.minecraft.util.ResourceLocation
+import java.util.function.Supplier
 
 object CRecipes {
+    private val recipeOutputs = mutableMapOf<ResourceLocation, Supplier<IRecipeOutputs>>()
+
     private val REGISTRY = mutableMapOf<String, RecipeRegistry<*>>()
     val ALL_REGISTRIES: Map<String, RecipeRegistry<*>> get() = REGISTRY.toMap()
 
@@ -61,7 +67,13 @@ object CRecipes {
         return REGISTRY[name]
     }
 
+    fun getRecipeOutput(id: ResourceLocation): IRecipeOutputs? {
+        return recipeOutputs[id]?.get()
+    }
+
     init {
+        recipeOutputs[SimpleRecipeOutputs.TYPE] = Supplier { SimpleRecipeOutputs() }
+
         if (Mods.JustEnoughItems.isModLoaded) {
             JeiPlugin.registerWrapper(SOLAR_1, ::SolarClayFabricatorRecipeWrapper)
             JeiPlugin.registerWrapper(SOLAR_2, ::SolarClayFabricatorRecipeWrapper)
