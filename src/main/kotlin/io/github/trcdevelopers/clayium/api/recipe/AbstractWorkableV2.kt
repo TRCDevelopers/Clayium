@@ -1,5 +1,6 @@
 package io.github.trcdevelopers.clayium.api.recipe
 
+import io.github.trcdevelopers.clayium.api.capability.IWorkingControllableV2
 import io.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
@@ -8,7 +9,9 @@ import net.minecraft.util.ResourceLocation
 
 abstract class AbstractWorkableV2(
     metaTileEntity: MetaTileEntity,
-) : MTETrait(metaTileEntity, "workable_v2") {
+) : MTETrait(metaTileEntity, "workable_v2"), IWorkingControllableV2 {
+
+    protected var recipeProcessor: OverclockableRecipeProcessor? = null
     protected var recipeOutput: IRecipeOutputs? = null
 
     override fun serializeNBT(): NBTTagCompound {
