@@ -26,6 +26,7 @@ object OreDictionaryLoader {
 
             registerAdditionalOreDict(ingot, silicon, "itemSilicon")
             registerAdditionalOreDict("impureDustAluminum", "dustImpureAluminum")
+            registerAdditionalOreDict("impureDustAluminium", "dustImpureAluminium")
 
             val ingot = ForgeRegistries.ITEMS.getValue(clayiumId("meta_ingot"))
             if (ingot != null) {
