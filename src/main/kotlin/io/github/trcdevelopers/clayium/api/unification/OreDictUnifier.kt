@@ -51,7 +51,6 @@ object OreDictUnifier {
                 else 0
             }
         }
-        //todo
     }
 
     fun registerOre(stack: ItemStack, oreDict: String) {
