@@ -143,15 +143,22 @@ object MaterialRecipeHandler {
         if (clayProperty != null) {
             // generate recipes for non-energy clay blocks
             if (resultClayProperty.energy == null) {
-                RecipeUtils.addShapedRecipe("${compressedInto.materialId.path}_block_compose",
-                    OreDictUnifier.get(OrePrefix.block, compressedInto),
-                    "CCC",
-                    "CCC",
-                    "CCC",
-                    'C', UnificationEntry(OrePrefix.block, material))
+                if (compressedInto == CMaterials.denseClay || compressedInto == CMaterials.compressedClay) {
+                    RecipeUtils.addShapedRecipe(
+                        "${compressedInto.materialId.path}_block_compose",
+                        OreDictUnifier.get(OrePrefix.block, compressedInto),
+                        "CCC",
+                        "CCC",
+                        "CCC",
+                        'C', UnificationEntry(OrePrefix.block, material)
+                    )
 
-                RecipeUtils.addShapelessRecipe("${compressedInto.materialId.path}_block_decompose",
-                    OreDictUnifier.get(OrePrefix.block, material, 9), UnificationEntry(OrePrefix.block, compressedInto))
+                    RecipeUtils.addShapelessRecipe(
+                        "${compressedInto.materialId.path}_block_decompose",
+                        OreDictUnifier.get(OrePrefix.block, material, 9),
+                        UnificationEntry(OrePrefix.block, compressedInto)
+                    )
+                }
 
                 CRecipes.DECOMPOSER.register {
                     input(OrePrefix.block, compressedInto)
