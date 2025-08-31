@@ -44,11 +44,10 @@ object OreDictUnifier {
         names.add(oreName)
 
         oreName2Stacks.computeIfAbsent(oreName) { mutableListOf() }.apply {
-            add(stack.copyWithSize(1))
-            sortWith { s1, s2 ->
-                if (s1.item.registryName?.namespace == MOD_ID) -1
-                else if (s2.item.registryName?.namespace == MOD_ID) 1
-                else 0
+            if (stack.item.registryName?.namespace == MOD_ID) {
+                add(0, stack.copyWithSize(1))
+            } else {
+                add(stack.copyWithSize(1))
             }
         }
     }
