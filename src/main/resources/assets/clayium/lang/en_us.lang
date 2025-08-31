@@ -3,7 +3,7 @@
 
 itemGroup.clayium=Clayium
 itemGroup.clayium.decorations=Clayium Decoration Blocks
-itemGroup.clayium.clayiumcapsule=Clayium Fluid Capsules
+itemGroup.clayium.fluid_capsules=Clayium Fluid Capsules
 
 # Advancements
 advancements.clayium.root.title=Clayium
@@ -48,6 +48,8 @@ advancements.clayium.clay_fabricator_mk3.description=Duplicate clay instantly at
 # Other, todo: organize?
 
 tooltip.clayium.HoldShiftForDetails=--§fHold §lShift§r For Details§7--
+
+gui.clayium.working_paused=Paused
 
 gui.clayium.laser_energy=Laser \: %1$s
 gui.clayium.resonance=Resonance %1$s
@@ -99,6 +101,7 @@ clayium.material.impure_silicon=Impure Silicon
 clayium.material.silicone=Silicone
 clayium.material.silicon=Silicon
 clayium.material.aluminum=Aluminum
+clayium.material.impure_aluminum=Impure Aluminum
 clayium.material.clay_steel=Clay Steel
 clayium.material.clayium=Clayium
 clayium.material.ultimate_alloy=Ultimate Alloy
@@ -157,6 +160,7 @@ clayium.material.neptunium=Neptunium
 clayium.material.nickel=Nickel
 clayium.material.organic_clay=Organic Clay
 clayium.material.osmium=Osmium
+clayium.material.impure_osmium=Impure Osmium
 clayium.material.palladium=Palladium
 clayium.material.phosphorus=Phosphorus
 clayium.material.platinum=Platinum
@@ -290,8 +294,7 @@ recipe.clayium.SaltExtractor.efficiency=%1$4.2g Items/t
 recipe.clayium.SaltExtractor.energyConsumption=%1$s CE/t
 recipe.clayium.SaltExtractor.description=A Salt Extractor is used to extract Salt from water. To run the machine, place water next to it.
 recipe.clayium.quartz_crucible=Quartz Crucible
-recipe.clayium.quartz_crucible.timeToCraft=%1$st = %2$ssec
-recipe.clayium.quartz_crucible.description=Quartz Crucible is a device to get the first Silicon Ingot. Throw Impure Silicon Ingots in a Quartz Crucible, wait a few seconds, and throw a String in it.
+recipe.clayium.quartz_crucible.description=Quartz Crucible is a device to get the first Silicon Ingot. Throw Impure Silicon Ingots in a Quartz Crucible, wait a while, and throw a String in it. You can process max 9 ingots at once. The process will take 30 seconds per ingot.
 recipe.clayium.SolarClayFabricator=Solar Clay Fabricator
 recipe.clayium.SolarClayFabricator.timeToCraft=%1$st = %2$ssec (%3$s CE/t)
 recipe.clayium.SolarClayFabricator.description=Requires an unobstructed view of the sky.
@@ -366,7 +369,7 @@ machine.clayium.inscriber=%s Inscriber
 machine.clayium.centrifuge=%s Centrifuge
 machine.clayium.centrifuge.tooltip1=The most important component of the first clay factory.
 
-machine.clayium.smelter=Ultimate Smelter
+machine.clayium.smelter=%s Smelter
 machine.clayium.smelter.tooltip1=Furnace powered by CE.
 
 machine.clayium.clay_buffer=%s Buffer
@@ -580,7 +583,7 @@ tile.clayium.ca_reactor_hull.7.tooltip1=Requires Mk III or higher Core and Coils
 tile.clayium.ca_reactor_hull.8.tooltip1=Requires Mk III or higher Core and Coils.
 tile.clayium.ca_reactor_hull.9.tooltip1=Requires Mk III or higher Core and Coils.
 
-tile.clayium.blockEnergeticClayDecomposer.name=Energetic Clay Decomposer
+machine.clayium.energetic_clay_decomposer.opa=Energetic Clay Decomposer
 
 machine.clayium.waterwheel=%s Water Wheel
 machine.clayium.waterwheel.tooltip1=Supplies energy to adjacent machines.
@@ -614,7 +617,7 @@ tile.clayium.chunk_loader.name=3x3 Chunk Loader
 machine.clayium.storage_container=Storage Container
 machine.clayium.void_container=Void Container
 machine.clayium.void_container.tooltip1=Deletes any item entering it.
-machine.clayium.blockAutoTrader.name=Auto Trader
+machine.clayium.auto_trader=Auto Trader
 
 tile.clayium.clay_marker.tooltip1=Used for area machines.
 tile.clayium.clay_marker.no_extend.name=Clay Marker
@@ -636,21 +639,21 @@ gui.clayium.range_visualization_mode.enabled=Range Display: Enabled
 gui.clayium.range_visualization_mode.enabled_xray=Range Display: Enabled (X-Ray)
 gui.clayium.miner.filter=Filter
 machine.clayium.block_breaker=Block Breaker
-machine.clayium.ranged_collector=Ranged Item Collector
+machine.clayium.item_collector=Ranged Item Collector
 machine.clayium.ranged_miner=Ranged Miner
 machine.clayium.advanced_ranged_miner=Advanced Ranged Miner
 machine.clayium.ranged_replacer=Area Replacer
 
-tile.clayium.blockActivator.name=Activator
-tile.clayium.blockActivator.tooltip.line1=Automatic right-clicker.
-tile.clayium.blockAreaActivator.name=Area Activator
-tile.clayium.blockAreaActivator.tooltip.line1=Automatic right-clicker.
+machine.clayium.activator=Activator
+machine.clayium.activator.tooltip1=Automatic right-clicker.
+gui.clayium.activator.raytrace_enabled=Raytrace Enabled
+gui.clayium.activator.raytrace_disabled=Raytrace Disabled
+gui.clayium.activator.block_filter=Block Filter
+gui.clayium.activator.item_filter=Item Filter
+machine.clayium.ranged_activator=Ranged Activator
+machine.clayium.ranged_activator.tooltip1=Automatic right-clicker.
 
-tile.clayium.blockAdvancedAutoCrafter.name=Auto Crafter
-tile.clayium.blockPrecisionAutoCrafter.name=Precision Auto Crafter
-tile.clayium.blockClaySteelAutoCrafter.name=Clay Steel Auto Crafter
-tile.clayium.blockClayiumAutoCrafter.name=Clayium Auto Crafter
-tile.clayium.blockUltimateAutoCrafter.name=Ultimate Auto Crafter
+machine.clayium.auto_crafter=%s Auto Crafter
 
 tile.clayium.pan_cable=PAN Cable
 machine.clayium.pan_core=PAN Core
@@ -662,18 +665,9 @@ machine.clayium.pan_adapter.laser_slot_tooltip=Laser Slot
 
 machine.clayium.pan_duplicator=PAN Duplicator Rank %s
 
-tile.clayium.blockBasicFluidTranslator.name=Basic Fluid Buffer
-tile.clayium.blockAdvancedFluidTranslator.name=Advanced Fluid Buffer
-tile.clayium.blockPrecisionFluidTranslator.name=Precision Fluid Buffer
-tile.clayium.blockClaySteelFluidTranslator.name=Clay Steel Fluid Buffer
-tile.clayium.blockClayiumFluidTranslator.name=Clayium Fluid Buffer
-tile.clayium.blockUltimateFluidTranslator.name=Ultimate Fluid Buffer
-tile.clayium.blockAntimatterFluidTranslator.name=Antimatter Fluid Buffer
-tile.clayium.blockPureAntimatterFluidTranslator.name=Pure Antimatter Fluid Buffer
-tile.clayium.blockOECFluidTranslator.name=OEC Fluid Buffer
-tile.clayium.blockOPAFluidTranslator.name=OPA Fluid Buffer
-tooltip.clayium.FluidTranslator.line1=Interconverts between fluid and
-tooltip.clayium.FluidTranslator.line2=stacks of Clay Fluid Capsule.
+machine.clayium.fluid_buffer=%s Fluid Buffer
+machine.clayium.fluid_buffer.tooltip1=Interconverts between fluid and
+machine.clayium.fluid_buffer.tooltip2=stacks of Clay Fluid Capsule.
 
 tile.clayium.blockAdvancedFluidTransferMachine.name=Fluid Transfer Machine
 tile.clayium.blockAdvancedFluidTransferMachine.tooltip.line1=Fills or empties liquid containers.
@@ -711,77 +705,9 @@ machine.clayium.energy_converter.tooltip5=Edit clayium.cfg to enable recipes for
 machine.clayium.energy_converter.tooltip.rate=%1$s/t -> %2$sFE/t
 machine.clayium.energy_converter.tooltip.output=Output\: %1$sFE/t
 
-tile.clayium.blockMetalChest.Silicon.name=Silicon Chest
-tile.clayium.blockMetalChest.Aluminium.name=Aluminium Chest
-tile.clayium.blockMetalChest.ClaySteel.name=Clay Steel Chest
-tile.clayium.blockMetalChest.Clayium.name=Clayium Chest
-tile.clayium.blockMetalChest.UltimateAlloy.name=Ultimate Alloy Chest
-
-tile.clayium.blockMetalChest.Magnesium.name=Magnesium Chest
-tile.clayium.blockMetalChest.Sodium.name=Sodium Chest
-tile.clayium.blockMetalChest.Lithium.name=Lithium Chest
-tile.clayium.blockMetalChest.Zirconium.name=Zirconium Chest
-tile.clayium.blockMetalChest.Zinc.name=Zinc Chest
-
-tile.clayium.blockMetalChest.Manganese.name=Manganese Chest
-tile.clayium.blockMetalChest.Calcium.name=Calcium Chest
-tile.clayium.blockMetalChest.Potassium.name=Potassium Chest
-tile.clayium.blockMetalChest.Nickel.name=Nickel Chest
-tile.clayium.blockMetalChest.Beryllium.name=Beryllium Chest
-tile.clayium.blockMetalChest.Lead.name=Lead Chest
-tile.clayium.blockMetalChest.Hafnium.name=Hafnium Chest
-tile.clayium.blockMetalChest.Chrome.name=Chrome Chest
-tile.clayium.blockMetalChest.Titanium.name=Titanium Chest
-tile.clayium.blockMetalChest.Strontium.name=Strontium Chest
-tile.clayium.blockMetalChest.Barium.name=Barium Chest
-
-tile.clayium.blockMetalChest.AZ91D.name=AZ91D Alloy Chest
-tile.clayium.blockMetalChest.ZK60A.name=ZK60A Alloy Chest
-
-tile.clayium.blockMetalChest.Rubidium.name=Rubidium Chest
-tile.clayium.blockMetalChest.Caesium.name=Caesium Chest
-tile.clayium.blockMetalChest.Francium.name=Francium Chest
-tile.clayium.blockMetalChest.Radium.name=Radium Chest
-tile.clayium.blockMetalChest.Actinium.name=Actinium Chest
-tile.clayium.blockMetalChest.Thorium.name=Thorium Chest
-tile.clayium.blockMetalChest.Protactinium.name=Protactinium Chest
-tile.clayium.blockMetalChest.Uranium.name=Uranium Chest
-tile.clayium.blockMetalChest.Neptunium.name=Neptunium Chest
-tile.clayium.blockMetalChest.Plutonium.name=Plutonium Chest
-tile.clayium.blockMetalChest.Americium.name=Americium Chest
-tile.clayium.blockMetalChest.Curium.name=Curium Chest
-
-tile.clayium.blockMetalChest.Lanthanum.name=Lanthanum Chest
-tile.clayium.blockMetalChest.Cerium.name=Cerium Chest
-tile.clayium.blockMetalChest.Praseodymium.name=Praseodymium Chest
-tile.clayium.blockMetalChest.Neodymium.name=Neodymium Chest
-tile.clayium.blockMetalChest.Promethium.name=Promethium Chest
-tile.clayium.blockMetalChest.Samarium.name=Samarium Chest
-tile.clayium.blockMetalChest.Europium.name=Europium Chest
-
-tile.clayium.blockMetalChest.Vanadium.name=Vanadium Chest
-
-tile.clayium.blockMetalChest.Cobalt.name=Cobalt Chest
-tile.clayium.blockMetalChest.Palladium.name=Palladium Chest
-
-tile.clayium.blockMetalChest.Platinum.name=Platinum Chest
-tile.clayium.blockMetalChest.Iridium.name=Iridium Chest
-tile.clayium.blockMetalChest.Osmium.name=Osmium Chest
-tile.clayium.blockMetalChest.Rhenium.name=Rhenium Chest
-
-tile.clayium.blockMetalChest.Tantalum.name=Tantalum Chest
-tile.clayium.blockMetalChest.Tungsten.name=Tungsten Chest
-tile.clayium.blockMetalChest.Molybdenum.name=Molybdenum Chest
-
-tile.clayium.blockMetalChest.Antimony.name=Antimony Chest
-tile.clayium.blockMetalChest.Bismuth.name=Bismuth Chest
-
-tile.clayium.blockMetalChest.Brass.name=Brass Chest
-tile.clayium.blockMetalChest.Electrum.name=Electrum Chest
-tile.clayium.blockMetalChest.Invar.name=Invar Chest
-
-tooltip.clayium.MetalChest.capacity1=Capacity\: %1$d x %2$d = %3$d Slots
-tooltip.clayium.MetalChest.capacity2=Capacity\: %1$d x %2$d x %3$d = %4$d Slots
+tile.clayium.metal_chest=%s Chest
+tile.clayium.metal_chest.tooltip_sp=Capacity\: %1$d x %2$d = %3$d Slots
+tile.clayium.metal_chest.tooltip_mp=Capacity\: %1$d x %2$d x %3$d = %4$d Slots
 
 tile.clayium.blockMetal.Magnesium.name=Magnesium Block
 tile.clayium.blockMetal.Sodium.name=Sodium Block
@@ -906,9 +832,11 @@ item.clayium.memory_card.tooltip1=Stores machine IO settings.
 item.clayium.memory_card.tooltip2=Right Click \: Load from memory
 item.clayium.memory_card.tooltip3=Shift + Right Click \: Save to memory
 
-item.clayium.itemDirectionMemory.name=Direction Memory Card
-item.clayium.itemDirectionMemory.tooltip.line1=Used to configure in what direction
-item.clayium.itemDirectionMemory.tooltip.line2=an Area Activator aims while using items.
+item.clayium.direction_memory.name=Direction Memory Card
+item.clayium.direction_memory.tooltip1=Used to configure in what direction
+item.clayium.direction_memory.tooltip2=an Area Activator aims while using items.
+item.clayium.direction_memory.saved=Direction saved.
+item.clayium.direction_memory.applied=Applied direction memory.
 
 item.clayium.compressed_clay_shard.name=Compressed Clay Shard
 item.clayium.industrial_clay_shard.name=Industrial Clay Shard
@@ -919,32 +847,46 @@ item.clayium.clay_shovel.tooltip=Can dig Clay Ores and increase drops.
 item.clayium.clay_pickaxe.name=Clay Pickaxe
 item.clayium.clay_pickaxe.tooltip=Can harvest Clay Ores so fast and increase drops.
 
-item.clayium.itemFilterDuplicator.copy.name=Item Filter Duplicator
 item.clayium.simple_item_filter.name=Item Filter
-item.clayium.itemFilterWhitelist.copy.name=White List Item Filter (Copy)
-item.clayium.itemFilterBlacklist.name=Black List Item Filter
-item.clayium.itemFilterBlacklist.copy.name=Black List Item Filter (Copy)
-item.clayium.itemFilterFuzzy.name=Fuzzy Item Filter
-item.clayium.itemFilterFuzzy.copy.name=Fuzzy Item Filter (Copy)
-item.clayium.itemFilterOreDict.name=Ore Dictionary Item Filter
-item.clayium.itemFilterOreDict.copy.name=Ore Dictionary Item Filter (Copy)
-item.clayium.itemFilterItemName.name=Display Name Item Filter
-item.clayium.itemFilterItemName.copy.name=Display Name Item Filter (Copy)
-item.clayium.itemFilterUnlocalizedName.name=Unlocalized Name Item Filter
-item.clayium.itemFilterUnlocalizedName.copy.name=Unlocalized Name Item Filter (Copy)
-item.clayium.itemFilterUniqueId.name=Unique ID Item Filter
-item.clayium.itemFilterUniqueId.copy.name=Unique ID Item Filter (Copy)
-item.clayium.itemFilterModId.name=MOD ID Item Filter
-item.clayium.itemFilterModId.copy.name=MOD ID Item Filter (Copy)
-item.clayium.itemFilterItemDamage.name=Damage Value Item Filter
-item.clayium.itemFilterItemDamage.copy.name=Damage Value Item Filter (Copy)
-item.clayium.itemFilterBlockMetadata.name=Block Metadata Item Filter
-item.clayium.itemFilterBlockMetadata.copy.name=Block Metadata Item Filter (Copy)
-item.clayium.itemFilterDuplicator.tooltip.line1=Copies a filter on a machine or in another
-item.clayium.itemFilterDuplicator.tooltip.line2=filter and see the content.
-item.clayium.itemFilterDuplicator.tooltip.line3=__DETAIL__
-item.clayium.itemFilterDuplicator.tooltip.line4=If you want to append the copied filter
-item.clayium.itemFilterDuplicator.tooltip.line5=to a machine, shift + r-click it.
+item.clayium.simple_item_filter.tooltip1=You can switch between white/black list.
+item.clayium.simple_item_filter.tooltip2=You can also nest filters by placing them.
+item.clayium.simple_item_filter.copy.name=Item Filter (Copy)
+item.clayium.item_filter_fuzzy.name=Fuzzy Item Filter
+item.clayium.item_filter_fuzzy.tooltip1=Match with fuzzier rules.
+item.clayium.item_filter_fuzzy.tooltip2=__DETAIL__
+item.clayium.item_filter_fuzzy.tooltip3=- Ignores NBT
+item.clayium.item_filter_fuzzy.tooltip4=- Ignores Durability
+item.clayium.item_filter_fuzzy.tooltip5=- Matches if there's a shared OreDict
+item.clayium.item_filter_fuzzy.copy.name=Fuzzy Item Filter (Copy)
+item.clayium.item_filter_ore_dict.name=Ore Dictionary Item Filter
+item.clayium.item_filter_ore_dict.copy.name=Ore Dictionary Item Filter (Copy)
+item.clayium.item_filter_display_name.name=Display Name Item Filter
+item.clayium.item_filter_display_name.copy.name=Display Name Item Filter (Copy)
+item.clayium.item_filter_unlocalized_name.name=Translation Key Item Filter
+item.clayium.item_filter_unlocalized_name.copy.name=Translation Key Item Filter (Copy)
+item.clayium.item_filter_unlocalized_name.tooltip1=__DETAIL__
+item.clayium.item_filter_unlocalized_name.tooltip2=Matches to the TranslationKey written on the left side of the lang file, such as tile.air.name
+item.clayium.item_filter_unlocalized_name.tooltip3=Formerly known as Unlocalized Item Filter.
+item.clayium.item_filter_registry_name.name=ID Item Filter
+item.clayium.item_filter_registry_name.copy.name=ID Item Filter (Copy)
+item.clayium.item_filter_registry_name.tooltip1=__DETAIL__
+item.clayium.item_filter_registry_name.tooltip2=Matches to the Item ID (Registry Name), such as minecraft:stone
+item.clayium.item_filter_mod_id.name=MOD ID Item Filter
+item.clayium.item_filter_mod_id.copy.name=MOD ID Item Filter (Copy)
+item.clayium.item_filter_damage_value.name=Damage Value Item Filter
+item.clayium.item_filter_damage_value.tooltip1=See JEI for details.
+item.clayium.item_filter_damage_value.jei_description=This filter interprets the given string as a regex with '^' and '$' at the beginning and end. If the damage value (metadata) of an item matches the regex, the item is accepted. If you simply enter a number, it will only match that value.
+item.clayium.item_filter_damage_value.copy.name=Damage Value Item Filter (Copy)
+item.clayium.item_filter_block_metadata.name=Block Metadata Item Filter
+item.clayium.item_filter_block_metadata.tooltip1=See JEI for details.
+item.clayium.item_filter_block_metadata.jei_description=This filter interprets the given string as a regex with '^' and '$' at the beginning and end. If the metadata of a placed block (0-15) matches the regex, the filter accepts it. If you simply enter a number, it will only match that value. Note that when filtering items including itemBlocks, this behaves the same as the Damage Value Item Filter. It may be possible to identify the orientation of a block, or a growth stage of a crop.
+item.clayium.item_filter_block_metadata.copy.name=Block Metadata Item Filter (Copy)
+item.clayium.item_filter_duplicator.copy.name=Item Filter Duplicator
+item.clayium.item_filter_duplicator.tooltip1=Copies a filter on a machine or in another
+item.clayium.item_filter_duplicator.tooltip2=filter and see the content.
+item.clayium.item_filter_duplicator.tooltip3=__DETAIL__
+item.clayium.item_filter_duplicator.tooltip4=If you want to append the copied filter
+item.clayium.item_filter_duplicator.tooltip5=to a machine, shift + r-click it.
 
 item.clayium.clay_steel_pickaxe.name=Clay Steel Pickaxe
 item.clayium.clay_steel_shovel.name=Clay Steel Shovel
@@ -981,36 +923,36 @@ item.clayium.synchronizer.tooltip6=1. R-click the interface with Synchronous Par
 item.clayium.synchronizer.tooltip7=2. Record the coord of the machine by R-clicking with this.
 item.clayium.synchronizer.tooltip8=3. Synchronize the interface by R-clicking with it.
 
-item.clayium.itemCapsule.name=Clay Fluid Capsule
-item.clayium.itemCapsule0125.name=Clay Fluid Capsule (125mB)
-item.clayium.itemCapsule0025.name=Clay Fluid Capsule (25mB)
-item.clayium.itemCapsule0005.name=Clay Fluid Capsule (5mB)
-item.clayium.itemCapsule0001.name=Clay Fluid Capsule (1mB)
+item.clayium.fluid_capsule_1000mb.name=Clay Fluid Capsule (1000mB)
+item.clayium.fluid_capsule_125mb.name=Clay Fluid Capsule (125mB)
+item.clayium.fluid_capsule_25mb.name=Clay Fluid Capsule (25mB)
+item.clayium.fluid_capsule_5mb.name=Clay Fluid Capsule (5mB)
+item.clayium.fluid_capsule_1mb.name=Clay Fluid Capsule (1mB)
 
-item.clayium.itemGadgetHolder.name=Clay Gadget Holder
-item.clayium.itemGadgetHolder.tooltip.line1=Clay Gadgets give effects
-item.clayium.itemGadgetHolder.tooltip.line2=when they are put in this.
+item.clayium.clay_gadget_holder.name=Clay Gadget Holder
+item.clayium.clay_gadget_holder.tooltip1=Clay Gadgets give effects
+item.clayium.clay_gadget_holder.tooltip2=when they are put in this.
 item.clayium.clay_gadget_parts.name=Clay Gadget Template
-item.clayium.itemGadget.AntimatterOverclock.name=Clay Gadget [Overclock I]
-item.clayium.itemGadget.AntimatterOverclock.tooltip.line1=Shortens each interval time of digging.
-item.clayium.itemGadget.PureAntimatterOverclock.name=Clay Gadget [Overclock II]
-item.clayium.itemGadget.PureAntimatterOverclock.tooltip.line1=Shortens each interval time of placing or digging.
-item.clayium.itemGadget.OECOverclock.name=Clay Gadget [Overclock III]
-item.clayium.itemGadget.OECOverclock.tooltip.line1=Shortens each interval time of placing or digging.
-item.clayium.itemGadget.OPAOverclock.name=Clay Gadget [Overclock IV]
-item.clayium.itemGadget.OPAOverclock.tooltip.line1=Shortens each interval time of placing or digging.
-item.clayium.itemGadget.Flight0.name=Clay Gadget [Flight]
-item.clayium.itemGadget.Flight1.name=Clay Gadget [Free Flight]
-item.clayium.itemGadget.Flight2.name=Clay Gadget [Supersonic Flight]
-item.clayium.itemGadget.Health0.name=Clay Gadget [Extra Health I]
-item.clayium.itemGadget.Health1.name=Clay Gadget [Extra Health II]
-item.clayium.itemGadget.Health2.name=Clay Gadget [Extra Health III]
-item.clayium.itemGadget.AutoEat0.name=Clay Gadget [Economical Auto Eat]
-item.clayium.itemGadget.AutoEat1.name=Clay Gadget [Auto Eat]
-item.clayium.itemGadget.RepeatedlyAttack.name=Clay Gadget [RepeatedlyAttack]
-item.clayium.itemGadget.LongArm0.name=Clay Gadget [Long Arm]
-item.clayium.itemGadget.LongArm1.name=Clay Gadget [Longer Arm]
-item.clayium.itemGadget.LongArm2.name=Clay Gadget [Longest Arm]
+item.clayium.gadget_overclocker_mk1.name=Clay Gadget [Overclock I]
+item.clayium.gadget_overclocker_mk1.tooltip1=Shortens each interval time of digging.
+item.clayium.gadget_overclocker_mk2.name=Clay Gadget [Overclock II]
+item.clayium.gadget_overclocker_mk2.tooltip1=Shortens each interval time of placing or digging.
+item.clayium.gadget_overclocker_mk3.name=Clay Gadget [Overclock III]
+item.clayium.gadget_overclocker_mk3.tooltip1=Shortens each interval time of placing or digging.
+item.clayium.gadget_overclocker_mk4.name=Clay Gadget [Overclock IV]
+item.clayium.gadget_overclocker_mk4.tooltip1=Shortens each interval time of placing or digging.
+item.clayium.gadget_flight_mk1.name=Clay Gadget [Flight]
+item.clayium.gadget_flight_mk2.name=Clay Gadget [Free Flight]
+item.clayium.gadget_flight_mk3.name=Clay Gadget [Supersonic Flight]
+item.clayium.gadget_health_mk1.name=Clay Gadget [Extra Health I]
+item.clayium.gadget_health_mk2.name=Clay Gadget [Extra Health II]
+item.clayium.gadget_health_mk3.name=Clay Gadget [Extra Health III]
+item.clayium.gadget_auto_eat_economical.name=Clay Gadget [Economical Auto Eat]
+item.clayium.gadget_auto_eat.name=Clay Gadget [Auto Eat]
+item.clayium.gadget_repeatedly_attack.name=Clay Gadget [RepeatedlyAttack]
+item.clayium.gadget_long_arm_mk1.name=Clay Gadget [Long Arm]
+item.clayium.gadget_long_arm_mk2.name=Clay Gadget [Longer Arm]
+item.clayium.gadget_long_arm_mk3.name=Clay Gadget [Longest Arm]
 
 item.clayium.clay_circuit_board.name=Clay Circuit Board
 item.clayium.clay_circuit.name=Clay Circuit

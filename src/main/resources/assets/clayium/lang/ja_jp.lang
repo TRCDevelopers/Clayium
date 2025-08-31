@@ -3,7 +3,7 @@
 
 itemGroup.clayium=Clayium
 itemGroup.clayium.decorations=Clayium 装飾ブロック
-itemGroup.clayium.clayiumcapsule=Clayium 液体カプセル
+itemGroup.clayium.fluid_capsules=Clayium 液体カプセル
 
 # Advancements
 advancements.clayium.root.title=Clayium
@@ -49,6 +49,8 @@ advancements.clayium.clay_fabricator_mk3.description=OCすることで、あら�
 
 tooltip.clayium.HoldShiftForDetails=--§f詳細は§lShift§rキー§7--
 
+gui.clayium.working_paused=停止中
+
 gui.clayium.laser_energy=レーザー %1$s
 gui.clayium.resonance=共鳴率 %1$s
 gui.clayium.overclock=オーバークロック x%1$s
@@ -88,6 +90,7 @@ clayium.material.impure_silicon=不純なシリコン
 clayium.material.silicone=シリコーン
 clayium.material.silicon=シリコン
 clayium.material.aluminum=アルミニウム
+clayium.material.impure_aluminum=不純なアルミニウム
 clayium.material.clay_steel=粘土鋼
 clayium.material.clayium=クレイウム
 clayium.material.ultimate_alloy=究極合金
@@ -146,6 +149,7 @@ clayium.material.neptunium=ネプツニウム
 clayium.material.nickel=ニッケル
 clayium.material.organic_clay=有機粘土
 clayium.material.osmium=オスミウム
+clayium.material.impure_osmium=不純なオスミウム
 clayium.material.palladium=パラジウム
 clayium.material.phosphorus=リン
 clayium.material.platinum=プラチナ
@@ -281,8 +285,7 @@ recipe.clayium.SaltExtractor.efficiency=%1$4.2g アイテム/t
 recipe.clayium.SaltExtractor.energyConsumption=%1$s CE/t
 recipe.clayium.SaltExtractor.description=塩析出装置は塩を水から抽出する機械。稼動するには隣に水を置いてエネルギーを供給してあげる必要がある。
 recipe.clayium.quartz_crucible=クォーツるつぼ
-recipe.clayium.quartz_crucible.timeToCraft=%1$st = %2$s秒
-recipe.clayium.quartz_crucible.description=クォーツるつぼは最初のシリコンの入手に使われる。クォーツるつぼの中に不純なシリコンインゴットを投入し、暫く待った後で糸を投入する。
+recipe.clayium.quartz_crucible.description=クォーツるつぼは最初のシリコンの入手に使われる。クォーツるつぼの中に不純なシリコンインゴットを投入し、暫く待った後で糸を投入する。最大で9個同時に処理でき、1つあたり30秒の時間がかかる。
 recipe.clayium.SolarClayFabricator=ソーラー粘土製造機
 recipe.clayium.SolarClayFabricator.timeToCraft=%1$st = %2$s秒 (%3$s CE/t)
 recipe.clayium.SolarClayFabricator.description=上面が空から見える位置に設置すること
@@ -432,7 +435,7 @@ machine.clayium.electrolysis_reactor=%s電気精錬機
 machine.clayium.distributor=%s分配機
 machine.clayium.distributor.tooltip1=内部のアイテムを出来るだけ均等に分配しようとする
 
-machine.clayium.laser_proxy=OPA レーザーインターフェース
+machine.clayium.laser_proxy=%sレーザーインターフェース
 machine.clayium.laser_proxy.tooltip1=粘土反応炉に使用
 machine.clayium.laser_proxy.tooltip2=__DETAIL__
 machine.clayium.laser_proxy.tooltip3=マルチブロック装置でなくても、
@@ -547,7 +550,7 @@ tile.clayium.ca_reactor_hull.7.tooltip1=コアとコイルは Mk III 以上で�
 tile.clayium.ca_reactor_hull.8.tooltip1=コアとコイルは Mk III 以上でなければならない
 tile.clayium.ca_reactor_hull.9.tooltip1=コアとコイルは Mk III 以上でなければならない
 
-tile.clayium.blockEnergeticClayDecomposer.name=エネルギー粘土分解機
+machine.clayium.energetic_clay_decomposer.opa=エネルギー粘土分解機
 
 machine.clayium.waterwheel=%s水車
 machine.clayium.waterwheel.tooltip1=隣接する機械にエネルギーを送る
@@ -581,7 +584,7 @@ tile.clayium.chunk_loader.name=3x3 チャンクローダー
 machine.clayium.storage_container=ストレージコンテナ
 machine.clayium.void_container=虚空コンテナ
 machine.clayium.void_container.tooltip1=搬入されたアイテムを消去する
-machine.clayium.blockAutoTrader.name=自動取引装置
+machine.clayium.auto_trader=自動取引装置
 
 tile.clayium.clay_marker.tooltip1=範囲機械の使用に必要
 tile.clayium.clay_marker.no_extend.name=粘土マーカー
@@ -603,21 +606,21 @@ gui.clayium.range_visualization_mode.enabled=範囲表示: 有効
 gui.clayium.range_visualization_mode.enabled_xray=範囲表示: 有効 (X-Ray)
 gui.clayium.miner.filter=フィルター
 machine.clayium.block_breaker=採掘機
-machine.clayium.ranged_collector=範囲収集機
+machine.clayium.item_collector=範囲収集機
 machine.clayium.ranged_miner=範囲採掘機
 machine.clayium.advanced_ranged_miner=発展型範囲採掘機
 machine.clayium.ranged_replacer=範囲置換機
 
-tile.clayium.blockActivator.name=代行機
-tile.clayium.blockActivator.tooltip.line1=右クリックを代行
-tile.clayium.blockAreaActivator.name=範囲代行機
-tile.clayium.blockAreaActivator.tooltip.line1=右クリックを代行
+machine.clayium.activator=代行機
+machine.clayium.activator.tooltip1=右クリックを代行
+gui.clayium.activator.raytrace_enabled=レイトレース有効
+gui.clayium.activator.raytrace_disabled=レイトレース無効
+gui.clayium.activator.block_filter=ブロックフィルター
+gui.clayium.activator.item_filter=アイテムフィルター
+machine.clayium.ranged_activator=範囲代行機
+machine.clayium.ranged_activator.tooltip1=右クリックを代行
 
-tile.clayium.blockAdvancedAutoCrafter.name=自動クラフト装置
-tile.clayium.blockPrecisionAutoCrafter.name=精密自動クラフト装置
-tile.clayium.blockClaySteelAutoCrafter.name=粘土鋼自動クラフト装置
-tile.clayium.blockClayiumAutoCrafter.name=クレイウム自動クラフト装置
-tile.clayium.blockUltimateAutoCrafter.name=究極自動クラフト装置
+machine.clayium.auto_crafter=%s自動クラフト装置
 
 tile.clayium.pan_cable=PAN ケーブル
 machine.clayium.pan_core=PAN コア
@@ -629,18 +632,9 @@ machine.clayium.pan_adapter.laser_slot_tooltip=レーザースロット
 
 machine.clayium.pan_duplicator=PAN 複製機 ランク %s
 
-tile.clayium.blockBasicFluidTranslator.name=液体バッファー
-tile.clayium.blockAdvancedFluidTranslator.name=発展液体バッファー
-tile.clayium.blockPrecisionFluidTranslator.name=精密液体バッファー
-tile.clayium.blockClaySteelFluidTranslator.name=粘土鋼液体バッファー
-tile.clayium.blockClayiumFluidTranslator.name=クレイウム液体バッファー
-tile.clayium.blockUltimateFluidTranslator.name=究極液体バッファー
-tile.clayium.blockAntimatterFluidTranslator.name=反物質液体バッファー
-tile.clayium.blockPureAntimatterFluidTranslator.name=純反物質液体バッファー
-tile.clayium.blockOECFluidTranslator.name=OEC 液体バッファー
-tile.clayium.blockOPAFluidTranslator.name=OPA 液体バッファー
-tooltip.clayium.FluidTranslator.line1=液体と粘土液体カプセルを
-tooltip.clayium.FluidTranslator.line2=相互に変換する
+machine.clayium.fluid_buffer=%s液体バッファー
+machine.clayium.fluid_buffer.tooltip1=液体と粘土液体カプセルを
+machine.clayium.fluid_buffer.tooltip2=相互に変換する
 
 tile.clayium.blockAdvancedFluidTransferMachine.name=液体転移装置
 tile.clayium.blockAdvancedFluidTransferMachine.tooltip.line1=液体容器から液体を出し入れする
@@ -680,8 +674,9 @@ machine.clayium.energy_converter.tooltip5=コンフィグでこれを作成す�
 machine.clayium.energy_converter.tooltip.rate=%1$s/t -> %2$sFE/t
 machine.clayium.energy_converter.tooltip.output=出力: %1$sFE/t
 
-tooltip.clayium.MetalChest.capacity1=容量: %1$d x %2$d = %3$d スロット
-tooltip.clayium.MetalChest.capacity2=容量: %1$d x %2$d x %3$d = %4$d スロット
+tile.clayium.metal_chest=%sチェスト
+tile.clayium.metal_chest.tooltip_sp=容量: %1$d x %2$d = %3$d スロット
+tile.clayium.metal_chest.tooltip_mp=容量: %1$d x %2$d x %3$d = %4$d スロット
 
 item.clayium.large_clay_ball.name=大粘土玉
 
@@ -706,9 +701,11 @@ item.clayium.memory_card.tooltip1=搬入出口などの設定を保存する
 item.clayium.memory_card.tooltip2=右クリック: メモリーから読み込み
 item.clayium.memory_card.tooltip3=Shift + 右クリック: メモリーに保存
 
-item.clayium.itemDirectionMemory.name=方向メモリー
-item.clayium.itemDirectionMemory.tooltip.line1=クリック方向・位置を保存し、
-item.clayium.itemDirectionMemory.tooltip.line2=範囲代行機に設定を適用する
+item.clayium.direction_memory.name=方向メモリー
+item.clayium.direction_memory.tooltip1=クリック方向・位置を保存し、
+item.clayium.direction_memory.tooltip2=範囲代行機に設定を適用する
+item.clayium.direction_memory.saved=方向を記録しました。
+item.clayium.direction_memory.applied=方向メモリーを適用しました。
 
 item.clayium.compressed_clay_shard.name=圧縮粘土片
 item.clayium.industrial_clay_shard.name=工業用粘土片
@@ -719,32 +716,46 @@ item.clayium.clay_shovel.tooltip=粘土鉱石が採掘でき、そのドロッ�
 item.clayium.clay_pickaxe.name=粘土ツルハシ
 item.clayium.clay_pickaxe.tooltip=粘土鉱石を素早く採掘し、そのドロップ数を上昇させる
 
-item.clayium.itemFilterDuplicator.copy.name=アイテムフィルター複製機
 item.clayium.simple_item_filter.name=アイテムフィルター
-item.clayium.itemFilterWhitelist.copy.name=ホワイトリストアイテムフィルター (コピー)
-item.clayium.itemFilterBlacklist.name=ブラックリストアイテムフィルター
-item.clayium.itemFilterBlacklist.copy.name=ブラックリストアイテムフィルター (コピー)
-item.clayium.itemFilterFuzzy.name=ファジーアイテムフィルター
-item.clayium.itemFilterFuzzy.copy.name=ファジーアイテムフィルター (コピー)
-item.clayium.itemFilterOreDict.name=鉱石辞書アイテムフィルター
-item.clayium.itemFilterOreDict.copy.name=鉱石辞書アイテムフィルター (コピー)
-item.clayium.itemFilterItemName.name=表示名アイテムフィルター
-item.clayium.itemFilterItemName.copy.name=表示名アイテムフィルター (コピー)
-item.clayium.itemFilterUnlocalizedName.name=内部名アイテムフィルター
-item.clayium.itemFilterUnlocalizedName.copy.name=内部名アイテムフィルター (コピー)
-item.clayium.itemFilterUniqueId.name=ID アイテムフィルター
-item.clayium.itemFilterUniqueId.copy.name=ID アイテムフィルター (コピー)
-item.clayium.itemFilterModId.name=MOD ID アイテムフィルター
-item.clayium.itemFilterModId.copy.name=MOD ID アイテムフィルター (コピー)
-item.clayium.itemFilterItemDamage.name=ダメージ値アイテムフィルター
-item.clayium.itemFilterItemDamage.copy.name=ダメージ値アイテムフィルター (コピー)
-item.clayium.itemFilterBlockMetadata.name=メタデータブロックフィルター
-item.clayium.itemFilterBlockMetadata.copy.name=メタデータブロックフィルター (コピー)
-item.clayium.itemFilterDuplicator.tooltip.line1=機械に適用されたフィルターや、フィルターの
-item.clayium.itemFilterDuplicator.tooltip.line2=中にあるフィルターの中身をコピーし、閲覧できる
-item.clayium.itemFilterDuplicator.tooltip.line3=__DETAIL__
-item.clayium.itemFilterDuplicator.tooltip.line4=コピーしたフィルターを他の機械に適用したい場合は
-item.clayium.itemFilterDuplicator.tooltip.line5=Shift + 右クリックによりコピーフラグを解除する
+item.clayium.simple_item_filter.tooltip1=ホワイトリスト・ブラックリストを切り替えられる
+item.clayium.simple_item_filter.tooltip2=また、スロットにフィルターを置くことで入れ子にできる
+item.clayium.simple_item_filter.copy.name=アイテムフィルター (コピー)
+item.clayium.item_filter_fuzzy.name=ファジーアイテムフィルター
+item.clayium.item_filter_fuzzy.tooltip1=よりゆるい条件でマッチする
+item.clayium.item_filter_fuzzy.tooltip2=__DETAIL__
+item.clayium.item_filter_fuzzy.tooltip3=- NBTの違いを無視する
+item.clayium.item_filter_fuzzy.tooltip4=- 耐久値を無視する
+item.clayium.item_filter_fuzzy.tooltip5=- 共通の鉱石辞書名があればマッチする
+item.clayium.item_filter_fuzzy.copy.name=ファジーアイテムフィルター (コピー)
+item.clayium.item_filter_ore_dict.name=鉱石辞書アイテムフィルター
+item.clayium.item_filter_ore_dict.copy.name=鉱石辞書アイテムフィルター (コピー)
+item.clayium.item_filter_display_name.name=表示名アイテムフィルター
+item.clayium.item_filter_display_name.copy.name=表示名アイテムフィルター (コピー)
+item.clayium.item_filter_unlocalized_name.name=翻訳キーアイテムフィルター
+item.clayium.item_filter_unlocalized_name.copy.name=翻訳キーアイテムフィルター (コピー)
+item.clayium.item_filter_unlocalized_name.tooltip1=__DETAIL__
+item.clayium.item_filter_unlocalized_name.tooltip2=tile.air.name のように、langファイルの左辺に書かれるTranslationKeyにマッチする
+item.clayium.item_filter_unlocalized_name.tooltip3=以前は内部名アイテムフィルターという名前だった
+item.clayium.item_filter_registry_name.name=ID アイテムフィルター
+item.clayium.item_filter_registry_name.copy.name=ID アイテムフィルター (コピー)
+item.clayium.item_filter_registry_name.tooltip1=__DETAIL__
+item.clayium.item_filter_registry_name.tooltip2=minecraft:stone のような、アイテムID(レジストリ名)にマッチする
+item.clayium.item_filter_mod_id.name=MOD ID アイテムフィルター
+item.clayium.item_filter_mod_id.copy.name=MOD ID アイテムフィルター (コピー)
+item.clayium.item_filter_damage_value.name=ダメージ値アイテムフィルター
+item.clayium.item_filter_damage_value.tooltip1=詳細はJEIを参照
+item.clayium.item_filter_damage_value.jei_description=入力字列の先頭に'^'、終点に'$'を追加したものを正規表現として解釈し、アイテムのダメージ値(メタデータ)が正規表現とマッチすれば許可される。単に数字を入力すると、その値のみにマッチする。
+item.clayium.item_filter_damage_value.copy.name=ダメージ値アイテムフィルター (コピー)
+item.clayium.item_filter_block_metadata.name=メタデータブロックフィルター
+item.clayium.item_filter_block_metadata.tooltip1=詳細はJEIを参照
+item.clayium.item_filter_block_metadata.jei_description=入力字列の先頭に'^'、終点に'$'を追加したものを正規表現として解釈し、ワールドに設置されたブロックのメタデータ(0-15)が正規表現とマッチすれば許可される。単に数字を入力すると、その値のみにマッチする。アイテム化されたブロックを含め、アイテムを対象にしたときはダメージ値フィルターと同様に動作する。ワールドに存在するブロックの向きの違いや、作物の成長具合が識別できる可能性がある。
+item.clayium.item_filter_block_metadata.copy.name=メタデータブロックフィルター (コピー)
+item.clayium.item_filter_duplicator.copy.name=アイテムフィルター複製機
+item.clayium.item_filter_duplicator.tooltip1=機械に適用されたフィルターや、フィルターの
+item.clayium.item_filter_duplicator.tooltip2=中にあるフィルターの中身をコピーし、閲覧できる
+item.clayium.item_filter_duplicator.tooltip3=__DETAIL__
+item.clayium.item_filter_duplicator.tooltip4=コピーしたフィルターを他の機械に適用したい場合は
+item.clayium.item_filter_duplicator.tooltip5=Shift + 右クリックによりコピーフラグを解除する
 
 item.clayium.clay_steel_pickaxe.name=粘土鋼ツルハシ
 item.clayium.clay_steel_shovel.name=粘土鋼シャベル
@@ -781,36 +792,36 @@ item.clayium.synchronizer.tooltip6=1. シンクロパーツでインターフェ
 item.clayium.synchronizer.tooltip7=2. シンクロナイザーで右クリックして装置の座標を記録
 item.clayium.synchronizer.tooltip8=3. 続いてインターフェースを右クリックして同期させる
 
-item.clayium.itemCapsule.name=粘土液体カプセル
-item.clayium.itemCapsule0125.name=粘土液体カプセル (125mB)
-item.clayium.itemCapsule0025.name=粘土液体カプセル (25mB)
-item.clayium.itemCapsule0005.name=粘土液体カプセル (5mB)
-item.clayium.itemCapsule0001.name=粘土液体カプセル (1mB)
+item.clayium.fluid_capsule_1000mb.name=粘土液体カプセル (1000mB)
+item.clayium.fluid_capsule_125mb.name=粘土液体カプセル (125mB)
+item.clayium.fluid_capsule_25mb.name=粘土液体カプセル (25mB)
+item.clayium.fluid_capsule_5mb.name=粘土液体カプセル (5mB)
+item.clayium.fluid_capsule_1mb.name=粘土液体カプセル (1mB)
 
-item.clayium.itemGadgetHolder.name=粘土ガジェットホルダー
-item.clayium.itemGadgetHolder.tooltip.line1=粘土ガジェットはこのホルダーに
-item.clayium.itemGadgetHolder.tooltip.line2=入れて使用すること
+item.clayium.clay_gadget_holder.name=粘土ガジェットホルダー
+item.clayium.clay_gadget_holder.tooltip1=粘土ガジェットはこのホルダーに
+item.clayium.clay_gadget_holder.tooltip2=入れて使用すること
 item.clayium.clay_gadget_parts.name=粘土ガジェットテンプレート
-item.clayium.itemGadget.AntimatterOverclock.name=粘土ガジェット [オーバークロック I]
-item.clayium.itemGadget.AntimatterOverclock.tooltip.line1=採掘のディレイタイムを短縮
-item.clayium.itemGadget.PureAntimatterOverclock.name=粘土ガジェット [オーバークロック II]
-item.clayium.itemGadget.PureAntimatterOverclock.tooltip.line1=ブロック設置や採掘のディレイタイムを短縮
-item.clayium.itemGadget.OECOverclock.name=粘土ガジェット [オーバークロック III]
-item.clayium.itemGadget.OECOverclock.tooltip.line1=ブロック設置や採掘のディレイタイムを短縮
-item.clayium.itemGadget.OPAOverclock.name=粘土ガジェット [オーバークロック IV]
-item.clayium.itemGadget.OPAOverclock.tooltip.line1=ブロック設置や採掘のディレイタイムを短縮
-item.clayium.itemGadget.Flight0.name=粘土ガジェット [飛行]
-item.clayium.itemGadget.Flight1.name=粘土ガジェット [自由飛行]
-item.clayium.itemGadget.Flight2.name=粘土ガジェット [超音速飛行]
-item.clayium.itemGadget.Health0.name=粘土ガジェット [体力 I]
-item.clayium.itemGadget.Health1.name=粘土ガジェット [体力 II]
-item.clayium.itemGadget.Health2.name=粘土ガジェット [体力 III]
-item.clayium.itemGadget.AutoEat0.name=粘土ガジェット [倹約自動摂食]
-item.clayium.itemGadget.AutoEat1.name=粘土ガジェット [自動摂食]
-item.clayium.itemGadget.RepeatedlyAttack.name=粘土ガジェット [連続攻撃]
-item.clayium.itemGadget.LongArm0.name=粘土ガジェット [ロングアーム]
-item.clayium.itemGadget.LongArm1.name=粘土ガジェット [超ロングアーム]
-item.clayium.itemGadget.LongArm2.name=粘土ガジェット [超超ロングアーム]
+item.clayium.gadget_overclocker_mk1.name=粘土ガジェット [オーバークロック I]
+item.clayium.gadget_overclocker_mk1.tooltip1=採掘のディレイタイムを短縮
+item.clayium.gadget_overclocker_mk2.name=粘土ガジェット [オーバークロック II]
+item.clayium.gadget_overclocker_mk2.tooltip1=ブロック設置や採掘のディレイタイムを短縮
+item.clayium.gadget_overclocker_mk3.name=粘土ガジェット [オーバークロック III]
+item.clayium.gadget_overclocker_mk3.tooltip1=ブロック設置や採掘のディレイタイムを短縮
+item.clayium.gadget_overclocker_mk4.name=粘土ガジェット [オーバークロック IV]
+item.clayium.gadget_overclocker_mk4.tooltip1=ブロック設置や採掘のディレイタイムを短縮
+item.clayium.gadget_flight_mk1.name=粘土ガジェット [飛行]
+item.clayium.gadget_flight_mk2.name=粘土ガジェット [自由飛行]
+item.clayium.gadget_flight_mk3.name=粘土ガジェット [超音速飛行]
+item.clayium.gadget_health_mk1.name=粘土ガジェット [体力 I]
+item.clayium.gadget_health_mk2.name=粘土ガジェット [体力 II]
+item.clayium.gadget_health_mk3.name=粘土ガジェット [体力 III]
+item.clayium.gadget_auto_eat_economical.name=粘土ガジェット [倹約自動摂食]
+item.clayium.gadget_auto_eat.name=粘土ガジェット [自動摂食]
+item.clayium.gadget_repeatedly_attack.name=粘土ガジェット [連続攻撃]
+item.clayium.gadget_long_arm_mk1.name=粘土ガジェット [ロングアーム]
+item.clayium.gadget_long_arm_mk2.name=粘土ガジェット [超ロングアーム]
+item.clayium.gadget_long_arm_mk3.name=粘土ガジェット [超超ロングアーム]
 
 item.clayium.clay_circuit_board.name=粘土回路板
 item.clayium.clay_circuit.name=粘土回路

@@ -1,0 +1,30 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "config:recommended"
+  ],
+  prConcurrentLimit: 3,
+  prHourlyLimit: 6,
+  addLabels: ["renovate"],
+  packageRules: [
+    {
+      matchDepNames: ["*"],
+      enabled: false,
+    },
+    {
+      matchFileNames: ["dependencies.gradle"],
+      enabled: true,
+      groupName: "Gradle Dependencies"
+    },
+    {
+      matchCategories: ["ci"], // for GitHub Actions
+      enabled: true,
+      groupName: "GitHub Actions"
+    },
+    {
+      matchCategories: ["js"], // for wiki
+      enabled: true,
+      groupName: "NPM Dependencies"
+    },
+  ]
+}

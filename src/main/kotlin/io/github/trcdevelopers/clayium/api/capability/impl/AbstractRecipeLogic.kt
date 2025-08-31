@@ -1,0 +1,105 @@
+package io.github.trcdevelopers.clayium.api.capability.impl
+
+import io.github.trcdevelopers.clayium.api.ClayEnergy
+import io.github.trcdevelopers.clayium.api.capability.AbstractWorkable
+import io.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
+import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
+import io.github.trcdevelopers.clayium.api.recipe.IRecipeProvider
+import io.github.trcdevelopers.clayium.api.util.toList
+import io.github.trcdevelopers.clayium.common.recipe.Recipe
+import io.github.trcdevelopers.clayium.common.util.TransferUtils
+import io.github.trcdevelopers.clayium.integration.jei.JeiPlugin
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
+import net.minecraftforge.common.capabilities.Capability
+import kotlin.math.pow
+
+/**
+ * Recipe-based implementation of [AbstractWorkable]
+ */
+abstract class AbstractRecipeLogic(
+    metaTileEntity: MetaTileEntity,
+    val recipeProvider: IRecipeProvider,
+) : AbstractWorkable(metaTileEntity) {
+
+    protected val inputInventory = metaTileEntity.importItems
+
+    var recipeCEt = ClayEnergy.ZERO
+        protected set
+
+    /**
+     * Draw energy from the energy container.
+     * Overclocking should be applied.
+     * @param ce Clay Energy to remove
+     * @param simulate whether to simulate energy extraction or not, default is false
+     * @return true if energy can/was drained, otherwise false
+     */
+    protected abstract fun drawEnergy(ce: ClayEnergy, simulate: Boolean = false): Boolean
+
+    override fun showRecipesInJei() {
+        val categories = recipeProvider.jeiCategories
+        if (categories.isNotEmpty()) {
+            JeiPlugin.jeiRuntime.recipesGui.showCategories(categories)
+        }
+    }
+
+    final override fun updateWorkingProgress() {
+        if (!drawEnergy(recipeCEt)) return
+        super.updateWorkingProgress()
+    }
+
+    override fun trySearchNewRecipe(): Boolean {
+        val currentRecipe = recipeProvider.searchRecipe(getTier(), inputInventory.toList())
+
+        if (currentRecipe == null) {
+            invalidInputsForRecipes = true
+            return false
+        }
+        return prepareRecipe(currentRecipe)
+    }
+
+    protected open fun prepareRecipe(recipe: Recipe): Boolean {
+        if (!this.drawEnergy(recipe.cePerTick, simulate = true)) return false
+        val outputs = recipe.copyOutputs().take(metaTileEntity.exportItems.slots)
+        if (!TransferUtils.insertToHandler(metaTileEntity.exportItems, outputs, true)) {
+            this.outputsFull = true
+            return false
+        }
+        if (!recipe.matches(true, inputInventory, getTier())) return false
+        val (cePerTick, duration) = applyOverclock(recipe.cePerTick, recipe.duration, ocHandler.compensatedFactor)
+        this.itemOutputs = outputs
+        this.recipeCEt = ClayEnergy(cePerTick)
+        this.requiredProgress = duration
+        this.currentProgress = 1
+        return true
+    }
+
+    /**
+     * Applies overclock to the recipe.
+     * @return { RawCEt, duration }
+     */
+    protected open fun applyOverclock(cePt: ClayEnergy, duration: Long, compensatedFactor: Double): LongArray {
+        val rawCEt = cePt.energy * compensatedFactor.pow(1.5)
+        val durationOCed = (duration / compensatedFactor)
+        return longArrayOf(rawCEt.toLong(), durationOCed.toLong())
+    }
+
+    override fun serializeNBT(): NBTTagCompound {
+        val data = super.serializeNBT()
+        data.setLong("recipeCEt", recipeCEt.energy)
+        return data
+    }
+
+    override fun deserializeNBT(data: NBTTagCompound) {
+        super.deserializeNBT(data)
+        recipeCEt = ClayEnergy(data.getLong("recipeCEt"))
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        return if (capability === ClayiumTileCapabilities.RECIPE_LOGIC) {
+            capability.cast(this)
+        } else {
+            super.getCapability(capability, facing)
+        }
+    }
+}

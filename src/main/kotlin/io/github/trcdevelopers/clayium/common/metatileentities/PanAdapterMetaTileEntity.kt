@@ -1,0 +1,238 @@
+package io.github.trcdevelopers.clayium.common.metatileentities
+
+import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.drawable.DynamicDrawable
+import com.cleanroommc.modularui.drawable.GuiTextures
+import com.cleanroommc.modularui.drawable.ItemDrawable
+import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
+import com.cleanroommc.modularui.widget.ParentWidget
+import com.cleanroommc.modularui.widgets.PageButton
+import com.cleanroommc.modularui.widgets.PagedWidget
+import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.layout.Grid
+import com.cleanroommc.modularui.widgets.layout.Row
+import com.google.common.collect.ImmutableSet
+import io.github.trcdevelopers.clayium.api.ClayEnergy
+import io.github.trcdevelopers.clayium.api.ClayiumApi
+import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_HEIGHT
+import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
+import io.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
+import io.github.trcdevelopers.clayium.api.capability.impl.EmptyItemStackHandler
+import io.github.trcdevelopers.clayium.api.capability.impl.ListeningItemStackHandler
+import io.github.trcdevelopers.clayium.api.gui.data.MetaTileEntityGuiData
+import io.github.trcdevelopers.clayium.api.laser.ClayLaser
+import io.github.trcdevelopers.clayium.api.metatileentity.ClayLaserMetaTileEntity
+import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
+import io.github.trcdevelopers.clayium.api.metatileentity.MteRenderingConfig
+import io.github.trcdevelopers.clayium.api.pan.IPanAdapter
+import io.github.trcdevelopers.clayium.api.pan.IPanCable
+import io.github.trcdevelopers.clayium.api.pan.IPanRecipe
+import io.github.trcdevelopers.clayium.api.util.CUtils
+import io.github.trcdevelopers.clayium.api.util.ClayTiers
+import io.github.trcdevelopers.clayium.api.util.ITier
+import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.api.util.toList
+import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
+import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
+import net.minecraft.util.ResourceLocation
+import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.items.IItemHandlerModifiable
+import net.minecraftforge.items.ItemStackHandler
+
+class PanAdapterMetaTileEntity(
+    metaTileEntityId: ResourceLocation,
+    tier: ITier,
+) : MetaTileEntity(metaTileEntityId, tier, onlyNoneList, onlyNoneList, "pan_adapter"), IPanAdapter {
+
+    override val importItems = EmptyItemStackHandler
+    override val exportItems = EmptyItemStackHandler
+    override val itemInventory = EmptyItemStackHandler
+
+    private val pageNum = when (tier.numeric) {
+        10 -> 1
+        11 -> 2
+        12 -> 4
+        13 -> 8
+        else -> 1
+    }
+
+    private val recipeInventories = List(pageNum) { ListeningItemStackHandler(9, ::onSlotChanged) }
+    private val resultInventories = List(pageNum) { ItemStackHandler(9) }
+    private val laserInventory = ListeningItemStackHandler(9, ::onSlotChanged)
+    private val currentEntries = mutableSetOf<IPanRecipe>()
+
+    private fun onSlotChanged(slot: Int) {
+        markAsDirty()
+        refreshEntries()
+    }
+
+    /**
+     * @return LaserEnergy, EnergyCost/t
+     */
+    private fun calculateLaserEnergy(): Pair<Double, ClayEnergy> {
+        val laserRgb = IntArray(3)
+        var energyCost = ClayEnergy.ZERO
+        for (i in 0..<laserInventory.slots) {
+            val stack = laserInventory.getStackInSlot(i)
+            val laserMte = (CUtils.getMetaTileEntity(stack) as? ClayLaserMetaTileEntity)  ?: continue
+            // Using White Laser is meaningless in terms of reducing energy cost
+            if (laserMte.tier == ClayTiers.ANTIMATTER) continue
+            val laser = laserMte.laserManager.sampleLaser
+            val laserCostPerTick = laserMte.energyCost
+            laserRgb[0] += (laser.red * stack.count)
+            laserRgb[1] += (laser.green * stack.count)
+            laserRgb[2] += (laser.blue * stack.count)
+            energyCost += laserCostPerTick * stack.count
+        }
+        return Pair(ClayLaser(laserRgb[0], laserRgb[1], laserRgb[2]).energy, energyCost)
+    }
+
+    override fun createMetaTileEntity(): MetaTileEntity {
+        return PanAdapterMetaTileEntity(metaTileEntityId, tier)
+    }
+
+    override fun update() {
+        super.update()
+        if (offsetTimer % 20 == 0L) {
+            refreshEntries()
+        }
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        return when {
+            capability === ClayiumTileCapabilities.PAN_CABLE -> capability.cast(IPanCable.INSTANCE)
+            capability === ClayiumTileCapabilities.PAN_ADAPTER -> capability.cast(this)
+            else -> super.getCapability(capability, facing)
+        }
+    }
+
+    override fun getEntries(): Set<IPanRecipe> {
+        return ImmutableSet.copyOf(currentEntries)
+    }
+
+    private fun refreshEntries() {
+        val world = world ?: return
+        val pos = pos ?: return
+        val (laserEnergy, cet) = calculateLaserEnergy()
+        currentEntries.clear()
+        for ((pattern, result) in recipeInventories.zip(resultInventories)) {
+            val stacks = pattern.toList()
+            var entry: IPanRecipe? = null
+            for (side in EnumFacing.entries) {
+                entry = ClayiumApi.PAN_RECIPE_FACTORIES.firstNotNullOfOrNull { factory ->
+                    factory.getEntry(world, pos.offset(side), stacks, laserEnergy, cet)
+                }
+                if (entry != null) break
+            }
+            if (entry == null) {
+                resetResult(result)
+            } else {
+                currentEntries.add(entry)
+                setResult(result, entry)
+            }
+        }
+    }
+
+    private fun setResult(resultHandler: IItemHandlerModifiable, entry: IPanRecipe) {
+        val stacks = entry.results
+        for (i in 0..<resultHandler.slots) {
+            resultHandler.setStackInSlot(i, stacks.getOrNull(i) ?: break)
+        }
+    }
+
+    private fun resetResult(resultHandler: IItemHandlerModifiable) {
+        for (i in 0..<resultHandler.slots) {
+            resultHandler.setStackInSlot(i, ItemStack.EMPTY)
+        }
+    }
+
+    override fun onNeighborChanged(facing: EnumFacing) {
+        super.onNeighborChanged(facing)
+        refreshEntries()
+    }
+
+    override fun onRemoval() {
+        super.onRemoval()
+    }
+
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        recipeInventories.forEachIndexed { i, h ->
+            CUtils.writeItems(h, "panAdapterPattern$i", data)
+        }
+        CUtils.writeItems(laserInventory, "laserInventory", data)
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        recipeInventories.forEachIndexed { i, h ->
+            CUtils.readItems(h, "panAdapterPattern$i", data)
+        }
+        CUtils.readItems(laserInventory, "laserInventory", data)
+    }
+
+    override fun onFirstTick() {
+        super.onFirstTick()
+        this.refreshEntries()
+    }
+
+    override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
+        val tabController = PagedWidget.Controller()
+        val buttons = Grid.mapToMatrix(2, resultInventories) { index, handler ->
+            ParentWidget().size(16)
+                .child(PageButton(index, tabController)
+                    .background(false, GuiTextures.MC_BUTTON)
+                    .background(true, ClayGuiTextures.BUTTON_PRESSED)
+                    .disableHoverBackground()
+                    .size(16, 16))
+                .child(DynamicDrawable { ItemDrawable(handler.getStackInSlot(0)) }.asWidget().size(16)
+                    .tooltip { it.addLine(IKey.dynamic { if (handler.getStackInSlot(0).isEmpty) "<no recipe>" else handler.getStackInSlot(0).displayName }) }
+                )
+        }
+        val pages = recipeInventories.zip(resultInventories).map{ (pattern, result) ->
+            val slots = SlotGroupWidget.builder()
+                .matrix("III", "III", "III")
+                .key('I') { MuiSlots.phantomSlot(pattern, it)
+                    .background(ClayGuiTextures.FILTER_SLOT) }
+                .build()
+            val resultSlots = SlotGroupWidget.builder()
+                .matrix("III", "III", "III")
+                .key('I') { MuiSlots.itemSlotBuilder(result, it).lock().build() }
+                .build()
+            Row().widthRel(1f).height(64)
+                .child(Grid().width(32).heightRel(1f).align(Alignment.TopLeft)
+                    .minElementMargin(0, 0)
+                    .matrix(buttons)
+                )
+                .child(slots.left(32 + 8))
+                .child(resultSlots.align(Alignment.TopRight))
+        }
+        return ModularPanel.defaultPanel("pan_adapter", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 32)
+            .columnWithPlayerInv {
+                child(buildMainParentWidget(syncManager)
+                    .child(PagedWidget().margin(0, 9).widthRel(1f).height(16*4)
+                        .controller(tabController)
+                        .apply { for (page in pages) addPage(page) }
+                    )
+                    .child(SlotGroupWidget.builder()
+                        .row("I".repeat(9))
+                        .key('I') { index ->
+                            MuiSlots.itemSlot(laserInventory, index)
+                                .tooltip { it.addLine(IKey.lang("machine.clayium.pan_adapter.laser_slot_tooltip")) }
+                        }
+                        .build()
+                        .bottom(10)
+                    )
+                )
+            }
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder().face(clayiumId("blocks/pan_adapter")).useFaceForAllSides().build()
+    }
+}

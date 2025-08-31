@@ -1,0 +1,88 @@
+package io.github.trcdevelopers.clayium.common.metatileentities
+
+import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
+import com.cleanroommc.modularui.widget.ParentWidget
+import io.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
+import io.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
+import io.github.trcdevelopers.clayium.api.metatileentity.MteRenderingConfig
+import io.github.trcdevelopers.clayium.api.util.ITier
+import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.api.util.getCapability
+import io.github.trcdevelopers.clayium.api.util.hasCapability
+import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
+import io.github.trcdevelopers.clayium.common.reflect.BlockReflect
+import io.github.trcdevelopers.clayium.common.util.TransferUtils
+import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
+import net.minecraft.block.state.IBlockState
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumActionResult
+import net.minecraft.util.NonNullList
+import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
+import net.minecraft.world.WorldServer
+import net.minecraftforge.common.util.FakePlayerFactory
+
+open class AdvancedRangedMinerMetaTileEntity(
+    metaTileEntityId: ResourceLocation,
+    tier: ITier,
+    name: String = "advanced_ranged_miner",
+) : RangedMinerMetaTileEntity(metaTileEntityId, tier, name) {
+
+    protected val extraFilters = ClayiumItemStackHandler(this, 2)
+    private val fortuneFilter get() = extraFilters.getStackInSlot(0).getCapability(ClayiumCapabilities.ITEM_FILTER)
+    private val silkTouchFilter get() = extraFilters.getStackInSlot(1).getCapability(ClayiumCapabilities.ITEM_FILTER)
+
+    override fun mine(state: IBlockState, world: World, pos: BlockPos): EnumActionResult {
+        // Already filtered in super.actionOnBlock
+
+        val silkFilter = silkTouchFilter
+        val fortuneFilter = fortuneFilter
+        val drops = NonNullList.create<ItemStack>()
+        if (silkFilter != null && silkFilter.testBlock(world, pos)
+            && world is WorldServer
+            && state.block.canSilkHarvest(world, pos, state, FakePlayerFactory.getMinecraft(world)))
+        {
+            drops.add(BlockReflect.getSilkTouchDrop(state.block, state))
+        } else {
+            val fortune = if (fortuneFilter != null && fortuneFilter.testBlock(world, pos)) 3 else 0
+            state.block.getDrops(drops, world, pos, state, fortune)
+        }
+        if (!TransferUtils.insertToHandler(itemInventory, drops, true)) return EnumActionResult.FAIL
+        TransferUtils.insertToHandler(itemInventory, drops, false)
+        world.destroyBlock(pos, false)
+        return EnumActionResult.SUCCESS
+    }
+
+    override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
+        return super.buildMainParentWidget(syncManager)
+            .child(MuiSlots.phantomSlotBuilder(extraFilters, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) }.build()
+                .background(ClayGuiTextures.FILTER_SLOT)
+                .top(12 + 18 + 2).right(24)
+                .tooltipBuilder { it.addLine(IKey.lang("enchantment.lootBonusDigger")) }
+            )
+            .child(MuiSlots.phantomSlotBuilder(extraFilters, 1).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) }.build()
+                .background(ClayGuiTextures.FILTER_SLOT)
+                .top(12 + 18 * 2 + 2 * 2).right(24)
+                .tooltipBuilder { it.addLine(IKey.lang("enchantment.untouching")) }
+            )
+    }
+
+    override fun createMetaTileEntity() = AdvancedRangedMinerMetaTileEntity(metaTileEntityId, tier)
+
+    override fun writeToNBT(data: NBTTagCompound) {
+        super.writeToNBT(data)
+        data.setTag("extraFilters", extraFilters.serializeNBT())
+    }
+
+    override fun readFromNBT(data: NBTTagCompound) {
+        super.readFromNBT(data)
+        extraFilters.deserializeNBT(data.getCompoundTag("extraFilters"))
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.face(clayiumId("blocks/adv_miner"))
+    }
+}

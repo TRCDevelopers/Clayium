@@ -38,17 +38,18 @@
  * For more details, see https://docs.gradle.org/8.4/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 dependencies {
-    runtimeOnly('io.github.chaosunity.forgelin:Forgelin-Continuous:2.0.10.0') { transitive = false }
+    runtimeOnly('io.github.chaosunity.forgelin:Forgelin-Continuous:2.2.0.0') { transitive = false }
     runtimeOnlyNonPublishable(rfg.deobf("curse.maven:better-advancements-272515:2685984"))
 
-    api("com.cleanroommc:modularui:2.4.3")
+    api("com.cleanroommc:modularui:2.5.0-rc6") { transitive = false }
     api("codechicken:codechickenlib:3.2.3.358")
-    api("com.cleanroommc:groovyscript:1.1.3") { transitive = false }
+    api("com.cleanroommc:groovyscript:1.2.5") { transitive = false }
 
     // Non-published dependencies
     // Change any to devOnlyNonPublishable to test them in-game.
     compileOnly("gregtech:gregtech:2.8.10-beta")
+    compileOnly(rfg.deobf("com.azanor.baubles:Baubles:1.12-1.5.2"))
 
-    testImplementation("io.kotest:kotest-runner-junit5:5.8.1")
-    testImplementation("io.mockk:mockk:1.13.10")
+    testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
+    testImplementation("io.mockk:mockk:1.14.5")
 }
