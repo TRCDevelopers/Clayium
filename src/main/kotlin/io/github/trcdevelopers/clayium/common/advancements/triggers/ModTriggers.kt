@@ -1,4 +1,4 @@
-package com.github.trc.clayium.common.advancements.triggers
+package io.github.trcdevelopers.clayium.common.advancements.triggers
 
 import net.minecraft.advancements.CriteriaTriggers
 

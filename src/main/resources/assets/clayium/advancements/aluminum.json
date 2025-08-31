@@ -9,7 +9,7 @@
     "aluminum": {
       "trigger": "clayium:inventory_changed_oredict",
       "conditions": {
-        "items": [{ "oredict": "ingotAluminum" }]
+        "items": [ "ingotAluminum" ]
       }
     }
   }

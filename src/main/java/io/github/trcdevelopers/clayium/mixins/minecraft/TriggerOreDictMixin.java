@@ -1,6 +1,6 @@
-package com.github.trc.clayium.mixins.minecraft;
+package io.github.trcdevelopers.clayium.mixins.minecraft;
 
-import com.github.trc.clayium.common.advancements.triggers.ModTriggers;
+import io.github.trcdevelopers.clayium.common.advancements.triggers.ModTriggers;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;

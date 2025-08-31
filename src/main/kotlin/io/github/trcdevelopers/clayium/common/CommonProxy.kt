@@ -14,6 +14,7 @@ import io.github.trcdevelopers.clayium.api.util.CLog
 import io.github.trcdevelopers.clayium.api.util.CUtils
 import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.common.advancements.triggers.ModTriggers
 import io.github.trcdevelopers.clayium.common.blocks.BlockQuartzCrucible
 import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
@@ -65,6 +66,7 @@ open class CommonProxy {
         MinecraftForge.EVENT_BUS.register(EntityEventListener)
         if (CUtils.isDeobfEnvironment) { MinecraftForge.EVENT_BUS.register(DebugUtils::class.java) }
 
+        ModTriggers.registerTriggers()
         ClayiumCTabs.init()
         CNetwork.init()
 

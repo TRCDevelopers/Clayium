@@ -1,7 +1,7 @@
-package com.github.trc.clayium.common.advancements.triggers
+package io.github.trcdevelopers.clayium.common.advancements.triggers
 
-import com.github.trc.clayium.api.util.clayiumId
-import com.github.trc.clayium.common.advancements.ItemPredicateOreDict
+import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.common.advancements.ItemPredicateOreDict
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
@@ -20,7 +20,6 @@ class InventoryChangedOreDictTrigger : ICriterionTrigger<InventoryChangedOreDict
     override fun addListener(playerAdvancementsIn: PlayerAdvancements, listener: ICriterionTrigger.Listener<InventoryChangedOreDictInstance>) {
         listenersMap.computeIfAbsent(playerAdvancementsIn) { Listeners(playerAdvancementsIn) }
             .add(listener)
-
     }
 
     override fun removeListener(playerAdvancementsIn: PlayerAdvancements, listener: ICriterionTrigger.Listener<InventoryChangedOreDictInstance>) {

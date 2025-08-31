@@ -1,6 +1,6 @@
-package com.github.trc.clayium.common.advancements.triggers
+package io.github.trcdevelopers.clayium.common.advancements.triggers
 
-import com.github.trc.clayium.common.advancements.ItemPredicateOreDict
+import io.github.trcdevelopers.clayium.common.advancements.ItemPredicateOreDict
 import net.minecraft.advancements.ICriterionInstance
 import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.util.ResourceLocation
