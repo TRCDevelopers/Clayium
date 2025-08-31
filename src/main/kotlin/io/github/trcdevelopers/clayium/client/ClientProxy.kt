@@ -4,6 +4,7 @@ import codechicken.lib.colour.ColourRGBA
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.client.gui.TextureExtra
+import io.github.trcdevelopers.clayium.client.model.CSimpleBakedModel
 import io.github.trcdevelopers.clayium.client.model.MetaTileEntityModelLoader
 import io.github.trcdevelopers.clayium.client.model.MetalModelLoader
 import io.github.trcdevelopers.clayium.client.renderer.ClayLaserReflectorRenderer
@@ -23,6 +24,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.Matrix4f
 import net.minecraft.client.renderer.block.model.BakedQuad
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.block.model.SimpleBakedModel
 import net.minecraft.item.Item
@@ -120,24 +122,25 @@ class ClientProxy : CommonProxy() {
 
             for (i in 0..<3) {
                 val q = quadsByLayer[i].firstOrNull() ?: continue
-                newQuads.addAll(transformLayer(q, i))
+                newQuads.addAll(transformLayer(model.itemCameraTransforms,q, i))
             }
 
 //            val newModel = SimpleBakedModel(quads, EnumFacing.entries.associateWith { emptyList() }, model.isAmbientOcclusion, model.isGui3d, model.particleTexture, model.itemCameraTransforms, model.overrides)
             val newModel = SimpleBakedModel(newQuads, EnumFacing.entries.associateWith { emptyList() }, model.isAmbientOcclusion, model.isGui3d, model.particleTexture, model.itemCameraTransforms, model.overrides)
+//            val newModel = CSimpleBakedModel(newQuads, model, 0.001f)
 //            val newModel = SimpleBakedModel(emptyList(), emptyMap(), true, true, model.particleTexture, model.itemCameraTransforms, model.overrides)
             e.modelRegistry.putObject(ModelResourceLocation(clayiumId("colored/ingot"), "inventory"), newModel)
         }
     }
 
-    fun transformLayer(quad: BakedQuad, offset: Int): List<BakedQuad> {
+    fun transformLayer(translation: ItemCameraTransforms, quad: BakedQuad, offset: Int): List<BakedQuad> {
         val scaleOffset = (0.001f * (2 - offset))
         val f = 1f - scaleOffset * 2
         val scale = javax.vecmath.Vector3f(f, f, f)
         val translation = javax.vecmath.Vector3f(scaleOffset, scaleOffset, scaleOffset)
         val trsrTransformation = TRSRTransformation(
             translation,
-            null, javax.vecmath.Vector3f(f, f, f), null
+            null, scale, null
         )
         return ItemLayerModel.getQuadsForSprite(quad.tintIndex, quad.sprite, quad.format, Optional.of(trsrTransformation))
     }
