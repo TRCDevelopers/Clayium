@@ -6,6 +6,7 @@ import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
+import io.github.trcdevelopers.clayium.common.config.ConfigCore
 import io.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraft.init.Blocks
 import net.minecraft.init.Items
@@ -55,6 +56,15 @@ object ClayBlastFurnaceRecipeLoader {
             .output(OrePrefix.ingot, CMaterials.steel)
             .tier(6).CEt(ClayEnergy.milli(100)).duration(500)
             .buildAndRegister()
+
+        if (ConfigCore.gameMode.hardcoreOsmium) {
+            registry.builder()
+                .input(OrePrefix.ingot, CMaterials.impureOsmium)
+                .output(OrePrefix.ingot, CMaterials.osmium)
+                .tier(11).CEt(ClayEnergy.of(40_000)).duration(100)
+                .buildAndRegister()
+        }
+
         if (Mods.EnderIO.isModLoaded) {
             /* Electrical Steel */
             registry.builder()

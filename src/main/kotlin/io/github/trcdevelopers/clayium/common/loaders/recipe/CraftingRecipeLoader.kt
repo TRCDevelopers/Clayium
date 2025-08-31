@@ -268,34 +268,40 @@ object CraftingRecipeLoader {
         )
     }
 
-    private fun registerChestRecipeIfExists(materialIn: CMaterial) {
-        if (BlockMetalChest.metalChestConfig[materialIn.materialId] == null) {
+    private fun registerChestRecipeIfExists(material: CMaterial) {
+        if (BlockMetalChest.metalChestConfig[material.materialId] == null) {
             return
         }
         val prefix = when {
-            OreDictUnifier.exists(OrePrefix.ingot, materialIn) -> OrePrefix.ingot
-            OreDictUnifier.exists(OrePrefix.gem, materialIn) -> OrePrefix.gem
+            OreDictUnifier.exists(OrePrefix.ingot, material) -> OrePrefix.ingot
+            OreDictUnifier.exists(OrePrefix.gem, material) -> OrePrefix.gem
             else -> return
         }
 
-        val material = if (ConfigCore.gameMode.hardcoreOsmium) {
-            when (materialIn.materialId) {
-                OSMIUM -> CMaterials.impureOsmium
-                else -> materialIn
-            }
+        if (ConfigCore.gameMode.hardcoreOsmium && material.materialId == OSMIUM) {
+            // handle hardcore osmium
+            RecipeUtils.addShapedRecipe("metal_chest_${material.materialId.namespace}_${material.materialId.path}",
+                ItemStack(ClayiumBlocks.METAL_CHEST, 1, CMaterials.osmium.metaItemSubId),
+                "MMM", "MCM", "MMM",
+                'M', UnificationEntry(prefix, CMaterials.impureOsmium),
+                'C', Blocks.CHEST)
+            RecipeUtils.addShapedRecipe("metal_chest_${material.materialId.namespace}_${material.materialId.path}_recraft",
+                ItemStack(ClayiumBlocks.METAL_CHEST, 1, CMaterials.osmium.metaItemSubId),
+                "MMM", "MCM", "MMM",
+                'M', UnificationEntry(prefix, CMaterials.impureOsmium),
+                'C', ClayiumBlocks.METAL_CHEST)
         } else {
-            materialIn
+            RecipeUtils.addShapedRecipe("metal_chest_${material.materialId.namespace}_${material.materialId.path}",
+                ItemStack(ClayiumBlocks.METAL_CHEST, 1, material.metaItemSubId),
+                "MMM", "MCM", "MMM",
+                'M', UnificationEntry(prefix, material),
+                'C', Blocks.CHEST)
+            RecipeUtils.addShapedRecipe("metal_chest_${material.materialId.namespace}_${material.materialId.path}_recraft",
+                ItemStack(ClayiumBlocks.METAL_CHEST, 1, material.metaItemSubId),
+                "MMM", "MCM", "MMM",
+                'M', UnificationEntry(prefix, material),
+                'C', ClayiumBlocks.METAL_CHEST)
         }
 
-        RecipeUtils.addShapedRecipe("metal_chest_${material.materialId.namespace}_${material.materialId.path}",
-            ItemStack(ClayiumBlocks.METAL_CHEST, 1, material.metaItemSubId),
-            "MMM", "MCM", "MMM",
-            'M', UnificationEntry(prefix, material),
-            'C', Blocks.CHEST)
-        RecipeUtils.addShapedRecipe("metal_chest_${material.materialId.namespace}_${material.materialId.path}_recraft",
-            ItemStack(ClayiumBlocks.METAL_CHEST, 1, material.metaItemSubId),
-            "MMM", "MCM", "MMM",
-            'M', UnificationEntry(prefix, material),
-            'C', ClayiumBlocks.METAL_CHEST)
     }
 }
