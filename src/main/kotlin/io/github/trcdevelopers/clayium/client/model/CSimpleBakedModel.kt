@@ -31,21 +31,6 @@ class CSimpleBakedModel(
 
     override fun handlePerspective(cameraTransformType: ItemCameraTransforms.TransformType): Pair<out IBakedModel?, Matrix4f?> {
         val superVal = base.handlePerspective(cameraTransformType)
-        val model = superVal.left
-        val transform = superVal.right
-        val trsr = TRSRTransformation(transform)
-        val vec = Vector3f(scaleOffset, scaleOffset, scaleOffset)
-        val newScale = Vector3f(
-            trsr.scale.x * scaleOffset,
-            trsr.scale.y * scaleOffset,
-            trsr.scale.z * scaleOffset
-        )
-        val newTrsr = TRSRTransformation(
-            trsr.translation.apply { add(Vector3f(scaleOffset, scaleOffset, scaleOffset)) },
-            trsr.leftRot,
-            newScale,
-            trsr.rightRot
-        )
-        return Pair.of(model, newTrsr.matrix)
+        return Pair.of(this, superVal.right)
     }
 }

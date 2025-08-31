@@ -126,8 +126,8 @@ class ClientProxy : CommonProxy() {
             }
 
 //            val newModel = SimpleBakedModel(quads, EnumFacing.entries.associateWith { emptyList() }, model.isAmbientOcclusion, model.isGui3d, model.particleTexture, model.itemCameraTransforms, model.overrides)
-            val newModel = SimpleBakedModel(newQuads, EnumFacing.entries.associateWith { emptyList() }, model.isAmbientOcclusion, model.isGui3d, model.particleTexture, model.itemCameraTransforms, model.overrides)
-//            val newModel = CSimpleBakedModel(newQuads, model, 0.001f)
+//            val newModel = SimpleBakedModel(newQuads, EnumFacing.entries.associateWith { emptyList() }, model.isAmbientOcclusion, model.isGui3d, model.particleTexture, model.itemCameraTransforms, model.overrides)
+            val newModel = CSimpleBakedModel(newQuads, model, 0.001f)
 //            val newModel = SimpleBakedModel(emptyList(), emptyMap(), true, true, model.particleTexture, model.itemCameraTransforms, model.overrides)
             e.modelRegistry.putObject(ModelResourceLocation(clayiumId("colored/ingot"), "inventory"), newModel)
         }
