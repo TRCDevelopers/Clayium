@@ -2,24 +2,24 @@ package io.github.trcdevelopers.clayium.api.recipe
 
 import io.github.trcdevelopers.clayium.api.metatileentity.interfaces.IHasNotifiableInventory
 import io.github.trcdevelopers.clayium.api.util.toList
-import io.github.trcdevelopers.clayium.common.recipe.Recipe
 import net.minecraftforge.items.IItemHandler
 
-open class RecipeLogic(
+open class RecipeProvider(
     private val notifiableInventory: IHasNotifiableInventory,
-    private val inputInventory: IItemHandler,
-    private val outputInventory: IItemHandler,
-    private val recipeProvider: IRecipeProvider,
+    val inputInventory: IItemHandler,
+    val outputInventory: IItemHandler,
+    val recipeProvider: IRecipeRegistry,
 ) {
     private var inputsWereValid = true
 
-    fun searchNewRecipe(machineTier: Int): Recipe? {
+    fun searchNewRecipe(machineTier: Int): IClayiumRecipe? {
         val shouldSearchForNewRecipe = this.canWorkWithInputs()
         if (!shouldSearchForNewRecipe) return null
 
         val inputsIn = inputInventory.toList()
 
-        return recipeProvider.searchRecipe(machineTier, inputsIn)
+        val newRecipe = recipeProvider.searchRecipe(machineTier, inputsIn)
+        return newRecipe?.takeIf { it.outputs.canFit(outputInventory) }
     }
 
     protected fun canWorkWithInputs(): Boolean {

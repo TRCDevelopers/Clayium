@@ -1,9 +1,8 @@
 package io.github.trcdevelopers.clayium.api.recipe
 
-import io.github.trcdevelopers.clayium.common.recipe.Recipe
 import net.minecraft.item.ItemStack
 
-interface IRecipeProviderV2 {
+interface IRecipeRegistry {
     val jeiCategories get() = listOfNotNull(jeiCategory)
     /**
      * null for disable JEI page for this logic.

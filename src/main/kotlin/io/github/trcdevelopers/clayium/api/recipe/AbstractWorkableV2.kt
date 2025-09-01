@@ -8,36 +8,51 @@ import io.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ResourceLocation
 
-abstract class AbstractWorkableV2(
+open class AbstractWorkableV2(
     metaTileEntity: MetaTileEntity,
     private val recipeProcessor: IRecipeProcessor,
-    private val recipeProvider: IRecipeProviderV2,
+    private val recipeProvider: RecipeProvider,
 ) : MTETrait(metaTileEntity, "workable_v2"), IWorkingControllableV2 {
 
-    private val inputItemInventory = metaTileEntity.importItems
-    private val outputItemInventory = metaTileEntity.exportItems
+    override var isWorkingEnabled: Boolean = true
 
     protected var recipeOutput: IRecipeOutputs? = null
 
     override fun update() {
         if (this.metaTileEntity.world?.isRemote == true) return
+        if (!this.isWorkingEnabled) return
 
         if (!this.recipeProcessor.hasRecipe) {
-            val newRecipe = this.recipeProvider.searchRecipe(
-                this.metaTileEntity.tier.numeric,
-                this.inputItemInventory.toList()
-            )
-            if (newRecipe != null && newRecipe.outputs.canFit(this.outputItemInventory)) {
-                this.recipeProcessor.set(newRecipe)
-                this.recipeOutput = newRecipe.outputs
+            val recipe = this.recipeProvider.searchNewRecipe(this.metaTileEntity.tier.numeric)
+            if (recipe != null) {
+                this.recipeOutput = recipe.outputs
+                this.recipeProcessor.set(recipe)
+                this.consumeInputs(recipe)
             }
         }
 
         this.recipeProcessor.tick()
 
         if (this.recipeProcessor.isCompleted) {
-            this.recipeOutput?.produceOutputs(this.outputItemInventory)
+            this.recipeOutput?.produceOutputs(this.recipeProvider.outputInventory)
             this.recipeProcessor.reset()
+        }
+    }
+
+    /**
+     * Recipe is already matched (inputs are already checked)
+     */
+    protected open fun consumeInputs(recipe: IClayiumRecipe) {
+        val inputInventory = this.recipeProvider.inputInventory
+        for (ingredient in recipe.inputs) {
+            if (!ingredient.isConsumable) continue
+            for (i in 0..<inputInventory.slots) {
+                val stack = inputInventory.getStackInSlot(i)
+                if (ingredient.testItemStackAndAmount(stack)) {
+                    inputInventory.extractItem(i, ingredient.consumeAmount, false)
+                    break
+                }
+            }
         }
     }
 
