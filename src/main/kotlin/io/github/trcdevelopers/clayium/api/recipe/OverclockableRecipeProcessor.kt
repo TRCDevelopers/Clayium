@@ -17,7 +17,6 @@ class OverclockableRecipeProcessor @JvmOverloads constructor(
     override val normalizedProgress: Double
         get() = if (requiredProgress <= 0) 0.0 else currentProgress.toDouble() / (requiredProgress.toDouble() + 1.0)
 
-
     override var isWorking: Boolean = false
         private set
     override val hasRecipe: Boolean get() = requiredProgress > 0
