@@ -1,10 +1,17 @@
 package io.github.trcdevelopers.clayium.api.recipe
 
+import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.api.widget.IGuiAction
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widgets.ProgressWidget
 import io.github.trcdevelopers.clayium.api.capability.IWorkingControllableV2
 import io.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
-import io.github.trcdevelopers.clayium.api.util.toList
+import io.github.trcdevelopers.clayium.api.util.Mods
+import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import io.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
+import io.github.trcdevelopers.clayium.integration.jei.JeiPlugin
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ResourceLocation
 
@@ -54,6 +61,35 @@ open class AbstractWorkableV2(
                 }
             }
         }
+    }
+
+    fun progressBar(syncManager: PanelSyncManager, showRecipes: Boolean = true): ProgressWidget {
+        syncManager.syncValue("requiredProgress", SyncHandlers.longNumber(recipeProcessor::requiredProgress, recipeProcessor::requiredProgress::set))
+        syncManager.syncValue("craftingProgress", SyncHandlers.longNumber(recipeProcessor::currentProgress, recipeProcessor::currentProgress::set))
+
+        val widget = ProgressWidget()
+            .size(22, 17)
+            .progress {
+                if (recipeProcessor.currentProgress == 0L || recipeProcessor.requiredProgress == 0L) {
+                    0.0
+                } else {
+                    recipeProcessor.currentProgress.toDouble() / recipeProcessor.requiredProgress.toDouble()
+                }
+            }
+            .texture(ClayGuiTextures.PROGRESS_BAR, 22)
+        if (showRecipes && Mods.JustEnoughItems.isModLoaded) {
+            widget.addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
+                .listenGuiAction(IGuiAction.MousePressed { _ ->
+                    if (!widget.isBelowMouse) return@MousePressed false
+                    val categories = recipeProvider.registry.jeiCategories
+                    if (categories.isNotEmpty()) {
+                        JeiPlugin.jeiRuntime.recipesGui.showCategories(categories)
+                    }
+                    return@MousePressed true
+                })
+        }
+
+        return widget
     }
 
     override fun serializeNBT(): NBTTagCompound {

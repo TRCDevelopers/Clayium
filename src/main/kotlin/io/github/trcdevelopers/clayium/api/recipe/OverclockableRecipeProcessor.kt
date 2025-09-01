@@ -11,10 +11,9 @@ class OverclockableRecipeProcessor @JvmOverloads constructor(
     private val progressPerTick: LongSupplier = ALWAYS_ONE,
 ) : IRecipeProcessor {
 
-    override var requiredProgress: Int = 0
-        private set
-    override var currentProgress: Int = 0
-        private set
+    override var requiredProgress: Long = 0
+    override var currentProgress: Long = 0
+
     override var isWorking: Boolean = false
         private set
     override val hasRecipe: Boolean get() = requiredProgress > 0

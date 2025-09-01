@@ -8,7 +8,7 @@ open class RecipeProvider(
     private val notifiableInventory: IHasNotifiableInventory,
     val inputInventory: IItemHandler,
     val outputInventory: IItemHandler,
-    val recipeProvider: IRecipeRegistry,
+    val registry: IRecipeRegistry,
 ) {
     private var inputsWereValid = true
 
@@ -18,7 +18,7 @@ open class RecipeProvider(
 
         val inputsIn = inputInventory.toList()
 
-        val newRecipe = recipeProvider.searchRecipe(machineTier, inputsIn)
+        val newRecipe = registry.searchRecipe(machineTier, inputsIn)
         return newRecipe?.takeIf { it.outputs.canFit(outputInventory) }
     }
 
