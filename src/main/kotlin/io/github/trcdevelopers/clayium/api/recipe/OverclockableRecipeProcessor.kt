@@ -14,11 +14,16 @@ class OverclockableRecipeProcessor @JvmOverloads constructor(
     override var requiredProgress: Long = 0
     override var currentProgress: Long = 0
 
+    override val normalizedProgress: Double
+        get() = if (requiredProgress <= 0) 0.0 else currentProgress.toDouble() / (requiredProgress.toDouble() + 1.0)
+
+
     override var isWorking: Boolean = false
         private set
     override val hasRecipe: Boolean get() = requiredProgress > 0
 
-    override val isCompleted get() = currentProgress >= requiredProgress
+    // currentProgress starts from 1.
+    override val isCompleted get() = currentProgress > requiredProgress
 
     override fun tick() {
         if (this.hasRecipe) {
@@ -27,7 +32,8 @@ class OverclockableRecipeProcessor @JvmOverloads constructor(
     }
 
     override fun set(recipe: IClayiumRecipe) {
-        val requiredProgress = recipe.duration / this.overclockHandler.compensatedFactor
+        this.requiredProgress = (recipe.duration / this.overclockHandler.compensatedFactor).toLong()
+        this.currentProgress = 1
     }
 
     override fun reset() {

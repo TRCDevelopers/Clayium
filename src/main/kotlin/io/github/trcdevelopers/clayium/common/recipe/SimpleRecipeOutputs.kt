@@ -11,6 +11,9 @@ import net.minecraftforge.items.IItemHandler
 class SimpleRecipeOutputs @JvmOverloads constructor(
     stacks: List<ItemStack> = emptyList(),
 ) : IRecipeOutputs {
+
+    constructor(vararg stacks: ItemStack) : this(listOf(*stacks))
+
     var stacks: List<ItemStack> = stacks
         private set
     override val type = TYPE

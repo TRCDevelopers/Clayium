@@ -15,7 +15,7 @@ import io.github.trcdevelopers.clayium.integration.jei.JeiPlugin
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ResourceLocation
 
-open class AbstractWorkableV2(
+open class WorkableV2(
     metaTileEntity: MetaTileEntity,
     private val recipeProcessor: IRecipeProcessor,
     private val recipeProvider: RecipeProvider,
@@ -42,6 +42,7 @@ open class AbstractWorkableV2(
 
         if (this.recipeProcessor.isCompleted) {
             this.recipeOutput?.produceOutputs(this.recipeProvider.outputInventory)
+            this.recipeOutput = null
             this.recipeProcessor.reset()
         }
     }
@@ -69,13 +70,7 @@ open class AbstractWorkableV2(
 
         val widget = ProgressWidget()
             .size(22, 17)
-            .progress {
-                if (recipeProcessor.currentProgress == 0L || recipeProcessor.requiredProgress == 0L) {
-                    0.0
-                } else {
-                    recipeProcessor.currentProgress.toDouble() / recipeProcessor.requiredProgress.toDouble()
-                }
-            }
+            .progress(recipeProcessor::normalizedProgress)
             .texture(ClayGuiTextures.PROGRESS_BAR, 22)
         if (showRecipes && Mods.JustEnoughItems.isModLoaded) {
             widget.addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))

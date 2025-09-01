@@ -260,6 +260,9 @@ object MetaTileEntities {
     val RANGED_ACTIVATOR = registerMetaTileEntity(1011,
         RangedActivatorMetaTileEntity(clayiumId("ranged_activator"), ClayTier.zk60a(8), "ranged_activator"))
 
+    val TEST = registerMetaTileEntity(10000,
+        SimpleMachineMetaTileEntityV2(clayiumId("test_machine"), ClayTiers.OPA))
+
     /**
      * @param tiers corresponding to the main material tiers (Clay, DenseClay...OPA)
      * @param provider tier -> MetaTileEntity

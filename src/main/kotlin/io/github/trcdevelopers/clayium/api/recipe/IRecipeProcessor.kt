@@ -13,6 +13,8 @@ interface IRecipeProcessor : IClayiumWorkable {
      */
     override var requiredProgress: Long
 
+    val normalizedProgress: Double
+
     val isCompleted: Boolean
     val hasRecipe: Boolean
     fun tick()
