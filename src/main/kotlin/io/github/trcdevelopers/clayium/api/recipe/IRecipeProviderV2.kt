@@ -10,5 +10,5 @@ interface IRecipeProviderV2 {
      */
     val jeiCategory: String?
 
-    fun searchRecipe(machineTier: Int, inputs: List<ItemStack>): RecipeV2?
+    fun searchRecipe(machineTier: Int, inputs: List<ItemStack>): IClayiumRecipe?
 }

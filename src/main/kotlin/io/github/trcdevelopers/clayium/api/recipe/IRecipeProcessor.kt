@@ -7,8 +7,6 @@ interface IRecipeProcessor : IClayiumWorkable {
     val hasRecipe: Boolean
     fun tick()
 
-    /**
-     * Given `requiredProgress` is raw. Not affected by overclocking or any other factors.
-     */
-    fun set(requiredProgress: Int)
+    fun set(recipe: IClayiumRecipe)
+    fun reset()
 }

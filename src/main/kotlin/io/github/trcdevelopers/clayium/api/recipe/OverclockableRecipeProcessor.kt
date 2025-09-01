@@ -22,10 +22,18 @@ class OverclockableRecipeProcessor @JvmOverloads constructor(
     override val isCompleted get() = currentProgress >= requiredProgress
 
     override fun tick() {
-        val progress = progressPerTick.asLong * this.overclockHandler.accelerationFactor
+        if (this.hasRecipe) {
+            val progress = progressPerTick.asLong * this.overclockHandler.accelerationFactor
+        }
     }
 
-    override fun set(requiredProgress: Int) {
-        val requiredProgress = requiredProgress / this.overclockHandler.compensatedFactor
+    override fun set(recipe: IClayiumRecipe) {
+        val requiredProgress = recipe.duration / this.overclockHandler.compensatedFactor
+    }
+
+    override fun reset() {
+        this.requiredProgress = 0
+        this.currentProgress = 0
+        this.isWorking = false
     }
 }
