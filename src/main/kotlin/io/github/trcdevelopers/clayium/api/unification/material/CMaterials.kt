@@ -380,7 +380,7 @@ object CMaterials {
     }
     val pureAntimatter1 = CMaterial.create(203, clayiumId("pure_antimatter1")) {
         tier(11).colors(0xC42385, 0x191919, 0xFFFFFF)
-        matter("matter2")
+        matter()
     }
     val pureAntimatter2 = CMaterial.create(204, clayiumId("pure_antimatter2")) {
         tier(11).colors(0x8E1777, 0x323200, 0xFFFFFF)
@@ -388,7 +388,7 @@ object CMaterials {
     }
     val pureAntimatter3 = CMaterial.create(205, clayiumId("pure_antimatter3")) {
         tier(11).colors(0x5E0D45, 0x4B4B00, 0xFFFFFF)
-        matter("matter3")
+        matter("matter2")
     }
     val pureAntimatter4 = CMaterial.create(206, clayiumId("pure_antimatter4")) {
         tier(12).colors(0x32061F, 0x646400, 0xFFFFFF)
@@ -396,7 +396,7 @@ object CMaterials {
     }
     val pureAntimatter5 = CMaterial.create(207, clayiumId("pure_antimatter5")) {
         tier(12).colors(0x520829, 0x7D7D00, 0xFFFFFF)
-        matter("matter4")
+        matter("matter3")
     }
     val pureAntimatter6 = CMaterial.create(208, clayiumId("pure_antimatter6")) {
         tier(12).colors(0x6E0727, 0x969600, 0xFFFFFF)
