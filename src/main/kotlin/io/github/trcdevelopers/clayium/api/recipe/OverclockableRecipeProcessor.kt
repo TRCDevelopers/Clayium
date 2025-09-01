@@ -28,6 +28,7 @@ class OverclockableRecipeProcessor @JvmOverloads constructor(
     override fun tick() {
         if (this.hasRecipe) {
             val progress = progressPerTick.asLong * this.overclockHandler.accelerationFactor
+            this.currentProgress += progress.toLong()
         }
     }
 
