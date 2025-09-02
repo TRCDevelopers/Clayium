@@ -1,10 +1,12 @@
 package io.github.trcdevelopers.clayium.common.items.metaitem
 
+import codechicken.lib.model.ModelRegistryHelper
 import io.github.trcdevelopers.clayium.api.ClayiumApi
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterial
 import io.github.trcdevelopers.clayium.api.unification.material.CPropertyKey
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.client.renderer.item.ItemDamagedRenderer
 import io.github.trcdevelopers.clayium.common.items.metaitem.component.IItemColorHandler
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.ItemStack
@@ -39,7 +41,11 @@ open class MetaPrefixItem private constructor(
             if (material.colors == null) {
                 ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${material.materialId}_${orePrefix.snake}", "inventory"))
             } else {
-                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation(clayiumId("colored/${orePrefix.snake}"), "inventory"))
+                if (this.orePrefix == OrePrefix.ingot) {
+                    ModelRegistryHelper.registerItemRenderer(this, ItemDamagedRenderer)
+                } else {
+                    ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation(clayiumId("colored/${orePrefix.snake}"), "inventory"))
+                }
             }
         }
     }

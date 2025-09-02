@@ -54,8 +54,8 @@ abstract class MetaItemClayium(name: String) : ItemClayium(name) {
         return item
     }
 
-    private fun getItem(meta: Short) = this.metaValueItems[meta]
-    private fun getItem(stack: ItemStack) = getItem(stack.itemDamage.toShort())
+    fun getItem(meta: Short) = this.metaValueItems[meta]
+    fun getItem(stack: ItemStack) = getItem(stack.itemDamage.toShort())
 
     @SideOnly(Side.CLIENT)
     fun registerColorHandler(e: ColorHandlerEvent.Item) {
