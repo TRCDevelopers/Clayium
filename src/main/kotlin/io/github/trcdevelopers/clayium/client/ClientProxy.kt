@@ -7,10 +7,10 @@ import io.github.trcdevelopers.clayium.client.gui.TextureExtra
 import io.github.trcdevelopers.clayium.client.model.CSimpleBakedModel
 import io.github.trcdevelopers.clayium.client.model.MetaTileEntityModelLoader
 import io.github.trcdevelopers.clayium.client.model.MetalModelLoader
-import io.github.trcdevelopers.clayium.client.renderer.ClayLaserReflectorRenderer
-import io.github.trcdevelopers.clayium.client.renderer.ClayMarkerTESR
-import io.github.trcdevelopers.clayium.client.renderer.MetaTileEntityRenderDispatcher
-import io.github.trcdevelopers.clayium.client.renderer.MetalChestRenderer
+import io.github.trcdevelopers.clayium.client.renderer.tileentity.ClayLaserReflectorRenderer
+import io.github.trcdevelopers.clayium.client.renderer.tileentity.ClayMarkerTESR
+import io.github.trcdevelopers.clayium.client.renderer.tileentity.MetaTileEntityRenderDispatcher
+import io.github.trcdevelopers.clayium.client.renderer.tileentity.MetalChestRenderer
 import io.github.trcdevelopers.clayium.common.CommonProxy
 import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
@@ -26,9 +26,7 @@ import net.minecraft.client.renderer.Matrix4f
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.client.renderer.block.model.SimpleBakedModel
 import net.minecraft.item.Item
-import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.MathHelper
 import net.minecraftforge.client.event.ColorHandlerEvent
 import net.minecraftforge.client.event.ModelBakeEvent

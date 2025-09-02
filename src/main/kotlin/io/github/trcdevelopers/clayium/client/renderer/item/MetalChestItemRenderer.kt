@@ -1,5 +1,6 @@
-package io.github.trcdevelopers.clayium.client.renderer
+package io.github.trcdevelopers.clayium.client.renderer.item
 
+import io.github.trcdevelopers.clayium.client.renderer.tileentity.MetalChestRenderer
 import io.github.trcdevelopers.clayium.common.items.ItemBlockMetalChest
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer
 import net.minecraft.item.ItemStack

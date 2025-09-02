@@ -1,7 +1,8 @@
-package io.github.trcdevelopers.clayium.client.renderer
+package io.github.trcdevelopers.clayium.client.renderer.tileentity
 
 import io.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.client.renderer.ClayLaserRenderer
 import io.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator

@@ -1,9 +1,12 @@
-package io.github.trcdevelopers.clayium.client.renderer
+package io.github.trcdevelopers.clayium.client.renderer.tileentity
 
 import io.github.trcdevelopers.clayium.api.block.BlockMachine
 import io.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import io.github.trcdevelopers.clayium.api.capability.ISynchronizedInterface
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
+import io.github.trcdevelopers.clayium.client.renderer.ClayLaserRenderer
+import io.github.trcdevelopers.clayium.client.renderer.InterfaceRenderer
+import io.github.trcdevelopers.clayium.client.renderer.PipedMachineIoRenderer
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.entity.player.EntityPlayer
 

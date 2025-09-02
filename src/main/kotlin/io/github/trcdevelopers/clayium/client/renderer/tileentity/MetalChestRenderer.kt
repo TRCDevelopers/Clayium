@@ -1,4 +1,4 @@
-package io.github.trcdevelopers.clayium.client.renderer
+package io.github.trcdevelopers.clayium.client.renderer.tileentity
 
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterial
 import io.github.trcdevelopers.clayium.api.util.clayiumId
