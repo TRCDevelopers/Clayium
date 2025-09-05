@@ -6,14 +6,25 @@ import codechicken.lib.util.TransformUtils
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import net.minecraft.client.Minecraft
+import net.minecraft.client.model.ModelSkeletonHead
 import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.*
-import net.minecraft.client.renderer.texture.TextureManager
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.FIXED
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.GROUND
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.GUI
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.HEAD
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.NONE
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.item.ItemStack
+import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.model.IModelState
 import org.lwjgl.opengl.GL11
+
 
 private val INGOT_RLS = listOf(
     clayiumId("textures/items/ingot_base"),
@@ -22,7 +33,13 @@ private val INGOT_RLS = listOf(
 )
 
 object ItemDamagedRenderer : IItemRenderer {
+
+    private val skeletonHead = ModelSkeletonHead(0, 0, 64, 32)
+    private val WITHER_SKELETON_TEXTURES: ResourceLocation = ResourceLocation("textures/entity/skeleton/wither_skeleton.png")
+
     override fun renderItem(stack: ItemStack, transformType: ItemCameraTransforms.TransformType) {
+        GlStateManager.pushMatrix()
+
         when (transformType) {
             NONE -> {}
             THIRD_PERSON_LEFT_HAND -> {}
@@ -37,9 +54,10 @@ object ItemDamagedRenderer : IItemRenderer {
                 val metaItem = item.getItem(stack) ?: return
                 val colorHandler = metaItem.colorHandler ?: return
                 val renderState = CCRenderState.instance()
-                GlStateManager.enableBlend()
+
 
                 for (i in 0..<3) {
+                    Minecraft.getMinecraft().textureManager.bindTexture(INGOT_RLS[i])
                     val color = colorHandler.getColor(stack, i)
                     val r = (color shr 16 and 255).toFloat() / 255.0f
                     val g = (color shr 8 and 255).toFloat() / 255.0f
@@ -52,20 +70,12 @@ object ItemDamagedRenderer : IItemRenderer {
                     GlStateManager.color(r, g, b, 1f)
                     GlStateManager.disableLighting()
                     GlStateManager.enableAlpha()
+//                    GlStateManager.scale(-8.0F, -8.0F, 8.0F);
 
+                    val model = Minecraft.getMinecraft().renderItem.itemModelMesher.getItemModel(stack)
+                        ?: return
                     renderState.reset()
-//                    renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
-                    renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR)
-                    Minecraft.getMinecraft().textureManager.bindTexture(INGOT_RLS[i])
-                    val buf = CCRenderState.instance().buffer
-//                    buf.pos(0.0, 16.0, 50.0).color(r, g, b, 1f).tex(0.0, 1.0).normal(0.0f, 0.0f, 1.0f).endVertex()
-//                    buf.pos(16.0, 16.0, 50.0).color(r, g, b, 1f).tex(0.0, 1.0).normal(0.0f, 0.0f, 1.0f).endVertex()
-//                    buf.pos(16.0, 0.0, 50.0).color(r, g, b, 1f).tex(0.0, 1.0).normal(0.0f, 0.0f, 1.0f).endVertex()
-//                    buf.pos(0.0, 0.0, 50.0).color(r, g, b, 1f).tex(0.0, 1.0).normal(0.0f, 0.0f, 1.0f).endVertex()
-                    buf.pos(0.0, 1.0, 0.0).tex(0.0, 1.0).color(r, g, b, 1f).endVertex()
-                    buf.pos(1.0, 1.0, 0.0).tex(1.0, 1.0).color(r, g, b, 1f).endVertex()
-                    buf.pos(1.0, 0.0, 0.0).tex(1.0, 0.0).color(r, g, b, 1f).endVertex()
-                    buf.pos(0.0, 0.0, 0.0).tex(0.0, 0.0).color(r, g, b, 1f).endVertex()
+                    renderState.renderQuads(model.getQuads(null, null, 0))
                     renderState.draw()
 
                     GlStateManager.enableLighting()
@@ -78,6 +88,7 @@ object ItemDamagedRenderer : IItemRenderer {
             GROUND -> {}
             FIXED -> {}
         }
+        GlStateManager.popMatrix()
     }
 
     override fun getTransforms(): IModelState {
