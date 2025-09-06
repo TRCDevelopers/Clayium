@@ -1,4 +1,4 @@
-package io.github.trcdevelopers.clayium.client.renderer
+package io.github.trcdevelopers.clayium.client.renderer.item
 
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import net.minecraft.client.renderer.GlStateManager

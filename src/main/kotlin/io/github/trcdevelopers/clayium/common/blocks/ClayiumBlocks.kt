@@ -14,7 +14,7 @@ import io.github.trcdevelopers.clayium.api.unification.material.CPropertyKey
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.api.util.getAsItem
-import io.github.trcdevelopers.clayium.client.renderer.MetalChestItemRenderer
+import io.github.trcdevelopers.clayium.client.renderer.item.MetalChestItemRenderer
 import io.github.trcdevelopers.clayium.common.blocks.chunkloader.ChunkLoaderBlock
 import io.github.trcdevelopers.clayium.common.blocks.claycraftingtable.BlockClayCraftingBoard
 import io.github.trcdevelopers.clayium.common.blocks.claytree.BlockClayLeaves

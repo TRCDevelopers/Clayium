@@ -1,11 +1,15 @@
 package io.github.trcdevelopers.clayium.common.items.metaitem
 
+import codechicken.lib.model.ModelRegistryHelper
 import io.github.trcdevelopers.clayium.api.ClayiumApi
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterial
 import io.github.trcdevelopers.clayium.api.unification.material.CPropertyKey
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
+import io.github.trcdevelopers.clayium.api.util.CLog
 import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.client.renderer.item.ItemDamagedRenderer
 import io.github.trcdevelopers.clayium.common.items.metaitem.component.IItemColorHandler
+import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.ItemStack
 import net.minecraftforge.client.model.ModelLoader
@@ -23,6 +27,9 @@ open class MetaPrefixItem private constructor(
             addItem(material.metaItemSubId.toShort(), materialName) {
                 tier(material.tier?.numeric ?: -1)
                 oreDict(orePrefix, material)
+                material.additionalOreName.forEach {
+                    oreDict("${orePrefix.snake}${it}")
+                }
                 if (material.colors != null) {
                     addComponent(IItemColorHandler { _, i -> material.colors[i] })
                 }
@@ -36,7 +43,7 @@ open class MetaPrefixItem private constructor(
             if (material.colors == null) {
                 ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${material.materialId}_${orePrefix.snake}", "inventory"))
             } else {
-                ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation(clayiumId("colored/${orePrefix.snake}"), "inventory"))
+                ModelRegistryHelper.registerItemRenderer(this, ItemDamagedRenderer(orePrefix.snake))
             }
         }
     }
@@ -60,12 +67,23 @@ open class MetaPrefixItem private constructor(
                 OrePrefix.impureDust -> MetaPrefixItemImpureDust
                 OrePrefix.gem -> object : MetaPrefixItem(name, OrePrefix.gem) {
                     override fun registerModels() {
+                        val map = Short2ObjectOpenHashMap<List<ModelResourceLocation>>()
                         for (item in metaValueItems.values) {
-                            ModelLoader.setCustomModelResourceLocation(
-                                this, item.meta.toInt(),
-                                ClayiumApi.materialRegistry.getObjectById(item.meta.toInt())?.getProperty(CPropertyKey.MATTER)?.modelLocation ?: ModelLoader.MODEL_MISSING
+                            val key = item.meta
+                            val modelBaseName = ClayiumApi.materialRegistry.getObjectById(item.meta.toInt())
+                                ?.getProperty(CPropertyKey.MATTER)
+                                ?.texture
+                                ?: continue
+                            map.put(
+                                key,
+                                listOf(
+                                    ModelResourceLocation(clayiumId("colored/${modelBaseName}_l0"), "inventory"),
+                                    ModelResourceLocation(clayiumId("colored/${modelBaseName}_l1"), "inventory"),
+                                    ModelResourceLocation(clayiumId("colored/${modelBaseName}_l2"), "inventory"),
+                                )
                             )
                         }
+                        ModelRegistryHelper.registerItemRenderer(this, ItemDamagedRenderer(map))
                     }
                 }
                 else -> MetaPrefixItem(name, orePrefix)
@@ -87,12 +105,7 @@ open class MetaPrefixItem private constructor(
         }
 
         override fun registerModels() {
-            for (item in metaValueItems.values) {
-                ModelLoader.setCustomModelResourceLocation(
-                    this, item.meta.toInt(),
-                    ModelResourceLocation(clayiumId("colored/dust"), "inventory")
-                )
-            }
+            ModelRegistryHelper.registerItemRenderer(this, ItemDamagedRenderer("dust"))
         }
     }
 }

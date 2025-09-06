@@ -15,9 +15,11 @@ object CMaterials {
     val aluminum = CMaterial.create(2, clayiumId("aluminum")) {
         tier(6)
         colors(0xBEC8CA, 0x191919, 0xFFFFFF)
-        ingot().dust().impureDust(0xBEC8CA, 0x78783C, 0xDCDCDC)
+        ingot().dust()
+        impureDust(0xBEC8CA, 0x78783C, 0xDCDCDC)
         plate(ClayEnergy.milli(1), 20, tier = 4)
-        claySmelting(0.5, 5, 200)
+        claySmelting(7.0, 5, 100)
+        additionalOreName("aluminium")
     }
     val americium = CMaterial.create(3, clayiumId("americium")) {
         tier(11).colors(0xEBEBEB, 0x9B9B9B, 0xEBEBEB)
@@ -378,7 +380,7 @@ object CMaterials {
     }
     val pureAntimatter1 = CMaterial.create(203, clayiumId("pure_antimatter1")) {
         tier(11).colors(0xC42385, 0x191919, 0xFFFFFF)
-        matter("matter2")
+        matter()
     }
     val pureAntimatter2 = CMaterial.create(204, clayiumId("pure_antimatter2")) {
         tier(11).colors(0x8E1777, 0x323200, 0xFFFFFF)
@@ -386,7 +388,7 @@ object CMaterials {
     }
     val pureAntimatter3 = CMaterial.create(205, clayiumId("pure_antimatter3")) {
         tier(11).colors(0x5E0D45, 0x4B4B00, 0xFFFFFF)
-        matter("matter3")
+        matter("matter2")
     }
     val pureAntimatter4 = CMaterial.create(206, clayiumId("pure_antimatter4")) {
         tier(12).colors(0x32061F, 0x646400, 0xFFFFFF)
@@ -394,7 +396,7 @@ object CMaterials {
     }
     val pureAntimatter5 = CMaterial.create(207, clayiumId("pure_antimatter5")) {
         tier(12).colors(0x520829, 0x7D7D00, 0xFFFFFF)
-        matter("matter4")
+        matter("matter3")
     }
     val pureAntimatter6 = CMaterial.create(208, clayiumId("pure_antimatter6")) {
         tier(12).colors(0x6E0727, 0x969600, 0xFFFFFF)
@@ -532,6 +534,18 @@ object CMaterials {
         tier(6).colors(0xE6AA8C, 0x780000, 0xFFFFFF)
         ingot().dust()
         claySmelting(0.2, 6, 400)
+    }
+    val impureAluminium = CMaterial.create(522, clayiumId("impure_aluminum")) {
+        tier(6)
+        colors(0xBEC8CA, 0x78783C, 0xDCDCDC)
+        ingot()
+        plate(ClayEnergy.milli(1), 20, tier = 4)
+        claySmelting(7.0, 5, 100)
+    }
+    val impureOsmium = CMaterial.create(523, clayiumId("impure_osmium")) {
+        tier(11)
+        colors(0x464696, 0x78783C, 0xDCDCDC)
+        ingot()
     }
     //endregion
 

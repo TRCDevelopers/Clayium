@@ -6,15 +6,17 @@ import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.client.gui.TextureExtra
 import io.github.trcdevelopers.clayium.client.model.MetaTileEntityModelLoader
 import io.github.trcdevelopers.clayium.client.model.MetalModelLoader
-import io.github.trcdevelopers.clayium.client.renderer.ClayLaserReflectorRenderer
-import io.github.trcdevelopers.clayium.client.renderer.ClayMarkerTESR
-import io.github.trcdevelopers.clayium.client.renderer.MetaTileEntityRenderDispatcher
-import io.github.trcdevelopers.clayium.client.renderer.MetalChestRenderer
+import io.github.trcdevelopers.clayium.client.renderer.item.ItemDamagedRenderer
+import io.github.trcdevelopers.clayium.client.renderer.tileentity.ClayLaserReflectorRenderer
+import io.github.trcdevelopers.clayium.client.renderer.tileentity.ClayMarkerTESR
+import io.github.trcdevelopers.clayium.client.renderer.tileentity.MetaTileEntityRenderDispatcher
+import io.github.trcdevelopers.clayium.client.renderer.tileentity.MetalChestRenderer
 import io.github.trcdevelopers.clayium.common.CommonProxy
 import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
 import io.github.trcdevelopers.clayium.common.blocks.marker.TileClayMarker
 import io.github.trcdevelopers.clayium.common.blocks.metalchest.TileEntityMetalChest
+import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.ICustomItemModel
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import io.github.trcdevelopers.clayium.common.metatileentities.MetaTileEntities
@@ -31,6 +33,7 @@ import net.minecraftforge.client.model.ModelLoaderRegistry
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.client.registry.ClientRegistry
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
@@ -62,6 +65,11 @@ class ClientProxy : CommonProxy() {
 
     override fun init(event: FMLInitializationEvent) {
         super.init(event)
+    }
+
+    override fun postInit(event: FMLPostInitializationEvent) {
+        super.postInit(event)
+        ItemDamagedRenderer.init()
     }
 
     override fun registerItem(registry: IForgeRegistry<Item>, item: Item) {
@@ -100,6 +108,10 @@ class ClientProxy : CommonProxy() {
         ClayiumBlocks.registerStateMappers()
         ClayiumBlocks.registerModels()
         MetaTileEntities.registerItemModels()
+        ModelLoader.registerItemVariants(
+            ClayiumItems.DUMMY,
+            *ItemDamagedRenderer.getAllModelResourceLocations().toTypedArray(),
+        )
     }
 
     @SubscribeEvent

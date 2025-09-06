@@ -97,6 +97,8 @@ class JeiPlugin : IModPlugin {
             }
         }
         this.registerIngredientInfo(modRegistry)
+
+        modRegistry.jeiHelpers.ingredientBlacklist.addIngredientToBlacklist(ItemStack(ClayiumItems.DUMMY))
     }
 
     private fun registerIngredientInfo(modRegistry: IModRegistry) {

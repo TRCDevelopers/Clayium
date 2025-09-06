@@ -1,6 +1,8 @@
 package io.github.trcdevelopers.clayium.client.renderer
 
 import net.minecraft.client.renderer.GlStateManager
+import org.lwjgl.opengl.GL11
+import java.nio.ByteBuffer
 
 object CRenderUtils {
     fun enableTranslucent() {
@@ -34,5 +36,60 @@ object CRenderUtils {
         GlStateManager.enableCull()
         GlStateManager.enableLighting()
         GlStateManager.enableTexture2D()
+    }
+
+    fun memoryCurrentStates(): GlStatesInformation {
+        return GlStatesInformation()
+    }
+
+    fun restoreStates(states: GlStatesInformation) {
+        // use GlStateManager
+        if (states.blend) GlStateManager.enableBlend() else GlStateManager.disableBlend()
+        if (states.lighting) GlStateManager.enableLighting() else GlStateManager.disableLighting()
+        if (states.texture2D) GlStateManager.enableTexture2D() else GlStateManager.disableTexture2D()
+        if (states.alphaTest) GlStateManager.enableAlpha() else GlStateManager.disableAlpha()
+        if (states.depthTest) GlStateManager.enableDepth() else GlStateManager.disableDepth()
+        if (states.cullFace) GlStateManager.enableCull() else GlStateManager.disableCull()
+
+        GlStateManager.color(states.r, states.g, states.b, states.a)
+        GlStateManager.shadeModel(states.shadeModel)
+        GlStateManager.bindTexture(states.textureId)
+    }
+
+    class GlStatesInformation(
+        val blend: Boolean = GL11.glIsEnabled(GL11.GL_BLEND),
+        val lighting: Boolean = GL11.glIsEnabled(GL11.GL_LIGHTING),
+        val texture2D: Boolean = GL11.glIsEnabled(GL11.GL_TEXTURE_2D),
+        val alphaTest: Boolean = GL11.glIsEnabled(GL11.GL_ALPHA_TEST),
+        val depthTest: Boolean = GL11.glIsEnabled(GL11.GL_DEPTH_TEST),
+        val cullFace: Boolean = GL11.glIsEnabled(GL11.GL_CULL_FACE),
+    ) {
+
+        val r: Float
+        val g: Float
+        val b: Float
+        val a: Float
+        val textureId: Int
+        val shadeModel: Int
+
+        init {
+            // Minimal size 16.
+            // java.lang.IllegalArgumentException: Number of remaining buffer elements is 4, must be at least 16.
+            // Because at most 16 elements can be returned, a buffer with at least 16 elements is required, regardless of actual returned element count
+            val rgba = ByteBuffer.allocateDirect(4 * 16).asFloatBuffer()
+            GL11.glGetFloat(GL11.GL_CURRENT_COLOR, rgba)
+            r = rgba[0]
+            g = rgba[1]
+            b = rgba[2]
+            a = rgba[3]
+
+            val textureId = ByteBuffer.allocateDirect(4 * 16).asIntBuffer()
+            GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, textureId)
+            this.textureId = textureId[0]
+
+            val shadeModel = ByteBuffer.allocateDirect(4 * 16).asIntBuffer()
+            GL11.glGetInteger(GL11.GL_SHADE_MODEL, shadeModel)
+            this.shadeModel = shadeModel[0]
+        }
     }
 }

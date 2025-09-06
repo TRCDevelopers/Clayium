@@ -10,7 +10,8 @@ sealed interface MaterialProperty {
     data object Ingot : MaterialProperty
     data object Dust : MaterialProperty
     class Matter(
-        texture: String = "matter",
+        // TODO: Rendering related on the server side logic. Move it to client side.
+        val texture: String = "matter",
     ) : MaterialProperty {
         val modelLocation = ModelResourceLocation(clayiumId("colored/$texture"), "inventory")
     }

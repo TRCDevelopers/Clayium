@@ -1,10 +1,8 @@
 package io.github.trcdevelopers.clayium.common.blocks.metalchest
 
-import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
-import com.cleanroommc.modularui.screen.UISettings
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
@@ -22,6 +20,7 @@ import io.github.trcdevelopers.clayium.api.unification.material.CMaterial
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.util.CUtils
 import io.github.trcdevelopers.clayium.api.util.asWidgetResizing
+import io.github.trcdevelopers.clayium.integration.modularui.IGuiHolderClayium
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
@@ -42,7 +41,7 @@ import kotlin.math.min
 
 private const val NUM_PLAYERS_USING_EVENT_ID = 1
 
-class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGuiData> {
+class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolderClayium<PosGuiData> {
 
     var material: CMaterial = CMaterials.aluminum
 
@@ -209,7 +208,7 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolder<PosGu
         return super.hasCapability(capability, facing)
     }
 
-    override fun buildUI(data: PosGuiData, syncManager: PanelSyncManager, settings: UISettings): ModularPanel {
+    override fun buildUI(data: PosGuiData, syncManager: PanelSyncManager): ModularPanel {
         syncManager.registerSlotGroup("metal_chest_inventory", inventoryHeight)
 
         val columnStr = "I".repeat(inventoryWidth)

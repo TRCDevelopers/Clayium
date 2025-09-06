@@ -37,7 +37,7 @@ See [wiki](https://trcdevelopers.github.io/Clayium/) for more information.
 ## WIP Features
 
 - Clay Guns
-- Configs (`ProgressionRate`, `HardcoreXXX`, etc.)
+- Config (`ProgressionRate` etc.)
 - Integrations with Other Mods
 
 ## License
