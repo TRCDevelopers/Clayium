@@ -28,7 +28,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraft.util.math.MathHelper
 import net.minecraftforge.client.event.ColorHandlerEvent
-import net.minecraftforge.client.event.ModelBakeEvent
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.client.event.TextureStitchEvent
 import net.minecraftforge.client.model.ItemLayerModel
@@ -107,10 +106,6 @@ class ClientProxy : CommonProxy() {
                 }
             }
         }
-    }
-
-    @SubscribeEvent
-    fun onModelBake(e: ModelBakeEvent) {
     }
 
     fun transformLayer(translation: ItemCameraTransforms, quad: BakedQuad, offset: Int): List<BakedQuad> {
