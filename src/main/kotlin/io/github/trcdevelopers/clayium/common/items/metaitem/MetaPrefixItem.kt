@@ -42,7 +42,7 @@ open class MetaPrefixItem private constructor(
                 ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation("${material.materialId}_${orePrefix.snake}", "inventory"))
             } else {
                 if (this.orePrefix == OrePrefix.ingot) {
-                    ModelRegistryHelper.registerItemRenderer(this, ItemDamagedRenderer)
+                    ModelRegistryHelper.registerItemRenderer(this, ItemDamagedRenderer("ingot"))
                 } else {
                     ModelLoader.setCustomModelResourceLocation(this, item.meta.toInt(), ModelResourceLocation(clayiumId("colored/${orePrefix.snake}"), "inventory"))
                 }

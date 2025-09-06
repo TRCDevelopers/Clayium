@@ -1,6 +1,5 @@
 package io.github.trcdevelopers.clayium.client.renderer.item
 
-import codechicken.lib.render.RenderUtils
 import codechicken.lib.render.item.IItemRenderer
 import codechicken.lib.util.TransformUtils
 import io.github.trcdevelopers.clayium.api.util.clayiumId
@@ -9,8 +8,6 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.BufferBuilder
 import net.minecraft.client.renderer.EntityRenderer
 import net.minecraft.client.renderer.GlStateManager
-import net.minecraft.client.renderer.OpenGlHelper
-import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.IBakedModel
@@ -26,11 +23,24 @@ import net.minecraftforge.common.model.IModelState
 import org.lwjgl.opengl.GL11
 
 
-object ItemDamagedRenderer : IItemRenderer {
+class ItemDamagedRenderer(
+    val layer0: ModelResourceLocation,
+    val layer1: ModelResourceLocation,
+    val layer2: ModelResourceLocation,
+) : IItemRenderer {
 
-    private val ingotL0Mrl = ModelResourceLocation(clayiumId("colored/ingot_l0"), "inventory")
-    private val ingotL1Mrl = ModelResourceLocation(clayiumId("colored/ingot_l1"), "inventory")
-    private val ingotL2Mrl = ModelResourceLocation(clayiumId("colored/ingot_l2"), "inventory")
+    /**
+     * @param base The base name of the item model, without the "colored/" prefix and "_lX" suffix. namespace is always "clayium".
+     */
+    constructor(base: String): this(
+        ModelResourceLocation(clayiumId("colored/${base}_l0"), "inventory"),
+        ModelResourceLocation(clayiumId("colored/${base}_l1"), "inventory"),
+        ModelResourceLocation(clayiumId("colored/${base}_l2"), "inventory"),
+    )
+
+    init {
+        renderers.add(this)
+    }
 
     private lateinit var modelL0: IBakedModel
     private lateinit var modelL1: IBakedModel
@@ -38,9 +48,9 @@ object ItemDamagedRenderer : IItemRenderer {
 
     fun init() {
         val modelManager = Minecraft.getMinecraft().renderItem.itemModelMesher.modelManager
-        modelL0 = modelManager.getModel(ingotL0Mrl)
-        modelL1 = modelManager.getModel(ingotL1Mrl)
-        modelL2 = modelManager.getModel(ingotL2Mrl)
+        modelL0 = modelManager.getModel(layer0)
+        modelL1 = modelManager.getModel(layer1)
+        modelL2 = modelManager.getModel(layer2)
     }
 
     override fun renderItem(stack: ItemStack, transformType: ItemCameraTransforms.TransformType) {
@@ -125,6 +135,15 @@ object ItemDamagedRenderer : IItemRenderer {
                 color = -1
             }
             LightUtil.renderQuadColor(buf, bakedquad, color)
+        }
+    }
+
+    companion object {
+        private val renderers = mutableListOf<ItemDamagedRenderer>()
+        fun init() {
+            for (renderer in renderers) {
+                renderer.init()
+            }
         }
     }
 }
