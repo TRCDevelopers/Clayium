@@ -3,8 +3,6 @@ package io.github.trcdevelopers.clayium.client.renderer
 import net.minecraft.client.renderer.GlStateManager
 import org.lwjgl.opengl.GL11
 import java.nio.ByteBuffer
-import java.nio.FloatBuffer
-import java.nio.IntBuffer
 
 object CRenderUtils {
     fun enableTranslucent() {
@@ -89,9 +87,9 @@ object CRenderUtils {
             GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, textureId)
             this.textureId = textureId[0]
 
-            val shapeModel = ByteBuffer.allocateDirect(4 * 16).asIntBuffer()
-            GL11.glGetInteger(GL11.GL_SHADE_MODEL, shapeModel)
-            this.shadeModel = shapeModel[0]
+            val shadeModel = ByteBuffer.allocateDirect(4 * 16).asIntBuffer()
+            GL11.glGetInteger(GL11.GL_SHADE_MODEL, shadeModel)
+            this.shadeModel = shadeModel[0]
         }
     }
 }
