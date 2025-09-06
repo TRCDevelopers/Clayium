@@ -2,8 +2,13 @@ package io.github.trcdevelopers.clayium.client.renderer.item
 
 import codechicken.lib.render.item.IItemRenderer
 import codechicken.lib.util.TransformUtils
+import io.github.trcdevelopers.clayium.api.util.CLog
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.client.renderer.CRenderUtils
+import it.unimi.dsi.fastutil.shorts.Short2ObjectFunction
+import it.unimi.dsi.fastutil.shorts.Short2ObjectFunctions
+import it.unimi.dsi.fastutil.shorts.Short2ObjectMap
+import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.BufferBuilder
 import net.minecraft.client.renderer.EntityRenderer
@@ -24,36 +29,65 @@ import org.lwjgl.opengl.GL11
 
 
 class ItemDamagedRenderer(
-    val layer0: ModelResourceLocation,
-    val layer1: ModelResourceLocation,
-    val layer2: ModelResourceLocation,
+    val map: Short2ObjectMap<List<ModelResourceLocation>>,
 ) : IItemRenderer {
 
     /**
      * @param base The base name of the item model, without the "colored/" prefix and "_lX" suffix. namespace is always "clayium".
      */
     constructor(base: String): this(
-        ModelResourceLocation(clayiumId("colored/${base}_l0"), "inventory"),
-        ModelResourceLocation(clayiumId("colored/${base}_l1"), "inventory"),
-        ModelResourceLocation(clayiumId("colored/${base}_l2"), "inventory"),
+        Short2ObjectOpenHashMap<List<ModelResourceLocation>>().apply {
+            defaultReturnValue(
+                listOf(
+                    ModelResourceLocation(clayiumId("colored/${base}_l0"), "inventory"),
+                    ModelResourceLocation(clayiumId("colored/${base}_l1"), "inventory"),
+                    ModelResourceLocation(clayiumId("colored/${base}_l2"), "inventory"),
+                )
+            )
+        }
     )
 
     init {
         renderers.add(this)
     }
 
-    private lateinit var modelL0: IBakedModel
-    private lateinit var modelL1: IBakedModel
-    private lateinit var modelL2: IBakedModel
+    private val models = Short2ObjectOpenHashMap<List<IBakedModel>>()
 
     fun init() {
+        val default = map.defaultReturnValue()
         val modelManager = Minecraft.getMinecraft().renderItem.itemModelMesher.modelManager
-        modelL0 = modelManager.getModel(layer0)
-        modelL1 = modelManager.getModel(layer1)
-        modelL2 = modelManager.getModel(layer2)
+        if (default != null) {
+            models.defaultReturnValue(
+                default.map { modelManager.getModel(it) }
+            )
+        }
+        for ((k, v) in map) {
+            models.put(k, v.map { modelManager.getModel(it) })
+        }
+    }
+
+    fun getAllModelResourceLocations(): Set<ModelResourceLocation> {
+        val set = mutableSetOf<ModelResourceLocation>()
+        for (v in map.values) {
+            set.addAll(v)
+        }
+        val defaultValue = map.defaultReturnValue()
+        if (defaultValue != null) {
+            set.addAll(defaultValue)
+        }
+        return set
     }
 
     override fun renderItem(stack: ItemStack, transformType: ItemCameraTransforms.TransformType) {
+
+        val meta = stack.metadata.toShort()
+        val models = models.get(meta)
+        if (models == null || models.size != 3) {
+            CLog.trace("ItemDamagedRenderer: No model for {}. ignoring.", stack)
+            return
+        }
+        val (modelL0, modelL1, modelL2) = models
+
         val mc = Minecraft.getMinecraft()
         val tessellator = Tessellator.getInstance()
         val buf = tessellator.buffer
@@ -84,7 +118,7 @@ class ItemDamagedRenderer(
         tessellator.draw()
 
         GlStateManager.enablePolygonOffset()
-        GlStateManager.doPolygonOffset(-1.0f, -10.0f)
+        GlStateManager.doPolygonOffset(-0.1f, -1f)
 
         // L1,L2
         buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
@@ -92,7 +126,11 @@ class ItemDamagedRenderer(
         for (facing in EnumFacing.entries) {
             renderModelQuads(buf, modelL1.getQuads(null, facing, 0L), stack, 1)
         }
+        tessellator.draw()
 
+        GlStateManager.doPolygonOffset(-0.2f, -2f)
+
+        buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
         renderModelQuads(buf, modelL2.getQuads(null, null, 0L), stack, 2)
         for (facing in EnumFacing.entries) {
             renderModelQuads(buf, modelL2.getQuads(null, facing, 0L), stack, 2)
@@ -144,6 +182,14 @@ class ItemDamagedRenderer(
             for (renderer in renderers) {
                 renderer.init()
             }
+        }
+
+        fun getAllModelResourceLocations(): Set<ModelResourceLocation> {
+            val set = mutableSetOf<ModelResourceLocation>()
+            for (renderer in renderers) {
+                set.addAll(renderer.getAllModelResourceLocations())
+            }
+            return set
         }
     }
 }

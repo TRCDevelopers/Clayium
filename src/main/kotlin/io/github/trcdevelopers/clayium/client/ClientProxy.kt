@@ -132,9 +132,7 @@ class ClientProxy : CommonProxy() {
         MetaTileEntities.registerItemModels()
         ModelLoader.registerItemVariants(
             ClayiumItems.DUMMY,
-            ModelResourceLocation(clayiumId("colored/ingot_l0"), "inventory"),
-            ModelResourceLocation(clayiumId("colored/ingot_l1"), "inventory"),
-            ModelResourceLocation(clayiumId("colored/ingot_l2"), "inventory"),
+            *ItemDamagedRenderer.getAllModelResourceLocations().toTypedArray(),
         )
     }
 
