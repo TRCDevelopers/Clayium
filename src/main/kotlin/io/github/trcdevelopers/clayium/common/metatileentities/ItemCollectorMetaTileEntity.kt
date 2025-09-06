@@ -82,7 +82,7 @@ class ItemCollectorMetaTileEntity(
     }
 
     override val renderingConfig by lazy {
-        MteRenderingConfig.face(clayiumId("blocks/miner"))
+        MteRenderingConfig.face(clayiumId("blocks/item_collector"))
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {
