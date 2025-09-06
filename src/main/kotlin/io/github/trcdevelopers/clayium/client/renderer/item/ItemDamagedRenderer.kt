@@ -1,94 +1,109 @@
 package io.github.trcdevelopers.clayium.client.renderer.item
 
 import codechicken.lib.render.CCRenderState
+import codechicken.lib.render.RenderUtils
+import codechicken.lib.render.item.CCRenderItem
 import codechicken.lib.render.item.IItemRenderer
 import codechicken.lib.util.TransformUtils
 import io.github.trcdevelopers.clayium.api.util.clayiumId
-import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import net.minecraft.client.Minecraft
 import net.minecraft.client.model.ModelSkeletonHead
+import net.minecraft.client.renderer.BufferBuilder
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
+import net.minecraft.client.renderer.block.model.BakedQuad
+import net.minecraft.client.renderer.block.model.IBakedModel
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.FIXED
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.GROUND
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.GUI
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.HEAD
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.NONE
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
+import net.minecraft.client.renderer.vertex.VertexBuffer
 import net.minecraft.item.ItemStack
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.client.ForgeHooksClient
 import net.minecraftforge.common.model.IModelState
 import org.lwjgl.opengl.GL11
 
 
-private val INGOT_RLS = listOf(
-    clayiumId("textures/items/ingot_base"),
-    clayiumId("textures/items/ingot_dark"),
-    clayiumId("textures/items/ingot_light"),
-)
-
 object ItemDamagedRenderer : IItemRenderer {
 
-    private val skeletonHead = ModelSkeletonHead(0, 0, 64, 32)
-    private val WITHER_SKELETON_TEXTURES: ResourceLocation = ResourceLocation("textures/entity/skeleton/wither_skeleton.png")
+    private val ingotL0Mrl = ModelResourceLocation(clayiumId("colored/ingot_l0"), "inventory")
+    private val ingotL1Mrl = ModelResourceLocation(clayiumId("colored/ingot_l1"), "inventory")
+    private val ingotL2Mrl = ModelResourceLocation(clayiumId("colored/ingot_l2"), "inventory")
+
+    private lateinit var modelL0: IBakedModel
+    private lateinit var modelL1: IBakedModel
+    private lateinit var modelL2: IBakedModel
+
+    fun init() {
+        val modelManager = Minecraft.getMinecraft().renderItem.itemModelMesher.modelManager
+        modelL0 = modelManager.getModel(ingotL0Mrl)
+        modelL1 = modelManager.getModel(ingotL1Mrl)
+        modelL2 = modelManager.getModel(ingotL2Mrl)
+    }
 
     override fun renderItem(stack: ItemStack, transformType: ItemCameraTransforms.TransformType) {
+        val mc = Minecraft.getMinecraft()
+        val tessellator = Tessellator.getInstance()
+        val buf = tessellator.buffer
+        val ri = mc.renderItem
+
+        val modelManager = mc.renderItem.itemModelMesher.modelManager
+
+        modelL0 = modelManager.getModel(ingotL0Mrl)
+        modelL1 = modelManager.getModel(ingotL1Mrl)
+        modelL2 = modelManager.getModel(ingotL2Mrl)
+
+//        tessellator.draw()
+
         GlStateManager.pushMatrix()
+        mc.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
+        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
+        GlStateManager.enableRescaleNormal()
+        GlStateManager.enableAlpha()
+        GlStateManager.enableBlend()
+        GlStateManager.tryBlendFuncSeparate(
+            GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+            GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO
+        )
+        GlStateManager.enableLighting()
 
-        when (transformType) {
-            NONE -> {}
-            THIRD_PERSON_LEFT_HAND -> {}
-            THIRD_PERSON_RIGHT_HAND -> {}
-            FIRST_PERSON_LEFT_HAND -> {}
-            FIRST_PERSON_RIGHT_HAND -> {}
-            HEAD -> {}
-            GUI -> {
-//        val itemColors = Minecraft.getMinecraft().itemColors
-//        val color = itemColors.colorMultiplier(stack, 0)
-                val item = stack.item as? MetaItemClayium ?: return
-                val metaItem = item.getItem(stack) ?: return
-                val colorHandler = metaItem.colorHandler ?: return
-                val renderState = CCRenderState.instance()
-
-
-                for (i in 0..<3) {
-                    Minecraft.getMinecraft().textureManager.bindTexture(INGOT_RLS[i])
-                    val color = colorHandler.getColor(stack, i)
-                    val r = (color shr 16 and 255).toFloat() / 255.0f
-                    val g = (color shr 8 and 255).toFloat() / 255.0f
-                    val b = (color and 255).toFloat() / 255.0f
-
-                    GlStateManager.tryBlendFuncSeparate(
-                        GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA,
-                        GL11.GL_ONE, GL11.GL_ZERO
-                    )
-                    GlStateManager.color(r, g, b, 1f)
-                    GlStateManager.disableLighting()
-                    GlStateManager.enableAlpha()
-//                    GlStateManager.scale(-8.0F, -8.0F, 8.0F);
-
-                    val model = Minecraft.getMinecraft().renderItem.itemModelMesher.getItemModel(stack)
-                        ?: return
-                    renderState.reset()
-                    renderState.renderQuads(model.getQuads(null, null, 0))
-                    renderState.draw()
-
-                    GlStateManager.enableLighting()
-                    GlStateManager.disableAlpha()
-                }
-
-
-                GlStateManager.disableBlend()
-            }
-            GROUND -> {}
-            FIXED -> {}
+        // L0
+        ForgeHooksClient.handleCameraTransforms(modelL0, transformType, false)
+        buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
+        renderModelQuads(buf, modelL0.getQuads(null, null, 0L), stack)
+        for (facing in EnumFacing.entries) {
+            renderModelQuads(buf, modelL0.getQuads(null, facing, 0L), stack)
         }
+        tessellator.draw()
+
+//        GlStateManager.enablePolygonOffset()
+//        GlStateManager.doPolygonOffset(1.0f, 10.0f)
+
+        // L1,L2
+        buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
+        renderModelQuads(buf, modelL1.getQuads(null, null, 0L), stack)
+        for (facing in EnumFacing.entries) {
+            renderModelQuads(buf, modelL1.getQuads(null, facing, 0L), stack)
+        }
+        renderModelQuads(buf, modelL2.getQuads(null, null, 0L), stack)
+        for (facing in EnumFacing.entries) {
+            renderModelQuads(buf, modelL2.getQuads(null, facing, 0L), stack)
+        }
+
+        tessellator.draw()
+
+//        GlStateManager.disablePolygonOffset()
+
+        GlStateManager.disableRescaleNormal()
+        GlStateManager.disableBlend()
+        GlStateManager.disableAlpha()
+        GlStateManager.disableLighting()
+
         GlStateManager.popMatrix()
+
+//        buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
     }
 
     override fun getTransforms(): IModelState {
@@ -97,4 +112,10 @@ object ItemDamagedRenderer : IItemRenderer {
 
     override fun isAmbientOcclusion() = true
     override fun isGui3d() = true
+
+    private fun renderModelQuads(buf: BufferBuilder, quads: List<BakedQuad>, stack: ItemStack) {
+        val ri = Minecraft.getMinecraft().renderItem
+        ri.renderQuads(buf, quads, -1, stack)
+    }
+
 }

@@ -7,6 +7,7 @@ import io.github.trcdevelopers.clayium.client.gui.TextureExtra
 import io.github.trcdevelopers.clayium.client.model.CSimpleBakedModel
 import io.github.trcdevelopers.clayium.client.model.MetaTileEntityModelLoader
 import io.github.trcdevelopers.clayium.client.model.MetalModelLoader
+import io.github.trcdevelopers.clayium.client.renderer.item.ItemDamagedRenderer
 import io.github.trcdevelopers.clayium.client.renderer.tileentity.ClayLaserReflectorRenderer
 import io.github.trcdevelopers.clayium.client.renderer.tileentity.ClayMarkerTESR
 import io.github.trcdevelopers.clayium.client.renderer.tileentity.MetaTileEntityRenderDispatcher
@@ -16,9 +17,11 @@ import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
 import io.github.trcdevelopers.clayium.common.blocks.marker.TileClayMarker
 import io.github.trcdevelopers.clayium.common.blocks.metalchest.TileEntityMetalChest
+import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.ICustomItemModel
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import io.github.trcdevelopers.clayium.common.metatileentities.MetaTileEntities
+import io.github.trcdevelopers.clayium.common.unification.ClayiumOreDictUnifierImpl
 import io.github.trcdevelopers.clayium.common.util.KeyInput
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import net.minecraft.client.Minecraft
@@ -39,6 +42,7 @@ import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.model.TRSRTransformation
 import net.minecraftforge.fml.client.registry.ClientRegistry
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
@@ -74,6 +78,11 @@ class ClientProxy : CommonProxy() {
         super.init(event)
     }
 
+    override fun postInit(event: FMLPostInitializationEvent) {
+        super.postInit(event)
+        ItemDamagedRenderer.init()
+    }
+
     override fun registerItem(registry: IForgeRegistry<Item>, item: Item) {
         registry.register(item)
         if (item is MetaItemClayium) {
@@ -107,28 +116,6 @@ class ClientProxy : CommonProxy() {
 
     @SubscribeEvent
     fun onModelBake(e: ModelBakeEvent) {
-        val model = e.modelRegistry.getObject(ModelResourceLocation(clayiumId("colored/ingot"), "inventory"))
-        if (model != null) {
-            val quads = model.getQuads(null, null, 0)
-            val newQuads = mutableListOf<BakedQuad>()
-            val quadsByLayer = quads.groupByTo(Int2ObjectArrayMap()) { it.tintIndex }
-            quadsByLayer.forEach { (tintIndex, quads) ->
-                val transform = Matrix4f()
-                transform.setIdentity()
-                transform.translate(Vector3f(0f, 0.01f * tintIndex, 0f))
-            }
-
-            for (i in 0..<3) {
-                val q = quadsByLayer[i].firstOrNull() ?: continue
-                newQuads.addAll(transformLayer(model.itemCameraTransforms,q, i))
-            }
-
-//            val newModel = SimpleBakedModel(quads, EnumFacing.entries.associateWith { emptyList() }, model.isAmbientOcclusion, model.isGui3d, model.particleTexture, model.itemCameraTransforms, model.overrides)
-//            val newModel = SimpleBakedModel(newQuads, EnumFacing.entries.associateWith { emptyList() }, model.isAmbientOcclusion, model.isGui3d, model.particleTexture, model.itemCameraTransforms, model.overrides)
-            val newModel = CSimpleBakedModel(newQuads, model, 0.001f)
-//            val newModel = SimpleBakedModel(emptyList(), emptyMap(), true, true, model.particleTexture, model.itemCameraTransforms, model.overrides)
-            e.modelRegistry.putObject(ModelResourceLocation(clayiumId("colored/ingot"), "inventory"), newModel)
-        }
     }
 
     fun transformLayer(translation: ItemCameraTransforms, quad: BakedQuad, offset: Int): List<BakedQuad> {
@@ -148,6 +135,12 @@ class ClientProxy : CommonProxy() {
         ClayiumBlocks.registerStateMappers()
         ClayiumBlocks.registerModels()
         MetaTileEntities.registerItemModels()
+        ModelLoader.registerItemVariants(
+            ClayiumItems.DUMMY,
+            ModelResourceLocation(clayiumId("colored/ingot_l0"), "inventory"),
+            ModelResourceLocation(clayiumId("colored/ingot_l1"), "inventory"),
+            ModelResourceLocation(clayiumId("colored/ingot_l2"), "inventory"),
+        )
     }
 
     @SubscribeEvent

@@ -18,6 +18,7 @@ import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_ALL
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.NONE
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.SECOND
 import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.client.renderer.item.ItemDamagedRenderer
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.BlockFaceUV
 import net.minecraft.client.renderer.block.model.BlockPartFace
