@@ -1,12 +1,15 @@
 package io.github.trcdevelopers.clayium.client.renderer.item
 
+import codechicken.lib.render.RenderUtils
 import codechicken.lib.render.item.IItemRenderer
 import codechicken.lib.util.TransformUtils
 import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.client.renderer.CRenderUtils
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.BufferBuilder
 import net.minecraft.client.renderer.EntityRenderer
 import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.IBakedModel
@@ -46,10 +49,10 @@ object ItemDamagedRenderer : IItemRenderer {
 
         mc.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
         mc.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false)
+        val states = CRenderUtils.memoryCurrentStates()
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
         GlStateManager.enableRescaleNormal()
         GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f)
-        GlStateManager.enableBlend()
         GlStateManager.tryBlendFuncSeparate(
             GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
             GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO
@@ -88,7 +91,7 @@ object ItemDamagedRenderer : IItemRenderer {
         GlStateManager.popMatrix()
 
         GlStateManager.disableRescaleNormal()
-        GlStateManager.disableBlend()
+        CRenderUtils.restoreStates(states)
         mc.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
         mc.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap()
     }
@@ -97,24 +100,26 @@ object ItemDamagedRenderer : IItemRenderer {
         return TransformUtils.DEFAULT_ITEM
     }
 
-    override fun isAmbientOcclusion() = true
+    override fun isAmbientOcclusion() = false
     override fun isGui3d() = true
 
     private fun renderModelQuads(buf: BufferBuilder, quads: List<BakedQuad>, stack: ItemStack, i: Int) {
         val flag = !stack.isEmpty
+        var color: Int
 
         for (bakedquad in quads) {
-            var k: Int = -1
             if (flag && bakedquad.hasTintIndex()) {
-                k = Minecraft.getMinecraft().itemColors.colorMultiplier(stack, i)
+                var k = Minecraft.getMinecraft().itemColors.colorMultiplier(stack, i)
 
                 if (EntityRenderer.anaglyphEnable) {
                     k = TextureUtil.anaglyphColor(k)
                 }
 
-                k = k or -16777216
+                color = k or 0xFF000000.toInt()
+            } else {
+                color = -1
             }
-            LightUtil.renderQuadColor(buf, bakedquad, k)
+            LightUtil.renderQuadColor(buf, bakedquad, color)
         }
     }
 }
