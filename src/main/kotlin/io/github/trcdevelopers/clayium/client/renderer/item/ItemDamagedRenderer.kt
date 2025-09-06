@@ -47,6 +47,15 @@ class ItemDamagedRenderer(
 
     init {
         renderers.add(this)
+
+        for ((meta, models) in map) {
+            if (models.size != 3) {
+                CLog.warn(
+                    "ItemDamagedRenderer requires exactly 3 models for each metadata, but got {} for metadata {} in map {}",
+                    models.size, meta, map
+                )
+            }
+        }
     }
 
     private val models = Short2ObjectOpenHashMap<List<IBakedModel>>()
@@ -81,7 +90,6 @@ class ItemDamagedRenderer(
         val meta = stack.metadata.toShort()
         val models = models.get(meta)
         if (models == null || models.size != 3) {
-            CLog.trace("ItemDamagedRenderer: No model for {}. ignoring.", stack)
             return
         }
         val (modelL0, modelL1, modelL2) = models
