@@ -22,19 +22,15 @@ import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import io.github.trcdevelopers.clayium.common.metatileentities.MetaTileEntities
 import io.github.trcdevelopers.clayium.common.util.KeyInput
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.block.model.BakedQuad
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraft.util.math.MathHelper
 import net.minecraftforge.client.event.ColorHandlerEvent
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.client.event.TextureStitchEvent
-import net.minecraftforge.client.model.ItemLayerModel
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.client.model.ModelLoaderRegistry
 import net.minecraftforge.common.MinecraftForge
-import net.minecraftforge.common.model.TRSRTransformation
 import net.minecraftforge.fml.client.registry.ClientRegistry
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
@@ -43,7 +39,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.registries.IForgeRegistry
-import java.util.*
 
 private const val mode1velocity: Float = 0.7f
 private const val mode2acceleration: Float = 0.9f
@@ -106,18 +101,6 @@ class ClientProxy : CommonProxy() {
                 }
             }
         }
-    }
-
-    fun transformLayer(translation: ItemCameraTransforms, quad: BakedQuad, offset: Int): List<BakedQuad> {
-        val scaleOffset = (0.001f * (2 - offset))
-        val f = 1f - scaleOffset * 2
-        val scale = javax.vecmath.Vector3f(f, f, f)
-        val translation = javax.vecmath.Vector3f(scaleOffset, scaleOffset, scaleOffset)
-        val trsrTransformation = TRSRTransformation(
-            translation,
-            null, scale, null
-        )
-        return ItemLayerModel.getQuadsForSprite(quad.tintIndex, quad.sprite, quad.format, Optional.of(trsrTransformation))
     }
 
     @SubscribeEvent
