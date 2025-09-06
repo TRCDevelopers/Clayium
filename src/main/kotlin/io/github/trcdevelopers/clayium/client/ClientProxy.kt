@@ -4,7 +4,6 @@ import codechicken.lib.colour.ColourRGBA
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.client.gui.TextureExtra
-import io.github.trcdevelopers.clayium.client.model.CSimpleBakedModel
 import io.github.trcdevelopers.clayium.client.model.MetaTileEntityModelLoader
 import io.github.trcdevelopers.clayium.client.model.MetalModelLoader
 import io.github.trcdevelopers.clayium.client.renderer.item.ItemDamagedRenderer
@@ -21,11 +20,8 @@ import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.ICustomItemModel
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import io.github.trcdevelopers.clayium.common.metatileentities.MetaTileEntities
-import io.github.trcdevelopers.clayium.common.unification.ClayiumOreDictUnifierImpl
 import io.github.trcdevelopers.clayium.common.util.KeyInput
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.Matrix4f
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -48,8 +44,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.registries.IForgeRegistry
-import org.lwjgl.util.vector.Vector3f
-import java.util.Optional
+import java.util.*
 
 private const val mode1velocity: Float = 0.7f
 private const val mode2acceleration: Float = 0.9f

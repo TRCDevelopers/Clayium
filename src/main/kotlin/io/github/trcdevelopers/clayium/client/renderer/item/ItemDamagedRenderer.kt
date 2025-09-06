@@ -11,17 +11,14 @@ import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.IBakedModel
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.client.renderer.texture.TextureUtil
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
-import net.minecraftforge.client.ForgeHooksClient
 import net.minecraftforge.client.model.pipeline.LightUtil
 import net.minecraftforge.common.model.IModelState
-import net.minecraftforge.common.model.TRSRTransformation
 import org.lwjgl.opengl.GL11
 
 
@@ -48,7 +45,7 @@ object ItemDamagedRenderer : IItemRenderer {
         val buf = tessellator.buffer
 
         mc.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
-        mc.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
+        mc.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false)
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
         GlStateManager.enableRescaleNormal()
         GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f)
