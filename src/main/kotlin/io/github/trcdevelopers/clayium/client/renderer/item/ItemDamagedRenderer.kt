@@ -5,8 +5,6 @@ import codechicken.lib.util.TransformUtils
 import io.github.trcdevelopers.clayium.api.util.CLog
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.client.renderer.CRenderUtils
-import it.unimi.dsi.fastutil.shorts.Short2ObjectFunction
-import it.unimi.dsi.fastutil.shorts.Short2ObjectFunctions
 import it.unimi.dsi.fastutil.shorts.Short2ObjectMap
 import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap
 import net.minecraft.client.Minecraft
@@ -118,7 +116,7 @@ class ItemDamagedRenderer(
         tessellator.draw()
 
         GlStateManager.enablePolygonOffset()
-        GlStateManager.doPolygonOffset(-0.1f, -1f)
+        GlStateManager.doPolygonOffset(-0.01f, -0.1f)
 
         // L1,L2
         buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
@@ -128,7 +126,7 @@ class ItemDamagedRenderer(
         }
         tessellator.draw()
 
-        GlStateManager.doPolygonOffset(-0.2f, -2f)
+        GlStateManager.doPolygonOffset(-0.02f, -0.2f)
 
         buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
         renderModelQuads(buf, modelL2.getQuads(null, null, 0L), stack, 2)
