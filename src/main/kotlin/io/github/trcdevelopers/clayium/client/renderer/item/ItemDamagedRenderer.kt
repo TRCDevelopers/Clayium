@@ -1,28 +1,27 @@
 package io.github.trcdevelopers.clayium.client.renderer.item
 
-import codechicken.lib.render.CCRenderState
-import codechicken.lib.render.RenderUtils
-import codechicken.lib.render.item.CCRenderItem
 import codechicken.lib.render.item.IItemRenderer
 import codechicken.lib.util.TransformUtils
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import net.minecraft.client.Minecraft
-import net.minecraft.client.model.ModelSkeletonHead
 import net.minecraft.client.renderer.BufferBuilder
+import net.minecraft.client.renderer.EntityRenderer
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.IBakedModel
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.texture.TextureMap
+import net.minecraft.client.renderer.texture.TextureUtil
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
-import net.minecraft.client.renderer.vertex.VertexBuffer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.ForgeHooksClient
+import net.minecraftforge.client.model.pipeline.LightUtil
 import net.minecraftforge.common.model.IModelState
+import net.minecraftforge.common.model.TRSRTransformation
 import org.lwjgl.opengl.GL11
 
 
@@ -47,63 +46,54 @@ object ItemDamagedRenderer : IItemRenderer {
         val mc = Minecraft.getMinecraft()
         val tessellator = Tessellator.getInstance()
         val buf = tessellator.buffer
-        val ri = mc.renderItem
 
-        val modelManager = mc.renderItem.itemModelMesher.modelManager
-
-        modelL0 = modelManager.getModel(ingotL0Mrl)
-        modelL1 = modelManager.getModel(ingotL1Mrl)
-        modelL2 = modelManager.getModel(ingotL2Mrl)
-
-//        tessellator.draw()
-
-        GlStateManager.pushMatrix()
         mc.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
+        mc.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
         GlStateManager.enableRescaleNormal()
-        GlStateManager.enableAlpha()
+        GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f)
         GlStateManager.enableBlend()
         GlStateManager.tryBlendFuncSeparate(
             GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
             GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO
         )
-        GlStateManager.enableLighting()
+
+        GlStateManager.pushMatrix()
 
         // L0
-        ForgeHooksClient.handleCameraTransforms(modelL0, transformType, false)
         buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
-        renderModelQuads(buf, modelL0.getQuads(null, null, 0L), stack)
+        renderModelQuads(buf, modelL0.getQuads(null, null, 0L), stack, 0)
         for (facing in EnumFacing.entries) {
-            renderModelQuads(buf, modelL0.getQuads(null, facing, 0L), stack)
+            renderModelQuads(buf, modelL0.getQuads(null, facing, 0L), stack, 0)
         }
         tessellator.draw()
 
-//        GlStateManager.enablePolygonOffset()
-//        GlStateManager.doPolygonOffset(1.0f, 10.0f)
+        GlStateManager.enablePolygonOffset()
+        GlStateManager.doPolygonOffset(-1.0f, -10.0f)
 
         // L1,L2
         buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
-        renderModelQuads(buf, modelL1.getQuads(null, null, 0L), stack)
+        renderModelQuads(buf, modelL1.getQuads(null, null, 0L), stack, 1)
         for (facing in EnumFacing.entries) {
-            renderModelQuads(buf, modelL1.getQuads(null, facing, 0L), stack)
+            renderModelQuads(buf, modelL1.getQuads(null, facing, 0L), stack, 1)
         }
-        renderModelQuads(buf, modelL2.getQuads(null, null, 0L), stack)
+
+        renderModelQuads(buf, modelL2.getQuads(null, null, 0L), stack, 2)
         for (facing in EnumFacing.entries) {
-            renderModelQuads(buf, modelL2.getQuads(null, facing, 0L), stack)
+            renderModelQuads(buf, modelL2.getQuads(null, facing, 0L), stack, 2)
         }
 
         tessellator.draw()
 
-//        GlStateManager.disablePolygonOffset()
+        GlStateManager.disablePolygonOffset()
+
+        GlStateManager.cullFace(GlStateManager.CullFace.BACK)
+        GlStateManager.popMatrix()
 
         GlStateManager.disableRescaleNormal()
         GlStateManager.disableBlend()
-        GlStateManager.disableAlpha()
-        GlStateManager.disableLighting()
-
-        GlStateManager.popMatrix()
-
-//        buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
+        mc.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
+        mc.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap()
     }
 
     override fun getTransforms(): IModelState {
@@ -113,9 +103,21 @@ object ItemDamagedRenderer : IItemRenderer {
     override fun isAmbientOcclusion() = true
     override fun isGui3d() = true
 
-    private fun renderModelQuads(buf: BufferBuilder, quads: List<BakedQuad>, stack: ItemStack) {
-        val ri = Minecraft.getMinecraft().renderItem
-        ri.renderQuads(buf, quads, -1, stack)
-    }
+    private fun renderModelQuads(buf: BufferBuilder, quads: List<BakedQuad>, stack: ItemStack, i: Int) {
+        val flag = !stack.isEmpty
 
+        for (bakedquad in quads) {
+            var k: Int = -1
+            if (flag && bakedquad.hasTintIndex()) {
+                k = Minecraft.getMinecraft().itemColors.colorMultiplier(stack, i)
+
+                if (EntityRenderer.anaglyphEnable) {
+                    k = TextureUtil.anaglyphColor(k)
+                }
+
+                k = k or -16777216
+            }
+            LightUtil.renderQuadColor(buf, bakedquad, k)
+        }
+    }
 }
