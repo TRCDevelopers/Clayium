@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.BufferBuilder
 import net.minecraft.client.renderer.EntityRenderer
 import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.OpenGlHelper
 import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.block.model.BakedQuad
@@ -57,6 +58,10 @@ object ItemDamagedRenderer : IItemRenderer {
             GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
             GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO
         )
+
+        if (transformType == ItemCameraTransforms.TransformType.GUI) {
+            GlStateManager.disableLighting()
+        }
 
         GlStateManager.pushMatrix()
 
