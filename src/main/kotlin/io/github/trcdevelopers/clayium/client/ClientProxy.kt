@@ -18,6 +18,7 @@ import io.github.trcdevelopers.clayium.common.blocks.marker.TileClayMarker
 import io.github.trcdevelopers.clayium.common.blocks.metalchest.TileEntityMetalChest
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.ICustomItemModel
+import io.github.trcdevelopers.clayium.common.items.ItemClayShooter
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import io.github.trcdevelopers.clayium.common.metatileentities.MetaTileEntities
 import io.github.trcdevelopers.clayium.common.util.KeyInput
@@ -26,6 +27,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraft.util.math.MathHelper
 import net.minecraftforge.client.event.ColorHandlerEvent
+import net.minecraftforge.client.event.FOVUpdateEvent
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.client.event.TextureStitchEvent
 import net.minecraftforge.client.model.ModelLoader
@@ -123,6 +125,27 @@ class ClientProxy : CommonProxy() {
     fun registerItemColors(e: ColorHandlerEvent.Item) {
         ClayiumBlocks.registerItemColors(e)
         MetaItemClayium.registerColors(e)
+    }
+
+    @SubscribeEvent
+    fun onFovUpdate(e: FOVUpdateEvent) {
+        val player = e.entity
+        if (!player.isHandActive) return
+
+        val stack = player.getHeldItem(player.activeHand)
+        val item = stack.item
+        if (item is ItemClayShooter) {
+            val chargeTime = item.chargeTimeTick
+            val usingTime = player.itemInUseMaxCount
+            val i = usingTime.coerceAtLeast(chargeTime)
+
+            val t = item.bulletInitialVelocity * item.bulletLifespanTick
+            val u = i / chargeTime.toFloat()
+            val k = (t * u - 10.0f).coerceAtLeast(0.0f)
+            val k1 = (k + 3600f) / (k + 60f) - 60f
+            val m = 2.5f / (k1 + 2.5f)
+            e.newfov = e.fov * m + (1.0f - m) * 0.1f
+        }
     }
 
     override fun updateFlightStatus(mode: Int) {
