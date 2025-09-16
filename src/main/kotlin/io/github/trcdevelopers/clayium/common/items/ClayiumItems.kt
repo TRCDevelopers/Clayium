@@ -72,6 +72,8 @@ object ClayiumItems {
     val FLUID_CAPSULE_125MB = createItem("fluid_capsule_125mb", ItemFluidCapsule(125), ClayiumCTabs.fluidCapsules)
     val FLUID_CAPSULE_1000MB = createItem("fluid_capsule_1000mb", ItemFluidCapsule(1000, addSubItemsToCreativeTab = true), ClayiumCTabs.fluidCapsules)
 
+    val CLAY_GUN = createItem("clay_gun", ItemClayShooter(10000, 2, 1.2f, 25.0f, 4, 6f, 0))
+
     val DUMMY: Item = Item().setRegistryName(clayiumId("dummy"))
 
     fun registerOreDicts() {
@@ -142,6 +144,8 @@ object ClayiumItems {
         proxy.registerItem(registry, FLUID_CAPSULE_25MB)
         proxy.registerItem(registry, FLUID_CAPSULE_125MB)
         proxy.registerItem(registry, FLUID_CAPSULE_1000MB)
+
+        proxy.registerItem(registry, CLAY_GUN)
 
         proxy.registerItem(registry, DUMMY)
     }
