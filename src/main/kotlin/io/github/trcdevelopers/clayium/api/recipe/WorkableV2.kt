@@ -52,7 +52,7 @@ open class WorkableV2(
      */
     protected open fun consumeInputs(recipe: IClayiumRecipe) {
         val inputInventory = this.recipeProvider.inputInventory
-        for (ingredient in recipe.inputs) {
+        for (ingredient in recipe.itemInputs) {
             if (!ingredient.isConsumable) continue
             for (i in 0..<inputInventory.slots) {
                 val stack = inputInventory.getStackInSlot(i)

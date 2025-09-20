@@ -1,10 +1,10 @@
 package io.github.trcdevelopers.clayium.api.recipe
 
 import io.github.trcdevelopers.clayium.api.ClayEnergy
-import io.github.trcdevelopers.clayium.common.recipe.ingredient.CRecipeInput
+import io.github.trcdevelopers.clayium.api.recipe.input.CItemRecipeInputV2
 
 data class RecipeV2(
-    override val inputs: List<CRecipeInput>,
+    override val itemInputs: List<CItemRecipeInputV2>,
     override val outputs: IRecipeOutputs,
     override val duration: Long,
     override val cePerTick: ClayEnergy,

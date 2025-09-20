@@ -32,3 +32,4 @@ const val M: Long = 3628800L
 const val W: Int = OreDictionary.WILDCARD_VALUE
 
 const val FALLBACK: Int = -1
+const val FALLBACK_L = -1L

@@ -1,10 +1,10 @@
 package io.github.trcdevelopers.clayium.api.recipe
 
 import io.github.trcdevelopers.clayium.api.ClayEnergy
-import io.github.trcdevelopers.clayium.common.recipe.ingredient.CRecipeInput
+import io.github.trcdevelopers.clayium.api.recipe.input.CItemRecipeInputV2
 
 interface IClayiumRecipe  {
-    val inputs: List<CRecipeInput> // TODO; make it more generic. like IRecipeInput with fluids
+    val itemInputs: List<CItemRecipeInputV2>
     val outputs: IRecipeOutputs
     val duration: Long
     val cePerTick: ClayEnergy

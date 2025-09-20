@@ -16,7 +16,6 @@ import io.github.trcdevelopers.clayium.api.recipe.RecipeProvider
 import io.github.trcdevelopers.clayium.api.recipe.RecipeV2
 import io.github.trcdevelopers.clayium.api.recipe.WorkableV2
 import io.github.trcdevelopers.clayium.api.util.ITier
-import io.github.trcdevelopers.clayium.api.util.MachineIoMode
 import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import io.github.trcdevelopers.clayium.common.recipe.SimpleRecipeOutputs
 import io.github.trcdevelopers.clayium.common.recipe.ingredient.COreRecipeInput
@@ -123,7 +122,7 @@ class TestRecipeRegistry : IRecipeRegistry {
         if (machineTier < recipe.recipeTier) return null
         val copied = inputs.map { it.copy() }
 
-        for (ingredient in recipe.inputs) {
+        for (ingredient in recipe.itemInputs) {
             if (!ingredient.isConsumable) continue
             var matched = false
             for (stack in copied) {
