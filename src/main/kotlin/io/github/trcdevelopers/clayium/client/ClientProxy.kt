@@ -137,14 +137,14 @@ class ClientProxy : CommonProxy() {
         if (item is ItemClayShooter) {
             val chargeTime = item.chargeTimeTick
             val usingTime = player.itemInUseMaxCount
-            val i = usingTime.coerceAtLeast(chargeTime)
 
             val t = item.bulletInitialVelocity * item.bulletLifespanTick
-            val u = i / chargeTime.toFloat()
-            val k = (t * u - 10.0f).coerceAtLeast(0.0f)
-            val k1 = (k + 3600f) / (k + 60f) - 60f
-            val m = 2.5f / (k1 + 2.5f)
-            e.newfov = e.fov * m + (1.0f - m) * 0.1f
+            val u = (usingTime.toFloat() / chargeTime.toFloat()).coerceAtMost(1f)
+            val k = ((t * u) - 10f).coerceAtLeast(0f)
+
+            val v = k + 3600f / (k + 60f) - 60f
+            val mod = 2.5f / (v + 2.5f)
+            e.newfov = e.fov * mod + (1f - mod) * 0.1f
         }
     }
 
