@@ -3,6 +3,7 @@ package io.github.trcdevelopers.clayium.common.items
 import io.github.trcdevelopers.clayium.api.item.ItemTiered
 import io.github.trcdevelopers.clayium.api.util.ClayTiers
 import io.github.trcdevelopers.clayium.api.util.ITier
+import io.github.trcdevelopers.clayium.common.entities.EntityClayBullet
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
@@ -37,12 +38,21 @@ open class ItemClayShooter(
 
     @JvmOverloads
     fun shoot(stack: ItemStack, player: EntityPlayer, per: Float, critical: Boolean = false) {
-        val hurtPitch = 5.0f / (itemRand.nextFloat() * 0.7f + this.getDamage(stack).toFloat() * per + 1.0f)
+        val hurtPitch = 5.0f / (itemRand.nextFloat() * 0.7f + this.bulletDamage.toFloat() * per + 1.0f)
         player.world.playSound(player, player.position, SoundEvents.ENTITY_PLAYER_SMALL_FALL, SoundCategory.PLAYERS, 0.6f, hurtPitch)
         val v = this.bulletInitialVelocity * per
         if (v >= 6f) {
             player.world.playSound(player, player.position, SoundEvents.ENTITY_FIREWORK_LAUNCH, SoundCategory.PLAYERS, 0.01f * (v - 6.0f), 1f)
             player.world.playSound(player, player.position, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.01f * (v - 6.0f), 6.0f / (v + 2.0f) + 0.2f)
+        }
+
+        if (!player.world.isRemote) {
+            player.world.spawnEntity(
+                EntityClayBullet(
+                    player.world, player, this.bulletLifespanTick, this.bulletInitialVelocity * per, this.bulletDiffusion,
+                    (this.bulletDamage * per).toInt(), 1, critical
+                )
+            )
         }
 
         if (!this.infinity) {

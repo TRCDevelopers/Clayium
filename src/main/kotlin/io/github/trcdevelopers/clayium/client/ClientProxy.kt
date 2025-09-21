@@ -16,6 +16,7 @@ import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
 import io.github.trcdevelopers.clayium.common.blocks.marker.TileClayMarker
 import io.github.trcdevelopers.clayium.common.blocks.metalchest.TileEntityMetalChest
+import io.github.trcdevelopers.clayium.common.entities.EntityClayBullet
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.ICustomItemModel
 import io.github.trcdevelopers.clayium.common.items.ItemClayShooter
@@ -24,6 +25,8 @@ import io.github.trcdevelopers.clayium.common.metatileentities.MetaTileEntities
 import io.github.trcdevelopers.clayium.common.util.KeyInput
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.client.renderer.entity.RenderSnowball
+import net.minecraft.init.Items
 import net.minecraft.item.Item
 import net.minecraft.util.math.MathHelper
 import net.minecraftforge.client.event.ColorHandlerEvent
@@ -34,6 +37,7 @@ import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.client.model.ModelLoaderRegistry
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.client.registry.ClientRegistry
+import net.minecraftforge.fml.client.registry.RenderingRegistry
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
@@ -56,6 +60,7 @@ class ClientProxy : CommonProxy() {
 
         ModelLoaderRegistry.registerLoader(MetaTileEntityModelLoader)
         ModelLoaderRegistry.registerLoader(MetalModelLoader)
+        this.registerRenderers()
 
         ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder::class.java, MetaTileEntityRenderDispatcher)
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayLaserReflector::class.java, ClayLaserReflectorRenderer)
@@ -82,6 +87,12 @@ class ClientProxy : CommonProxy() {
             item.registerModels()
         } else {
             ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(item.registryName!!, "inventory"))
+        }
+    }
+
+    fun registerRenderers() {
+        RenderingRegistry.registerEntityRenderingHandler(EntityClayBullet::class.java) { manager ->
+            RenderSnowball(manager, Items.CLAY_BALL, Minecraft.getMinecraft().renderItem)
         }
     }
 
