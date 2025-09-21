@@ -47,12 +47,11 @@ open class ItemClayShooter(
         }
 
         if (!player.world.isRemote) {
-            player.world.spawnEntity(
-                EntityClayBullet(
+            val entityClayBullet = EntityClayBullet(
                     player.world, player, this.bulletLifespanTick, this.bulletInitialVelocity * per, this.bulletDiffusion,
                     (this.bulletDamage * per).toInt(), 1, critical
-                )
             )
+            player.world.spawnEntity(entityClayBullet)
         }
 
         if (!this.infinity) {

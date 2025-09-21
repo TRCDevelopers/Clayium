@@ -24,14 +24,43 @@ import kotlin.math.sqrt
 
 class EntityClayBullet(
     world: World,
-    val thrower: EntityLivingBase,
-    val lifespan: Int,
-    val initialVelocity: Float,
-    val diffusion: Float,
-    val damage: Int,
-    val numOfTicks: Int,
-    val critical: Boolean,
 ) : Entity(world), IProjectile {
+
+    constructor(world: World, thrower: EntityLivingBase, lifespan: Int, initialVelocity: Float, diffusion: Float, damage: Int, numOfTicks: Int, critical: Boolean)
+            : this(world) {
+        this.thrower = thrower
+        this.lifespan = lifespan
+        this.initialVelocity = initialVelocity
+        this.diffusion = diffusion
+        this.damage = damage
+        this.numOfTicks = numOfTicks
+        this.critical = critical
+
+        this.setLocationAndAngles(
+            thrower.posX, thrower.posY + thrower.eyeHeight.toDouble(), thrower.posZ, thrower.rotationYaw, thrower.rotationPitch
+        )
+
+        this.posX -= (cos(this.rotationYaw / 180.0f * Math.PI.toFloat()) * 0.16f)
+        this.posY -= 0.1
+        this.posZ -= (sin(this.rotationYaw / 180.0f * Math.PI.toFloat()) * 0.16f)
+        this.setPosition(this.posX, this.posY, this.posZ)
+        val d4 = thrower.posX - (sin(thrower.rotationYaw / 180.0f * Math.PI.toFloat()) * initialVelocity).toDouble() * lifespan.toDouble() - this.posX
+        val d5 = thrower.posZ + (cos(thrower.rotationYaw / 180.0f * Math.PI.toFloat()) * initialVelocity).toDouble() * lifespan.toDouble() - this.posZ
+        this.rotationYaw = (atan2(d5, d4) * 180.0 / Math.PI).toFloat() - 90.0f
+        val f = 0.4f
+        this.motionX = (-sin(this.rotationYaw / 180.0f * Math.PI.toFloat()) * cos(this.rotationPitch / 180.0f * Math.PI.toFloat()) * f).toDouble()
+        this.motionZ = (cos(this.rotationYaw / 180.0f * Math.PI.toFloat()) * cos(this.rotationPitch / 180.0f * Math.PI.toFloat()) * f).toDouble()
+        this.motionY = (-sin((this.rotationPitch) / 180.0f * Math.PI.toFloat()) * f).toDouble()
+        this.shoot(this.motionX, this.motionY, this.motionZ, initialVelocity, diffusion)
+    }
+
+    private lateinit var thrower: EntityLivingBase
+    private var lifespan: Int = 0
+    private var initialVelocity: Float = 0f
+    private var diffusion: Float = 0f
+    private var damage: Int = 0
+    private var numOfTicks: Int = 0
+    private var critical: Boolean = false
 
     private val lastTickPos: BlockPos.MutableBlockPos = BlockPos.MutableBlockPos()
 
@@ -48,21 +77,6 @@ class EntityClayBullet(
 
     init {
         this.setSize(0.25f, 0.25f)
-        this.setLocationAndAngles(
-            thrower.posX, thrower.posY + thrower.eyeHeight.toDouble(), thrower.posZ, thrower.rotationYaw, thrower.rotationPitch
-        )
-        this.posX -= (cos(this.rotationYaw / 180.0f * Math.PI.toFloat()) * 0.16f)
-        this.posY -= 0.1
-        this.posZ -= (sin(this.rotationYaw / 180.0f * Math.PI.toFloat()) * 0.16f)
-        this.setPosition(this.posX, this.posY, this.posZ)
-        val d4 = thrower.posX - (sin(thrower.rotationYaw / 180.0f * Math.PI.toFloat()) * initialVelocity).toDouble() * lifespan.toDouble() - this.posX
-        val d5 = thrower.posZ + (cos(thrower.rotationYaw / 180.0f * Math.PI.toFloat()) * initialVelocity).toDouble() * lifespan.toDouble() - this.posZ
-        this.rotationYaw = (atan2(d5, d4) * 180.0 / Math.PI).toFloat() - 90.0f
-        val f = 0.4f
-        this.motionX = (-sin(this.rotationYaw / 180.0f * Math.PI.toFloat()) * cos(this.rotationPitch / 180.0f * Math.PI.toFloat()) * f).toDouble()
-        this.motionZ = (cos(this.rotationYaw / 180.0f * Math.PI.toFloat()) * cos(this.rotationPitch / 180.0f * Math.PI.toFloat()) * f).toDouble()
-        this.motionY = (-sin((this.rotationPitch) / 180.0f * Math.PI.toFloat()) * f).toDouble()
-        this.shoot(this.motionX, this.motionY, this.motionZ, initialVelocity, diffusion)
     }
 
     override fun isInRangeToRenderDist(distance: Double): Boolean {
@@ -113,11 +127,11 @@ class EntityClayBullet(
         if (this.world.isRemote) {
             this.updatePer()
         } else {
-            repeat(this.numOfTicks) {
+//            repeat(this.numOfTicks) {
                 if (!this.isDead) {
                     this.updatePer()
                 }
-            }
+//            }
         }
     }
 
@@ -304,17 +318,19 @@ class EntityClayBullet(
     }
 
     private fun playHitSound() {
-        if (this.thrower !is EntityPlayer) return
-        this.world.playSound(this.thrower, this.thrower.position, SoundEvents.ENTITY_PLAYER_HURT, SoundCategory.PLAYERS, 0.1f * this.damage, 0.7f)
-        this.world.playSound(this.thrower, this.thrower.position, SoundEvents.ENTITY_BLAZE_HURT, SoundCategory.PLAYERS, 0.05f * this.damage, 0.5f)
-        this.world.playSound(this.thrower, this.thrower.position, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.PLAYERS, 0.2f * this.damage, 1.2f)
-        this.world.playSound(this.thrower, this.thrower.position, SoundEvents.BLOCK_NOTE_HAT, SoundCategory.PLAYERS, 0.3f * this.damage, 1.3f)
-        this.world.playSound(this.thrower, this.thrower.position, SoundEvents.BLOCK_NOTE_SNARE, SoundCategory.PLAYERS, 0.1f * this.damage, 1.2f)
+        val thrower = this.thrower
+        if (thrower !is EntityPlayer) return
+        this.world.playSound(thrower, this.thrower.position, SoundEvents.ENTITY_PLAYER_HURT, SoundCategory.PLAYERS, 0.1f * this.damage, 0.7f)
+        this.world.playSound(thrower, this.thrower.position, SoundEvents.ENTITY_BLAZE_HURT, SoundCategory.PLAYERS, 0.05f * this.damage, 0.5f)
+        this.world.playSound(thrower, this.thrower.position, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.PLAYERS, 0.2f * this.damage, 1.2f)
+        this.world.playSound(thrower, this.thrower.position, SoundEvents.BLOCK_NOTE_HAT, SoundCategory.PLAYERS, 0.3f * this.damage, 1.3f)
+        this.world.playSound(thrower, this.thrower.position, SoundEvents.BLOCK_NOTE_SNARE, SoundCategory.PLAYERS, 0.1f * this.damage, 1.2f)
     }
 
     private fun playCriticalSound() {
-        if (this.thrower !is EntityPlayer) return
-        this.world.playSound(this.thrower, this.thrower.position, SoundEvents.ENTITY_FIREWORK_TWINKLE, SoundCategory.PLAYERS, 10f, 1f)
+        val thrower = this.thrower
+        if (thrower !is EntityPlayer) return
+        this.world.playSound(thrower, this.thrower.position, SoundEvents.ENTITY_FIREWORK_TWINKLE, SoundCategory.PLAYERS, 10f, 1f)
     }
 
     private fun spawnCriticalParticle() {

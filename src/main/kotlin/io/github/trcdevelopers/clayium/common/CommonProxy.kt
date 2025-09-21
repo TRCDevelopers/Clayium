@@ -25,6 +25,7 @@ import io.github.trcdevelopers.clayium.common.blocks.marker.TileClayMarker
 import io.github.trcdevelopers.clayium.common.blocks.metalchest.BlockMetalChest
 import io.github.trcdevelopers.clayium.common.blocks.metalchest.TileEntityMetalChest
 import io.github.trcdevelopers.clayium.common.creativetab.ClayiumCTabs
+import io.github.trcdevelopers.clayium.common.entities.EntityClayBullet
 import io.github.trcdevelopers.clayium.common.event.EntityEventListener
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.ItemClaySteelTool
@@ -41,6 +42,7 @@ import io.github.trcdevelopers.clayium.datafix.ClayiumDataFix
 import io.github.trcdevelopers.clayium.integration.CModIntegration
 import io.github.trcdevelopers.clayium.network.ClayChunkLoaderCallback
 import net.minecraft.block.Block
+import net.minecraft.entity.Entity
 import net.minecraft.item.Item
 import net.minecraft.item.crafting.IRecipe
 import net.minecraftforge.common.ForgeChunkManager
@@ -52,6 +54,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.eventhandler.EventPriority
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.network.NetworkRegistry
+import net.minecraftforge.fml.common.registry.EntityEntry
+import net.minecraftforge.fml.common.registry.EntityEntryBuilder
+import net.minecraftforge.fml.common.registry.EntityRegistry
 import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.registries.IForgeRegistry
 
@@ -123,6 +128,20 @@ open class CommonProxy {
 
         ClayiumItems.registerItems(registry)
         ClayiumBlocks.registerItemBlocks(registry)
+    }
+
+    @Suppress("unused")
+    @SubscribeEvent
+    fun registerEntities(e: RegistryEvent.Register<EntityEntry>) {
+        CLog.info("Registering entities...")
+        val registry = e.registry
+        val entry = EntityEntryBuilder.create<EntityClayBullet>()
+            .entity(EntityClayBullet::class.java)
+            .id(clayiumId("clay_bullet"), 1)
+            .name("clay_bullet")
+            .tracker(128, 1, true)
+            .build()
+        registry.register(entry)
     }
 
     @SubscribeEvent
