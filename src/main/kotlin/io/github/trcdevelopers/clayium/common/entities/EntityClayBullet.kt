@@ -165,26 +165,28 @@ class EntityClayBullet(
         }
 
 
-        var current = Vec3d(this.posX, this.posY, this.posZ)
-        var after1tick = Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ)
-        var raytraceresult = this.world.rayTraceBlocks(current, after1tick)
-        current = Vec3d(this.posX, this.posY, this.posZ)
-        after1tick = Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ)
+        val current = Vec3d(this.posX, this.posY, this.posZ)
+        val after1tickRaw = Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ)
 
-        if (raytraceresult != null) {
-            after1tick = Vec3d(raytraceresult.hitVec.x, raytraceresult.hitVec.y, raytraceresult.hitVec.z)
+        var rsBlock = this.world.rayTraceBlocks(current, after1tickRaw)
+
+        val collidedToBlock = rsBlock != null
+        val after1tick = if (collidedToBlock) {
+             Vec3d(rsBlock.hitVec.x, rsBlock.hitVec.y, rsBlock.hitVec.z)
+        } else {
+            after1tickRaw
         }
 
         if (!this.world.isRemote) {
-            val bb = this.entityBoundingBox.expand(this.motionX * 10, this.motionY * 10, this.motionZ * 10).grow(1.0)
+            val entitySearchAabb = this.entityBoundingBox.expand(this.motionX * 10, this.motionY * 10, this.motionZ * 10).grow(1.0)
             var collidedEntity: Entity? = null
             var d0 = 0.0
-            this.world.getEntitiesWithinAABBExcludingEntity(this, bb).forEach { entity ->
+            this.world.getEntitiesWithinAABBExcludingEntity(this, entitySearchAabb).forEach { entity ->
                 if (entity.canBeCollidedWith() && (entity != this.thrower || this.ticksInAir >= 5)) {
-                    val bb = entity.entityBoundingBox.grow(0.3, 0.3, 0.3)
-                    val rs = bb.calculateIntercept(current, after1tick)
+                    val aabb = entity.entityBoundingBox.grow(0.3)
+                    val rs = aabb.calculateIntercept(current, after1tick)
                     if (rs != null) {
-                        val distance = current.distanceTo(rs.hitVec)
+                        val distance = current.squareDistanceTo(rs.hitVec)
                         if (distance < d0 || d0 == 0.0) {
                             collidedEntity = entity
                             d0 = distance
@@ -194,14 +196,14 @@ class EntityClayBullet(
             }
 
             if (collidedEntity != null) {
-                raytraceresult = RayTraceResult(collidedEntity)
+                rsBlock = RayTraceResult(collidedEntity)
             }
 
-            if (raytraceresult != null) {
-                if (raytraceresult.typeOfHit == RayTraceResult.Type.BLOCK && this.world.getBlockState(raytraceresult.blockPos).getBlock() === Blocks.PORTAL) {
-                    this.setPortal(raytraceresult.blockPos)
+            if (rsBlock != null) {
+                if (rsBlock.typeOfHit == RayTraceResult.Type.BLOCK && this.world.getBlockState(rsBlock.blockPos).getBlock() === Blocks.PORTAL) {
+                    this.setPortal(rsBlock.blockPos)
                 } else {
-                    this.onImpact(raytraceresult)
+                    this.onImpact(rsBlock)
                 }
             }
         }
