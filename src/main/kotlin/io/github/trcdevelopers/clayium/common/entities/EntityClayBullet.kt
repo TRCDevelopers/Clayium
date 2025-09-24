@@ -229,7 +229,7 @@ class EntityClayBullet @Deprecated("Use another constructor, this is for world l
         var f2: Float = this.getFriction()
         val f3: Float = this.getGravityVelocity()
         if (this.isInWater) {
-            this.spawnInWaterParticle()
+            this.spwanInWaterParticleClient()
             f2 = 0.8f
         }
 
@@ -243,8 +243,8 @@ class EntityClayBullet @Deprecated("Use another constructor, this is for world l
         this.setPosition(this.posX, this.posY, this.posZ)
         ++this.age
         if (this.world.isRemote) {
-            this.spawnFlyingDustParticle()
-            this.spawnTwinklingParticle()
+            this.spawnFlyingDustParticleClient()
+            this.spawnTwinklingParticleClient()
         }
     }
 
@@ -259,6 +259,12 @@ class EntityClayBullet @Deprecated("Use another constructor, this is for world l
     fun onImpact(result: RayTraceResult) {
         if (this.isDead) return
 
+        if (result.typeOfHit == RayTraceResult.Type.BLOCK || result.entityHit != null) {
+            this.posX = result.hitVec.x
+            this.posY = result.hitVec.y
+            this.posZ = result.hitVec.z
+        }
+
         val hitEntity = result.entityHit
         if (hitEntity != null) {
             this.onEntityHit(hitEntity)
@@ -272,6 +278,7 @@ class EntityClayBullet @Deprecated("Use another constructor, this is for world l
             this.playImpactExplodeSound(s.toFloat())
             this.spawnImpactExplodeParticle()
         }
+        this.setDead()
     }
 
     fun onEntityHit(entity: Entity) {
@@ -335,22 +342,25 @@ class EntityClayBullet @Deprecated("Use another constructor, this is for world l
     }
 
     private fun spawnCriticalParticle() {
-        if (world.isRemote) return
-        val worldServer = this.world as WorldServer
+        val worldServer = this.world as? WorldServer ?: return
         worldServer.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, this.posX, this.posY, this.posZ, 50, 0.0, -1.0, 0.0, 0.5)
     }
 
     private fun spawnImpactDustParticle() {
+        val worldServer = this.world as? WorldServer ?: return
         repeat(8) {
-            this.world.spawnParticle(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, 0.0, 0.0, 0.0, Block.getStateId(Blocks.CLAY.defaultState))
+            worldServer.spawnParticle(
+                EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, 1, 0.0, 0.0, 0.0, 0.0, Block.getStateId(Blocks.CLAY.defaultState)
+            )
         }
     }
 
     private fun spawnImpactExplodeParticle() {
-        this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY, this.posZ, 0.0, 0.0, 0.0)
+        val worldServer = this.world as? WorldServer ?: return
+        worldServer.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY, this.posZ, 1, 0.0, 0.0, 0.0, 0.0)
     }
 
-    private fun spawnFlyingDustParticle() {
+    private fun spawnFlyingDustParticleClient() {
         this.world.spawnParticle(
             EnumParticleTypes.BLOCK_DUST, this.lastTickPosX, this.lastTickPosY, this.lastTickPosZ,
             this.motionX / 2.0, this.motionY / 2.0, this.motionZ / 2.0, Block.getStateId(Blocks.CLAY.defaultState)
@@ -361,7 +371,7 @@ class EntityClayBullet @Deprecated("Use another constructor, this is for world l
         )
     }
 
-    private fun spawnTwinklingParticle() {
+    private fun spawnTwinklingParticleClient() {
         var s = floor(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ).toInt() * 100 / 16
         if (this.age >= this.lifespan) {
             s = 0
@@ -382,7 +392,7 @@ class EntityClayBullet @Deprecated("Use another constructor, this is for world l
         }
     }
 
-    private fun spawnInWaterParticle() {
+    private fun spwanInWaterParticleClient() {
         for (i in 0..3) {
             val f4 = 0.25f
             this.world.spawnParticle(
