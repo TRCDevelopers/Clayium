@@ -22,7 +22,7 @@ import kotlin.math.floor
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-class EntityClayBullet(
+class EntityClayBullet @Deprecated("Use another constructor, this is for world load.") constructor(
     world: World,
 ) : Entity(world), IProjectile {
 
@@ -115,9 +115,9 @@ class EntityClayBullet(
     override fun setVelocity(x: Double, y: Double, z: Double) {
         super.setVelocity(x, y, z)
         if (this.prevRotationPitch == 0.0f && this.prevRotationYaw == 0.0f) {
-            val d = sqrt(motionX * motionX + motionZ * motionZ)
             this.rotationYaw = (atan2(motionX, motionZ) * 180.0 / Math.PI).toFloat()
             this.prevRotationYaw = this.rotationYaw
+            val d = sqrt(motionX * motionX + motionZ * motionZ)
             this.rotationPitch = (atan2(motionY, d) * 180.0 / Math.PI).toFloat()
             this.prevRotationPitch = this.rotationPitch
         }
@@ -166,9 +166,9 @@ class EntityClayBullet(
 
 
         val current = Vec3d(this.posX, this.posY, this.posZ)
-        val after1tickRaw = Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ)
+        val after1tickRaw = Vec3d(this.posX + this.motionX * 10, this.posY + this.motionY * 10, this.posZ + this.motionZ * 10)
 
-        var rsBlock = this.world.rayTraceBlocks(current, after1tickRaw)
+        val rsBlock = this.world.rayTraceBlocks(current, after1tickRaw)
 
         val collidedToBlock = rsBlock != null
         val after1tick = if (collidedToBlock) {
@@ -178,7 +178,9 @@ class EntityClayBullet(
         }
 
         if (!this.world.isRemote) {
-            val entitySearchAabb = this.entityBoundingBox.expand(this.motionX * 10, this.motionY * 10, this.motionZ * 10).grow(1.0)
+            val entitySearchAabb = this.entityBoundingBox
+                .expand(this.motionX * 10, this.motionY * 10, this.motionZ * 10)
+                .grow(1.0)
             var collidedEntity: Entity? = null
             var d0 = 0.0
             this.world.getEntitiesWithinAABBExcludingEntity(this, entitySearchAabb).forEach { entity ->
@@ -195,16 +197,13 @@ class EntityClayBullet(
                 }
             }
 
-            if (collidedEntity != null) {
-                rsBlock = RayTraceResult(collidedEntity)
-            }
+            val rsEntity = collidedEntity?.let { RayTraceResult(it) }
 
-            if (rsBlock != null) {
-                if (rsBlock.typeOfHit == RayTraceResult.Type.BLOCK && this.world.getBlockState(rsBlock.blockPos).getBlock() === Blocks.PORTAL) {
-                    this.setPortal(rsBlock.blockPos)
-                } else {
-                    this.onImpact(rsBlock)
-                }
+            val hitEntity = rsEntity != null
+            if (hitEntity) {
+                this.onImpact(rsEntity)
+            } else if (collidedToBlock && this.world.getBlockState(rsBlock.blockPos).block === Blocks.PORTAL) {
+                this.setPortal(rsBlock.blockPos)
             }
         }
 
