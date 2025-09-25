@@ -3,7 +3,7 @@ package io.github.trcdevelopers.clayium.common.items
 import io.github.trcdevelopers.clayium.api.item.ItemTiered
 import io.github.trcdevelopers.clayium.api.util.ClayTiers
 import io.github.trcdevelopers.clayium.api.util.ITier
-import io.github.trcdevelopers.clayium.common.entities.EntityClayBullet
+import io.github.trcdevelopers.clayium.common.entities.EntityThrowableClayBullet
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
@@ -47,10 +47,14 @@ open class ItemClayShooter(
         }
 
         if (!player.world.isRemote) {
-            val entityClayBullet = EntityClayBullet(
-                    player.world, player, this.bulletLifespanTick, this.bulletInitialVelocity * per, this.bulletDiffusion,
-                    (this.bulletDamage * per).toInt(), 1, critical
+//            val entityClayBullet = EntityClayBullet(
+//                    player.world, player, this.bulletLifespanTick, this.bulletInitialVelocity * per, this.bulletDiffusion,
+//                    (this.bulletDamage * per).toInt(), 1, critical
+//            )
+            val entityClayBullet = EntityThrowableClayBullet(
+                player.world, player, this.bulletLifespanTick, this.bulletDamage, critical
             )
+            entityClayBullet.shoot(player, player.rotationPitch, player.rotationYaw, 0f, this.bulletInitialVelocity * per, this.bulletDiffusion)
             player.world.spawnEntity(entityClayBullet)
         }
 

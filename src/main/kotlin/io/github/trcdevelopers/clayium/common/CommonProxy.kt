@@ -7,12 +7,10 @@ import io.github.trcdevelopers.clayium.api.capability.SimpleCapabilityManager
 import io.github.trcdevelopers.clayium.api.events.ClayiumMteRegistryEvent
 import io.github.trcdevelopers.clayium.api.gui.MetaTileEntityGuiFactory
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
-import io.github.trcdevelopers.clayium.api.unification.OreDictUnifier
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.util.CLog
 import io.github.trcdevelopers.clayium.api.util.CUtils
-import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.common.blocks.BlockQuartzCrucible
 import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
@@ -26,6 +24,7 @@ import io.github.trcdevelopers.clayium.common.blocks.metalchest.BlockMetalChest
 import io.github.trcdevelopers.clayium.common.blocks.metalchest.TileEntityMetalChest
 import io.github.trcdevelopers.clayium.common.creativetab.ClayiumCTabs
 import io.github.trcdevelopers.clayium.common.entities.EntityClayBullet
+import io.github.trcdevelopers.clayium.common.entities.EntityThrowableClayBullet
 import io.github.trcdevelopers.clayium.common.event.EntityEventListener
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.ItemClaySteelTool
@@ -42,7 +41,6 @@ import io.github.trcdevelopers.clayium.datafix.ClayiumDataFix
 import io.github.trcdevelopers.clayium.integration.CModIntegration
 import io.github.trcdevelopers.clayium.network.ClayChunkLoaderCallback
 import net.minecraft.block.Block
-import net.minecraft.entity.Entity
 import net.minecraft.item.Item
 import net.minecraft.item.crafting.IRecipe
 import net.minecraftforge.common.ForgeChunkManager
@@ -56,7 +54,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.network.NetworkRegistry
 import net.minecraftforge.fml.common.registry.EntityEntry
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder
-import net.minecraftforge.fml.common.registry.EntityRegistry
 import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.registries.IForgeRegistry
 
@@ -135,13 +132,18 @@ open class CommonProxy {
     fun registerEntities(e: RegistryEvent.Register<EntityEntry>) {
         CLog.info("Registering entities...")
         val registry = e.registry
-        val entry = EntityEntryBuilder.create<EntityClayBullet>()
+        registry.register(EntityEntryBuilder.create<EntityClayBullet>()
             .entity(EntityClayBullet::class.java)
             .id(clayiumId("clay_bullet"), 1)
             .name("clay_bullet")
             .tracker(128, 1, true)
-            .build()
-        registry.register(entry)
+            .build())
+        registry.register(EntityEntryBuilder.create<EntityThrowableClayBullet>()
+            .entity(EntityThrowableClayBullet::class.java)
+            .id(clayiumId("throwable_clay_bullet"), 2)
+            .name("throwable_clay_bullet")
+            .tracker(128, 1, true)
+            .build())
     }
 
     @SubscribeEvent

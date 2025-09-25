@@ -287,13 +287,10 @@ class EntityClayBullet @Deprecated("Use another constructor, this is for world l
                 if (!this.world.isRemote) {
                     this.spawnCriticalParticle()
                 }
-
                 this.playCriticalSound()
             }
-
             this.playHitSound()
         }
-
         if (!this.world.isRemote) {
             this.causeDamage(entity)
         }
