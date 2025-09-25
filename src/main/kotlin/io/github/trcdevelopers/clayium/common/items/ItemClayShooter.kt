@@ -44,7 +44,7 @@ open class ItemClayShooter(
     @JvmOverloads
     fun shoot(stack: ItemStack, player: EntityPlayer, per: Float, critical: Boolean = false) {
         val hurtPitch = 5.0f / (itemRand.nextFloat() * 0.7f + this.bulletDamage.toFloat() * per + 1.0f)
-        player.world.playSound(player, player.position, SoundEvents.ENTITY_PLAYER_SMALL_FALL, SoundCategory.PLAYERS, 0.6f, hurtPitch)
+        player.world.playSound(null, player.position, SoundEvents.ENTITY_PLAYER_SMALL_FALL, SoundCategory.PLAYERS, 0.6f, hurtPitch)
         val v = this.bulletInitialVelocity * per
         if (v >= 6f) {
             player.world.playSound(player, player.position, SoundEvents.ENTITY_FIREWORK_LAUNCH, SoundCategory.PLAYERS, 0.01f * (v - 6.0f), 1f)
@@ -69,7 +69,7 @@ open class ItemClayShooter(
     }
 
     override fun getItemUseAction(stack: ItemStack): EnumAction {
-        return EnumAction.BOW
+        return if (this.isCharger) EnumAction.BOW else EnumAction.NONE
     }
 
     override fun getMaxItemUseDuration(stack: ItemStack): Int {
@@ -87,6 +87,8 @@ open class ItemClayShooter(
             if (cooldown <= 0 && !worldIn.isRemote) {
                 this.shoot(playerIn.getHeldItem(playerIn.activeHand), playerIn, 1.0f)
             }
+            data.clayGunCooldown = this.bulletCooldownTick
+            return ActionResult.newResult(EnumActionResult.PASS, playerIn.getHeldItem(handIn))
         }
         return ActionResult.newResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
     }
@@ -110,7 +112,7 @@ open class ItemClayShooter(
         if (this.isCharger) {
             val charge = this.getMaxItemUseDuration(stack) - timeLeft
             if (charge >= this.chargeTimeTick && entityLiving is EntityPlayer) {
-                this.shoot(stack, entityLiving, 1.0f)
+                this.shoot(stack, entityLiving, per = 1.0f, critical = true)
             }
         }
     }

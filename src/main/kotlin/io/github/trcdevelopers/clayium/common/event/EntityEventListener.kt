@@ -12,15 +12,17 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.PlayerEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
+import sun.net.www.content.text.plain
 
 object EntityEventListener {
     @SubscribeEvent
     fun onPlayerTick(e: TickEvent.PlayerTickEvent) {
         if (e.phase != TickEvent.Phase.START) return
+        val player = e.player
 
-        ItemClayGadgetHolder.onTick(e.player)
+        ItemClayGadgetHolder.onTick(player)
 
-        val data = e.player.getCapability(ClayiumPlayerData.CAPABILITY, null)
+        val data = player.getCapability(ClayiumPlayerData.CAPABILITY, null)
         if (data != null) {
             data.clayGunCooldown--
         }

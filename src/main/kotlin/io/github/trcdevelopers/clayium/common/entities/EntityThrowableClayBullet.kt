@@ -41,14 +41,17 @@ class EntityThrowableClayBullet : EntityThrowable {
         return distance < d1 * d1
     }
 
-    override fun getGravityVelocity(): Float {
-        return if (this.age < this.lifespan) 0.0f else 0.45f
+    override fun hasNoGravity(): Boolean {
+        return true
     }
 
     override fun onUpdate() {
         super.onUpdate()
         this.age++
-        CLog.info("I'm living at ${this.posX}, ${this.posY}, ${this.posZ} for $age ticks.")
+        if (this.age > this.lifespan && !this.world.isRemote) {
+            this.setDead()
+            return
+        }
 
         if (this.world.isRemote) {
             if (this.isInWater) {
@@ -60,7 +63,7 @@ class EntityThrowableClayBullet : EntityThrowable {
     }
 
     override fun onImpact(result: RayTraceResult) {
-        if (this.isDead) return
+        if (this.isDead || this.world.isRemote) return
 
         if (result.typeOfHit == RayTraceResult.Type.BLOCK || result.entityHit != null) {
             this.posX = result.hitVec.x
@@ -76,7 +79,7 @@ class EntityThrowableClayBullet : EntityThrowable {
         this.spawnImpactDustParticle()
         this.playImpactSound()
 
-        val s = sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ)
+        val s = sqrt((this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ) / 100.0)
         if (s >= 0.5f && this.age <= this.lifespan) {
             this.playImpactExplodeSound(s.toFloat())
             this.spawnImpactExplodeParticle()
