@@ -27,6 +27,10 @@ open class ItemClayShooter(
     val infinity: Boolean = false,
 ) : ItemTiered() {
 
+    init {
+        this.maxStackSize = 1
+    }
+
     val isCharger = chargeTimeTick > 0
 
     constructor(maxDamage: Int, bulletLifespan: Int, bulletInitialVelocity: Float, bulletDiffusion: Float, bulletDamage: Int, bulletShootingFrame: Int, chargeTime: Int)
