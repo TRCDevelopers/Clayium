@@ -1,5 +1,6 @@
 package io.github.trcdevelopers.clayium.common.entities
 
+import io.github.trcdevelopers.clayium.api.util.CLog
 import net.minecraft.block.Block
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
@@ -34,6 +35,12 @@ class EntityThrowableClayBullet : EntityThrowable {
         this.critical = critical
     }
 
+    override fun isInRangeToRenderDist(distance: Double): Boolean {
+        var d1 = this.entityBoundingBox.getAverageEdgeLength() * 4.0
+        d1 *= 64.0
+        return distance < d1 * d1
+    }
+
     override fun getGravityVelocity(): Float {
         return if (this.age < this.lifespan) 0.0f else 0.45f
     }
@@ -41,6 +48,7 @@ class EntityThrowableClayBullet : EntityThrowable {
     override fun onUpdate() {
         super.onUpdate()
         this.age++
+        CLog.info("I'm living at ${this.posX}, ${this.posY}, ${this.posZ} for $age ticks.")
 
         if (this.world.isRemote) {
             if (this.isInWater) {
@@ -153,18 +161,24 @@ class EntityThrowableClayBullet : EntityThrowable {
     }
 
     private fun spawnFlyingDustParticleClient() {
+        val mx = this.motionX / 20.0
+        val my = this.motionY / 20.0
+        val mz = this.motionZ / 20.0
         this.world.spawnParticle(
             EnumParticleTypes.BLOCK_DUST, this.lastTickPosX, this.lastTickPosY, this.lastTickPosZ,
-            this.motionX / 2.0, this.motionY / 2.0, this.motionZ / 2.0, Block.getStateId(Blocks.CLAY.defaultState)
+            mx, my, mz, Block.getStateId(Blocks.CLAY.defaultState)
         )
         this.world.spawnParticle(
             EnumParticleTypes.BLOCK_DUST, (this.posX + this.lastTickPosX) / 2.0, (this.posY + this.lastTickPosY) / 2.0, (this.posZ + this.lastTickPosZ) / 2.0,
-            this.motionX / 2.0, this.motionY / 2.0, this.motionZ / 2.0, Block.getStateId(Blocks.CLAY.defaultState)
+            mx, my, mz, Block.getStateId(Blocks.CLAY.defaultState)
         )
     }
 
     private fun spawnTwinklingParticleClient() {
-        var s = floor(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ).toInt() / 16
+        val mx = this.motionX / 10.0
+        val my = this.motionY / 10.0
+        val mz = this.motionZ / 10.0
+        var s = floor(mx * mx + my * my + mz * mz).toInt() / 16
         if (this.age >= this.lifespan) {
             s = 0
         }
@@ -177,27 +191,29 @@ class EntityThrowableClayBullet : EntityThrowable {
 
             this.world.spawnParticle(
                 EnumParticleTypes.CRIT,
-                this.posX + this.motionX * m1,
-                this.posY + this.motionY * m1,
-                this.posZ + this.motionZ * m1,
-                this.motionX * m2,
-                this.motionY * m2,
-                this.motionZ * m2
+                this.posX + mx * m1,
+                this.posY + my * m1,
+                this.posZ + mz * m1,
+                mx * m2,
+                my * m2,
+                mz * m2
             )
         }
     }
 
     private fun spawnInWaterParticleClient() {
+        val mx = this.motionX / 10.0
+        val my = this.motionY / 10.0
+        val mz = this.motionZ / 10.0
         for (i in 0..3) {
-            val f4 = 0.25f
             this.world.spawnParticle(
                 EnumParticleTypes.WATER_BUBBLE,
-                this.posX - this.motionX * f4.toDouble(),
-                this.posY - this.motionY * f4.toDouble(),
-                this.posZ - this.motionZ * f4.toDouble(),
-                this.motionX,
-                this.motionY,
-                this.motionZ
+                this.posX - mx * 0.25,
+                this.posY - my * 0.25,
+                this.posZ - mz * 0.25,
+                mx,
+                my,
+                mz,
             )
         }
     }

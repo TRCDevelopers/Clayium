@@ -11,7 +11,15 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable
  * This is not intended to be inherited by any class.
  */
 class ClayiumPlayerData : ICapabilitySerializable<NBTTagCompound> {
+    /**
+     * Flight Gadget
+     */
     var wasFlying = false
+
+    /**
+     * Clay Guns
+     */
+    var clayGunCooldown = 0
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
         return capability == CAPABILITY
@@ -28,11 +36,13 @@ class ClayiumPlayerData : ICapabilitySerializable<NBTTagCompound> {
     override fun serializeNBT(): NBTTagCompound {
         val nbt = NBTTagCompound()
         nbt.setBoolean("wasFlying", wasFlying)
+        nbt.setInteger("clayGunCooldown", clayGunCooldown)
         return nbt
     }
 
     override fun deserializeNBT(nbt: NBTTagCompound) {
-        wasFlying = nbt.getBoolean("wasFlying")
+        this.wasFlying = nbt.getBoolean("wasFlying")
+        this.clayGunCooldown = nbt.getInteger("clayGunCooldown")
     }
 
     companion object {

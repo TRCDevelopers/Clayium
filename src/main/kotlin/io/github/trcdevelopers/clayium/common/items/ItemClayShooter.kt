@@ -1,5 +1,6 @@
 package io.github.trcdevelopers.clayium.common.items
 
+import io.github.trcdevelopers.clayium.api.capability.ClayiumPlayerData
 import io.github.trcdevelopers.clayium.api.item.ItemTiered
 import io.github.trcdevelopers.clayium.api.util.ClayTiers
 import io.github.trcdevelopers.clayium.api.util.ITier
@@ -79,6 +80,13 @@ open class ItemClayShooter(
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         if (this.isCharger) {
             playerIn.activeHand = handIn
+        } else {
+            val data = playerIn.getCapability(ClayiumPlayerData.CAPABILITY, null)
+                ?: return ActionResult.newResult(EnumActionResult.FAIL, playerIn.getHeldItem(handIn))
+            val cooldown = data.clayGunCooldown
+            if (cooldown <= 0 && !worldIn.isRemote) {
+                this.shoot(playerIn.getHeldItem(playerIn.activeHand), playerIn, 1.0f)
+            }
         }
         return ActionResult.newResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
     }

@@ -19,6 +19,11 @@ object EntityEventListener {
         if (e.phase != TickEvent.Phase.START) return
 
         ItemClayGadgetHolder.onTick(e.player)
+
+        val data = e.player.getCapability(ClayiumPlayerData.CAPABILITY, null)
+        if (data != null) {
+            data.clayGunCooldown--
+        }
     }
 
     @SubscribeEvent
