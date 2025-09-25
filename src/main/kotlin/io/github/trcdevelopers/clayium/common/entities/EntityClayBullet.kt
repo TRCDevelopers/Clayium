@@ -229,7 +229,7 @@ class EntityClayBullet @Deprecated("Use another constructor, this is for world l
         var f2: Float = this.getFriction()
         val f3: Float = this.getGravityVelocity()
         if (this.isInWater) {
-            this.spwanInWaterParticleClient()
+            this.spawnInWaterParticleClient()
             f2 = 0.8f
         }
 
@@ -392,7 +392,7 @@ class EntityClayBullet @Deprecated("Use another constructor, this is for world l
         }
     }
 
-    private fun spwanInWaterParticleClient() {
+    private fun spawnInWaterParticleClient() {
         for (i in 0..3) {
             val f4 = 0.25f
             this.world.spawnParticle(
