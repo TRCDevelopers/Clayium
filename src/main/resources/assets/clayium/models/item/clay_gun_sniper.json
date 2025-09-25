@@ -1,6 +1,6 @@
 {
   "parent": "clayium:item/base/clay_gun",
   "textures": {
-    "layer0": "clayium:items/clay_gun_basic"
+    "layer0": "clayium:items/clay_gun_sniper"
   }
 }
