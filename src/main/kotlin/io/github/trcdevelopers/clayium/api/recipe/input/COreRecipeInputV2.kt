@@ -10,13 +10,11 @@ import net.minecraftforge.oredict.OreDictionary
 class COreRecipeInputV2(
     val oreId: Int,
     requiredAmount: Int,
-    consumeAmount: Int = requiredAmount,
-) : CRecipeInputV2(requiredAmount, consumeAmount) {
+    isConsumable: Boolean = true,
+) : CRecipeInputV2(requiredAmount, isConsumable) {
 
-    constructor(oreDict: String, amount: Int = 1, isConsumable: Boolean = true) : this(OreDictionary.getOreID(oreDict), amount, if (isConsumable) amount else 0)
-    constructor(oreDict: String, amount: Int = 1, consumeAmount: Int = amount) : this(OreDictionary.getOreID(oreDict), amount, consumeAmount)
+    constructor(oreDict: String, amount: Int = 1, isConsumable: Boolean = true) : this(OreDictionary.getOreID(oreDict), amount, isConsumable)
     constructor(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1, isConsumable: Boolean = true) : this(UnificationEntry(orePrefix, material).toString(), amount, isConsumable)
-    constructor(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1, consumeAmount: Int = amount) : this(UnificationEntry(orePrefix, material).toString(), amount, consumeAmount)
 
     override val components: List<ItemStack> by lazy {
         val oreStacks = OreDictionary.getOres(OreDictionary.getOreName(oreId)).map {
@@ -35,7 +33,7 @@ class COreRecipeInputV2(
     override fun computeHash(): Int {
         var hash = oreId
         hash = 31 * hash + requiredAmount
-        hash = 31 * hash + consumeAmount
+        hash = 31 * hash + if (isConsumable) 1 else 0
         return hash
     }
 
@@ -45,7 +43,7 @@ class COreRecipeInputV2(
 
         if (oreId != other.oreId) return false
         if (requiredAmount != other.requiredAmount) return false
-        if (consumeAmount != other.consumeAmount) return false
+        if (isConsumable != other.isConsumable) return false
 
         return true
     }

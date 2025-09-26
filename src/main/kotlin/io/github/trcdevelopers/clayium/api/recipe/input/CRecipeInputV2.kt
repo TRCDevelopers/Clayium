@@ -5,8 +5,7 @@ import net.minecraft.item.ItemStack
 @Suppress("EqualsOrHashCode") // equals is abstract, so inheritors must implement.
 abstract class CRecipeInputV2(
     val requiredAmount: Int,
-    val consumeAmount: Int = requiredAmount,
-    val isConsumable: Boolean = consumeAmount > 0,
+    val isConsumable: Boolean,
 ) {
 
     abstract val components: List<ItemStack>

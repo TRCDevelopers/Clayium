@@ -7,8 +7,8 @@ import net.minecraftforge.oredict.OreDictionary
 class CItemRecipeInputV2(
     override val components: List<ItemStack>,
     requiredAmount: Int,
-    consumeAmount: Int = requiredAmount,
-) : CRecipeInputV2(requiredAmount, consumeAmount) {
+    isConsumable: Boolean = true,
+) : CRecipeInputV2(requiredAmount, isConsumable) {
 
     override fun test(stack: ItemStack): Boolean {
         return components.any {
@@ -32,7 +32,7 @@ class CItemRecipeInputV2(
             }
         }
         hash = 31 * hash + requiredAmount
-        hash = 31 * hash + consumeAmount
+        hash = 31 * hash + if (isConsumable) 1 else 0
         return hash
     }
 
@@ -41,7 +41,7 @@ class CItemRecipeInputV2(
         if (other !is CItemRecipeInputV2) return false
 
         if (this.requiredAmount != other.requiredAmount) return false
-        if (this.consumeAmount != other.consumeAmount) return false
+        if (this.isConsumable != other.isConsumable) return false
         if (this.components.size != other.components.size) return false
         for (i in this.components.indices) {
             val s1 = this.components[i]

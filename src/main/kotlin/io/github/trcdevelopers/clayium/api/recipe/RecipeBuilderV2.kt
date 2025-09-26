@@ -5,6 +5,10 @@ import io.github.trcdevelopers.clayium.api.FALLBACK
 import io.github.trcdevelopers.clayium.api.FALLBACK_L
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.recipe.input.CItemRecipeInputV2
+import io.github.trcdevelopers.clayium.api.recipe.input.COreRecipeInputV2
+import io.github.trcdevelopers.clayium.api.recipe.input.CRecipeInputV2
+import io.github.trcdevelopers.clayium.api.unification.material.IMaterial
+import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import net.minecraft.block.Block
 import net.minecraft.item.Item
@@ -14,7 +18,7 @@ import net.minecraft.item.ItemStack
 abstract class RecipeBuilderV2<T: RecipeBuilderV2<T>>(
 ) {
 
-    private val itemInputs: MutableList<CItemRecipeInputV2> = mutableListOf()
+    private val itemInputs: MutableList<CRecipeInputV2> = mutableListOf()
     private var outputs: IRecipeOutputs? = null
     private var duration: Long = FALLBACK_L
     private var cePerTick: ClayEnergy = ClayEnergy.ZERO
@@ -26,7 +30,7 @@ abstract class RecipeBuilderV2<T: RecipeBuilderV2<T>>(
         return this as T
     }
 
-    fun input(input: CItemRecipeInputV2): T {
+    fun input(input: CRecipeInputV2): T {
         this.itemInputs.add(input)
         return this as T
     }
@@ -36,8 +40,8 @@ abstract class RecipeBuilderV2<T: RecipeBuilderV2<T>>(
     fun input(metaItem: MetaItemClayium.MetaValueItem, amount: Int = 1) = input(metaItem.getStackForm(amount))
     fun input(metaTileEntity: MetaTileEntity, amount: Int = 1) = input(metaTileEntity.asStackForm(amount))
     fun input(block: Block, amount: Int = 1) = input(ItemStack(block, amount))
-//    fun input(oreDict: String, amount: Int = 1) = input(COreRecipeInput(oreDict, amount))
-//    fun input(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1) = input(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
+    fun input(oreDict: String, amount: Int = 1) = input(COreRecipeInputV2(oreDict, amount))
+    fun input(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1) = input(COreRecipeInputV2(orePrefix, material, amount))
 
     fun build(): RecipeV2 {
         val outputs = this.outputs
