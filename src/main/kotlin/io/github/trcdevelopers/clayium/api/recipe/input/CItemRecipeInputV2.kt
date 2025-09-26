@@ -3,29 +3,53 @@ package io.github.trcdevelopers.clayium.api.recipe.input
 import net.minecraft.item.ItemStack
 import net.minecraftforge.oredict.OreDictionary
 
+@Suppress("EqualsOrHashCode")
 class CItemRecipeInputV2(
     override val components: List<ItemStack>,
-    override val requiredAmount: Int,
-    override val consumeAmount: Int = requiredAmount,
-) : IRecipeInput<ItemStack> {
+    requiredAmount: Int,
+    consumeAmount: Int = requiredAmount,
+) : CRecipeInputV2(requiredAmount, consumeAmount) {
 
-    override fun test(input: ItemStack): Boolean {
+    override fun test(stack: ItemStack): Boolean {
         return components.any {
-            OreDictionary.itemMatches(it, input, false) && input.count >= requiredAmount
+            OreDictionary.itemMatches(it, stack, false) && stack.count >= requiredAmount
         }
     }
 
-    override fun testIgnoringAmount(input: ItemStack): Boolean {
+    override fun testIgnoringAmount(stack: ItemStack): Boolean {
         return components.any {
-            OreDictionary.itemMatches(it, input, false)
+            OreDictionary.itemMatches(it, stack, false)
         }
+    }
+
+    override fun computeHash(): Int {
+        var hash = 1
+        for (stack in this.components) {
+            hash = 31 * hash + stack.item.hashCode()
+            hash = 31 * hash + stack.metadata
+            if (stack.hasTagCompound()) {
+                hash = 31 * hash + stack.tagCompound.hashCode()
+            }
+        }
+        hash = 31 * hash + requiredAmount
+        hash = 31 * hash + consumeAmount
+        return hash
     }
 
     override fun equals(other: Any?): Boolean {
-        TODO()
-    }
+        if (this === other) return true
+        if (other !is CItemRecipeInputV2) return false
 
-    override fun hashCode(): Int {
-        TODO()
+        if (this.requiredAmount != other.requiredAmount) return false
+        if (this.consumeAmount != other.consumeAmount) return false
+        if (this.components.size != other.components.size) return false
+        for (i in this.components.indices) {
+            val s1 = this.components[i]
+            val s2 = other.components[i]
+            if (!ItemStack.areItemStackTagsEqual(s1, s2)) {
+                return false
+            }
+        }
+        return true
     }
 }

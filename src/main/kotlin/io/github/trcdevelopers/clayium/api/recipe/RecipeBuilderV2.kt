@@ -3,18 +3,41 @@ package io.github.trcdevelopers.clayium.api.recipe
 import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.FALLBACK
 import io.github.trcdevelopers.clayium.api.FALLBACK_L
+import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.recipe.input.CItemRecipeInputV2
+import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
+import net.minecraft.block.Block
+import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
 
 @Suppress("UNCHECKED_CAST")
 abstract class RecipeBuilderV2<T: RecipeBuilderV2<T>>(
 ) {
 
-    private var itemInputs: List<CItemRecipeInputV2> = emptyList()
+    private val itemInputs: MutableList<CItemRecipeInputV2> = mutableListOf()
     private var outputs: IRecipeOutputs? = null
     private var duration: Long = FALLBACK_L
     private var cePerTick: ClayEnergy = ClayEnergy.ZERO
     private var recipeTier: Int = FALLBACK
     private var priority: Int = 0
+
+    fun priority(priority: Int): T {
+        this.priority = priority
+        return this as T
+    }
+
+    fun input(input: CItemRecipeInputV2): T {
+        this.itemInputs.add(input)
+        return this as T
+    }
+
+    fun input(stack: ItemStack) = this.input(CItemRecipeInputV2(listOf(stack), stack.count))
+    fun input(item: Item, amount: Int = 1) = input(ItemStack(item, amount))
+    fun input(metaItem: MetaItemClayium.MetaValueItem, amount: Int = 1) = input(metaItem.getStackForm(amount))
+    fun input(metaTileEntity: MetaTileEntity, amount: Int = 1) = input(metaTileEntity.asStackForm(amount))
+    fun input(block: Block, amount: Int = 1) = input(ItemStack(block, amount))
+//    fun input(oreDict: String, amount: Int = 1) = input(COreRecipeInput(oreDict, amount))
+//    fun input(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1) = input(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
 
     fun build(): RecipeV2 {
         val outputs = this.outputs

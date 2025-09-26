@@ -56,7 +56,7 @@ open class WorkableV2(
             if (!ingredient.isConsumable) continue
             for (i in 0..<inputInventory.slots) {
                 val stack = inputInventory.getStackInSlot(i)
-                if (ingredient.testItemStackAndAmount(stack)) {
+                if (ingredient.test(stack)) {
                     inputInventory.extractItem(i, ingredient.consumeAmount, false)
                     break
                 }
