@@ -10,13 +10,20 @@ import net.minecraft.util.ResourceLocation
  */
 class ButtonUiTextures(
     location: ResourceLocation,
-    v: Int,
     u: Int,
+    v: Int,
     fileWidth: Int = 256,
     fileHeight: Int = 256,
     buttonWidth: Int = 16,
     buttonHeight: Int = 16,
 ) {
+
+    init {
+        println("Disabled UV: ($u, $v")
+        println("Enabled UV: ($u, ${v + buttonHeight})")
+        println("Hovered UV: ($u, ${v + buttonHeight * 2})")
+    }
+
     val disabled: UITexture = UITexture.builder()
         .location(location)
         .imageSize(fileWidth, fileHeight)
