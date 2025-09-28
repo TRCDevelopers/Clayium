@@ -1,7 +1,19 @@
 package io.github.trcdevelopers.clayium.common.blocks.clayworktable
 
+import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.factory.PosGuiData
+import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandlers
+import com.cleanroommc.modularui.widget.ParentWidget
+import com.cleanroommc.modularui.widgets.layout.Flow
+import io.github.trcdevelopers.clayium.common.gui.ButtonToggleable
+import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import io.github.trcdevelopers.clayium.common.recipe.CWTRecipes
 import io.github.trcdevelopers.clayium.common.recipe.ClayWorkTableRecipe
+import io.github.trcdevelopers.clayium.integration.modularui.IGuiHolderClayium
+import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -13,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemStackHandler
 
-class TileClayWorkTable : TileEntity() {
+class TileClayWorkTable : TileEntity(), IGuiHolderClayium<PosGuiData> {
 
     private val itemHandler = ItemStackHandler(4)
     var craftingProgress = 0
@@ -100,7 +112,60 @@ class TileClayWorkTable : TileEntity() {
         }
     }
 
+    override fun buildUI(data: PosGuiData, syncManager: PanelSyncManager): ModularPanel {
+        syncManager.syncValue("craftingProgress", SyncHandlers.intNumber({ craftingProgress }, { craftingProgress = it }))
+        syncManager.syncValue("requiredProgress", SyncHandlers.intNumber({ requiredProgress }, { requiredProgress = it }))
+        return ModularPanel.defaultPanel("clay_work_table")
+            .child(Flow.column().margin(7).sizeRel(1f)
+                .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
+                    .child(IKey.lang("tile.clayium.clay_work_table.name").asWidget().align(Alignment.TopLeft))
+                    .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
+                    .child(MuiSlots.itemSlotBuilder(this.itemHandler, INPUT_SLOT)
+                        .putOnly().singletonSlotGroup()
+                        .buildLarge()
+                        .left(2).top(15))
+                    .child(MuiSlots.itemSlotBuilder(this.itemHandler, OUTPUT1_SLOT)
+                        .takeOnly().singletonSlotGroup()
+                        .buildLarge()
+                        .right(2).top(15))
+                    .child(MuiSlots.itemSlotBuilder(this.itemHandler, OUTPUT2_SLOT)
+                        .takeOnly().singletonSlotGroup()
+                        .build()
+                        .right(10).top(44)
+                    )
+                    .child(MuiSlots.itemSlotBuilder(this.itemHandler, TOOL_SLOT)
+                        // TODO: Use capability
+                        .filter { s -> ClayWorkTableMethod.entries.any { s.item in it.requiredTools } }
+                        .build()
+                        .right(73).top(10))
+                    .child(Flow.row().size(80, 16).pos(33, 45)
+                        .also {
+                            for (i in 0..<5) {
+                                it.child(ButtonToggleable()
+                                    .size(16, 16)
+                                    .clickableIf { canPushButton(i) }
+                                    .background(ClayGuiTextures.WorkTable.LIST[i].enabled)
+                                    .hoverBackground(ClayGuiTextures.WorkTable.LIST[i].hovered)
+                                    .unclickableBackground(ClayGuiTextures.WorkTable.LIST[i].disabled)
+                                    .onMousePressed {
+                                        this.pushButton(data.player, i)
+                                        true
+                                    }
+                                )
+                            }
+                        }
+                    )
+                )
+                .child(MuiSlots.playerInventory(0))
+            )
+    }
+
     companion object {
+        private const val INPUT_SLOT = 0
+        private const val TOOL_SLOT = 1
+        private const val OUTPUT1_SLOT = 2
+        private const val OUTPUT2_SLOT = 3
+
         private val ITEM_HANDLER_CAPABILITY = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
     }
 }

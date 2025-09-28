@@ -121,6 +121,16 @@ object ClayGuiTextures {
         val SNEAK_HOVERED = button(176, 32)
     }
 
+    object WorkTable {
+        val ROLLING_HAND = ButtonUiTextures(clayiumId("gui/clayworktable"), 176, 32)
+        val PUNCH = ButtonUiTextures(clayiumId("gui/clayworktable"), 176 + 16, 32)
+        val ROLLING_PIN = ButtonUiTextures(clayiumId("gui/clayworktable"), 176 + 32, 32)
+        val CUT_PLATE = ButtonUiTextures(clayiumId("gui/clayworktable"), 176 + 48, 32)
+        val CUT_DISC = ButtonUiTextures(clayiumId("gui/clayworktable"), 176 + 64, 32)
+        val CUT = ButtonUiTextures(clayiumId("gui/clayworktable"), 176, 80)
+        val LIST = arrayOf(ROLLING_HAND, PUNCH, ROLLING_PIN, CUT_PLATE, CUT_DISC, CUT)
+    }
+
     private fun slotTexture(): UITexture.Builder = UITexture.builder()
         .location(MOD_ID, "gui/slot")
         .imageSize(256, 256)
