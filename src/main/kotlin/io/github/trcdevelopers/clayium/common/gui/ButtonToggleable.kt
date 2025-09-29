@@ -1,8 +1,10 @@
 package io.github.trcdevelopers.clayium.common.gui
 
+import com.cleanroommc.modularui.api.ITheme
 import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.screen.ModularScreen
+import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import java.util.function.BooleanSupplier
 
@@ -13,11 +15,11 @@ class ButtonToggleable : ButtonWidget<ButtonToggleable>() {
 
     private val clickable get() = this.clickableSupplier.asBoolean
 
-    override fun getBackground(): IDrawable? {
-        if (this.clickable) {
-            return unclickableBackground ?: super.getBackground()
+    override fun getCurrentBackground(theme: ITheme?, widgetTheme: WidgetTheme?): IDrawable? {
+        if (!this.clickable) {
+            return unclickableBackground ?: super.getCurrentBackground(theme, widgetTheme)
         }
-        return super.getBackground()
+        return super.getCurrentBackground(theme, widgetTheme)
     }
 
     fun clickableIf(supplier: BooleanSupplier): ButtonToggleable {

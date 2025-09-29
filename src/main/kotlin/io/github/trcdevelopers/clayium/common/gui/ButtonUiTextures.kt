@@ -18,12 +18,6 @@ class ButtonUiTextures(
     buttonHeight: Int = 16,
 ) {
 
-    init {
-        println("Disabled UV: ($u, $v")
-        println("Enabled UV: ($u, ${v + buttonHeight})")
-        println("Hovered UV: ($u, ${v + buttonHeight * 2})")
-    }
-
     val disabled: UITexture = UITexture.builder()
         .location(location)
         .imageSize(fileWidth, fileHeight)

@@ -1,17 +1,23 @@
 package io.github.trcdevelopers.clayium.common.blocks.clayworktable
 
 import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.api.widget.IGuiAction
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
+import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.layout.Flow
+import com.cleanroommc.modularui.widgets.slot.SlotGroup
+import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.common.gui.ButtonToggleable
 import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import io.github.trcdevelopers.clayium.common.recipe.CWTRecipes
 import io.github.trcdevelopers.clayium.common.recipe.ClayWorkTableRecipe
+import io.github.trcdevelopers.clayium.integration.jei.JeiPlugin
 import io.github.trcdevelopers.clayium.integration.modularui.IGuiHolderClayium
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import net.minecraft.entity.player.EntityPlayer
@@ -56,6 +62,10 @@ class TileClayWorkTable : TileEntity(), IGuiHolderClayium<PosGuiData> {
     @SideOnly(Side.CLIENT)
     fun getCraftingProgressScaled(scale: Int): Int {
         return if (requiredProgress == 0) 0 else craftingProgress * scale / requiredProgress
+    }
+
+    fun getNormalizedProgress(): Double {
+        return if (requiredProgress == 0) 0.0 else craftingProgress.toDouble() / requiredProgress.toDouble()
     }
 
     fun canPushButton(id: Int): Boolean {
@@ -115,13 +125,26 @@ class TileClayWorkTable : TileEntity(), IGuiHolderClayium<PosGuiData> {
     override fun buildUI(data: PosGuiData, syncManager: PanelSyncManager): ModularPanel {
         syncManager.syncValue("craftingProgress", SyncHandlers.intNumber({ craftingProgress }, { craftingProgress = it }))
         syncManager.syncValue("requiredProgress", SyncHandlers.intNumber({ requiredProgress }, { requiredProgress = it }))
+
+        val progressWidget = ProgressWidget().size(80, 15)
+            .texture(ClayGuiTextures.WorkTable.PROGRESS_BAR_EMPTY, ClayGuiTextures.WorkTable.PROGRESS_BAR_FULL, 80)
+            .progress(this::getNormalizedProgress)
+        if (Mods.JustEnoughItems.isModLoaded) {
+            progressWidget.addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
+                .listenGuiAction(IGuiAction.MousePressed { _ ->
+                    if (!progressWidget.isBelowMouse) return@MousePressed false
+                    JeiPlugin.jeiRuntime.recipesGui.showCategories(listOf("clayium.clay_work_table"))
+                    return@MousePressed true
+                })
+        }
+
         return ModularPanel.defaultPanel("clay_work_table")
             .child(Flow.column().margin(7).sizeRel(1f)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.lang("tile.clayium.clay_work_table.name").asWidget().align(Alignment.TopLeft))
                     .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
                     .child(MuiSlots.itemSlotBuilder(this.itemHandler, INPUT_SLOT)
-                        .putOnly().singletonSlotGroup()
+                        .singletonSlotGroup()
                         .buildLarge()
                         .left(2).top(15))
                     .child(MuiSlots.itemSlotBuilder(this.itemHandler, OUTPUT1_SLOT)
@@ -131,26 +154,30 @@ class TileClayWorkTable : TileEntity(), IGuiHolderClayium<PosGuiData> {
                     .child(MuiSlots.itemSlotBuilder(this.itemHandler, OUTPUT2_SLOT)
                         .takeOnly().singletonSlotGroup()
                         .build()
-                        .right(10).top(44)
+                        .right(6).top(44)
                     )
                     .child(MuiSlots.itemSlotBuilder(this.itemHandler, TOOL_SLOT)
+                        .singletonSlotGroup(SlotGroup.STORAGE_SLOT_PRIO + 1)
                         // TODO: Use capability
                         .filter { s -> ClayWorkTableMethod.entries.any { s.item in it.requiredTools } }
                         .build()
                         .right(73).top(10))
+                    .child(progressWidget.pos(38, 20))
                     .child(Flow.row().size(80, 16).pos(33, 45)
                         .also {
-                            for (i in 0..<5) {
+                            for (i in 0..<6) {
                                 it.child(ButtonToggleable()
                                     .size(16, 16)
                                     .clickableIf { canPushButton(i) }
                                     .background(ClayGuiTextures.WorkTable.LIST[i].enabled)
                                     .hoverBackground(ClayGuiTextures.WorkTable.LIST[i].hovered)
                                     .unclickableBackground(ClayGuiTextures.WorkTable.LIST[i].disabled)
-                                    .onMousePressed {
-                                        this.pushButton(data.player, i)
-                                        true
-                                    }
+                                    .syncHandler(InteractionSyncHandler()
+                                        .setOnMousePressed { mouse ->
+                                            if (!mouse.isClient && canPushButton(i)) {
+                                                pushButton(data.player, i)
+                                            }
+                                        })
                                 )
                             }
                         }

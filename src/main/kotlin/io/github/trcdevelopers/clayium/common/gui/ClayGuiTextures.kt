@@ -122,13 +122,27 @@ object ClayGuiTextures {
     }
 
     object WorkTable {
-        val ROLLING_HAND = ButtonUiTextures(clayiumId("gui/clayworktable"), 176, 32)
-        val PUNCH = ButtonUiTextures(clayiumId("gui/clayworktable"), 176 + 16, 32)
-        val ROLLING_PIN = ButtonUiTextures(clayiumId("gui/clayworktable"), 176 + 32, 32)
-        val CUT_PLATE = ButtonUiTextures(clayiumId("gui/clayworktable"), 176 + 48, 32)
-        val CUT_DISC = ButtonUiTextures(clayiumId("gui/clayworktable"), 176 + 64, 32)
-        val CUT = ButtonUiTextures(clayiumId("gui/clayworktable"), 176, 80)
+        val ROLLING_HAND = ButtonUiTextures(clayiumId("gui/clay_work_table_icons"), 80, 0)
+        val PUNCH = ButtonUiTextures(clayiumId("gui/clay_work_table_icons"), 80 + 16, 0)
+        val ROLLING_PIN = ButtonUiTextures(clayiumId("gui/clay_work_table_icons"), 80 + 32, 0)
+        val CUT_PLATE = ButtonUiTextures(clayiumId("gui/clay_work_table_icons"), 80 + 48, 0)
+        val CUT_DISC = ButtonUiTextures(clayiumId("gui/clay_work_table_icons"), 80 + 64, 0)
+        val CUT = ButtonUiTextures(clayiumId("gui/clay_work_table_icons"), 80 + 80, 0)
         val LIST = arrayOf(ROLLING_HAND, PUNCH, ROLLING_PIN, CUT_PLATE, CUT_DISC, CUT)
+
+        val PROGRESS_BAR_EMPTY: UITexture = UITexture.builder()
+            .location(clayiumId("gui/clay_work_table_icons"))
+            .imageSize(256, 256)
+            .uv(0, 0, 80, 15)
+            .canApplyTheme()
+            .build()
+
+        val PROGRESS_BAR_FULL: UITexture = UITexture.builder()
+            .location(clayiumId("gui/clay_work_table_icons"))
+            .imageSize(256, 256)
+            .uv(0, 16, 80, 16)
+            .canApplyTheme()
+            .build()
     }
 
     private fun slotTexture(): UITexture.Builder = UITexture.builder()
