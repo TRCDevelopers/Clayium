@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.projectile.EntityThrowable
 import net.minecraft.init.Blocks
 import net.minecraft.init.SoundEvents
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.DamageSource
 import net.minecraft.util.EnumParticleTypes
 import net.minecraft.util.SoundCategory
@@ -46,6 +47,9 @@ class EntityThrowableClayBullet : EntityThrowable {
     }
 
     override fun onUpdate() {
+        this.lastTickPosX = this.posX
+        this.lastTickPosY = this.posY
+        this.lastTickPosZ = this.posZ
         super.onUpdate()
         this.age++
         if (this.age > this.lifespan && !this.world.isRemote) {
@@ -60,6 +64,7 @@ class EntityThrowableClayBullet : EntityThrowable {
             this.spawnFlyingDustParticleClient()
             this.spawnTwinklingParticleClient()
         }
+        println("Motion: (${this.motionX}, ${this.motionY}, ${this.motionZ}), pos: (${this.posX}, ${this.posY}, ${this.posZ}), lastPos: (${this.lastTickPosX}, ${this.lastTickPosY}, ${this.lastTickPosZ})")
     }
 
     override fun onImpact(result: RayTraceResult) {
@@ -85,6 +90,20 @@ class EntityThrowableClayBullet : EntityThrowable {
             this.spawnImpactExplodeParticle()
         }
         this.setDead()
+    }
+
+    override fun writeEntityToNBT(compound: NBTTagCompound) {
+        super.writeEntityToNBT(compound)
+        compound.setInteger("lifespan", this.lifespan)
+        compound.setInteger("damage", this.damage)
+        compound.setBoolean("critical", this.critical)
+    }
+
+    override fun readEntityFromNBT(compound: NBTTagCompound) {
+        super.readEntityFromNBT(compound)
+        this.lifespan = compound.getInteger("lifespan")
+        this.damage = compound.getInteger("damage")
+        this.critical = compound.getBoolean("critical")
     }
 
     fun onEntityHit(entity: Entity) {
