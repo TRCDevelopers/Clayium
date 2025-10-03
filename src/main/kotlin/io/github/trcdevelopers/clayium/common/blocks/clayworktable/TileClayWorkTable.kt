@@ -146,23 +146,23 @@ class TileClayWorkTable : TileEntity(), IGuiHolderClayium<PosGuiData> {
                     .child(MuiSlots.itemSlotBuilder(this.itemHandler, INPUT_SLOT)
                         .singletonSlotGroup()
                         .buildLarge()
-                        .left(2).top(15))
+                        .left(5).top(18))
                     .child(MuiSlots.itemSlotBuilder(this.itemHandler, OUTPUT1_SLOT)
                         .takeOnly().singletonSlotGroup()
                         .buildLarge()
-                        .right(2).top(15))
+                        .right(5).top(18))
                     .child(MuiSlots.itemSlotBuilder(this.itemHandler, OUTPUT2_SLOT)
                         .takeOnly().singletonSlotGroup()
                         .build()
-                        .right(6).top(44)
+                        .right(9).top(47)
                     )
                     .child(MuiSlots.itemSlotBuilder(this.itemHandler, TOOL_SLOT)
                         .singletonSlotGroup(SlotGroup.STORAGE_SLOT_PRIO + 1)
                         // TODO: Use capability
                         .filter { s -> ClayWorkTableMethod.entries.any { s.item in it.requiredTools } }
                         .build()
-                        .right(73).top(10))
-                    .child(progressWidget.pos(38, 20))
+                        .right(72).top(9))
+                    .child(progressWidget.pos(41, 22))
                     .child(Flow.row().size(80, 16).pos(33, 45)
                         .also {
                             for (i in 0..<6) {
