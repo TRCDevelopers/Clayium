@@ -133,14 +133,7 @@ object ClayGuiTextures {
         val PROGRESS_BAR_EMPTY: UITexture = UITexture.builder()
             .location(clayiumId("gui/clay_work_table_icons"))
             .imageSize(256, 256)
-            .uv(0, 0, 80, 15)
-            .canApplyTheme()
-            .build()
-
-        val PROGRESS_BAR_FULL: UITexture = UITexture.builder()
-            .location(clayiumId("gui/clay_work_table_icons"))
-            .imageSize(256, 256)
-            .uv(0, 16, 80, 16)
+            .uv(0, 0, 80, 32)
             .canApplyTheme()
             .build()
     }

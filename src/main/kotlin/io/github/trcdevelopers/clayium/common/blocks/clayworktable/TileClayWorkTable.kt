@@ -126,8 +126,8 @@ class TileClayWorkTable : TileEntity(), IGuiHolderClayium<PosGuiData> {
         syncManager.syncValue("craftingProgress", SyncHandlers.intNumber({ craftingProgress }, { craftingProgress = it }))
         syncManager.syncValue("requiredProgress", SyncHandlers.intNumber({ requiredProgress }, { requiredProgress = it }))
 
-        val progressWidget = ProgressWidget().size(80, 15)
-            .texture(ClayGuiTextures.WorkTable.PROGRESS_BAR_EMPTY, ClayGuiTextures.WorkTable.PROGRESS_BAR_FULL, 80)
+        val progressWidget: ProgressWidget = ProgressWidget().size(80, 16)
+            .texture(ClayGuiTextures.WorkTable.PROGRESS_BAR_EMPTY, 80)
             .progress(this::getNormalizedProgress)
         if (Mods.JustEnoughItems.isModLoaded) {
             progressWidget.addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
