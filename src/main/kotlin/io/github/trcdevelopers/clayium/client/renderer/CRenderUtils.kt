@@ -83,7 +83,7 @@ object CRenderUtils {
             a = rgba[3]
 
             // Use non-buffer version, because buffer version is shifted by 8 bits.
-            this.textureId = GL11.glGetInteger(GL11.GL_TEXTURE_2D)
+            this.textureId = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D)
             this.shadeModel = GL11.glGetInteger(GL11.GL_SHADE_MODEL)
         }
     }
