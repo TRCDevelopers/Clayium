@@ -728,10 +728,10 @@ item.clayium.clay_steel_shovel.tooltip4=モード 2 : 任意範囲採掘モー�
 item.clayium.clay_steel_shovel.tooltip5=採掘したい形に粘土ブロックを設置してから、
 item.clayium.clay_steel_shovel.tooltip6=それを右クリックすることで指定する
 
-item.clayium.itemClayShooter0.name=粘土銃
-item.clayium.itemClayShooter1.name=発展粘土銃
-item.clayium.itemClayShooter2.name=スナイパー粘土銃
-item.clayium.itemClayShooter3.name=スナイパー粘土銃プロ
+item.clayium.clay_gun_basic.name=粘土銃
+item.clayium.clay_gun_advanced.name=発展粘土銃
+item.clayium.clay_gun_sniper.name=スナイパー粘土銃
+item.clayium.clay_gun_sniper_pro.name=スナイパー粘土銃プロ
 item.clayium.itemInstantTeleporter.name=テレポートシューター
 item.clayium.itemInstantTeleporter.tooltip.line1=着弾点にテレポートする
 

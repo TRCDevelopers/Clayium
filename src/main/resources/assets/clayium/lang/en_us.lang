@@ -862,10 +862,10 @@ item.clayium.clay_steel_shovel.tooltip4=Mode 2 \: arbitrary area mode.
 item.clayium.clay_steel_shovel.tooltip5=You can set up the mining area by right-clicking Clay Blocks
 item.clayium.clay_steel_shovel.tooltip6=which are constructed in the shape you need.
 
-item.clayium.itemClayShooter0.name=Basic Clay Shooter
-item.clayium.itemClayShooter1.name=Advanced Clay Shooter
-item.clayium.itemClayShooter2.name=Sniper Clay Shooter
-item.clayium.itemClayShooter3.name=Sniper Clay Shooter Pro
+item.clayium.clay_gun_basic.name=Basic Clay Shooter
+item.clayium.clay_gun_advanced.name=Advanced Clay Shooter
+item.clayium.clay_gun_sniper.name=Sniper Clay Shooter
+item.clayium.clay_gun_sniper_pro.name=Sniper Clay Shooter Pro
 item.clayium.itemInstantTeleporter.name=Instant Teleporter
 item.clayium.itemInstantTeleporter.tooltip.line1=Teleports you to the point of impact.
 
