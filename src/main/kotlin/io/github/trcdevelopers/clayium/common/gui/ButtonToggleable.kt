@@ -1,10 +1,12 @@
 package io.github.trcdevelopers.clayium.common.gui
 
 import com.cleanroommc.modularui.api.ITheme
+import com.cleanroommc.modularui.api.UpOrDown
 import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.screen.ModularScreen
 import com.cleanroommc.modularui.theme.WidgetTheme
+import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import java.util.function.BooleanSupplier
 
@@ -15,7 +17,7 @@ class ButtonToggleable : ButtonWidget<ButtonToggleable>() {
 
     private val clickable get() = this.clickableSupplier.asBoolean
 
-    override fun getCurrentBackground(theme: ITheme?, widgetTheme: WidgetTheme?): IDrawable? {
+    override fun getCurrentBackground(theme: ITheme?, widgetTheme: WidgetThemeEntry<*>?): IDrawable? {
         if (!this.clickable) {
             return unclickableBackground ?: super.getCurrentBackground(theme, widgetTheme)
         }
@@ -56,7 +58,7 @@ class ButtonToggleable : ButtonWidget<ButtonToggleable>() {
         return if (this.clickable) super.onKeyTapped(typedChar, keyCode) else Interactable.Result.IGNORE
     }
 
-    override fun onMouseScroll(scrollDirection: ModularScreen.UpOrDown?, amount: Int): Boolean {
+    override fun onMouseScroll(scrollDirection: UpOrDown?, amount: Int): Boolean {
         return if (this.clickable) super.onMouseScroll(scrollDirection, amount) else false
     }
 

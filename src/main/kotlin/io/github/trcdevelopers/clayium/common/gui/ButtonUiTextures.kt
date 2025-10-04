@@ -21,18 +21,18 @@ class ButtonUiTextures(
     val disabled: UITexture = UITexture.builder()
         .location(location)
         .imageSize(fileWidth, fileHeight)
-        .uv(u, v, buttonWidth, buttonHeight)
+        .xy(u, v, buttonWidth, buttonHeight)
         .build()
 
     val enabled: UITexture = UITexture.builder()
         .location(location)
         .imageSize(fileWidth, fileHeight)
-        .uv(u, v + buttonHeight, buttonWidth, buttonHeight)
+        .xy(u, v + buttonHeight, buttonWidth, buttonHeight)
         .build()
 
     val hovered: UITexture = UITexture.builder()
         .location(location)
         .imageSize(fileWidth, fileHeight)
-        .uv(u, v + buttonHeight * 2, buttonWidth, buttonHeight)
+        .xy(u, v + buttonHeight * 2, buttonWidth, buttonHeight)
         .build()
 }
