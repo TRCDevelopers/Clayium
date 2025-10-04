@@ -56,7 +56,7 @@ class LaserEnergyHolder(
         return super.getCapability(capability, facing)
     }
 
-    fun createLpTextWidget(syncManager: PanelSyncManager): TextWidget {
+    fun createLpTextWidget(syncManager: PanelSyncManager): TextWidget<*> {
         syncManager.syncValue("laser_power", SyncHandlers.doubleNumber(
             { storedPower.energy },
             { storedPower = LaserEnergy(it) }

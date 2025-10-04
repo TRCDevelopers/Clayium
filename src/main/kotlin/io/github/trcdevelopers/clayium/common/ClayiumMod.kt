@@ -20,7 +20,7 @@ import org.apache.logging.log4j.core.config.Configurator
     modLanguageAdapter = "io.github.chaosunity.forgelin.KotlinAdapter",
     dependencies = "required:forge@[14.23.5.2847,);" +
             "required-after:forgelin_continuous@[2.0.0.0,);" +
-            "required-after:modularui@[2.4.3,);" +
+            "required-after:modularui@[2.5.0,);" +
             "required-after:codechickenlib@[3.2.3,);" +
             "required-after:mixinbooter@[9.1,);" +
             "after:jei@[4.15.0,);" + "after:groovyscript@[1.1.3,);" +
