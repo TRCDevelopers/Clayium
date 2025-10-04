@@ -64,7 +64,6 @@ class EntityThrowableClayBullet : EntityThrowable {
             this.spawnFlyingDustParticleClient()
             this.spawnTwinklingParticleClient()
         }
-        println("Motion: (${this.motionX}, ${this.motionY}, ${this.motionZ}), pos: (${this.posX}, ${this.posY}, ${this.posZ}), lastPos: (${this.lastTickPosX}, ${this.lastTickPosY}, ${this.lastTickPosZ})")
     }
 
     override fun onImpact(result: RayTraceResult) {
@@ -143,18 +142,16 @@ class EntityThrowableClayBullet : EntityThrowable {
 
     private fun playImpactExplodeSound(speed: Float) {
         if (speed >= 0.5f && this.age <= this.lifespan) {
-            this.world.playSound(null, this.position, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.6f * this.damage, 0.5f / (this.rand.nextFloat() * 0.4f + 0.6f))
+            this.world.playSound(null, this.position, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.6f * speed, 0.5f / (this.rand.nextFloat() * 0.4f + 0.6f))
         }
     }
 
     private fun playHitSound() {
-        val thrower = this.thrower
-        if (thrower !is EntityPlayer) return
-        this.world.playSound(thrower, this.thrower.position, SoundEvents.ENTITY_PLAYER_HURT, SoundCategory.PLAYERS, 0.1f * this.damage, 0.7f)
-        this.world.playSound(thrower, this.thrower.position, SoundEvents.ENTITY_BLAZE_HURT, SoundCategory.PLAYERS, 0.05f * this.damage, 0.5f)
-        this.world.playSound(thrower, this.thrower.position, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.PLAYERS, 0.2f * this.damage, 1.2f)
-        this.world.playSound(thrower, this.thrower.position, SoundEvents.BLOCK_NOTE_HAT, SoundCategory.PLAYERS, 0.3f * this.damage, 1.3f)
-        this.world.playSound(thrower, this.thrower.position, SoundEvents.BLOCK_NOTE_SNARE, SoundCategory.PLAYERS, 0.1f * this.damage, 1.2f)
+        this.world.playSound(null, this.position, SoundEvents.ENTITY_PLAYER_HURT, SoundCategory.PLAYERS, 0.1f * this.damage, 0.7f)
+        this.world.playSound(null, this.position, SoundEvents.ENTITY_BLAZE_HURT, SoundCategory.PLAYERS, 0.05f * this.damage, 0.5f)
+        this.world.playSound(null, this.position, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.PLAYERS, 0.2f * this.damage, 1.2f)
+        this.world.playSound(null, this.position, SoundEvents.BLOCK_NOTE_HAT, SoundCategory.PLAYERS, 0.3f * this.damage, 1.3f)
+        this.world.playSound(null, this.position, SoundEvents.BLOCK_NOTE_SNARE, SoundCategory.PLAYERS, 0.1f * this.damage, 1.2f)
     }
 
     private fun playCriticalSound() {
