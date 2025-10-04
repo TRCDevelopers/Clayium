@@ -1,9 +1,8 @@
 package io.github.trcdevelopers.clayium.common.blocks.clayworktable
 
+import com.cleanroommc.modularui.factory.TileEntityGuiFactory
 import io.github.trcdevelopers.clayium.api.block.ITieredBlock
 import io.github.trcdevelopers.clayium.api.util.ClayTiers
-import io.github.trcdevelopers.clayium.common.ClayiumMod
-import io.github.trcdevelopers.clayium.common.GuiHandler
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
@@ -36,7 +35,7 @@ class BlockClayWorkTable : Block(Material.ROCK), ITieredBlock {
         hitX: Float, hitY: Float, hitZ: Float
     ): Boolean {
         if (worldIn.isRemote) return true
-        playerIn.openGui(ClayiumMod, GuiHandler.CLAY_WORK_TABLE, worldIn, pos.x, pos.y, pos.z)
+        TileEntityGuiFactory.INSTANCE.open(playerIn, pos)
         return true
     }
 
