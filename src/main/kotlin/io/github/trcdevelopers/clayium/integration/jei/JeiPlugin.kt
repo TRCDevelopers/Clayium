@@ -6,7 +6,6 @@ import io.github.trcdevelopers.clayium.api.unification.OreDictUnifier
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.client.gui.GuiClayCraftingBoard
-import io.github.trcdevelopers.clayium.client.gui.GuiClayWorkTable
 import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.metatileentities.SolarClayFabricatorMetaTileEntity
@@ -57,7 +56,6 @@ class JeiPlugin : IModPlugin {
         modRegistry.handleRecipes(ClayWorkTableRecipe::class.java, ::ClayWorkTableRecipeWrapper, ClayWorkTableRecipeCategory.UID)
         modRegistry.addRecipeCatalyst(ItemStack(ClayiumBlocks.CLAY_WORK_TABLE), ClayWorkTableRecipeCategory.UID)
         modRegistry.addRecipes(CWTRecipes.CLAY_WORK_TABLE.recipes, ClayWorkTableRecipeCategory.UID)
-        modRegistry.addRecipeClickArea(GuiClayWorkTable::class.java, 78, 29, 20, 16, ClayWorkTableRecipeCategory.UID)
 
         /* Clay Crafting Board */
         modRegistry.addRecipeCatalyst(ItemStack(ClayiumBlocks.CLAY_CRAFTING_BOARD), VanillaRecipeCategoryUid.CRAFTING)
