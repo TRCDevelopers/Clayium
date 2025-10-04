@@ -18,6 +18,7 @@ import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import io.github.trcdevelopers.clayium.common.recipe.CWTRecipes
 import io.github.trcdevelopers.clayium.common.recipe.ClayWorkTableRecipe
 import io.github.trcdevelopers.clayium.integration.jei.JeiPlugin
+import io.github.trcdevelopers.clayium.integration.jei.clayworktable.ClayWorkTableRecipeCategory
 import io.github.trcdevelopers.clayium.integration.modularui.IGuiHolderClayium
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import net.minecraft.entity.player.EntityPlayer
@@ -133,7 +134,7 @@ class TileClayWorkTable : TileEntity(), IGuiHolderClayium<PosGuiData> {
             progressWidget.addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
                 .listenGuiAction(IGuiAction.MousePressed { _ ->
                     if (!progressWidget.isBelowMouse) return@MousePressed false
-                    JeiPlugin.jeiRuntime.recipesGui.showCategories(listOf("clayium.clay_work_table"))
+                    JeiPlugin.jeiRuntime.recipesGui.showCategories(listOf(ClayWorkTableRecipeCategory.UID))
                     return@MousePressed true
                 })
         }
