@@ -9,7 +9,7 @@ enum class Mods(
     AE2(Names.AE2),
     Baubles(Names.BAUBLES),
     EnderIO(Names.ENDER_IO),
-    GregTech(Names.GREG_TECH),
+    GregTech(Names.GREGTECH),
     GroovyScript(Names.GROOVY_SCRIPT),
     JustEnoughItems(Names.JUST_ENOUGH_ITEMS),
     ModularUI(Names.MODULAR_UI),
@@ -22,7 +22,7 @@ enum class Mods(
         const val AE2 = "appliedenergistics2"
         const val BAUBLES = "baubles"
         const val ENDER_IO = "enderio"
-        const val GREG_TECH = "gregtech"
+        const val GREGTECH = "gregtech"
         const val GROOVY_SCRIPT = "groovyscript"
         const val JUST_ENOUGH_ITEMS = "jei"
         const val MODULAR_UI = "modularui"

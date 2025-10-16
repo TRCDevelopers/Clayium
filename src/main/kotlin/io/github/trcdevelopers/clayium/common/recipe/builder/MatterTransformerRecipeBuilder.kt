@@ -4,9 +4,13 @@ import io.github.trcdevelopers.clayium.api.unification.OreDictUnifier
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterial
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.unification.stack.UnificationEntry
+import io.github.trcdevelopers.clayium.api.util.Mods
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraftforge.fml.common.Optional
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuilder> {
 
@@ -23,6 +27,16 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
     fun defaultPrefix(orePrefix: OrePrefix): MatterTransformerRecipeBuilder {
         this.defaultPrefix = orePrefix
         return this
+    }
+
+    @OptIn(ExperimentalContracts::class)
+    fun verifyDefaultPrefixIsSet(defaultPrefix: OrePrefix?) {
+        contract {
+            returns() implies (defaultPrefix != null)
+        }
+        if (defaultPrefix == null) {
+            throw IllegalStateException("Default OrePrefix is not set, but a material only method is called.")
+        }
     }
 
     fun input(material: CMaterial) = input(defaultPrefix!!, material)
@@ -63,6 +77,12 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
 
     fun chain(orePrefix: OrePrefix, material: CMaterial) = chain(UnificationEntry(orePrefix, material).toString())
     fun chain(material: CMaterial) = chain(defaultPrefix!!, material)
+    @Optional.Method(modid = Mods.Names.GREGTECH)
+    fun chain(material: GtMaterial): MatterTransformerRecipeBuilder {
+        val defaultPrefix = this.defaultPrefix
+        verifyDefaultPrefixIsSet(defaultPrefix)
+        return chain("${defaultPrefix.camel}${material.toCamelCaseString()}")
+    }
 
     fun chain(block: Block): MatterTransformerRecipeBuilder {
         this.buildAndRegister()
@@ -90,6 +110,8 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
             .output(stack)
         return newBuilder
     }
+    @Optional.Method(modid = Mods.Names.GREGTECH)
+    fun chain(orePrefix: GtOrePrefix, material: GtMaterial) = chain(GtOreDictUnifier.get(orePrefix, material))
 
     fun chainIf(shouldChain: Boolean, oreDict: String): MatterTransformerRecipeBuilder {
         return if (shouldChain) chain(oreDict) else this

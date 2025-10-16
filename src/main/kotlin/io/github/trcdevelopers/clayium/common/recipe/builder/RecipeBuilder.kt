@@ -25,6 +25,10 @@ import net.minecraft.item.ItemStack
 import net.minecraftforge.fml.common.Optional
 import kotlin.math.pow
 
+typealias GtOrePrefix = gregtech.api.unification.ore.OrePrefix
+typealias GtMaterial = gregtech.api.unification.material.Material
+typealias GtOreDictUnifier = gregtech.api.unification.OreDictUnifier
+
 @Suppress("UNCHECKED_CAST", "FunctionName")
 abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     protected val inputs: MutableList<CRecipeInput>,
@@ -80,6 +84,8 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
         val entries = prefixes.map { UnificationEntry(it, material) }.toTypedArray()
         return inputs(CMultiOreRecipeInput(amount, *entries))
     }
+    @Optional.Method(modid = Mods.Names.GREGTECH)
+    fun input(orePrefix: GtOrePrefix, material: GtMaterial, amount: Int = 1) = this.input(GtOreDictUnifier.get(orePrefix, material, amount))
 
     fun notConsumable(stack: ItemStack) = inputs(CItemRecipeInput(stack, stack.count, isConsumable = false))
     fun notConsumable(item: Item, amount: Int = 1) = notConsumable(ItemStack(item, amount))
@@ -88,6 +94,8 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun notConsumable(block: Block, amount: Int = 1) = notConsumable(ItemStack(block, amount))
     fun notConsumable(oreDict: String, amount: Int = 1) = inputs(COreRecipeInput(oreDict, amount, isConsumable = false))
     fun notConsumable(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1) = notConsumable(UnificationEntry(orePrefix, material).toString(), amount)
+    @Optional.Method(modid = Mods.Names.GREGTECH)
+    fun notConsumable(orePrefix: GtOrePrefix, material: GtMaterial, amount: Int = 1) = this.notConsumable(GtOreDictUnifier.get(orePrefix, material, amount))
 
     fun outputs(vararg stacks: ItemStack): R {
         outputs.addAll(stacks)
@@ -101,6 +109,8 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun output(block: Block, amount: Int = 1) = output(ItemStack(block, amount))
     fun output(oreDict: String, amount: Int = 1) = outputs(OreDictUnifier.get(oreDict, amount))
     fun output(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1) = outputs(OreDictUnifier.get(orePrefix, material, amount))
+    @Optional.Method(modid = Mods.Names.GREGTECH)
+    fun output(orePrefix: GtOrePrefix, material: GtMaterial, amount: Int = 1) = this.output(GtOreDictUnifier.get(orePrefix, material, amount))
 
     fun chancedOutput(output: ItemStack, chance: Int): R {
         chancedOutputs.add(ChancedOutput(output, chance))
@@ -116,6 +126,8 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun chancedOutput(oreDict: String, chance: Int) = chancedOutput(oreDict, 1, chance)
     fun chancedOutput(orePrefix: OrePrefix, material: IMaterial, amount: Int, chance: Int): R = chancedOutput(OreDictUnifier.get(orePrefix, material, amount), chance)
     fun chancedOutput(orePrefix: OrePrefix, material: IMaterial, chance: Int) = chancedOutput(orePrefix, material, 1, chance)
+    @Optional.Method(modid = Mods.Names.GREGTECH)
+    fun chancedOutput(orePrefix: GtOrePrefix, material: GtMaterial, amount: Int, chance: Int): R = this.chancedOutput(GtOreDictUnifier.get(orePrefix, material, amount), chance)
 
     fun chancedLogic(logic: IChancedOutputLogic): R {
         chancedOutputLogic = logic
