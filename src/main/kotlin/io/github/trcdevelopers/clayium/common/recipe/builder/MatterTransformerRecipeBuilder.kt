@@ -39,8 +39,28 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
         }
     }
 
-    fun input(material: CMaterial) = input(defaultPrefix!!, material)
-    fun output(material: CMaterial) = output(defaultPrefix!!, material)
+    fun input(material: CMaterial): MatterTransformerRecipeBuilder {
+        val defaultPrefix = this.defaultPrefix
+        verifyDefaultPrefixIsSet(defaultPrefix)
+        return this.input(defaultPrefix, material)
+    }
+    fun output(material: CMaterial): MatterTransformerRecipeBuilder {
+        val defaultPrefix = this.defaultPrefix
+        verifyDefaultPrefixIsSet(defaultPrefix)
+        return this.output(defaultPrefix, material)
+    }
+    @Optional.Method(modid = Mods.Names.GREGTECH)
+    fun input(material: GtMaterial): MatterTransformerRecipeBuilder {
+        val defaultPrefix = this.defaultPrefix
+        verifyDefaultPrefixIsSet(defaultPrefix)
+        return this.input("${defaultPrefix.camel}${material.toCamelCaseString()}")
+    }
+    @Optional.Method(modid = Mods.Names.GREGTECH)
+    fun output(material: GtMaterial): MatterTransformerRecipeBuilder {
+        val defaultPrefix = this.defaultPrefix
+        verifyDefaultPrefixIsSet(defaultPrefix)
+        return this.output("${defaultPrefix.camel}${material.toCamelCaseString()}")
+    }
 
     /**
      * Returns a new builder instance with the current output set as the input,
@@ -76,7 +96,11 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
     }
 
     fun chain(orePrefix: OrePrefix, material: CMaterial) = chain(UnificationEntry(orePrefix, material).toString())
-    fun chain(material: CMaterial) = chain(defaultPrefix!!, material)
+    fun chain(material: CMaterial): MatterTransformerRecipeBuilder {
+        val defaultPrefix = this.defaultPrefix
+        verifyDefaultPrefixIsSet(defaultPrefix)
+        return chain(defaultPrefix, material)
+    }
     @Optional.Method(modid = Mods.Names.GREGTECH)
     fun chain(material: GtMaterial): MatterTransformerRecipeBuilder {
         val defaultPrefix = this.defaultPrefix
