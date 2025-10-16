@@ -1,8 +1,8 @@
 package io.github.trcdevelopers.clayium.client.renderer
 
 import net.minecraft.client.renderer.GlStateManager
+import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11
-import java.nio.ByteBuffer
 
 object CRenderUtils {
     fun enableTranslucent() {
@@ -43,7 +43,6 @@ object CRenderUtils {
     }
 
     fun restoreStates(states: GlStatesInformation) {
-        // use GlStateManager
         if (states.blend) GlStateManager.enableBlend() else GlStateManager.disableBlend()
         if (states.lighting) GlStateManager.enableLighting() else GlStateManager.disableLighting()
         if (states.texture2D) GlStateManager.enableTexture2D() else GlStateManager.disableTexture2D()
@@ -76,20 +75,16 @@ object CRenderUtils {
             // Minimal size 16.
             // java.lang.IllegalArgumentException: Number of remaining buffer elements is 4, must be at least 16.
             // Because at most 16 elements can be returned, a buffer with at least 16 elements is required, regardless of actual returned element count
-            val rgba = ByteBuffer.allocateDirect(4 * 16).asFloatBuffer()
+            val rgba = BufferUtils.createFloatBuffer(16)
             GL11.glGetFloat(GL11.GL_CURRENT_COLOR, rgba)
             r = rgba[0]
             g = rgba[1]
             b = rgba[2]
             a = rgba[3]
 
-            val textureId = ByteBuffer.allocateDirect(4 * 16).asIntBuffer()
-            GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, textureId)
-            this.textureId = textureId[0]
-
-            val shadeModel = ByteBuffer.allocateDirect(4 * 16).asIntBuffer()
-            GL11.glGetInteger(GL11.GL_SHADE_MODEL, shadeModel)
-            this.shadeModel = shadeModel[0]
+            // Use non-buffer version, because buffer version is shifted by 8 bits.
+            this.textureId = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D)
+            this.shadeModel = GL11.glGetInteger(GL11.GL_SHADE_MODEL)
         }
     }
 }

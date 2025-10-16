@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Auto Labeling
-        uses: actions/labeler@v5.0.0
+        uses: actions/labeler@v6.0.1
         with:
           configuration-path: .github/labeler.yaml
       - name: Check for Merge-Blocking Labels # blocks merge if present

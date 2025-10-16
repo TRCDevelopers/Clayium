@@ -66,16 +66,16 @@ fun tradeIcon() = UITexture.builder()
     .location(ResourceLocation("textures/gui/container/villager.png"))
     .imageSize(256, 256)
 
-private val TRADE_DISABLED = tradeIcon().uv(215, 3, 22, 15).build()
-private val TRADE_ENABLED = tradeIcon().uv(86, 24, 22, 15).build()
+private val TRADE_DISABLED = tradeIcon().xy(215, 3, 22, 15).build()
+private val TRADE_ENABLED = tradeIcon().xy(86, 24, 22, 15).build()
 
-private val NEXT = tradeIcon().uv(177, 2, 10, 15).build()
-private val NEXT_SELECTED = tradeIcon().uv(189, 2, 10, 15).build()
-private val NEXT_DISABLED = tradeIcon().uv(201, 2, 10, 15).build()
+private val NEXT = tradeIcon().xy(177, 2, 10, 15).build()
+private val NEXT_SELECTED = tradeIcon().xy(189, 2, 10, 15).build()
+private val NEXT_DISABLED = tradeIcon().xy(201, 2, 10, 15).build()
 
-private val PREV = tradeIcon().uv(177, 21, 10, 15).build()
-private val PREV_SELECTED = tradeIcon().uv(189, 21, 10, 15).build()
-private val PREV_DISALBED = tradeIcon().uv(201, 21, 10, 15).build()
+private val PREV = tradeIcon().xy(177, 21, 10, 15).build()
+private val PREV_SELECTED = tradeIcon().xy(189, 21, 10, 15).build()
+private val PREV_DISALBED = tradeIcon().xy(201, 21, 10, 15).build()
 
 private lateinit var sideQuads: List<BakedQuad>
 private lateinit var topQuad: BakedQuad

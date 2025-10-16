@@ -1,6 +1,6 @@
 package io.github.trcdevelopers.clayium.integration.modularui
 
-import com.cleanroommc.modularui.integration.jei.JeiRecipeTransferHandler
+import com.cleanroommc.modularui.integration.recipeviewer.RecipeViewerRecipeTransferHandler
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.screen.ModularScreen
 import mezz.jei.api.gui.IRecipeLayout
@@ -10,7 +10,7 @@ import mezz.jei.transfer.RecipeTransferErrorTooltip
 @Suppress("UnstableApiUsage")
 class ModularScreenClayium(
     panel: ModularPanel
-) : ModularScreen(panel), JeiRecipeTransferHandler {
+) : ModularScreen(panel), RecipeViewerRecipeTransferHandler {
     init {
         this.useTheme(ModularUiInit.CLAYIUM_DEFAULT_THEME)
     }

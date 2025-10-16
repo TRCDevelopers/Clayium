@@ -93,7 +93,7 @@ class SolarClayFabricatorMetaTileEntity(
             super.completeWork()
         }
 
-        fun createCeTextWidget(syncManager: PanelSyncManager): TextWidget {
+        fun createCeTextWidget(syncManager: PanelSyncManager): TextWidget<*> {
             syncManager.syncValue("clayEnergy", SyncHandlers.longNumber(
                 { clayEnergy.energy },
                 { clayEnergy = ClayEnergy(it) }
