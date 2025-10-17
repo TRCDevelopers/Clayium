@@ -1,5 +1,8 @@
 package io.github.trcdevelopers.clayium.common.loaders.recipe
 
+import io.github.trcdevelopers.clayium.api.util.Mods
+import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtBlastFurnaceRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtMatterTransformerRecipeLoader
 import io.github.trcdevelopers.clayium.common.recipe.handler.MaterialRecipeHandler
 
 object CRecipeLoader {
@@ -36,5 +39,10 @@ object CRecipeLoader {
         WireDrawingRecipeLoader.registerRecipes()
 
         ClayGadgetsRecipeLoader.registerRecipes()
+
+        if (Mods.GregTech.isModLoaded) {
+            GtBlastFurnaceRecipeLoader.registerRecipes()
+            GtMatterTransformerRecipeLoader.registerRecipes()
+        }
     }
 }

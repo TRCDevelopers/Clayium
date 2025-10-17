@@ -11,7 +11,7 @@ import net.minecraft.init.Items
 object AlloySmelterRecipeLoader {
     fun registerRecipes() {
         val registry = CRecipes.ALLOY_SMELTER
-        val ingotDust = arrayOf(OrePrefix.ingot, OrePrefix.dust)
+        val ingotDust = listOf(OrePrefix.ingot, OrePrefix.dust)
         simpleAlloy()
             .input(ingotDust, CMaterials.copper, 3)
             .input(ingotDust, CMaterials.tin)
@@ -69,7 +69,7 @@ object AlloySmelterRecipeLoader {
             /* Conductive Iron */
             registry.builder()
                 .input(Items.REDSTONE)
-                .input(arrayOf(OrePrefix.ingot, OrePrefix.dust), CMaterials.iron)
+                .input(listOf(OrePrefix.ingot, OrePrefix.dust), CMaterials.iron)
                 .output(OrePrefix.ingot, CMarkerMaterials.conductiveIron)
                 .tier(6).defaultCEt().duration(100)
                 .buildAndRegister()

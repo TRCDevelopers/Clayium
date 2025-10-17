@@ -80,12 +80,17 @@ abstract class RecipeBuilder<R: RecipeBuilder<R>>(
     fun input(block: Block, amount: Int = 1) = input(ItemStack(block, amount))
     fun input(oreDict: String, amount: Int = 1) = inputs(COreRecipeInput(oreDict, amount))
     open fun input(orePrefix: OrePrefix, material: IMaterial, amount: Int = 1) = inputs(COreRecipeInput(UnificationEntry(orePrefix, material).toString(), amount))
-    fun input(prefixes: Array<OrePrefix>, material: IMaterial, amount: Int = 1): R {
-        val entries = prefixes.map { UnificationEntry(it, material) }.toTypedArray()
-        return inputs(CMultiOreRecipeInput(amount, *entries))
+    fun input(prefixes: List<OrePrefix>, material: IMaterial, amount: Int = 1): R {
+        val entries = prefixes.map { UnificationEntry(it, material) }
+        return inputs(CMultiOreRecipeInput.unifEntries(entries, amount))
     }
     @Optional.Method(modid = Mods.Names.GREGTECH)
     fun input(orePrefix: GtOrePrefix, material: GtMaterial, amount: Int = 1) = this.input(GtOreDictUnifier.get(orePrefix, material, amount))
+    @Optional.Method(modid = Mods.Names.GREGTECH)
+    fun input(prefixes: List<OrePrefix>, material: GtMaterial, amount: Int = 1): R {
+        val ores = prefixes.map { "${it.camel}${material.toCamelCaseString()}" }
+        return inputs(CMultiOreRecipeInput.oreNames(ores, amount))
+    }
 
     fun notConsumable(stack: ItemStack) = inputs(CItemRecipeInput(stack, stack.count, isConsumable = false))
     fun notConsumable(item: Item, amount: Int = 1) = notConsumable(ItemStack(item, amount))
