@@ -1,11 +1,9 @@
 package io.github.trcdevelopers.clayium.common.loaders.recipe
 
 import io.github.trcdevelopers.clayium.api.ClayEnergy
-import io.github.trcdevelopers.clayium.api.unification.material.CMarkerMaterials
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.util.ClayTiers
-import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.common.blocks.BlockCaReactorCoil
 import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
@@ -170,20 +168,5 @@ object ClayReactorRecipeLoader {
             .output(ClayiumBlocks.OVERCLOCKER.getItem(BlockCaReactorCoil.BlockType.OPA))
             .tier(13).CEtFactor(5.0).duration(1_000_000_000_000_000)
             .buildAndRegister()
-        if (Mods.EnderIO.isModLoaded) {
-            /* Energetic Alloy */
-            registry.builder()
-                .input(Items.REDSTONE)
-                .input(OrePrefix.ingot, CMaterials.gold)
-                .output(OrePrefix.ingot, CMarkerMaterials.energeticAlloy)
-                .tier(8).defaultCEt().duration(1_000_000_000)
-                .buildAndRegister()
-            registry.builder()
-                .input(Items.REDSTONE)
-                .input(OrePrefix.dust, CMaterials.gold)
-                .output(OrePrefix.ingot, CMarkerMaterials.energeticAlloy)
-                .tier(8).defaultCEt().duration(1_000_000_000)
-                .buildAndRegister()
-        }
     }
 }
