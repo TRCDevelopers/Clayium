@@ -13,7 +13,7 @@ class CMultiOreRecipeInput(
 
     override val stacks by lazy {
         val oreStacks = oreIds.map {
-            OreDictionary.getOres(OreDictionary.getOreName(it)).map { it.copyWithSize(amount) }
+            OreDictionary.getOres(OreDictionary.getOreName(it)).map { s -> s.copyWithSize(amount) }
         }.flatten()
         oreStacks
     }
