@@ -30,19 +30,19 @@ object GtMatterTransformerRecipeLoader {
             .output(Materials.Naquadah)
             .chain(Materials.NaquadahEnriched)
             .chain(Materials.Naquadria)
-            .buildAndRegister();
+            .buildAndRegister()
 
         registry.builder()
             .defaultPrefix(OrePrefix.ingot)
             .tier(12).defaultCEt().duration(200)
             .input(Materials.Curium).output(Materials.Neutronium)
-            .buildAndRegister();
+            .buildAndRegister()
 
         registry.builder()
             .defaultPrefix(OrePrefix.dust)
             .tier(9).defaultCEt().duration(200)
             // Original version has Nikolite in between, but it's gone. So 2x duration and skip it.
             .input(Materials.Redstone).output(Materials.Electrotine)
-            .buildAndRegister();
+            .buildAndRegister()
     }
 }

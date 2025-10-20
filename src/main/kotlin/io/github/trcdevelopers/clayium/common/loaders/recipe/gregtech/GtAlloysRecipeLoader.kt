@@ -2,7 +2,6 @@ package io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech
 
 import gregtech.api.unification.material.Materials
 import io.github.trcdevelopers.clayium.api.ClayEnergy
-import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.common.recipe.builder.GtOrePrefix
 import io.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 
@@ -60,8 +59,6 @@ object GtAlloysRecipeLoader {
 
     private fun registerBlastRecipes() {
         val registry = CRecipes.CLAY_BLAST_FURNACE
-
-        val prefixes = listOf(OrePrefix.ingot, OrePrefix.dust)
 
         registry.builder()
             .input(Materials.Tungsten)
