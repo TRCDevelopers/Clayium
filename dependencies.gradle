@@ -47,6 +47,8 @@ dependencies {
     // Non-published dependencies
     // Change any to devOnlyNonPublishable to test them in-game.
     devOnlyNonPublishable("gregtech:gregtech:2.8.10-beta")
+    devOnlyNonPublishable(rfg.deobf("maven.modrinth:extreme-reactors:1.12.2-0.4.5.68"))
+    devOnlyNonPublishable(rfg.deobf("maven.modrinth:zerocore:1.12.2-0.1.2.9"))
     compileOnly(rfg.deobf("com.azanor.baubles:Baubles:1.12-1.5.2"))
 
     testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
