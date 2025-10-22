@@ -29,16 +29,11 @@ We have integration with [GroovyScript](https://github.com/CleanroomMC/GroovyScr
 
 See [wiki](https://trcdevelopers.github.io/Clayium/) for more information.
 
-## Ported Features
-
-- up to tier 13 Clay Fabricator Mk3, except for those listed below.
-- PAN
-
 ## WIP Features
 
-- Clay Guns
-- Config (`ProgressionRate` etc.)
-- Integrations with Other Mods
+- Clay guns
+- Some config options (`ProgressionRate` etc.)
+- Some cross-mod recipes
 
 ## License
 

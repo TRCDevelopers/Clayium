@@ -25,14 +25,10 @@ Clayiumの1.12.2向け**非公式**移植版です。
 [GroovyScript](https://github.com/CleanroomMC/GroovyScript)を用いて行うことができます。
 詳細は[wiki](https://trcdevelopers.github.io/Clayium/)を参照してください。
 
-## 実装済みの要素
-
-下記のものを除き、Tier 13まで、またPANを実装済みです。
-
 ## 未実装の要素
 
 - 粘土銃
-- コンフィグ (`ProgressionRate`など)
+- 一部コンフィグ (`ProgressionRate`など)
 - 他MODとの連携要素
 
 ## ライセンス
