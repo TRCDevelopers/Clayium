@@ -127,22 +127,8 @@ dependencies {
     annotationProcessor(mixin) {
         isTransitive = false
     }
-
-    api("com.cleanroommc:modularui:2.5.0-rc5")
-    api("codechicken:codechickenlib:3.2.3.358")
-    api("com.cleanroommc:groovyscript:1.2.5") { isTransitive = false }
-
-    compileOnly("gregtech:gregtech:2.8.10-beta")
-    compileOnly(rfg.deobf("com.azanor.baubles:Baubles:1.12-1.5.2"))
-
-    testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
-    testImplementation("io.mockk:mockk:1.14.5")
-
-    implementation("mezz.jei:jei_1.12.2:4.16.1.302")
-    implementation(rfg.deobf("curse.maven:top-245211:2667280")) // TOP 1.4.28
 }
-
-apply(from = "gradle/scripts/dependencies.gradle.kts")
+apply(from = "gradle/scripts/dependencies.gradle")
 
 if (accessTransformersFile.isNotBlank()) {
     val fileLocation = file("$projectDir/src/main/resources/$accessTransformersFile")
