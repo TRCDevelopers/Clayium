@@ -31,10 +31,8 @@ Clayiumの1.12.2向け**非公式**移植版です。
 
 ## 未実装の要素
 
-- 自動クラフト装置
 - 粘土銃
-- 液体関連の要素
-- コンフィグ (`ProgressionRate`や`HardcoreXXX`など)
+- コンフィグ (`ProgressionRate`など)
 - 他MODとの連携要素
 
 ## ライセンス

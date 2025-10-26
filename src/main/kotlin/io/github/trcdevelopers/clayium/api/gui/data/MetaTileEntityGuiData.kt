@@ -16,9 +16,14 @@ sealed class MetaTileEntityGuiData(
 
     class WorldAndPos(
         player: EntityPlayer,
-        val world: World,
+        private val world: World,
         val pos: BlockPos,
     ) : MetaTileEntityGuiData(player) {
+
+        override fun getWorld(): World {
+            return this.world
+        }
+
         override val metaTileEntity: MetaTileEntity by lazy {
             this.world.getMetaTileEntity(pos)
                 ?: throw IllegalStateException("Could not find a MetaTileEntity at $pos in ${this.world.provider?.dimensionType}")

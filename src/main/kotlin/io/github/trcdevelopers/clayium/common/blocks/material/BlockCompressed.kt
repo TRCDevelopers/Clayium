@@ -6,6 +6,7 @@ import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.api.util.getAsItem
 import io.github.trcdevelopers.clayium.common.blocks.properties.CMaterialProperty
 import io.github.trcdevelopers.clayium.common.creativetab.ClayiumCTabs
+import io.github.trcdevelopers.clayium.common.util.ToolClasses
 import net.minecraft.block.SoundType
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -24,6 +25,10 @@ import net.minecraftforge.fml.relauncher.SideOnly
 abstract class BlockCompressed(mapping: Map<Int, CMaterial>) : BlockMaterialWithDynModel(BlockMaterial.IRON, mapping) {
 
     init {
+        setHardness(2f)
+        setResistance(2f)
+        setHarvestLevel(ToolClasses.PICKAXE, 1)
+
         setCreativeTab(ClayiumCTabs.decorations)
     }
 

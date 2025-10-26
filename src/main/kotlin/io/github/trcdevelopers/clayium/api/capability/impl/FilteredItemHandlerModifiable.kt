@@ -10,8 +10,10 @@ import net.minecraftforge.items.IItemHandlerModifiable
  */
 class FilteredItemHandlerModifiable(
     private val modifiable: IItemHandlerModifiable,
-    filter: (ItemStack) -> Boolean
+    filter: (Int, ItemStack) -> Boolean
 ) : FilteredItemHandler(modifiable, filter), IItemHandlerModifiable {
+
+    constructor(delegate: IItemHandlerModifiable, filter: (ItemStack) -> Boolean) : this(delegate, { _, stack -> filter(stack) })
     constructor(delegate: IItemHandlerModifiable, filter: IItemFilter) : this(delegate, filter::test)
 
     override fun setStackInSlot(slot: Int, stack: ItemStack) {

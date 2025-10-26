@@ -9,8 +9,10 @@ import io.github.trcdevelopers.clayium.api.unification.material.CMaterials.dense
 import io.github.trcdevelopers.clayium.api.unification.material.MaterialAmount
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.unification.stack.UnificationEntry
+import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.blocks.metalchest.BlockMetalChest
+import io.github.trcdevelopers.clayium.common.config.ConfigCore
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import io.github.trcdevelopers.clayium.common.recipe.RecipeUtils
@@ -20,9 +22,13 @@ import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
 
 object CraftingRecipeLoader {
+
+    private val OSMIUM = clayiumId("osmium")
+
     fun registerRecipes() {
         clayToolRecipes()
         registerClayPartsRecipes()
+        registerCapsuleRecipes()
 
         RecipeUtils.addShapedRecipe("clay_work_table",
             ItemStack(ClayiumBlocks.CLAY_WORK_TABLE),
@@ -216,6 +222,52 @@ object CraftingRecipeLoader {
             ClayiumItems.SIMPLE_ITEM_FILTER, ClayiumItems.DISPLAY_NAME_ITEM_FILTER, ClayiumItems.FUZZY_ITEM_FILTER)
     }
 
+    private fun registerCapsuleRecipes() {
+        RecipeUtils.addShapedRecipe("fluid_capsule",
+            ItemStack(ClayiumItems.FLUID_CAPSULE_1000MB),
+            " C ", "C C", " C ",
+            'C', UnificationEntry(OrePrefix.block, denseClay))
+
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_125",
+            ItemStack(ClayiumItems.FLUID_CAPSULE_125MB, 8),
+            ClayiumItems.FLUID_CAPSULE_1000MB)
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_25",
+            ItemStack(ClayiumItems.FLUID_CAPSULE_25MB, 5),
+            ClayiumItems.FLUID_CAPSULE_125MB)
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_5",
+            ItemStack(ClayiumItems.FLUID_CAPSULE_5MB, 5),
+            ClayiumItems.FLUID_CAPSULE_25MB)
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_1",
+            ItemStack(ClayiumItems.FLUID_CAPSULE_1MB, 5),
+            ClayiumItems.FLUID_CAPSULE_5MB)
+
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_1000_2",
+            ItemStack(ClayiumItems.FLUID_CAPSULE_1000MB),
+            ClayiumItems.FLUID_CAPSULE_125MB, ClayiumItems.FLUID_CAPSULE_125MB,
+            ClayiumItems.FLUID_CAPSULE_125MB, ClayiumItems.FLUID_CAPSULE_125MB,
+            ClayiumItems.FLUID_CAPSULE_125MB, ClayiumItems.FLUID_CAPSULE_125MB,
+            ClayiumItems.FLUID_CAPSULE_125MB, ClayiumItems.FLUID_CAPSULE_125MB,
+        )
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_125_2",
+            ItemStack(ClayiumItems.FLUID_CAPSULE_125MB),
+            ClayiumItems.FLUID_CAPSULE_25MB, ClayiumItems.FLUID_CAPSULE_25MB,
+            ClayiumItems.FLUID_CAPSULE_25MB, ClayiumItems.FLUID_CAPSULE_25MB,
+            ClayiumItems.FLUID_CAPSULE_25MB,
+        )
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_25_2",
+            ItemStack(ClayiumItems.FLUID_CAPSULE_25MB),
+            ClayiumItems.FLUID_CAPSULE_5MB, ClayiumItems.FLUID_CAPSULE_5MB,
+            ClayiumItems.FLUID_CAPSULE_5MB, ClayiumItems.FLUID_CAPSULE_5MB,
+            ClayiumItems.FLUID_CAPSULE_5MB,
+        )
+        RecipeUtils.addShapelessRecipeNbt("fluid_capsule_5_2",
+            ItemStack(ClayiumItems.FLUID_CAPSULE_5MB),
+            ClayiumItems.FLUID_CAPSULE_1MB, ClayiumItems.FLUID_CAPSULE_1MB,
+            ClayiumItems.FLUID_CAPSULE_1MB, ClayiumItems.FLUID_CAPSULE_1MB,
+            ClayiumItems.FLUID_CAPSULE_1MB,
+        )
+    }
+
     private fun registerChestRecipeIfExists(material: CMaterial) {
         if (BlockMetalChest.metalChestConfig[material.materialId] == null) {
             return
@@ -225,15 +277,31 @@ object CraftingRecipeLoader {
             OreDictUnifier.exists(OrePrefix.gem, material) -> OrePrefix.gem
             else -> return
         }
-        RecipeUtils.addShapedRecipe("metal_chest_${material.materialId.namespace}_${material.materialId.path}",
-            ItemStack(ClayiumBlocks.METAL_CHEST, 1, material.metaItemSubId),
-            "MMM", "MCM", "MMM",
-            'M', UnificationEntry(prefix, material),
-            'C', Blocks.CHEST)
-        RecipeUtils.addShapedRecipe("metal_chest_${material.materialId.namespace}_${material.materialId.path}_recraft",
-            ItemStack(ClayiumBlocks.METAL_CHEST, 1, material.metaItemSubId),
-            "MMM", "MCM", "MMM",
-            'M', UnificationEntry(prefix, material),
-            'C', ClayiumBlocks.METAL_CHEST)
+
+        if (ConfigCore.gameMode.hardcoreOsmium && material.materialId == OSMIUM) {
+            // handle hardcore osmium
+            RecipeUtils.addShapedRecipe("metal_chest_${material.materialId.namespace}_${material.materialId.path}",
+                ItemStack(ClayiumBlocks.METAL_CHEST, 1, CMaterials.osmium.metaItemSubId),
+                "MMM", "MCM", "MMM",
+                'M', UnificationEntry(prefix, CMaterials.impureOsmium),
+                'C', Blocks.CHEST)
+            RecipeUtils.addShapedRecipe("metal_chest_${material.materialId.namespace}_${material.materialId.path}_recraft",
+                ItemStack(ClayiumBlocks.METAL_CHEST, 1, CMaterials.osmium.metaItemSubId),
+                "MMM", "MCM", "MMM",
+                'M', UnificationEntry(prefix, CMaterials.impureOsmium),
+                'C', ClayiumBlocks.METAL_CHEST)
+        } else {
+            RecipeUtils.addShapedRecipe("metal_chest_${material.materialId.namespace}_${material.materialId.path}",
+                ItemStack(ClayiumBlocks.METAL_CHEST, 1, material.metaItemSubId),
+                "MMM", "MCM", "MMM",
+                'M', UnificationEntry(prefix, material),
+                'C', Blocks.CHEST)
+            RecipeUtils.addShapedRecipe("metal_chest_${material.materialId.namespace}_${material.materialId.path}_recraft",
+                ItemStack(ClayiumBlocks.METAL_CHEST, 1, material.metaItemSubId),
+                "MMM", "MCM", "MMM",
+                'M', UnificationEntry(prefix, material),
+                'C', ClayiumBlocks.METAL_CHEST)
+        }
+
     }
 }

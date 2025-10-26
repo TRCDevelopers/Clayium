@@ -1,0 +1,52 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "capacity": {
+      "1000": {
+        "model": "forge:forgebucket",
+        "textures": {
+          "base": "clayium:items/fluid_capsule_1000",
+          "fluid": "clayium:items/fluid_capsule_1000_mask",
+          "cover": "clayium:items/fluid_capsule_1000"
+        },
+        "transform": "forge:default-item"
+      },
+      "125": {
+        "model": "forge:forgebucket",
+        "textures": {
+          "base": "clayium:items/fluid_capsule_125",
+          "fluid": "clayium:items/fluid_capsule_125_mask",
+          "cover": "clayium:items/fluid_capsule_125"
+        },
+        "transform": "forge:default-item"
+      },
+      "25": {
+        "model": "forge:forgebucket",
+        "textures": {
+          "base": "clayium:items/fluid_capsule_25",
+          "fluid": "clayium:items/fluid_capsule_25_mask",
+          "cover": "clayium:items/fluid_capsule_25"
+        },
+        "transform": "forge:default-item"
+      },
+      "5": {
+        "model": "forge:forgebucket",
+        "textures": {
+          "base": "clayium:items/fluid_capsule_5",
+          "fluid": "clayium:items/fluid_capsule_5_mask",
+          "cover": "clayium:items/fluid_capsule_5"
+        },
+        "transform": "forge:default-item"
+      },
+      "1": {
+        "model": "forge:forgebucket",
+        "textures": {
+          "base": "clayium:items/fluid_capsule_1",
+          "fluid": "clayium:items/fluid_capsule_1_mask",
+          "cover": "clayium:items/fluid_capsule_1"
+        },
+        "transform": "forge:default-item"
+      }
+    }
+  }
+}

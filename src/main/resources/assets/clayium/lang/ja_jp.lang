@@ -1,7 +1,7 @@
 #PARSE_ESCAPES
 itemGroup.clayium=Clayium
 itemGroup.clayium.decorations=Clayium 装飾ブロック
-itemGroup.clayium.clayiumcapsule=Clayium 液体カプセル
+itemGroup.clayium.fluid_capsules=Clayium 液体カプセル
 
 tooltip.clayium.HoldShiftForDetails=--§f詳細は§lShift§rキー§7--
 
@@ -46,6 +46,7 @@ clayium.material.impure_silicon=不純なシリコン
 clayium.material.silicone=シリコーン
 clayium.material.silicon=シリコン
 clayium.material.aluminum=アルミニウム
+clayium.material.impure_aluminum=不純なアルミニウム
 clayium.material.clay_steel=粘土鋼
 clayium.material.clayium=クレイウム
 clayium.material.ultimate_alloy=究極合金
@@ -104,6 +105,7 @@ clayium.material.neptunium=ネプツニウム
 clayium.material.nickel=ニッケル
 clayium.material.organic_clay=有機粘土
 clayium.material.osmium=オスミウム
+clayium.material.impure_osmium=不純なオスミウム
 clayium.material.palladium=パラジウム
 clayium.material.phosphorus=リン
 clayium.material.platinum=プラチナ
@@ -239,8 +241,7 @@ recipe.clayium.SaltExtractor.efficiency=%1$4.2g アイテム/t
 recipe.clayium.SaltExtractor.energyConsumption=%1$s CE/t
 recipe.clayium.SaltExtractor.description=塩析出装置は塩を水から抽出する機械。稼動するには隣に水を置いてエネルギーを供給してあげる必要がある。
 recipe.clayium.quartz_crucible=クォーツるつぼ
-recipe.clayium.quartz_crucible.timeToCraft=%1$st = %2$s秒
-recipe.clayium.quartz_crucible.description=クォーツるつぼは最初のシリコンの入手に使われる。クォーツるつぼの中に不純なシリコンインゴットを投入し、暫く待った後で糸を投入する。
+recipe.clayium.quartz_crucible.description=クォーツるつぼは最初のシリコンの入手に使われる。クォーツるつぼの中に不純なシリコンインゴットを投入し、暫く待った後で糸を投入する。最大で9個同時に処理でき、1つあたり30秒の時間がかかる。
 recipe.clayium.SolarClayFabricator=ソーラー粘土製造機
 recipe.clayium.SolarClayFabricator.timeToCraft=%1$st = %2$s秒 (%3$s CE/t)
 recipe.clayium.SolarClayFabricator.description=上面が空から見える位置に設置すること
@@ -575,11 +576,7 @@ gui.clayium.activator.item_filter=アイテムフィルター
 machine.clayium.ranged_activator=範囲代行機
 machine.clayium.ranged_activator.tooltip1=右クリックを代行
 
-tile.clayium.blockAdvancedAutoCrafter.name=自動クラフト装置
-tile.clayium.blockPrecisionAutoCrafter.name=精密自動クラフト装置
-tile.clayium.blockClaySteelAutoCrafter.name=粘土鋼自動クラフト装置
-tile.clayium.blockClayiumAutoCrafter.name=クレイウム自動クラフト装置
-tile.clayium.blockUltimateAutoCrafter.name=究極自動クラフト装置
+machine.clayium.auto_crafter=%s自動クラフト装置
 
 tile.clayium.pan_cable=PAN ケーブル
 machine.clayium.pan_core=PAN コア
@@ -591,18 +588,9 @@ machine.clayium.pan_adapter.laser_slot_tooltip=レーザースロット
 
 machine.clayium.pan_duplicator=PAN 複製機 ランク %s
 
-tile.clayium.blockBasicFluidTranslator.name=液体バッファー
-tile.clayium.blockAdvancedFluidTranslator.name=発展液体バッファー
-tile.clayium.blockPrecisionFluidTranslator.name=精密液体バッファー
-tile.clayium.blockClaySteelFluidTranslator.name=粘土鋼液体バッファー
-tile.clayium.blockClayiumFluidTranslator.name=クレイウム液体バッファー
-tile.clayium.blockUltimateFluidTranslator.name=究極液体バッファー
-tile.clayium.blockAntimatterFluidTranslator.name=反物質液体バッファー
-tile.clayium.blockPureAntimatterFluidTranslator.name=純反物質液体バッファー
-tile.clayium.blockOECFluidTranslator.name=OEC 液体バッファー
-tile.clayium.blockOPAFluidTranslator.name=OPA 液体バッファー
-tooltip.clayium.FluidTranslator.line1=液体と粘土液体カプセルを
-tooltip.clayium.FluidTranslator.line2=相互に変換する
+machine.clayium.fluid_buffer=%s液体バッファー
+machine.clayium.fluid_buffer.tooltip1=液体と粘土液体カプセルを
+machine.clayium.fluid_buffer.tooltip2=相互に変換する
 
 tile.clayium.blockAdvancedFluidTransferMachine.name=液体転移装置
 tile.clayium.blockAdvancedFluidTransferMachine.tooltip.line1=液体容器から液体を出し入れする
@@ -760,11 +748,11 @@ item.clayium.synchronizer.tooltip6=1. シンクロパーツでインターフェ
 item.clayium.synchronizer.tooltip7=2. シンクロナイザーで右クリックして装置の座標を記録
 item.clayium.synchronizer.tooltip8=3. 続いてインターフェースを右クリックして同期させる
 
-item.clayium.itemCapsule.name=粘土液体カプセル
-item.clayium.itemCapsule0125.name=粘土液体カプセル (125mB)
-item.clayium.itemCapsule0025.name=粘土液体カプセル (25mB)
-item.clayium.itemCapsule0005.name=粘土液体カプセル (5mB)
-item.clayium.itemCapsule0001.name=粘土液体カプセル (1mB)
+item.clayium.fluid_capsule_1000mb.name=粘土液体カプセル (1000mB)
+item.clayium.fluid_capsule_125mb.name=粘土液体カプセル (125mB)
+item.clayium.fluid_capsule_25mb.name=粘土液体カプセル (25mB)
+item.clayium.fluid_capsule_5mb.name=粘土液体カプセル (5mB)
+item.clayium.fluid_capsule_1mb.name=粘土液体カプセル (1mB)
 
 item.clayium.clay_gadget_holder.name=粘土ガジェットホルダー
 item.clayium.clay_gadget_holder.tooltip1=粘土ガジェットはこのホルダーに

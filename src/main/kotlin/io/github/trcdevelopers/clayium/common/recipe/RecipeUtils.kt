@@ -6,12 +6,12 @@ import io.github.trcdevelopers.clayium.api.unification.stack.UnificationEntry
 import io.github.trcdevelopers.clayium.api.util.CLog
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
+import io.github.trcdevelopers.clayium.common.recipe.crafting.CShapelessOreRecipe
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.FurnaceRecipes
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.registry.ForgeRegistries
 import net.minecraftforge.oredict.ShapedOreRecipe
-import net.minecraftforge.oredict.ShapelessOreRecipe
 
 object RecipeUtils {
 
@@ -48,7 +48,13 @@ object RecipeUtils {
 
     fun addShapelessRecipe(registryName: String, result: ItemStack, vararg recipe: Any) {
         val actualRegName = if (registryName.contains(":")) ResourceLocation(registryName) else clayiumId(registryName)
-        ForgeRegistries.RECIPES.register(ShapelessOreRecipe(null, result, *finalizeRecipe(recipe))
+        ForgeRegistries.RECIPES.register(CShapelessOreRecipe(result, false, *recipe)
+            .setRegistryName(actualRegName))
+    }
+
+    fun addShapelessRecipeNbt(registryName: String, result: ItemStack, vararg recipe: Any) {
+        val actualRegName = if (registryName.contains(":")) ResourceLocation(registryName) else clayiumId(registryName)
+        ForgeRegistries.RECIPES.register(CShapelessOreRecipe(result, true, *recipe)
             .setRegistryName(actualRegName))
     }
 

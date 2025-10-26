@@ -8,6 +8,7 @@ import io.github.trcdevelopers.clayium.api.util.CLog
 import io.github.trcdevelopers.clayium.api.util.ClayTiers
 import io.github.trcdevelopers.clayium.api.util.ITier
 import net.minecraft.util.ResourceLocation
+import java.util.Locale.getDefault
 
 class CMaterial(
     val metaItemSubId: Int,
@@ -19,6 +20,7 @@ class CMaterial(
     override val tier: ITier? = null,
     val colors: IntArray? = null,
     private val flags: Set<CMaterialFlag> = emptySet(),
+    val additionalOreName: List<String> = emptyList(),
 ) : Comparable<CMaterial>, IMaterial {
 
     override val upperCamelName: String = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, materialId.path)
@@ -46,6 +48,7 @@ class CMaterial(
         private var colors: IntArray? = null
         private var flags: MutableSet<CMaterialFlag> = mutableSetOf()
         private var blockAmount = -1
+        private var additionalOreDictName = mutableListOf<String>()
 
         fun tier(tier: Int) = apply { this.tier = ClayTiers.entries[tier] }
         fun tier(tier: ITier) = apply { this.tier = tier }
@@ -131,9 +134,19 @@ class CMaterial(
             return this
         }
 
+        fun additionalOreName(name: String): Builder {
+            if (name.isBlank()) {
+                CLog.warn("Material.Builder#additionalOreName is called, but provided name is blank. Ignoring.")
+                return this
+            }
+            val capitalized = name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(getDefault()) else it.toString() }
+            additionalOreDictName.add(capitalized)
+            return this
+        }
+
         fun build(): CMaterial{
             val flags = if (this.flags.isEmpty()) emptySet() else this.flags
-            val material = CMaterial(metaItemSubId, metaItemId, properties, tier, colors, flags)
+            val material = CMaterial(metaItemSubId, metaItemId, properties, tier, colors, flags, additionalOreDictName)
             ClayiumApi.materialRegistry.register(metaItemSubId, metaItemId, material)
             if (blockAmount != -1) {
                 OrePrefix.block.modifyAmount(material, MaterialAmount.of(blockAmount.toLong()))

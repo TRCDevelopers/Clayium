@@ -129,7 +129,7 @@ class MultiblockLogic(
         super.receiveCustomData(discriminator, buf)
     }
 
-    fun tierTextWidget(syncManager: PanelSyncManager): TextWidget {
+    fun tierTextWidget(syncManager: PanelSyncManager): TextWidget<*> {
         syncManager.syncValue("multiblock_tier", SyncHandlers.intNumber({ recipeLogicTier }, { recipeLogicTier = it }))
         return IKey.dynamic { SidelessI18n.format("tooltip.clayium.tier", recipeLogicTier) }.asWidgetResizing()
     }

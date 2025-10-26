@@ -52,7 +52,7 @@ object MachineBlockRecipeLoader {
             CMaterials.industrialClay,
             CMaterials.advancedIndustrialClay,
             CMaterials.impureSilicon,
-            CMaterials.aluminum,
+            if (ConfigCore.gameMode.hardcoreAluminium) CMaterials.impureAluminium else CMaterials.aluminum,
             CMaterials.claySteel,
             CMaterials.clayium,
             CMaterials.ultimateAlloy,
@@ -161,9 +161,14 @@ object MachineBlockRecipeLoader {
         }
 
         /* Ca Reactor Coils */
-        for ((i, entry) in listOf(CMaterials.antimatter, CMaterials.pureAntimatter, CMaterials.octupleEnergyClay,
-            CMaterials.octuplePureAntimatter).zip(listOf(CMaterials.platinum, CMaterials.iridium, CMaterials.osmium,
-            CMaterials.rhenium)).withIndex()) {
+        val plateMaterials = listOf(CMaterials.antimatter, CMaterials.pureAntimatter, CMaterials.octupleEnergyClay,
+            CMaterials.octuplePureAntimatter)
+        val ingotMaterials = if (ConfigCore.gameMode.hardcoreOsmium) {
+            listOf(CMaterials.platinum, CMaterials.iridium, CMaterials.impureOsmium, CMaterials.rhenium)
+        } else {
+            listOf(CMaterials.platinum, CMaterials.iridium, CMaterials.osmium, CMaterials.rhenium)
+        }
+        for ((i, entry) in plateMaterials.zip(ingotMaterials).withIndex()) {
             val (plateMaterial, ingotMaterial) = entry
             CRecipes.CLAY_REACTOR.builder()
                 .input(OrePrefix.plate, plateMaterial, 6)
@@ -231,6 +236,22 @@ object MachineBlockRecipeLoader {
         }
         registerMachineRecipeHull(MetaTileEntities.SOLAR_CLAY_FABRICATOR) {
             input(OrePrefix.plate, CMaterials.silicon, if (it == 0) 8 else 16)
+        }
+
+        /* Auto Crafter */
+        CRecipes.ASSEMBLER.builder()
+            .input(MACHINE_HULL.getItem(ADVANCED))
+            .input(MetaTileEntities.ASSEMBLER[1])
+            .output(MetaTileEntities.AUTO_CRAFTER[0])
+            .tier(4).CEt(ClayEnergy.milli(10)).duration(40)
+            .buildAndRegister()
+        for ((i, tier) in listOf(PRECISION, CLAY_STEEL, CLAYIUM, ULTIMATE).withIndex()) {
+            CRecipes.ASSEMBLER.builder()
+                .input(MetaTileEntities.AUTO_CRAFTER[i])
+                .input(MACHINE_HULL.getItem(tier))
+                .output(MetaTileEntities.AUTO_CRAFTER[i + 1])
+                .tier(4).CEt(ClayEnergy.milli(10 * 10.0.pow(i + 1).toLong())).duration(40)
+                .buildAndRegister()
         }
 
         /* Energetic Clay Decomposer */

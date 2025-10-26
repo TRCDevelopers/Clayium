@@ -50,6 +50,10 @@ object MetaTileEntities {
         DistributorMetaTileEntity(clayiumId("distributor.${it.lowerName}"), it)
     }
 
+    val FLUID_BUFFER = registerMetaTileEntities(107, (4..13)) { //+10
+        FluidBufferMetaTileEntity(clayiumId("fluid_buffer.${it.lowerName}"), it)
+    }
+
     /* Singleblock Item Processing Machines 201-500 */
     val ALLOY_SMELTER = registerMetaTileEntity(201, SimpleMachineMetaTileEntity(clayiumId("alloy_smelter"), ClayTiers.PRECISION, CRecipes.ALLOY_SMELTER))
 
@@ -143,6 +147,10 @@ object MetaTileEntities {
 
     val WIRE_DRAWING_MACHINE = registerMetaTileEntities(282, (1..4)) { //+4
         SimpleMachineMetaTileEntity(clayiumId("wire_drawing_machine.${it.lowerName}"), it, CRecipes.WIRE_DRAWING_MACHINE)
+    }
+
+    val AUTO_CRAFTER = registerMetaTileEntities(286, (5..9)) { //+5
+        AutoCrafterMetaTileEntity(clayiumId("auto_crafter.${it.lowerName}"), it, it.numeric != 5)
     }
 
 

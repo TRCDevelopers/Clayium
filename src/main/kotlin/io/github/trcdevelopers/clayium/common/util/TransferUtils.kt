@@ -20,6 +20,12 @@ fun IItemHandler.transferTo(to: IItemHandler) {
     }
 }
 
+fun IItemHandlerModifiable.copy() = ItemStackHandler(this.slots).also { other ->
+    for (i in 0..<this.slots) {
+        other.setStackInSlot(i, this.getStackInSlot(i).copy())
+    }
+}
+
 object TransferUtils {
     /**
      * Insert a list of ItemStacks to an IItemHandlerModifiable
@@ -27,6 +33,7 @@ object TransferUtils {
      * @return true if all stacks are inserted successfully
      */
     fun insertToHandler(handler: IItemHandlerModifiable, stacks: List<ItemStack>, simulate: Boolean = false): Boolean {
+        val stacks = stacks.map(ItemStack::copy)
         if (simulate) {
             val copiedHandler = ItemStackHandler(handler.slots).apply {
                 for (i in 0..<handler.slots) {

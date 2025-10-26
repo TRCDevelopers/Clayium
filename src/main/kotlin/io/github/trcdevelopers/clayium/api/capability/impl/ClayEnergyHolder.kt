@@ -87,7 +87,7 @@ class ClayEnergyHolder(
             .background(IDrawable.EMPTY)
     }
 
-    fun createCeTextWidget(syncManager: PanelSyncManager): TextWidget {
+    fun createCeTextWidget(syncManager: PanelSyncManager): TextWidget<*> {
         syncManager.syncValue("${this.name}.text", SyncHandlers.longNumber(
             { clayEnergy.energy },
             { clayEnergy = ClayEnergy(it) }

@@ -35,12 +35,10 @@ import io.github.trcdevelopers.clayium.common.network.CNetwork
 import io.github.trcdevelopers.clayium.common.pan.factories.CPanRecipeFactory
 import io.github.trcdevelopers.clayium.common.pan.factories.CraftingTablePanRecipeFactory
 import io.github.trcdevelopers.clayium.common.pan.factories.FurnacePanRecipeFactory
-import io.github.trcdevelopers.clayium.common.unification.ClayiumOreDictUnifierImpl
 import io.github.trcdevelopers.clayium.common.util.DebugUtils
 import io.github.trcdevelopers.clayium.common.worldgen.ClayOreGenerator
 import io.github.trcdevelopers.clayium.datafix.ClayiumDataFix
 import io.github.trcdevelopers.clayium.integration.CModIntegration
-import io.github.trcdevelopers.clayium.integration.gregtech.GTOreDictUnifierAdapter
 import io.github.trcdevelopers.clayium.network.ClayChunkLoaderCallback
 import net.minecraft.block.Block
 import net.minecraft.item.Item
@@ -88,12 +86,6 @@ open class CommonProxy {
         ClayiumApi.PAN_RECIPE_FACTORIES.add(FurnacePanRecipeFactory)
 
         ForgeChunkManager.setForcedChunkLoadingCallback(ClayiumMod, ClayChunkLoaderCallback)
-
-        if (Mods.GregTech.isModLoaded) {
-            OreDictUnifier.injectImpl(GTOreDictUnifierAdapter)
-        } else {
-            OreDictUnifier.injectImpl(ClayiumOreDictUnifierImpl)
-        }
     }
 
     open fun init(event: FMLInitializationEvent) {

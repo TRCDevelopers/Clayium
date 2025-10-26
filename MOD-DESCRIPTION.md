@@ -3,12 +3,12 @@ README for modrinth & curseforge page
 todo: auto deploy if possible
 --->
 
+日本語版は[こちら](https://github.com/TRCDevelopers/Clayium/blob/develop/MOD-DESCRIPTION-JP.md)
+
 An unofficial continuation of Clayium.
-Clayium Unofficial is not created by, nor maintained by deb_rk.
 
 Original mod: [Clayium](https://www.curseforge.com/minecraft/mc-mods/clayium) © deb_rk (Licensed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/))
 
-This mod is currently in the alpha stage and may contain critical bugs, including game crashes.
 If you find a bug, please report it on [issue tracker](https://github.com/TRCDevelopers/Clayium/issues).
 
 ## Modpack Permission

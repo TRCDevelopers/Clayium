@@ -5,6 +5,7 @@ import io.github.trcdevelopers.clayium.api.util.MachineIoMode
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.ALL
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.CE
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.FIRST
+import io.github.trcdevelopers.clayium.api.util.MachineIoMode.FLUID
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_1
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_2
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_3
@@ -45,6 +46,7 @@ object PipedMachineIoRenderer {
             M_4 -> clayiumId("textures/blocks/import_m4_p.png")
             M_5 -> clayiumId("textures/blocks/import_m5_p.png")
             M_6 -> clayiumId("textures/blocks/import_m6_p.png")
+            FLUID -> clayiumId("textures/blocks/import_l_p.png")
         }
     }
 
@@ -61,6 +63,7 @@ object PipedMachineIoRenderer {
             M_4 -> clayiumId("textures/blocks/export_m4_p.png")
             M_5 -> clayiumId("textures/blocks/export_m5_p.png")
             M_6 -> clayiumId("textures/blocks/export_m6_p.png")
+            FLUID -> clayiumId("textures/blocks/export_l_p.png")
         }
     }
 
