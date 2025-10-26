@@ -52,12 +52,13 @@ configurations {
         extendsFrom(embed)
     }
 
-//    create("runtimeOnlyNonPublishable") {
+//    create<Configuration>("runtimeOnlyNonPublishable") {
 //        description = "Runtime only dependencies that are not published alongside the jar"
 //        isCanBeConsumed = false
 //        isCanBeResolved = false
 //    }
-//    create("devOnlyNonPublishable") {
+//
+//    create<Configuration>("devOnlyNonPublishable") {
 //        description = "Runtime and compiletime dependencies that are not published alongside the jar (compileOnly + runtimeOnlyNonPublishable)"
 //        isCanBeConsumed = false
 //        isCanBeResolved = false
