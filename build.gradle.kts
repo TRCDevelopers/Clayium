@@ -11,6 +11,7 @@ plugins {
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.2"
     id("eclipse")
     id("com.gtnewhorizons.retrofuturagradle") version "1.4.6"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 val forgelinContinuousVersion: String by project
@@ -52,17 +53,17 @@ configurations {
         extendsFrom(embed)
     }
 
-//    create<Configuration>("runtimeOnlyNonPublishable") {
-//        description = "Runtime only dependencies that are not published alongside the jar"
-//        isCanBeConsumed = false
-//        isCanBeResolved = false
-//    }
-//
-//    create<Configuration>("devOnlyNonPublishable") {
-//        description = "Runtime and compiletime dependencies that are not published alongside the jar (compileOnly + runtimeOnlyNonPublishable)"
-//        isCanBeConsumed = false
-//        isCanBeResolved = false
-//    }
+    val runtimeOnlyNonPublishable by creating {
+        description = "Runtime only dependencies that are not published alongside the jar"
+        isCanBeConsumed = false
+        isCanBeResolved = false
+    }
+
+    val devOnlyNonPublishable by creating {
+        description = "Runtime and compiletime dependencies that are not published alongside the jar (compileOnly + runtimeOnlyNonPublishable)"
+        isCanBeConsumed = false
+        isCanBeResolved = false
+    }
 }
 
 minecraft {
@@ -185,7 +186,6 @@ tasks.withType<Jar> {
         }
     })
 }
-
 
 idea {
     module {
