@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.gradle.ext.Gradle
 import org.jetbrains.gradle.ext.compiler
 import org.jetbrains.gradle.ext.runConfigurations
@@ -242,3 +244,31 @@ idea {
 tasks.named("processIdeaSettings").configure {
     dependsOn("injectTags")
 }
+
+sourceSets {
+    named("test") {
+        java {
+            compileClasspath += patchedMc.get().output + mcLauncher.get().output
+            runtimeClasspath += patchedMc.get().output + mcLauncher.get().output
+        }
+    }
+}
+
+tasks.named<Test>("test") {
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    })
+
+    testLogging {
+        events(TestLogEvent.STARTED, TestLogEvent.PASSED, TestLogEvent.FAILED)
+
+        exceptionFormat = TestExceptionFormat.FULL
+        showExceptions = true
+        showStackTraces = true
+        showCauses = true
+        showStandardStreams = true
+    }
+
+    useJUnitPlatform()
+}
+
