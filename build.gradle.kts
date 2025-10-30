@@ -39,14 +39,16 @@ val minecraftVersion: String by project
 
 // CoreMod
 val coreMod: String by project
-val coreModPluginClassName: String by project
 val includeMod: String by project
+val coreModPluginClassName: String by project
 
 val accessTransformersFile: String by project
 
 val gradleTokenClassName: String by project
 
 val developmentEnvironmentUserName: String by project
+
+val separateRunDirectories: String by project
 
 project.version = "$minecraftVersion-$modVersion"
 
@@ -238,6 +240,15 @@ idea {
                 }
             }
         }
+    }
+}
+
+if (separateRunDirectories.toBoolean()) {
+    tasks.named<JavaExec>("runClient") {
+        workingDir = project.file("run/client")
+    }
+    tasks.named<JavaExec>("runServer") {
+        workingDir = project.file("run/server")
     }
 }
 
