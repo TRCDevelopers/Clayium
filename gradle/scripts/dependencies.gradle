@@ -36,6 +36,8 @@
  * For more details, see https://docs.gradle.org/8.4/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 
+//file:noinspection DependencyNotationArgument
+
 dependencies {
     api("com.cleanroommc:modularui:3.0.3") { transitive = false }
     api("codechicken:codechickenlib:3.2.3.358")
