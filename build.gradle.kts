@@ -3,10 +3,20 @@ import org.jetbrains.gradle.ext.compiler
 import org.jetbrains.gradle.ext.runConfigurations
 import org.jetbrains.gradle.ext.settings
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlinVersion}")
+    }
+}
+
 plugins {
     id("java")
     id("java-library")
-    kotlin("jvm") version "2.0.10"
+    kotlin("jvm") version libs.versions.kotlinVersion
     id("maven-publish")
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.2"
     id("eclipse")
@@ -22,6 +32,12 @@ val modId: String by project
 val modGroup: String by project
 val modVersion: String by project
 val modArchivesBaseName: String by project
+val minecraftVersion: String by project
+
+// CoreMod
+val coreMod: String by project
+val coreModPluginClassName: String by project
+val includeMod: String by project
 
 val accessTransformersFile: String by project
 
@@ -29,8 +45,11 @@ val gradleTokenClassName: String by project
 
 val developmentEnvironmentUserName: String by project
 
-val coreMod: String by project
-val coreModClass: String by project
+project.version = "$minecraftVersion-$modVersion"
+
+base {
+    archivesName = modArchivesBaseName
+}
 
 java {
     toolchain {
@@ -82,7 +101,7 @@ minecraft {
     // Add various JVM arguments here for runtime
     val args = mutableListOf("-ea:${group}")
     if (coreMod.toBoolean()) {
-        args += "-Dfml.coreMods.load=$coreModClass"
+        args += "-Dfml.coreMods.load=$coreModPluginClassName"
     }
     if (coreMod.toBoolean()) {
         args += "-Dmixin.hotSwap=true"
@@ -118,6 +137,7 @@ dependencies {
     runtimeOnly("io.github.chaosunity.forgelin:Forgelin-Continuous:${forgelinContinuousVersion}") {
         exclude("net.minecraftforge")
     }
+
     /* mixin */
     val mixin = modUtils.enableMixins("zone.rong:mixinbooter:$mixinBooterVersion", "mixins.$modId.refmap.json") as String
     api(mixin) {
@@ -153,10 +173,7 @@ tasks.withType<ProcessResources> {
 
     // Replace various properties in mcmod.info and pack.mcmeta if applicable
     filesMatching(arrayListOf("mcmod.info", "pack.mcmeta")) {
-        expand(
-            "version" to modVersion,
-            "mcversion" to minecraft.mcVersion
-        )
+        expand("version" to modVersion, "mcversion" to minecraft.mcVersion)
     }
 
     if (accessTransformersFile.isNotBlank()) {
@@ -167,13 +184,13 @@ tasks.withType<ProcessResources> {
 tasks.withType<Jar> {
     manifest {
         val attributeMap = mutableMapOf<String, String>()
-//        if (use_coremod.toBoolean()) {
-//            attributeMap["FMLCorePlugin"] = coremod_plugin_class_name
-//            if (include_mod.toBoolean()) {
-//                attributeMap["FMLCorePluginContainsFMLMod"] = true.toString()
-//                attributeMap["ForceLoadAsMod"] = (project.gradle.startParameter.taskNames[0] == "build").toString()
-//            }
-//        }
+        if (coreMod.toBoolean()) {
+            attributeMap["FMLCorePlugin"] = coreModPluginClassName
+            if (includeMod.toBoolean()) {
+                attributeMap["FMLCorePluginContainsFMLMod"] = true.toString()
+                attributeMap["ForceLoadAsMod"] = (project.gradle.startParameter.taskNames[0] == "build").toString()
+            }
+        }
         if (accessTransformersFile.isNotBlank()) {
             attributeMap["FMLAT"] = accessTransformersFile
         }
@@ -211,8 +228,8 @@ idea {
                 afterEvaluate {
                     javacAdditionalOptions = "-encoding utf8"
                     moduleJavacAdditionalOptions = mutableMapOf(
-                        (project.name + ".main") to tasks.compileJava.get().options.compilerArgs.joinToString(" ") { "\"$it\"" }
-                    )
+                        (project.name + ".main") to tasks.compileJava.get().options.compilerArgs.joinToString(
+                            " ") { "\"$it\"" })
                 }
             }
         }
