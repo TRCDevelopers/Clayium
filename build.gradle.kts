@@ -21,7 +21,7 @@ plugins {
     id("maven-publish")
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.2"
     id("eclipse")
-    id("com.gtnewhorizons.retrofuturagradle") version "1.4.6"
+    id("com.gtnewhorizons.retrofuturagradle") version "1.4.8"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
