@@ -116,7 +116,7 @@ minecraft {
     // Add any properties you want to swap out for a dynamic value at build time here
     // Any properties here will be added to a class at build time, the name can be configured below
     // Example:
-    injectedTags.put("VERSION", project.version)
+    injectedTags.put("VERSION", modVersion)
     injectedTags.put("MOD_ID", modId)
     injectedTags.put("MOD_NAME", modName)
 }
