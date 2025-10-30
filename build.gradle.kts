@@ -2,6 +2,7 @@ import org.jetbrains.gradle.ext.Gradle
 import org.jetbrains.gradle.ext.compiler
 import org.jetbrains.gradle.ext.runConfigurations
 import org.jetbrains.gradle.ext.settings
+import org.jetbrains.kotlin.gradle.utils.extendsFrom
 
 buildscript {
     repositories {
@@ -72,17 +73,22 @@ configurations {
         extendsFrom(embed)
     }
 
-    val runtimeOnlyNonPublishable by creating {
+    val runtimeOnlyNonPublishable = register("runtimeOnlyNonPublishable") {
         description = "Runtime only dependencies that are not published alongside the jar"
         isCanBeConsumed = false
         isCanBeResolved = false
     }
 
-    val devOnlyNonPublishable by creating {
+    val devOnlyNonPublishable = register("devOnlyNonPublishable") {
         description = "Runtime and compiletime dependencies that are not published alongside the jar (compileOnly + runtimeOnlyNonPublishable)"
         isCanBeConsumed = false
         isCanBeResolved = false
     }
+
+    compileOnly.extendsFrom(devOnlyNonPublishable)
+    runtimeOnlyNonPublishable.extendsFrom(devOnlyNonPublishable)
+    runtimeClasspath.extendsFrom(runtimeOnlyNonPublishable)
+    testRuntimeClasspath.extendsFrom(runtimeOnlyNonPublishable)
 }
 
 minecraft {

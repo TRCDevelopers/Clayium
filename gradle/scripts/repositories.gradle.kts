@@ -34,7 +34,6 @@ repositories {
         }
     }
 
-
     maven {
         name = "thiakil"
         url = uri("http://maven.thiakil.com")
