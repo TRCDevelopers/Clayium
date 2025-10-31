@@ -11,11 +11,10 @@ public interface MixinNarrator {
     /**
      * @author bqc0n
      * <p>
-     * NarratorOSX {@link com.mojang.text2speech.NarratorOSX} causes UnsatisfiedLinkError on Apple Silicon Macs
+     * @reason NarratorOSX {@link com.mojang.text2speech.NarratorOSX} causes UnsatisfiedLinkError on Apple Silicon Macs
      * (Maybe native libs are not available in arm64 Java 8 JDKs?).
      * This mixin should be enabled only on deobf environment.
      */
-    @SuppressWarnings("OverwriteAuthorRequired") // reason is an unknown tag
     @Overwrite(remap = false)
     static Narrator getNarrator() {
         return new NarratorDummy();
