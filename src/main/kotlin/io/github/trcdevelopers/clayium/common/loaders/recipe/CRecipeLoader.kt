@@ -6,6 +6,7 @@ import io.github.trcdevelopers.clayium.common.loaders.recipe.enderio.EnderIoAllo
 import io.github.trcdevelopers.clayium.common.loaders.recipe.extremereactors.ExrRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtAlloysRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtMatterTransformerRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.tofucraftreload.TofuCraftRecipeLoader
 import io.github.trcdevelopers.clayium.common.recipe.handler.MaterialRecipeHandler
 
 object CRecipeLoader {
@@ -54,6 +55,10 @@ object CRecipeLoader {
 
         if (Mods.ExtremeReactors.isModLoaded && ConfigModIntegration.extremeReactors) {
             ExrRecipeLoader.registerRecipes()
+        }
+
+        if (Mods.TofuCraft.isModLoaded && ConfigModIntegration.tofuCraft) {
+            TofuCraftRecipeLoader.registerRecipes()
         }
     }
 }

@@ -15,4 +15,7 @@ public class ConfigModIntegration {
 
     @Config.Name("Extreme Reactors")
     public static boolean extremeReactors = true;
+
+    @Config.Name("TofuCraft Reload")
+    public static boolean tofuCraft = true;
 }
