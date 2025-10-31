@@ -23,7 +23,7 @@ enum class Mods(
         const val AE2 = "appliedenergistics2"
         const val BAUBLES = "baubles"
         const val ENDER_IO = "enderio"
-        const val EXTREME_REACTORS = "extremereactors"
+        const val EXTREME_REACTORS = "bigreactors"
         const val GREGTECH = "gregtech"
         const val GROOVY_SCRIPT = "groovyscript"
         const val JUST_ENOUGH_ITEMS = "jei"
