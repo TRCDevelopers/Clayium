@@ -24,7 +24,6 @@ plugins {
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.2"
     id("eclipse")
     id("com.gtnewhorizons.retrofuturagradle") version "1.4.8"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 val forgelinContinuousVersion: String by project
@@ -47,10 +46,10 @@ val accessTransformersFile: String by project
 val gradleTokenClassName: String by project
 
 val developmentEnvironmentUserName: String by project
-
 val separateRunDirectories: String by project
 
 project.version = "$minecraftVersion-$modVersion"
+project.group = modGroup
 
 base {
     archivesName = modArchivesBaseName
