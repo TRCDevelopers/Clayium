@@ -54,6 +54,7 @@ Clayium Unofficialは以下のOSSを利用、または参照しています。
 |                   [EnderIO](https://modrinth.com/mod/enderio)                   | [The Unlicense](https://github.com/SleepyTrousers/EnderIO-1.5-1.12/blob/master/LICENSE) |
 |          [ExtremeReactors](https://modrinth.com/mod/extreme-reactors)           |                    [MIT](https://modrinth.com/mod/extreme-reactors)                     |
 | [TofuCraftReload](https://www.curseforge.com/minecraft/mc-mods/tofucraftreload) |       [MIT](https://www.curseforge.com/minecraft/mc-mods/tofucraftreload#license)       |
+|                  [Sakura](https://modrinth.com/mod/sakura_mod)                  |                       [MIT](https://modrinth.com/mod/sakura_mod)                        |
 |         [GTExpert-Core](https://github.com/GTModpackTeam/GTExpert-Core)         |     [LGPL-3.0](https://github.com/GTModpackTeam/GTExpert-Core/blob/master/LICENSE)      |
 |              [ModularUI](https://github.com/CleanroomMC/ModularUI)              |        [LGPL-3.0](https://github.com/CleanroomMC/ModularUI/blob/master/LICENSE)         |
 |            [RFTools](https://github.com/McJtyMods/RFTools/tree/1.12)            |            [MIT](https://github.com/McJtyMods/RFTools/blob/1.12/LICENSE.md)             |

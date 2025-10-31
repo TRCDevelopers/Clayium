@@ -18,4 +18,7 @@ public class ConfigModIntegration {
 
     @Config.Name("TofuCraft Reload")
     public static boolean tofuCraft = true;
+
+    @Config.Name("Sakura")
+    public static boolean sakura = true;
 }

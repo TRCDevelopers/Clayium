@@ -14,6 +14,7 @@ enum class Mods(
     GroovyScript(Names.GROOVY_SCRIPT),
     JustEnoughItems(Names.JUST_ENOUGH_ITEMS),
     ModularUI(Names.MODULAR_UI),
+    Sakura(Names.SAKURA),
     TheOneProbe(Names.THE_ONE_PROBE),
     TofuCraft(Names.TOFU_CRAFT),
     ;
@@ -29,6 +30,7 @@ enum class Mods(
         const val GROOVY_SCRIPT = "groovyscript"
         const val JUST_ENOUGH_ITEMS = "jei"
         const val MODULAR_UI = "modularui"
+        const val SAKURA = "sakura"
         const val THE_ONE_PROBE = "theoneprobe"
         const val TOFU_CRAFT = "tofucraft"
     }
