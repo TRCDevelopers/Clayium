@@ -17,6 +17,7 @@ import org.apache.logging.log4j.core.config.Configurator
     modid = MOD_ID,
     name = MOD_NAME,
     version = CTags.VERSION,
+    acceptedMinecraftVersions = "[1.12.2,1.13)",
     modLanguageAdapter = "io.github.chaosunity.forgelin.KotlinAdapter",
     dependencies = "required:forge@[14.23.5.2847,);" +
             "required-after:forgelin_continuous@[2.0.0.0,);" +
