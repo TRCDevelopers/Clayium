@@ -14,5 +14,10 @@ object CMarkerMaterials {
 
     val glass = CMarkerMaterial("Glass")
 
+    val yellorium = CMarkerMaterial("Yellorium")
+    val cyanite = CMarkerMaterial("Cyanite")
+    val blutonium = CMarkerMaterial("Blutonium")
+    val ludicrite = CMarkerMaterial("Ludicrite")
+
     fun init() {}
 }
