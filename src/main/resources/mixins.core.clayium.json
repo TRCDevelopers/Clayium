@@ -6,6 +6,7 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "io.github.trcdevelopers.clayium.core.ClayiumMixinConfigPlugin",
   "mixins": [
+    "patch.MixinNarrator"
   ],
   "client": [],
   "server": []
