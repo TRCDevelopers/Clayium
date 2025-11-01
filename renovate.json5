@@ -6,13 +6,16 @@
   prConcurrentLimit: 3,
   prHourlyLimit: 6,
   addLabels: ["renovate"],
+  major: {
+    dependencyDashboardApproval: true
+  },
   packageRules: [
     {
       matchDepNames: ["*"],
-      enabled: false,
+      enabled: false
     },
     {
-      matchFileNames: ["dependencies.gradle"],
+      matchCategories: ["java"],
       enabled: true,
       groupName: "Gradle Dependencies"
     },
@@ -26,5 +29,10 @@
       enabled: true,
       groupName: "NPM Dependencies"
     },
+    {
+      matchFileNames: ["**/mod_dependencies.gradle"],
+      enabled: true,
+      groupName: "Mod Dependencies",
+    }
   ]
 }

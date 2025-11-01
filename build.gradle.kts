@@ -157,6 +157,7 @@ dependencies {
     }
 }
 apply(from = "gradle/scripts/dependencies.gradle")
+apply(from = "gradle/scripts/mod_dependencies.gradle")
 
 if (accessTransformersFile.isNotBlank()) {
     val fileLocation = file("$projectDir/src/main/resources/$accessTransformersFile")
