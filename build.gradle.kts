@@ -283,3 +283,9 @@ tasks.named<Test>("test") {
     useJUnitPlatform()
 }
 
+tasks.withType<Javadoc> {
+    (options as StandardJavadocDocletOptions).addStringOption("tag", "reason:a:\"Reason for Overwrite:\"")
+
+    options.encoding = "UTF-8"
+    options.locale = "en_US"
+}
