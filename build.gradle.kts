@@ -157,6 +157,7 @@ dependencies {
     }
 }
 apply(from = "gradle/scripts/dependencies.gradle")
+apply(from = "gradle/scripts/mod_dependencies.gradle")
 
 if (accessTransformersFile.isNotBlank()) {
     val fileLocation = file("$projectDir/src/main/resources/$accessTransformersFile")
@@ -282,3 +283,9 @@ tasks.named<Test>("test") {
     useJUnitPlatform()
 }
 
+tasks.withType<Javadoc> {
+    (options as StandardJavadocDocletOptions).addStringOption("tag", "reason:a:\"Reason for Overwrite:\"")
+
+    options.encoding = "UTF-8"
+    options.locale = "en_US"
+}
