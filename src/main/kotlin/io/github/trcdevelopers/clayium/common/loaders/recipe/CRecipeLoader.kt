@@ -1,5 +1,6 @@
 package io.github.trcdevelopers.clayium.common.loaders.recipe
 
+import io.github.trcdevelopers.clayium.api.util.CLog
 import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.common.config.ConfigModIntegration
 import io.github.trcdevelopers.clayium.common.loaders.recipe.ae2.Ae2RecipeLoader
@@ -8,6 +9,7 @@ import io.github.trcdevelopers.clayium.common.loaders.recipe.extremereactors.Exr
 import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtAlloysRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtMatterTransformerRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.mekanism.MekanismRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.projectred.ProjectRedRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.sakura.SakuraRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.tconstruct.TConstructRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.thermal.ThermalRecipeLoader
@@ -65,10 +67,11 @@ object CRecipeLoader {
             MekanismRecipeLoader.registerRecipes()
         }
         if (Mods.Sakura.isModLoaded && ConfigModIntegration.sakura) {
+            CLog.info("Sakura Mod is Loaded. Registering sakura mod recipes...")
             SakuraRecipeLoader.registerRecipes()
         }
         if (Mods.ProjectRedExpansion.isModLoaded && ConfigModIntegration.projectRedExpansion) {
-            SakuraRecipeLoader.registerRecipes()
+            ProjectRedRecipeLoader.registerRecipes()
         }
         if (Mods.TConstruct.isModLoaded && ConfigModIntegration.tconstruct) {
             TConstructRecipeLoader.registerRecipes()

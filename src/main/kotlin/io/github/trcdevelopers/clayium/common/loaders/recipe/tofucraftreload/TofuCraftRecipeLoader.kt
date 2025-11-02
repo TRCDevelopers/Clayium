@@ -1,5 +1,6 @@
 package io.github.trcdevelopers.clayium.common.loaders.recipe.tofucraftreload
 
+import cn.mcmod.tofucraft.item.ItemLoader
 import cn.mcmod.tofucraft.material.TofuType
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
@@ -7,15 +8,13 @@ import io.github.trcdevelopers.clayium.api.util.copyWithSize
 import io.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraft.item.ItemStack
 
-private typealias TofuItems = cn.mcmod.tofucraft.item.ItemLoader
-
 object TofuCraftRecipeLoader {
     fun registerRecipes() {
         val reactor = CRecipes.CLAY_REACTOR
 
         reactor.builder()
-            .input(TofuItems.soybeans)
-            .input(TofuItems.nigari)
+            .input(ItemLoader.soybeans)
+            .input(ItemLoader.nigari)
             .output(TofuType.kinu.itemStack.copyWithSize(4))
             .tier(9).duration(10_000_000_000_000)
             .buildAndRegister()
@@ -48,7 +47,7 @@ object TofuCraftRecipeLoader {
             .tier(11).duration(10_000_000_000_000_000)
             .buildAndRegister()
 
-                val tofuGem = ItemStack(TofuItems.material, 1, 18)
+        val tofuGem = ItemStack(ItemLoader.material, 1, 18)
         reactor.builder()
             .input(TofuType.momen.itemStack)
             .input("gemDiamond")
