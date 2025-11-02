@@ -1,6 +1,9 @@
 package io.github.trcdevelopers.clayium.api.unification.material
 
 object CMarkerMaterials {
+    val obsidian = CMarkerMaterial("Obsidian")
+    val diamond = CMarkerMaterial("Diamond")
+
     val certusQuartz = CMarkerMaterial("CertusQuartz")
     val fluix = CMarkerMaterial("Fluix")
     val redstoneAlloy = CMarkerMaterial("RedstoneAlloy")
@@ -18,6 +21,9 @@ object CMarkerMaterials {
     val cyanite = CMarkerMaterial("Cyanite")
     val blutonium = CMarkerMaterial("Blutonium")
     val ludicrite = CMarkerMaterial("Ludicrite")
+
+    val refinedGlowstone = CMarkerMaterial("RefinedGlowstone")
+    val refinedObsidian  = CMarkerMaterial("RefinedObsidian")
 
     fun init() {}
 }

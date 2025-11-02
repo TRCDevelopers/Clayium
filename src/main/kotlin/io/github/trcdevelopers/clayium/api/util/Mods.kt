@@ -13,6 +13,7 @@ enum class Mods(
     GregTech(Names.GREGTECH),
     GroovyScript(Names.GROOVY_SCRIPT),
     JustEnoughItems(Names.JUST_ENOUGH_ITEMS),
+    Mekanism(Names.MEKANISM),
     ModularUI(Names.MODULAR_UI),
     Sakura(Names.SAKURA),
     TheOneProbe(Names.THE_ONE_PROBE),
@@ -28,6 +29,7 @@ enum class Mods(
         const val EXTREME_REACTORS = "bigreactors"
         const val GREGTECH = "gregtech"
         const val GROOVY_SCRIPT = "groovyscript"
+        const val MEKANISM = "mekanism"
         const val JUST_ENOUGH_ITEMS = "jei"
         const val MODULAR_UI = "modularui"
         const val SAKURA = "sakura"
