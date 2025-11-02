@@ -29,7 +29,7 @@ object ProjectRedRecipeLoader {
         CRecipes.ALLOY_SMELTER.builder()
             .input(CMaterials.iron)
             .input(CMarkerMaterials.electrotine, 8)
-            .output(OrePrefix.ingot, CMarkerMaterials.electrotine)
+            .output(OrePrefix.ingot, CMarkerMaterials.electrotineAlloy)
             .tier(6).duration(100)
             .buildAndRegister()
     }

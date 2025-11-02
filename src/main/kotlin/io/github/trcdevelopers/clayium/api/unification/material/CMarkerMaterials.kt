@@ -42,6 +42,7 @@ object CMarkerMaterials {
     val fairy = CMarkerMaterial("Fairy")
 
     val electrotine  = CMarkerMaterial("Electrotine")
+    val electrotineAlloy  = CMarkerMaterial("ElectrotineAlloy")
     val redAlloy  = CMarkerMaterial("RedAlloy")
 
     fun init() {}
