@@ -21,9 +21,9 @@ plugins {
     id("java-library")
     kotlin("jvm") version libs.versions.kotlinVersion
     id("maven-publish")
-    id("org.jetbrains.gradle.plugin.idea-ext") version "1.2"
+    id("org.jetbrains.gradle.plugin.idea-ext") version "1.3"
     id("eclipse")
-    id("com.gtnewhorizons.retrofuturagradle") version "1.4.8"
+    id("com.gtnewhorizons.retrofuturagradle") version "1.4.9"
 }
 
 val forgelinContinuousVersion: String by project
@@ -150,8 +150,8 @@ dependencies {
         isTransitive = false
     }
     annotationProcessor("org.ow2.asm:asm-debug-all:5.2")
-    annotationProcessor("com.google.guava:guava:32.1.2-jre")
-    annotationProcessor("com.google.code.gson:gson:2.8.9")
+    annotationProcessor("com.google.guava:guava:32.1.3-jre")
+    annotationProcessor("com.google.code.gson:gson:2.13.2")
     annotationProcessor(mixin) {
         isTransitive = false
     }
