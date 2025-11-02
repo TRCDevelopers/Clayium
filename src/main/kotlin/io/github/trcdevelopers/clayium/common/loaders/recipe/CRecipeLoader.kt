@@ -1,7 +1,10 @@
 package io.github.trcdevelopers.clayium.common.loaders.recipe
 
+import io.github.trcdevelopers.clayium.api.unification.material.CMarkerMaterials
+import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.common.config.ConfigModIntegration
+import io.github.trcdevelopers.clayium.common.loaders.recipe.ae2.Ae2RecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.enderio.EnderIoAlloysRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.extremereactors.ExrRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtAlloysRecipeLoader
@@ -11,6 +14,7 @@ import io.github.trcdevelopers.clayium.common.loaders.recipe.sakura.SakuraRecipe
 import io.github.trcdevelopers.clayium.common.loaders.recipe.tconstruct.TConstructRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.tofucraftreload.TofuCraftRecipeLoader
 import io.github.trcdevelopers.clayium.common.recipe.handler.MaterialRecipeHandler
+import net.minecraft.init.Items
 
 object CRecipeLoader {
     fun load() {
@@ -68,6 +72,9 @@ object CRecipeLoader {
         }
         if (Mods.TofuCraft.isModLoaded && ConfigModIntegration.tofuCraft) {
             TofuCraftRecipeLoader.registerRecipes()
+        }
+        if (Mods.AE2.isModLoaded && ConfigModIntegration.ae2) {
+            Ae2RecipeLoader.registerRecipes()
         }
     }
 }

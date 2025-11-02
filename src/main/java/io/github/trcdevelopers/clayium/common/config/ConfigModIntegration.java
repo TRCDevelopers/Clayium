@@ -7,6 +7,9 @@ import static io.github.trcdevelopers.clayium.api.CValues.MOD_ID;
 @Config.LangKey("clayium.config.mod_integration")
 @Config(modid = MOD_ID, name = MOD_ID + "/" + "mod_integration")
 public class ConfigModIntegration {
+    @Config.Name("AE2")
+    public static boolean ae2 = true;
+
     @Config.Name("EnderIO")
     public static boolean enderio = true;
 

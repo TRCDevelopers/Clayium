@@ -151,13 +151,6 @@ object MatterTransformerRecipeLoader {
 
         registerMaterialTransformations()
 
-        if (Mods.AE2.isModLoaded) {
-            registry.builder()
-                .input(Items.QUARTZ)
-                .output(OrePrefix.crystal, CMarkerMaterials.certusQuartz)
-                .tier(10).defaultCEt().duration(60)
-                .buildAndRegister()
-        }
     }
 
     private fun getLeaveStack(type: BlockPlanks.EnumType): ItemStack {
