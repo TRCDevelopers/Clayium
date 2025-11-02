@@ -20,6 +20,16 @@ repositories {
         url = uri("https://repo.spongepowered.org/maven")
     }
     maven {
+        name = "ProgWML6 Maven"
+        url = uri("https://dvs1.progwml6.com/files/maven/")
+    }
+    maven {
+        name = "thiakil"
+        url = uri("http://maven.thiakil.com")
+        isAllowInsecureProtocol = true
+    }
+
+    maven {
         name = "CurseMaven"
         url = uri("https://cursemaven.com")
         content {
@@ -32,11 +42,5 @@ repositories {
         content {
             includeGroup("maven.modrinth")
         }
-    }
-
-    maven {
-        name = "thiakil"
-        url = uri("http://maven.thiakil.com")
-        isAllowInsecureProtocol = true
     }
 }

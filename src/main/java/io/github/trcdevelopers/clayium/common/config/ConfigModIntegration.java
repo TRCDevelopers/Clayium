@@ -10,18 +10,21 @@ public class ConfigModIntegration {
     @Config.Name("EnderIO")
     public static boolean enderio = true;
 
-    @Config.Name("Gregtech")
-    public static boolean gregtech = true;
-
     @Config.Name("ExtremeReactors")
     public static boolean extremeReactors = true;
 
-    @Config.Name("TofuCraftReload")
-    public static boolean tofuCraft = true;
+    @Config.Name("Gregtech")
+    public static boolean gregtech = true;
+
+    @Config.Name("Mekanism")
+    public static boolean mekanism = true;
 
     @Config.Name("Sakura")
     public static boolean sakura = true;
 
-    @Config.Name("Mekanism")
-    public static boolean mekanism = true;
+    @Config.Name("TinkersConstruct")
+    public static boolean tconstruct = true;
+
+    @Config.Name("TofuCraftReload")
+    public static boolean tofuCraft = true;
 }

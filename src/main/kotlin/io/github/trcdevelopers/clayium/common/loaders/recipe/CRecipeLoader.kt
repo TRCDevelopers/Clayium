@@ -8,6 +8,7 @@ import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtAlloysRe
 import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtMatterTransformerRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.mekanism.MekanismRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.sakura.SakuraRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.tconstruct.TConstructRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.tofucraftreload.TofuCraftRecipeLoader
 import io.github.trcdevelopers.clayium.common.recipe.handler.MaterialRecipeHandler
 
@@ -49,26 +50,24 @@ object CRecipeLoader {
         if (Mods.EnderIO.isModLoaded && ConfigModIntegration.enderio) {
             EnderIoAlloysRecipeLoader.registerRecipes()
         }
-
+        if (Mods.ExtremeReactors.isModLoaded && ConfigModIntegration.extremeReactors) {
+            ExrRecipeLoader.registerRecipes()
+        }
         if (Mods.GregTech.isModLoaded && ConfigModIntegration.gregtech) {
             GtAlloysRecipeLoader.registerRecipes()
             GtMatterTransformerRecipeLoader.registerRecipes()
         }
-
-        if (Mods.ExtremeReactors.isModLoaded && ConfigModIntegration.extremeReactors) {
-            ExrRecipeLoader.registerRecipes()
+        if (Mods.Mekanism.isModLoaded && ConfigModIntegration.mekanism) {
+            MekanismRecipeLoader.registerRecipes()
         }
-
-        if (Mods.TofuCraft.isModLoaded && ConfigModIntegration.tofuCraft) {
-            TofuCraftRecipeLoader.registerRecipes()
-        }
-
         if (Mods.Sakura.isModLoaded && ConfigModIntegration.sakura) {
             SakuraRecipeLoader.registerRecipes()
         }
-
-        if (Mods.Mekanism.isModLoaded && ConfigModIntegration.mekanism) {
-            MekanismRecipeLoader.registerRecipes()
+        if (Mods.TConstruct.isModLoaded && ConfigModIntegration.tconstruct) {
+            TConstructRecipeLoader.registerRecipes()
+        }
+        if (Mods.TofuCraft.isModLoaded && ConfigModIntegration.tofuCraft) {
+            TofuCraftRecipeLoader.registerRecipes()
         }
     }
 }

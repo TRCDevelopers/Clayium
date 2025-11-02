@@ -16,6 +16,7 @@ enum class Mods(
     Mekanism(Names.MEKANISM),
     ModularUI(Names.MODULAR_UI),
     Sakura(Names.SAKURA),
+    TConstruct(Names.TCONSTRUCT),
     TheOneProbe(Names.THE_ONE_PROBE),
     TofuCraft(Names.TOFU_CRAFT),
     ;
@@ -34,6 +35,7 @@ enum class Mods(
         const val MODULAR_UI = "modularui"
         const val SAKURA = "sakura"
         const val THE_ONE_PROBE = "theoneprobe"
+        const val TCONSTRUCT = "tconstruct"
         const val TOFU_CRAFT = "tofucraft"
     }
 }
