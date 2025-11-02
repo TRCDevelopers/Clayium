@@ -5,6 +5,8 @@ object CMarkerMaterials {
     val diamond = CMarkerMaterial("Diamond")
     val emerald  = CMarkerMaterial("Emerald")
 
+    val apatite = CMarkerMaterial("Apatite")
+
     val certusQuartz = CMarkerMaterial("CertusQuartz")
     val fluix = CMarkerMaterial("Fluix")
     val redstoneAlloy = CMarkerMaterial("RedstoneAlloy")
