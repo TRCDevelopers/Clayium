@@ -13,10 +13,10 @@ public class ConfigModIntegration {
     @Config.Name("Gregtech")
     public static boolean gregtech = true;
 
-    @Config.Name("Extreme Reactors")
+    @Config.Name("ExtremeReactors")
     public static boolean extremeReactors = true;
 
-    @Config.Name("TofuCraft Reload")
+    @Config.Name("TofuCraftReload")
     public static boolean tofuCraft = true;
 
     @Config.Name("Sakura")
