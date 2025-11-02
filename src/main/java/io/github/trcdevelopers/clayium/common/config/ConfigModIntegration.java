@@ -25,6 +25,9 @@ public class ConfigModIntegration {
     @Config.Name("Sakura")
     public static boolean sakura = true;
 
+    @Config.Name("ThermalFoundation")
+    public static boolean thermalFoundation = true;
+
     @Config.Name("TinkersConstruct")
     public static boolean tconstruct = true;
 

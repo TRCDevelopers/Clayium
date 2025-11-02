@@ -10,6 +10,7 @@ import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtMatterTr
 import io.github.trcdevelopers.clayium.common.loaders.recipe.mekanism.MekanismRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.sakura.SakuraRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.tconstruct.TConstructRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.thermal.ThermalRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.tofucraftreload.TofuCraftRecipeLoader
 import io.github.trcdevelopers.clayium.common.recipe.handler.MaterialRecipeHandler
 
@@ -68,6 +69,9 @@ object CRecipeLoader {
         }
         if (Mods.TConstruct.isModLoaded && ConfigModIntegration.tconstruct) {
             TConstructRecipeLoader.registerRecipes()
+        }
+        if (Mods.ThermalFoundation.isModLoaded && ConfigModIntegration.thermalFoundation) {
+            ThermalRecipeLoader.registerRecipes()
         }
         if (Mods.TofuCraft.isModLoaded && ConfigModIntegration.tofuCraft) {
             TofuCraftRecipeLoader.registerRecipes()
