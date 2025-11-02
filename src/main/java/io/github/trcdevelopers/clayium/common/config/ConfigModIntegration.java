@@ -22,6 +22,9 @@ public class ConfigModIntegration {
     @Config.Name("Mekanism")
     public static boolean mekanism = true;
 
+    @Config.Name("ProjectRedExpansion")
+    public static boolean projectRedExpansion = true;
+
     @Config.Name("Sakura")
     public static boolean sakura = true;
 

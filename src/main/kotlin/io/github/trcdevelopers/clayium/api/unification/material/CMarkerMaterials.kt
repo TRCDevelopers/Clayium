@@ -41,5 +41,8 @@ object CMarkerMaterials {
     val pokefennium = CMarkerMaterial("Pokefennium")
     val fairy = CMarkerMaterial("Fairy")
 
+    val electrotine  = CMarkerMaterial("Electrotine")
+    val redAlloy  = CMarkerMaterial("RedAlloy")
+
     fun init() {}
 }

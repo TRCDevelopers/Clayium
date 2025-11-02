@@ -15,6 +15,7 @@ enum class Mods(
     JustEnoughItems(Names.JUST_ENOUGH_ITEMS),
     Mekanism(Names.MEKANISM),
     ModularUI(Names.MODULAR_UI),
+    ProjectRedExpansion(Names.PROJECT_RED_EXPANSION),
     Sakura(Names.SAKURA),
     TConstruct(Names.TCONSTRUCT),
     ThermalFoundation(Names.THERMAL_FOUNDATION),
@@ -34,6 +35,7 @@ enum class Mods(
         const val MEKANISM = "mekanism"
         const val JUST_ENOUGH_ITEMS = "jei"
         const val MODULAR_UI = "modularui"
+        const val PROJECT_RED_EXPANSION = "projectred-expansion"
         const val SAKURA = "sakura"
         const val THE_ONE_PROBE = "theoneprobe"
         const val TCONSTRUCT = "tconstruct"

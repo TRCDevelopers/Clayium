@@ -67,6 +67,9 @@ object CRecipeLoader {
         if (Mods.Sakura.isModLoaded && ConfigModIntegration.sakura) {
             SakuraRecipeLoader.registerRecipes()
         }
+        if (Mods.ProjectRedExpansion.isModLoaded && ConfigModIntegration.projectRedExpansion) {
+            SakuraRecipeLoader.registerRecipes()
+        }
         if (Mods.TConstruct.isModLoaded && ConfigModIntegration.tconstruct) {
             TConstructRecipeLoader.registerRecipes()
         }
