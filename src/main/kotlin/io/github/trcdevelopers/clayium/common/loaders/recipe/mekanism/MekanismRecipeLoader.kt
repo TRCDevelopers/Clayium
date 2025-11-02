@@ -9,7 +9,7 @@ import net.minecraft.init.Items
 object MekanismRecipeLoader {
     fun registerRecipes() {
         CRecipes.ALLOY_SMELTER.builder()
-            .input(listOf(OrePrefix.ingot, OrePrefix.dust), CMaterials.osmium)
+            .input(CMaterials.osmium)
             .input(Items.GLOWSTONE_DUST)
             .output(OrePrefix.ingot, CMarkerMaterials.refinedGlowstone)
             .tier(6).duration(100)

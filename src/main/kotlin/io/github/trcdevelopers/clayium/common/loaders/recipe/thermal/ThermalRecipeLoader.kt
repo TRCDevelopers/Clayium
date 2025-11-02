@@ -30,7 +30,7 @@ object ThermalRecipeLoader {
             .buildAndRegister()
 
         CRecipes.ALLOY_SMELTER.builder()
-            .input(ingotDust, CMaterials.electrum)
+            .input(CMaterials.electrum)
             .input(Items.REDSTONE, 2)
             .output(OrePrefix.ingot, CMarkerMaterials.electrumFlux)
             .tier(6).duration(100)
