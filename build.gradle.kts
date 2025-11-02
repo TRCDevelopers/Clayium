@@ -38,7 +38,7 @@ val minecraftVersion: String by project
 
 // CoreMod
 val coreMod: String by project
-val includeMod: String by project
+val coreModOnly: String by project
 val coreModPluginClassName: String by project
 
 val accessTransformersFile: String by project
@@ -193,9 +193,9 @@ tasks.withType<Jar> {
         val attributeMap = mutableMapOf<String, String>()
         if (coreMod.toBoolean()) {
             attributeMap["FMLCorePlugin"] = coreModPluginClassName
-            if (includeMod.toBoolean()) {
+            if (!coreModOnly.toBoolean()) {
                 attributeMap["FMLCorePluginContainsFMLMod"] = true.toString()
-                attributeMap["ForceLoadAsMod"] = (project.gradle.startParameter.taskNames[0] == "build").toString()
+                attributeMap["ForceLoadAsMod"] = true.toString()
             }
         }
         if (accessTransformersFile.isNotBlank()) {
