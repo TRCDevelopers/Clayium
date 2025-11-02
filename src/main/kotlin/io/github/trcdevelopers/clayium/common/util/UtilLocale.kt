@@ -90,7 +90,7 @@ object UtilLocale {
         ret = try {
             String.format(ret, *args)
         } catch (e: IllegalFormatException) {
-            //ClayiumCore.logger.catching((Throwable)e);
+            //ClayiumCoreMod.logger.catching((Throwable)e);
             return str
         }
         return ret
