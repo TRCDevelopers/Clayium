@@ -1,4 +1,4 @@
-package io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech
+package io.github.trcdevelopers.clayium.common.loaders.recipe.integration.gregtech
 
 import gregtech.api.unification.material.Materials
 import io.github.trcdevelopers.clayium.api.ClayEnergy

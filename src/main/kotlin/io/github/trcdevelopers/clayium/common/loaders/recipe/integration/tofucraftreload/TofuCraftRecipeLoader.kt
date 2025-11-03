@@ -1,4 +1,4 @@
-package io.github.trcdevelopers.clayium.common.loaders.recipe.tofucraftreload
+package io.github.trcdevelopers.clayium.common.loaders.recipe.integration.tofucraftreload
 
 import cn.mcmod.tofucraft.item.ItemLoader
 import cn.mcmod.tofucraft.material.TofuType

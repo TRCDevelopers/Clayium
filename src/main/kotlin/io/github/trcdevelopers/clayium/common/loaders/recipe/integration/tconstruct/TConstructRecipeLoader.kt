@@ -1,4 +1,4 @@
-package io.github.trcdevelopers.clayium.common.loaders.recipe.tconstruct
+package io.github.trcdevelopers.clayium.common.loaders.recipe.integration.tconstruct
 
 import io.github.trcdevelopers.clayium.api.unification.OreDictUnifier
 import io.github.trcdevelopers.clayium.api.unification.material.CMarkerMaterials

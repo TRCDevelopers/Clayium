@@ -3,19 +3,19 @@ package io.github.trcdevelopers.clayium.common.loaders.recipe
 import io.github.trcdevelopers.clayium.api.util.CLog
 import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.common.config.ConfigModIntegration
-import io.github.trcdevelopers.clayium.common.loaders.recipe.ae2.Ae2RecipeLoader
-import io.github.trcdevelopers.clayium.common.loaders.recipe.enderio.EnderIoAlloysRecipeLoader
-import io.github.trcdevelopers.clayium.common.loaders.recipe.extremereactors.ExrRecipeLoader
-import io.github.trcdevelopers.clayium.common.loaders.recipe.galacticraft.GalacticraftRecipeLoader
-import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtAlloysRecipeLoader
-import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtMatterTransformerRecipeLoader
-import io.github.trcdevelopers.clayium.common.loaders.recipe.mekanism.MekanismRecipeLoader
-import io.github.trcdevelopers.clayium.common.loaders.recipe.metallurgy.MetallurgyRecipeLoader
-import io.github.trcdevelopers.clayium.common.loaders.recipe.projectred.ProjectRedRecipeLoader
-import io.github.trcdevelopers.clayium.common.loaders.recipe.sakura.SakuraRecipeLoader
-import io.github.trcdevelopers.clayium.common.loaders.recipe.tconstruct.TConstructRecipeLoader
-import io.github.trcdevelopers.clayium.common.loaders.recipe.thermal.ThermalRecipeLoader
-import io.github.trcdevelopers.clayium.common.loaders.recipe.tofucraftreload.TofuCraftRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.integration.ae2.Ae2RecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.integration.enderio.EnderIoAlloysRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.integration.extremereactors.ExrRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.integration.galacticraft.GalacticraftRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.integration.gregtech.GtAlloysRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.integration.gregtech.GtMatterTransformerRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.integration.mekanism.MekanismRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.integration.metallurgy.MetallurgyRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.integration.projectred.ProjectRedRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.integration.sakura.SakuraRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.integration.tconstruct.TConstructRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.integration.thermal.ThermalRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.integration.tofucraftreload.TofuCraftRecipeLoader
 import io.github.trcdevelopers.clayium.common.recipe.handler.MaterialRecipeHandler
 
 object CRecipeLoader {

@@ -1,4 +1,4 @@
-package io.github.trcdevelopers.clayium.common.loaders.recipe.enderio
+package io.github.trcdevelopers.clayium.common.loaders.recipe.integration.enderio
 
 import io.github.trcdevelopers.clayium.api.unification.material.CMarkerMaterials
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials

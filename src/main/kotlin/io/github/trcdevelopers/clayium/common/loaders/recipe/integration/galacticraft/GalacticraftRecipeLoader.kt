@@ -1,4 +1,4 @@
-package io.github.trcdevelopers.clayium.common.loaders.recipe.galacticraft
+package io.github.trcdevelopers.clayium.common.loaders.recipe.integration.galacticraft
 
 import io.github.trcdevelopers.clayium.api.unification.material.CMarkerMaterial
 import io.github.trcdevelopers.clayium.api.unification.material.CMarkerMaterials

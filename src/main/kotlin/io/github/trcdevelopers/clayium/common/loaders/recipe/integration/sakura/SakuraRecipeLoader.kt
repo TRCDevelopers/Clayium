@@ -1,4 +1,4 @@
-package io.github.trcdevelopers.clayium.common.loaders.recipe.sakura
+package io.github.trcdevelopers.clayium.common.loaders.recipe.integration.sakura
 
 import cn.mcmod.sakura.block.BlockLoader
 import cn.mcmod.sakura.item.ItemLoader

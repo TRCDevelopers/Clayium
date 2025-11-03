@@ -1,4 +1,4 @@
-package io.github.trcdevelopers.clayium.common.loaders.recipe.ae2
+package io.github.trcdevelopers.clayium.common.loaders.recipe.integration.ae2
 
 import io.github.trcdevelopers.clayium.api.unification.material.CMarkerMaterials
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix

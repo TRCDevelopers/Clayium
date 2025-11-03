@@ -1,4 +1,4 @@
-package io.github.trcdevelopers.clayium.common.loaders.recipe.projectred
+package io.github.trcdevelopers.clayium.common.loaders.recipe.integration.projectred
 
 import io.github.trcdevelopers.clayium.api.unification.OreDictUnifier
 import io.github.trcdevelopers.clayium.api.unification.material.CMarkerMaterials

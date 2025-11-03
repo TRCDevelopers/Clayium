@@ -1,4 +1,4 @@
-package io.github.trcdevelopers.clayium.common.loaders.recipe.extremereactors
+package io.github.trcdevelopers.clayium.common.loaders.recipe.integration.extremereactors
 
 import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.unification.material.CMarkerMaterials
