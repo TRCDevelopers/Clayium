@@ -1,5 +1,6 @@
 package io.github.trcdevelopers.clayium.api.unification.material
 
+@Suppress("SpellCheckingInspection")
 object CMarkerMaterials {
     val obsidian = CMarkerMaterial("Obsidian")
     val diamond = CMarkerMaterial("Diamond")
@@ -52,6 +53,43 @@ object CMarkerMaterials {
 
     val meteoricIron = CMarkerMaterial("MeteoricIron")
     val desh = CMarkerMaterial("Desh")
+
+    // metallurgy
+    val deepIron = CMarkerMaterial("DeepIron")
+    val prometheum = CMarkerMaterial("Prometheum")
+    val infuscolium = CMarkerMaterial("Infuscolium")
+    val oureclase = CMarkerMaterial("Oureclase")
+    val astralSilver = CMarkerMaterial("AstralSilver")
+    val carmot = CMarkerMaterial("Cartmot")
+    val mithril = CMarkerMaterial("Mithril")
+    val rubracium = CMarkerMaterial("Rubracium")
+    val orichalcum = CMarkerMaterial("Orichalcum")
+    val adamatine  = CMarkerMaterial("Adamatine")
+    val atlarus = CMarkerMaterial("Atlarus")
+    val ignatius = CMarkerMaterial("Ignatius")
+    val shadowIron = CMarkerMaterial("ShadowIron")
+    val lemurite = CMarkerMaterial("Lemurite")
+    val midasium = CMarkerMaterial("Midasium")
+    val vyroxeres = CMarkerMaterial("Vyroxeres")
+    val ceruclase  = CMarkerMaterial("Ceruclase")
+    val alduorite  = CMarkerMaterial("Alduorite")
+    val kalendrite = CMarkerMaterial("Kalendrite")
+    val vulcanite  = CMarkerMaterial("Vulcanite")
+    val sanguinite  = CMarkerMaterial("Sanguinite")
+    val eximite  = CMarkerMaterial("Eximite")
+    val meutoite  = CMarkerMaterial("Meutoite")
+    val hepatizon = CMarkerMaterial("Hepatizon")
+    val damascusSteel = CMarkerMaterial("DamascusSteel")
+    val angmallen  = CMarkerMaterial("Angmallen")
+    val blackSteel = CMarkerMaterial("BlackSteel")
+    val quickSilver = CMarkerMaterial("QuickSilver")
+    val haderoth = CMarkerMaterial("Haderoth")
+    val celenegil = CMarkerMaterial("Celenegil")
+    val tartarite  = CMarkerMaterial("Tartarite")
+    val shadowSteel = CMarkerMaterial("ShadowSteel")
+    val inolashite  = CMarkerMaterial("Inolashite")
+    val amordrine  = CMarkerMaterial("Amordrine")
+    val desichalkos = CMarkerMaterial("Desichalkos")
 
     fun init() {}
 }

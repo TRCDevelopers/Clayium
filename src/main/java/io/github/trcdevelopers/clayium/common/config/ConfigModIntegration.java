@@ -25,6 +25,9 @@ public class ConfigModIntegration {
     @Config.Name("Mekanism")
     public static boolean mekanism = true;
 
+    @Config.Name("Metallurgy-4-Reforged")
+    public static boolean metallurgy = true;
+
     @Config.Name("ProjectRedExpansion")
     public static boolean projectRedExpansion = true;
 

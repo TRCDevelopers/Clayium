@@ -40,12 +40,12 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
         }
     }
 
-    fun input(material: CMaterial): MatterTransformerRecipeBuilder {
+    fun input(material: IMaterial): MatterTransformerRecipeBuilder {
         val defaultPrefix = this.defaultPrefix
         verifyDefaultPrefixIsSet(defaultPrefix)
         return this.input(defaultPrefix, material)
     }
-    fun output(material: CMaterial): MatterTransformerRecipeBuilder {
+    fun output(material: IMaterial): MatterTransformerRecipeBuilder {
         val defaultPrefix = this.defaultPrefix
         verifyDefaultPrefixIsSet(defaultPrefix)
         return this.output(defaultPrefix, material)
@@ -87,11 +87,11 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
      */
     fun chain(oreDict: String): MatterTransformerRecipeBuilder {
         if (OreDictUnifier.get(oreDict).isEmpty) return this
-        this.buildAndRegister()
         val newBuilder = this.recipeRegistry.builder()
             .tier(this.tier).CEt(this.cePerTick).duration(this.duration)
             .input(this.outputs[0])
             .output(oreDict)
+        this.buildAndRegister()
         if (defaultPrefix != null) newBuilder.defaultPrefix(defaultPrefix!!)
         return newBuilder
     }

@@ -10,6 +10,7 @@ import io.github.trcdevelopers.clayium.common.loaders.recipe.galacticraft.Galact
 import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtAlloysRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtMatterTransformerRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.mekanism.MekanismRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.metallurgy.MetallurgyRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.projectred.ProjectRedRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.sakura.SakuraRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.tconstruct.TConstructRecipeLoader
@@ -70,8 +71,10 @@ object CRecipeLoader {
         if (Mods.Mekanism.isModLoaded && ConfigModIntegration.mekanism) {
             MekanismRecipeLoader.registerRecipes()
         }
+        if (Mods.Metallurgy.isModLoaded && ConfigModIntegration.metallurgy) {
+            MetallurgyRecipeLoader.registerRecipes()
+        }
         if (Mods.Sakura.isModLoaded && ConfigModIntegration.sakura) {
-            CLog.info("Sakura Mod is Loaded. Registering sakura mod recipes...")
             SakuraRecipeLoader.registerRecipes()
         }
         if (Mods.ProjectRedExpansion.isModLoaded && ConfigModIntegration.projectRedExpansion) {

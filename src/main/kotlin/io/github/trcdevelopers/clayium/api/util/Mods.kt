@@ -15,6 +15,7 @@ enum class Mods(
     GroovyScript(Names.GROOVY_SCRIPT),
     JustEnoughItems(Names.JUST_ENOUGH_ITEMS),
     Mekanism(Names.MEKANISM),
+    Metallurgy(Names.METALLURGY),
     ModularUI(Names.MODULAR_UI),
     ProjectRedExpansion(Names.PROJECT_RED_EXPANSION),
     Sakura(Names.SAKURA),
@@ -35,6 +36,7 @@ enum class Mods(
         const val GREGTECH = "gregtech"
         const val GROOVY_SCRIPT = "groovyscript"
         const val MEKANISM = "mekanism"
+        const val METALLURGY = "metallurgy"
         const val JUST_ENOUGH_ITEMS = "jei"
         const val MODULAR_UI = "modularui"
         const val PROJECT_RED_EXPANSION = "projectred-expansion"
