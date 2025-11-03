@@ -1,0 +1,11 @@
+.dockerignore
+Dockerfile
+compose.yaml
+
+node_modules/**
+bun.lock
+docs/.vitepress/cache/**
+docs/.vitepress/dist/**
+
+.DS_Store
+Thumbs.db
