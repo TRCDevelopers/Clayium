@@ -811,4 +811,8 @@ item.clayium.antimatter_seed.name=反物質の種
 item.clayium.energized_clay_dust.name=活性化粘土粉
 item.clayium.excited_clay_dust.name=励起粘土粉
 
+clayium.config.core=主な設定
+clayium.config.metal_chest=金属チェスト設定
+clayium.config.tier_balance=Tierバランス設定
+clayium.config.mod_integration=連携レシピ設定
 clayium.config.mod_integration.all_toggle=連携レシピを有効化

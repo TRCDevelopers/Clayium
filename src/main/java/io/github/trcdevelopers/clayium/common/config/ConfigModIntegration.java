@@ -5,6 +5,7 @@ import net.minecraftforge.common.config.Config;
 import static io.github.trcdevelopers.clayium.api.CValues.MOD_ID;
 
 @Config(modid = MOD_ID, name = MOD_ID + "/" + "mod_integration")
+@Config.LangKey("clayium.config.mod_integration")
 public class ConfigModIntegration {
     @Config.Name("!Enable Integration Recipes")
     @Config.Comment(

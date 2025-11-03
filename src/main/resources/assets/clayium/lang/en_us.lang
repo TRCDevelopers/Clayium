@@ -947,4 +947,8 @@ item.clayium.excited_clay_dust.name=Excited Clay Dust
 
 item.clayium.organic_clay_dust.name=Organic Clay
 
+clayium.config.core=Main Settings
+clayium.config.metal_chest=Metal Chest Properties
+clayium.config.tier_balance=Tier Balancing
+clayium.config.mod_integration=Mod Integration Recipes
 clayium.config.mod_integration.all_toggle=Enable Integration Recipes
