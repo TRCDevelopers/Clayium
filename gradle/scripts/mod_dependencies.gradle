@@ -43,24 +43,24 @@ dependencies {
     api("codechicken:codechickenlib:3.2.3.358")
     api("com.cleanroommc:groovyscript:1.3.1") { transitive = false }
 
-    // Optional dependencies. Use `devOnyNonPublishable` for testing.
-    // %s/devOnlyNonPublishable/compileOnly
-    // %s/compileOnly/devOnlyNonPublishable
+    // Optional dependencies. Use `devOnyNonPublishable` or uncomment for testing.
+    compileOnly("gregtech:gregtech:2.8.10-beta")
+    compileOnly(rfg.deobf("com.azanor.baubles:Baubles:1.12-1.5.2"))
+    compileOnly(rfg.deobf("curse.maven:tofucraftreload-317469:3115668"))
+    compileOnly(rfg.deobf("maven.modrinth:sakura_mod:1.0.7-1.12.2"))
+    compileOnly(rfg.deobf("maven.modrinth:mmlib:2.3.0-1.12.2")) // Required by TofuCraftReload, Sakura MOD
+//    runtimeOnlyNonPublishable(rfg.deobf("maven.modrinth:mekanism:9.8.3.390"))
+//    runtimeOnlyNonPublishable("slimeknights:TConstruct:1.12.2-2.12.0.164") // Tinkers
+//    runtimeOnlyNonPublishable("slimeknights.mantle:Mantle:1.12-1.3.3.55")
+//    runtimeOnlyNonPublishable(rfg.deobf("maven.modrinth:materialis:1.12.2-1.2.5"))
+//    runtimeOnlyNonPublishable(rfg.deobf("curse.maven:cofh-core-69162:2920433")) // Thermal
+//    runtimeOnlyNonPublishable(rfg.deobf("curse.maven:thermal-foundation-222880:2926428"))
+//    runtimeOnlyNonPublishable(rfg.deobf("curse.maven:redstone-arsenal-70631:2939416"))
+//    runtimeOnlyNonPublishable(rfg.deobf("curse.maven:cofh-world-271384:2920434"))
+//    runtimeOnlyNonPublishable(rfg.deobf("curse.maven:redstone-flux-270789:2920436"))
+//    runtimeOnlyNonPublishable(rfg.deobf("curse.maven:galacticraft-legacy-564236:6364107"))
+//    runtimeOnlyNonPublishable(rfg.deobf("curse.maven:metallurgy-4-reforged-300890:5279337")) // somehow crashes on deobf
+
     devOnlyNonPublishable("mezz.jei:jei_1.12.2:4.16.1.1013")
-    devOnlyNonPublishable("gregtech:gregtech:2.8.10-beta")
-    devOnlyNonPublishable(rfg.deobf("com.azanor.baubles:Baubles:1.12-1.5.2"))
     devOnlyNonPublishable(rfg.deobf("curse.maven:top-245211:2667280")) // TOP 1.4.28
-    devOnlyNonPublishable(rfg.deobf("curse.maven:tofucraftreload-317469:3115668"))
-    devOnlyNonPublishable(rfg.deobf("maven.modrinth:sakura_mod:1.0.7-1.12.2"))
-    devOnlyNonPublishable(rfg.deobf("maven.modrinth:mmlib:2.3.0-1.12.2")) // Required by TofuCraftReload, Sakura MOD
-    devOnlyNonPublishable(rfg.deobf("maven.modrinth:mekanism:9.8.3.390"))
-    devOnlyNonPublishable("slimeknights:TConstruct:1.12.2-2.12.0.164") // Tinkers
-    devOnlyNonPublishable("slimeknights.mantle:Mantle:1.12-1.3.3.55")
-    devOnlyNonPublishable(rfg.deobf("maven.modrinth:materialis:1.12.2-1.2.5"))
-//    devOnlyNonPublishable(rfg.deobf("curse.maven:cofh-core-69162:2920433")) // Thermal
-//    devOnlyNonPublishable(rfg.deobf("curse.maven:thermal-foundation-222880:2926428"))
-//    devOnlyNonPublishable(rfg.deobf("curse.maven:redstone-arsenal-70631:2939416"))
-//    devOnlyNonPublishable(rfg.deobf("curse.maven:cofh-world-271384:2920434"))
-//    devOnlyNonPublishable(rfg.deobf("curse.maven:redstone-flux-270789:2920436"))
-    devOnlyNonPublishable(rfg.deobf("curse.maven:galacticraft-legacy-564236:6364107"))
 }
