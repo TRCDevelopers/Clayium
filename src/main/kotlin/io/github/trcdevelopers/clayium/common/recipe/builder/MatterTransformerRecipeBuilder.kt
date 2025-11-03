@@ -2,6 +2,7 @@ package io.github.trcdevelopers.clayium.common.recipe.builder
 
 import io.github.trcdevelopers.clayium.api.unification.OreDictUnifier
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterial
+import io.github.trcdevelopers.clayium.api.unification.material.IMaterial
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.unification.stack.UnificationEntry
 import io.github.trcdevelopers.clayium.api.util.Mods
@@ -95,8 +96,8 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
         return newBuilder
     }
 
-    fun chain(orePrefix: OrePrefix, material: CMaterial) = chain(UnificationEntry(orePrefix, material).toString())
-    fun chain(material: CMaterial): MatterTransformerRecipeBuilder {
+    fun chain(orePrefix: OrePrefix, material: IMaterial) = chain(UnificationEntry(orePrefix, material).toString())
+    fun chain(material: IMaterial): MatterTransformerRecipeBuilder {
         val defaultPrefix = this.defaultPrefix
         verifyDefaultPrefixIsSet(defaultPrefix)
         return chain(defaultPrefix, material)

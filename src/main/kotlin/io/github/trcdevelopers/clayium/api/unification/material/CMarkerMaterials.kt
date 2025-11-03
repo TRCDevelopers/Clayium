@@ -6,6 +6,11 @@ object CMarkerMaterials {
     val emerald  = CMarkerMaterial("Emerald")
 
     val apatite = CMarkerMaterial("Apatite")
+    val topaz = CMarkerMaterial("Topaz")
+    val malachite = CMarkerMaterial("Malachite")
+    val tanzanite  = CMarkerMaterial("Tanzanite")
+    val dilithium = CMarkerMaterial("Dilithium")
+    val forcicium = CMarkerMaterial("Forcicium")
 
     val signalum = CMarkerMaterial("Signalum")
     val lumium = CMarkerMaterial("Lumium")

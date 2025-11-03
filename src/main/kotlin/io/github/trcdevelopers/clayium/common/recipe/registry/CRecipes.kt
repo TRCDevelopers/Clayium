@@ -2,6 +2,7 @@ package io.github.trcdevelopers.clayium.common.recipe.registry
 
 import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.common.recipe.builder.AlloyRecipeBuilder
+import io.github.trcdevelopers.clayium.common.recipe.builder.CaInjectorRecipeBuilder
 import io.github.trcdevelopers.clayium.common.recipe.builder.ClayFabricatorRecipeBuilder
 import io.github.trcdevelopers.clayium.common.recipe.builder.MatterTransformerRecipeBuilder
 import io.github.trcdevelopers.clayium.common.recipe.builder.RecipeBuilder
@@ -40,7 +41,7 @@ object CRecipes {
     val ASSEMBLER = addRegistry("assembler", SimpleRecipeBuilder(), 2, 1)
     val INSCRIBER = addRegistry("inscriber", SimpleRecipeBuilder(), 2, 1)
     val ALLOY_SMELTER = addRegistry("alloy_smelter", AlloyRecipeBuilder(), 2, 1)
-    val CA_INJECTOR = addRegistry("ca_injector", SimpleRecipeBuilder(), 2, 1) //todo special registry or builder?
+    val CA_INJECTOR = addRegistry("ca_injector", CaInjectorRecipeBuilder(), 2, 1)
 
     // others
     val CHEMICAL_REACTOR = addRegistry("chemical_reactor", SimpleRecipeBuilder(), 2, 2)
