@@ -53,44 +53,46 @@ object CRecipeLoader {
 
         ClayGadgetsRecipeLoader.registerRecipes()
 
-        MiscIntegrationRecipeLoader.registerRecipes()
+        if (ConfigModIntegration.enableIntegrationRecipes) {
+            MiscIntegrationRecipeLoader.registerRecipes()
 
-        if (Mods.EnderIO.isModLoaded && ConfigModIntegration.enderio) {
-            EnderIoAlloysRecipeLoader.registerRecipes()
-        }
-        if (Mods.ExtremeReactors.isModLoaded && ConfigModIntegration.extremeReactors) {
-            ExrRecipeLoader.registerRecipes()
-        }
-        if (Mods.GalacticraftCore.isModLoaded && ConfigModIntegration.galacticraft) {
-            GalacticraftRecipeLoader.registerRecipes()
-        }
-        if (Mods.GregTech.isModLoaded && ConfigModIntegration.gregtech) {
-            GtAlloysRecipeLoader.registerRecipes()
-            GtMatterTransformerRecipeLoader.registerRecipes()
-        }
-        if (Mods.Mekanism.isModLoaded && ConfigModIntegration.mekanism) {
-            MekanismRecipeLoader.registerRecipes()
-        }
-        if (Mods.Metallurgy.isModLoaded && ConfigModIntegration.metallurgy) {
-            MetallurgyRecipeLoader.registerRecipes()
-        }
-        if (Mods.Sakura.isModLoaded && ConfigModIntegration.sakura) {
-            SakuraRecipeLoader.registerRecipes()
-        }
-        if (Mods.ProjectRedExpansion.isModLoaded && ConfigModIntegration.projectRedExpansion) {
-            ProjectRedRecipeLoader.registerRecipes()
-        }
-        if (Mods.TConstruct.isModLoaded && ConfigModIntegration.tconstruct) {
-            TConstructRecipeLoader.registerRecipes()
-        }
-        if (Mods.ThermalFoundation.isModLoaded && ConfigModIntegration.thermalFoundation) {
-            ThermalRecipeLoader.registerRecipes()
-        }
-        if (Mods.TofuCraft.isModLoaded && ConfigModIntegration.tofuCraft) {
-            TofuCraftRecipeLoader.registerRecipes()
-        }
-        if (Mods.AE2.isModLoaded && ConfigModIntegration.ae2) {
-            Ae2RecipeLoader.registerRecipes()
+            if (Mods.EnderIO.isModLoaded && ConfigModIntegration.enderio) {
+                EnderIoAlloysRecipeLoader.registerRecipes()
+            }
+            if (Mods.ExtremeReactors.isModLoaded && ConfigModIntegration.extremeReactors) {
+                ExrRecipeLoader.registerRecipes()
+            }
+            if (Mods.GalacticraftCore.isModLoaded && ConfigModIntegration.galacticraft) {
+                GalacticraftRecipeLoader.registerRecipes()
+            }
+            if (Mods.GregTech.isModLoaded && ConfigModIntegration.gregtech) {
+                GtAlloysRecipeLoader.registerRecipes()
+                GtMatterTransformerRecipeLoader.registerRecipes()
+            }
+            if (Mods.Mekanism.isModLoaded && ConfigModIntegration.mekanism) {
+                MekanismRecipeLoader.registerRecipes()
+            }
+            if (Mods.Metallurgy.isModLoaded && ConfigModIntegration.metallurgy) {
+                MetallurgyRecipeLoader.registerRecipes()
+            }
+            if (Mods.Sakura.isModLoaded && ConfigModIntegration.sakura) {
+                SakuraRecipeLoader.registerRecipes()
+            }
+            if (Mods.ProjectRedExpansion.isModLoaded && ConfigModIntegration.projectRedExpansion) {
+                ProjectRedRecipeLoader.registerRecipes()
+            }
+            if (Mods.TConstruct.isModLoaded && ConfigModIntegration.tconstruct) {
+                TConstructRecipeLoader.registerRecipes()
+            }
+            if (Mods.ThermalFoundation.isModLoaded && ConfigModIntegration.thermalFoundation) {
+                ThermalRecipeLoader.registerRecipes()
+            }
+            if (Mods.TofuCraft.isModLoaded && ConfigModIntegration.tofuCraft) {
+                TofuCraftRecipeLoader.registerRecipes()
+            }
+            if (Mods.AE2.isModLoaded && ConfigModIntegration.ae2) {
+                Ae2RecipeLoader.registerRecipes()
+            }
         }
     }
 }
