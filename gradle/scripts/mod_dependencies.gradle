@@ -62,4 +62,5 @@ dependencies {
 //    devOnlyNonPublishable(rfg.deobf("curse.maven:redstone-arsenal-70631:2939416"))
 //    devOnlyNonPublishable(rfg.deobf("curse.maven:cofh-world-271384:2920434"))
 //    devOnlyNonPublishable(rfg.deobf("curse.maven:redstone-flux-270789:2920436"))
+    devOnlyNonPublishable(rfg.deobf("curse.maven:galacticraft-legacy-564236:6364107"))
 }

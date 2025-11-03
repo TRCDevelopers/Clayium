@@ -45,5 +45,8 @@ object CMarkerMaterials {
     val electrotineAlloy  = CMarkerMaterial("ElectrotineAlloy")
     val redAlloy  = CMarkerMaterial("RedAlloy")
 
+    val meteoricIron = CMarkerMaterial("MeteoricIron")
+    val desh = CMarkerMaterial("Desh")
+
     fun init() {}
 }

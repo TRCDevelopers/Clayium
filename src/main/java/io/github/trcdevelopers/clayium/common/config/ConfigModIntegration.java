@@ -16,6 +16,9 @@ public class ConfigModIntegration {
     @Config.Name("ExtremeReactors")
     public static boolean extremeReactors = true;
 
+    @Config.Name("Galacticraft")
+    public static boolean galacticraft = true;
+
     @Config.Name("Gregtech")
     public static boolean gregtech = true;
 

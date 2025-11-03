@@ -10,6 +10,7 @@ enum class Mods(
     Baubles(Names.BAUBLES),
     EnderIO(Names.ENDER_IO),
     ExtremeReactors(Names.EXTREME_REACTORS),
+    GalacticraftCore(Names.GALACTICRAFT_CORE),
     GregTech(Names.GREGTECH),
     GroovyScript(Names.GROOVY_SCRIPT),
     JustEnoughItems(Names.JUST_ENOUGH_ITEMS),
@@ -30,6 +31,7 @@ enum class Mods(
         const val BAUBLES = "baubles"
         const val ENDER_IO = "enderio"
         const val EXTREME_REACTORS = "bigreactors"
+        const val GALACTICRAFT_CORE = "galacticraftcore"
         const val GREGTECH = "gregtech"
         const val GROOVY_SCRIPT = "groovyscript"
         const val MEKANISM = "mekanism"

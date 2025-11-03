@@ -6,6 +6,7 @@ import io.github.trcdevelopers.clayium.common.config.ConfigModIntegration
 import io.github.trcdevelopers.clayium.common.loaders.recipe.ae2.Ae2RecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.enderio.EnderIoAlloysRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.extremereactors.ExrRecipeLoader
+import io.github.trcdevelopers.clayium.common.loaders.recipe.galacticraft.GalacticraftRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtAlloysRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.gregtech.GtMatterTransformerRecipeLoader
 import io.github.trcdevelopers.clayium.common.loaders.recipe.mekanism.MekanismRecipeLoader
@@ -58,6 +59,9 @@ object CRecipeLoader {
         }
         if (Mods.ExtremeReactors.isModLoaded && ConfigModIntegration.extremeReactors) {
             ExrRecipeLoader.registerRecipes()
+        }
+        if (Mods.GalacticraftCore.isModLoaded && ConfigModIntegration.galacticraft) {
+            GalacticraftRecipeLoader.registerRecipes()
         }
         if (Mods.GregTech.isModLoaded && ConfigModIntegration.gregtech) {
             GtAlloysRecipeLoader.registerRecipes()
