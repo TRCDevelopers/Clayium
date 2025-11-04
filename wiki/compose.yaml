@@ -12,5 +12,7 @@ services:
       - vitepress-node-modules:/app/node_modules
     tty: true
     stdin_open: true
+    environment:
+      CHOKIDAR_USEPOLLING: true
 volumes:
   vitepress-node-modules:

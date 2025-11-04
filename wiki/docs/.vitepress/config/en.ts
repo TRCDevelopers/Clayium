@@ -29,6 +29,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
             collapsed: true,
             items: [
                 { text: "Clay laser", link: "clay-laser" },
+                { text: "Integrations with Other MODs", link: "mod-integrations" },
             ],
         },
         {
