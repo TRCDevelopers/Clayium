@@ -18,6 +18,7 @@ object GtCaInjectorRecipeLoader {
             .tier(10).CEt(ClayEnergy.of(1000)).duration(60)
             .build()
 
+        // There is no niter in GTCEu
 
         registry.builder()
             .input(GtOrePrefix.gem, Materials.Sapphire)

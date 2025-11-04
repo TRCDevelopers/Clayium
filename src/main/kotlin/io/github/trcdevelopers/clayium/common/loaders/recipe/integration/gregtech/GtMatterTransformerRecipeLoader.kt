@@ -19,7 +19,8 @@ object GtMatterTransformerRecipeLoader {
         registry.builder()
             .defaultPrefix(OrePrefix.ingot)
             .tier(11).defaultCEt().duration(200)
-            .input(Materials.Vanadium).output(Materials.Niobium)
+            .input(Materials.Vanadium)
+            .output(Materials.Niobium)
             .chain(Materials.Yttrium)
             .buildAndRegister()
 
