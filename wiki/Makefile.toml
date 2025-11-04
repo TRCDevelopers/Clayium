@@ -1,0 +1,8 @@
+[config]
+skip_core_tasks = true
+
+[tasks]
+dev = { command = "docker-compose", args = ["up", "dev", "--build"] }
+stop = { command = "docker-compose", args = ["down"] }
+clean = { dependencies = ["stop"], command = "docker", args = ["volume", "rm", "clayium-docs_vitepress-node-modules"], ignore_errors = true }
+license = { command = "docker-compose", args = ["run", "--rm", "dev", "bun", "x", "license-checker-rseidelsohn", "--summary"] }
