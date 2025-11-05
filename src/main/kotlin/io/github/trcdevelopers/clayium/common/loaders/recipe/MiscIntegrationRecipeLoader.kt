@@ -55,6 +55,24 @@ object MiscIntegrationRecipeLoader {
                 .buildAndRegister()
         }
 
+        if (OreDictUnifier.exists(OrePrefix.item, CMaterials.rawRubber)) {
+            caInjector.builder()
+                .input(OrePrefix.log, CMaterials.wood)
+                .inputAntimatter(1)
+                .output(OrePrefix.item, CMaterials.rawRubber)
+                .tier(10).CEtFactor(2.0).duration(60)
+                .buildAndRegister()
+        }
+
+        if (OreDictUnifier.exists(OrePrefix.seed, CMaterials.cotton)) {
+            reactor.builder()
+                .input(Items.MELON_SEEDS)
+                .input(Items.STRING, 3)
+                .output(OrePrefix.seed, CMaterials.cotton)
+                .tier(8).duration(1_000_000_000)
+                .buildAndRegister()
+        }
+
         if (OreDictUnifier.exists(OrePrefix.gem, CMarkerMaterials.apatite)) {
             caInjector.builder()
                 .input(listOf(OrePrefix.dust, OrePrefix.gem), CMaterials.phosphorus)

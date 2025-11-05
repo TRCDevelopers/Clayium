@@ -587,6 +587,9 @@ object CMaterials {
     val cinnabar = CMarkerMaterial("Cinnabar")
 
     val soybean = CMarkerMaterial("Soybean")
+    val rawRubber = CMarkerMaterial("RawRubber")
+    val wood = CMarkerMaterial("RawRubber")
+    val cotton = CMarkerMaterial("Cotton")
     //endregion
 
     init {
