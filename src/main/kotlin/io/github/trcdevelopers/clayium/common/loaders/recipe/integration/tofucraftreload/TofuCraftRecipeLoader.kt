@@ -2,15 +2,34 @@ package io.github.trcdevelopers.clayium.common.loaders.recipe.integration.tofucr
 
 import cn.mcmod.tofucraft.item.ItemLoader
 import cn.mcmod.tofucraft.material.TofuType
+import io.github.trcdevelopers.clayium.api.unification.material.CMarkerMaterials
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
+import io.github.trcdevelopers.clayium.api.util.VItems
 import io.github.trcdevelopers.clayium.api.util.copyWithSize
 import io.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
+import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 
 object TofuCraftRecipeLoader {
     fun registerRecipes() {
         val reactor = CRecipes.CLAY_REACTOR
+
+        val edamame = ItemStack(ItemLoader.material, 1, 3)
+
+        reactor.builder()
+            .input(OrePrefix.dye, CMarkerMaterials.lime)
+            .input(VItems.COCOA_BEANS)
+            .output(edamame)
+            .tier(8).duration(1_000_000_000)
+            .buildAndRegister()
+
+        reactor.builder()
+            .input(Items.MELON_SEEDS)
+            .input(VItems.COCOA_BEANS)
+            .output(OrePrefix.crop, CMaterials.soybean)
+            .tier(8).duration(1_000_000_000)
+            .buildAndRegister()
 
         reactor.builder()
             .input(ItemLoader.soybeans)

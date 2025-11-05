@@ -1,7 +1,6 @@
 package io.github.trcdevelopers.clayium.common.recipe.builder
 
 import io.github.trcdevelopers.clayium.api.unification.OreDictUnifier
-import io.github.trcdevelopers.clayium.api.unification.material.CMaterial
 import io.github.trcdevelopers.clayium.api.unification.material.IMaterial
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.unification.stack.UnificationEntry
@@ -40,15 +39,15 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
         }
     }
 
-    fun input(material: IMaterial): MatterTransformerRecipeBuilder {
+    fun input(material: IMaterial, amount: Int = 1): MatterTransformerRecipeBuilder {
         val defaultPrefix = this.defaultPrefix
         verifyDefaultPrefixIsSet(defaultPrefix)
-        return this.input(defaultPrefix, material)
+        return this.input(defaultPrefix, material, amount)
     }
-    fun output(material: IMaterial): MatterTransformerRecipeBuilder {
+    fun output(material: IMaterial, amount: Int = 1): MatterTransformerRecipeBuilder {
         val defaultPrefix = this.defaultPrefix
         verifyDefaultPrefixIsSet(defaultPrefix)
-        return this.output(defaultPrefix, material)
+        return this.output(defaultPrefix, material, amount)
     }
     @Optional.Method(modid = Mods.Names.GREGTECH)
     fun input(material: GtMaterial): MatterTransformerRecipeBuilder {
@@ -67,6 +66,7 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
      * Returns a new builder instance with the current output set as the input,
      * and the output set to the given ore dictionary.
      * If the given oreDict does not exist, this does nothing.
+     * If outputs are empty, this sets output to a given item instead of creating a new builer instance.
      * Also sets the CEt, duration, and tier to the current values.
      * These values can be reset by calling the respective methods.
      *
@@ -74,7 +74,7 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
      * registry.builder()
      *    .CEt(ClayEnergy.of(1)).duration(20).tier(7)
      *    .input("ingotIron")
-     *    .output("ingotCopper")
+     *    .chain("ingotCopper")
      *    .chain("ingotGold")
      *    .chain("someInvalidOreDict")
      *    .chain("gemDiamond").tier(8).duration(200)
@@ -87,13 +87,19 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
      */
     fun chain(oreDict: String): MatterTransformerRecipeBuilder {
         if (OreDictUnifier.get(oreDict).isEmpty) return this
-        val newBuilder = this.recipeRegistry.builder()
-            .tier(this.tier).CEt(this.cePerTick).duration(this.duration)
-            .input(this.outputs[0])
-            .output(oreDict)
-        this.buildAndRegister()
-        if (defaultPrefix != null) newBuilder.defaultPrefix(defaultPrefix!!)
-        return newBuilder
+
+        if (this.outputs.isEmpty()) {
+            this.output(oreDict)
+            return this
+        } else {
+            val newBuilder = this.recipeRegistry.builder()
+                .tier(this.tier).CEt(this.cePerTick).duration(this.duration)
+                .input(this.outputs[0])
+                .output(oreDict)
+            this.buildAndRegister()
+            if (defaultPrefix != null) newBuilder.defaultPrefix(defaultPrefix!!)
+            return newBuilder
+        }
     }
 
     fun chain(orePrefix: OrePrefix, material: IMaterial) = chain(UnificationEntry(orePrefix, material).toString())
@@ -141,10 +147,22 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
     fun chainIf(shouldChain: Boolean, oreDict: String): MatterTransformerRecipeBuilder {
         return if (shouldChain) chain(oreDict) else this
     }
-    fun chainIf(shouldChain: Boolean, orePrefix: OrePrefix, material: CMaterial): MatterTransformerRecipeBuilder {
+    fun chainIf(shouldChain: Boolean, orePrefix: OrePrefix, material: IMaterial): MatterTransformerRecipeBuilder {
         return if (shouldChain) chain(orePrefix, material) else this
     }
-    fun chainIf(shouldChain: Boolean, material: CMaterial): MatterTransformerRecipeBuilder {
+    fun chainIf(shouldChain: Boolean, material: IMaterial): MatterTransformerRecipeBuilder {
         return if (shouldChain) chain(material) else this
+    }
+
+    fun chainIfExists(oreDict: String): MatterTransformerRecipeBuilder {
+        return chainIf(OreDictUnifier.exists(oreDict), oreDict)
+    }
+    fun chainIfExists(orePrefix: OrePrefix, material: IMaterial): MatterTransformerRecipeBuilder {
+        return chainIf(OreDictUnifier.exists(orePrefix, material), orePrefix, material)
+    }
+    fun chainIfExists(material: IMaterial): MatterTransformerRecipeBuilder {
+        val defaultPrefix = this.defaultPrefix
+        verifyDefaultPrefixIsSet(defaultPrefix)
+        return chainIfExists(defaultPrefix, material)
     }
 }

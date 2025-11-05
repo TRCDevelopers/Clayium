@@ -74,4 +74,4 @@ The addition of integration recipes can be controlled per mod in the Config (`co
 
 ## TofuCraftReload
 
-- Clay Blast Furnace: Kinu Tofu, Momen Tofu, Ishi Tofu, Metal Tofu, Diamond Tofu, Tofu Gem
+- Clay Reactor: Kinu Tofu, Momen Tofu, Ishi Tofu, Metal Tofu, Diamond Tofu, Tofu Gem, Edamame, Soybeans

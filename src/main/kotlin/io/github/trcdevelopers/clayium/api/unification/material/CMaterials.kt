@@ -572,6 +572,23 @@ object CMaterials {
     val PURE_ANTIMATTERS = listOf(pureAntimatter, pureAntimatter1, pureAntimatter2, pureAntimatter3,
         pureAntimatter4, pureAntimatter5, pureAntimatter6, pureAntimatter7, octuplePureAntimatter)
 
+    //region compat materials
+    val lazurite = CMarkerMaterial("Lazurite")
+    val sodalite = CMarkerMaterial("Sodalite")
+    val monazite = CMarkerMaterial("Monazite")
+
+    val diamond = CMarkerMaterial("Diamond")
+    val emerald  = CMarkerMaterial("Emerald")
+    val amber  = CMarkerMaterial("Amber")
+    val amethyst = CMarkerMaterial("Amethyst")
+    val peridot = CMarkerMaterial("Peridot")
+    val sapphire = CMarkerMaterial("Sapphire")
+    val ruby = CMarkerMaterial("Ruby")
+    val cinnabar = CMarkerMaterial("Cinnabar")
+
+    val soybean = CMarkerMaterial("Soybean")
+    //endregion
+
     init {
         //region Clay Materials
         compressedEnergeticClay7 = CMaterial.create(163, clayiumId("compressed_energetic_clay7")) {

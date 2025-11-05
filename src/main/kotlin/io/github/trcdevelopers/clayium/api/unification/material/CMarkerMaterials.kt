@@ -1,5 +1,6 @@
 package io.github.trcdevelopers.clayium.api.unification.material
 
+// TODO: Move these to CMaterials
 @Suppress("SpellCheckingInspection")
 object CMarkerMaterials {
     val obsidian = CMarkerMaterial("Obsidian")
@@ -90,6 +91,23 @@ object CMarkerMaterials {
     val inolashite  = CMarkerMaterial("Inolashite")
     val amordrine  = CMarkerMaterial("Amordrine")
     val desichalkos = CMarkerMaterial("Desichalkos")
+
+    val white = CMarkerMaterial("White")
+    val orange = CMarkerMaterial("Orange")
+    val magenta = CMarkerMaterial("Magenta")
+    val lightBlue = CMarkerMaterial("LightBlue")
+    val yellow = CMarkerMaterial("Yellow")
+    val lime = CMarkerMaterial("Lime")
+    val pink = CMarkerMaterial("Pink")
+    val gray = CMarkerMaterial("Gray")
+    val lightGray = CMarkerMaterial("LightGray")
+    val cyan = CMarkerMaterial("Cyan")
+    val purple = CMarkerMaterial("Purple")
+    val blue = CMarkerMaterial("Blue")
+    val brown = CMarkerMaterial("Brown")
+    val green = CMarkerMaterial("Green")
+    val red = CMarkerMaterial("Red")
+    val black = CMarkerMaterial("Black")
 
     fun init() {}
 }
