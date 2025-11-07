@@ -952,3 +952,4 @@ clayium.config.metal_chest=Metal Chest Properties
 clayium.config.tier_balance=Tier Balancing
 clayium.config.mod_integration=Mod Integration Recipes
 clayium.config.mod_integration.all_toggle=Enable Integration Recipes
+clayium.config.recipe=Recipes
