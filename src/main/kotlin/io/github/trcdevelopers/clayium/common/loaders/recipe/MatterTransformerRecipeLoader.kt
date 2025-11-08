@@ -1,10 +1,8 @@
 package io.github.trcdevelopers.clayium.common.loaders.recipe
 
 import io.github.trcdevelopers.clayium.api.ClayEnergy
-import io.github.trcdevelopers.clayium.api.unification.material.CMarkerMaterials
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
-import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.api.util.VBlocks
 import io.github.trcdevelopers.clayium.api.util.VItems
 import io.github.trcdevelopers.clayium.common.config.ConfigCore
@@ -266,6 +264,7 @@ object MatterTransformerRecipeLoader {
             .chain(CMaterials.sulfur).CEtFactor(30.0)
             .buildAndRegister()
 
+        // TODO
         CRecipes.MATTER_TRANSFORMER.builder()
             .defaultPrefix(OrePrefix.dust)
             .input(CMaterials.industrialClay)

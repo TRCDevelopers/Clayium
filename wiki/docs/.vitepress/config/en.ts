@@ -33,6 +33,14 @@ function sidebar(): DefaultTheme.SidebarItem[] {
             ],
         },
         {
+            text: "Data",
+            base: "/en/config/",
+            collapsed: true,
+            items: [
+                { text: "Config", link: "config" },
+            ],
+        },
+        {
             text: "GroovyScript",
             base: "/en/groovy-script/",
             collapsed: true,

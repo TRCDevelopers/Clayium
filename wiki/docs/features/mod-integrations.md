@@ -1,6 +1,6 @@
 # 他MODとの連携
 
-連携レシピの追加は、Config(`config/clayium/mod_integration.cfg`)でMODごとに制御可能である。
+連携レシピの追加は、Config(`config/clayium/recipe.cfg`)でMODごとに制御可能である。
 
 ## Applied Energistics 2
 

@@ -1,6 +1,6 @@
 # Integration with Other Mods
 
-The addition of integration recipes can be controlled per mod in the Config (`config/clayium/mod_integration.cfg`).
+The addition of integration recipes can be controlled per mod in the Config (`config/clayium/recipe.cfg`).
 
 ## Applied Energistics 2
 

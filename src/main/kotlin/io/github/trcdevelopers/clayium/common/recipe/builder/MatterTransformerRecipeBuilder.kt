@@ -63,12 +63,32 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
     }
 
     /**
+     * If the given oreDict doesn't exist, this does nothing.
+     */
+    fun chain(oreDict: String): MatterTransformerRecipeBuilder {
+        val stack = OreDictUnifier.get(oreDict)
+        if (stack.isEmpty) return this
+        return this.chain(stack)
+    }
+
+    fun chain(orePrefix: OrePrefix, material: IMaterial) = chain(UnificationEntry(orePrefix, material).toString())
+    fun chain(material: IMaterial): MatterTransformerRecipeBuilder {
+        val defaultPrefix = this.defaultPrefix
+        verifyDefaultPrefixIsSet(defaultPrefix)
+        return chain(defaultPrefix, material)
+    }
+
+    fun chain(block: Block) = this.chain(ItemStack(block))
+    fun chain(item: Item) = this.chain(ItemStack(item))
+
+    /**
      * Returns a new builder instance with the current output set as the input,
-     * and the output set to the given ore dictionary.
-     * If the given oreDict does not exist, this does nothing.
+     * and the output set to the given ItemStack.
      * If outputs are empty, this sets output to a given item instead of creating a new builer instance.
-     * Also sets the CEt, duration, and tier to the current values.
+     * Also sets the new Builder's CEt, duration, and tier to the current values.
      * These values can be reset by calling the respective methods.
+     *
+     * There are utility methods that accept arguments other than ItemStack, such as OreDictionary String, Item, Block.
      *
      * ```
      * registry.builder()
@@ -85,64 +105,29 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
      * - `ingotCopper` -> `ingotGold`
      * - `ingotGold` -> `gemDiamond`
      */
-    fun chain(oreDict: String): MatterTransformerRecipeBuilder {
-        if (OreDictUnifier.get(oreDict).isEmpty) return this
-
+    fun chain(stack: ItemStack): MatterTransformerRecipeBuilder {
         if (this.outputs.isEmpty()) {
-            this.output(oreDict)
-            return this
+            return this.output(stack)
         } else {
             val newBuilder = this.recipeRegistry.builder()
                 .tier(this.tier).CEt(this.cePerTick).duration(this.duration)
                 .input(this.outputs[0])
-                .output(oreDict)
-            this.buildAndRegister()
+                .output(stack)
             if (defaultPrefix != null) newBuilder.defaultPrefix(defaultPrefix!!)
+            this.buildAndRegister()
             return newBuilder
         }
     }
 
-    fun chain(orePrefix: OrePrefix, material: IMaterial) = chain(UnificationEntry(orePrefix, material).toString())
-    fun chain(material: IMaterial): MatterTransformerRecipeBuilder {
-        val defaultPrefix = this.defaultPrefix
-        verifyDefaultPrefixIsSet(defaultPrefix)
-        return chain(defaultPrefix, material)
-    }
+    @Optional.Method(modid = Mods.Names.GREGTECH)
+    fun chain(orePrefix: GtOrePrefix, material: GtMaterial) = chain(GtOreDictUnifier.get(orePrefix, material))
+
     @Optional.Method(modid = Mods.Names.GREGTECH)
     fun chain(material: GtMaterial): MatterTransformerRecipeBuilder {
         val defaultPrefix = this.defaultPrefix
         verifyDefaultPrefixIsSet(defaultPrefix)
         return chain("${defaultPrefix.camel}${material.toCamelCaseString()}")
     }
-
-    fun chain(block: Block): MatterTransformerRecipeBuilder {
-        this.buildAndRegister()
-        val newBuilder = this.recipeRegistry.builder()
-            .tier(this.tier).CEt(this.cePerTick).duration(this.duration)
-            .input(this.outputs[0])
-            .output(block)
-        return newBuilder
-    }
-
-    fun chain(item: Item): MatterTransformerRecipeBuilder {
-        this.buildAndRegister()
-        val newBuilder = this.recipeRegistry.builder()
-            .tier(this.tier).CEt(this.cePerTick).duration(this.duration)
-            .input(this.outputs[0])
-            .output(item)
-        return newBuilder
-    }
-
-    fun chain(stack: ItemStack): MatterTransformerRecipeBuilder {
-        this.buildAndRegister()
-        val newBuilder = this.recipeRegistry.builder()
-            .tier(this.tier).CEt(this.cePerTick).duration(this.duration)
-            .input(this.outputs[0])
-            .output(stack)
-        return newBuilder
-    }
-    @Optional.Method(modid = Mods.Names.GREGTECH)
-    fun chain(orePrefix: GtOrePrefix, material: GtMaterial) = chain(GtOreDictUnifier.get(orePrefix, material))
 
     fun chainIf(shouldChain: Boolean, oreDict: String): MatterTransformerRecipeBuilder {
         return if (shouldChain) chain(oreDict) else this
@@ -152,17 +137,5 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
     }
     fun chainIf(shouldChain: Boolean, material: IMaterial): MatterTransformerRecipeBuilder {
         return if (shouldChain) chain(material) else this
-    }
-
-    fun chainIfExists(oreDict: String): MatterTransformerRecipeBuilder {
-        return chainIf(OreDictUnifier.exists(oreDict), oreDict)
-    }
-    fun chainIfExists(orePrefix: OrePrefix, material: IMaterial): MatterTransformerRecipeBuilder {
-        return chainIf(OreDictUnifier.exists(orePrefix, material), orePrefix, material)
-    }
-    fun chainIfExists(material: IMaterial): MatterTransformerRecipeBuilder {
-        val defaultPrefix = this.defaultPrefix
-        verifyDefaultPrefixIsSet(defaultPrefix)
-        return chainIfExists(defaultPrefix, material)
     }
 }
