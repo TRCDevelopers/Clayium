@@ -263,18 +263,5 @@ object MatterTransformerRecipeLoader {
             .tier(7).CEtFactor(10.0).duration(200)
             .chain(CMaterials.sulfur).CEtFactor(30.0)
             .buildAndRegister()
-
-        // TODO
-        CRecipes.MATTER_TRANSFORMER.builder()
-            .defaultPrefix(OrePrefix.dust)
-            .input(CMaterials.industrialClay)
-            .output(CMaterials.carbon)
-            .CEt(ClayEnergy.of(1)).tier(7)
-            .duration(200)
-            .chain(CMaterials.graphite)
-            .chain(CMaterials.charcoal)
-            .chain(CMaterials.coal)
-            .chain(CMaterials.lapis)
-            .buildAndRegister()
     }
 }
