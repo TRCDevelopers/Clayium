@@ -1,6 +1,6 @@
 # Integration with Other Mods
 
-The addition of integration recipes can be controlled per mod in the Config (`config/clayium/recipe.cfg`).
+Integration recipes can be controlled per mod in the Config (`config/clayium/recipe.cfg`).
 
 ## Applied Energistics 2
 
@@ -59,18 +59,18 @@ The addition of integration recipes can be controlled per mod in the Config (`co
 
 ## Sakura MOD
 
-- Clay Blast Furnace: Sakura Diamond
+- Clay Reactor: Sakura Diamond
 
 ## Tinkers' Construct
 
 - Alloy Smelter: Aluminium Brass, Manyullyn
 - CA Injector: Cobalt -> Ardite
-- Clay Blast Furnace: Alumite, Pig Iron, Pokefenium, Fairy
+- Clay Reactor: Alumite, Pig Iron, Pokefenium, Fairy
 
 ## Thermal
 
 - Alloy Smelter: Electrum Flux
-- Clay Blast Furnace: Signalum, Lumiun, Crystal Flux
+- Clay Reactor: Signalum, Lumiun, Crystal Flux
 
 ## TofuCraftReload
 
