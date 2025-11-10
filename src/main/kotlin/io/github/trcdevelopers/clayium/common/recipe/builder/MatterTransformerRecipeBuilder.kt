@@ -84,7 +84,7 @@ class MatterTransformerRecipeBuilder : RecipeBuilder<MatterTransformerRecipeBuil
     /**
      * Returns a new builder instance with the current output set as the input,
      * and the output set to the given ItemStack.
-     * If outputs are empty, this sets output to a given item instead of creating a new builer instance.
+     * If outputs are empty, this sets output to a given item instead of creating a new builder instance.
      * Also sets the new Builder's CEt, duration, and tier to the current values.
      * These values can be reset by calling the respective methods.
      *
