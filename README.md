@@ -33,7 +33,6 @@ See [wiki](https://trcdevelopers.github.io/Clayium/) for more information.
 
 - Clay guns
 - Some config options (`ProgressionRate` etc.)
-- Some cross-mod recipes
 
 ## License
 
