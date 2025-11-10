@@ -2,6 +2,11 @@
 
 連携レシピの追加は、Config(`config/clayium/recipe.cfg`)でMODごとに制御可能である。
 
+また、設定によらず、以下のレシピは登録される:
+- 物質変換装置:
+  - 炭素系粉の変換: 発展工業用粘土 -> Carbon -> Graphite -> Charcoal -> Coal -> Lapis -> Lazurite -> Sodalite -> Monazite
+  - Diamond -> Amber -> Amethyst -> Peridot -> Sapphire -> Ruby -> Emerald
+
 ## Applied Energistics 2
 
 - 物質変換装置: Quartz -> Certus Quartz
@@ -75,3 +80,13 @@
 ## TofuCraftReload
 
 - 粘土反応炉: 絹豆腐, 木綿豆腐, 石豆腐, 鋼豆腐, 金剛豆腐, 豆腐石, 枝豆, 大豆
+
+## その他
+
+- CA注入機: Raw Rubber, Apatite, Topaz
+- 物質変換装置: 
+  - Flint -> Cinnabar
+  - Topaz -> Malachite -> Tanzanite
+- 粘土反応炉: 
+  - Dilithium, Forcicium 
+  - Flour/itemFlour/dustFlour, seedCotton, cropRice, cropStraw, cropCoffee, apricot, bamboo

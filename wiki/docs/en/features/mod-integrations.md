@@ -2,6 +2,11 @@
 
 Integration recipes can be controlled per mod in the Config (`config/clayium/recipe.cfg`).
 
+Also, These recipes are registered anyway regardless of the configuration:
+- MatterTransformer:
+  - Advanced Industrial Clay -> Carbon -> Graphite -> Charcoal -> Coal -> Lapis -> Lazurite -> Sodalite -> Monazite
+  - Diamond -> Amber -> Amethyst -> Peridot -> Sapphire -> Ruby -> Emerald
+
 ## Applied Energistics 2
 
 - Matter Transformer: Quartz -> Certus Quartz
@@ -75,3 +80,12 @@ Integration recipes can be controlled per mod in the Config (`config/clayium/rec
 ## TofuCraftReload
 
 - Clay Reactor: Kinu Tofu, Momen Tofu, Ishi Tofu, Metal Tofu, Diamond Tofu, Tofu Gem, Edamame, Soybeans
+
+## Misc
+- CA Injector: Raw Rubber, Apatite, Topaz
+- Matter Transformer:
+  - Flint -> Cinnabar
+  - Topaz -> Malachite -> Tanzanite
+- Clay Reactor:
+  - Dilithium, Forcicium
+  - Flour/itemFlour/dustFlour, seedCotton, cropRice, cropStraw, cropCoffee, apricot, bamboo

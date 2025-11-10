@@ -4,15 +4,14 @@ import io.github.trcdevelopers.clayium.api.unification.OreDictUnifier
 import io.github.trcdevelopers.clayium.api.unification.material.CMarkerMaterials
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
+import io.github.trcdevelopers.clayium.api.util.VItems
 import io.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraft.init.Blocks
 import net.minecraft.init.Items
 
 object MiscIntegrationRecipeLoader {
-    fun registerRecipes() {
-        registerCropRecipes()
-        val caInjector = CRecipes.CA_INJECTOR
-        val reactor = CRecipes.CLAY_REACTOR
+
+    fun registerMandatory() {
         val matterTransformer = CRecipes.MATTER_TRANSFORMER
 
         matterTransformer.builder()
@@ -38,6 +37,13 @@ object MiscIntegrationRecipeLoader {
             .chain(CMaterials.ruby)
             .chain(CMaterials.emerald).tier(11)
             .buildAndRegister()
+    }
+
+    fun registerRecipes() {
+        registerCropRecipes()
+        val caInjector = CRecipes.CA_INJECTOR
+        val reactor = CRecipes.CLAY_REACTOR
+        val matterTransformer = CRecipes.MATTER_TRANSFORMER
 
         matterTransformer.builder()
             .input(Items.FLINT)
@@ -140,6 +146,15 @@ object MiscIntegrationRecipeLoader {
                 .input(Blocks.TALLGRASS)
                 .output(OrePrefix.crop, CMaterials.straw)
                 .tier(8).duration(1_000_000_000)
+                .buildAndRegister()
+        }
+
+        if (OreDictUnifier.exists(OrePrefix.crop, CMaterials.coffee)) {
+            reactor.builder()
+                .input(Items.WHEAT_SEEDS)
+                .input(VItems.COCOA_BEANS)
+                .output(OrePrefix.crop, CMaterials.coffee)
+                .tier(10).duration(100_000_000_000_000)
                 .buildAndRegister()
         }
 

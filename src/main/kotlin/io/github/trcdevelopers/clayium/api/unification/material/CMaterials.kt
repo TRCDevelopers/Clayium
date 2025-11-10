@@ -592,6 +592,7 @@ object CMaterials {
     val cotton = CMarkerMaterial("Cotton")
     val rice = CMarkerMaterial("Rice")
     val straw = CMarkerMaterial("Straw")
+    val coffee = CMarkerMaterial("Coffee")
     //endregion
 
     init {

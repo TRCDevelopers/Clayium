@@ -54,6 +54,7 @@ object CRecipeLoader {
 
         ClayGadgetsRecipeLoader.registerRecipes()
 
+        MiscIntegrationRecipeLoader.registerMandatory()
         if (ConfigRecipe.integration.enableIntegrationRecipes) {
             MiscIntegrationRecipeLoader.registerRecipes()
 
