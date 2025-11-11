@@ -1,5 +1,6 @@
 package io.github.trcdevelopers.clayium.integration.jei.basic
 
+import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.common.recipe.Recipe
 import io.github.trcdevelopers.clayium.integration.modularui.CNumFormat
 import mezz.jei.api.ingredients.IIngredients
@@ -16,7 +17,7 @@ open class ClayiumRecipeWrapper(
     }
 
     override fun drawInfo(minecraft: Minecraft, recipeWidth: Int, recipeHeight: Int, mouseX: Int, mouseY: Int) {
-        val energyConsumed = CNumFormat.format((recipe.cePerTick.energy.toDouble() * recipe.duration) / 100_000)
+        val energyConsumed = ClayEnergy(((recipe.cePerTick.energy.toDouble() * recipe.duration) / 100_000).toLong()).format()
         val craftTime = CNumFormat.format(recipe.duration.toDouble())
         minecraft.fontRenderer.drawString("Tier: ${recipe.recipeTier}", 6, 43, 0x404040)
         minecraft.fontRenderer.drawString(
