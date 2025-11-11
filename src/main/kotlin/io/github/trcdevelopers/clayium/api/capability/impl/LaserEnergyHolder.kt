@@ -64,7 +64,7 @@ class LaserEnergyHolder(
 
         return IKey.dynamic { "Laser : ${this.storedPower.format()}" }.asWidget()
             .alignment(Alignment.Center)
-            .size(60)
+            .width(60)
     }
 
     override fun serializeNBT(): NBTTagCompound {
