@@ -5,7 +5,6 @@ import io.github.trcdevelopers.clayium.api.ClayiumApi
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterial
 import io.github.trcdevelopers.clayium.api.unification.material.CPropertyKey
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
-import io.github.trcdevelopers.clayium.api.util.CLog
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.client.renderer.item.ItemDamagedRenderer
 import io.github.trcdevelopers.clayium.common.items.metaitem.component.IItemColorHandler

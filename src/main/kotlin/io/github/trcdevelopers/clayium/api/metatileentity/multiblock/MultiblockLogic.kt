@@ -1,6 +1,7 @@
 package io.github.trcdevelopers.clayium.api.metatileentity.multiblock
 
 import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.TextWidget
@@ -11,7 +12,6 @@ import io.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.api.util.RelativeDirection
-import io.github.trcdevelopers.clayium.api.util.asWidgetResizing
 import io.github.trcdevelopers.clayium.api.util.getMetaTileEntity
 import io.github.trcdevelopers.clayium.common.blocks.BlockMachineHull
 import io.github.trcdevelopers.clayium.common.util.SidelessI18n
@@ -131,7 +131,8 @@ class MultiblockLogic(
 
     fun tierTextWidget(syncManager: PanelSyncManager): TextWidget<*> {
         syncManager.syncValue("multiblock_tier", SyncHandlers.intNumber({ recipeLogicTier }, { recipeLogicTier = it }))
-        return IKey.dynamic { SidelessI18n.format("tooltip.clayium.tier", recipeLogicTier) }.asWidgetResizing()
+        return IKey.dynamic { SidelessI18n.format("tooltip.clayium.tier", recipeLogicTier) }
+            .asWidget().width(40).alignment(Alignment.Center)
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {

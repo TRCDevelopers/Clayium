@@ -14,7 +14,6 @@ import io.github.trcdevelopers.clayium.api.unification.OreDictUnifier
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.util.ITier
-import io.github.trcdevelopers.clayium.api.util.asWidgetResizing
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.common.util.SidelessI18n
 import io.github.trcdevelopers.clayium.integration.modularui.CNumFormat
@@ -53,7 +52,7 @@ class ResonatingCollectorMetaTileEntity(
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic {
                 SidelessI18n.format("gui.$MOD_ID.resonance", CNumFormat.format(resonanceManager.resonance))
-            }.asWidgetResizing()
+            }.asWidget().width(90).alignment(Alignment.BottomRight)
                 .align(Alignment.BottomRight))
             .child(SlotGroupWidget.builder()
                 .matrix("III", "III", "III")

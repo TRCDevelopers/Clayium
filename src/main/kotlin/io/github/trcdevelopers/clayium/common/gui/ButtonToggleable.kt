@@ -4,8 +4,6 @@ import com.cleanroommc.modularui.api.ITheme
 import com.cleanroommc.modularui.api.UpOrDown
 import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.widget.Interactable
-import com.cleanroommc.modularui.screen.ModularScreen
-import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import java.util.function.BooleanSupplier

@@ -52,7 +52,6 @@ import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_6
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.M_ALL
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.NONE
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode.SECOND
-import io.github.trcdevelopers.clayium.api.util.asWidgetResizing
 import io.github.trcdevelopers.clayium.client.model.ModelTextures
 import io.github.trcdevelopers.clayium.common.capability.impl.ItemFilterHolderTrait
 import io.github.trcdevelopers.clayium.common.creativetab.ClayiumCTabs
@@ -708,7 +707,7 @@ abstract class MetaTileEntity(
             .child(IKey.dynamic {
                 // if empty string, a bug occurs.
                 if (overclock != 1.0) SidelessI18n.format("gui.clayium.overclock", overclock) else " "
-            }.asWidgetResizing().alignment(Alignment.CenterRight).align(Alignment.BottomRight))
+            }.asWidget().width(100).alignment(Alignment.CenterRight).align(Alignment.BottomRight))
     }
 
     @Deprecated("Use onRightClickServerSide instead.", ReplaceWith("onRightClickServerSide(player, hand, clickedSide, hitX, hitY, hitZ)"))
