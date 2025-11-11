@@ -42,6 +42,15 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Get node_modules cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            wiki/node_modules
+          key: ${{ runner.os }}-bun-${{ hashFiles('wiki/bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-${{ hashFiles('wiki/bun.lock') }}
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
         working-directory: wiki
