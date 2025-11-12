@@ -22,8 +22,9 @@ object MaterialRecipeHandler {
         for (material in ClayiumApi.materialRegistry) {
             GrinderRecipeLoader.handleOre(material)
 
-            if (!material.hasOre(OrePrefix.ingot))
+            if (!material.hasOre(OrePrefix.ingot)) {
                 CondenserRecipeLoader.handleOre(material)
+            }
 
             if (material.hasOre(OrePrefix.ingot)) {
                 if (material.hasProperty(CPropertyKey.PLATE)) addPlateRecipe(OrePrefix.ingot, material)
