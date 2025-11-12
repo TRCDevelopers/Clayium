@@ -19,7 +19,7 @@ If you encounter bugs or crashes, or have feature suggestions, please create an 
 
 ## Required Mods
 
-- [ModularUI](https://github.com/CleanroomMC/ModularUI) (v2.5.0-rc5)
+- [ModularUI](https://github.com/CleanroomMC/ModularUI)
 - [CodeChickenLib](https://github.com/TheCBProject/CodeChickenLib)
 - [Forgelin Continuous](https://github.com/ChAoSUnItY/Forgelin-Continuous)
 
