@@ -1,6 +1,6 @@
 package io.github.trcdevelopers.clayium.common.items.filter
 
-import com.cleanroommc.modularui.factory.HandGuiData
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import io.github.trcdevelopers.clayium.api.capability.IItemFilter
@@ -27,7 +27,7 @@ class ItemFilterDuplicator : ItemFilterBase({ IItemFilter.ALWAYS_FALSE }) {
         return IItemFilter.ALWAYS_FALSE
     }
 
-    override fun buildUI(data: HandGuiData, syncManager: PanelSyncManager): ModularPanel {
+    override fun buildUI(data: PlayerInventoryGuiData, syncManager: PanelSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("empty")
     }
 

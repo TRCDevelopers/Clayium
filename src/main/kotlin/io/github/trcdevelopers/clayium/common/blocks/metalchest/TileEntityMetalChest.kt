@@ -19,7 +19,6 @@ import io.github.trcdevelopers.clayium.api.metatileentity.SyncedTileEntityBase
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterial
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.util.CUtils
-import io.github.trcdevelopers.clayium.api.util.asWidgetResizing
 import io.github.trcdevelopers.clayium.integration.modularui.IGuiHolderClayium
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import net.minecraft.entity.EntityLivingBase
@@ -265,7 +264,8 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolderClayiu
                         .overlay(IKey.str(">").shadow(false))
                         .align(Alignment.TopRight)
                         .size(12, 12))
-                    .child(IKey.dynamic { "${pagedWidget.currentPageIndex + 1} / $inventoryPage" }.asWidgetResizing()
+                    .child(IKey.dynamic { "${pagedWidget.currentPageIndex + 1} / $inventoryPage" }
+                        .asWidget().width(40).alignment(Alignment.Center)
                         .align(Alignment.BottomCenter))
                 )
                 .child(MuiSlots.playerInventory(0)))

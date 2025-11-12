@@ -20,7 +20,6 @@ import io.github.trcdevelopers.clayium.api.unification.material.Clay
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode
-import io.github.trcdevelopers.clayium.api.util.asWidgetResizing
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.api.util.getAsItem
 import io.github.trcdevelopers.clayium.common.blocks.ItemBlockMaterial
@@ -71,7 +70,7 @@ class ClayFabricatorMetaTileEntity(
 
         return super.buildMainParentWidget(syncManager)
             .child(slotsAndProgressBar.align(Alignment.Center))
-            .child(IKey.dynamic { workable.currentCe.format() }.asWidgetResizing()
+            .child(IKey.dynamic { workable.currentCe.format() }.asWidget().width(60)
                 .left(0).bottom(10))
     }
 

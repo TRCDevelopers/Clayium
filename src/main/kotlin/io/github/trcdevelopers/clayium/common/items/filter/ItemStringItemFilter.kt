@@ -1,7 +1,7 @@
 package io.github.trcdevelopers.clayium.common.items.filter
 
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.factory.HandGuiData
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
@@ -27,7 +27,7 @@ class ItemStringItemFilter(
         }
     }
 
-    override fun buildUI(data: HandGuiData, syncManager: PanelSyncManager): ModularPanel {
+    override fun buildUI(data: PlayerInventoryGuiData, syncManager: PanelSyncManager): ModularPanel {
         val stack = data.usedItemStack
         val oreNameSyncValue = SyncHandlers.string(
             { stack.tagCompound?.getString("filterString") ?: "" },

@@ -12,10 +12,10 @@ Original mod: [Clayium](https://www.curseforge.com/minecraft/mc-mods/clayium) ©
 If you find a bug, please report it on [issue tracker](https://github.com/TRCDevelopers/Clayium/issues).
 
 ## Modpack Permission
-You're welcome to include this mod in your modpack.
+This mod is open-source and freely available.
 
 ## Recipe Customization
-We have integration with [GroovyScript](https://github.com/CleanroomMC/GroovyScript).
+You can customize recipes with [GroovyScript](https://github.com/CleanroomMC/GroovyScript).
 
 See [wiki](https://trcdevelopers.github.io/Clayium/) for more information.
 

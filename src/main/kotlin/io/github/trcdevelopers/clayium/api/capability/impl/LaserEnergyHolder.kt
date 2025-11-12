@@ -1,6 +1,7 @@
 package io.github.trcdevelopers.clayium.api.capability.impl
 
 import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.TextWidget
@@ -11,7 +12,6 @@ import io.github.trcdevelopers.clayium.api.capability.IClayLaserAcceptor
 import io.github.trcdevelopers.clayium.api.laser.ClayLaser
 import io.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
-import io.github.trcdevelopers.clayium.api.util.asWidgetResizing
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
@@ -62,7 +62,9 @@ class LaserEnergyHolder(
             { storedPower = LaserEnergy(it) }
         ))
 
-        return IKey.dynamic { "Laser : ${this.storedPower.format()}" }.asWidgetResizing()
+        return IKey.dynamic { "Laser : ${this.storedPower.format()}" }.asWidget()
+            .alignment(Alignment.Center)
+            .width(60)
     }
 
     override fun serializeNBT(): NBTTagCompound {

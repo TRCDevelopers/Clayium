@@ -1,7 +1,7 @@
 package io.github.trcdevelopers.clayium.common.items.filter
 
-import com.cleanroommc.modularui.factory.HandGuiData
-import com.cleanroommc.modularui.factory.ItemGuiFactory
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiFactory
 import io.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
 import io.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import io.github.trcdevelopers.clayium.api.capability.IItemFilter
@@ -10,7 +10,6 @@ import io.github.trcdevelopers.clayium.common.util.UtilLocale
 import io.github.trcdevelopers.clayium.integration.modularui.IGuiHolderClayium
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -28,7 +27,7 @@ import java.util.function.Supplier
 
 abstract class ItemFilterBase(
     val emptyFilterSupplier: Supplier<IItemFilter>,
-) : Item(), IGuiHolderClayium<HandGuiData> {
+) : Item(), IGuiHolderClayium<PlayerInventoryGuiData> {
 
     abstract fun createItemFilter(stack: ItemStack): IItemFilter
     fun createItemFilter() = emptyFilterSupplier.get()
@@ -38,7 +37,7 @@ abstract class ItemFilterBase(
             if (playerIn.isSneaking && hasCopyFlag(playerIn.getHeldItem(handIn))) {
                 this.clearCopyFlag(playerIn.getHeldItem(handIn))
             } else {
-                ItemGuiFactory.INSTANCE.open(playerIn as EntityPlayerMP, handIn)
+                PlayerInventoryGuiFactory.INSTANCE.openFromHand(playerIn, handIn)
             }
         }
         return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))

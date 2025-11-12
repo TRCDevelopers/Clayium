@@ -14,7 +14,6 @@ import io.github.trcdevelopers.clayium.api.metatileentity.MteRenderingConfig
 import io.github.trcdevelopers.clayium.api.metatileentity.WorkableMetaTileEntity
 import io.github.trcdevelopers.clayium.api.metatileentity.multiblock.MultiblockLogic.StructureValidationResult
 import io.github.trcdevelopers.clayium.api.util.ITier
-import io.github.trcdevelopers.clayium.api.util.asWidgetResizing
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.api.util.getMetaTileEntity
 import io.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
@@ -86,7 +85,8 @@ class ClayReactorMetaTileEntity(
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         syncManager.syncValue("clayLaser", ClayLaserSyncValue(::laser, ::laser::set))
         return super.buildMainParentWidget(syncManager)
-            .child(IKey.dynamic { SidelessI18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.energy?.toLong() ?: 0L)) }.asWidgetResizing()
+            .child(IKey.dynamic { SidelessI18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.energy?.toLong() ?: 0L)) }
+                .asWidget().width(70).alignment(Alignment.Center)
                 .pos(102, 53))
             .child(multiblockLogic.tierTextWidget(syncManager)
                 .alignX(Alignment.Center.x).bottom(12))

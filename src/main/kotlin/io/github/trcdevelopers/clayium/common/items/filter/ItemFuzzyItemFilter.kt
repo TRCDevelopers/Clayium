@@ -1,7 +1,7 @@
 package io.github.trcdevelopers.clayium.common.items.filter
 
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.factory.HandGuiData
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.ItemStackItemHandler
@@ -23,7 +23,7 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
 class ItemFuzzyItemFilter : ItemFilterBase(::ItemFilterFuzzy) {
-    override fun buildUI(data: HandGuiData, syncManager: PanelSyncManager): ModularPanel {
+    override fun buildUI(data: PlayerInventoryGuiData, syncManager: PanelSyncManager): ModularPanel {
         val stack = data.usedItemStack
         val itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) as? IItemHandlerModifiable
             ?: return ModularPanel.defaultPanel("item_filter_fuzzy_error")

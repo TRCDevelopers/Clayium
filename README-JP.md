@@ -17,7 +17,7 @@ Clayiumの1.12.2向け**非公式**移植版です。
 バグやクラッシュに遭遇した場合、また機能の提案などがあるときには、[Issue](https://github.com/TRCDevelopers/Clayium/issues)を作成してください。
 
 ## 前提Mod
-- [ModularUI](https://github.com/CleanroomMC/ModularUI) (v2.5.0-rc5)
+- [ModularUI](https://github.com/CleanroomMC/ModularUI)
 - [CodeChickenLib](https://github.com/TheCBProject/CodeChickenLib)
 - [Forgelin Continuous](https://github.com/ChAoSUnItY/Forgelin-Continuous)
 

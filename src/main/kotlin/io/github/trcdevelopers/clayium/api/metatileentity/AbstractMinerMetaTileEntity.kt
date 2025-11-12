@@ -15,7 +15,6 @@ import io.github.trcdevelopers.clayium.api.gui.sync.ClayLaserSyncValue
 import io.github.trcdevelopers.clayium.api.laser.ClayLaser
 import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode
-import io.github.trcdevelopers.clayium.api.util.asWidgetResizing
 import io.github.trcdevelopers.clayium.api.util.getCapability
 import io.github.trcdevelopers.clayium.api.util.hasCapability
 import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
@@ -126,7 +125,8 @@ abstract class AbstractMinerMetaTileEntity(
         syncManager.syncValue("clay_laser", ClayLaserSyncValue(::laser, ::laser::set))
 
         return super.buildMainParentWidget(syncManager)
-            .child(IKey.dynamic { "Laser : ${laser?.let { LaserEnergy(it.energy).format() } ?: 0}" }.asWidgetResizing()
+            .child(IKey.dynamic { "Laser : ${laser?.let { LaserEnergy(it.energy).format() } ?: 0}" }.asWidget()
+                .width(80).alignment(Alignment.Center)
                 .alignX(Alignment.Center.x).bottom(12)
             )
             .child(MuiSlots.phantomSlotBuilder(filterSlot, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) }.build()

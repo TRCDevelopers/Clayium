@@ -1,13 +1,11 @@
 package io.github.trcdevelopers.clayium.api.util
 
-import com.cleanroommc.modularui.api.drawable.IKey
 import com.mojang.authlib.GameProfile
 import io.github.trcdevelopers.clayium.api.ClayiumApi
 import io.github.trcdevelopers.clayium.api.MOD_ID
 import io.github.trcdevelopers.clayium.api.block.ItemBlockMachine
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntityHolder
-import io.github.trcdevelopers.clayium.common.gui.ResizingTextWidget
 import io.github.trcdevelopers.clayium.common.util.FakeServerHandler
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
@@ -93,10 +91,6 @@ fun AxisAlignedBB.containsEq(vec: Vec3d): Boolean {
     return vec.x >= this.minX && vec.x <= this.maxX &&
            vec.y >= this.minY && vec.y <= this.maxY &&
            vec.z >= this.minZ && vec.z <= this.maxZ
-}
-
-fun IKey.asWidgetResizing(): ResizingTextWidget {
-    return ResizingTextWidget(this)
 }
 
 inline fun <reified K : Enum<K>, V, T : EnumEntries<K>> T.enumMap(mapper: (K) -> V): EnumMap<K, V> {

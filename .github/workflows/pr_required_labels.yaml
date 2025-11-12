@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   Labels:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
 
     permissions:
       contents: read
@@ -40,5 +40,5 @@ jobs:
         with:
           mode: minimum
           count: 1
-          labels: 'feature, bug, refactoring, translation, type: ci, ignore changelog, documentation, other, renovate'
+          labels: 'feature, bug, refactoring, translation, type: ci, ignore changelog, documentation, chore, other, renovate'
           exit_type: failure

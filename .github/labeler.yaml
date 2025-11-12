@@ -10,5 +10,7 @@ documentation:
   - head-branch: ['^ci']
 "ignore changelog":
   - head-branch: ['^ignorec']
+chore:
+  - head-branch: ['^chore']
 other:
   - head-branch: ['^other']
