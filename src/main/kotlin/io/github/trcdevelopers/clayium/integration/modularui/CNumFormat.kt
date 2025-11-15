@@ -4,6 +4,7 @@ import com.cleanroommc.modularui.utils.NumberFormat
 import java.math.RoundingMode
 
 // TODO: reinvent the wheel because I want to use "u" instead of "μ" for micros
+@Deprecated("Use CNumberFormat")
 object CNumFormat {
 
     val NUMBER_FORMAT: NumberFormat.Params = NumberFormat.DEFAULT.copyToBuilder()

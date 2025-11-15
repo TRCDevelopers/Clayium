@@ -39,4 +39,8 @@ class TestClayEnergyStrings : StringSpec({
     "1.234k CE - decimal value" {
         ClayEnergy.of(1234).format() shouldBe "1.234kCE"
     }
+
+    "Test CE Strings" {
+        ClayEnergy.of(999).format() shouldBe "999CE"
+    }
 })
