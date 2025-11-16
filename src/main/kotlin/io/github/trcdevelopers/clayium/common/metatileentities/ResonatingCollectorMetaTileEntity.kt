@@ -17,7 +17,6 @@ import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.common.util.CNumberFormat
 import io.github.trcdevelopers.clayium.common.util.SidelessI18n
-import io.github.trcdevelopers.clayium.integration.modularui.CNumFormat
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation

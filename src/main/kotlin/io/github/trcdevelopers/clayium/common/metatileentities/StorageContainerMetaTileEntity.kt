@@ -23,7 +23,6 @@ import io.github.trcdevelopers.clayium.client.model.ModelTextures
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import io.github.trcdevelopers.clayium.common.util.CNumberFormat
 import io.github.trcdevelopers.clayium.common.util.transferTo
-import io.github.trcdevelopers.clayium.integration.modularui.CNumFormat
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
