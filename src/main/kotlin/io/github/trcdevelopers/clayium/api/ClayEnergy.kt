@@ -22,11 +22,11 @@ private val numberFormat = CNumberFormat(Thresholds.default, Units.default, Roun
     }
 }
 
-@JvmInline
 /**
  * @param energy 1 = 10uCE, 100_000 = 1CE.
  * You can use factory methods `ClayEnergy.of`, `.milli`, `micro` to create ClayEnergy.
  */
+@JvmInline
 value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
 
     val actualValue: Double get() = energy / 100_000.0
