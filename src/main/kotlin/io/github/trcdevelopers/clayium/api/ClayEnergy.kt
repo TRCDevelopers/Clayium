@@ -1,5 +1,6 @@
 package io.github.trcdevelopers.clayium.api
 
+import io.github.trcdevelopers.clayium.common.util.CNumberFormat
 import net.minecraft.network.PacketBuffer
 import kotlin.math.abs
 import kotlin.math.pow
@@ -18,6 +19,11 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
     //todo: minimum digits?
     fun format(): String {
         return "${formatWithoutUnit()}CE"
+    }
+
+    fun formatWith(formatter: CNumberFormat): String {
+        val actualEnergy = this.energy.toDouble() / 100_000.0
+        return "${formatter.format(actualEnergy)}CE"
     }
 
     fun formatWithoutUnit(): String {

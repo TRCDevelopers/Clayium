@@ -8,11 +8,12 @@ import kotlin.math.abs
 class CNumberFormat(
     private val thresholds: DoubleArray,
     private val units: List<String>,
+    private val roundingMode: RoundingMode,
     private val decimalFormatStr: String,
 ) {
 
     private val decimalFormat = ThreadLocal.withInitial {
-        DecimalFormat(decimalFormatStr).apply { roundingMode = RoundingMode.DOWN }
+        DecimalFormat(decimalFormatStr).also { df -> df.roundingMode = this.roundingMode }
     }
 
     fun format(number: Double): String {
@@ -42,8 +43,8 @@ class CNumberFormat(
     }
 
     companion object {
-        val DEFAULT = CNumberFormat(Thresholds.default, Units.default, "0.000")
-        val DEFAULT_NO_DECIMAL = CNumberFormat(Thresholds.default, Units.default, "0.###")
+        val DEFAULT = CNumberFormat(Thresholds.default, Units.default, RoundingMode.DOWN, "0.000")
+        val DEFAULT_NO_DECIMAL = CNumberFormat(Thresholds.default, Units.default, RoundingMode.DOWN, "0.###")
     }
 
     object Thresholds {

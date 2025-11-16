@@ -6,6 +6,14 @@ import mezz.jei.api.ingredients.IIngredients
 import mezz.jei.api.ingredients.VanillaTypes
 import mezz.jei.api.recipe.IRecipeWrapper
 import net.minecraft.client.Minecraft
+import java.math.RoundingMode
+
+private val NUM_FORMATTER = CNumberFormat(
+    CNumberFormat.Thresholds.default,
+    CNumberFormat.Units.default,
+    RoundingMode.HALF_DOWN,
+    "0.###"
+)
 
 open class ClayiumRecipeWrapper(
     val recipe: Recipe,
@@ -17,11 +25,11 @@ open class ClayiumRecipeWrapper(
 
     override fun drawInfo(minecraft: Minecraft, recipeWidth: Int, recipeHeight: Int, mouseX: Int, mouseY: Int) {
         val oneCe = 100_000
-        val energyConsumed = CNumberFormat.DEFAULT_NO_DECIMAL.format((recipe.cePerTick.energy.toDouble() * recipe.duration) / oneCe)
-        val craftTime = CNumberFormat.DEFAULT_NO_DECIMAL.format(recipe.duration.toDouble())
+        val energyConsumed = NUM_FORMATTER.format((recipe.cePerTick.energy.toDouble() * recipe.duration) / oneCe)
+        val craftTime = NUM_FORMATTER.format(recipe.duration.toDouble())
         minecraft.fontRenderer.drawString("Tier: ${recipe.recipeTier}", 6, 43, 0x404040)
         minecraft.fontRenderer.drawString(
-            "${recipe.cePerTick.format()}/t x ${craftTime}t = ${energyConsumed}CE",
+            "${recipe.cePerTick.formatWith(NUM_FORMATTER)}/t x ${craftTime}t = ${energyConsumed}CE",
             6, 52, 0x404040
         )
     }
