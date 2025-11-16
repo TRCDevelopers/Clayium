@@ -14,13 +14,39 @@ class TestCNumberFormat : FunSpec({
     lateinit var lengthFixed: CNumberFormat
 
     beforeTest {
-        roundingModeDown = CNumberFormat(CNumberFormat.Thresholds.default, CNumberFormat.Units.default, RoundingMode.DOWN, "0.000")
-        roundingModeHalfDown = CNumberFormat(CNumberFormat.Thresholds.default, CNumberFormat.Units.default, RoundingMode.HALF_DOWN, "0.000")
-        lengthFixed = CNumberFormat(CNumberFormat.Thresholds.default, CNumberFormat.Units.default, RoundingMode.DOWN, "0.000", true)
+        roundingModeDown =
+            CNumberFormat(CNumberFormat.Thresholds.default, CNumberFormat.Units.default, RoundingMode.DOWN, "0.000")
+        roundingModeHalfDown = CNumberFormat(
+            CNumberFormat.Thresholds.default,
+            CNumberFormat.Units.default,
+            RoundingMode.HALF_DOWN,
+            "0.000"
+        )
+        lengthFixed = CNumberFormat(
+            CNumberFormat.Thresholds.default, CNumberFormat.Units.default, RoundingMode.DOWN,
+            decimalFormatPatternSupplier = { unit: String, displayValue: Double ->
+                if (unit == CNumberFormat.SCI_UNIT_STR) {
+                    "0.00"
+                } else if (unit.isEmpty()) {
+                    when {
+                        displayValue < 10.0 -> "0.000" // 1.234
+                        displayValue < 100.0 -> "0.00" // 12.34
+                        else -> "0.0" // 123.4
+                    }
+                } else {
+                    when {
+                        displayValue < 10.0 -> "0.00" // 1.23k
+                        displayValue < 100.0 -> "0.0" //12.3k
+                        else -> "0" // 123k
+                    }
+                }
+            }
+        )
     }
 
     context("CNumberFormat Default") {
         withData(
+            0.0 to "0.000",
             1.0 to "1.000",
             7.0 to "7.000",
             555.0 to "555.000",
@@ -43,6 +69,7 @@ class TestCNumberFormat : FunSpec({
 
     context("CNumberFormat lengthFixed") {
         withData(
+            0.0 to "0.000",
             0.01234 to "12.3m",
             1.0 to "1.000",
             1234.5 to "1.23k",
@@ -53,11 +80,12 @@ class TestCNumberFormat : FunSpec({
 
     context("CNumberFormat scientific notation") {
         withData(
-            1.2345e-12 to "1.234E-12",
+            0.0 to "0.000",
+            1.2345e-12 to "1.23E-12",
             0.01234 to "12.3m",
             1.0 to "1.000",
             1234.5 to "1.23k",
-            1.2345e77 to "1.234E77",
+            1.2345e77 to "1.23E77",
         ) { (value, formatted) ->
             lengthFixed.format(value) shouldBe formatted
         }

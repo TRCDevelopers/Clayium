@@ -2,28 +2,31 @@ package io.github.trcdevelopers.clayium.common.util
 
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.util.function.Supplier
 import kotlin.math.abs
 
 class CNumberFormat(
     private val thresholds: DoubleArray,
     private val units: List<String>,
     private val roundingMode: RoundingMode,
-    private val decimalFormatStr: String,
     /**
-     * If true, DecimalFormat string is dynamically determined by suffix & displayValue to fix the length of Formatted String as possible.
-     * e.g. 0.000, 1.234, 12.3k, 56.7M, 888G (4 chars).
-     *
-     * Note: decimalFormatStr is still used in scientific notation (number too big/small).
+     * empty string if no unit.
+     * "SCIENTIFICNOTATION" for scientific notation. you can get this String from CNumberFormat.SCI_UNIT_STR
      */
-    private val lengthFixed: Boolean = false,
+    private val decimalFormatPatternSupplier: (unit: String, displayValue: Double) -> String,
 ) {
 
-    private val decimalFormat = ThreadLocal.withInitial {
-        DecimalFormat(decimalFormatStr).also { df -> df.roundingMode = this.roundingMode }
-    }
+    constructor(thresholds: DoubleArray, units: List<String>, roundingMode: RoundingMode, decimalFormatPattern: String) : this(
+        thresholds, units, roundingMode, { _: String, _: Double -> decimalFormatPattern },
+    )
 
     fun format(number: Double): String {
         val absValue = abs(number)
+
+        if (number == 0.0) {
+            val pattern = decimalFormatPatternSupplier("", 0.0)
+            return getDecimalFormat(pattern).format(number)
+        }
 
         if (absValue < thresholds.first() || absValue > thresholds.last()) {
             return this.formatScientificNotation(number)
@@ -43,36 +46,16 @@ class CNumberFormat(
         val unit = units[index]
         val displayValue = absValue / divisor
 
-        return if (this.lengthFixed) {
-            val pattern = this.getDecimalFormatForLengthFixed(unit, displayValue)
-            getDecimalFormat(pattern).format(displayValue)
-        } else {
-            val displayString = decimalFormat.get().format(displayValue)
-            "$displayString$unit"
-        }
-    }
+        val decimalFormatPattern = this.decimalFormatPatternSupplier(unit, displayValue)
+        val decimalFormat = getDecimalFormat(decimalFormatPattern)
 
-    /**
-     * No unit = empty string.
-     */
-    private fun getDecimalFormatForLengthFixed(unit: String, displayValue: Double): String {
-        return if (unit.isEmpty()) {
-            when {
-                displayValue < 10.0 -> "0.000" // 1.234
-                displayValue < 100.0 -> "0.00" // 12.34
-                else -> "0.0" // 123.4
-            }
-        } else {
-            when {
-                displayValue < 10.0 -> "0.00" // 1.23k
-                displayValue < 100.0 -> "0.0" //12.3k
-                else -> "0" // 123k
-            }
-        }
+        val displayString = decimalFormat.format(displayValue)
+        return "$displayString$unit"
     }
 
     private fun formatScientificNotation(value: Double): String {
-        val decimalFormat = getDecimalFormat("${decimalFormatStr}E0")
+        val pattern = this.decimalFormatPatternSupplier(SCI_UNIT_STR, value)
+        val decimalFormat = getDecimalFormat("${pattern}E0")
         return decimalFormat.format(value)
     }
 
@@ -81,8 +64,10 @@ class CNumberFormat(
     }
 
     companion object {
-        val DEFAULT = CNumberFormat(Thresholds.default, Units.default, RoundingMode.DOWN, "0.000", false)
-        val DEFAULT_NO_DECIMAL = CNumberFormat(Thresholds.default, Units.default, RoundingMode.DOWN, "0.###", false)
+        val DEFAULT = CNumberFormat(Thresholds.default, Units.default, RoundingMode.DOWN, "0.000")
+        val DEFAULT_NO_DECIMAL = CNumberFormat(Thresholds.default, Units.default, RoundingMode.DOWN, "0.###")
+
+        const val SCI_UNIT_STR = "SCIENTIFICNOTATION"
     }
 
     object Thresholds {

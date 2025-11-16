@@ -24,7 +24,24 @@ import net.minecraft.util.ResourceLocation
 import java.math.RoundingMode
 
 private val numberFormatter = CNumberFormat(
-    CNumberFormat.Thresholds.default, CNumberFormat.Units.default, RoundingMode.DOWN, "0.0", true,
+    CNumberFormat.Thresholds.default, CNumberFormat.Units.default, RoundingMode.DOWN,
+    decimalFormatPatternSupplier = { unit: String, displayValue: Double ->
+            if (unit == CNumberFormat.SCI_UNIT_STR) {
+                "0.00"
+            } else if (unit.isEmpty()) {
+                when {
+                    displayValue < 10.0 -> "0.000" // 1.234
+                    displayValue < 100.0 -> "0.00" // 12.34
+                    else -> "0.0" // 123.4
+                }
+            } else {
+                when {
+                    displayValue < 10.0 -> "0.00" // 1.23k
+                    displayValue < 100.0 -> "0.0" //12.3k
+                    else -> "0" // 123k
+                }
+            }
+        }
 )
 
 class ResonatingCollectorMetaTileEntity(

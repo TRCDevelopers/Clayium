@@ -21,6 +21,7 @@ import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.api.util.copyWithSize
 import io.github.trcdevelopers.clayium.client.model.ModelTextures
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
+import io.github.trcdevelopers.clayium.common.util.CNumberFormat
 import io.github.trcdevelopers.clayium.common.util.transferTo
 import io.github.trcdevelopers.clayium.integration.modularui.CNumFormat
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
@@ -53,7 +54,25 @@ import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.ItemStackHandler
+import java.math.RoundingMode
 import kotlin.math.min
+
+private val numberFormatter = CNumberFormat(
+    CNumberFormat.Thresholds.default, CNumberFormat.Units.default, RoundingMode.DOWN,
+    decimalFormatPatternSupplier = { unit: String, displayValue: Double ->
+        if (unit == CNumberFormat.SCI_UNIT_STR) {
+            "0.00"
+        } else if (unit.isEmpty()) {
+            "0"
+        } else {
+            when {
+                displayValue < 10.0 -> "0.00" // 1.23k
+                displayValue < 100.0 -> "0.0" //12.3k
+                else -> "0" // 123k
+            }
+        }
+    }
+)
 
 class StorageContainerMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -327,7 +346,7 @@ class StorageContainerMetaTileEntity(
             }
 
             GlStateManager.pushMatrix()
-            val amountText: String = CNumFormat.format(itemsStored.toDouble())
+            val amountText: String = numberFormatter.format(itemsStored.toDouble())
             val fRenderer = mc.fontRenderer
             GlStateManager.rotate(180.0f, 0.0f, 1.0f, 0.0f)
             GlStateManager.translate(0.0, -0.15, -0.55)
