@@ -66,7 +66,7 @@ private val numberFormatter = CNumberFormat(
         } else {
             when {
                 displayValue < 10.0 -> "0.00" // 1.23k
-                displayValue < 100.0 -> "0.0" //12.3k
+                displayValue < 100.0 -> "0.0" // 12.3k
                 else -> "0" // 123k
             }
         }
