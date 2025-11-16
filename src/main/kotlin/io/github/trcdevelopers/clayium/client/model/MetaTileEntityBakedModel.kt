@@ -32,12 +32,14 @@ class MetaTileEntityBakedModel : IModelParticleProvider {
 
     override fun getHitEffects(traceResult: RayTraceResult, state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite> {
         val metaTileEntity = world.getMetaTileEntity(pos) ?: return setOf(TextureUtils.getMissingSprite())
-        return setOf(ModelTextures.getHullTexture(metaTileEntity.tier))
+        val particles = metaTileEntity.renderingConfig.particleSupplier.get() ?: setOf(ModelTextures.getHullTexture(metaTileEntity.tier))
+        return particles
     }
 
     override fun getDestroyEffects(state: IBlockState?, world: IBlockAccess?, pos: BlockPos?): Set<TextureAtlasSprite> {
         val metaTileEntity = world.getMetaTileEntity(pos) ?: return setOf(TextureUtils.getMissingSprite())
-        return setOf(ModelTextures.getHullTexture(metaTileEntity.tier))
+        val particles = metaTileEntity.renderingConfig.particleSupplier.get() ?: setOf(ModelTextures.getHullTexture(metaTileEntity.tier))
+        return particles
     }
 
     override fun isAmbientOcclusion() = true

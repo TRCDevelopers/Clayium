@@ -1,5 +1,6 @@
 package io.github.trcdevelopers.clayium.api.metatileentity
 
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.tileentity.TileEntityBeacon
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
@@ -13,6 +14,7 @@ data class MteRenderingConfig private constructor(
     val maxRenderDistanceSquared: Double,
     val renderBoundingBox: AxisAlignedBB?,
     val useGlobalRenderer: Boolean,
+    val particleSupplier: Supplier<Set<TextureAtlasSprite>?>,
 ) {
     val faceTexture get() = faceTextureSupplier.get()
 
@@ -32,6 +34,7 @@ data class MteRenderingConfig private constructor(
         private var maxRenderDistanceSquared: Double = 4096.0
         private var renderBoundingBox: AxisAlignedBB? = null
         private var useGlobalRenderer: Boolean = false
+        private var particleSupplier: Supplier<Set<TextureAtlasSprite>?> = Supplier { null }
 
         /**
          * Sets the facing texture for the MTE.
@@ -97,6 +100,18 @@ data class MteRenderingConfig private constructor(
             this.useGlobalRenderer = true
         }
 
+        fun particle(particle: TextureAtlasSprite) = apply {
+            this.particleSupplier = Supplier { setOf(particle) }
+        }
+
+        fun particle(supplier: Supplier<TextureAtlasSprite?>) = apply {
+            this.particleSupplier = Supplier { supplier.get()?.let { setOf(it) } }
+        }
+
+        fun particles(supplier: Supplier<Set<TextureAtlasSprite>?>) = apply {
+            this.particleSupplier = supplier
+        }
+
         fun build(): MteRenderingConfig {
             // `hasFrontFacing` is redundant because `faceSupplier` can return null,
             // but it is kept for clarity and to ensure that the user explicitly sets it.
@@ -112,6 +127,7 @@ data class MteRenderingConfig private constructor(
                 maxRenderDistanceSquared,
                 renderBoundingBox,
                 useGlobalRenderer,
+                particleSupplier,
             )
         }
 

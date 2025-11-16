@@ -170,7 +170,12 @@ class PanDuplicatorMetaTileEntity(
     }
 
     override val renderingConfig by lazy {
-        MteRenderingConfig.face(clayiumId("blocks/pan_duplicator"))
+        MteRenderingConfig.builder()
+            .face(clayiumId("blocks/pan_duplicator"))
+            .particle {
+                if (ModelTextures.isInitialized) ModelTextures.getHullTexture(this.machineHullTier) else null
+            }
+            .build()
     }
 
     private inner class PanDuplicatorRecipeLogic : AbstractWorkable(this@PanDuplicatorMetaTileEntity) {
