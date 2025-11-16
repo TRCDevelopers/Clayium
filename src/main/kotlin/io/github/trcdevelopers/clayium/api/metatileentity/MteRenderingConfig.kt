@@ -6,6 +6,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import java.util.function.Supplier
 
+@ConsistentCopyVisibility
 data class MteRenderingConfig private constructor(
     val faceTextureSupplier: Supplier<ResourceLocation?>,
     val requiredTextures: List<ResourceLocation>,
