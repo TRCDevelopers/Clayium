@@ -15,11 +15,17 @@ import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.common.util.CNumberFormat
 import io.github.trcdevelopers.clayium.common.util.SidelessI18n
 import io.github.trcdevelopers.clayium.integration.modularui.CNumFormat
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import java.math.RoundingMode
+
+private val numberFormatter = CNumberFormat(
+    CNumberFormat.Thresholds.default, CNumberFormat.Units.default, RoundingMode.DOWN, "0.0", true,
+)
 
 class ResonatingCollectorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -51,7 +57,7 @@ class ResonatingCollectorMetaTileEntity(
         resonanceManager.sync(syncManager)
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic {
-                SidelessI18n.format("gui.$MOD_ID.resonance", CNumFormat.format(resonanceManager.resonance))
+                SidelessI18n.format("gui.$MOD_ID.resonance", numberFormatter.format(resonanceManager.resonance))
             }.asWidget().width(90).alignment(Alignment.BottomRight)
                 .align(Alignment.BottomRight))
             .child(SlotGroupWidget.builder()
