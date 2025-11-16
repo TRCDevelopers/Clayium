@@ -23,6 +23,7 @@ import io.github.trcdevelopers.clayium.api.util.MachineIoMode
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.api.util.getAsItem
 import io.github.trcdevelopers.clayium.common.blocks.ItemBlockMaterial
+import io.github.trcdevelopers.clayium.common.util.CNumberFormat
 import io.github.trcdevelopers.clayium.common.util.TransferUtils
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import mcjty.theoneprobe.api.IProbeHitData
@@ -168,7 +169,7 @@ class ClayFabricatorMetaTileEntity(
             super.addProbeInfo(mode, probeInfo, player, world, state, hitData)
             if (isWorking) {
                 val cet = cePerTick * overclockHandler.accelerationFactor
-                probeInfo.text("Generating ${TextFormatting.GREEN}${cet.formatWithoutUnit()}${TextFormatting.WHITE} CE/t")
+                probeInfo.text("Generating ${TextFormatting.GREEN}${cet.formatWith(CNumberFormat.DEFAULT_NO_EXZERO)}${TextFormatting.WHITE} CE/t")
             }
         }
     }

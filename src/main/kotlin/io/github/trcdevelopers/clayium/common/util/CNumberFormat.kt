@@ -2,7 +2,6 @@ package io.github.trcdevelopers.clayium.common.util
 
 import java.math.RoundingMode
 import java.text.DecimalFormat
-import java.util.function.Supplier
 import kotlin.math.abs
 
 class CNumberFormat(
@@ -22,6 +21,7 @@ class CNumberFormat(
 
     fun format(number: Double): String {
         val absValue = abs(number)
+        val sign = if (number < 0) "-" else ""
 
         if (number == 0.0) {
             val pattern = decimalFormatPatternSupplier("", 0.0)
@@ -32,7 +32,7 @@ class CNumberFormat(
             return this.formatScientificNotation(number)
         }
 
-        var index = thresholds.binarySearch(number)
+        var index = thresholds.binarySearch(absValue)
 
         if (index < 0) {
             // Not found.
@@ -50,7 +50,7 @@ class CNumberFormat(
         val decimalFormat = getDecimalFormat(decimalFormatPattern)
 
         val displayString = decimalFormat.format(displayValue)
-        return "$displayString$unit"
+        return "$sign$displayString$unit"
     }
 
     private fun formatScientificNotation(value: Double): String {
@@ -65,7 +65,7 @@ class CNumberFormat(
 
     companion object {
         val DEFAULT = CNumberFormat(Thresholds.default, Units.default, RoundingMode.DOWN, "0.000")
-        val DEFAULT_NO_DECIMAL = CNumberFormat(Thresholds.default, Units.default, RoundingMode.DOWN, "0.###")
+        val DEFAULT_NO_EXZERO = CNumberFormat(Thresholds.default, Units.default, RoundingMode.DOWN, "0.###")
 
         const val SCI_UNIT_STR = "SCIENTIFICNOTATION"
     }

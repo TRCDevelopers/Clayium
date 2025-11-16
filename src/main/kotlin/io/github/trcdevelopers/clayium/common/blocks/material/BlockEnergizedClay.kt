@@ -4,6 +4,7 @@ import io.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterial
 import io.github.trcdevelopers.clayium.common.blocks.properties.CMaterialProperty
 import io.github.trcdevelopers.clayium.common.creativetab.ClayiumCTabs
+import io.github.trcdevelopers.clayium.common.util.CNumberFormat
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraft.client.util.ITooltipFlag
@@ -29,7 +30,7 @@ abstract class BlockEnergizedClay(
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
         val energizedClayCapability = stack.getCapability(ClayiumCapabilities.ENERGIZED_CLAY, null)
-        if (energizedClayCapability != null) tooltip.add(energizedClayCapability.getClayEnergy().format())
+        if (energizedClayCapability != null) tooltip.add(energizedClayCapability.getClayEnergy().formatNoExcessZero())
     }
 
     companion object {

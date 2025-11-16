@@ -16,31 +16,31 @@ class TestClayEnergyStrings : StringSpec({
         ClayEnergy.micro(10).format() shouldBe "10uCE"
     }
     "13m CE - small value" {
-        ClayEnergy.milli(13).format() shouldBe "13mCE"
+        ClayEnergy.milli(13).format() shouldBe "13.000mCE"
     }
     "1 CE" {
-        ClayEnergy.of(1).format() shouldBe "1CE"
+        ClayEnergy.of(1).format() shouldBe "1.000CE"
     }
     "57 CE" {
-        ClayEnergy.of(57).format() shouldBe "57CE"
+        ClayEnergy.of(57).format() shouldBe "57.000CE"
     }
     "250 CE" {
-        ClayEnergy.of(250).format() shouldBe "250CE"
+        ClayEnergy.of(250).format() shouldBe "250.000CE"
     }
     "6k CE - kilo value" {
-        ClayEnergy.of(6000).format() shouldBe "6kCE"
+        ClayEnergy.of(6789).format() shouldBe "6.789kCE"
     }
     "500k CE" {
-        ClayEnergy.of(500_000).format() shouldBe "500kCE"
+        ClayEnergy.of(500_000).format() shouldBe "500.000kCE"
     }
     "53T CE - big value" {
-        ClayEnergy.of(53_000_000_000_000).format() shouldBe "53TCE"
+        ClayEnergy.of(53_000_000_000_000).format() shouldBe "53.000TCE"
     }
     "1.234k CE - decimal value" {
         ClayEnergy.of(1234).format() shouldBe "1.234kCE"
     }
 
-    "Test CE Strings" {
-        ClayEnergy.of(999).format() shouldBe "999CE"
+    "999 CE" {
+        ClayEnergy.of(999).format() shouldBe "999.000CE"
     }
 })

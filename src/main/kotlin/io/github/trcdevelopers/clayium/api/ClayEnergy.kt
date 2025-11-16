@@ -1,7 +1,10 @@
 package io.github.trcdevelopers.clayium.api
 
 import io.github.trcdevelopers.clayium.common.util.CNumberFormat
+import io.github.trcdevelopers.clayium.common.util.CNumberFormat.Thresholds
+import io.github.trcdevelopers.clayium.common.util.CNumberFormat.Units
 import net.minecraft.network.PacketBuffer
+import java.math.RoundingMode
 import kotlin.math.abs
 import kotlin.math.pow
 
@@ -13,28 +16,33 @@ fun PacketBuffer.readClayEnergy(): ClayEnergy {
     return ClayEnergy(readLong())
 }
 
+private val numberFormat = CNumberFormat(Thresholds.default, Units.default, RoundingMode.DOWN) { unit: String, displayValue: Double ->
+    if (unit == "u" || displayValue == 0.0) {
+        "0"
+    } else {
+        "0.000"
+    }
+}
+
 @JvmInline
+/**
+ * @param energy 1 = 10uCE, 100_000 = 1CE.
+ * You can use factory methods `ClayEnergy.of`, `.milli`, `micro` to create ClayEnergy.
+ */
 value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
 
-    //todo: minimum digits?
+    val actualValue: Double get() = energy / 100_000.0
+
     fun format(): String {
-        return "${formatWithoutUnit()}CE"
+        return this.formatWith(numberFormat)
+    }
+
+    fun formatNoExcessZero(): String {
+        return this.formatWith(CNumberFormat.DEFAULT_NO_EXZERO)
     }
 
     fun formatWith(formatter: CNumberFormat): String {
-        val actualEnergy = this.energy.toDouble() / 100_000.0
-        return "${formatter.format(actualEnergy)}CE"
-    }
-
-    fun formatWithoutUnit(): String {
-        if (energy == 0L) return "0"
-        val digits = abs(energy).toString().length
-        val microCe = energy.toDouble() * 10.0
-        val unitIndex = digits / 3
-        val displayValue = String.format("%.3f", microCe / 10.0.pow(unitIndex * 3))
-            .replace(matchesExcessZero, "")
-            .replace(matchesExcessDecimalPoint, "")
-        return "$displayValue${units[unitIndex]}"
+        return "${formatter.format(actualValue)}CE"
     }
 
     override fun toString(): String {

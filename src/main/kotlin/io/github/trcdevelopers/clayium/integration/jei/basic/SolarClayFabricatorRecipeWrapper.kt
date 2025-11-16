@@ -14,7 +14,7 @@ class SolarClayFabricatorRecipeWrapper(
         minecraft.fontRenderer.drawString(tierText, (recipeWidth - tierTextWidth) / 2, 3, 0x404040)
 
         minecraft.fontRenderer.drawString(
-            "${recipe.duration}t = ${I18n.format("recipe.clayium.second", (recipe.duration / 20))} (${recipe.cePerTick.format()}/t)",
+            "${recipe.duration}t = ${I18n.format("recipe.clayium.second", (recipe.duration / 20))} (${recipe.cePerTick.formatNoExcessZero()}/t)",
             6, 50, 0x404040
         )
     }
