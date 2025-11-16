@@ -151,7 +151,7 @@ class PanDuplicatorMetaTileEntity(
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
-        tooltip.add("CE Consumption Rate: ${maxCeConsumptionRate.formatNoExcessZero()}/t")
+        tooltip.add("CE Consumption Rate: ${maxCeConsumptionRate.format()}/t")
     }
 
     override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {
@@ -222,8 +222,8 @@ class PanDuplicatorMetaTileEntity(
                 probeInfo.progress(
                     currentProgress, requiredProgress, probeInfo.defaultProgressStyle()
                         .numberFormat(NumberFormat.NONE)
-                        .prefix(energy.formatNoExcessZero())
-                        .suffix(" / ${maxEnergy.formatNoExcessZero()}")
+                        .prefix(energy.format())
+                        .suffix(" / ${maxEnergy.format()}")
                         .filledColor(color)
                         .alternateFilledColor(color)
                         .borderColor(BORDER_COLOR)

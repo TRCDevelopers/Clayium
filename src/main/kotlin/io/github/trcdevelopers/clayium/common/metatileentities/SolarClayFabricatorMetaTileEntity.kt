@@ -28,7 +28,6 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
@@ -100,7 +99,7 @@ class SolarClayFabricatorMetaTileEntity(
                 { clayEnergy = ClayEnergy(it) }
             ))
 
-            return IKey.dynamic { clayEnergy.format() }.asWidget()
+            return IKey.dynamic { clayEnergy.formatWithExcessZero() }.asWidget()
         }
 
         override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {

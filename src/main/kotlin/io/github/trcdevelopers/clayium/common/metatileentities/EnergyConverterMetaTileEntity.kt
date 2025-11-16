@@ -97,7 +97,7 @@ class EnergyConverterMetaTileEntity(
             .child(Column().widthRel(1f).height(8 * 3 + 3 * 2 + 10).align(Alignment.Center)
                 .child(IKey.dynamic { SidelessI18n.format("gui.clayium.energy_converter.storage", feStorage.energyStored, feStorage.maxEnergyStored) }
                     .asWidget().widthRel(1f))
-                .child(IKey.dynamic { SidelessI18n.format("gui.clayium.energy_converter.rate", cePerTick.formatNoExcessZero(), fePerTick) }
+                .child(IKey.dynamic { SidelessI18n.format("gui.clayium.energy_converter.rate", cePerTick.format(), fePerTick) }
                     .asWidget().widthRel(1f).margin(0, 3))
                 .child(IKey.dynamic { SidelessI18n.format("gui.clayium.energy_converter.output", fePerTick) }
                     .asWidget().widthRel(1f))
@@ -123,7 +123,7 @@ class EnergyConverterMetaTileEntity(
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
-        tooltip.add(I18n.format("machine.clayium.energy_converter.tooltip.rate", cePerTick.formatNoExcessZero(), fePerTick))
+        tooltip.add(I18n.format("machine.clayium.energy_converter.tooltip.rate", cePerTick.format(), fePerTick))
         tooltip.add(I18n.format("machine.clayium.energy_converter.tooltip.output", fePerTick))
     }
 

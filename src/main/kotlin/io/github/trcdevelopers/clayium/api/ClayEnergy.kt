@@ -5,8 +5,6 @@ import io.github.trcdevelopers.clayium.common.util.CNumberFormat.Thresholds
 import io.github.trcdevelopers.clayium.common.util.CNumberFormat.Units
 import net.minecraft.network.PacketBuffer
 import java.math.RoundingMode
-import kotlin.math.abs
-import kotlin.math.pow
 
 fun PacketBuffer.writeClayEnergy(energy: ClayEnergy) {
     writeLong(energy.energy)
@@ -33,11 +31,11 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
 
     val actualValue: Double get() = energy / 100_000.0
 
-    fun format(): String {
+    fun formatWithExcessZero(): String {
         return this.formatWith(numberFormat)
     }
 
-    fun formatNoExcessZero(): String {
+    fun format(): String {
         return this.formatWith(CNumberFormat.DEFAULT_NO_EXZERO)
     }
 
