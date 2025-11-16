@@ -326,6 +326,11 @@ class CaReactorMetaTileEntity(
     }
 
     private inner class CaReactorRecipeLogic : MultiblockRecipeLogic(this@CaReactorMetaTileEntity, caReactorRegistry, multiblockLogic) {
+
+        override fun getTier(): Int {
+            return this@CaReactorMetaTileEntity.tier.numeric
+        }
+
         override fun trySearchNewRecipe(): Boolean {
             val recipe = caReactorRegistry.findRecipeWithRank(tier.numeric, avgHullRank, inputInventory.toList())
             if (recipe == null) {
