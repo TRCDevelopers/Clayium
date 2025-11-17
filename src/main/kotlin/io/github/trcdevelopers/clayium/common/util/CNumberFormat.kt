@@ -5,12 +5,8 @@ import java.text.DecimalFormat
 import kotlin.math.abs
 
 class CNumberFormat(
-    private val numberUnitPreset: NumberUnitPreset,
+    numberUnitPreset: NumberUnitPreset,
     private val roundingMode: RoundingMode,
-    /**
-     * empty string if no unit.
-     * "SCIENTIFICNOTATION" for scientific notation. you can get this String from CNumberFormat.SCI_UNIT_STR
-     */
     private val decimalFormatPatternSupplier: (unit: DisplayUnit, displayValue: Double) -> String,
 ) {
 
@@ -48,7 +44,7 @@ class CNumberFormat(
         val unit = units[index]
         val displayValue = absValue / divisor
 
-        val decimalFormatPattern = this.decimalFormatPatternSupplier(unit, displayValue)
+        val decimalFormatPattern = this.decimalFormatPatternSupplier(DisplayUnit.fromString(unit), displayValue)
         val decimalFormat = getDecimalFormat(decimalFormatPattern)
 
         val displayString = decimalFormat.format(displayValue)
@@ -68,27 +64,14 @@ class CNumberFormat(
     companion object {
         val DEFAULT = CNumberFormat(NumberUnitPreset.default, RoundingMode.DOWN, "0.000")
         val DEFAULT_NO_EXZERO = CNumberFormat(NumberUnitPreset.default, RoundingMode.DOWN, "0.###")
-
-        const val SCI_UNIT_STR = "SCIENTIFICNOTATION"
-    }
-
-    object Thresholds {
-        /**
-         * micro (1e-6) ... Yotta (1e24)
-         */
-        val default = doubleArrayOf(1e-6, 1e-3, 1.0, 1e3, 1e6, 1e9, 1e12, 1e15, 1e18, 1e21, 1e24, )
-    }
-
-    object Units {
-        /**
-         * From micro (u) to Yotta (Y)
-         */
-        val default = listOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y")
     }
 
     class NumberUnitPreset(
         val thresholds: DoubleArray,
-        val units: List<DisplayUnit>,
+        /**
+         * You can use Empty String for no unit.
+         */
+        val units: List<String>,
     ) {
         init {
             require(thresholds.isNotEmpty()) { "Thresholds must not be empty." }
@@ -102,7 +85,7 @@ class CNumberFormat(
         companion object {
             val default = NumberUnitPreset(
                 doubleArrayOf(1e-6, 1e-3, 1.0, 1e3, 1e6, 1e9, 1e12, 1e15, 1e18, 1e21, 1e24, ),
-                listOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y").map { DisplayUnit.fromString(it) },
+                listOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"),
             )
         }
     }
@@ -113,14 +96,10 @@ class CNumberFormat(
         data object NoUnit : DisplayUnit
 
         companion object {
-            /**
-             * Creates a UnitType from a string.
-             * empty string for NoUnit, otherwise Symbol.
-             */
-            fun fromString(str: String): DisplayUnit {
-                return when (str) {
+            fun fromString(unit: String): DisplayUnit {
+                return when (unit) {
                     "" -> NoUnit
-                    else -> Symbol(str)
+                    else -> Symbol(unit)
                 }
             }
         }
