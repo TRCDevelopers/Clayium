@@ -2,7 +2,6 @@ package io.github.trcdevelopers.clayium.util
 
 import io.github.trcdevelopers.clayium.common.util.CNumberFormat
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.core.spec.style.StringSpec
 import io.kotest.datatest.withData
 import io.kotest.matchers.shouldBe
 import java.math.RoundingMode
@@ -14,34 +13,26 @@ class TestCNumberFormat : FunSpec({
     lateinit var lengthFixed: CNumberFormat
 
     beforeTest {
-        roundingModeDown =
-            CNumberFormat(CNumberFormat.Thresholds.default, CNumberFormat.Units.default, RoundingMode.DOWN, "0.000")
-        roundingModeHalfDown = CNumberFormat(
-            CNumberFormat.Thresholds.default,
-            CNumberFormat.Units.default,
-            RoundingMode.HALF_DOWN,
-            "0.000"
-        )
-        lengthFixed = CNumberFormat(
-            CNumberFormat.Thresholds.default, CNumberFormat.Units.default, RoundingMode.DOWN,
-            decimalFormatPatternSupplier = { unit: String, displayValue: Double ->
-                if (unit == CNumberFormat.SCI_UNIT_STR) {
-                    "0.00"
-                } else if (unit.isEmpty()) {
-                    when {
+        roundingModeDown = CNumberFormat(CNumberFormat.NumberUnitPreset.default, RoundingMode.DOWN, "0.000")
+        roundingModeHalfDown = CNumberFormat(CNumberFormat.NumberUnitPreset.default, RoundingMode.HALF_DOWN, "0.000")
+        lengthFixed = CNumberFormat(CNumberFormat.NumberUnitPreset.default, RoundingMode.DOWN,
+            decimalFormatPatternSupplier = { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
+                when (unit) {
+                    CNumberFormat.DisplayUnit.NoUnit -> when {
                         displayValue < 10.0 -> "0.000" // 1.234
                         displayValue < 100.0 -> "0.00" // 12.34
                         else -> "0.0" // 123.4
                     }
-                } else {
-                    when {
+
+                    CNumberFormat.DisplayUnit.ScientificNotation -> "0.00"
+                    is CNumberFormat.DisplayUnit.Symbol -> when {
                         displayValue < 10.0 -> "0.00" // 1.23k
                         displayValue < 100.0 -> "0.0" //12.3k
                         else -> "0" // 123k
                     }
+
                 }
-            }
-        )
+            })
     }
 
     context("CNumberFormat Default") {

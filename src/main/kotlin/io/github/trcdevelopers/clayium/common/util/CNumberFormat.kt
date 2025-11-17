@@ -5,18 +5,20 @@ import java.text.DecimalFormat
 import kotlin.math.abs
 
 class CNumberFormat(
-    private val thresholds: DoubleArray,
-    private val units: List<String>,
+    private val numberUnitPreset: NumberUnitPreset,
     private val roundingMode: RoundingMode,
     /**
      * empty string if no unit.
      * "SCIENTIFICNOTATION" for scientific notation. you can get this String from CNumberFormat.SCI_UNIT_STR
      */
-    private val decimalFormatPatternSupplier: (unit: String, displayValue: Double) -> String,
+    private val decimalFormatPatternSupplier: (unit: DisplayUnit, displayValue: Double) -> String,
 ) {
 
-    constructor(thresholds: DoubleArray, units: List<String>, roundingMode: RoundingMode, decimalFormatPattern: String) : this(
-        thresholds, units, roundingMode, { _: String, _: Double -> decimalFormatPattern },
+    private val thresholds = numberUnitPreset.thresholds
+    private val units = numberUnitPreset.units
+
+    constructor(numberUnitPreset: NumberUnitPreset, roundingMode: RoundingMode, decimalFormatPattern: String) : this(
+        numberUnitPreset, roundingMode, { _: DisplayUnit, _: Double -> decimalFormatPattern },
     )
 
     fun format(number: Double): String {
@@ -24,7 +26,7 @@ class CNumberFormat(
         val sign = if (number < 0) "-" else ""
 
         if (number == 0.0) {
-            val pattern = decimalFormatPatternSupplier("", 0.0)
+            val pattern = decimalFormatPatternSupplier(DisplayUnit.NoUnit, 0.0)
             return getDecimalFormat(pattern).format(number)
         }
 
@@ -54,7 +56,7 @@ class CNumberFormat(
     }
 
     private fun formatScientificNotation(value: Double): String {
-        val pattern = this.decimalFormatPatternSupplier(SCI_UNIT_STR, value)
+        val pattern = this.decimalFormatPatternSupplier(DisplayUnit.ScientificNotation, value)
         val decimalFormat = getDecimalFormat("${pattern}E0")
         return decimalFormat.format(value)
     }
@@ -64,8 +66,8 @@ class CNumberFormat(
     }
 
     companion object {
-        val DEFAULT = CNumberFormat(Thresholds.default, Units.default, RoundingMode.DOWN, "0.000")
-        val DEFAULT_NO_EXZERO = CNumberFormat(Thresholds.default, Units.default, RoundingMode.DOWN, "0.###")
+        val DEFAULT = CNumberFormat(NumberUnitPreset.default, RoundingMode.DOWN, "0.000")
+        val DEFAULT_NO_EXZERO = CNumberFormat(NumberUnitPreset.default, RoundingMode.DOWN, "0.###")
 
         const val SCI_UNIT_STR = "SCIENTIFICNOTATION"
     }
@@ -86,7 +88,7 @@ class CNumberFormat(
 
     class NumberUnitPreset(
         val thresholds: DoubleArray,
-        val units: List<UnitType>,
+        val units: List<DisplayUnit>,
     ) {
         init {
             require(thresholds.isNotEmpty()) { "Thresholds must not be empty." }
@@ -100,22 +102,22 @@ class CNumberFormat(
         companion object {
             val default = NumberUnitPreset(
                 doubleArrayOf(1e-6, 1e-3, 1.0, 1e3, 1e6, 1e9, 1e12, 1e15, 1e18, 1e21, 1e24, ),
-                listOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y").map { UnitType.fromString(it) },
+                listOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y").map { DisplayUnit.fromString(it) },
             )
         }
     }
 
-    sealed interface UnitType {
-        class Symbol(val symbol: String) : UnitType
-        data object ScientificNotation : UnitType
-        data object NoUnit : UnitType
+    sealed interface DisplayUnit {
+        class Symbol(val symbol: String) : DisplayUnit
+        data object ScientificNotation : DisplayUnit
+        data object NoUnit : DisplayUnit
 
         companion object {
             /**
              * Creates a UnitType from a string.
              * empty string for NoUnit, otherwise Symbol.
              */
-            fun fromString(str: String): UnitType {
+            fun fromString(str: String): DisplayUnit {
                 return when (str) {
                     "" -> NoUnit
                     else -> Symbol(str)

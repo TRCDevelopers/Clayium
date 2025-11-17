@@ -22,18 +22,18 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import java.math.RoundingMode
 
-private val numberFormatter = CNumberFormat(
-    CNumberFormat.Thresholds.default, CNumberFormat.Units.default, RoundingMode.DOWN,
-    decimalFormatPatternSupplier = { unit: String, displayValue: Double ->
-            if (unit == CNumberFormat.SCI_UNIT_STR) {
-                "0.00"
-            } else if (unit.isEmpty()) {
+private val numberFormatter = CNumberFormat(CNumberFormat.NumberUnitPreset.default, RoundingMode.DOWN,
+    decimalFormatPatternSupplier = { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
+        when (unit) {
+            CNumberFormat.DisplayUnit.NoUnit -> {
                 when {
                     displayValue < 10.0 -> "0.000" // 1.234
                     displayValue < 100.0 -> "0.00" // 12.34
                     else -> "0.0" // 123.4
                 }
-            } else {
+            }
+            CNumberFormat.DisplayUnit.ScientificNotation -> "0.00"
+            is CNumberFormat.DisplayUnit.Symbol -> {
                 when {
                     displayValue < 10.0 -> "0.00" // 1.23k
                     displayValue < 100.0 -> "0.0" //12.3k
@@ -41,6 +41,7 @@ private val numberFormatter = CNumberFormat(
                 }
             }
         }
+    }
 )
 
 class ResonatingCollectorMetaTileEntity(

@@ -1,8 +1,6 @@
 package io.github.trcdevelopers.clayium.api
 
 import io.github.trcdevelopers.clayium.common.util.CNumberFormat
-import io.github.trcdevelopers.clayium.common.util.CNumberFormat.Thresholds
-import io.github.trcdevelopers.clayium.common.util.CNumberFormat.Units
 import net.minecraft.network.PacketBuffer
 import java.math.RoundingMode
 
@@ -14,8 +12,8 @@ fun PacketBuffer.readClayEnergy(): ClayEnergy {
     return ClayEnergy(readLong())
 }
 
-private val numberFormat = CNumberFormat(Thresholds.default, Units.default, RoundingMode.DOWN) { unit: String, displayValue: Double ->
-    if (unit == "u" || displayValue == 0.0) {
+private val numberFormat = CNumberFormat(CNumberFormat.NumberUnitPreset.default, RoundingMode.DOWN) { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
+    if (displayValue == 0.0 || (unit is CNumberFormat.DisplayUnit.Symbol && unit.symbol == "u")) {
         "0"
     } else {
         "0.000"

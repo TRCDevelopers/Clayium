@@ -57,17 +57,17 @@ import java.math.RoundingMode
 import kotlin.math.min
 
 private val numberFormatter = CNumberFormat(
-    CNumberFormat.Thresholds.default, CNumberFormat.Units.default, RoundingMode.DOWN,
-    decimalFormatPatternSupplier = { unit: String, displayValue: Double ->
-        if (unit == CNumberFormat.SCI_UNIT_STR) {
-            "0.00"
-        } else if (unit.isEmpty()) {
-            "0"
-        } else {
-            when {
-                displayValue < 10.0 -> "0.00" // 1.23k
-                displayValue < 100.0 -> "0.0" // 12.3k
-                else -> "0" // 123k
+    CNumberFormat.NumberUnitPreset.default, RoundingMode.DOWN,
+    decimalFormatPatternSupplier = { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
+        when (unit) {
+            CNumberFormat.DisplayUnit.NoUnit -> "0"
+            CNumberFormat.DisplayUnit.ScientificNotation -> "0.00"
+            is CNumberFormat.DisplayUnit.Symbol -> {
+                when {
+                    displayValue < 10.0 -> "0.00" // 1.23k
+                    displayValue < 100.0 -> "0.0" // 12.3k
+                    else -> "0" // 123k
+                }
             }
         }
     }
