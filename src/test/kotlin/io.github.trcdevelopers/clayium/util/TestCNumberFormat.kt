@@ -49,6 +49,7 @@ class TestCNumberFormat : FunSpec({
             0.01234 to "12.3m",
             1.0 to "1.000",
             1234.5 to "1.23k",
+            9999.9999 to "9.99k",
         ) { (value, formatted) ->
             lengthFixed.format(value) shouldBe formatted
         }
