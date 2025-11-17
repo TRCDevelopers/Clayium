@@ -19,7 +19,6 @@ import io.github.trcdevelopers.clayium.api.util.MachineIoMode
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.common.recipe.builder.ClayFabricatorRecipeBuilder
 import io.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
-import io.github.trcdevelopers.clayium.common.util.CNumberFormat
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import mcjty.theoneprobe.api.IProbeHitData
 import mcjty.theoneprobe.api.IProbeInfo
@@ -28,6 +27,7 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
@@ -106,7 +106,7 @@ class SolarClayFabricatorMetaTileEntity(
             super.addProbeInfo(mode, probeInfo, player, world, state, hitData)
             if (this.isWorking) {
                 val cet = recipeCEt * overclockHandler.accelerationFactor
-                probeInfo.text(cet.formatWith(CNumberFormat.DEFAULT_NO_EXZERO))
+                probeInfo.text("Generating ${TextFormatting.GREEN}${cet.format()}${TextFormatting.WHITE} CE/t")
             }
         }
     }
