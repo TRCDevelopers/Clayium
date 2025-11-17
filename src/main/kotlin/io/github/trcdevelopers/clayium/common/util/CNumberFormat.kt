@@ -88,6 +88,15 @@ class CNumberFormat(
         val thresholds: DoubleArray,
         val units: List<UnitType>,
     ) {
+        init {
+            require(thresholds.isNotEmpty()) { "Thresholds must not be empty." }
+            require(units.isNotEmpty()) { "Units must not be empty." }
+            require(thresholds.size == units.size) { "Thresholds and units must have the same size." }
+            for (i in 1..<thresholds.size) {
+                require(thresholds[i] > thresholds[i - 1]) { "Thresholds must be strictly increasing." }
+            }
+        }
+
         companion object {
             val default = NumberUnitPreset(
                 doubleArrayOf(1e-6, 1e-3, 1.0, 1e3, 1e6, 1e9, 1e12, 1e15, 1e18, 1e21, 1e24, ),
