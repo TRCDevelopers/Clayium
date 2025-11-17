@@ -74,11 +74,7 @@ class CNumberFormat(
         /**
          * micro (1e-6) ... Yotta (1e24)
          */
-        val default = doubleArrayOf(
-            1e-6, 1e-3,
-            1.0,
-            1e3, 1e6, 1e9, 1e12, 1e15, 1e18, 1e21, 1e24,
-        )
+        val default = doubleArrayOf(1e-6, 1e-3, 1.0, 1e3, 1e6, 1e9, 1e12, 1e15, 1e18, 1e21, 1e24, )
     }
 
     object Units {
@@ -86,5 +82,36 @@ class CNumberFormat(
          * From micro (u) to Yotta (Y)
          */
         val default = listOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y")
+    }
+
+    class NumberUnitPreset(
+        val thresholds: DoubleArray,
+        val units: List<UnitType>,
+    ) {
+        companion object {
+            val default = NumberUnitPreset(
+                doubleArrayOf(1e-6, 1e-3, 1.0, 1e3, 1e6, 1e9, 1e12, 1e15, 1e18, 1e21, 1e24, ),
+                listOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y").map { UnitType.fromString(it) },
+            )
+        }
+    }
+
+    sealed interface UnitType {
+        class Symbol(val symbol: String) : UnitType
+        data object ScientificNotation : UnitType
+        data object NoUnit : UnitType
+
+        companion object {
+            /**
+             * Creates a UnitType from a string.
+             * empty string for NoUnit, otherwise Symbol.
+             */
+            fun fromString(str: String): UnitType {
+                return when (str) {
+                    "" -> NoUnit
+                    else -> Symbol(str)
+                }
+            }
+        }
     }
 }
