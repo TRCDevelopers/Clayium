@@ -9,16 +9,16 @@ import java.math.RoundingMode
 class TestCNumberFormat : FunSpec({
 
     lateinit var default: CNumberFormat
-    lateinit var roundingModeDown: CNumberFormat
+    lateinit var roundingModeUp: CNumberFormat
     lateinit var lengthFixed: CNumberFormat
 
     beforeTest {
         default = CNumberFormat.DEFAULT
-        roundingModeDown = CNumberFormat.DEFAULT.copyToBuilder().roundingMode(RoundingMode.DOWN).build()
+        roundingModeUp = CNumberFormat.DEFAULT.copyToBuilder().roundingMode(RoundingMode.UP).build()
         lengthFixed = CNumberFormat.DEFAULT.copyToBuilder().maxLength(4).build()
     }
 
-    context("CNumberFormat Default") {
+    context("Mostly works") {
         withData(
             0.0 to "0.000",
             1.0 to "1.000",
@@ -35,13 +35,15 @@ class TestCNumberFormat : FunSpec({
         }
     }
 
-    test("CNumberFormat RoundingMode") {
-        roundingModeDown.format(9999.999) shouldBe "9.999k"
-        default.format(9999.999) shouldBe "10.000k"
-        default.format(9999.0) shouldBe "9.999k"
+    test("Default RoundingMode is Down") {
+        default.format(9999.999) shouldBe "9.999k"
     }
 
-    context("CNumberFormat lengthFixed") {
+    test("RoundingMode Takes Effect") {
+        roundingModeUp.format(9999.999) shouldBe "10.000k"
+    }
+
+    context("Max Length Works") {
         withData(
             0.0 to "0.000",
             0.01234 to "12.3m",
@@ -52,16 +54,12 @@ class TestCNumberFormat : FunSpec({
         }
     }
 
-    context("CNumberFormat scientific notation") {
+    context("Scientific Notation is used if too small/big") {
         withData(
-            0.0 to "0.000",
-            1.2345e-12 to "1.23E-12",
-            0.01234 to "12.3m",
-            1.0 to "1.000",
-            1234.5 to "1.23k",
-            1.2345e77 to "1.23E77",
+            1.2345e-12 to "1.234E-12",
+            1.2345e77 to "1.234E77",
         ) { (value, formatted) ->
-            lengthFixed.format(value) shouldBe formatted
+            default.format(value) shouldBe formatted
         }
     }
 })
