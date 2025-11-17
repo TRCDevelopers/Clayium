@@ -13,9 +13,9 @@ class TestCNumberFormat : FunSpec({
     lateinit var lengthFixed: CNumberFormat
 
     beforeTest {
-        roundingModeDown = CNumberFormat(CNumberFormat.NumberUnitPreset.default, RoundingMode.DOWN, "0.000")
-        roundingModeHalfDown = CNumberFormat(CNumberFormat.NumberUnitPreset.default, RoundingMode.HALF_DOWN, "0.000")
-        lengthFixed = CNumberFormat(CNumberFormat.NumberUnitPreset.default, RoundingMode.DOWN,
+        roundingModeDown = CNumberFormat(CNumberFormat.Presets.default, RoundingMode.DOWN, "0.000")
+        roundingModeHalfDown = CNumberFormat(CNumberFormat.Presets.default, RoundingMode.HALF_DOWN, "0.000")
+        lengthFixed = CNumberFormat(CNumberFormat.Presets.default, RoundingMode.DOWN,
             decimalFormatPatternSupplier = { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
                 when (unit) {
                     CNumberFormat.DisplayUnit.NoUnit -> when {

@@ -9,7 +9,7 @@ import net.minecraft.client.Minecraft
 import java.math.RoundingMode
 
 private val NUM_FORMATTER = CNumberFormat(
-    CNumberFormat.NumberUnitPreset.default,
+    CNumberFormat.Presets.default,
     RoundingMode.HALF_DOWN,
     "0.###"
 )

@@ -22,7 +22,7 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import java.math.RoundingMode
 
-private val numberFormatter = CNumberFormat(CNumberFormat.NumberUnitPreset.default, RoundingMode.DOWN,
+private val numberFormatter = CNumberFormat(CNumberFormat.Presets.default, RoundingMode.DOWN,
     decimalFormatPatternSupplier = { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
         when (unit) {
             CNumberFormat.DisplayUnit.NoUnit -> {

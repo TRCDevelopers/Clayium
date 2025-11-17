@@ -57,7 +57,7 @@ import java.math.RoundingMode
 import kotlin.math.min
 
 private val numberFormatter = CNumberFormat(
-    CNumberFormat.NumberUnitPreset.default, RoundingMode.DOWN,
+    CNumberFormat.Presets.default, RoundingMode.DOWN,
     decimalFormatPatternSupplier = { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
         when (unit) {
             CNumberFormat.DisplayUnit.NoUnit -> "0"

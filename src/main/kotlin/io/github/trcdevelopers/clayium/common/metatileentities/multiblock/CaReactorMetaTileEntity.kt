@@ -31,7 +31,6 @@ import io.github.trcdevelopers.clayium.common.blocks.BlockCaReactorHull
 import io.github.trcdevelopers.clayium.common.config.ConfigCore
 import io.github.trcdevelopers.clayium.common.recipe.Recipe
 import io.github.trcdevelopers.clayium.common.recipe.registry.CaReactorRecipeRegistry
-import io.github.trcdevelopers.clayium.common.util.CNumberFormat
 import io.github.trcdevelopers.clayium.common.util.SidelessI18n
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import net.minecraft.client.renderer.GlStateManager

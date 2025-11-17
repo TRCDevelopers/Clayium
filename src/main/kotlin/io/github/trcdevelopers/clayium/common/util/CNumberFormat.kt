@@ -5,32 +5,23 @@ import java.text.DecimalFormat
 import kotlin.math.abs
 
 class CNumberFormat(
-    numberUnitPreset: NumberUnitPreset,
-    private val roundingMode: RoundingMode,
-    private val decimalFormatPatternSupplier: (unit: DisplayUnit, displayValue: Double) -> String,
+    private val presets: Presets,
 ) {
-
-    private val thresholds = numberUnitPreset.thresholds
-    private val units = numberUnitPreset.units
-
-    constructor(numberUnitPreset: NumberUnitPreset, roundingMode: RoundingMode, decimalFormatPattern: String) : this(
-        numberUnitPreset, roundingMode, { _: DisplayUnit, _: Double -> decimalFormatPattern },
-    )
 
     fun format(number: Double): String {
         val absValue = abs(number)
         val sign = if (number < 0) "-" else ""
 
         if (number == 0.0) {
-            val pattern = decimalFormatPatternSupplier(DisplayUnit.NoUnit, 0.0)
+            val pattern = presets.decimalFormatPatternSupplier(DisplayUnit.NoUnit, 0.0)
             return getDecimalFormat(pattern).format(number)
         }
 
-        if (absValue < thresholds.first() || absValue > thresholds.last()) {
+        if (absValue < presets.thresholds.first() || absValue > presets.thresholds.last()) {
             return this.formatScientificNotation(number)
         }
 
-        var index = thresholds.binarySearch(absValue)
+        var index = presets.thresholds.binarySearch(absValue)
 
         if (index < 0) {
             // Not found.
@@ -40,11 +31,11 @@ class CNumberFormat(
             index = insertionPoint - 1
         }
 
-        val divisor = thresholds[index]
-        val unit = units[index]
+        val divisor = presets.thresholds[index]
+        val unit = presets.units[index]
         val displayValue = absValue / divisor
 
-        val decimalFormatPattern = this.decimalFormatPatternSupplier(DisplayUnit.fromString(unit), displayValue)
+        val decimalFormatPattern = presets.decimalFormatPatternSupplier(DisplayUnit.fromString(unit), displayValue)
         val decimalFormat = getDecimalFormat(decimalFormatPattern)
 
         val displayString = decimalFormat.format(displayValue)
@@ -52,26 +43,43 @@ class CNumberFormat(
     }
 
     private fun formatScientificNotation(value: Double): String {
-        val pattern = this.decimalFormatPatternSupplier(DisplayUnit.ScientificNotation, value)
+        val pattern = presets.decimalFormatPatternSupplier(DisplayUnit.ScientificNotation, value)
         val decimalFormat = getDecimalFormat("${pattern}E0")
         return decimalFormat.format(value)
     }
 
     private fun getDecimalFormat(pattern: String): DecimalFormat {
-        return DecimalFormat(pattern).also { df -> df.roundingMode = this.roundingMode }
+        return DecimalFormat(pattern).also { df -> df.roundingMode = presets.roundingMode }
+    }
+
+    fun copyToBuilder(): Builder {
+        return Builder()
+            .thresholds(presets.thresholds)
+            .units(presets.units)
+            .roundingMode(presets.roundingMode)
+            .decimalFormatPatternProvider(presets.decimalFormatPatternSupplier)
     }
 
     companion object {
-        val DEFAULT = CNumberFormat(NumberUnitPreset.default, RoundingMode.DOWN, "0.000")
-        val DEFAULT_NO_EXZERO = CNumberFormat(NumberUnitPreset.default, RoundingMode.DOWN, "0.###")
+        val DEFAULT = Builder()
+            .thresholds(1e-6, 1e-3, 1.0, 1e3, 1e6, 1e9, 1e12, 1e15, 1e18, 1e21, 1e24)
+            .units("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y")
+            .roundingMode(RoundingMode.HALF_UP)
+            .decimalFormat("0.000")
+            .build()
+        val DEFAULT_NO_EXZERO = DEFAULT.copyToBuilder()
+            .decimalFormat("0")
+            .build()
     }
 
-    class NumberUnitPreset(
+    class Presets(
         val thresholds: DoubleArray,
         /**
          * You can use Empty String for no unit.
          */
         val units: List<String>,
+        val roundingMode: RoundingMode,
+        val decimalFormatPatternSupplier: (unit: DisplayUnit, displayValue: Double) -> String,
     ) {
         init {
             require(thresholds.isNotEmpty()) { "Thresholds must not be empty." }
@@ -81,12 +89,38 @@ class CNumberFormat(
                 require(thresholds[i] > thresholds[i - 1]) { "Thresholds must be strictly increasing." }
             }
         }
+    }
 
-        companion object {
-            val default = NumberUnitPreset(
-                doubleArrayOf(1e-6, 1e-3, 1.0, 1e3, 1e6, 1e9, 1e12, 1e15, 1e18, 1e21, 1e24, ),
-                listOf("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"),
-            )
+    class Builder {
+        private var thresholds: DoubleArray = doubleArrayOf()
+        private var units: List<String> = listOf()
+        private var roundingMode: RoundingMode = RoundingMode.HALF_UP
+        private var decimalFormatPatternSupplier: (unit: DisplayUnit, displayValue: Double) -> String =
+            { _, _ -> "0.###" }
+
+        fun thresholds(thresholds: DoubleArray) = apply { this.thresholds = thresholds }
+        fun thresholds(vararg thresholds: Double) = apply { this.thresholds = thresholds }
+
+        fun units(units: List<String>) = apply { this.units = units }
+        fun units(vararg units: String) = apply { this.units = units.toList() }
+
+        fun roundingMode(roundingMode: RoundingMode) = apply {
+            this.roundingMode = roundingMode
+        }
+
+        fun decimalFormatPatternProvider(
+            supplier: (unit: DisplayUnit, displayValue: Double) -> String,
+        ) = apply {
+            this.decimalFormatPatternSupplier = supplier
+        }
+
+        fun decimalFormat(pattern: String) = apply {
+            this.decimalFormatPatternSupplier = { _, _ -> pattern }
+        }
+
+        fun build(): CNumberFormat {
+            val preset = Presets(thresholds, units, roundingMode, decimalFormatPatternSupplier)
+            return CNumberFormat(preset)
         }
     }
 

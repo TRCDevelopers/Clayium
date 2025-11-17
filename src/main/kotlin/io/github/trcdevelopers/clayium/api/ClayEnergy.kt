@@ -12,7 +12,7 @@ fun PacketBuffer.readClayEnergy(): ClayEnergy {
     return ClayEnergy(readLong())
 }
 
-private val numberFormat = CNumberFormat(CNumberFormat.NumberUnitPreset.default, RoundingMode.DOWN) { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
+private val numberFormat = CNumberFormat(CNumberFormat.Presets.default, RoundingMode.DOWN) { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
     if (displayValue == 0.0 || (unit is CNumberFormat.DisplayUnit.Symbol && unit.symbol == "u")) {
         "0"
     } else {
