@@ -22,8 +22,9 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import java.math.RoundingMode
 
-private val numberFormatter = CNumberFormat(CNumberFormat.Presets.default, RoundingMode.DOWN,
-    decimalFormatPatternSupplier = { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
+private val numberFormatter = CNumberFormat.DEFAULT.copyToBuilder()
+    .roundingMode(RoundingMode.DOWN)
+    .decimalFormatPatternProvider { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
         when (unit) {
             CNumberFormat.DisplayUnit.NoUnit -> {
                 when {
@@ -42,7 +43,7 @@ private val numberFormatter = CNumberFormat(CNumberFormat.Presets.default, Round
             }
         }
     }
-)
+    .build()
 
 class ResonatingCollectorMetaTileEntity(
     metaTileEntityId: ResourceLocation,

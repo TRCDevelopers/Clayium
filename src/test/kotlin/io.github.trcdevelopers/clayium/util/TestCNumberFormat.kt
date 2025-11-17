@@ -8,31 +8,14 @@ import java.math.RoundingMode
 
 class TestCNumberFormat : FunSpec({
 
+    lateinit var default: CNumberFormat
     lateinit var roundingModeDown: CNumberFormat
-    lateinit var roundingModeHalfDown: CNumberFormat
     lateinit var lengthFixed: CNumberFormat
 
     beforeTest {
-        roundingModeDown = CNumberFormat(CNumberFormat.Presets.default, RoundingMode.DOWN, "0.000")
-        roundingModeHalfDown = CNumberFormat(CNumberFormat.Presets.default, RoundingMode.HALF_DOWN, "0.000")
-        lengthFixed = CNumberFormat(CNumberFormat.Presets.default, RoundingMode.DOWN,
-            decimalFormatPatternSupplier = { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
-                when (unit) {
-                    CNumberFormat.DisplayUnit.NoUnit -> when {
-                        displayValue < 10.0 -> "0.000" // 1.234
-                        displayValue < 100.0 -> "0.00" // 12.34
-                        else -> "0.0" // 123.4
-                    }
-
-                    CNumberFormat.DisplayUnit.ScientificNotation -> "0.00"
-                    is CNumberFormat.DisplayUnit.Symbol -> when {
-                        displayValue < 10.0 -> "0.00" // 1.23k
-                        displayValue < 100.0 -> "0.0" //12.3k
-                        else -> "0" // 123k
-                    }
-
-                }
-            })
+        default = CNumberFormat.DEFAULT
+        roundingModeDown = CNumberFormat.DEFAULT.copyToBuilder().roundingMode(RoundingMode.DOWN).build()
+        lengthFixed = CNumberFormat.DEFAULT.copyToBuilder().maxLength(4).build()
     }
 
     context("CNumberFormat Default") {
@@ -54,8 +37,8 @@ class TestCNumberFormat : FunSpec({
 
     test("CNumberFormat RoundingMode") {
         roundingModeDown.format(9999.999) shouldBe "9.999k"
-        roundingModeHalfDown.format(9999.999) shouldBe "10.000k"
-        roundingModeHalfDown.format(9999.0) shouldBe "9.999k"
+        default.format(9999.999) shouldBe "10.000k"
+        default.format(9999.0) shouldBe "9.999k"
     }
 
     context("CNumberFormat lengthFixed") {

@@ -56,9 +56,9 @@ import net.minecraftforge.items.ItemStackHandler
 import java.math.RoundingMode
 import kotlin.math.min
 
-private val numberFormatter = CNumberFormat(
-    CNumberFormat.Presets.default, RoundingMode.DOWN,
-    decimalFormatPatternSupplier = { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
+private val numberFormatter = CNumberFormat.DEFAULT.copyToBuilder()
+    .roundingMode(RoundingMode.DOWN)
+    .decimalFormatPatternProvider { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
         when (unit) {
             CNumberFormat.DisplayUnit.NoUnit -> "0"
             CNumberFormat.DisplayUnit.ScientificNotation -> "0.00"
@@ -71,7 +71,7 @@ private val numberFormatter = CNumberFormat(
             }
         }
     }
-)
+    .build()
 
 class StorageContainerMetaTileEntity(
     metaTileEntityId: ResourceLocation,

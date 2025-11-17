@@ -2,7 +2,6 @@ package io.github.trcdevelopers.clayium.api
 
 import io.github.trcdevelopers.clayium.common.util.CNumberFormat
 import net.minecraft.network.PacketBuffer
-import java.math.RoundingMode
 
 fun PacketBuffer.writeClayEnergy(energy: ClayEnergy) {
     writeLong(energy.energy)
@@ -12,13 +11,15 @@ fun PacketBuffer.readClayEnergy(): ClayEnergy {
     return ClayEnergy(readLong())
 }
 
-private val numberFormat = CNumberFormat(CNumberFormat.Presets.default, RoundingMode.DOWN) { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
-    if (displayValue == 0.0 || (unit is CNumberFormat.DisplayUnit.Symbol && unit.symbol == "u")) {
-        "0"
-    } else {
-        "0.000"
+private val numberFormat = CNumberFormat.DEFAULT.copyToBuilder()
+    .decimalFormatPatternProvider { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
+        if (displayValue == 0.0 || (unit is CNumberFormat.DisplayUnit.Symbol && unit.symbol == "u")) {
+            "0"
+        } else {
+            "0.000"
+        }
     }
-}
+    .build()
 
 /**
  * @param energy 1 = 10uCE, 100_000 = 1CE.

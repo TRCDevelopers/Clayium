@@ -54,17 +54,24 @@ class CNumberFormat(
 
     fun copyToBuilder(): Builder {
         return Builder()
-            .thresholds(presets.thresholds)
+            .thresholds(*presets.thresholds)
             .units(presets.units)
             .roundingMode(presets.roundingMode)
             .decimalFormatPatternProvider(presets.decimalFormatPatternSupplier)
     }
 
     companion object {
+        const val MAX_LEN_UNLIMITED = -1
+
+        /**
+         * RoundingMode: DOWN
+         * DecimalFormat: "0.000"
+         * MaxLength: Unlimited
+         */
         val DEFAULT = Builder()
             .thresholds(1e-6, 1e-3, 1.0, 1e3, 1e6, 1e9, 1e12, 1e15, 1e18, 1e21, 1e24)
             .units("u", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y")
-            .roundingMode(RoundingMode.HALF_UP)
+            .roundingMode(RoundingMode.DOWN)
             .decimalFormat("0.000")
             .build()
         val DEFAULT_NO_EXZERO = DEFAULT.copyToBuilder()
@@ -79,6 +86,7 @@ class CNumberFormat(
          */
         val units: List<String>,
         val roundingMode: RoundingMode,
+        val maxLength: Int,
         val decimalFormatPatternSupplier: (unit: DisplayUnit, displayValue: Double) -> String,
     ) {
         init {
@@ -95,10 +103,10 @@ class CNumberFormat(
         private var thresholds: DoubleArray = doubleArrayOf()
         private var units: List<String> = listOf()
         private var roundingMode: RoundingMode = RoundingMode.HALF_UP
+        private var maxLength: Int = MAX_LEN_UNLIMITED
         private var decimalFormatPatternSupplier: (unit: DisplayUnit, displayValue: Double) -> String =
             { _, _ -> "0.###" }
 
-        fun thresholds(thresholds: DoubleArray) = apply { this.thresholds = thresholds }
         fun thresholds(vararg thresholds: Double) = apply { this.thresholds = thresholds }
 
         fun units(units: List<String>) = apply { this.units = units }
@@ -107,6 +115,8 @@ class CNumberFormat(
         fun roundingMode(roundingMode: RoundingMode) = apply {
             this.roundingMode = roundingMode
         }
+
+        fun maxLength(maxLength: Int) = apply { this.maxLength = maxLength }
 
         fun decimalFormatPatternProvider(
             supplier: (unit: DisplayUnit, displayValue: Double) -> String,
@@ -119,7 +129,7 @@ class CNumberFormat(
         }
 
         fun build(): CNumberFormat {
-            val preset = Presets(thresholds, units, roundingMode, decimalFormatPatternSupplier)
+            val preset = Presets(thresholds, units, roundingMode, maxLength, decimalFormatPatternSupplier)
             return CNumberFormat(preset)
         }
     }

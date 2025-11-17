@@ -8,11 +8,10 @@ import mezz.jei.api.recipe.IRecipeWrapper
 import net.minecraft.client.Minecraft
 import java.math.RoundingMode
 
-private val NUM_FORMATTER = CNumberFormat(
-    CNumberFormat.Presets.default,
-    RoundingMode.HALF_DOWN,
-    "0.###"
-)
+private val NUM_FORMATTER = CNumberFormat.DEFAULT.copyToBuilder()
+    .roundingMode(RoundingMode.HALF_UP)
+    .decimalFormat("0.###")
+    .build()
 
 open class ClayiumRecipeWrapper(
     val recipe: Recipe,
