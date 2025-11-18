@@ -67,7 +67,7 @@ class CNumberFormat(
             val m2 = decimalFormat.minimumFractionDigits
             decimalFormat.maximumFractionDigits = maxLength
             val s = decimalFormat.format(displayValue)
-            decimalFormat.maximumIntegerDigits = m1
+            decimalFormat.maximumFractionDigits = m1
             decimalFormat.minimumFractionDigits = m2
             s
         } else {
