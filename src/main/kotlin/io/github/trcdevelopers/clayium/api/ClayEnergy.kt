@@ -30,7 +30,7 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
 
     val actualValue: Double get() = energy / 100_000.0
 
-    fun formatWithExcessZero(): String {
+    fun formatWithTrailingZeros(): String {
         return this.formatWith(numberFormat)
     }
 

@@ -92,7 +92,7 @@ class ClayEnergyHolder(
             { clayEnergy = ClayEnergy(it) }
         ))
 
-        return IKey.dynamic { this.clayEnergy.formatWithExcessZero() }.asWidget()
+        return IKey.dynamic { this.clayEnergy.formatWithTrailingZeros() }.asWidget()
             .width(60)
     }
 

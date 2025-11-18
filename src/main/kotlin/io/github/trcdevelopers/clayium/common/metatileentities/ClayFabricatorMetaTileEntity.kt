@@ -71,7 +71,7 @@ class ClayFabricatorMetaTileEntity(
 
         return super.buildMainParentWidget(syncManager)
             .child(slotsAndProgressBar.align(Alignment.Center))
-            .child(IKey.dynamic { workable.currentCe.formatWithExcessZero() }.asWidget().width(60)
+            .child(IKey.dynamic { workable.currentCe.formatWithTrailingZeros() }.asWidget().width(60)
                 .left(0).bottom(10))
     }
 

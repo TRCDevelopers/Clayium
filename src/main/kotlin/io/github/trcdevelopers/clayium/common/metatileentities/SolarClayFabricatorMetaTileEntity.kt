@@ -99,7 +99,7 @@ class SolarClayFabricatorMetaTileEntity(
                 { clayEnergy = ClayEnergy(it) }
             ))
 
-            return IKey.dynamic { clayEnergy.formatWithExcessZero() }.asWidget()
+            return IKey.dynamic { clayEnergy.formatWithTrailingZeros() }.asWidget()
         }
 
         override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
