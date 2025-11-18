@@ -13,6 +13,8 @@ private val NUM_FORMATTER = CNumberFormat.DEFAULT.copyToBuilder()
     .decimalFormat("0.###")
     .build()
 
+private const val ONE_CE = 100_000
+
 open class ClayiumRecipeWrapper(
     val recipe: Recipe,
 ) : IRecipeWrapper {
@@ -22,8 +24,7 @@ open class ClayiumRecipeWrapper(
     }
 
     override fun drawInfo(minecraft: Minecraft, recipeWidth: Int, recipeHeight: Int, mouseX: Int, mouseY: Int) {
-        val oneCe = 100_000
-        val energyConsumed = NUM_FORMATTER.format((recipe.cePerTick.energy.toDouble() * recipe.duration) / oneCe)
+        val energyConsumed = NUM_FORMATTER.format((recipe.cePerTick.energy.toDouble() * recipe.duration) / ONE_CE)
         val craftTime = NUM_FORMATTER.format(recipe.duration.toDouble())
         minecraft.fontRenderer.drawString("Tier: ${recipe.recipeTier}", 6, 43, 0x404040)
         minecraft.fontRenderer.drawString(
