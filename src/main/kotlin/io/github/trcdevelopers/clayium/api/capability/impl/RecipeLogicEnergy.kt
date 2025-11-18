@@ -3,6 +3,7 @@ package io.github.trcdevelopers.clayium.api.capability.impl
 import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.recipe.IRecipeProvider
+import io.github.trcdevelopers.clayium.common.util.CNumberFormat
 import mcjty.theoneprobe.api.IProbeHitData
 import mcjty.theoneprobe.api.IProbeInfo
 import mcjty.theoneprobe.api.ProbeMode
@@ -50,7 +51,7 @@ open class RecipeLogicEnergy(
         super.addProbeInfo(mode, probeInfo, player, world, state, hitData)
         if (this.isWorking) {
             val cet = recipeCEt * ocHandler.accelerationFactor
-            probeInfo.text("Using ${TextFormatting.RED}${cet.formatWithoutUnit()}${TextFormatting.WHITE} CE/t")
+            probeInfo.text("Using ${TextFormatting.RED}${cet.formatWith(CNumberFormat.DEFAULT_NO_EXZERO)}${TextFormatting.WHITE} CE/t")
         }
     }
 }

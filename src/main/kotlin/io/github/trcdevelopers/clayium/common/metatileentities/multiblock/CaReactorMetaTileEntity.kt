@@ -32,7 +32,6 @@ import io.github.trcdevelopers.clayium.common.config.ConfigCore
 import io.github.trcdevelopers.clayium.common.recipe.Recipe
 import io.github.trcdevelopers.clayium.common.recipe.registry.CaReactorRecipeRegistry
 import io.github.trcdevelopers.clayium.common.util.SidelessI18n
-import io.github.trcdevelopers.clayium.integration.modularui.CNumFormat
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
@@ -242,8 +241,8 @@ class CaReactorMetaTileEntity(
                     syncManager.player.sendMessage(err)
                 })
             )
-            .child(IKey.dynamic { SidelessI18n.format("gui.clayium.ca_reactor.efficiency", CNumFormat.format(efficiency)) }
-                .asWidget().width(100).alignment(Alignment.CenterRight).alignX(Alignment.BottomRight.x).bottom(14)
+            .child(IKey.dynamic { SidelessI18n.format("gui.clayium.ca_reactor.efficiency", efficiency) }
+                .asWidget().width(120).alignment(Alignment.CenterRight).alignX(Alignment.BottomRight.x).bottom(14)
             )
             .child(IKey.dynamic { SidelessI18n.format("gui.clayium.ca_reactor.rank_size", avgHullRank, hullCount) }
                 .asWidget().width(100).alignment(Alignment.CenterLeft).left(0).top(10))
