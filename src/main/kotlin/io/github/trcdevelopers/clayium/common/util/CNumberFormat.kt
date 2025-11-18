@@ -92,6 +92,7 @@ class CNumberFormat(
             .thresholds(*thresholds)
             .units(units)
             .roundingMode(roundingMode)
+            .maxLength(maxLength)
             .decimalFormatPatternProvider(decimalFormatPatternSupplier)
     }
 
