@@ -182,7 +182,7 @@ object MachineBlockRecipeLoader {
         registerMachineRecipeHull(MetaTileEntities.BENDING_MACHINE) {
             input(OrePrefix.plate, CMaterials.denseClay, 3)
         }
-        registerLowTierRecipe(MetaTileEntities.BENDING_MACHINE, "Sgp", "pHp", "Sgp")
+        registerLowTierRecipe(MetaTileEntities.BENDING_MACHINE, "MIg", "pHp", "MIg")
         registerMachineRecipeHull(MetaTileEntities.MILLING_MACHINE) {
             input(OrePrefix.cuttingHead, CMaterials.denseClay)
         }

@@ -158,7 +158,7 @@ class TileClayWorkTable : TileEntity(), IGuiHolderClayium<PosGuiData> {
                         .right(9).top(47)
                     )
                     .child(MuiSlots.itemSlotBuilder(this.itemHandler, TOOL_SLOT)
-                        .singletonSlotGroup(SlotGroup.STORAGE_SLOT_PRIO + 1)
+                        .singletonSlotGroup(SlotGroup.STORAGE_SLOT_PRIO - 1)
                         // TODO: Use capability
                         .filter { s -> ClayWorkTableMethod.entries.any { s.item in it.requiredTools } }
                         .build()
