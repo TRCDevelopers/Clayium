@@ -25,7 +25,9 @@ jobs:
         id: filter # このステップの出力を後で参照できるようにidを設定
         with:
           filters: |
-            src_or_gradle_changed:
+            src_or_gradle_or_ci_changed:
+              - '.github/actions/build_setup/**'
+              - '.github/workflows/run_server.yaml'
               - 'src/**'
               - 'gradle/**'
               - '**.gradle'
@@ -33,16 +35,16 @@ jobs:
               - 'gradlew'
 
       - name: Grant execute permission for gradlew
-        if: steps.filter.outputs.src_or_gradle_changed == 'true'
+        if: steps.filter.outputs.src_or_gradle_or_ci_changed == 'true'
         shell: bash
         run: chmod +x gradlew
 
       - name: Setup Build
-        if: steps.filter.outputs.src_or_gradle_changed == 'true'
+        if: steps.filter.outputs.src_or_gradle_or_ci_changed == 'true'
         uses: ./.github/actions/build_setup
 
       - name: Run Dedicated Server
-        if: steps.filter.outputs.src_or_gradle_changed == 'true'
+        if: steps.filter.outputs.src_or_gradle_or_ci_changed == 'true'
         shell: bash
         run: |
           mkdir -p run/server
@@ -52,12 +54,12 @@ jobs:
           timeout ${{ env.TIMEOUT }} ./.github/actions/run_server_autostop.sh | tee -a server.log || true
 
       - name: Test no errors reported during the server run
-        if: steps.filter.outputs.src_or_gradle_changed == 'true'
+        if: steps.filter.outputs.src_or_gradle_or_ci_changed == 'true'
         run: |
           chmod +x ./.github/actions/test_no_error_reports.sh
           ./.github/actions/test_no_error_reports.sh
 
       - name: Skip server run (no changes in src/ or Gradle)
-        if: steps.filter.outputs.src_or_gradle_changed == 'false'
+        if: steps.filter.outputs.src_or_gradle_or_ci_changed == 'false'
         run: |
           echo "No changes detected in src/ or Gradle. Server run is not required for this PR."
