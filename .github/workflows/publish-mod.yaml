@@ -39,7 +39,7 @@ jobs:
       - name: Get Mod Version
         id: get_mod_version
         run: |
-          VERSION=$(./gradlew -q printVersion | grep -E "[0-9]+\.[0-9]+\.[0-9]+-[0-9]+\.[0-9]+\.[0-9]+")
+          VERSION=$(./gradlew -q printVersion | grep -E "^[0-9]+(\.[0-9]+)*-[0-9]+(\.[0-9]+)*$"
           echo "Version is $VERSION"
           echo "mod_version=$VERSION" >> $GITHUB_ENV
 
