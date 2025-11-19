@@ -15,5 +15,9 @@ jobs:
       - name: Setup Build
         uses: ./.github/actions/build_setup
 
-      - name: Run printVersion
-        run: ./gradlew -q printVersion
+      - name: Get Mod Version
+        id: get_mod_version
+        run: |
+          VERSION=$(./gradlew printVersion | grep -E "\d+\.\d+\.\d+-\d+\.\d+\.\d+")
+          echo "Version is $VERSION"
+          echo "mod_version=$VERSION" >> $GITHUB_ENV
