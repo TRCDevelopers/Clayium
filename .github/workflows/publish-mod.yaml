@@ -37,7 +37,7 @@ jobs:
       - name: Get Mod Version
         id: get_mod_version
         run: |
-          VERSION=$(grep "^modVersion" gradle.properties | awk '{print $3}')
+          VERSION=$(./gradlew printVersion | grep -E "\d+\.\d+\.\d+-\d+\.\d+\.\d+")
           echo "Version is $VERSION"
           echo "mod_version=$VERSION" >> $GITHUB_ENV
 
