@@ -33,17 +33,13 @@ class ItemDamagedRenderer(
     /**
      * @param base The base name of the item model, without the "colored/" prefix and "_lX" suffix. namespace is always "clayium".
      */
-    constructor(base: String): this(
-        Short2ObjectOpenHashMap<List<ModelResourceLocation>>().apply {
-            defaultReturnValue(
-                listOf(
-                    ModelResourceLocation(clayiumId("colored/${base}_l0"), "inventory"),
-                    ModelResourceLocation(clayiumId("colored/${base}_l1"), "inventory"),
-                    ModelResourceLocation(clayiumId("colored/${base}_l2"), "inventory"),
-                )
-            )
-        }
-    )
+    constructor(base: String) : this(Short2ObjectOpenHashMap<List<ModelResourceLocation>>().apply {
+        defaultReturnValue(listOf(
+            ModelResourceLocation(clayiumId("colored/${base}_l0"), "inventory"),
+            ModelResourceLocation(clayiumId("colored/${base}_l1"), "inventory"),
+            ModelResourceLocation(clayiumId("colored/${base}_l2"), "inventory"),
+        ))
+    })
 
     init {
         renderers.add(this)
@@ -52,8 +48,7 @@ class ItemDamagedRenderer(
             if (models.size != 3) {
                 CLog.warn(
                     "ItemDamagedRenderer requires exactly 3 models for each metadata, but got {} for metadata {} in map {}",
-                    models.size, meta, map
-                )
+                    models.size, meta, map)
             }
         }
     }
@@ -64,9 +59,7 @@ class ItemDamagedRenderer(
         val default = map.defaultReturnValue()
         val modelManager = Minecraft.getMinecraft().renderItem.itemModelMesher.modelManager
         if (default != null) {
-            models.defaultReturnValue(
-                default.map { modelManager.getModel(it) }
-            )
+            models.defaultReturnValue(default.map { modelManager.getModel(it) })
         }
         for ((k, v) in map) {
             models.put(k, v.map { modelManager.getModel(it) })
@@ -93,6 +86,7 @@ class ItemDamagedRenderer(
             return
         }
         val (modelL0, modelL1, modelL2) = models
+        val doPolygonOffset = transformType != ItemCameraTransforms.TransformType.GUI
 
         val mc = Minecraft.getMinecraft()
         val tessellator = Tessellator.getInstance()
@@ -123,8 +117,10 @@ class ItemDamagedRenderer(
         }
         tessellator.draw()
 
-        GlStateManager.enablePolygonOffset()
-        GlStateManager.doPolygonOffset(-0.01f, -0.1f)
+        if (doPolygonOffset) {
+            GlStateManager.enablePolygonOffset()
+            GlStateManager.doPolygonOffset(-0.01f, -0.1f)
+        }
 
         // L1,L2
         buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
@@ -134,7 +130,9 @@ class ItemDamagedRenderer(
         }
         tessellator.draw()
 
-        GlStateManager.doPolygonOffset(-0.02f, -0.2f)
+        if (doPolygonOffset) {
+            GlStateManager.doPolygonOffset(-0.02f, -0.2f)
+        }
 
         buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
         renderModelQuads(buf, modelL2.getQuads(null, null, 0L), stack, 2)
@@ -144,7 +142,9 @@ class ItemDamagedRenderer(
 
         tessellator.draw()
 
-        GlStateManager.disablePolygonOffset()
+        if (doPolygonOffset) {
+            GlStateManager.disablePolygonOffset()
+        }
 
         GlStateManager.cullFace(GlStateManager.CullFace.BACK)
         GlStateManager.popMatrix()
