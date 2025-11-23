@@ -101,14 +101,28 @@ data class MteRenderingConfig private constructor(
             this.useGlobalRenderer = true
         }
 
+        /**
+         * Sets a single static particle for the MTE.
+         * Used for hit/destroy particle effects.
+         */
         fun particle(particle: TextureAtlasSprite) = apply {
             this.particleSupplier = Supplier { setOf(particle) }
         }
 
+        /**
+         * Sets a dynamic particle texture supplier for the MTE.
+         * The supplier can return null. In that case, machine hull texture will be used.
+         * Used for hit/destroy particle effects.
+         */
         fun particle(supplier: Supplier<TextureAtlasSprite?>) = apply {
             this.particleSupplier = Supplier { supplier.get()?.let { setOf(it) } }
         }
 
+        /**
+         * Sets a dynamic particle texture supplier for the MTE.
+         * The supplier can return null. In that case, machine hull texture will be used.
+         * Used for hit/destroy particle effects.
+         */
         fun particles(supplier: Supplier<Set<TextureAtlasSprite>?>) = apply {
             this.particleSupplier = supplier
         }
