@@ -15,7 +15,7 @@ class ClayEnergyInfoProvider : CapabilityInfoProvider<IClayEnergyHolder>() {
     override val capability: Capability<IClayEnergyHolder> = ClayiumTileCapabilities.CLAY_ENERGY_HOLDER
 
     override fun addProbeInfo(capability: IClayEnergyHolder, mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
-        probeInfo.text(capability.getEnergyStored().format())
+        probeInfo.text(capability.getEnergyStored().formatWithTrailingZeros())
     }
 
     override fun getID() = "$MOD_ID:ce_container_provider"

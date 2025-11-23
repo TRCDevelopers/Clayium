@@ -1,5 +1,5 @@
 # Changes from the original
-* Some recipes are now cheaper.
+* Some Clay Assembler recipes now consume less energy.
 * The deny/allowlist filter is now merged to an Item Filter. You can switch it in the GUI.
 * Clay interfaces now always render information about the target.
 

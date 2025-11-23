@@ -99,14 +99,14 @@ class SolarClayFabricatorMetaTileEntity(
                 { clayEnergy = ClayEnergy(it) }
             ))
 
-            return IKey.dynamic { clayEnergy.format() }.asWidget()
+            return IKey.dynamic { clayEnergy.formatWithTrailingZeros() }.asWidget()
         }
 
         override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
             super.addProbeInfo(mode, probeInfo, player, world, state, hitData)
             if (this.isWorking) {
                 val cet = recipeCEt * overclockHandler.accelerationFactor
-                probeInfo.text("Generating ${TextFormatting.GREEN}${cet.formatWithoutUnit()}${TextFormatting.WHITE} CE/t")
+                probeInfo.text("Generating ${TextFormatting.GREEN}${cet.format()}${TextFormatting.WHITE} CE/t")
             }
         }
     }

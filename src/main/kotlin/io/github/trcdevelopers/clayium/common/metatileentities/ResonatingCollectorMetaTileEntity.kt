@@ -15,11 +15,35 @@ import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.api.util.clayiumId
+import io.github.trcdevelopers.clayium.common.util.CNumberFormat
 import io.github.trcdevelopers.clayium.common.util.SidelessI18n
-import io.github.trcdevelopers.clayium.integration.modularui.CNumFormat
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import java.math.RoundingMode
+
+private val numberFormatter = CNumberFormat.DEFAULT.copyToBuilder()
+    .roundingMode(RoundingMode.DOWN)
+    .decimalFormatPatternProvider { unit: CNumberFormat.DisplayUnit, displayValue: Double ->
+        when (unit) {
+            CNumberFormat.DisplayUnit.NoUnit -> {
+                when {
+                    displayValue < 10.0 -> "0.000" // 1.234
+                    displayValue < 100.0 -> "0.00" // 12.34
+                    else -> "0.0" // 123.4
+                }
+            }
+            CNumberFormat.DisplayUnit.ScientificNotation -> "0.00"
+            is CNumberFormat.DisplayUnit.Symbol -> {
+                when {
+                    displayValue < 10.0 -> "0.00" // 1.23k
+                    displayValue < 100.0 -> "0.0" // 12.3k
+                    else -> "0" // 123k
+                }
+            }
+        }
+    }
+    .build()
 
 class ResonatingCollectorMetaTileEntity(
     metaTileEntityId: ResourceLocation,
@@ -51,7 +75,7 @@ class ResonatingCollectorMetaTileEntity(
         resonanceManager.sync(syncManager)
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic {
-                SidelessI18n.format("gui.$MOD_ID.resonance", CNumFormat.format(resonanceManager.resonance))
+                SidelessI18n.format("gui.$MOD_ID.resonance", numberFormatter.format(resonanceManager.resonance))
             }.asWidget().width(90).alignment(Alignment.BottomRight)
                 .align(Alignment.BottomRight))
             .child(SlotGroupWidget.builder()
