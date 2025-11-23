@@ -4,7 +4,7 @@ package io.github.trcdevelopers.clayium.client.model
 
 import codechicken.lib.render.particle.IModelParticleProvider
 import io.github.trcdevelopers.clayium.api.util.clayiumId
-import io.github.trcdevelopers.clayium.common.blocks.metalchest.BlockMetalChest
+import io.github.trcdevelopers.clayium.common.blocks.material.BlockMaterialWithDynModel
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.block.model.IBakedModel
@@ -89,8 +89,8 @@ object MetalChestModel : IModel {
 
         fun getParticle(state: IBlockState?): Set<TextureAtlasSprite> {
             val state = state as? IExtendedBlockState ?: return emptySet()
-            val materialId = state.getValue(BlockMetalChest.MATERIAL_ID)
-            val atlas = texGetter.apply(clayiumId("blocks/compressed_${materialId.path}"))
+            val materialName = state.getValue(BlockMaterialWithDynModel.MATERIAL_NAME)
+            val atlas = texGetter.apply(clayiumId("blocks/compressed_${materialName}"))
             return setOf(atlas)
         }
     }

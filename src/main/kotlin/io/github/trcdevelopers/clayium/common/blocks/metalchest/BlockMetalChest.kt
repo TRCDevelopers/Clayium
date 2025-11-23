@@ -1,6 +1,5 @@
 package io.github.trcdevelopers.clayium.common.blocks.metalchest
 
-import codechicken.lib.block.property.unlisted.UnlistedResourceLocationProperty
 import codechicken.lib.render.particle.CustomParticleHandler
 import com.cleanroommc.modularui.factory.TileEntityGuiFactory
 import io.github.trcdevelopers.clayium.api.ClayiumApi
@@ -10,6 +9,7 @@ import io.github.trcdevelopers.clayium.api.util.BlockMaterial
 import io.github.trcdevelopers.clayium.api.util.CLog
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.api.util.getAsItem
+import io.github.trcdevelopers.clayium.common.blocks.material.BlockMaterialWithDynModel
 import io.github.trcdevelopers.clayium.common.config.ConfigMetalChest
 import io.github.trcdevelopers.clayium.common.creativetab.ClayiumCTabs
 import net.minecraft.block.Block
@@ -54,13 +54,13 @@ class BlockMetalChest : Block(BlockMaterial.IRON) {
     }
 
     override fun createBlockState(): BlockStateContainer {
-        return BlockStateContainer.Builder(this).add(MATERIAL_ID).build()
+        return BlockStateContainer.Builder(this).add(BlockMaterialWithDynModel.MATERIAL_NAME).build()
     }
 
     override fun getExtendedState(state: IBlockState, world: IBlockAccess, pos: BlockPos): IBlockState {
         val te = world.getTileEntity(pos) as? TileEntityMetalChest ?: return state
         return (super.getExtendedState(state, world, pos) as IExtendedBlockState)
-            .withProperty(MATERIAL_ID, te.material.materialId)
+            .withProperty(BlockMaterialWithDynModel.MATERIAL_NAME, te.material.upperCamelName)
     }
 
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
@@ -207,7 +207,6 @@ class BlockMetalChest : Block(BlockMaterial.IRON) {
 
     companion object {
 
-        val MATERIAL_ID = UnlistedResourceLocationProperty("material_id")
         val metalChestConfig = mutableMapOf<ResourceLocation, IntArray>()
 
         private const val MAX_WIDTH = 50
