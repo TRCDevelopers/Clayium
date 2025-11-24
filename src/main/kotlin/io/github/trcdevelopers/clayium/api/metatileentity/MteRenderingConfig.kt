@@ -1,10 +1,12 @@
 package io.github.trcdevelopers.clayium.api.metatileentity
 
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.tileentity.TileEntityBeacon
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import java.util.function.Supplier
 
+@ConsistentCopyVisibility
 data class MteRenderingConfig private constructor(
     val faceTextureSupplier: Supplier<ResourceLocation?>,
     val requiredTextures: List<ResourceLocation>,
@@ -13,6 +15,7 @@ data class MteRenderingConfig private constructor(
     val maxRenderDistanceSquared: Double,
     val renderBoundingBox: AxisAlignedBB?,
     val useGlobalRenderer: Boolean,
+    val particleSupplier: Supplier<Set<TextureAtlasSprite>?>,
 ) {
     val faceTexture get() = faceTextureSupplier.get()
 
@@ -32,6 +35,7 @@ data class MteRenderingConfig private constructor(
         private var maxRenderDistanceSquared: Double = 4096.0
         private var renderBoundingBox: AxisAlignedBB? = null
         private var useGlobalRenderer: Boolean = false
+        private var particleSupplier: Supplier<Set<TextureAtlasSprite>?> = Supplier { null }
 
         /**
          * Sets the facing texture for the MTE.
@@ -97,6 +101,32 @@ data class MteRenderingConfig private constructor(
             this.useGlobalRenderer = true
         }
 
+        /**
+         * Sets a single static particle for the MTE.
+         * Used for hit/destroy particle effects.
+         */
+        fun particle(particle: TextureAtlasSprite) = apply {
+            this.particleSupplier = Supplier { setOf(particle) }
+        }
+
+        /**
+         * Sets a dynamic particle texture supplier for the MTE.
+         * The supplier can return null. In that case, machine hull texture will be used.
+         * Used for hit/destroy particle effects.
+         */
+        fun particle(supplier: Supplier<TextureAtlasSprite?>) = apply {
+            this.particleSupplier = Supplier { supplier.get()?.let { setOf(it) } }
+        }
+
+        /**
+         * Sets a dynamic particle texture supplier for the MTE.
+         * The supplier can return null. In that case, machine hull texture will be used.
+         * Used for hit/destroy particle effects.
+         */
+        fun particles(supplier: Supplier<Set<TextureAtlasSprite>?>) = apply {
+            this.particleSupplier = supplier
+        }
+
         fun build(): MteRenderingConfig {
             // `hasFrontFacing` is redundant because `faceSupplier` can return null,
             // but it is kept for clarity and to ensure that the user explicitly sets it.
@@ -112,6 +142,7 @@ data class MteRenderingConfig private constructor(
                 maxRenderDistanceSquared,
                 renderBoundingBox,
                 useGlobalRenderer,
+                particleSupplier,
             )
         }
 
