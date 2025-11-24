@@ -1,6 +1,9 @@
 package io.github.trcdevelopers.clayium.client.renderer
 
+import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.Tessellator
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11
 
@@ -36,6 +39,44 @@ object CRenderUtils {
         GlStateManager.enableCull()
         GlStateManager.enableLighting()
         GlStateManager.enableTexture2D()
+    }
+
+    fun renderStringWithBackground(text: String, color: Int) {
+        val mc = Minecraft.getMinecraft()
+        GlStateManager.pushMatrix()
+        val memory = memoryCurrentStates()
+        enableTranslucent()
+        run {
+            GlStateManager.glNormal3f(0.0f, 1.0f, 0.0f)
+            GlStateManager.depthMask(false)
+
+            GlStateManager.tryBlendFuncSeparate(
+                GlStateManager.SourceFactor.SRC_ALPHA,
+                GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE,
+                GlStateManager.DestFactor.ZERO
+            )
+            val width = mc.fontRenderer.getStringWidth(text) / 2
+
+            GlStateManager.disableTexture2D()
+            GlStateManager.color(0f, 0f, 0f, 0.5f)
+            val tessellator = Tessellator.getInstance()
+            val bufferBuilder = tessellator.buffer
+            bufferBuilder.begin(7, DefaultVertexFormats.POSITION)
+            bufferBuilder.pos(-width - 1.0, -1.0, 0.0).endVertex()
+            bufferBuilder.pos(-width - 1.0, 8.0, 0.0).endVertex()
+            bufferBuilder.pos(width + 1.0, 8.0, 0.0).endVertex()
+            bufferBuilder.pos(width + 1.0, -1.0, 0.0).endVertex()
+            tessellator.draw()
+            GlStateManager.enableTexture2D()
+            GlStateManager.depthMask(true)
+
+            Minecraft.getMinecraft().fontRenderer.drawString(text, -width, 0, color)
+
+            GlStateManager.depthMask(false)
+            GlStateManager.color(1f, 1f, 1f, 1f)
+        }
+        restoreStates(memory)
+        GlStateManager.popMatrix()
     }
 
     fun memoryCurrentStates(): GlStatesInformation {
