@@ -8,7 +8,7 @@ object CRenderUtils {
     /**
      * Disables Lightning, depthMask.
      * Enables Blend, Depth, and BlendFunc
-     * Make sure to store current OpenGL state by calling [CrenderUtils.memoryCurrentStates].
+     * Make sure to store current OpenGL state by calling [CRenderUtils.memoryCurrentStates].
      */
     fun enableTranslucent() {
         GlStateManager.disableLighting()
