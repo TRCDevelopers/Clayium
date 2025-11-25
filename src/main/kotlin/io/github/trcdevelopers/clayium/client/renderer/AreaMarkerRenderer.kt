@@ -18,6 +18,8 @@ object AreaMarkerRenderer {
 
     private fun renderSourceOverlay(source: Cuboid6) {
         GlStateManager.pushMatrix()
+        val states = CRenderUtils.memoryCurrentStates()
+        GlStateManager.disableTexture2D()
         CRenderUtils.enableTranslucent()
         CRenderUtils.enableXray()
         run {
@@ -26,13 +28,14 @@ object AreaMarkerRenderer {
             GlStateManager.color(0.7f, 0.1f, 0.1f, 1f)
             RenderUtils.drawCuboidOutline(source)
         }
-        CRenderUtils.disableXray()
-        CRenderUtils.disableTranslucent()
+        CRenderUtils.restoreStates(states)
         GlStateManager.popMatrix()
     }
 
     private fun renderRangeOverlay(range: Cuboid6, xray: Boolean) {
         GlStateManager.pushMatrix()
+        val states = CRenderUtils.memoryCurrentStates()
+        GlStateManager.disableTexture2D()
         CRenderUtils.enableTranslucent()
         if (xray) { CRenderUtils.enableXray() }
         run {
@@ -41,8 +44,7 @@ object AreaMarkerRenderer {
             GlStateManager.color(0.1f, 0.1f, 0.7f, 1f)
             RenderUtils.drawCuboidOutline(range)
         }
-        if (xray) { CRenderUtils.disableXray() }
-        CRenderUtils.disableTranslucent()
+        CRenderUtils.restoreStates(states)
         GlStateManager.popMatrix()
     }
 

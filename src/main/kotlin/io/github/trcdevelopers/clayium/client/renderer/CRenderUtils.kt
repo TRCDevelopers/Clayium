@@ -5,6 +5,11 @@ import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11
 
 object CRenderUtils {
+    /**
+     * Disables Lightning, depthMask.
+     * Enables Blend, Depth, and BlendFunc
+     * Make sure to store current OpenGL state by calling [CrenderUtils.memoryCurrentStates].
+     */
     fun enableTranslucent() {
         GlStateManager.disableLighting()
         GlStateManager.enableBlend()
@@ -14,13 +19,11 @@ object CRenderUtils {
         )
         GlStateManager.enableDepth()
         GlStateManager.depthMask(false)
-
-        GlStateManager.disableTexture2D()
     }
 
+    @Deprecated("Use memoryCurrentStates and restoreStates instead.")
     fun disableTranslucent() {
         GlStateManager.disableBlend()
-        GlStateManager.enableTexture2D()
         GlStateManager.depthMask(true)
         GlStateManager.enableDepth()
     }

@@ -264,6 +264,8 @@ class CaReactorMetaTileEntity(
                 val aabb = AxisAlignedBB(pos.x - d, pos.y - d, pos.z - d, pos.x + s + d, pos.y + s + d, pos.z + s + d)
 
                 GlStateManager.pushMatrix()
+                val states = CRenderUtils.memoryCurrentStates()
+                GlStateManager.disableTexture2D()
                 CRenderUtils.enableTranslucent()
 
                 GlStateManager.translate(x, y, z)
@@ -299,9 +301,8 @@ class CaReactorMetaTileEntity(
                 bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.maxZ).color(r, g, b, a).endVertex()
                 bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.maxZ).color(r, g, b, a).endVertex()
                 tessellator.draw()
-                GlStateManager.color(1f, 1f, 1f, 1f)
 
-                CRenderUtils.disableTranslucent()
+                CRenderUtils.restoreStates(states)
                 GlStateManager.popMatrix()
             }
         }
