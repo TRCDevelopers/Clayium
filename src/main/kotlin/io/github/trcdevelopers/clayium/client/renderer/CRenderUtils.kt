@@ -19,6 +19,7 @@ object CRenderUtils {
     }
 
     fun disableTranslucent() {
+        GlStateManager.disableBlend()
         GlStateManager.enableTexture2D()
         GlStateManager.depthMask(true)
         GlStateManager.enableDepth()
