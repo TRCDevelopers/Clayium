@@ -77,11 +77,11 @@ class OrePrefix(
         private val _prefixes = mutableListOf<OrePrefix>()
         val allPrefixes: List<OrePrefix> = _prefixes
 
-        private val hasIngotProperty = Predicate<CMaterial> { it.hasProperty(CPropertyKey.Companion.INGOT) }
-        private val hasDustProperty = Predicate<CMaterial> { it.hasProperty(CPropertyKey.Companion.DUST) }
-        private val hasPlateProperty = Predicate<CMaterial> { it.hasProperty(CPropertyKey.Companion.PLATE) }
-        private val hasMatterProperty = Predicate<CMaterial> { it.hasProperty(CPropertyKey.Companion.MATTER) }
-        private val hasImpureDustProperty = Predicate<CMaterial> { it.hasProperty(CPropertyKey.Companion.IMPURE_DUST) }
+        private val hasIngotProperty = Predicate<CMaterial> { it.hasProperty(CPropertyKey.INGOT) }
+        private val hasDustProperty = Predicate<CMaterial> { it.hasProperty(CPropertyKey.DUST) }
+        private val hasPlateProperty = Predicate<CMaterial> { it.hasProperty(CPropertyKey.PLATE) }
+        private val hasMatterProperty = Predicate<CMaterial> { it.hasProperty(CPropertyKey.MATTER) }
+        private val hasImpureDustProperty = Predicate<CMaterial> { it.hasProperty(CPropertyKey.IMPURE_DUST) }
         private val hasClayPartsFlag = Predicate<CMaterial> { it.hasFlag(CMaterialFlags.GENERATE_CLAY_PARTS) }
 
         val ingot = OrePrefix("ingot", 1.M, hasIngotProperty)
@@ -89,6 +89,10 @@ class OrePrefix(
         val gem = OrePrefix("gem", 1.M, hasMatterProperty)
         val crystal = OrePrefix("crystal", 1.M)
         val item = OrePrefix("item", 1.M)
+        val dye = OrePrefix("dye", 1.M)
+        val crop = OrePrefix("crop", 1.M)
+        val log = OrePrefix("log", 1.M)
+        val seed = OrePrefix("seed", 1.M)
 
         val plate = OrePrefix("plate", 1.M, hasPlateProperty)
         val largePlate = OrePrefix("largePlate", 4.M, hasPlateProperty)

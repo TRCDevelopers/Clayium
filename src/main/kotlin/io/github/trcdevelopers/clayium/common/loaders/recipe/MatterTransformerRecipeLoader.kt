@@ -1,10 +1,8 @@
 package io.github.trcdevelopers.clayium.common.loaders.recipe
 
 import io.github.trcdevelopers.clayium.api.ClayEnergy
-import io.github.trcdevelopers.clayium.api.unification.material.CMarkerMaterials
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
-import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.api.util.VBlocks
 import io.github.trcdevelopers.clayium.api.util.VItems
 import io.github.trcdevelopers.clayium.common.config.ConfigCore
@@ -151,13 +149,6 @@ object MatterTransformerRecipeLoader {
 
         registerMaterialTransformations()
 
-        if (Mods.AE2.isModLoaded) {
-            registry.builder()
-                .input(Items.QUARTZ)
-                .output(OrePrefix.crystal, CMarkerMaterials.certusQuartz)
-                .tier(10).defaultCEt().duration(60)
-                .buildAndRegister()
-        }
     }
 
     private fun getLeaveStack(type: BlockPlanks.EnumType): ItemStack {
@@ -271,18 +262,6 @@ object MatterTransformerRecipeLoader {
             .output(CMaterials.phosphorus)
             .tier(7).CEtFactor(10.0).duration(200)
             .chain(CMaterials.sulfur).CEtFactor(30.0)
-            .buildAndRegister()
-
-        CRecipes.MATTER_TRANSFORMER.builder()
-            .defaultPrefix(OrePrefix.dust)
-            .input(CMaterials.industrialClay)
-            .output(CMaterials.carbon)
-            .CEt(ClayEnergy.of(1)).tier(7)
-            .duration(200)
-            .chain(CMaterials.graphite)
-            .chain(CMaterials.charcoal)
-            .chain(CMaterials.coal)
-            .chain(CMaterials.lapis)
             .buildAndRegister()
     }
 }

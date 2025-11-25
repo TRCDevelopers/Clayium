@@ -2,7 +2,9 @@ package io.github.trcdevelopers.clayium.common.loaders.recipe
 
 import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.unification.OreDictUnifier
+import io.github.trcdevelopers.clayium.api.unification.material.CMaterial
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
+import io.github.trcdevelopers.clayium.api.unification.material.CPropertyKey
 import io.github.trcdevelopers.clayium.api.unification.material.IMaterial
 import io.github.trcdevelopers.clayium.api.unification.material.MaterialAmount
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
@@ -109,10 +111,12 @@ object GrinderRecipeLoader {
             if (!OreDictUnifier.exists(prefix, material)) continue
             when (prefix) {
                 block -> handleBlockGrinding(material)
-                ingot, gem, crystal,
+                ingot, gem, crystal -> addDefaultGrindingRecipe(prefix, material)
                 bearing, blade, cuttingHead, cylinder, disc,
-                gear, grindingHead, needle, pipe, ring, spindle -> {
-                    addDefaultGrindingRecipe(prefix, material)
+                gear, grindingHead, needle, pipe, ring, spindle-> {
+                    if (material is CMaterial && material.hasProperty(CPropertyKey.CLAY))  {
+                        addDefaultGrindingRecipe(prefix, material)
+                    }
                 }
             }
         }
@@ -132,7 +136,7 @@ object GrinderRecipeLoader {
         val mAmount = orePrefix.getMaterialAmount(material)
         if (mAmount == MaterialAmount.NONE) return
         val durationModifier = floor(sqrt(mAmount.dustAmount.toDouble())).toInt()
-        val amount = mAmount.dustAmount.toInt()
+        val amount = mAmount.dustAmount
         CRecipes.GRINDER.builder()
             .input(orePrefix, material)
             .output(OrePrefix.dust, material, amount)

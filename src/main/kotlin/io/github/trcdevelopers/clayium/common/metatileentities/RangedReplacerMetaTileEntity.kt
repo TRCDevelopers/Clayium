@@ -22,7 +22,6 @@ import io.github.trcdevelopers.clayium.api.gui.data.MetaTileEntityGuiData
 import io.github.trcdevelopers.clayium.api.metatileentity.MteRenderingConfig
 import io.github.trcdevelopers.clayium.api.util.CUtils
 import io.github.trcdevelopers.clayium.api.util.ITier
-import io.github.trcdevelopers.clayium.api.util.asWidgetResizing
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.api.util.hasCapability
 import io.github.trcdevelopers.clayium.client.renderer.AreaMarkerRenderer.RangeRenderMode
@@ -157,7 +156,8 @@ class RangedReplacerMetaTileEntity(
                                 .matrix("IIII", "IIII")
                                 .key('I') { MuiSlots.itemSlotBuilder(replaceBlockInventory, it).slotGroup("replace_inventory").build() }
                                 .build().marginTop(2)))
-                        .child(IKey.dynamic { "Laser : ${laser?.let { LaserEnergy(it.energy).format() } ?: 0}" }.asWidgetResizing()
+                        .child(IKey.dynamic { "Laser : ${laser?.let { LaserEnergy(it.energy).format() } ?: 0}" }.asWidget()
+                            .alignment(Alignment.Center).width(60)
                             .alignX(Alignment.Center.x).bottom(12))
                         .child(clayEnergyHolder.createCeTextWidget(syncManager)
                             .left(0).bottom(12))

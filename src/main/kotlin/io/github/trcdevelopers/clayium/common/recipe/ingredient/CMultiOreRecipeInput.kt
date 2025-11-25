@@ -8,14 +8,12 @@ import net.minecraftforge.oredict.OreDictionary
 
 class CMultiOreRecipeInput(
     override val amount: Int,
-    vararg oreDicts: UnificationEntry,
+    val oreIds: IntArray,
 ) : CRecipeInput() {
-
-    val oreIds = oreDicts.map { OreDictionary.getOreID(it.toString()) }
 
     override val stacks by lazy {
         val oreStacks = oreIds.map {
-            OreDictionary.getOres(OreDictionary.getOreName(it)).map { it.copyWithSize(amount) }
+            OreDictionary.getOres(OreDictionary.getOreName(it)).map { s -> s.copyWithSize(amount) }
         }.flatten()
         oreStacks
     }
@@ -34,6 +32,22 @@ class CMultiOreRecipeInput(
     }
 
     override fun toString(): String {
-        return "CMultiOreRecipeInput(${oreIds.map { OreDictionary.getOreName(it) }.joinToString(", ")})"
+        return "CMultiOreRecipeInput(${oreIds.joinToString(", ") { OreDictionary.getOreName(it) }})"
+    }
+
+    companion object {
+        fun unifEntries(ores: List<UnificationEntry>, amount: Int): CMultiOreRecipeInput {
+            val oreIds = IntArray(ores.size) {
+                OreDictionary.getOreID(ores[it].oreName)
+            }
+            return CMultiOreRecipeInput(amount, oreIds)
+        }
+
+        fun oreNames(ores: List<String>, amount: Int): CMultiOreRecipeInput {
+            val oreIds = IntArray(ores.size) {
+                OreDictionary.getOreID(ores[it])
+            }
+            return CMultiOreRecipeInput(amount, oreIds)
+        }
     }
 }

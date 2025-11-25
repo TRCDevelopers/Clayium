@@ -5,6 +5,7 @@ changelog:
       - "ignore changelog"
       - "type: ci"
       - "renovate"
+      - "chore"
 
   categories:
     - title: Added

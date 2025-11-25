@@ -3,8 +3,8 @@ package io.github.trcdevelopers.clayium.common.items
 import baubles.api.BaubleType
 import baubles.api.IBauble
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.factory.HandGuiData
-import com.cleanroommc.modularui.factory.ItemGuiFactory
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiFactory
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.ItemStackItemHandler
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
@@ -38,14 +38,14 @@ import net.minecraftforge.items.IItemHandlerModifiable
 import java.util.*
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES)
-class ItemClayGadgetHolder : Item(), IGuiHolderClayium<HandGuiData>, IBauble {
+class ItemClayGadgetHolder : Item(), IGuiHolderClayium<PlayerInventoryGuiData>, IBauble {
     init {
         maxStackSize = 1
     }
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack?> {
         if (!worldIn.isRemote) {
-            ItemGuiFactory.INSTANCE.open(playerIn as EntityPlayerMP, handIn)
+            PlayerInventoryGuiFactory.INSTANCE.openFromHand(playerIn, handIn)
         }
         return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
     }
@@ -67,7 +67,7 @@ class ItemClayGadgetHolder : Item(), IGuiHolderClayium<HandGuiData>, IBauble {
         UtilLocale.formatTooltips(tooltip, "clayium.clay_gadget_holder.tooltip")
     }
 
-    override fun buildUI(data: HandGuiData, syncManager: PanelSyncManager): ModularPanel {
+    override fun buildUI(data: PlayerInventoryGuiData, syncManager: PanelSyncManager): ModularPanel {
         syncManager.registerSlotGroup("clayium_gadget_holder", 2)
 
         val stack = data.usedItemStack

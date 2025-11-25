@@ -1,0 +1,18 @@
+name: clayium-docs
+services:
+  dev:
+    container_name: dev
+    build:
+      context: .
+      target: dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - vitepress-node-modules:/app/node_modules
+    tty: true
+    stdin_open: true
+    environment:
+      CHOKIDAR_USEPOLLING: true
+volumes:
+  vitepress-node-modules:

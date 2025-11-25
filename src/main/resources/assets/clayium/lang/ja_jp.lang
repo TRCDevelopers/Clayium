@@ -462,7 +462,7 @@ machine.clayium.ca_reactor.tooltip10=- コイルやインターフェースの T
 gui.clayium.ca_reactor.invalid=無効
 gui.clayium.ca_reactor.constructed=構築済
 gui.clayium.ca_reactor.rank_size=ランク %d サイズ %d
-gui.clayium.ca_reactor.efficiency=効率 %s
+gui.clayium.ca_reactor.efficiency=効率 %g
 message.clayium.ca_reactor.invalid_coil=コイル %s が無効です。
 message.clayium.ca_reactor.too_many_coils=コイルの数が基準値(%s)を超えています。
 message.clayium.ca_reactor.insufficient_tier_coil=コイル %s の Tier が無効です。
@@ -810,3 +810,10 @@ item.clayium.antimatter_seed.name=反物質の種
 
 item.clayium.energized_clay_dust.name=活性化粘土粉
 item.clayium.excited_clay_dust.name=励起粘土粉
+
+clayium.config.core=主な設定
+clayium.config.metal_chest=金属チェスト設定
+clayium.config.tier_balance=Tierバランス設定
+clayium.config.mod_integration=連携レシピ設定
+clayium.config.mod_integration.all_toggle=連携レシピを有効化
+clayium.config.レシピ設定

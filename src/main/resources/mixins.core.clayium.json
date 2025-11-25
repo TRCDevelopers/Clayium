@@ -1,0 +1,13 @@
+{
+  "package": "io.github.trcdevelopers.clayium.mixins",
+  "refmap": "mixins.clayium.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "plugin": "io.github.trcdevelopers.clayium.core.ClayiumMixinConfigPlugin",
+  "mixins": [
+    "patch.MixinNarrator"
+  ],
+  "client": [],
+  "server": []
+}

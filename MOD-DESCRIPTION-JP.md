@@ -2,10 +2,10 @@ Clayiumの非公式移植版です。
 
 オリジナル: [Clayium](https://www.curseforge.com/minecraft/mc-mods/clayium) © deb_rk (ライセンス: [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/))
 
-バグを見つけた場合は [GitHub](https://github.com/TRCDevelopers/Clayium/issues)へ報告してくださると嬉しいです。
+バグを見つけた場合は [GitHub](https://github.com/TRCDevelopers/Clayium/issues)で報告してくださると嬉しいです。
 
 ## Modpack Permission
-Modpackへの同梱は完全に自由です!
+このModはオープンソースであり、自由に利用可能です。
 
 ## Recipe Customization
 [GroovyScript](https://github.com/CleanroomMC/GroovyScript)を利用してレシピのカスタマイズが可能です。

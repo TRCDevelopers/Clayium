@@ -1,6 +1,8 @@
 package io.github.trcdevelopers.clayium.common.recipe.registry
 
 import io.github.trcdevelopers.clayium.api.util.Mods
+import io.github.trcdevelopers.clayium.common.recipe.builder.AlloyRecipeBuilder
+import io.github.trcdevelopers.clayium.common.recipe.builder.CaInjectorRecipeBuilder
 import io.github.trcdevelopers.clayium.common.recipe.builder.ClayFabricatorRecipeBuilder
 import io.github.trcdevelopers.clayium.common.recipe.builder.MatterTransformerRecipeBuilder
 import io.github.trcdevelopers.clayium.common.recipe.builder.RecipeBuilder
@@ -38,12 +40,12 @@ object CRecipes {
     // 2 -> 1 recipes
     val ASSEMBLER = addRegistry("assembler", SimpleRecipeBuilder(), 2, 1)
     val INSCRIBER = addRegistry("inscriber", SimpleRecipeBuilder(), 2, 1)
-    val ALLOY_SMELTER = addRegistry("alloy_smelter", SimpleRecipeBuilder(), 2, 1)
-    val CA_INJECTOR = addRegistry("ca_injector", SimpleRecipeBuilder(), 2, 1) //todo special registry or builder?
+    val ALLOY_SMELTER = addRegistry("alloy_smelter", AlloyRecipeBuilder(), 2, 1)
+    val CA_INJECTOR = addRegistry("ca_injector", CaInjectorRecipeBuilder(), 2, 1)
 
     // others
     val CHEMICAL_REACTOR = addRegistry("chemical_reactor", SimpleRecipeBuilder(), 2, 2)
-    val CLAY_BLAST_FURNACE = addRegistry("clay_blast_furnace", SimpleRecipeBuilder(), 2, 2)
+    val CLAY_BLAST_FURNACE = addRegistry("clay_blast_furnace", AlloyRecipeBuilder(), 2, 2)
     val CLAY_REACTOR = addRegistry("clay_reactor", SimpleRecipeBuilder(), 2, 2)
     val CHEMICAL_METAL_SEPARATOR = addRegistry("chemical_metal_separator", WeightedRecipeBuilder(), 1, 1)
     val CENTRIFUGE = addRegistry("centrifuge", SimpleRecipeBuilder(), 1, 4)

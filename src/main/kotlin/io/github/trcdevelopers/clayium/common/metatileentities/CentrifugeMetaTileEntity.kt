@@ -15,7 +15,6 @@ import io.github.trcdevelopers.clayium.api.metatileentity.MteRenderingConfig
 import io.github.trcdevelopers.clayium.api.metatileentity.WorkableMetaTileEntity
 import io.github.trcdevelopers.clayium.api.metatileentity.trait.AutoIoHandler
 import io.github.trcdevelopers.clayium.api.util.ITier
-import io.github.trcdevelopers.clayium.api.util.asWidgetResizing
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.common.config.ConfigTierBalance
 import io.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
@@ -72,7 +71,7 @@ class CentrifugeMetaTileEntity(
             .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
             .child(IKey.dynamic {
                 if (overclock != 1.0) SidelessI18n.format("gui.clayium.overclock", overclock) else " "
-            }.asWidgetResizing().alignment(Alignment.CenterRight).align(Alignment.BottomRight))
+            }.asWidget().width(100).alignment(Alignment.CenterRight).align(Alignment.BottomRight))
             .child(slotsAndProgressBar.align(Alignment.Center))
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .bottom(12).left(0))

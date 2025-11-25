@@ -50,7 +50,6 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
-import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.fml.common.Optional
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -159,13 +158,24 @@ class PanDuplicatorMetaTileEntity(
         panCasingQuads = EnumFacing.entries.map { ModelTextures.createQuad(it, sprite) }
     }
 
+    override fun getQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
+        if (state == null || side == null) return
+        quads.add(ModelTextures.getHullQuads(this.machineHullTier)?.get(side) ?: return)
+    }
+
     override fun overlayQuads(quads: MutableList<BakedQuad>, state: IBlockState?, side: EnumFacing?, rand: Long) {
-        if (state == null || side == null || state !is IExtendedBlockState) return
-        if (side != this.frontFacing) quads.add(panCasingQuads[side.index])
+        if (state == null || side == null) return
+        quads.add(panCasingQuads[side.index])
+        super.overlayQuads(quads, state, side, rand)
     }
 
     override val renderingConfig by lazy {
-        MteRenderingConfig.face(clayiumId("blocks/pan_duplicator"))
+        MteRenderingConfig.builder()
+            .face(clayiumId("blocks/pan_duplicator"))
+            .particle {
+                if (ModelTextures.isInitialized) ModelTextures.getHullTexture(this.machineHullTier) else null
+            }
+            .build()
     }
 
     private inner class PanDuplicatorRecipeLogic : AbstractWorkable(this@PanDuplicatorMetaTileEntity) {

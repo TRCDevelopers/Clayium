@@ -1,17 +1,14 @@
 package io.github.trcdevelopers.clayium.common.loaders.recipe
 
 import io.github.trcdevelopers.clayium.api.ClayEnergy
-import io.github.trcdevelopers.clayium.api.unification.material.CMarkerMaterials
 import io.github.trcdevelopers.clayium.api.unification.material.CMaterials
 import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
-import io.github.trcdevelopers.clayium.api.util.Mods
 import io.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
-import net.minecraft.init.Items
 
 object AlloySmelterRecipeLoader {
     fun registerRecipes() {
         val registry = CRecipes.ALLOY_SMELTER
-        val ingotDust = arrayOf(OrePrefix.ingot, OrePrefix.dust)
+        val ingotDust = listOf(OrePrefix.ingot, OrePrefix.dust)
         simpleAlloy()
             .input(ingotDust, CMaterials.copper, 3)
             .input(ingotDust, CMaterials.tin)
@@ -58,22 +55,6 @@ object AlloySmelterRecipeLoader {
             .output(OrePrefix.ingot, CMaterials.zk60a, 20)
             .tier(6).CEt(ClayEnergy.of(3)).duration(500)
             .buildAndRegister()
-        if (Mods.EnderIO.isModLoaded) {
-            /* Redstone Alloy */
-            registry.builder()
-                .input(Items.REDSTONE)
-                .input(OrePrefix.item, CMaterials.silicon)
-                .output(OrePrefix.ingot, CMarkerMaterials.redstoneAlloy)
-                .tier(6).defaultCEt().duration(100)
-                .buildAndRegister()
-            /* Conductive Iron */
-            registry.builder()
-                .input(Items.REDSTONE)
-                .input(arrayOf(OrePrefix.ingot, OrePrefix.dust), CMaterials.iron)
-                .output(OrePrefix.ingot, CMarkerMaterials.conductiveIron)
-                .tier(6).defaultCEt().duration(100)
-                .buildAndRegister()
-        }
     }
 
     private fun simpleAlloy() = CRecipes.ALLOY_SMELTER.builder()

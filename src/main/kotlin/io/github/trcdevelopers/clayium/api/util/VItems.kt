@@ -9,4 +9,5 @@ import net.minecraft.item.ItemStack
  */
 object VItems {
     val INK_SAC = ItemStack(Items.DYE, 1, 0)
+    val COCOA_BEANS = ItemStack(Items.DYE, 1, 3)
 }

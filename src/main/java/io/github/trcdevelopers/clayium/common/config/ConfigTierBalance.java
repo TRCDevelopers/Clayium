@@ -7,7 +7,7 @@ import net.minecraftforge.common.config.Config.RangeInt;
 
 import static io.github.trcdevelopers.clayium.api.CValues.MOD_ID;
 
-@LangKey("clayium.config.tier")
+@LangKey("clayium.config.tier_balance")
 @Config(modid = MOD_ID, name = MOD_ID + "/tier_balance")
 public class ConfigTierBalance {
     private ConfigTierBalance() {}

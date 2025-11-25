@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.oredict.OreDictionary
-import kotlin.collections.mutableSetOf
 
 object OreDictUnifier {
     private val item2OreNames = mutableMapOf<Item, MutableItemVariantMap<MutableSet<String>>>()
