@@ -357,7 +357,7 @@ class StorageContainerMetaTileEntity(
             GlStateManager.popMatrix()
             // Item Name if a player is looking at this block
             val rayTraceResult = mc.objectMouseOver
-            if (rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK && rayTraceResult.blockPos == pos) {
+            if (rayTraceResult != null && rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK && rayTraceResult.blockPos == pos) {
                 GlStateManager.pushMatrix()
                 val itemName = stack.displayName
                 GlStateManager.rotate(180.0f, 0.0f, 1.0f, 0.0f)
