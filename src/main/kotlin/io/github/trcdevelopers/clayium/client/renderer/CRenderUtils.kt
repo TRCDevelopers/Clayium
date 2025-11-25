@@ -21,25 +21,11 @@ object CRenderUtils {
         GlStateManager.depthMask(false)
     }
 
-    @Deprecated("Use memoryCurrentStates and restoreStates instead.")
-    fun disableTranslucent() {
-        GlStateManager.disableBlend()
-        GlStateManager.depthMask(true)
-        GlStateManager.enableDepth()
-    }
-
     fun enableXray() {
         GlStateManager.disableTexture2D()
         GlStateManager.disableLighting()
         GlStateManager.disableCull()
         GlStateManager.disableDepth()
-    }
-
-    fun disableXray() {
-        GlStateManager.enableDepth()
-        GlStateManager.enableCull()
-        GlStateManager.enableLighting()
-        GlStateManager.enableTexture2D()
     }
 
     fun memoryCurrentStates(): GlStatesInformation {
