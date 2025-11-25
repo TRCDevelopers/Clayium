@@ -359,7 +359,6 @@ class StorageContainerMetaTileEntity(
             val rayTraceResult = mc.objectMouseOver
             if (rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK && rayTraceResult.blockPos == pos) {
                 GlStateManager.pushMatrix()
-                GlStateManager.depthMask(false)
                 val itemName = stack.displayName
                 GlStateManager.rotate(180.0f, 0.0f, 1.0f, 0.0f)
                 GlStateManager.translate(0.0, 0.35, -0.55)

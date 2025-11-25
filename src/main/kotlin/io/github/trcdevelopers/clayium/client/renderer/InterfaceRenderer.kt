@@ -156,38 +156,13 @@ object InterfaceRenderer {
 
     private fun renderString(text: String) {
         val mc = Minecraft.getMinecraft()
+        val player = mc.player
         GlStateManager.pushMatrix()
         run {
             GlStateManager.glNormal3f(0.0f, 1.0f, 0.0f)
             GlStateManager.scale(-0.025f, -0.025f, 0.025f)
-            GlStateManager.depthMask(false)
-
-            GlStateManager.tryBlendFuncSeparate(
-                GlStateManager.SourceFactor.SRC_ALPHA,
-                GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE,
-                GlStateManager.DestFactor.ZERO
-            )
-            val width = mc.fontRenderer.getStringWidth(text) / 2
-
-            GlStateManager.disableTexture2D()
-            GlStateManager.color(0f, 0f, 0f, 0.5f)
-            val player = mc.player
             GlStateManager.rotate(player.rotationYaw, 0f, 1f, 0f)
-            val tessellator = Tessellator.getInstance()
-            val bufferBuilder = tessellator.buffer
-            bufferBuilder.begin(7, DefaultVertexFormats.POSITION)
-            bufferBuilder.pos(-width - 1.0, -1.0, 0.0).endVertex()
-            bufferBuilder.pos(-width - 1.0, 8.0, 0.0).endVertex()
-            bufferBuilder.pos(width + 1.0, 8.0, 0.0).endVertex()
-            bufferBuilder.pos(width + 1.0, -1.0, 0.0).endVertex()
-            tessellator.draw()
-            GlStateManager.enableTexture2D()
-            GlStateManager.depthMask(true)
-
-            Minecraft.getMinecraft().fontRenderer.drawString(text, -width, 0, 0xFFFFFF)
-
-            GlStateManager.depthMask(false)
-            GlStateManager.color(1f, 1f, 1f, 1f)
+            CRenderUtils.renderStringWithBackground(text, 0xFFFFFF)
         }
         GlStateManager.popMatrix()
     }
