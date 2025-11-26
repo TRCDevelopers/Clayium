@@ -5,7 +5,6 @@ import io.github.trcdevelopers.clayium.common.blocks.BlockQuartzCrucible
 import mcjty.theoneprobe.api.IProbeHitData
 import mcjty.theoneprobe.api.IProbeInfo
 import mcjty.theoneprobe.api.IProbeInfoProvider
-import mcjty.theoneprobe.api.NumberFormat
 import mcjty.theoneprobe.api.ProbeMode
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
@@ -18,13 +17,14 @@ class QuartzCrucibleInfoProvider : IProbeInfoProvider {
 
     override fun addProbeInfo(mode: ProbeMode, info: IProbeInfo, player: EntityPlayer, world: World, blockState: IBlockState, data: IProbeHitData) {
         val tileEntity = world.getTileEntity(data.pos) as? BlockQuartzCrucible.QuartzCrucibleTileEntity ?: return
+        val ingotQuantity = tileEntity.ingotQuantity
         val requiredTicks = tileEntity.ingotQuantity * BlockQuartzCrucible.TICKS_PER_ITEM
         val currentTicks = tileEntity.ticked
 
+        info.text("Processing $ingotQuantity ingots")
         info.progress(
             currentTicks, requiredTicks, info.defaultProgressStyle()
                 .suffix(" / $requiredTicks ticks")
-                .numberFormat(NumberFormat.COMMAS)
         )
     }
 }
