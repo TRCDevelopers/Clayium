@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11
 
 object CRenderUtils {
     /**
-     * Disables: lightning, depthMask.
+     * Disables: lighting, depthMask.
      * Enables: blend, depth, blendFunc.
      *
      * You can use [codechicken.lib.render.state.GlStateTracker] to push/pop GL states around this call.
@@ -28,7 +28,7 @@ object CRenderUtils {
     }
 
     /**
-     * Disables: texture2D, lightning, cullFace, depth.
+     * Disables: texture2D, lighting, cullFace, depth.
      *
      * You can use [codechicken.lib.render.state.GlStateTracker] to push/pop GL states around this call.
      * NOTE: Texture2D is NOT TRACKED by GlStateTracker, REMEMBER to enable it back.
