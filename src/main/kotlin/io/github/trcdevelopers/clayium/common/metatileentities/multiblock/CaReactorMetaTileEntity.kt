@@ -35,8 +35,6 @@ import io.github.trcdevelopers.clayium.common.recipe.registry.CaReactorRecipeReg
 import io.github.trcdevelopers.clayium.common.util.SidelessI18n
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import net.minecraft.client.renderer.GlStateManager
-import net.minecraft.client.renderer.Tessellator
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.client.resources.I18n
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
@@ -45,7 +43,6 @@ import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.ITextComponent
 import net.minecraft.util.text.TextComponentTranslation
-import org.lwjgl.opengl.GL11
 import kotlin.math.pow
 
 class CaReactorMetaTileEntity(
@@ -251,6 +248,12 @@ class CaReactorMetaTileEntity(
 
     override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
         if (!(this.workable.isWorking && ConfigCore.rendering.caReactorGlittering)) return
+        GlStateManager.pushMatrix()
+        GlStateTracker.pushState()
+        GlStateManager.disableTexture2D()
+        CRenderUtils.enableTranslucent()
+
+        GlStateManager.translate(x, y, z)
         for (j in 1..<(avgHullRank + 2)) {
             for (hullPos in hullPoses) {
                 val pos = hullPos.subtract(this.pos ?: return)
@@ -259,55 +262,18 @@ class CaReactorMetaTileEntity(
                 val k = j / (avgHullRank + 1.0)
                 val d = 0.01f * (i.pow(1.6) + 1.0)
 
-                val tessellator = Tessellator.getInstance()
-                val bufferBuilder = tessellator.buffer
-
                 val aabb = AxisAlignedBB(pos.x - d, pos.y - d, pos.z - d, pos.x + s + d, pos.y + s + d, pos.z + s + d)
-
-                GlStateManager.pushMatrix()
-                GlStateTracker.pushState()
-                GlStateManager.disableTexture2D()
-                CRenderUtils.enableTranslucent()
-
-                GlStateManager.translate(x, y, z)
-
                 val r = 1f
                 val g = 1f
                 val b = (0.3f + 0.05f + (2.0f * k - k * k) * j).toFloat()
                 val a = 0.11f
-
-                bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR)
-                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.minZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.minZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.minZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.minZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.maxZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.maxZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.maxZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.maxZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.minZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.minZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.maxZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.maxZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.maxZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.maxZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.minZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.minZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.maxZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.maxZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.minX, aabb.maxY, aabb.minZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.minX, aabb.minY, aabb.minZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.minZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.minZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.maxX, aabb.maxY, aabb.maxZ).color(r, g, b, a).endVertex()
-                bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.maxZ).color(r, g, b, a).endVertex()
-                tessellator.draw()
-
-                GlStateManager.enableTexture2D()
-                GlStateTracker.popState()
-                GlStateManager.popMatrix()
+                CRenderUtils.renderCube(aabb, r, g, b, a)
             }
         }
+        GlStateManager.color(1f, 1f, 1f, 1f)
+        GlStateManager.enableTexture2D()
+        GlStateTracker.popState()
+        GlStateManager.popMatrix()
     }
 
     companion object {
