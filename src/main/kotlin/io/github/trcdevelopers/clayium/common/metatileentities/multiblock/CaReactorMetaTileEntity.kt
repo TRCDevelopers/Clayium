@@ -1,5 +1,6 @@
 package io.github.trcdevelopers.clayium.common.metatileentities.multiblock
 
+import codechicken.lib.render.state.GlStateTracker
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.utils.Alignment
@@ -264,7 +265,7 @@ class CaReactorMetaTileEntity(
                 val aabb = AxisAlignedBB(pos.x - d, pos.y - d, pos.z - d, pos.x + s + d, pos.y + s + d, pos.z + s + d)
 
                 GlStateManager.pushMatrix()
-                val states = CRenderUtils.memoryCurrentStates()
+                GlStateTracker.pushState()
                 GlStateManager.disableTexture2D()
                 CRenderUtils.enableTranslucent()
 
@@ -302,7 +303,8 @@ class CaReactorMetaTileEntity(
                 bufferBuilder.pos(aabb.maxX, aabb.minY, aabb.maxZ).color(r, g, b, a).endVertex()
                 tessellator.draw()
 
-                CRenderUtils.restoreStates(states)
+                GlStateManager.enableTexture2D()
+                GlStateTracker.popState()
                 GlStateManager.popMatrix()
             }
         }

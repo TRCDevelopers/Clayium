@@ -1,6 +1,7 @@
 package io.github.trcdevelopers.clayium.client.renderer
 
 import codechicken.lib.render.RenderUtils
+import codechicken.lib.render.state.GlStateTracker
 import codechicken.lib.vec.Cuboid6
 import net.minecraft.client.renderer.GlStateManager
 
@@ -18,7 +19,7 @@ object AreaMarkerRenderer {
 
     private fun renderSourceOverlay(source: Cuboid6) {
         GlStateManager.pushMatrix()
-        val states = CRenderUtils.memoryCurrentStates()
+        GlStateTracker.pushState()
         GlStateManager.disableTexture2D()
         CRenderUtils.enableTranslucent()
         CRenderUtils.enableXray()
@@ -28,13 +29,14 @@ object AreaMarkerRenderer {
             GlStateManager.color(0.7f, 0.1f, 0.1f, 1f)
             RenderUtils.drawCuboidOutline(source)
         }
-        CRenderUtils.restoreStates(states)
+        GlStateTracker.popState()
+        GlStateManager.enableTexture2D()
         GlStateManager.popMatrix()
     }
 
     private fun renderRangeOverlay(range: Cuboid6, xray: Boolean) {
         GlStateManager.pushMatrix()
-        val states = CRenderUtils.memoryCurrentStates()
+        GlStateTracker.pushState()
         GlStateManager.disableTexture2D()
         CRenderUtils.enableTranslucent()
         if (xray) { CRenderUtils.enableXray() }
@@ -44,7 +46,8 @@ object AreaMarkerRenderer {
             GlStateManager.color(0.1f, 0.1f, 0.7f, 1f)
             RenderUtils.drawCuboidOutline(range)
         }
-        CRenderUtils.restoreStates(states)
+        GlStateTracker.popState()
+        GlStateManager.enableTexture2D()
         GlStateManager.popMatrix()
     }
 
