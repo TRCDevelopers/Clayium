@@ -28,13 +28,12 @@ object CRenderUtils {
     }
 
     /**
-     * Disables: texture2D, lighting, cullFace, depth.
+     * Disables: lighting, cullFace, depth.
      *
      * You can use [codechicken.lib.render.state.GlStateTracker] to push/pop GL states around this call.
-     * NOTE: Texture2D is NOT TRACKED by GlStateTracker, REMEMBER to enable it back.
+     * All the states modified by this method are tracked by GlStateTracker.
      */
     fun enableXray() {
-        GlStateManager.disableTexture2D()
         GlStateManager.disableLighting()
         GlStateManager.disableCull()
         GlStateManager.disableDepth()
