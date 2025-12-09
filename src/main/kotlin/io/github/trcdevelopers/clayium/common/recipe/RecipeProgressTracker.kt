@@ -3,11 +3,13 @@ package io.github.trcdevelopers.clayium.common.recipe
 import io.github.trcdevelopers.clayium.api.capability.IWorkingControllable
 import io.github.trcdevelopers.clayium.api.metatileentity.trait.OverclockHandler
 import io.github.trcdevelopers.clayium.api.sync.ClayiumSyncManager
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraftforge.common.util.INBTSerializable
 
 open class RecipeProgressTracker(
     syncManager: ClayiumSyncManager,
     private val ocHandler: OverclockHandler,
-) : IWorkingControllable {
+) : IWorkingControllable, INBTSerializable<NBTTagCompound> {
 
     private var state by syncManager.enum(State::class.java, State.IDLE)
     private var requiredProgress = 0L
@@ -45,6 +47,20 @@ open class RecipeProgressTracker(
 
     protected open fun getProgressPerTick(): Long {
         return 1L
+    }
+
+    override fun serializeNBT(): NBTTagCompound {
+        val nbt = NBTTagCompound()
+        nbt.setLong("requiredProgress", this.requiredProgress)
+        nbt.setLong("currentProgress", this.currentProgress)
+        nbt.setInteger("state", this.state.ordinal)
+        return nbt
+    }
+
+    override fun deserializeNBT(nbt: NBTTagCompound) {
+        this.requiredProgress = nbt.getLong("requiredProgress")
+        this.currentProgress = nbt.getLong("currentProgress")
+        this.state = State.entries.getOrNull(nbt.getInteger("state")) ?: State.IDLE
     }
 
     enum class State {
