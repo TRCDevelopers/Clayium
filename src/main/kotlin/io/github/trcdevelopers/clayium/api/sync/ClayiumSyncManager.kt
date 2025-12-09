@@ -36,4 +36,16 @@ class ClayiumSyncManager {
             }
         }
     }
+
+    fun integer(initial: Int): SyncedInt {
+        return this.register(SyncedInt(initial))
+    }
+
+    fun boolean(initial: Boolean): SyncedBoolean {
+        return this.register(SyncedBoolean(initial))
+    }
+
+    fun <E: Enum<E>> enum(enumClass: Class<E>, initial: E): SyncedEnum<E> {
+        return this.register(SyncedEnum(enumClass, initial))
+    }
 }
