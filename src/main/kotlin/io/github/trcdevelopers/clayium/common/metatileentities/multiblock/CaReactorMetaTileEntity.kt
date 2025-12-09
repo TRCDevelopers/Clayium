@@ -299,6 +299,14 @@ class CaReactorMetaTileEntity(
             return this@CaReactorMetaTileEntity.tier.numeric
         }
 
+        override fun writeInitialSyncData(buf: PacketBuffer) {
+            super.writeInitialSyncData(buf)
+        }
+
+        override fun receiveInitialSyncData(buf: PacketBuffer) {
+            super.receiveInitialSyncData(buf)
+        }
+
         override fun trySearchNewRecipe(): Boolean {
             val recipe = caReactorRegistry.findRecipeWithRank(tier.numeric, avgHullRank, inputInventory.toList())
             if (recipe == null) {
