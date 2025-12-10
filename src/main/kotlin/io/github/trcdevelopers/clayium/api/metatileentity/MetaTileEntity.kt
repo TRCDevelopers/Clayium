@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.ClayiumApi
 import io.github.trcdevelopers.clayium.api.block.BlockMachine.Companion.IS_PIPE
 import io.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
+import io.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.CLAYIUM_SYNC_MANAGER
 import io.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.INITIALIZE_MTE
 import io.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.SYNC_MTE_TRAIT
 import io.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_CONNECTIONS
@@ -35,6 +36,7 @@ import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity.Compani
 import io.github.trcdevelopers.clayium.api.metatileentity.interfaces.ISyncedTileEntity
 import io.github.trcdevelopers.clayium.api.metatileentity.interfaces.IWorldObject
 import io.github.trcdevelopers.clayium.api.metatileentity.trait.OverclockHandler
+import io.github.trcdevelopers.clayium.api.sync.ClayiumSyncManager
 import io.github.trcdevelopers.clayium.api.util.CLog
 import io.github.trcdevelopers.clayium.api.util.CUtils
 import io.github.trcdevelopers.clayium.api.util.ITier
@@ -109,6 +111,8 @@ abstract class MetaTileEntity(
     val blockMachine get() = mteRegistry.blockMachine
     val itemBlockMachine get() = mteRegistry.itemBlockMachine
 
+    val clayiumSyncManager = ClayiumSyncManager()
+
     val forgeRarity = tier.rarity
     val translationKey = "machine.${metaTileEntityId.namespace}.$name"
 
@@ -174,6 +178,9 @@ abstract class MetaTileEntity(
     open fun update() {
         if (timer == 0L) {
             onFirstTick()
+        }
+        if (clayiumSyncManager.isDirty) {
+            writeCustomData(CLAYIUM_SYNC_MANAGER, this.clayiumSyncManager::write)
         }
         mteTraits.values.forEach(MTETrait::update)
         timer++
@@ -306,6 +313,9 @@ abstract class MetaTileEntity(
                         return
                     }
                 trait.receiveCustomData(buf.readVarInt(), buf)
+            }
+            CLAYIUM_SYNC_MANAGER -> {
+                this.clayiumSyncManager.read(buf)
             }
         }
     }
