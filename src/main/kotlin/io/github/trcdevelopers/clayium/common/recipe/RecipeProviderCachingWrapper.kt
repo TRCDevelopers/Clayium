@@ -4,8 +4,8 @@ import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.recipe.IRecipeProvider
 
 open class RecipeProviderCachingWrapper(
-    private val recipeProvider: IRecipeProvider,
     private val metaTileEntity: MetaTileEntity,
+    private val recipeProvider: IRecipeProvider,
 ) {
     private val lastRecipe: Recipe? = null
 

@@ -49,6 +49,11 @@ open class RecipeProgressTracker(
         return 1L
     }
 
+    fun getNormalizedProgress(): Double {
+        if (currentProgress == 0L || requiredProgress == 0L) return 0.0
+        return (currentProgress.toDouble() - 1.0) / requiredProgress.toDouble()
+    }
+
     override fun serializeNBT(): NBTTagCompound {
         val nbt = NBTTagCompound()
         nbt.setLong("requiredProgress", this.requiredProgress)

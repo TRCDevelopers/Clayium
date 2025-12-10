@@ -2,7 +2,11 @@ package io.github.trcdevelopers.clayium.api.sync
 
 import net.minecraft.network.PacketBuffer
 
-class SyncedInt(initial: Int) : ISyncedProperty {
+class SyncedInt(
+    syncManager: ClayiumSyncManager,
+    index: Int,
+    initial: Int,
+) : SyncedPropertyBase(syncManager, index) {
 
     var value = initial
         set(value) {

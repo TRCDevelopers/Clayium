@@ -5,6 +5,8 @@ import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.sync.ClayiumSyncManager
 import io.github.trcdevelopers.clayium.common.recipe.RecipeProgressTracker
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
+import net.minecraftforge.common.capabilities.Capability
 
 abstract class AbstractWorkableV2(
     metaTileEntity: MetaTileEntity,
@@ -20,6 +22,13 @@ abstract class AbstractWorkableV2(
         progressTracker.updateServer()
         if (progressTracker.isCompleted()) {
 
+        }
+    }
+
+    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+        return when {
+            capability === ClayiumTileCapabilities.CONTROLLABLE -> capability.cast(this.progressTracker)
+            else -> super.getCapability(capability, facing)
         }
     }
 
