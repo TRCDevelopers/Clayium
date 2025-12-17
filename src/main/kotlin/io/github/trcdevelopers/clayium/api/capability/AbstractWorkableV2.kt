@@ -15,7 +15,6 @@ abstract class AbstractWorkableV2(
     private val progressTracker: RecipeProgressTracker,
     private val jobProvider: RecipeJobProvider,
 ) : MTETrait(metaTileEntity, "TODO_REPLACE_ME") {
-    private val syncManager = metaTileEntity.clayiumSyncManager
 
     private var itemOutputs: List<ItemStack> = emptyList()
 
