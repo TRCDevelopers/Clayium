@@ -2,26 +2,40 @@ package io.github.trcdevelopers.clayium.api.capability
 
 import io.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
-import io.github.trcdevelopers.clayium.api.sync.ClayiumSyncManager
+import io.github.trcdevelopers.clayium.api.recipe.RecipeJobProvider
 import io.github.trcdevelopers.clayium.common.recipe.RecipeProgressTracker
+import io.github.trcdevelopers.clayium.common.util.TransferUtils
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 
 abstract class AbstractWorkableV2(
     metaTileEntity: MetaTileEntity,
+    private val progressTracker: RecipeProgressTracker,
+    private val jobProvider: RecipeJobProvider,
 ) : MTETrait(metaTileEntity, "TODO_REPLACE_ME") {
-    private val syncManager = ClayiumSyncManager()
+    private val syncManager = metaTileEntity.clayiumSyncManager
 
-    private val progressTracker = RecipeProgressTracker(syncManager, metaTileEntity.overclockHandler)
+    private var itemOutputs: List<ItemStack> = emptyList()
 
     override fun update() {
         super.update()
         if (metaTileEntity.isRemote) return
 
+        if (!progressTracker.isProcessingRecipe) {
+            val newJob = jobProvider.provide()
+            if (newJob != null) {
+                progressTracker.startProcessing(newJob.requiredWork)
+                this.itemOutputs = newJob.outputs
+            }
+        }
+
         progressTracker.updateServer()
         if (progressTracker.isCompleted()) {
-
+            progressTracker.reset()
+            itemOutputs = emptyList()
+            TransferUtils.insertToHandler(metaTileEntity.exportItems, itemOutputs)
         }
     }
 

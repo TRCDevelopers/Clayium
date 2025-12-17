@@ -15,7 +15,13 @@ open class RecipeProgressTracker(
     private var requiredProgress = 0L
     private var currentProgress = 0L
 
-    private val isProcessingRecipe get() = currentProgress != 0L
+    val isProcessingRecipe get() = currentProgress != 0L
+
+    fun startProcessing(requiredProgress: Long) {
+        this.requiredProgress = requiredProgress
+        this.currentProgress = 1L
+        this.state = State.WORKING
+    }
 
     fun updateServer() {
         if (state == State.DISABLED) return
@@ -28,6 +34,12 @@ open class RecipeProgressTracker(
 
     fun isCompleted(): Boolean {
         return this.currentProgress > this.requiredProgress
+    }
+
+    fun reset() {
+        this.requiredProgress = 0L
+        this.currentProgress = 0L
+        this.state = State.IDLE
     }
 
     override val isWorking: Boolean get() = this.state == State.WORKING
