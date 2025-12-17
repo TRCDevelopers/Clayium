@@ -19,6 +19,7 @@ import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.common.config.ConfigTierBalance
 import io.github.trcdevelopers.clayium.common.metatileentities.multiblock.CaReactorMetaTileEntity
 import io.github.trcdevelopers.clayium.common.metatileentities.multiblock.RedstoneProxyMetaTileEntity
+import io.github.trcdevelopers.clayium.common.recipe.RecipeLogicFactory
 import io.github.trcdevelopers.clayium.common.recipe.registry.CRecipes
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -130,7 +131,8 @@ object MetaTileEntities {
     }
 
     val MATTER_TRANSFORMER = registerMetaTileEntities(263, (7..12)) { //+6
-        SimpleMachineMetaTileEntity(clayiumId("matter_transformer.${it.lowerName}"), it, CRecipes.MATTER_TRANSFORMER)
+        SimpleMachineMetaTileEntityV2(clayiumId("matter_transformer.${it.lowerName}"), it, CRecipes.MATTER_TRANSFORMER,
+            RecipeLogicFactory::recipeLogicEnergy)
     }
 
     val MILLING_MACHINE = registerMetaTileEntities(269, intArrayOf(1, 3, 4)) { //+3

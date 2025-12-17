@@ -4,6 +4,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import io.github.trcdevelopers.clayium.api.capability.IWorkingControllable
 import io.github.trcdevelopers.clayium.api.metatileentity.trait.OverclockHandler
+import io.github.trcdevelopers.clayium.api.recipe.RecipeProcessingJob
 import io.github.trcdevelopers.clayium.api.sync.ClayiumSyncManager
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.common.util.INBTSerializable
@@ -19,8 +20,8 @@ open class RecipeProgressTracker(
 
     val isProcessingRecipe get() = currentProgress != 0L
 
-    fun startProcessing(requiredProgress: Long) {
-        this.requiredProgress = requiredProgress
+    open fun startProcessing(job: RecipeProcessingJob) {
+        this.requiredProgress = job.requiredWork
         this.currentProgress = 1L
         this.state = State.WORKING
     }
@@ -29,16 +30,20 @@ open class RecipeProgressTracker(
         if (state == State.DISABLED) return
 
         if (isProcessingRecipe) {
-            val rawProgress = this.getProgressPerTick()
-            this.currentProgress += (rawProgress.toDouble() * ocHandler.accelerationFactor).toLong()
+            this.updateProgress()
         }
     }
 
-    fun isCompleted(): Boolean {
+    protected open fun updateProgress() {
+        val rawProgress = this.getProgressPerTick()
+        this.currentProgress += (rawProgress.toDouble() * ocHandler.accelerationFactor).toLong()
+    }
+
+    open fun isCompleted(): Boolean {
         return this.currentProgress > this.requiredProgress
     }
 
-    fun reset() {
+    open fun reset() {
         this.requiredProgress = 0L
         this.currentProgress = 0L
         this.state = State.IDLE

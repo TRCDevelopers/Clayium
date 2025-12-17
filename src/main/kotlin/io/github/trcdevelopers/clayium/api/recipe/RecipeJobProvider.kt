@@ -6,5 +6,6 @@ interface RecipeJobProvider {
     fun provide(
         machineTier: Int,
         inputs: List<ItemStack>,
+        overclockCFactor: Double,
     ): RecipeProcessingJob?
 }

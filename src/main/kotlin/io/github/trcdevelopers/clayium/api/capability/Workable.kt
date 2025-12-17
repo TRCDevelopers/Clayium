@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 
-abstract class AbstractWorkableV2(
+open class Workable(
     metaTileEntity: MetaTileEntity,
     private val progressTracker: RecipeProgressTracker,
     private val jobProvider: RecipeJobProvider,
@@ -31,9 +31,9 @@ abstract class AbstractWorkableV2(
         if (metaTileEntity.isRemote) return
 
         if (!progressTracker.isProcessingRecipe) {
-            val newJob = jobProvider.provide(this.getTier(), metaTileEntity.importItems.toList())
+            val newJob = jobProvider.provide(this.getTier(), metaTileEntity.importItems.toList(), metaTileEntity.overclockHandler.compensatedFactor)
             if (newJob != null) {
-                progressTracker.startProcessing(newJob.requiredWork)
+                progressTracker.startProcessing(newJob)
                 this.itemOutputs = newJob.outputs
             }
         }
@@ -41,8 +41,8 @@ abstract class AbstractWorkableV2(
         progressTracker.updateServer()
         if (progressTracker.isCompleted()) {
             progressTracker.reset()
-            itemOutputs = emptyList()
             TransferUtils.insertToHandler(metaTileEntity.exportItems, itemOutputs)
+            itemOutputs = emptyList()
         }
     }
 
@@ -54,6 +54,8 @@ abstract class AbstractWorkableV2(
     }
 
     fun getProgressBar(syncManager: PanelSyncManager, showRecipes: Boolean = true): ProgressWidget {
+        this.progressTracker.syncProgressGui(syncManager)
+
         val widget = ProgressWidget()
             .size(22, 17)
             .progress(this.progressTracker::getNormalizedProgress)

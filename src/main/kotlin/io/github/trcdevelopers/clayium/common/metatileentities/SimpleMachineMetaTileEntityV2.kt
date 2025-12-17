@@ -8,7 +8,7 @@ import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import io.github.trcdevelopers.clayium.api.ClayEnergy
-import io.github.trcdevelopers.clayium.api.capability.AbstractWorkableV2
+import io.github.trcdevelopers.clayium.api.capability.Workable
 import io.github.trcdevelopers.clayium.api.capability.impl.ClayEnergyHolder
 import io.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import io.github.trcdevelopers.clayium.api.capability.impl.NotifiableItemStackHandler
@@ -31,22 +31,21 @@ class SimpleMachineMetaTileEntityV2(
     private val recipeRegistry: RecipeRegistry<*>,
     private val inputSize: Int = recipeRegistry.maxInputs,
     private val outputSize: Int = recipeRegistry.maxOutputs,
-    private val workable: AbstractWorkableV2,
+    private val workableProvider: (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> Workable,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, recipeRegistry.category.categoryName) {
 
     constructor(
         metaTileEntityId: ResourceLocation,
         tier: ITier,
         recipeRegistry: RecipeRegistry<*>,
-        workable: AbstractWorkableV2,
+        workableProvider: (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> Workable,
     ) : this(
         metaTileEntityId, tier,
         validInputModesLists[recipeRegistry.maxInputs], validOutputModesLists[recipeRegistry.maxOutputs],
         recipeRegistry,
         recipeRegistry.maxInputs, recipeRegistry.maxOutputs,
-        workable,
+        workableProvider,
     )
-
 
     override val importItems = NotifiableItemStackHandler(this, inputSize, this, false)
     override val exportItems = NotifiableItemStackHandler(this, outputSize, this, true)
@@ -55,11 +54,13 @@ class SimpleMachineMetaTileEntityV2(
 
     val clayEnergyHolder = ClayEnergyHolder(this)
 
+    private val workable = workableProvider(this, recipeRegistry, clayEnergyHolder)
+
     override fun createMetaTileEntity(): MetaTileEntity {
         return SimpleMachineMetaTileEntityV2(
             metaTileEntityId, tier, validInputModes, validOutputModes,
             recipeRegistry, inputSize, outputSize,
-            workable,
+            workableProvider,
         )
     }
 
