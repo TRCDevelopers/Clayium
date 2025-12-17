@@ -1,5 +1,7 @@
 package io.github.trcdevelopers.clayium.common.recipe
 
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
+import com.cleanroommc.modularui.value.sync.SyncHandlers
 import io.github.trcdevelopers.clayium.api.capability.IWorkingControllable
 import io.github.trcdevelopers.clayium.api.metatileentity.trait.OverclockHandler
 import io.github.trcdevelopers.clayium.api.sync.ClayiumSyncManager
@@ -64,6 +66,11 @@ open class RecipeProgressTracker(
     fun getNormalizedProgress(): Double {
         if (currentProgress == 0L || requiredProgress == 0L) return 0.0
         return (currentProgress.toDouble() - 1.0) / requiredProgress.toDouble()
+    }
+
+    fun syncProgressGui(pSyncManager: PanelSyncManager) {
+        pSyncManager.syncValue("requiredProgress", SyncHandlers.longNumber(::requiredProgress, ::requiredProgress::set))
+        pSyncManager.syncValue("craftingProgress", SyncHandlers.longNumber(::currentProgress, ::currentProgress::set))
     }
 
     override fun serializeNBT(): NBTTagCompound {

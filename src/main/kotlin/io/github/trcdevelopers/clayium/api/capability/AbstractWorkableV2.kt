@@ -1,8 +1,12 @@
 package io.github.trcdevelopers.clayium.api.capability
 
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
+import com.cleanroommc.modularui.widgets.ProgressWidget
 import io.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.recipe.RecipeJobProvider
+import io.github.trcdevelopers.clayium.api.util.toList
+import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import io.github.trcdevelopers.clayium.common.recipe.RecipeProgressTracker
 import io.github.trcdevelopers.clayium.common.util.TransferUtils
 import net.minecraft.item.ItemStack
@@ -18,12 +22,16 @@ abstract class AbstractWorkableV2(
 
     private var itemOutputs: List<ItemStack> = emptyList()
 
+    open fun getTier(): Int {
+        return metaTileEntity.tier.numeric
+    }
+
     override fun update() {
         super.update()
         if (metaTileEntity.isRemote) return
 
         if (!progressTracker.isProcessingRecipe) {
-            val newJob = jobProvider.provide()
+            val newJob = jobProvider.provide(this.getTier(), metaTileEntity.importItems.toList())
             if (newJob != null) {
                 progressTracker.startProcessing(newJob.requiredWork)
                 this.itemOutputs = newJob.outputs
@@ -44,6 +52,24 @@ abstract class AbstractWorkableV2(
             else -> super.getCapability(capability, facing)
         }
     }
+
+    fun getProgressBar(syncManager: PanelSyncManager, showRecipes: Boolean = true): ProgressWidget {
+        val widget = ProgressWidget()
+            .size(22, 17)
+            .progress(this.progressTracker::getNormalizedProgress)
+            .texture(ClayGuiTextures.PROGRESS_BAR, 22)
+//        if (showRecipes && Mods.JustEnoughItems.isModLoaded) {
+//            widget.addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
+//                .listenGuiAction(IGuiAction.MousePressed { _ ->
+//                    if (!widget.isBelowMouse) return@MousePressed false
+//                    showRecipesInJei()
+//                    return@MousePressed true
+//                })
+//        }
+
+        return widget
+    }
+
 
     override fun serializeNBT(): NBTTagCompound {
         val nbt = super.serializeNBT()
