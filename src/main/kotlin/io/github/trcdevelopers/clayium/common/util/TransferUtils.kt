@@ -32,7 +32,7 @@ object TransferUtils {
      * @param simulate if true, the operation will be simulated. default = false
      * @return true if all stacks are inserted successfully
      */
-    fun insertToHandler(handler: IItemHandlerModifiable, stacks: List<ItemStack>, simulate: Boolean = false): Boolean {
+    fun insertToHandler(handler: IItemHandler, stacks: List<ItemStack>, simulate: Boolean = false): Boolean {
         val stacks = stacks.map(ItemStack::copy)
         if (simulate) {
             val copiedHandler = ItemStackHandler(handler.slots).apply {
