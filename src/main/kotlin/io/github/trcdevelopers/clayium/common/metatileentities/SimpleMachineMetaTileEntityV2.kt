@@ -13,6 +13,7 @@ import io.github.trcdevelopers.clayium.api.capability.impl.ClayEnergyHolder
 import io.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import io.github.trcdevelopers.clayium.api.capability.impl.NotifiableItemStackHandler
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
+import io.github.trcdevelopers.clayium.api.metatileentity.MteRenderingConfig
 import io.github.trcdevelopers.clayium.api.metatileentity.trait.AutoIoHandler
 import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode
@@ -28,7 +29,7 @@ class SimpleMachineMetaTileEntityV2(
     tier: ITier,
     validInputModes: List<MachineIoMode>,
     validOutputModes: List<MachineIoMode>,
-    private val recipeRegistry: RecipeRegistry<*>,
+    val recipeRegistry: RecipeRegistry<*>,
     private val inputSize: Int = recipeRegistry.maxInputs,
     private val outputSize: Int = recipeRegistry.maxOutputs,
     private val workableProvider: (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> Workable,
@@ -135,5 +136,9 @@ class SimpleMachineMetaTileEntityV2(
                 .syncHandler(InteractionSyncHandler().setOnMousePressed {
                     clayEnergyHolder.addEnergy(ClayEnergy(1))
                 }))
+    }
+
+    override val renderingConfig by lazy {
+        MteRenderingConfig.builder().face(ResourceLocation(metaTileEntityId.namespace, "blocks/${recipeRegistry.category.categoryName}")).build()
     }
 }

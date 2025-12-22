@@ -8,6 +8,7 @@ import io.github.trcdevelopers.clayium.api.unification.ore.OrePrefix
 import io.github.trcdevelopers.clayium.client.gui.GuiClayCraftingBoard
 import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
+import io.github.trcdevelopers.clayium.common.metatileentities.SimpleMachineMetaTileEntityV2
 import io.github.trcdevelopers.clayium.common.metatileentities.SolarClayFabricatorMetaTileEntity
 import io.github.trcdevelopers.clayium.common.recipe.CWTRecipes
 import io.github.trcdevelopers.clayium.common.recipe.ClayWorkTableRecipe
@@ -87,6 +88,9 @@ class JeiPlugin : IModPlugin {
             for (metaTileEntity in registry) {
                 when (metaTileEntity) {
                     is WorkableMetaTileEntity -> modRegistry.addRecipeCatalyst(metaTileEntity.asStackForm(),
+                        metaTileEntity.recipeRegistry.category.uniqueId)
+
+                    is SimpleMachineMetaTileEntityV2 -> modRegistry.addRecipeCatalyst(metaTileEntity.asStackForm(),
                         metaTileEntity.recipeRegistry.category.uniqueId)
 
                     is SolarClayFabricatorMetaTileEntity -> modRegistry.addRecipeCatalyst(metaTileEntity.asStackForm(),

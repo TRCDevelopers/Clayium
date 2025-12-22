@@ -3,6 +3,7 @@ package io.github.trcdevelopers.clayium.common.recipe
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import io.github.trcdevelopers.clayium.api.capability.IWorkingControllable
+import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.metatileentity.trait.OverclockHandler
 import io.github.trcdevelopers.clayium.api.recipe.RecipeProcessingJob
 import io.github.trcdevelopers.clayium.api.sync.ClayiumSyncManager
@@ -11,12 +12,15 @@ import net.minecraftforge.common.util.INBTSerializable
 
 open class RecipeProgressTracker(
     syncManager: ClayiumSyncManager,
-    private val ocHandler: OverclockHandler,
+    private val metaTileEntity: MetaTileEntity,
 ) : IWorkingControllable, INBTSerializable<NBTTagCompound> {
 
     private var state by syncManager.enum(State::class.java, State.IDLE)
     private var requiredProgress = 0L
     private var currentProgress = 0L
+
+    protected val ocHandler: OverclockHandler = metaTileEntity.overclockHandler
+    protected var canProgress = true
 
     val isProcessingRecipe get() = currentProgress != 0L
 
@@ -29,8 +33,15 @@ open class RecipeProgressTracker(
     fun updateServer() {
         if (state == State.DISABLED) return
 
-        if (isProcessingRecipe) {
+        if (metaTileEntity.offsetTimer % 20L == 0L) {
+            this.canProgress = this.canProgress()
+        }
+
+        if (this.canProgress && this.isProcessingRecipe) {
+            this.state = State.WORKING
             this.updateProgress()
+        } else {
+            this.state = State.IDLE
         }
     }
 
@@ -66,6 +77,10 @@ open class RecipeProgressTracker(
 
     protected open fun getProgressPerTick(): Long {
         return 1L
+    }
+
+    protected open fun canProgress(): Boolean {
+        return true
     }
 
     fun getNormalizedProgress(): Double {

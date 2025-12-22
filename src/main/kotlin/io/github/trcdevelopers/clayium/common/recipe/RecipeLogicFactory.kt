@@ -9,7 +9,7 @@ object RecipeLogicFactory {
     fun recipeLogicEnergy(metaTileEntity: MetaTileEntity, recipeRegistry: RecipeRegistry<*>, clayEnergyHolder: ClayEnergyHolder): Workable {
         return Workable(
             metaTileEntity,
-            RecipeProgressTrackerEnergy(metaTileEntity.clayiumSyncManager, metaTileEntity.overclockHandler, clayEnergyHolder),
+            RecipeProgressTrackerEnergy(metaTileEntity.clayiumSyncManager, metaTileEntity, clayEnergyHolder),
             RecipeLifecycleHandlerEnergy(metaTileEntity, recipeRegistry, clayEnergyHolder),
         )
     }
