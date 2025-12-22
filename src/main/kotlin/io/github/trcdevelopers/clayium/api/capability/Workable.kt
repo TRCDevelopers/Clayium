@@ -4,12 +4,10 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.ProgressWidget
 import io.github.trcdevelopers.clayium.api.metatileentity.MTETrait
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
-import io.github.trcdevelopers.clayium.api.recipe.RecipeJobProvider
+import io.github.trcdevelopers.clayium.api.recipe.RecipeLifecycleHandler
 import io.github.trcdevelopers.clayium.api.util.toList
 import io.github.trcdevelopers.clayium.common.gui.ClayGuiTextures
 import io.github.trcdevelopers.clayium.common.recipe.RecipeProgressTracker
-import io.github.trcdevelopers.clayium.common.util.TransferUtils
-import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
@@ -17,32 +15,25 @@ import net.minecraftforge.common.capabilities.Capability
 open class Workable(
     metaTileEntity: MetaTileEntity,
     private val progressTracker: RecipeProgressTracker,
-    private val jobProvider: RecipeJobProvider,
+    private val lifecycleHandler: RecipeLifecycleHandler,
 ) : MTETrait(metaTileEntity, "TODO_REPLACE_ME") {
 
-    private var itemOutputs: List<ItemStack> = emptyList()
-
     open fun getTier(): Int {
-        return metaTileEntity.tier.numeric
+        return this.metaTileEntity.tier.numeric
     }
 
     override fun update() {
         super.update()
-        if (metaTileEntity.isRemote) return
+        if (this.metaTileEntity.isRemote) return
 
-        if (!progressTracker.isProcessingRecipe) {
-            val newJob = jobProvider.provide(this.getTier(), metaTileEntity.importItems.toList(), metaTileEntity.overclockHandler.compensatedFactor)
-            if (newJob != null) {
-                progressTracker.startProcessing(newJob)
-                this.itemOutputs = newJob.outputs
-            }
+        if (!this.progressTracker.isProcessingRecipe) {
+            this.lifecycleHandler.tryStartCrafting(this.getTier(), this.metaTileEntity.importItems.toList())
         }
 
-        progressTracker.updateServer()
-        if (progressTracker.isCompleted()) {
-            progressTracker.reset()
-            TransferUtils.insertToHandler(metaTileEntity.exportItems, itemOutputs)
-            itemOutputs = emptyList()
+        this.progressTracker.updateServer()
+        if (this.progressTracker.isCompleted()) {
+            this.lifecycleHandler.completeCrafting()
+            this.progressTracker.reset()
         }
     }
 
@@ -75,12 +66,12 @@ open class Workable(
 
     override fun serializeNBT(): NBTTagCompound {
         val nbt = super.serializeNBT()
-        nbt.setTag("progressTracker", progressTracker.serializeNBT())
+        nbt.setTag("progressTracker", this.progressTracker.serializeNBT())
         return nbt
     }
 
     override fun deserializeNBT(data: NBTTagCompound) {
         super.deserializeNBT(data)
-        progressTracker.deserializeNBT(data.getCompoundTag("progressTracker"))
+        this.progressTracker.deserializeNBT(data.getCompoundTag("progressTracker"))
     }
 }

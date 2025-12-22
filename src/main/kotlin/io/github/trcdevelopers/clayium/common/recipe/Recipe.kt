@@ -6,7 +6,7 @@ import io.github.trcdevelopers.clayium.api.util.toList
 import io.github.trcdevelopers.clayium.common.recipe.chanced.ChancedOutputList
 import io.github.trcdevelopers.clayium.common.recipe.ingredient.CRecipeInput
 import net.minecraft.item.ItemStack
-import net.minecraftforge.items.IItemHandlerModifiable
+import net.minecraftforge.items.IItemHandler
 
 data class Recipe(
     val inputs: List<CRecipeInput>,
@@ -20,8 +20,7 @@ data class Recipe(
     val recipeTier: Int,
     val priority: Int = 0,
 ) {
-    fun matches(consumeOnMatch: Boolean, inputsIn: IItemHandlerModifiable, machineTier: Int): Boolean {
-
+    fun matches(consumeOnMatch: Boolean, inputsIn: IItemHandler, machineTier: Int): Boolean {
         if (this.recipeTier > machineTier) return false
         val (isItemsMatched, amountsToConsume) = matchesItems(inputsIn.toList())
         if (!isItemsMatched) return false

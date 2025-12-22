@@ -1,5 +1,6 @@
 package io.github.trcdevelopers.clayium.api.metatileentity.trait
 
+import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.block.IOverclockerBlock
 import io.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs
 import io.github.trcdevelopers.clayium.api.metatileentity.MTETrait
@@ -7,6 +8,7 @@ import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import kotlin.math.min
+import kotlin.math.pow
 
 class OverclockHandler(
     metaTileEntity: MetaTileEntity,
@@ -29,6 +31,16 @@ class OverclockHandler(
         private set
     var compensatedFactor = 1.0
         private set
+
+    /**
+     * Applies overclock to the recipe.
+     * @return { RawCEt, duration }
+     */
+    fun applyOverclock(cePerTick: ClayEnergy, duration: Long): LongArray {
+        val rawCEt = cePerTick.energy * compensatedFactor.pow(1.5)
+        val durationOCed = (duration / compensatedFactor)
+        return longArrayOf(rawCEt.toLong(), durationOCed.toLong())
+    }
 
     override fun onFirstTick() {
         super.onFirstTick()
