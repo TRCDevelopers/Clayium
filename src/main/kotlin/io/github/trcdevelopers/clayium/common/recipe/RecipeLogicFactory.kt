@@ -10,7 +10,7 @@ object RecipeLogicFactory {
         return Workable(
             metaTileEntity,
             RecipeProgressTrackerEnergy(metaTileEntity.clayiumSyncManager, metaTileEntity.overclockHandler, clayEnergyHolder),
-            RecipeRegistryJobProvider(recipeRegistry),
+            RecipeLifecycleHandlerEnergy(metaTileEntity, recipeRegistry, clayEnergyHolder),
         )
     }
 }

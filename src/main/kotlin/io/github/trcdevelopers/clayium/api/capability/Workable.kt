@@ -27,7 +27,10 @@ open class Workable(
         if (this.metaTileEntity.isRemote) return
 
         if (!this.progressTracker.isProcessingRecipe) {
-            this.lifecycleHandler.tryStartCrafting(this.getTier(), this.metaTileEntity.importItems.toList())
+            val newJob = this.lifecycleHandler.tryStartCrafting(this.getTier(), this.metaTileEntity.importItems.toList())
+            if (newJob != null) {
+                this.progressTracker.startProcessing(newJob)
+            }
         }
 
         this.progressTracker.updateServer()
