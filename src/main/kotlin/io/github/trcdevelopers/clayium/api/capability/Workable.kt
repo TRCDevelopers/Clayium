@@ -66,15 +66,16 @@ open class Workable(
         return widget
     }
 
-
     override fun serializeNBT(): NBTTagCompound {
         val nbt = super.serializeNBT()
         nbt.setTag("progressTracker", this.progressTracker.serializeNBT())
+        nbt.setTag("lifecycleHandler", this.lifecycleHandler.serializeNBT())
         return nbt
     }
 
     override fun deserializeNBT(data: NBTTagCompound) {
         super.deserializeNBT(data)
         this.progressTracker.deserializeNBT(data.getCompoundTag("progressTracker"))
+        this.lifecycleHandler.deserializeNBT(data.getCompoundTag("lifecycleHandler"))
     }
 }

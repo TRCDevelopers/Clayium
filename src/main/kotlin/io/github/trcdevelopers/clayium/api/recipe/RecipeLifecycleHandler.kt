@@ -1,6 +1,8 @@
 package io.github.trcdevelopers.clayium.api.recipe
 
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraftforge.common.util.INBTSerializable
 
 /**
  * Handles the lifecycle events of recipe processing.
@@ -11,7 +13,7 @@ import net.minecraft.item.ItemStack
  *
  * - Complete: Finalizes the job and handles output generation.
  */
-interface RecipeLifecycleHandler {
+interface RecipeLifecycleHandler : INBTSerializable<NBTTagCompound> {
     /**
      * @return RecipeProcessingJob if crafting can start, null otherwise.
      */
