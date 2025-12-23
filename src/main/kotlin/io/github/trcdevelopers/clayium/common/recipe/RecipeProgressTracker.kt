@@ -12,7 +12,7 @@ import net.minecraftforge.common.util.INBTSerializable
 
 open class RecipeProgressTracker(
     syncManager: ClayiumSyncManager,
-    private val metaTileEntity: MetaTileEntity,
+    protected val metaTileEntity: MetaTileEntity,
 ) : IWorkingControllable, INBTSerializable<NBTTagCompound> {
 
     private var state by syncManager.enum(State::class.java, State.IDLE)

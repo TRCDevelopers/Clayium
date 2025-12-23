@@ -7,4 +7,9 @@ class SolarRecipeProcessor(
     syncManager: ClayiumSyncManager,
     metaTileEntity: MetaTileEntity,
 ) : RecipeProgressTracker(syncManager, metaTileEntity) {
+    override fun canProgress(): Boolean {
+        val world = metaTileEntity.world ?: return false
+        val pos = metaTileEntity.pos ?: return false
+        return world.canSeeSky(pos.up())
+    }
 }
