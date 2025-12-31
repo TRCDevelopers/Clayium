@@ -54,14 +54,6 @@ open class Workable(
             .size(22, 17)
             .progress(this.progressTracker::getNormalizedProgress)
             .texture(ClayGuiTextures.PROGRESS_BAR, 22)
-//        if (showRecipes && Mods.JustEnoughItems.isModLoaded) {
-//            widget.addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
-//                .listenGuiAction(IGuiAction.MousePressed { _ ->
-//                    if (!widget.isBelowMouse) return@MousePressed false
-//                    showRecipesInJei()
-//                    return@MousePressed true
-//                })
-//        }
 
         return widget
     }
