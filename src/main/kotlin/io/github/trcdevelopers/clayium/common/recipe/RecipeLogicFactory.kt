@@ -6,7 +6,11 @@ import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 
 object RecipeLogicFactory {
-    fun recipeLogicEnergy(metaTileEntity: MetaTileEntity, recipeRegistry: RecipeRegistry<*>, clayEnergyHolder: ClayEnergyHolder): Workable {
+    fun recipeLogicEnergy(
+        metaTileEntity: MetaTileEntity,
+        recipeRegistry: RecipeRegistry<*>,
+        clayEnergyHolder: ClayEnergyHolder
+    ): Workable<RecipeProgressTrackerEnergy, RecipeLifecycleHandlerEnergy> {
         return Workable(
             metaTileEntity,
             RecipeProgressTrackerEnergy(metaTileEntity.clayiumSyncManager, metaTileEntity, clayEnergyHolder),

@@ -13,7 +13,7 @@ import kotlin.math.pow
  *
  * Output is automatically set if input material has clay property or can be set manually.
  * Duration is calculated by [requiredTicksCalculator], or can be set manually.
- * [cePerTick] is automatically calculated.
+ * [cePerTick] means CE generated / tick, and is calculated automatically.
  */
 class ClayFabricatorRecipeBuilder : RecipeBuilder<ClayFabricatorRecipeBuilder> {
 

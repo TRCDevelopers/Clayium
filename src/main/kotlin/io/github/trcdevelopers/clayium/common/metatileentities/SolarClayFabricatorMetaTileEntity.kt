@@ -69,6 +69,11 @@ class SolarClayFabricatorMetaTileEntity(
     }
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
+        syncManager.syncValue("clayEnergy", SyncHandlers.longNumber(
+            { workable.progressTracker.clayEnergy.energy },
+            { workable.progressTracker.clayEnergy = ClayEnergy(it) }
+        ))
+
         return super.buildMainParentWidget(syncManager)
             .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
                 .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup(2).buildLarge()
@@ -78,8 +83,8 @@ class SolarClayFabricatorMetaTileEntity(
                 .child(MuiSlots.itemSlotBuilder(exportItems, 0).singletonSlotGroup(0).takeOnly().buildLarge()
                     .align(Alignment.CenterRight))
             )
-//            .child(workable.createCeTextWidget(syncManager)
-//                .bottom(12).left(0).widthRel(0.5f))
+            .child(IKey.dynamic { workable.progressTracker.clayEnergy.formatWithTrailingZeros() }.asWidget()
+                .bottom(12).left(0).widthRel(0.5f))
     }
 
     override val renderingConfig by lazy {

@@ -32,14 +32,14 @@ class SimpleMachineMetaTileEntityV2(
     val recipeRegistry: RecipeRegistry<*>,
     private val inputSize: Int = recipeRegistry.maxInputs,
     private val outputSize: Int = recipeRegistry.maxOutputs,
-    private val workableProvider: (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> Workable,
+    private val workableProvider: (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> Workable<*, *>,
 ) : MetaTileEntity(metaTileEntityId, tier, validInputModes, validOutputModes, recipeRegistry.category.categoryName) {
 
     constructor(
         metaTileEntityId: ResourceLocation,
         tier: ITier,
         recipeRegistry: RecipeRegistry<*>,
-        workableProvider: (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> Workable,
+        workableProvider: (MetaTileEntity, RecipeRegistry<*>, ClayEnergyHolder) -> Workable<*, *>,
     ) : this(
         metaTileEntityId, tier,
         validInputModesLists[recipeRegistry.maxInputs], validOutputModesLists[recipeRegistry.maxOutputs],

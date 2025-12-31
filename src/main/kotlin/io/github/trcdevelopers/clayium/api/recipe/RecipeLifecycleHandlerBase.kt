@@ -24,7 +24,8 @@ abstract class RecipeLifecycleHandlerBase(
     protected var wasInputsInvalid = false
     protected var wasOutputsFull = false
 
-    protected var itemOutputs = emptyList<ItemStack>()
+    var itemOutputs: List<ItemStack> = emptyList()
+        protected set
 
     override fun tryStartCrafting(machineTier: Int, inputs: List<ItemStack>): RecipeProcessingJob? {
         if (this.shouldSearchForRecipe()) {

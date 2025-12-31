@@ -12,10 +12,10 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 
-open class Workable(
+open class Workable<T: RecipeProgressTracker, R: RecipeLifecycleHandler>(
     metaTileEntity: MetaTileEntity,
-    private val progressTracker: RecipeProgressTracker,
-    private val lifecycleHandler: RecipeLifecycleHandler,
+    val progressTracker: T,
+    val lifecycleHandler: R,
 ) : MTETrait(metaTileEntity, "TODO_REPLACE_ME") {
 
     open fun getTier(): Int {

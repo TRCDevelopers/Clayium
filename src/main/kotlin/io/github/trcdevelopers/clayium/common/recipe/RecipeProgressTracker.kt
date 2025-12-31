@@ -16,8 +16,10 @@ open class RecipeProgressTracker(
 ) : IWorkingControllable, INBTSerializable<NBTTagCompound> {
 
     private var state by syncManager.enum(State::class.java, State.IDLE)
-    private var requiredProgress = 0L
-    private var currentProgress = 0L
+    var requiredProgress = 0L
+        private set
+    var currentProgress = 0L
+        private set
 
     protected val ocHandler: OverclockHandler = metaTileEntity.overclockHandler
     protected var canProgress = true
