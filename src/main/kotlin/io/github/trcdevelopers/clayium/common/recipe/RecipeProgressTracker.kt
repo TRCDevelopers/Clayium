@@ -64,7 +64,7 @@ open class RecipeProgressTracker(
 
     override val isWorking: Boolean get() = this.state == State.WORKING
     override var isWorkingEnabled: Boolean
-        get() = this.state == State.DISABLED
+        get() = this.state != State.DISABLED
         set(value) {
             if (value) {
                 if (isProcessingRecipe) {
