@@ -25,7 +25,9 @@ object ClayiumTileCapabilities {
     lateinit var CONTROLLABLE: Capability<IWorkingControllable>
 
     @CapabilityInject(AbstractWorkable::class)
-    lateinit var WORKABLE: Capability<AbstractWorkable>
+    lateinit var ABSTRACT_WORKABLE: Capability<AbstractWorkable>
+    @CapabilityInject(Workable::class)
+    lateinit var WORKABLE: Capability<Workable<*, *>>
     @CapabilityInject(AbstractRecipeLogic::class)
     lateinit var RECIPE_LOGIC: Capability<AbstractRecipeLogic>
     @CapabilityInject(MultiblockLogic::class)

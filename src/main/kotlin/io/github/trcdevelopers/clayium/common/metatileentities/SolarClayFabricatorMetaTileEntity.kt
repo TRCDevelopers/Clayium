@@ -116,42 +116,6 @@ class SolarClayFabricatorMetaTileEntity(
         }
     }
 
-    private inner class SolarClayFabricatorRecipeLogic : AbstractRecipeLogic(this@SolarClayFabricatorMetaTileEntity, registry) {
-        private var clayEnergy = ClayEnergy.ZERO
-
-        override fun drawEnergy(ce: ClayEnergy, simulate: Boolean): Boolean {
-            val world = world ?: return false
-            val pos = pos ?: return false
-            if (!world.canSeeSky(pos.up())) return false
-
-            if (simulate) return true
-            clayEnergy += ce
-            return true
-        }
-
-        override fun completeWork() {
-            clayEnergy = ClayEnergy.ZERO
-            super.completeWork()
-        }
-
-        fun createCeTextWidget(syncManager: PanelSyncManager): TextWidget<*> {
-            syncManager.syncValue("clayEnergy", SyncHandlers.longNumber(
-                { clayEnergy.energy },
-                { clayEnergy = ClayEnergy(it) }
-            ))
-
-            return IKey.dynamic { clayEnergy.formatWithTrailingZeros() }.asWidget()
-        }
-
-        override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
-            super.addProbeInfo(mode, probeInfo, player, world, state, hitData)
-            if (this.isWorking) {
-                val cet = recipeCEt * overclockHandler.accelerationFactor
-                probeInfo.text("Generating ${TextFormatting.GREEN}${cet.format()}${TextFormatting.WHITE} CE/t")
-            }
-        }
-    }
-
     companion object {
         private val validInputModes = listOf(MachineIoMode.NONE, MachineIoMode.ALL)
     }

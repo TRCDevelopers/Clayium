@@ -245,7 +245,7 @@ abstract class AbstractWorkable(
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         return when {
             capability === ClayiumTileCapabilities.CONTROLLABLE -> capability.cast(this)
-            capability === ClayiumTileCapabilities.WORKABLE -> capability.cast(this)
+            capability === ClayiumTileCapabilities.ABSTRACT_WORKABLE -> capability.cast(this)
             else -> super.getCapability(capability, facing)
         }
     }

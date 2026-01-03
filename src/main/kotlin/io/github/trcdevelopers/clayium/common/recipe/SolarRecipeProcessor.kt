@@ -4,6 +4,7 @@ import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.recipe.RecipeProcessingJob
 import io.github.trcdevelopers.clayium.api.sync.ClayiumSyncManager
+import net.minecraft.nbt.NBTTagCompound
 
 class SolarRecipeProcessor(
     syncManager: ClayiumSyncManager,
@@ -32,11 +33,25 @@ class SolarRecipeProcessor(
     override fun reset() {
         super.reset()
         this.ceGeneratedPerTick = ClayEnergy.ZERO
+        this.clayEnergy = ClayEnergy.ZERO
     }
 
     override fun canProgress(): Boolean {
         val world = metaTileEntity.world ?: return false
         val pos = metaTileEntity.pos ?: return false
         return world.canSeeSky(pos.up())
+    }
+
+    override fun serializeNBT(): NBTTagCompound {
+        val data = super.serializeNBT()
+        data.setLong("clayEnergy", clayEnergy.energy)
+        data.setLong("ceGeneratedPerTick", ceGeneratedPerTick.energy)
+        return data
+    }
+
+    override fun deserializeNBT(nbt: NBTTagCompound) {
+        super.deserializeNBT(nbt)
+        this.clayEnergy = ClayEnergy(nbt.getLong("clayEnergy"))
+        this.ceGeneratedPerTick = ClayEnergy(nbt.getLong("ceGeneratedPerTick"))
     }
 }

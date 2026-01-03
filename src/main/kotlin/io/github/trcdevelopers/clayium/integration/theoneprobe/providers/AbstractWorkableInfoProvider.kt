@@ -1,8 +1,8 @@
 package io.github.trcdevelopers.clayium.integration.theoneprobe.providers
 
 import io.github.trcdevelopers.clayium.api.MOD_ID
+import io.github.trcdevelopers.clayium.api.capability.AbstractWorkable
 import io.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
-import io.github.trcdevelopers.clayium.api.capability.Workable
 import mcjty.theoneprobe.api.IProbeHitData
 import mcjty.theoneprobe.api.IProbeInfo
 import mcjty.theoneprobe.api.ProbeMode
@@ -11,15 +11,12 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 
-class WorkableInfoProvider : CapabilityInfoProvider<Workable<*, *>>() {
-    override val capability: Capability<Workable<*, *>> = ClayiumTileCapabilities.WORKABLE
+class AbstractWorkableInfoProvider : CapabilityInfoProvider<AbstractWorkable>() {
+    override val capability: Capability<AbstractWorkable> = ClayiumTileCapabilities.ABSTRACT_WORKABLE
 
-    override fun addProbeInfo(capability: Workable<*, *>, mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
+    override fun addProbeInfo(capability: AbstractWorkable, mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
         capability.addProbeInfo(mode, probeInfo, player, world, state, hitData)
     }
 
-    override fun getID(): String {
-        // do not change this, there was a v1 called "$MOD_ID:workable_info_provider"
-        return "$MOD_ID:workable_info_provider_v2"
-    }
+    override fun getID() = "$MOD_ID:workable_info_provider"
 }

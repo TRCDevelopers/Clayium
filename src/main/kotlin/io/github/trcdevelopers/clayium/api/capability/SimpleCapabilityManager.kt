@@ -30,6 +30,7 @@ object SimpleCapabilityManager {
         registerCapabilityWithNoDefault(IClayLaserSource::class.java)
         registerCapabilityWithNoDefault(IClayLaserAcceptor::class.java)
         registerCapabilityWithNoDefault(IWorkingControllable::class.java)
+        registerCapabilityWithNoDefault(Workable::class.java)
         registerCapabilityWithNoDefault(AbstractWorkable::class.java)
         registerCapabilityWithNoDefault(AbstractRecipeLogic::class.java)
         registerCapabilityWithNoDefault(MultiblockLogic::class.java)
