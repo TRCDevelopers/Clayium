@@ -123,6 +123,7 @@ open class Workable<T: RecipeProgressTracker, R: RecipeLifecycleHandler>(
                     .borderColor(BORDER_COLOR)
                     .numberFormat(NumberFormat.COMMAS)
             )
+            this.progressTracker.addProbeInfo(mode, probeInfo, player, world, state, hitData)
         }
 
         if (!isWorkingEnabled) {

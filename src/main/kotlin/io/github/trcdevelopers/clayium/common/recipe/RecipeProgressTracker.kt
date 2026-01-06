@@ -7,8 +7,16 @@ import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.metatileentity.trait.OverclockHandler
 import io.github.trcdevelopers.clayium.api.recipe.RecipeProcessingJob
 import io.github.trcdevelopers.clayium.api.sync.ClayiumSyncManager
+import io.github.trcdevelopers.clayium.api.util.Mods
+import mcjty.theoneprobe.api.IProbeHitData
+import mcjty.theoneprobe.api.IProbeInfo
+import mcjty.theoneprobe.api.ProbeMode
+import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.world.World
 import net.minecraftforge.common.util.INBTSerializable
+import net.minecraftforge.fml.common.Optional
 
 open class RecipeProgressTracker(
     syncManager: ClayiumSyncManager,
@@ -108,6 +116,13 @@ open class RecipeProgressTracker(
         this.currentProgress = nbt.getLong("currentProgress")
         this.state = State.entries.getOrNull(nbt.getInteger("state")) ?: State.IDLE
     }
+
+    /**
+     * Called after the Workable has added its own info.
+     * Must be annotated with `@Optional.Method(modid = Mods.Names.THE_ONE_PROBE)`
+     */
+    @Optional.Method(modid = Mods.Names.THE_ONE_PROBE)
+    open fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {}
 
     enum class State {
         IDLE, WORKING, DISABLED

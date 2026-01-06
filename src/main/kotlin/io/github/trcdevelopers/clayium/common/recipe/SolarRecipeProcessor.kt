@@ -4,7 +4,16 @@ import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.recipe.RecipeProcessingJob
 import io.github.trcdevelopers.clayium.api.sync.ClayiumSyncManager
+import io.github.trcdevelopers.clayium.api.util.Mods
+import mcjty.theoneprobe.api.IProbeHitData
+import mcjty.theoneprobe.api.IProbeInfo
+import mcjty.theoneprobe.api.ProbeMode
+import mcjty.theoneprobe.api.TextStyleClass
+import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.world.World
+import net.minecraftforge.fml.common.Optional
 
 class SolarRecipeProcessor(
     syncManager: ClayiumSyncManager,
@@ -53,5 +62,10 @@ class SolarRecipeProcessor(
         super.deserializeNBT(nbt)
         this.clayEnergy = ClayEnergy(nbt.getLong("clayEnergy"))
         this.ceGeneratedPerTick = ClayEnergy(nbt.getLong("ceGeneratedPerTick"))
+    }
+
+    @Optional.Method(modid = Mods.Names.THE_ONE_PROBE)
+    override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
+        probeInfo.text("${TextStyleClass.OK}${this.ceGeneratedPerTick.format()}${TextStyleClass.INFO}/t")
     }
 }
