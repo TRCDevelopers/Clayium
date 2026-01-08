@@ -8,10 +8,10 @@ import io.github.trcdevelopers.clayium.api.util.Mods
 import mcjty.theoneprobe.api.IProbeHitData
 import mcjty.theoneprobe.api.IProbeInfo
 import mcjty.theoneprobe.api.ProbeMode
-import mcjty.theoneprobe.api.TextStyleClass
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.Optional
 
@@ -66,6 +66,6 @@ class SolarRecipeProcessor(
 
     @Optional.Method(modid = Mods.Names.THE_ONE_PROBE)
     override fun addProbeInfo(mode: ProbeMode, probeInfo: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, hitData: IProbeHitData) {
-        probeInfo.text("${TextStyleClass.OK}${this.ceGeneratedPerTick.format()}${TextStyleClass.INFO}/t")
+        probeInfo.text("${TextFormatting.GREEN}${this.ceGeneratedPerTick.format()} ${TextFormatting.WHITE}CE/t")
     }
 }

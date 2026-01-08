@@ -5,11 +5,9 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.capability.Workable
-import io.github.trcdevelopers.clayium.api.capability.impl.AbstractRecipeLogic
 import io.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
 import io.github.trcdevelopers.clayium.api.capability.impl.NotifiableItemStackHandler
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
@@ -26,16 +24,9 @@ import io.github.trcdevelopers.clayium.common.recipe.registry.RecipeRegistry
 import io.github.trcdevelopers.clayium.common.util.TransferUtils
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
 import io.github.trcdevelopers.clayium.integration.modularui.injectShowRecipesButton
-import mcjty.theoneprobe.api.IProbeHitData
-import mcjty.theoneprobe.api.IProbeInfo
-import mcjty.theoneprobe.api.ProbeMode
-import net.minecraft.block.state.IBlockState
-import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
-import net.minecraft.util.text.TextFormatting
-import net.minecraft.world.World
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
@@ -83,7 +74,7 @@ class SolarClayFabricatorMetaTileEntity(
                 .child(MuiSlots.itemSlotBuilder(exportItems, 0).singletonSlotGroup(0).takeOnly().buildLarge()
                     .align(Alignment.CenterRight))
             )
-            .child(IKey.dynamic { workable.progressTracker.clayEnergy.formatWithTrailingZeros() }.asWidget()
+            .child(IKey.dynamic { workable.progressTracker.clayEnergy.formatWithTrailingZerosAndUnit() }.asWidget()
                 .bottom(12).left(0).widthRel(0.5f))
     }
 

@@ -150,7 +150,7 @@ class PanDuplicatorMetaTileEntity(
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
-        tooltip.add("CE Consumption Rate: ${maxCeConsumptionRate.format()}/t")
+        tooltip.add("CE Consumption Rate: ${maxCeConsumptionRate.format()} CE/t")
     }
 
     override fun bakeQuads(getter: Function<ResourceLocation, TextureAtlasSprite>, faceBakery: FaceBakery) {

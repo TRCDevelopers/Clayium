@@ -244,7 +244,7 @@ class PanCoreMetaTileEntity(
                         val flag = if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips) ITooltipFlag.TooltipFlags.ADVANCED else ITooltipFlag.TooltipFlags.NORMAL
                         tooltip.addStringLines(stack.getTooltip(data.player, flag))
                     }
-                    tooltip.add(entry.ce.format())
+                    tooltip.add("${entry.ce.format()} CE")
                 }
                 .also {
                     if (!entry.isAllowedToDuplicate) {

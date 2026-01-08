@@ -652,7 +652,7 @@ tile.clayium.colored_silicone.black.name=Black Silicone Block
 
 machine.clayium.energy_converter=%s CE-FE Converter
 gui.clayium.energy_converter.storage=%1$sFE/%2$sFE
-gui.clayium.energy_converter.rate=%1$s/t -> %2$sFE/t
+gui.clayium.energy_converter.rate=%1$sCE/t -> %2$sFE/t
 gui.clayium.energy_converter.output=Output\: %1$sFE/t
 gui.clayium.energy_converter.overclock=Overclock\: x%1$s
 gui.clayium.energy_converter.overclockExponent=OC\: %1$s ^ %2$s = %3$s
@@ -661,7 +661,7 @@ machine.clayium.energy_converter.tooltip2=__DETAIL__
 machine.clayium.energy_converter.tooltip3=Power emission will stop when a redstone signal is applied.
 machine.clayium.energy_converter.tooltip4=Overclocker increases output FE/t.
 machine.clayium.energy_converter.tooltip5=Edit clayium.cfg to enable recipes for Converters.
-machine.clayium.energy_converter.tooltip.rate=%1$s/t -> %2$sFE/t
+machine.clayium.energy_converter.tooltip.rate=%1$sCE/t -> %2$sFE/t
 machine.clayium.energy_converter.tooltip.output=Output\: %1$sFE/t
 
 tile.clayium.metal_chest=%s Chest

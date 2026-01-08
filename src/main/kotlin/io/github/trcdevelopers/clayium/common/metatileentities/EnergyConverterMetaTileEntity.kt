@@ -123,6 +123,7 @@ class EnergyConverterMetaTileEntity(
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         super.addInformation(stack, worldIn, tooltip, flagIn)
+        // translated string has CE/t and FE/t units
         tooltip.add(I18n.format("machine.clayium.energy_converter.tooltip.rate", cePerTick.format(), fePerTick))
         tooltip.add(I18n.format("machine.clayium.energy_converter.tooltip.output", fePerTick))
     }

@@ -618,7 +618,7 @@ tile.clayium.colored_silicone.black.name=黒色シリコーンブロック
 machine.clayium.energy_converter=%s CE-FE コンバーター
 machine.clayium.energy_converter.basic=CE-FE コンバーター
 gui.clayium.energy_converter.storage=%1$sFE/%2$sFE
-gui.clayium.energy_converter.rate=%1$s/t -> %2$sFE/t
+gui.clayium.energy_converter.rate=%1$sCE/t -> %2$sFE/t
 gui.clayium.energy_converter.output=出力: %1$sFE/t
 gui.clayium.energy_converter.overclock=オーバークロック: x%1$s
 gui.clayium.energy_converter.overclockExponent=OC: %1$s ^ %2$s = %3$s
@@ -627,7 +627,7 @@ machine.clayium.energy_converter.tooltip2=__DETAIL__
 machine.clayium.energy_converter.tooltip3=赤石信号によりエネルギー出力を止められる
 machine.clayium.energy_converter.tooltip4=オーバークロッカーにより出力 FE/t を増大できる
 machine.clayium.energy_converter.tooltip5=コンフィグでこれを作成するレシピが有効化できる
-machine.clayium.energy_converter.tooltip.rate=%1$s/t -> %2$sFE/t
+machine.clayium.energy_converter.tooltip.rate=%1$sCE/t -> %2$sFE/t
 machine.clayium.energy_converter.tooltip.output=出力: %1$sFE/t
 
 tile.clayium.metal_chest=%sチェスト
@@ -816,4 +816,4 @@ clayium.config.metal_chest=金属チェスト設定
 clayium.config.tier_balance=Tierバランス設定
 clayium.config.mod_integration=連携レシピ設定
 clayium.config.mod_integration.all_toggle=連携レシピを有効化
-clayium.config.レシピ設定
+clayium.config.recipe=レシピ設定

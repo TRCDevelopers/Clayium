@@ -30,6 +30,10 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
 
     val actualValue: Double get() = energy / 100_000.0
 
+    fun formatWithTrailingZerosAndUnit(): String {
+        return "${this.formatWith(numberFormat)}CE"
+    }
+
     fun formatWithTrailingZeros(): String {
         return this.formatWith(numberFormat)
     }
@@ -39,7 +43,7 @@ value class ClayEnergy(val energy: Long) : Comparable<ClayEnergy> {
     }
 
     fun formatWith(formatter: CNumberFormat): String {
-        return "${formatter.format(actualValue)}CE"
+        return formatter.format(actualValue)
     }
 
     override fun toString(): String {
