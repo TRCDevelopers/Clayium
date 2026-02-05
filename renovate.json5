@@ -33,6 +33,12 @@
       matchFileNames: ["**/mod_dependencies.gradle"],
       enabled: true,
       groupName: "Mod Dependencies",
+    },
+    {
+      // renovate updates Sakura MOD to a different MC Version which breaks the build
+      matchManagers: ["gradle"],
+      matchPackageNames: ["maven.modrinth:sakura_mod", "maven.modrinth:mmlib"],
+      enabled: false
     }
   ]
 }
