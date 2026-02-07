@@ -37,6 +37,10 @@ class MerchantRecipeListSyncValue(
         return !isEqual
     }
 
+    override fun notifyUpdate() {
+        this.setValue(this.getter.get(), setSource = false, sync = true)
+    }
+
     override fun write(buffer: PacketBuffer) {
         this.cache!!.writeToBuf(buffer)
     }
@@ -47,5 +51,9 @@ class MerchantRecipeListSyncValue(
 
     override fun getValue(): MerchantRecipeList? {
         return this.cache
+    }
+
+    override fun getValueType(): Class<MerchantRecipeList> {
+        return MerchantRecipeList::class.java
     }
 }
