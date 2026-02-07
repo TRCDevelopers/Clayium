@@ -117,10 +117,8 @@ class MultiTrackBufferMetaTileEntity(
         (0..<trackRow).forEach { syncManager.registerSlotGroup("mt_buffer_inv_${it}", 1) }
         val slotsRowString = "I".repeat(trackInvSize)
         return ModularPanel("multi_track_buffer")
-            .flex {
-                it.size(max(GUI_DEFAULT_WIDTH, trackInvSize * 18 + 4 + 18 + /* margin*/ 12), 18 + trackRow * 18 + 94 + 2)
-                it.align(Alignment.Center)
-            }
+            .size(max(GUI_DEFAULT_WIDTH, trackInvSize * 18 + 4 + 18 + /* margin*/ 12), 18 + trackRow * 18 + 94 + 2)
+            .align(Alignment.Center)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
                     .child(Column().width(trackInvSize * 18 + 4 + 18).height(trackRow * 18)

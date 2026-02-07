@@ -30,11 +30,17 @@ class MerchantRecipeListSyncValue(
         val value = this.getter.get()
         val valueNbt = value.map { it.writeToTags() }
         val cacheNbt = this.cacheNbt
-        val isEqual = cacheNbt != null && valueNbt.zip(cacheNbt).all { (t1, t2) -> t1 == t2 }
+        val isEqual = cacheNbt != null
+                && valueNbt.size == cacheNbt.size
+                && valueNbt.zip(cacheNbt).all { (t1, t2) -> t1 == t2 }
         if (isFirstSync || !isEqual) {
             setValue(value, setSource = false, sync = false)
         }
         return !isEqual
+    }
+
+    override fun notifyUpdate() {
+        this.setValue(this.getter.get(), setSource = false, sync = true)
     }
 
     override fun write(buffer: PacketBuffer) {
@@ -47,5 +53,9 @@ class MerchantRecipeListSyncValue(
 
     override fun getValue(): MerchantRecipeList? {
         return this.cache
+    }
+
+    override fun getValueType(): Class<MerchantRecipeList> {
+        return MerchantRecipeList::class.java
     }
 }
