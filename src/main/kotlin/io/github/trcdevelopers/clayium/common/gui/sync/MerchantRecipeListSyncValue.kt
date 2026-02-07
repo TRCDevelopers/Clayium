@@ -30,7 +30,9 @@ class MerchantRecipeListSyncValue(
         val value = this.getter.get()
         val valueNbt = value.map { it.writeToTags() }
         val cacheNbt = this.cacheNbt
-        val isEqual = cacheNbt != null && valueNbt.zip(cacheNbt).all { (t1, t2) -> t1 == t2 }
+        val isEqual = cacheNbt != null
+                && valueNbt.size == cacheNbt.size
+                && valueNbt.zip(cacheNbt).all { (t1, t2) -> t1 == t2 }
         if (isFirstSync || !isEqual) {
             setValue(value, setSource = false, sync = false)
         }
