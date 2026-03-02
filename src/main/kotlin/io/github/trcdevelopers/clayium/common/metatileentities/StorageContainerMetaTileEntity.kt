@@ -424,8 +424,10 @@ class StorageContainerMetaTileEntity(
 
     private inner class StorageContainerExportItems : IItemHandlerModifiable {
         override fun setStackInSlot(slot: Int, stack: ItemStack) {
-            // this method should be called only for exporting item.
-            if (slot != 0 || stack.isItemEqual(currentInsertedStack)) return
+            if (slot != 0) return
+            // Changing the item is not allowed if there are still items stored
+            if (!stack.canActuallyStack(currentInsertedStack)) return
+
             val currentSlotAmount = min(itemsStored, 64)
             val amountAfterExtraction = stack.count
             val extractedAmount = currentSlotAmount - amountAfterExtraction

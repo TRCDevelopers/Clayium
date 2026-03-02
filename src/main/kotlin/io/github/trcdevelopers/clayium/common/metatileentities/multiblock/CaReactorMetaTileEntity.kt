@@ -144,7 +144,7 @@ class CaReactorMetaTileEntity(
                         }
                     }
                     else -> {
-                        errorMsg = TextComponentTranslation("message.clayium.ca_reactor.invalid_coil", coilPos)
+                        errorMsg = TextComponentTranslation("message.clayium.ca_reactor.invalid_block",block.registryName, pos)
                         return Invalid
                     }
                 }
