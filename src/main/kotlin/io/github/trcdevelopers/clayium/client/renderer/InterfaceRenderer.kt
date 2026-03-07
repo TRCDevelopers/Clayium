@@ -75,7 +75,7 @@ object InterfaceRenderer {
         CRenderUtils.enableXray()
         GlStateManager.disableTexture2D()
         run {
-            if (targetDimensionId == tileEntity.world.provider?.dimension) {
+            if (targetDimensionId == tileEntity.world?.provider?.dimension) {
                 val offsetPos = targetPos.subtract(tileEntity.pos)
 
                 val tessellator = Tessellator.getInstance()
