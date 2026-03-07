@@ -21,7 +21,7 @@ plugins {
     id("java-library")
     kotlin("jvm") version libs.versions.kotlinVersion
     id("maven-publish")
-    id("org.jetbrains.gradle.plugin.idea-ext") version "1.4"
+    id("org.jetbrains.gradle.plugin.idea-ext") version "1.4.1"
     id("eclipse")
     id("com.gtnewhorizons.retrofuturagradle") version "1.4.9"
 }
