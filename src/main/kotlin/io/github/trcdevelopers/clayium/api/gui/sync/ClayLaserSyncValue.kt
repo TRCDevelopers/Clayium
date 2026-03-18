@@ -8,7 +8,7 @@ import java.util.function.Consumer
 import java.util.function.Supplier
 
 @Suppress("DEPRECATION")
-@Deprecated("This class depends on ModularUI APIs that are scheduled for removal in version 3.2.0. Use `GenericSyncValue.builder()` directly instead. Refer to the `useBuilder` method in this class a migration example.",
+@Deprecated("This class depends on ModularUI APIs that are scheduled for removal in version 3.2.0. Use `GenericSyncValue.builder()` directly instead. Refer to the `useBuilder` method in this class for a migration example.",
     ReplaceWith("GenericSyncValue.builder(ClayLaser::class.java)"),
 )
 @ApiStatus.ScheduledForRemoval(inVersion = "1.0.0.0")
