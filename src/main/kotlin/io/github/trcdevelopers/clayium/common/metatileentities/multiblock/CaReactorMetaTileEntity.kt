@@ -232,7 +232,7 @@ class CaReactorMetaTileEntity(
                     else
                         I18n.format("gui.clayium.ca_reactor.invalid")
                 })
-                .align(Alignment.BottomRight)
+                .bottom(0).right(0)
                 .syncHandler(InteractionSyncHandler().setOnMousePressed { mouseData ->
                     if (multiblockLogic.structureFormed || mouseData.isClient) return@setOnMousePressed
                     val err = errorMsg ?: return@setOnMousePressed
@@ -240,7 +240,7 @@ class CaReactorMetaTileEntity(
                 })
             )
             .child(IKey.dynamic { SidelessI18n.format("gui.clayium.ca_reactor.efficiency", efficiency) }
-                .asWidget().width(120).textAlign(Alignment.CenterRight).alignX(Alignment.BottomRight.x).bottom(14)
+                .asWidget().width(120).textAlign(Alignment.CenterRight).right(0).bottom(14)
             )
             .child(IKey.dynamic { SidelessI18n.format("gui.clayium.ca_reactor.rank_size", avgHullRank, hullCount) }
                 .asWidget().width(100).textAlign(Alignment.CenterLeft).left(0).top(10))

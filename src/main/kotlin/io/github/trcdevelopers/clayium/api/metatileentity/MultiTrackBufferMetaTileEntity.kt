@@ -118,11 +118,11 @@ class MultiTrackBufferMetaTileEntity(
         val slotsRowString = "I".repeat(trackInvSize)
         return ModularPanel("multi_track_buffer")
             .size(max(GUI_DEFAULT_WIDTH, trackInvSize * 18 + 4 + 18 + /* margin*/ 12), 18 + trackRow * 18 + 94 + 2)
-            .align(Alignment.Center)
+            .center()
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
                     .child(Column().width(trackInvSize * 18 + 4 + 18).height(trackRow * 18)
-                        .align(Alignment.Center)
+                        .center()
                         .also { column ->
                             for ((i, handler) in tracks.withIndex()) {
                                 column.child(Row().width(trackInvSize * 18 + 4 + 18).height(18)
@@ -137,7 +137,7 @@ class MultiTrackBufferMetaTileEntity(
                                         .build())
                                     .child(MuiSlots.phantomSlot(filtersHandler, i)
                                         .background(ClayGuiTextures.M_TRACK_FILTER_SLOTS[i])
-                                        .align(Alignment.CenterRight)))
+                                        .right(0).verticalCenter()))
                             }
                         }
                     )

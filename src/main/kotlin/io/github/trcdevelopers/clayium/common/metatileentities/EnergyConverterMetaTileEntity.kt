@@ -91,10 +91,10 @@ class EnergyConverterMetaTileEntity(
         syncManager.syncValue("feStorage", SyncHandlers.intNumber(feStorage::getEnergyStored, feStorage::setEnergy))
         return super.buildMainParentWidget(syncManager)
             .child(clayEnergyHolder.createSlotWidget()
-                .align(Alignment.BottomRight))
+                .right(0).bottom(0))
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .left(0).bottom(10))
-            .child(Column().widthRel(1f).height(8 * 3 + 3 * 2 + 10).align(Alignment.Center)
+            .child(Column().widthRel(1f).height(8 * 3 + 3 * 2 + 10).center()
                 .child(IKey.dynamic { SidelessI18n.format("gui.clayium.energy_converter.storage", feStorage.energyStored, feStorage.maxEnergyStored) }
                     .asWidget().widthRel(1f))
                 .child(IKey.dynamic { SidelessI18n.format("gui.clayium.energy_converter.rate", cePerTick.format(), fePerTick) }

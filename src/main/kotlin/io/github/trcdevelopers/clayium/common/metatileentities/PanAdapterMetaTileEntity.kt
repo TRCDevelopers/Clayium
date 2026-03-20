@@ -205,12 +205,12 @@ class PanAdapterMetaTileEntity(
                 .key('I') { MuiSlots.itemSlotBuilder(result, it).lock().build() }
                 .build()
             Row().widthRel(1f).height(64)
-                .child(Grid().width(32).heightRel(1f).align(Alignment.TopLeft)
+                .child(Grid().width(32).heightRel(1f).left(0).top(0)
                     .minElementMargin(0, 0)
                     .matrix(buttons)
                 )
                 .child(slots.left(32 + 8))
-                .child(resultSlots.align(Alignment.TopRight))
+                .child(resultSlots.right(0).top(0))
         }
         return ModularPanel.defaultPanel("pan_adapter", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 32)
             .columnWithPlayerInv {

@@ -56,7 +56,7 @@ class ClayBlastFurnaceMetaTileEntity(
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(multiblockLogic.tierTextWidget(syncManager)
-                .align(Alignment.BottomCenter))
+                .horizontalCenter().bottom(0))
     }
 
     override fun createMetaTileEntity(): MetaTileEntity {

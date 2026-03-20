@@ -86,13 +86,13 @@ class WaterwheelMetaTileEntity(
             .child(Column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
-                        .align(Alignment.TopLeft))
+                        .left(0).top(0))
                     .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
+                        .left(0).bottom(0))
                     .child(IKey.dynamic { SidelessI18n.format("gui.clayium.waterwheel.waters", waterCount) }.asWidget()
-                        .widthRel(0.3f).align(Alignment.CenterRight))
+                        .widthRel(0.3f).right(0).verticalCenter())
                     .child(IKey.dynamic { SidelessI18n.format("gui.clayium.waterwheel.progress", progress) }.asWidget()
-                        .widthRel(0.6f).align(Alignment.CenterLeft)))
+                        .widthRel(0.6f).left(0).verticalCenter()))
                 .child(MuiSlots.playerInventory(0)))
     }
 

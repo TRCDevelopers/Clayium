@@ -95,7 +95,7 @@ class ClayReactorMetaTileEntity(
                 .asWidget().width(70).textAlign(Alignment.Center)
                 .pos(102, 53))
             .child(multiblockLogic.tierTextWidget(syncManager)
-                .alignX(Alignment.Center.x).bottom(12))
+                .horizontalCenter().bottom(12))
     }
 
     override fun acceptLaser(irradiatedSide: EnumFacing, laser: ClayLaser?) {

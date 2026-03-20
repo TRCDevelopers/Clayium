@@ -79,7 +79,7 @@ class ClayBufferMetaTileEntity(
             .child(
                 TextWidget(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)))
                     .margin(6)
-                    .align(Alignment.TopLeft))
+                    .left(0).top(0))
             .child(Column()
                 .marginTop(18)
                 .child(SlotGroupWidget.builder()

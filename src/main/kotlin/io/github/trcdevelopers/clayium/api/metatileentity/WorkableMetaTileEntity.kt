@@ -59,12 +59,12 @@ abstract class WorkableMetaTileEntity(
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         val slotsAndProgressBar = Row()
             .widthRel(0.7f).height(26)
-            .align(Alignment.Center)
-            .child(workable.getProgressBar(syncManager).align(Alignment.Center))
+            .center()
+            .child(workable.getProgressBar(syncManager).center())
 
         if (importItems.slots == 1) {
             slotsAndProgressBar.child(
-                MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().build().align(Alignment.CenterLeft)
+                MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().build().left(0).verticalCenter()
             )
         } else if (importItems.slots == 2) {
             syncManager.registerSlotGroup("input_inv", 1)
@@ -76,12 +76,12 @@ abstract class WorkableMetaTileEntity(
                                 if (index == 0) background(ClayGuiTextures.IMPORT_1_SLOT) else background(ClayGuiTextures.IMPORT_2_SLOT)
                             }}
                     .build()
-                    .align(Alignment.CenterLeft))
+                    .left(0).verticalCenter())
         }
         if (exportItems.slots == 1) {
             slotsAndProgressBar.child(
                 MuiSlots.itemSlotBuilder(exportItems, 0).singletonSlotGroup().takeOnly().buildLarge()
-            .align(Alignment.CenterRight))
+            .right(0).verticalCenter())
         } else if (exportItems.slots == 2) {
             syncManager.registerSlotGroup("output_inv", 1)
             slotsAndProgressBar.child(
@@ -96,20 +96,20 @@ abstract class WorkableMetaTileEntity(
                             }
                     }
                     .build()
-                    .align(Alignment.CenterRight)
+                    .right(0).verticalCenter()
             )
         }
 
         return super.buildMainParentWidget(syncManager)
-            .child(slotsAndProgressBar.align(Alignment.Center))
+            .child(slotsAndProgressBar.center())
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .name("CE Text")
                 .bottom(12).left(0))
             .child(clayEnergyHolder.createSlotWidget()
                 .name("CE Slot")
-                .align(Alignment.BottomRight))
+                .right(0).bottom(0))
             .childIf(tier.numeric < 3, ButtonWidget()
-                .size(16, 16).align(Alignment.BottomCenter)
+                .size(16, 16).horizontalCenter().bottom(0)
                 .overlay(ClayGuiTextures.CE_BUTTON)
                 .hoverOverlay(ClayGuiTextures.CE_BUTTON_HOVERED)
                 .syncHandler(InteractionSyncHandler().setOnMousePressed {

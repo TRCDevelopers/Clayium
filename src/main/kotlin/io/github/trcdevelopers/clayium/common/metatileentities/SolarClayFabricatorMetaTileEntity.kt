@@ -60,12 +60,12 @@ class SolarClayFabricatorMetaTileEntity(
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
-            .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
+            .child(Row().widthRel(0.7f).height(26).center()
                 .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup(2).buildLarge()
-                    .align(Alignment.CenterLeft))
-                .child(workable.getProgressBar(syncManager).align(Alignment.Center))
+                    .left(0).verticalCenter())
+                .child(workable.getProgressBar(syncManager).center())
                 .child(MuiSlots.itemSlotBuilder(exportItems, 0).singletonSlotGroup(0).takeOnly().buildLarge()
-                    .align(Alignment.CenterRight))
+                    .right(0).verticalCenter())
             )
             .child(workable.createCeTextWidget(syncManager)
                 .bottom(12).left(0).widthRel(0.5f))

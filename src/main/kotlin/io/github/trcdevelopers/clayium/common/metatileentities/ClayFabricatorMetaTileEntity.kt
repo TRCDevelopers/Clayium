@@ -64,13 +64,13 @@ class ClayFabricatorMetaTileEntity(
         syncManager.syncValue("clay_energy", SyncHandlers.longNumber({ workable.currentCe.energy }, { workable.currentCe = ClayEnergy(it) }))
         val slotsAndProgressBar = Row().widthRel(0.7f).height(26)
             .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().buildLarge()
-                .align(Alignment.CenterLeft))
-            .child(workable.getProgressBar(syncManager).align(Alignment.Center))
+                .left(0).verticalCenter())
+            .child(workable.getProgressBar(syncManager).center())
             .child(MuiSlots.itemSlotBuilder(exportItems, 0).takeOnly().buildLarge()
-                .align(Alignment.CenterRight))
+                .right(0).verticalCenter())
 
         return super.buildMainParentWidget(syncManager)
-            .child(slotsAndProgressBar.align(Alignment.Center))
+            .child(slotsAndProgressBar.center())
             .child(IKey.dynamic { workable.currentCe.formatWithTrailingZeros() }.asWidget().width(60)
                 .left(0).bottom(10))
     }

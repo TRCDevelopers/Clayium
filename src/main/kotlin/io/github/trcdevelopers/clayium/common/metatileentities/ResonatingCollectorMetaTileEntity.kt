@@ -77,13 +77,13 @@ class ResonatingCollectorMetaTileEntity(
             .child(IKey.dynamic {
                 SidelessI18n.format("gui.$MOD_ID.resonance", numberFormatter.format(resonanceManager.resonance))
             }.asWidget().width(90).textAlign(Alignment.BottomRight)
-                .align(Alignment.BottomRight))
+                .right(0).bottom(0))
             .child(SlotGroupWidget.builder()
                 .matrix("III", "III", "III")
                 .key('I') { i ->
                     MuiSlots.itemSlotBuilder(itemInventory, i)
                         .slotGroup("machine_inventory").build()
-                }.build().align(Alignment.Center))
+                }.build().center())
     }
 
     override val renderingConfig by lazy {

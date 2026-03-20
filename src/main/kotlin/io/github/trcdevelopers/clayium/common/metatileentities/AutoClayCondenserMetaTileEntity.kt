@@ -80,7 +80,7 @@ class AutoClayCondenserMetaTileEntity(
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
                     .child(Row().widthRel(1f).height(18 * 4)
-                        .align(Alignment.Center)
+                        .center()
                         .child(SlotGroupWidget.builder()
                             .matrix(*matrix)
                             .key('I') {
@@ -88,10 +88,10 @@ class AutoClayCondenserMetaTileEntity(
                                     .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null }
                                     .slotGroup("compressor_inventory").build()
                             }
-                            .build().align(Alignment.Center))
+                            .build().center())
                         .child(MuiSlots.phantomSlotBuilder(maxCompressedClay, 0)
                             .filter { getMaterial(it)?.getPropOrNull(CPropertyKey.CLAY) != null }.build()
-                            .align(Alignment.TopRight)
+                            .top(0).right(0)
                             .background(ClayGuiTextures.CLAY_SLOT))
                     )
                 )

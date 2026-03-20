@@ -265,13 +265,13 @@ class StorageContainerMetaTileEntity(
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic { "$itemsStored / $maxStoredItems" }.asWidget()
-                .widthRel(0.5f).align(Alignment.BottomRight))
+                .widthRel(0.5f).right(0).bottom(0))
             .child(Column().widthRel(0.6f).height(26)
                 .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().buildLarge()
-                    .align(Alignment.CenterLeft))
+                    .left(0).verticalCenter())
                 .child(MuiSlots.itemSlotBuilder(exportItems, 0).takeOnly().buildLarge()
-                    .align(Alignment.CenterRight))
-                .align(Alignment.Center))
+                    .right(0).verticalCenter())
+                .center())
             .child(MuiSlots.phantomSlot(filterSlot, 0)
                 .right(10).top(15))
     }

@@ -108,7 +108,7 @@ class DistributorMetaTileEntity(
         slotGroupRows.forEachIndexed { i, row ->
             column.child(row.marginTop(2 * min(i, 1)))
         }
-        return w.child(column.align(Alignment.Center))
+        return w.child(column.center())
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {

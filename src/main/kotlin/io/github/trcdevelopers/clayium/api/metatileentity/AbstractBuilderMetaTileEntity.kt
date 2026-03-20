@@ -182,7 +182,7 @@ abstract class AbstractBuilderMetaTileEntity(
             .child(SlotGroupWidget.builder()
                 .matrix(*matrixStr.toTypedArray())
                 .key('I') { MuiSlots.itemSlotBuilder(itemInventory, it).slotGroup("builder_inventory").build() }
-                .build().alignX(Alignment.TopCenter.x).top(12)
+                .build().horizontalCenter().top(12)
             )
     }
 

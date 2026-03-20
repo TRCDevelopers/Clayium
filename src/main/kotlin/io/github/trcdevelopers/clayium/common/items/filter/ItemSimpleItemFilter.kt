@@ -57,12 +57,12 @@ class ItemSimpleItemFilter : ItemFilterBase(:: ItemFilterSimple) {
             .child(Column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.str(stack.displayName).asWidget()
-                        .align(Alignment.TopLeft))
+                        .left(0).top(0))
                     .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
+                        .left(0).bottom(0))
                     .child(CycleButtonWidget()
                         .length(2)
-                        .align(Alignment.CenterRight)
+                        .right(0).verticalCenter()
                         .value(isWhiteListSyncHandler)
                         .overlay(DynamicDrawable {
                             if (isWhiteListSyncHandler.value) {
@@ -78,7 +78,7 @@ class ItemSimpleItemFilter : ItemFilterBase(:: ItemFilterSimple) {
                         .matrix(*matrix)
                         .key('I') { i -> MuiSlots.phantomSlotBuilder(itemHandler, i).slotGroup("filter").build() }
                         .build()
-                        .align(Alignment.Center)))
+                        .center()))
                 .child(SlotGroupWidget.playerInventory(0, false)))
     }
 

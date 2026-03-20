@@ -38,14 +38,14 @@ class ItemFuzzyItemFilter : ItemFilterBase(::ItemFilterFuzzy) {
             .child(Column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.str(stack.displayName).asWidget()
-                        .align(Alignment.TopLeft))
+                        .left(0).top(0))
                     .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
+                        .left(0).bottom(0))
                     .child(SlotGroupWidget.builder()
                         .matrix(*matrix)
                         .key('I') { i -> MuiSlots.phantomSlotBuilder(itemHandler, i).slotGroup("filter").build() }
                         .build()
-                        .align(Alignment.Center)))
+                        .center()))
                 .child(MuiSlots.playerInventory(0)))
     }
 
