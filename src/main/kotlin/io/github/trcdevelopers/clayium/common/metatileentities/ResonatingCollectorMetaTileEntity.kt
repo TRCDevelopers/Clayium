@@ -76,7 +76,7 @@ class ResonatingCollectorMetaTileEntity(
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic {
                 SidelessI18n.format("gui.$MOD_ID.resonance", numberFormatter.format(resonanceManager.resonance))
-            }.asWidget().width(90).alignment(Alignment.BottomRight)
+            }.asWidget().width(90).textAlign(Alignment.BottomRight)
                 .align(Alignment.BottomRight))
             .child(SlotGroupWidget.builder()
                 .matrix("III", "III", "III")

@@ -707,7 +707,7 @@ abstract class MetaTileEntity(
             .child(IKey.dynamic {
                 // if empty string, a bug occurs.
                 if (overclock != 1.0) SidelessI18n.format("gui.clayium.overclock", overclock) else " "
-            }.asWidget().width(100).alignment(Alignment.CenterRight).align(Alignment.BottomRight))
+            }.asWidget().width(100).textAlign(Alignment.CenterRight).align(Alignment.BottomRight))
     }
 
     @Deprecated("Use onRightClickServerSide instead.", ReplaceWith("onRightClickServerSide(player, hand, clickedSide, hitX, hitY, hitZ)"))

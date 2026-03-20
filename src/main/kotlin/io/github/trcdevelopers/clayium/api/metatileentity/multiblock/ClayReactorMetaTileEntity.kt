@@ -92,7 +92,7 @@ class ClayReactorMetaTileEntity(
         syncManager.syncValue("clay_laser", clayLaserSyncValue)
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic { SidelessI18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.energy?.toLong() ?: 0L)) }
-                .asWidget().width(70).alignment(Alignment.Center)
+                .asWidget().width(70).textAlign(Alignment.Center)
                 .pos(102, 53))
             .child(multiblockLogic.tierTextWidget(syncManager)
                 .alignX(Alignment.Center.x).bottom(12))

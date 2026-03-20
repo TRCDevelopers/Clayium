@@ -71,7 +71,7 @@ class CentrifugeMetaTileEntity(
             .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
             .child(IKey.dynamic {
                 if (overclock != 1.0) SidelessI18n.format("gui.clayium.overclock", overclock) else " "
-            }.asWidget().width(100).alignment(Alignment.CenterRight).align(Alignment.BottomRight))
+            }.asWidget().width(100).textAlign(Alignment.CenterRight).align(Alignment.BottomRight))
             .child(slotsAndProgressBar.align(Alignment.Center))
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .bottom(12).left(0))

@@ -265,7 +265,7 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolderClayiu
                         .align(Alignment.TopRight)
                         .size(12, 12))
                     .child(IKey.dynamic { "${pagedWidget.currentPageIndex + 1} / $inventoryPage" }
-                        .asWidget().width(40).alignment(Alignment.Center)
+                        .asWidget().width(40).textAlign(Alignment.Center)
                         .align(Alignment.BottomCenter))
                 )
                 .child(MuiSlots.playerInventory(0)))

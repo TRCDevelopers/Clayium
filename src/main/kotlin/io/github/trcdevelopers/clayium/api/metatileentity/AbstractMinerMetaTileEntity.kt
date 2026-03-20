@@ -132,7 +132,7 @@ abstract class AbstractMinerMetaTileEntity(
 
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic { "Laser : ${laser?.let { LaserEnergy(it.energy).format() } ?: 0}" }.asWidget()
-                .width(80).alignment(Alignment.Center)
+                .width(80).textAlign(Alignment.Center)
                 .alignX(Alignment.Center.x).bottom(12)
             )
             .child(MuiSlots.phantomSlotBuilder(filterSlot, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) }.build()

@@ -240,10 +240,10 @@ class CaReactorMetaTileEntity(
                 })
             )
             .child(IKey.dynamic { SidelessI18n.format("gui.clayium.ca_reactor.efficiency", efficiency) }
-                .asWidget().width(120).alignment(Alignment.CenterRight).alignX(Alignment.BottomRight.x).bottom(14)
+                .asWidget().width(120).textAlign(Alignment.CenterRight).alignX(Alignment.BottomRight.x).bottom(14)
             )
             .child(IKey.dynamic { SidelessI18n.format("gui.clayium.ca_reactor.rank_size", avgHullRank, hullCount) }
-                .asWidget().width(100).alignment(Alignment.CenterLeft).left(0).top(10))
+                .asWidget().width(100).textAlign(Alignment.CenterLeft).left(0).top(10))
     }
 
     override fun renderMetaTileEntity(x: Double, y: Double, z: Double, partialTicks: Float) {
