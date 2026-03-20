@@ -248,7 +248,7 @@ class PanCoreMetaTileEntity(
                 }
                 .also {
                     if (!entry.isAllowedToDuplicate) {
-                        it.background(Rectangle().setColor(0xFF5E1E0E.toInt()))
+                        it.background(Rectangle().color(0xFF5E1E0E.toInt()))
                     }
                 }
         }
@@ -263,13 +263,13 @@ class PanCoreMetaTileEntity(
                         .left(0).bottom(0))
                     .child(ParentWidget().width(panDisplayWidth + panDisplayMargin * 2).heightRel(1f)
                         .horizontalCenter().top(0).margin(0, 2)
-                        .child(Rectangle().setColor(Color.rgb(0, 0x1E, 0)).asWidget()
+                        .child(Rectangle().color(Color.rgb(0, 0x1E, 0)).asWidget()
                             .width(panDisplayWidth + panDisplayMargin * 2).heightRel(1f).margin(0, 9))
                         .child(Grid().width(panDisplayWidth).heightRel(1f).margin(panDisplayMargin, 13)
                             .minElementMargin(0, 0)
                             .matrix(displayItems)
                             .scrollable(VerticalScrollData())
-                            .background(Rectangle().setColor(Color.rgb(0, 0x1E, 0))))
+                            .background(Rectangle().color(Color.rgb(0, 0x1E, 0))))
                     )
                 )
                 .child(MuiSlots.playerInventory(0)))
