@@ -108,12 +108,12 @@ abstract class WorkableMetaTileEntity(
             .child(clayEnergyHolder.createSlotWidget()
                 .name("CE Slot")
                 .right(0).bottom(0))
-            .childIf(tier.numeric < 3, ButtonWidget()
+            .childIf(tier.numeric < 3) { ButtonWidget()
                 .size(16, 16).horizontalCenter().bottom(0)
                 .overlay(ClayGuiTextures.CE_BUTTON)
                 .hoverOverlay(ClayGuiTextures.CE_BUTTON_HOVERED)
                 .syncHandler(InteractionSyncHandler().setOnMousePressed {
                     clayEnergyHolder.addEnergy(ClayEnergy(1))
-                }))
+                })}
     }
 }

@@ -247,7 +247,7 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolderClayiu
                         .margin(0, 9).height(18 * inventoryHeight).width(inventoryWidth * 18))
                     .child(IKey.lang("container.inventory").asWidget()
                         .bottom(0).left(((width - 7 * 2) - playerInventoryWidth) / 2)))
-                .childIf(this.inventoryPage > 1, ParentWidget().right(0).bottom(14).width(12 + 2 + 12).height(12 + 4 + 9)
+                .childIf(this.inventoryPage > 1) { ParentWidget().right(0).bottom(14).width(12 + 2 + 12).height(12 + 4 + 9)
                     .child(ButtonWidget()
                         .onMousePressed {
                             pagedWidget.previousPage()
@@ -267,7 +267,7 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolderClayiu
                     .child(IKey.dynamic { "${pagedWidget.currentPageIndex + 1} / $inventoryPage" }
                         .asWidget().width(40).textAlign(Alignment.Center)
                         .horizontalCenter().bottom(0))
-                )
+                }
                 .child(MuiSlots.playerInventory(0)))
     }
 }
