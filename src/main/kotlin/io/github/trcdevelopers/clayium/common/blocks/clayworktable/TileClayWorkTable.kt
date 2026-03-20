@@ -5,6 +5,7 @@ import com.cleanroommc.modularui.api.widget.IGuiAction
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
@@ -126,10 +127,11 @@ class TileClayWorkTable : TileEntity(), IGuiHolderClayium<PosGuiData> {
     override fun buildUI(data: PosGuiData, syncManager: PanelSyncManager): ModularPanel {
         syncManager.syncValue("craftingProgress", SyncHandlers.intNumber({ craftingProgress }, { craftingProgress = it }))
         syncManager.syncValue("requiredProgress", SyncHandlers.intNumber({ requiredProgress }, { requiredProgress = it }))
+        syncManager.syncValue("progress", DoubleSyncValue(::getNormalizedProgress))
 
         val progressWidget: ProgressWidget = ProgressWidget().size(80, 16)
             .texture(ClayGuiTextures.WorkTable.PROGRESS_BAR_EMPTY, 80)
-            .progress(this::getNormalizedProgress)
+            .syncHandler("progress")
         if (Mods.JustEnoughItems.isModLoaded) {
             progressWidget.addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))
                 .listenGuiAction(IGuiAction.MousePressed { _ ->

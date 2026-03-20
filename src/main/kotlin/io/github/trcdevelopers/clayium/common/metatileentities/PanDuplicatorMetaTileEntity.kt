@@ -122,7 +122,6 @@ class PanDuplicatorMetaTileEntity(
                 .child(MuiSlots.itemSlotBuilder(exportItems, 0).singletonSlotGroup().takeOnly().buildLarge()
                     .align(Alignment.CenterRight))
                 .child(recipeLogic.getProgressBar(syncManager, showRecipes = false)
-                    .progress(recipeLogic::getNormalizedProgress)
                     .align(Alignment.Center)
                 )
             )
