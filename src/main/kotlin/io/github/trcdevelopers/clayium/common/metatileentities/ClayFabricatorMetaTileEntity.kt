@@ -5,7 +5,7 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.capability.AbstractWorkable
 import io.github.trcdevelopers.clayium.api.capability.impl.ItemHandlerProxy
@@ -62,15 +62,15 @@ class ClayFabricatorMetaTileEntity(
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         syncManager.syncValue("clay_energy", SyncHandlers.longNumber({ workable.currentCe.energy }, { workable.currentCe = ClayEnergy(it) }))
-        val slotsAndProgressBar = Row().widthRel(0.7f).height(26)
+        val slotsAndProgressBar = Flow.row().widthRel(0.7f).height(26)
             .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().buildLarge()
-                .align(Alignment.CenterLeft))
-            .child(workable.getProgressBar(syncManager).align(Alignment.Center))
+                .left(0).verticalCenter())
+            .child(workable.getProgressBar(syncManager).center())
             .child(MuiSlots.itemSlotBuilder(exportItems, 0).takeOnly().buildLarge()
-                .align(Alignment.CenterRight))
+                .right(0).verticalCenter())
 
         return super.buildMainParentWidget(syncManager)
-            .child(slotsAndProgressBar.align(Alignment.Center))
+            .child(slotsAndProgressBar.center())
             .child(IKey.dynamic { workable.currentCe.formatWithTrailingZeros() }.asWidget().width(60)
                 .left(0).bottom(10))
     }

@@ -2,6 +2,7 @@ package io.github.trcdevelopers.clayium.api.capability
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.api.widget.IGuiAction
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widgets.ProgressWidget
@@ -220,10 +221,11 @@ abstract class AbstractWorkable(
     fun getProgressBar(syncManager: PanelSyncManager, showRecipes: Boolean = true): ProgressWidget {
         syncManager.syncValue("requiredProgress", SyncHandlers.longNumber(::requiredProgress, ::requiredProgress::set))
         syncManager.syncValue("craftingProgress", SyncHandlers.longNumber(::currentProgress, ::currentProgress::set))
+        syncManager.syncValue("progress", DoubleSyncValue(::getNormalizedProgress))
 
         val widget = ProgressWidget()
             .size(22, 17)
-            .progress(this::getNormalizedProgress)
+            .syncHandler("progress")
             .texture(ClayGuiTextures.PROGRESS_BAR, 22)
         if (showRecipes && Mods.JustEnoughItems.isModLoaded) {
             widget.addTooltipLine(IKey.lang("jei.tooltip.show.recipes"))

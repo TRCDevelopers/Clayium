@@ -6,7 +6,7 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
 import io.github.trcdevelopers.clayium.api.capability.impl.RecipeLogicEnergy
 import io.github.trcdevelopers.clayium.api.gui.data.MetaTileEntityGuiData
@@ -47,36 +47,36 @@ class CentrifugeMetaTileEntity(
     }
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
-        val slotsAndProgressBar = Row()
+        val slotsAndProgressBar = Flow.row()
             .widthRel(0.7f).height(26)
-            .align(Alignment.Center)
+            .center()
             .top(30)
-            .child(workable.getProgressBar(syncManager).align(Alignment.Center))
+            .child(workable.getProgressBar(syncManager).center())
 
         slotsAndProgressBar.child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().buildLarge()
-            .align(Alignment.CenterLeft))
+            .left(0).verticalCenter())
         slotsAndProgressBar.child(SlotGroupWidget.builder()
             .matrix(*(0..<outputSize).map { "I" }.toTypedArray())
             .key('I') {
                 MuiSlots.itemSlotBuilder(exportItems, it).takeOnly().build()
             }
             .build()
-            .align(Alignment.CenterRight)
+            .right(0).verticalCenter()
         )
 
         @Suppress("DuplicatedCode") // special output slot layout
         return ParentWidget().widthRel(1f).expanded().marginBottom(2)
             .child(IKey.str(asStackForm().displayName).asWidget()
-                .align(Alignment.TopLeft))
-            .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
+                .left(0).top(0))
+            .child(IKey.lang("container.inventory").asWidget().left(0).bottom(0))
             .child(IKey.dynamic {
                 if (overclock != 1.0) SidelessI18n.format("gui.clayium.overclock", overclock) else " "
-            }.asWidget().width(100).alignment(Alignment.CenterRight).align(Alignment.BottomRight))
-            .child(slotsAndProgressBar.align(Alignment.Center))
+            }.asWidget().width(100).textAlign(Alignment.CenterRight).right(0).bottom(0))
+            .child(slotsAndProgressBar.center())
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
-                .bottom(12).left(0))
+                .left(0).bottom(12))
             .child(clayEnergyHolder.createSlotWidget()
-                .align(Alignment.BottomRight))
+                .right(0).bottom(0))
     }
 
     override fun onReplace(world: World, pos: BlockPos, newMetaTileEntity: MetaTileEntity, oldMteData: NBTTagCompound) {

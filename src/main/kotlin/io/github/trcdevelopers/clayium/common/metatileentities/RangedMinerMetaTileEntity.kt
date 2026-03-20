@@ -61,7 +61,7 @@ open class RangedMinerMetaTileEntity(
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .left(0).bottom(12))
             .child(clayEnergyHolder.createSlotWidget()
-                .align(Alignment.BottomRight))
+                .right(0).bottom(0))
     }
 
     override fun onPlacement() {

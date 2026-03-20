@@ -30,7 +30,7 @@ class ItemSlotBuilder(
         return ParentWidget()
             .size(26, 26)
             .background(ClayGuiTextures.LARGE_SLOT)
-            .child(ItemSlot.create(phantom).align(Alignment.Center)
+            .child(ItemSlot.create(phantom).center()
                 .slot(modularSlot)
                 .background(IDrawable.EMPTY))
     }

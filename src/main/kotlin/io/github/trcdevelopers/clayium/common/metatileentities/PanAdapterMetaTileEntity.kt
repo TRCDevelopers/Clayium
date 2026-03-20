@@ -12,7 +12,7 @@ import com.cleanroommc.modularui.widgets.PageButton
 import com.cleanroommc.modularui.widgets.PagedWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Grid
-import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.layout.Flow
 import com.google.common.collect.ImmutableSet
 import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.ClayiumApi
@@ -204,13 +204,13 @@ class PanAdapterMetaTileEntity(
                 .matrix("III", "III", "III")
                 .key('I') { MuiSlots.itemSlotBuilder(result, it).lock().build() }
                 .build()
-            Row().widthRel(1f).height(64)
-                .child(Grid().width(32).heightRel(1f).align(Alignment.TopLeft)
+            Flow.row().widthRel(1f).height(64)
+                .child(Grid().width(32).heightRel(1f).left(0).top(0)
                     .minElementMargin(0, 0)
                     .matrix(buttons)
                 )
                 .child(slots.left(32 + 8))
-                .child(resultSlots.align(Alignment.TopRight))
+                .child(resultSlots.right(0).top(0))
         }
         return ModularPanel.defaultPanel("pan_adapter", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 32)
             .columnWithPlayerInv {

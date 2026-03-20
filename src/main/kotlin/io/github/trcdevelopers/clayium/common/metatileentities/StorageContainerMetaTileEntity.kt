@@ -4,7 +4,7 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.block.BlockMachine
 import io.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER_ITEM
 import io.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_ITEMS_STORED
@@ -265,13 +265,13 @@ class StorageContainerMetaTileEntity(
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic { "$itemsStored / $maxStoredItems" }.asWidget()
-                .widthRel(0.5f).align(Alignment.BottomRight))
-            .child(Column().widthRel(0.6f).height(26)
+                .widthRel(0.5f).right(0).bottom(0))
+            .child(Flow.column().widthRel(0.6f).height(26)
                 .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().buildLarge()
-                    .align(Alignment.CenterLeft))
+                    .left(0).verticalCenter())
                 .child(MuiSlots.itemSlotBuilder(exportItems, 0).takeOnly().buildLarge()
-                    .align(Alignment.CenterRight))
-                .align(Alignment.Center))
+                    .right(0).verticalCenter())
+                .center())
             .child(MuiSlots.phantomSlot(filterSlot, 0)
                 .right(10).top(15))
     }

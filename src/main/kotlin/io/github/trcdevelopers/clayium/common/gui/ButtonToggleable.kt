@@ -1,6 +1,5 @@
 package io.github.trcdevelopers.clayium.common.gui
 
-import com.cleanroommc.modularui.api.ITheme
 import com.cleanroommc.modularui.api.UpOrDown
 import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.widget.Interactable
@@ -15,11 +14,11 @@ class ButtonToggleable : ButtonWidget<ButtonToggleable>() {
 
     private val clickable get() = this.clickableSupplier.asBoolean
 
-    override fun getCurrentBackground(theme: ITheme?, widgetTheme: WidgetThemeEntry<*>?): IDrawable? {
+    override fun getCurrentBackground(widgetTheme: WidgetThemeEntry<*>): IDrawable? {
         if (!this.clickable) {
-            return unclickableBackground ?: super.getCurrentBackground(theme, widgetTheme)
+            return unclickableBackground ?: super.getCurrentBackground(widgetTheme)
         }
-        return super.getCurrentBackground(theme, widgetTheme)
+        return super.getCurrentBackground(widgetTheme)
     }
 
     fun clickableIf(supplier: BooleanSupplier): ButtonToggleable {
