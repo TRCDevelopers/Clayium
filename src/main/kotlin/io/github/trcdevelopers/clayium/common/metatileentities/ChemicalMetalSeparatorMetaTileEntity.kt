@@ -6,7 +6,7 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_HEIGHT
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
 import io.github.trcdevelopers.clayium.api.capability.impl.NotifiableItemStackHandler
@@ -30,7 +30,7 @@ class ChemicalMetalSeparatorMetaTileEntity(
     override val workable = RecipeLogicEnergy(this, recipeRegistry, clayEnergyHolder)
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
-        val slotsAndProgressBar = Row()
+        val slotsAndProgressBar = Flow.row()
             .widthRel(0.8f).height(18 * 4)
             .center()
             .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().buildLarge()

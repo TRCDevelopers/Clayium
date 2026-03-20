@@ -10,7 +10,7 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.CycleButtonWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.ToggleButton
-import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Flow
 import com.cleanroommc.modularui.widgets.layout.Grid
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_HEIGHT
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
@@ -146,7 +146,7 @@ class RangedReplacerMetaTileEntity(
                             .row(displayRange)
                             .minElementMargin(1)
                             .left(2).top(12))
-                        .child(Column().coverChildren().top(12).horizontalCenter()
+                        .child(Flow.column().coverChildren().top(12).horizontalCenter()
                             .child(SlotGroupWidget.builder()
                                 .matrix("IIII", "IIII")
                                 .key('I') { MuiSlots.itemSlotBuilder(itemInventory, it)

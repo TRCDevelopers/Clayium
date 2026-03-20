@@ -4,7 +4,8 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.layout.Flow
+
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_HEIGHT
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
 import io.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
@@ -79,7 +80,7 @@ class AutoClayCondenserMetaTileEntity(
         return ModularPanel.defaultPanel("auto_clay_condenser", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 20)
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
-                    .child(Row().widthRel(1f).height(18 * 4)
+                    .child(Flow.row().widthRel(1f).height(18 * 4)
                         .center()
                         .child(SlotGroupWidget.builder()
                             .matrix(*matrix)

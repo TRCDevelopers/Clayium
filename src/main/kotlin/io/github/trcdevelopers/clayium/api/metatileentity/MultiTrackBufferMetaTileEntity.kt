@@ -5,8 +5,7 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Column
-import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
 import io.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
 import io.github.trcdevelopers.clayium.api.capability.IPipeConnectionLogic
@@ -121,11 +120,11 @@ class MultiTrackBufferMetaTileEntity(
             .center()
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
-                    .child(Column().width(trackInvSize * 18 + 4 + 18).height(trackRow * 18)
+                    .child(Flow.column().width(trackInvSize * 18 + 4 + 18).height(trackRow * 18)
                         .center()
                         .also { column ->
                             for ((i, handler) in tracks.withIndex()) {
-                                column.child(Row().width(trackInvSize * 18 + 4 + 18).height(18)
+                                column.child(Flow.row().width(trackInvSize * 18 + 4 + 18).height(18)
                                     .child(SlotGroupWidget.builder()
                                         .matrix(slotsRowString)
                                         .key('I') { slotIndex ->

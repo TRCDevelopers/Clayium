@@ -6,7 +6,7 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
 import io.github.trcdevelopers.clayium.api.capability.impl.RecipeLogicEnergy
 import io.github.trcdevelopers.clayium.api.gui.data.MetaTileEntityGuiData
@@ -47,7 +47,7 @@ class CentrifugeMetaTileEntity(
     }
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
-        val slotsAndProgressBar = Row()
+        val slotsAndProgressBar = Flow.row()
             .widthRel(0.7f).height(26)
             .center()
             .top(30)

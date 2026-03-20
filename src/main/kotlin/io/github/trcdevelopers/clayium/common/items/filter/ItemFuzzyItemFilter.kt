@@ -8,7 +8,7 @@ import com.cleanroommc.modularui.utils.ItemStackItemHandler
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.capability.IItemFilter
 import io.github.trcdevelopers.clayium.api.capability.ItemCapabilityProvider
 import io.github.trcdevelopers.clayium.common.capability.impl.ItemFilterFuzzy
@@ -35,7 +35,7 @@ class ItemFuzzyItemFilter : ItemFilterBase(::ItemFilterFuzzy) {
 
         MuiSlots.lockHeldItem(syncManager, data.player)
         return ModularPanel.defaultPanel("item_filter_fuzzy")
-            .child(Column().margin(7)
+            .child(Flow.column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.str(stack.displayName).asWidget()
                         .left(0).top(0))

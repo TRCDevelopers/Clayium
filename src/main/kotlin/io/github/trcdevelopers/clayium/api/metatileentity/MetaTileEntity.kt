@@ -5,7 +5,6 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.ClayiumApi
 import io.github.trcdevelopers.clayium.api.block.BlockMachine.Companion.IS_PIPE
@@ -690,7 +689,7 @@ abstract class MetaTileEntity(
 
     protected inline fun ModularPanel.columnWithPlayerInv(builder: (Flow.() -> Flow)): ModularPanel {
         return this.child(
-            Column().margin(7).sizeRel(1f)
+            Flow.column().margin(7).sizeRel(1f)
                 .builder()
                 .child(MuiSlots.playerInventory(0))
         )

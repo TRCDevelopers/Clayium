@@ -5,8 +5,7 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Column
-import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_HEIGHT
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
 import io.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
@@ -94,14 +93,14 @@ class DistributorMetaTileEntity(
             group
         }
         val slotGroupRows = groups.windowed(this.groupX, this.groupX).map { slotGroupList ->
-            val row = Row()
+            val row = Flow.row()
                 .size((18 * 2) * this.groupX + 2 * (this.groupX - 1), 18 * 2)
             slotGroupList.forEachIndexed { i, g ->
                 row.child(g.marginLeft(2 * min(i, 1)))
             }
             row
         }
-        val column = Column()
+        val column = Flow.column()
             .width(18 * 2 * this.groupX + 2 * (this.groupX - 1))
             .height(18 * 2 * this.groupY + 2 * (this.groupY - 1))
         val w = super.buildMainParentWidget(syncManager)

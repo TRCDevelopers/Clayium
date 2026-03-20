@@ -4,7 +4,7 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.capability.AbstractWorkable
 import io.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
@@ -109,7 +109,7 @@ class PanDuplicatorMetaTileEntity(
                 .bottom(12).left(0))
             .child(clayEnergyHolder.createSlotWidget()
                 .right(0).bottom(0))
-            .child(Row().widthRel(0.7f).height(26).center()
+            .child(Flow.row().widthRel(0.7f).height(26).center()
                 .child(SlotGroupWidget.builder()
                     .row("AD")
                     .key('A', MuiSlots.itemSlotBuilder(antimatterSlot, 0).singletonSlotGroup().build()

@@ -10,7 +10,7 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.PagedWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Flow
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import io.github.trcdevelopers.clayium.api.ClayiumApi
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
@@ -239,7 +239,7 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolderClayiu
         syncManager.addOpenListener { this.onInventoryOpen(it) }
         syncManager.addCloseListener { this.onInventoryClose(it) }
         return ModularPanel.defaultPanel("metal_chest_inv", width, 18 + inventoryHeight * 18 + 94 + 2)
-            .child(Column().margin(7).sizeRel(1f)
+            .child(Flow.column().margin(7).sizeRel(1f)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(titleTextWidget.asWidget()
                         .top(0).left(((width - 7 * 2) - chestInventoryWidth) / 2))

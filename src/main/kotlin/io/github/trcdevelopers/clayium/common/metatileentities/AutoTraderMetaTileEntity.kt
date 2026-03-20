@@ -10,8 +10,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ToggleButton
-import com.cleanroommc.modularui.widgets.layout.Column
-import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_HEIGHT
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
@@ -190,8 +189,8 @@ class AutoTraderMetaTileEntity(
                 }
             }))
         return super.buildMainParentWidget(syncManager)
-            .child(Column().widthRel(0.9f).coverChildrenHeight().horizontalCenter().top(16)
-                .child(Row().widthRel(1f).height(17).name("Preview Row").horizontalCenter()
+            .child(Flow.column().widthRel(0.9f).coverChildrenHeight().horizontalCenter().top(16)
+                .child(Flow.row().widthRel(1f).height(17).name("Preview Row").horizontalCenter()
                     .child(prev.size(10, 15).left(0).verticalCenter()
                         .background(PREV_DISALBED)
                         .hoverBackground(PREV_DISALBED)
@@ -214,7 +213,7 @@ class AutoTraderMetaTileEntity(
                         .selectedBackground(NEXT).selectedHoverBackground(NEXT_SELECTED)
                     )
                 )
-                .child(Row().widthRel(1f).height(26).horizontalCenter().marginTop(6)
+                .child(Flow.row().widthRel(1f).height(26).horizontalCenter().marginTop(6)
                     .name("Inventory Row")
                     .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup(100).build()
                         .marginLeft(15).verticalCenter().background(ClayGuiTextures.IMPORT_1_SLOT)

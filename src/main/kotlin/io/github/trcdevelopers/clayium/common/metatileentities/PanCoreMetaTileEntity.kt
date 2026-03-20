@@ -9,7 +9,7 @@ import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData
-import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Flow
 import com.cleanroommc.modularui.widgets.layout.Grid
 import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_HEIGHT
@@ -255,7 +255,7 @@ class PanCoreMetaTileEntity(
         val panDisplayMargin = 4
         val panDisplayWidth = 16 * 9 + 0
         return ModularPanel.defaultPanel("pan_core", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 50)
-            .child(Column().margin(7)
+            .child(Flow.column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
                         .left(0).top(0))

@@ -6,7 +6,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.capability.impl.AbstractRecipeLogic
 import io.github.trcdevelopers.clayium.api.capability.impl.ClayEnergyHolder
@@ -57,7 +57,7 @@ abstract class WorkableMetaTileEntity(
     }
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
-        val slotsAndProgressBar = Row()
+        val slotsAndProgressBar = Flow.row()
             .widthRel(0.7f).height(26)
             .center()
             .child(workable.getProgressBar(syncManager).center())
