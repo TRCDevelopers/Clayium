@@ -182,7 +182,8 @@ class PanAdapterMetaTileEntity(
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         val tabController = PagedWidget.Controller()
-        val buttons = Grid.createGridOfSizeWidth(resultInventories.size, 2) { _, _, index ->
+        val gridWidth = if (resultInventories.size == 1) 1 else 2
+        val buttons = Grid.createGridOfSizeWidth(resultInventories.size, gridWidth) { _, _, index ->
             val handler = resultInventories[index]
             ParentWidget().size(16)
                 .child(PageButton(index, tabController)
