@@ -235,7 +235,6 @@ class PanCoreMetaTileEntity(
         if (!isRemote) {
             refreshNetworkAndThenEntries()
         }
-//        val displayItems = Grid.mapToMatrix(9, duplicationEntries.toList()) { index, (itemAndMeta, entry) ->
         val duplicationEntriesList = duplicationEntries.toList()
         val displayItems = Grid.createGridOfSizeWidth(duplicationEntriesList.size, 9) { _, _, index ->
             val (itemAndMeta, entry) = duplicationEntriesList[index]
