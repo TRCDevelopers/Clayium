@@ -5,14 +5,13 @@ import com.cleanroommc.modularui.drawable.DynamicDrawable
 import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.screen.ModularPanel
-import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.PageButton
 import com.cleanroommc.modularui.widgets.PagedWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Grid
 import com.cleanroommc.modularui.widgets.layout.Flow
+import com.cleanroommc.modularui.widgets.layout.Grid
 import com.google.common.collect.ImmutableSet
 import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.ClayiumApi
@@ -183,7 +182,8 @@ class PanAdapterMetaTileEntity(
 
     override fun buildUI(data: MetaTileEntityGuiData, syncManager: PanelSyncManager): ModularPanel {
         val tabController = PagedWidget.Controller()
-        val buttons = Grid.mapToMatrix(2, resultInventories) { index, handler ->
+        val buttons = Grid.createGridOfSizeWidth(resultInventories.size, 2) { _, _, index ->
+            val handler = resultInventories[index]
             ParentWidget().size(16)
                 .child(PageButton(index, tabController)
                     .background(false, GuiTextures.MC_BUTTON)
@@ -207,7 +207,7 @@ class PanAdapterMetaTileEntity(
             Flow.row().widthRel(1f).height(64)
                 .child(Grid().width(32).heightRel(1f).left(0).top(0)
                     .minElementMargin(0, 0)
-                    .matrix(buttons)
+                    .grid(buttons)
                 )
                 .child(slots.left(32 + 8))
                 .child(resultSlots.right(0).top(0))
