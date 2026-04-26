@@ -4,7 +4,6 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.drawable.Rectangle
 import com.cleanroommc.modularui.screen.ModularPanel
-import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
@@ -236,7 +235,9 @@ class PanCoreMetaTileEntity(
         if (!isRemote) {
             refreshNetworkAndThenEntries()
         }
-        val displayItems = Grid.mapToMatrix(9, duplicationEntries.toList()) { index, (itemAndMeta, entry) ->
+        val duplicationEntriesList = duplicationEntries.toList()
+        val displayItems = Grid.createGridOfSizeWidth(duplicationEntriesList.size, 9) { _, _, index ->
+            val (itemAndMeta, entry) = duplicationEntriesList[index]
             val stack = itemAndMeta.asStack()
             ItemDrawable(stack).asWidget().size(16)
                 .tooltip { tooltip ->
@@ -267,7 +268,7 @@ class PanCoreMetaTileEntity(
                             .width(panDisplayWidth + panDisplayMargin * 2).heightRel(1f).margin(0, 9))
                         .child(Grid().width(panDisplayWidth).heightRel(1f).margin(panDisplayMargin, 13)
                             .minElementMargin(0, 0)
-                            .matrix(displayItems)
+                            .grid(displayItems)
                             .scrollable(VerticalScrollData())
                             .background(Rectangle().color(Color.rgb(0, 0x1E, 0))))
                     )
