@@ -4,7 +4,7 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.block.BlockMachine
 import io.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_FILTER_ITEM
 import io.github.trcdevelopers.clayium.api.capability.ClayiumDataCodecs.UPDATE_ITEMS_STORED
@@ -20,6 +20,7 @@ import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.api.util.copyWithSize
 import io.github.trcdevelopers.clayium.client.model.ModelTextures
+import io.github.trcdevelopers.clayium.client.renderer.CRenderUtils
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayParts
 import io.github.trcdevelopers.clayium.common.util.CNumberFormat
 import io.github.trcdevelopers.clayium.common.util.transferTo
@@ -42,6 +43,7 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.common.capabilities.Capability
@@ -263,13 +265,13 @@ class StorageContainerMetaTileEntity(
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic { "$itemsStored / $maxStoredItems" }.asWidget()
-                .widthRel(0.5f).align(Alignment.BottomRight))
-            .child(Column().widthRel(0.6f).height(26)
+                .widthRel(0.5f).right(0).bottom(0))
+            .child(Flow.column().widthRel(0.6f).height(26)
                 .child(MuiSlots.itemSlotBuilder(importItems, 0).singletonSlotGroup().buildLarge()
-                    .align(Alignment.CenterLeft))
+                    .left(0).verticalCenter())
                 .child(MuiSlots.itemSlotBuilder(exportItems, 0).takeOnly().buildLarge()
-                    .align(Alignment.CenterRight))
-                .align(Alignment.Center))
+                    .right(0).verticalCenter())
+                .center())
             .child(MuiSlots.phantomSlot(filterSlot, 0)
                 .right(10).top(15))
     }
@@ -344,6 +346,7 @@ class StorageContainerMetaTileEntity(
                 else -> {}
             }
 
+            // Item Amount
             GlStateManager.pushMatrix()
             val amountText: String = numberFormatter.format(itemsStored.toDouble())
             val fRenderer = mc.fontRenderer
@@ -352,6 +355,20 @@ class StorageContainerMetaTileEntity(
             GlStateManager.scale(-0.025f, -0.025f, 0.025f)
             fRenderer.drawString(amountText, -fRenderer.getStringWidth(amountText) / 2, 0, 0)
             GlStateManager.popMatrix()
+            // Item Name if a player is looking at this block
+            val rayTraceResult = mc.objectMouseOver
+            if (rayTraceResult != null && rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK && rayTraceResult.blockPos == pos) {
+                GlStateManager.pushMatrix()
+                val itemName = stack.displayName
+                GlStateManager.rotate(180.0f, 0.0f, 1.0f, 0.0f)
+                GlStateManager.translate(0.0, 0.35, -0.55)
+                GlStateManager.scale(-0.025f, -0.025f, 0.025f)
+                GlStateManager.scale(0.5, 0.5, 0.5)
+
+                CRenderUtils.renderStringWithBackground(itemName, -1)
+
+                GlStateManager.popMatrix()
+            }
         }
         GlStateManager.popMatrix()
     }
@@ -407,8 +424,10 @@ class StorageContainerMetaTileEntity(
 
     private inner class StorageContainerExportItems : IItemHandlerModifiable {
         override fun setStackInSlot(slot: Int, stack: ItemStack) {
-            // this method should be called only for exporting item.
-            if (slot != 0 || stack.isItemEqual(currentInsertedStack)) return
+            if (slot != 0) return
+            // Changing the item is not allowed if there are still items stored
+            if (!stack.canActuallyStack(currentInsertedStack)) return
+
             val currentSlotAmount = min(itemsStored, 64)
             val amountAfterExtraction = stack.count
             val extractedAmount = currentSlotAmount - amountAfterExtraction

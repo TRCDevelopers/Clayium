@@ -67,7 +67,7 @@ class VoidContainerMetaTileEntity(
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager).child(MuiSlots.itemSlotBuilder(importItems, 0)
                 .filter { filterStack.isEmpty || ItemHandlerHelper.canItemStacksStack(it, filterStack) }.buildLarge()
-                .align(Alignment.Center)).child(MuiSlots.phantomSlot(filterSlot, 0).right(10).top(15))
+                .center()).child(MuiSlots.phantomSlot(filterSlot, 0).right(10).top(15))
     }
 
     override fun receiveCustomData(discriminator: Int, buf: PacketBuffer) {

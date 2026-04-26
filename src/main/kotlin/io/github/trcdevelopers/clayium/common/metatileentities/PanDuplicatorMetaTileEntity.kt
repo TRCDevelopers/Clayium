@@ -4,7 +4,7 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.capability.AbstractWorkable
 import io.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
@@ -108,8 +108,8 @@ class PanDuplicatorMetaTileEntity(
             .child(clayEnergyHolder.createCeTextWidget(syncManager)
                 .bottom(12).left(0))
             .child(clayEnergyHolder.createSlotWidget()
-                .align(Alignment.BottomRight))
-            .child(Row().widthRel(0.7f).height(26).align(Alignment.Center)
+                .right(0).bottom(0))
+            .child(Flow.row().widthRel(0.7f).height(26).center()
                 .child(SlotGroupWidget.builder()
                     .row("AD")
                     .key('A', MuiSlots.itemSlotBuilder(antimatterSlot, 0).singletonSlotGroup().build()
@@ -117,13 +117,12 @@ class PanDuplicatorMetaTileEntity(
                     .key('D', MuiSlots.itemSlotBuilder(duplicationTargetSlot, 0).singletonSlotGroup().build()
                         .background(ClayGuiTextures.IMPORT_2_SLOT))
                     .build()
-                    .align(Alignment.CenterLeft)
+                    .left(0).verticalCenter()
                 )
                 .child(MuiSlots.itemSlotBuilder(exportItems, 0).singletonSlotGroup().takeOnly().buildLarge()
-                    .align(Alignment.CenterRight))
+                    .right(0).verticalCenter())
                 .child(recipeLogic.getProgressBar(syncManager, showRecipes = false)
-                    .progress(recipeLogic::getNormalizedProgress)
-                    .align(Alignment.Center)
+                    .center()
                 )
             )
     }

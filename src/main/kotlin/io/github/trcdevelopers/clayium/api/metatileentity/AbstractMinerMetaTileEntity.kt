@@ -2,6 +2,7 @@ package io.github.trcdevelopers.clayium.api.metatileentity
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.GenericSyncValue
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import io.github.trcdevelopers.clayium.api.HARDNESS_UNBREAKABLE
@@ -11,7 +12,7 @@ import io.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import io.github.trcdevelopers.clayium.api.capability.IClayLaserAcceptor
 import io.github.trcdevelopers.clayium.api.capability.IItemFilter
 import io.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
-import io.github.trcdevelopers.clayium.api.gui.sync.ClayLaserSyncValue
+import io.github.trcdevelopers.clayium.api.gui.sync.codec.ClayLaserByteBufAdapter
 import io.github.trcdevelopers.clayium.api.laser.ClayLaser
 import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.api.util.MachineIoMode
@@ -122,12 +123,17 @@ abstract class AbstractMinerMetaTileEntity(
     }
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
-        syncManager.syncValue("clay_laser", ClayLaserSyncValue(::laser, ::laser::set))
+        val clayLaserSyncValue = GenericSyncValue.builder(ClayLaser::class.java)
+            .getter { laser }
+            .setter { laser = it }
+            .adapter(ClayLaserByteBufAdapter.INSTANCE)
+            .build()
+        syncManager.syncValue("clay_laser", clayLaserSyncValue)
 
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic { "Laser : ${laser?.let { LaserEnergy(it.energy).format() } ?: 0}" }.asWidget()
-                .width(80).alignment(Alignment.Center)
-                .alignX(Alignment.Center.x).bottom(12)
+                .width(80).textAlign(Alignment.Center)
+                .horizontalCenter().bottom(12)
             )
             .child(MuiSlots.phantomSlotBuilder(filterSlot, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) }.build()
                 .background(ClayGuiTextures.FILTER_SLOT)

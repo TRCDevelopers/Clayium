@@ -132,7 +132,7 @@ class MultiblockLogic(
     fun tierTextWidget(syncManager: PanelSyncManager): TextWidget<*> {
         syncManager.syncValue("multiblock_tier", SyncHandlers.intNumber({ recipeLogicTier }, { recipeLogicTier = it }))
         return IKey.dynamic { SidelessI18n.format("tooltip.clayium.tier", recipeLogicTier) }
-            .asWidget().width(40).alignment(Alignment.Center)
+            .asWidget().width(40).textAlign(Alignment.Center)
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {

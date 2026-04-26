@@ -234,13 +234,13 @@ class AutoCrafterMetaTileEntity(
                             .filter { stack -> isItemValidForCraftingGrid(i, stack) }
                             .build()
                     }.build()
-                    .alignY(Alignment.Center).marginLeft(4)
+                    .verticalCenter().marginLeft(4)
                 )
                 .child(SlotGroupWidget.builder()
                     .matrix("OO", "OO", "OO")
                     .key('O') { MuiSlots.itemSlotBuilder(exportItems, it).takeOnly().build() }
                     .build()
-                    .align(Alignment.CenterRight)
+                    .verticalCenter().right(0)
                 )
             )
             // @see clayEnergyHoler declaration, it's not null if useEnergy is true
@@ -250,7 +250,7 @@ class AutoCrafterMetaTileEntity(
                 clayEnergyHolder!!.createCeTextWidget(syncManager).bottom(12).left(0)
             }
             .childIf(this.useEnergy) {
-                clayEnergyHolder!!.createSlotWidget().align(Alignment.BottomRight)
+                clayEnergyHolder!!.createSlotWidget().bottom(0).right(0)
             }
     }
 

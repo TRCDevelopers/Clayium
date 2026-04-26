@@ -128,7 +128,7 @@ abstract class AbstractItemGeneratorMetaTileEntity(
                             MuiSlots.itemSlotBuilder(itemInventory, index)
                                 .slotGroup("machine_inventory")
                                 .build()
-                        }.build().align(Alignment.Center))
+                        }.build().center())
                 )
             }
     }

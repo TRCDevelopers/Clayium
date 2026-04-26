@@ -157,7 +157,7 @@ class BlockMachine : Block(Material.IRON) {
         val stack = metaTileEntity.asStackForm()
         if (metaTileEntity is IHasItemStackNbt) {
             val data = NBTTagCompound()
-            metaTileEntity.writeToNBT(data)
+            metaTileEntity.writeItemStackNbt(data)
             if (!data.isEmpty) stack.tagCompound = data
         }
         drops.add(stack)

@@ -66,7 +66,7 @@ class ClayLaserMetaTileEntity(
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager).child(
                         clayEnergyHolder.createCeTextWidget(syncManager).bottom(12).left(0))
-                    .child(clayEnergyHolder.createSlotWidget().align(Alignment.BottomRight)))
+                    .child(clayEnergyHolder.createSlotWidget().right(0).bottom(0)))
             }
     }
 

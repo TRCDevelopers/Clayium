@@ -2,12 +2,13 @@ package io.github.trcdevelopers.clayium.api.metatileentity.multiblock
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.utils.Alignment
+import com.cleanroommc.modularui.value.sync.GenericSyncValue
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import io.github.trcdevelopers.clayium.api.capability.ClayiumTileCapabilities
 import io.github.trcdevelopers.clayium.api.capability.IClayLaserAcceptor
 import io.github.trcdevelopers.clayium.api.capability.impl.MultiblockRecipeLogic
-import io.github.trcdevelopers.clayium.api.gui.sync.ClayLaserSyncValue
+import io.github.trcdevelopers.clayium.api.gui.sync.codec.ClayLaserByteBufAdapter
 import io.github.trcdevelopers.clayium.api.laser.ClayLaser
 import io.github.trcdevelopers.clayium.api.metatileentity.MetaTileEntity
 import io.github.trcdevelopers.clayium.api.metatileentity.MteRenderingConfig
@@ -83,13 +84,18 @@ class ClayReactorMetaTileEntity(
     }
 
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
-        syncManager.syncValue("clayLaser", ClayLaserSyncValue(::laser, ::laser::set))
+        val clayLaserSyncValue = GenericSyncValue.builder(ClayLaser::class.java)
+            .getter { laser }
+            .setter { laser = it }
+            .adapter(ClayLaserByteBufAdapter.INSTANCE)
+            .build()
+        syncManager.syncValue("clay_laser", clayLaserSyncValue)
         return super.buildMainParentWidget(syncManager)
             .child(IKey.dynamic { SidelessI18n.format("gui.clayium.laser_energy", UtilLocale.laserNumeral(this.laser?.energy?.toLong() ?: 0L)) }
-                .asWidget().width(70).alignment(Alignment.Center)
+                .asWidget().width(70).textAlign(Alignment.Center)
                 .pos(102, 53))
             .child(multiblockLogic.tierTextWidget(syncManager)
-                .alignX(Alignment.Center.x).bottom(12))
+                .horizontalCenter().bottom(12))
     }
 
     override fun acceptLaser(irradiatedSide: EnumFacing, laser: ClayLaser?) {

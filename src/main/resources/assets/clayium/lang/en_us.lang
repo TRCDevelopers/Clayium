@@ -504,6 +504,7 @@ message.clayium.ca_reactor.too_many_coils=The number of coils must not be higher
 message.clayium.ca_reactor.insufficient_tier_coil=Coil %s's tier is insufficient.
 message.clayium.ca_reactor.too_high_tier_hull=Hull %s's tier is too high.
 message.clayium.ca_reactor.insufficient_tier_interface=Interface %s's tier is insufficient.
+message.clayium.ca_reactor.invalid_block=%1$s at %2$s is invalid.
 
 tile.clayium.ca_reactor_coil.antimatter=CA Reactor Coil Mk I
 tile.clayium.ca_reactor_coil.pure_antimatter=CA Reactor Coil Mk II

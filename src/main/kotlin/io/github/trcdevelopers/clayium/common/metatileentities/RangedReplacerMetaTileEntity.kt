@@ -10,7 +10,7 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.CycleButtonWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.ToggleButton
-import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Flow
 import com.cleanroommc.modularui.widgets.layout.Grid
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_HEIGHT
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
@@ -137,8 +137,8 @@ class RangedReplacerMetaTileEntity(
                 child(
                     ParentWidget().widthRel(1f).expanded().marginBottom(2)
                         .child(IKey.str(asStackForm().displayName).asWidget()
-                            .align(Alignment.TopLeft))
-                        .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
+                            .left(0).top(0))
+                        .child(IKey.lang("container.inventory").asWidget().left(0).bottom(0))
                         .child(Grid().coverChildren()
                             .row(startButton)
                             .row(stopButton)
@@ -146,7 +146,7 @@ class RangedReplacerMetaTileEntity(
                             .row(displayRange)
                             .minElementMargin(1)
                             .left(2).top(12))
-                        .child(Column().coverChildren().top(12).alignX(Alignment.Center)
+                        .child(Flow.column().coverChildren().top(12).horizontalCenter()
                             .child(SlotGroupWidget.builder()
                                 .matrix("IIII", "IIII")
                                 .key('I') { MuiSlots.itemSlotBuilder(itemInventory, it)
@@ -157,12 +157,12 @@ class RangedReplacerMetaTileEntity(
                                 .key('I') { MuiSlots.itemSlotBuilder(replaceBlockInventory, it).slotGroup("replace_inventory").build() }
                                 .build().marginTop(2)))
                         .child(IKey.dynamic { "Laser : ${laser?.let { LaserEnergy(it.energy).format() } ?: 0}" }.asWidget()
-                            .alignment(Alignment.Center).width(60)
-                            .alignX(Alignment.Center.x).bottom(12))
+                            .textAlign(Alignment.Center).width(60)
+                            .horizontalCenter().bottom(12))
                         .child(clayEnergyHolder.createCeTextWidget(syncManager)
                             .left(0).bottom(12))
                         .child(clayEnergyHolder.createSlotWidget()
-                            .align(Alignment.BottomRight))
+                            .right(0).bottom(0))
                         .child(MuiSlots.phantomSlotBuilder(filterSlot, 0).filter { it.hasCapability(ClayiumCapabilities.ITEM_FILTER) }.build()
                             .background(ClayGuiTextures.FILTER_SLOT)
                             .top(12).right(24)
