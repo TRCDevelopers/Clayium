@@ -1,10 +1,10 @@
 package io.github.trcdevelopers.clayium.client.renderer.item
 
 import codechicken.lib.render.item.IItemRenderer
+import codechicken.lib.render.state.GlStateTracker
 import codechicken.lib.util.TransformUtils
 import io.github.trcdevelopers.clayium.api.util.CLog
 import io.github.trcdevelopers.clayium.api.util.clayiumId
-import io.github.trcdevelopers.clayium.client.renderer.CRenderUtils
 import it.unimi.dsi.fastutil.shorts.Short2ObjectMap
 import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap
 import net.minecraft.client.Minecraft
@@ -79,7 +79,6 @@ class ItemDamagedRenderer(
     }
 
     override fun renderItem(stack: ItemStack, transformType: ItemCameraTransforms.TransformType) {
-
         val meta = stack.metadata.toShort()
         val models = models.get(meta)
         if (models == null || models.size != 3) {
@@ -92,9 +91,8 @@ class ItemDamagedRenderer(
         val tessellator = Tessellator.getInstance()
         val buf = tessellator.buffer
 
-        mc.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
-        mc.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false)
-        val states = CRenderUtils.memoryCurrentStates()
+        GlStateManager.pushMatrix()
+        GlStateTracker.pushState()
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
         GlStateManager.enableRescaleNormal()
         GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f)
@@ -102,55 +100,53 @@ class ItemDamagedRenderer(
             GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
             GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO
         )
-
         if (transformType == ItemCameraTransforms.TransformType.GUI) {
             GlStateManager.disableLighting()
         }
+        run {
+            mc.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
+            mc.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false)
 
-        GlStateManager.pushMatrix()
+            // L0
+            buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
+            renderModelQuads(buf, modelL0.getQuads(null, null, 0L), stack, 0)
+            for (facing in EnumFacing.entries) {
+                renderModelQuads(buf, modelL0.getQuads(null, facing, 0L), stack, 0)
+            }
+            tessellator.draw()
 
-        // L0
-        buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
-        renderModelQuads(buf, modelL0.getQuads(null, null, 0L), stack, 0)
-        for (facing in EnumFacing.entries) {
-            renderModelQuads(buf, modelL0.getQuads(null, facing, 0L), stack, 0)
+            if (doPolygonOffset) {
+                GlStateManager.enablePolygonOffset()
+                GlStateManager.doPolygonOffset(-0.01f, -0.1f)
+            }
+
+            // L1,L2
+            buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
+            renderModelQuads(buf, modelL1.getQuads(null, null, 0L), stack, 1)
+            for (facing in EnumFacing.entries) {
+                renderModelQuads(buf, modelL1.getQuads(null, facing, 0L), stack, 1)
+            }
+            tessellator.draw()
+
+            if (doPolygonOffset) {
+                GlStateManager.doPolygonOffset(-0.02f, -0.2f)
+            }
+
+            buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
+            renderModelQuads(buf, modelL2.getQuads(null, null, 0L), stack, 2)
+            for (facing in EnumFacing.entries) {
+                renderModelQuads(buf, modelL2.getQuads(null, facing, 0L), stack, 2)
+            }
+
+            tessellator.draw()
+
+            if (doPolygonOffset) {
+                GlStateManager.disablePolygonOffset()
+            }
         }
-        tessellator.draw()
-
-        if (doPolygonOffset) {
-            GlStateManager.enablePolygonOffset()
-            GlStateManager.doPolygonOffset(-0.01f, -0.1f)
-        }
-
-        // L1,L2
-        buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
-        renderModelQuads(buf, modelL1.getQuads(null, null, 0L), stack, 1)
-        for (facing in EnumFacing.entries) {
-            renderModelQuads(buf, modelL1.getQuads(null, facing, 0L), stack, 1)
-        }
-        tessellator.draw()
-
-        if (doPolygonOffset) {
-            GlStateManager.doPolygonOffset(-0.02f, -0.2f)
-        }
-
-        buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
-        renderModelQuads(buf, modelL2.getQuads(null, null, 0L), stack, 2)
-        for (facing in EnumFacing.entries) {
-            renderModelQuads(buf, modelL2.getQuads(null, facing, 0L), stack, 2)
-        }
-
-        tessellator.draw()
-
-        if (doPolygonOffset) {
-            GlStateManager.disablePolygonOffset()
-        }
-
-        GlStateManager.cullFace(GlStateManager.CullFace.BACK)
+        GlStateTracker.popState()
         GlStateManager.popMatrix()
 
-        GlStateManager.disableRescaleNormal()
-        CRenderUtils.restoreStates(states)
         mc.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
         mc.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap()
     }

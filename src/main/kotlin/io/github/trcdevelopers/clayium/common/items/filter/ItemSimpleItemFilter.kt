@@ -12,7 +12,7 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.CycleButtonWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.capability.IItemFilter
 import io.github.trcdevelopers.clayium.api.capability.ItemCapabilityProvider
 import io.github.trcdevelopers.clayium.common.capability.impl.ItemFilterSimple
@@ -54,15 +54,15 @@ class ItemSimpleItemFilter : ItemFilterBase(:: ItemFilterSimple) {
 
         MuiSlots.lockHeldItem(syncManager, data.player)
         return ModularPanel.defaultPanel("simple_item_filter")
-            .child(Column().margin(7)
+            .child(Flow.column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.str(stack.displayName).asWidget()
-                        .align(Alignment.TopLeft))
+                        .left(0).top(0))
                     .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
+                        .left(0).bottom(0))
                     .child(CycleButtonWidget()
                         .length(2)
-                        .align(Alignment.CenterRight)
+                        .right(0).verticalCenter()
                         .value(isWhiteListSyncHandler)
                         .overlay(DynamicDrawable {
                             if (isWhiteListSyncHandler.value) {
@@ -78,7 +78,7 @@ class ItemSimpleItemFilter : ItemFilterBase(:: ItemFilterSimple) {
                         .matrix(*matrix)
                         .key('I') { i -> MuiSlots.phantomSlotBuilder(itemHandler, i).slotGroup("filter").build() }
                         .build()
-                        .align(Alignment.Center)))
+                        .center()))
                 .child(SlotGroupWidget.playerInventory(0, false)))
     }
 

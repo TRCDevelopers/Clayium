@@ -6,7 +6,7 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.capability.impl.InfiniteItemStackHandler
 import io.github.trcdevelopers.clayium.api.unification.material.CPropertyKey
 import io.github.trcdevelopers.clayium.api.util.toItemStack
@@ -39,13 +39,13 @@ class TileEntityCreativeEnergySource : TileEntity(), IGuiHolderClayium<PosGuiDat
 
     override fun buildUI(data: PosGuiData, syncManager: PanelSyncManager): ModularPanel {
         return ModularPanel.defaultPanel("clayium:creative_energy_source")
-            .child(Column().margin(7).sizeRel(1f)
+            .child(Flow.column().margin(7).sizeRel(1f)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.lang("tile.clayium.creative_energy_source.name").asWidget()
-                        .align(Alignment.TopLeft))
-                    .child(IKey.lang("container.inventory").asWidget().align(Alignment.BottomLeft))
+                        .left(0).top(0))
+                    .child(IKey.lang("container.inventory").asWidget().left(0).bottom(0))
                     .child(MuiSlots.itemSlotBuilder(handler, 0).takeOnly().build()
-                        .align(Alignment.Center))
+                        .center())
                 )
                 .child(MuiSlots.playerInventory(0))
             )

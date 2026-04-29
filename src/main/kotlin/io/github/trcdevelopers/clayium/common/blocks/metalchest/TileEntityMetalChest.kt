@@ -10,7 +10,7 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.PagedWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Flow
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import io.github.trcdevelopers.clayium.api.ClayiumApi
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
@@ -239,22 +239,22 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolderClayiu
         syncManager.addOpenListener { this.onInventoryOpen(it) }
         syncManager.addCloseListener { this.onInventoryClose(it) }
         return ModularPanel.defaultPanel("metal_chest_inv", width, 18 + inventoryHeight * 18 + 94 + 2)
-            .child(Column().margin(7).sizeRel(1f)
+            .child(Flow.column().margin(7).sizeRel(1f)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(titleTextWidget.asWidget()
                         .top(0).left(((width - 7 * 2) - chestInventoryWidth) / 2))
-                    .child(pagedWidget.alignX(Alignment.Center)
+                    .child(pagedWidget.horizontalCenter()
                         .margin(0, 9).height(18 * inventoryHeight).width(inventoryWidth * 18))
                     .child(IKey.lang("container.inventory").asWidget()
                         .bottom(0).left(((width - 7 * 2) - playerInventoryWidth) / 2)))
-                .childIf(this.inventoryPage > 1, ParentWidget().right(0).bottom(14).width(12 + 2 + 12).height(12 + 4 + 9)
+                .childIf(this.inventoryPage > 1) { ParentWidget().right(0).bottom(14).width(12 + 2 + 12).height(12 + 4 + 9)
                     .child(ButtonWidget()
                         .onMousePressed {
                             pagedWidget.previousPage()
                             true
                         }
                         .overlay(IKey.str("<").shadow(false))
-                        .align(Alignment.TopLeft)
+                        .left(0).top(0)
                         .size(12, 12))
                     .child(ButtonWidget()
                         .onMousePressed {
@@ -262,12 +262,12 @@ class TileEntityMetalChest : SyncedTileEntityBase(), ITickable, IGuiHolderClayiu
                             true
                         }
                         .overlay(IKey.str(">").shadow(false))
-                        .align(Alignment.TopRight)
+                        .right(0).top(0)
                         .size(12, 12))
                     .child(IKey.dynamic { "${pagedWidget.currentPageIndex + 1} / $inventoryPage" }
-                        .asWidget().width(40).alignment(Alignment.Center)
-                        .align(Alignment.BottomCenter))
-                )
+                        .asWidget().width(40).textAlign(Alignment.Center)
+                        .horizontalCenter().bottom(0))
+                }
                 .child(MuiSlots.playerInventory(0)))
     }
 }

@@ -63,7 +63,7 @@ class LaserEnergyHolder(
         ))
 
         return IKey.dynamic { "Laser : ${this.storedPower.format()}" }.asWidget()
-            .alignment(Alignment.Center)
+            .textAlign(Alignment.Center)
             .width(60)
     }
 

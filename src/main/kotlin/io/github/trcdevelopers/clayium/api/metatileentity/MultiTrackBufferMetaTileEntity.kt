@@ -5,8 +5,7 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
-import com.cleanroommc.modularui.widgets.layout.Column
-import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
 import io.github.trcdevelopers.clayium.api.capability.ClayiumCapabilities
 import io.github.trcdevelopers.clayium.api.capability.IPipeConnectionLogic
@@ -117,17 +116,15 @@ class MultiTrackBufferMetaTileEntity(
         (0..<trackRow).forEach { syncManager.registerSlotGroup("mt_buffer_inv_${it}", 1) }
         val slotsRowString = "I".repeat(trackInvSize)
         return ModularPanel("multi_track_buffer")
-            .flex {
-                it.size(max(GUI_DEFAULT_WIDTH, trackInvSize * 18 + 4 + 18 + /* margin*/ 12), 18 + trackRow * 18 + 94 + 2)
-                it.align(Alignment.Center)
-            }
+            .size(max(GUI_DEFAULT_WIDTH, trackInvSize * 18 + 4 + 18 + /* margin*/ 12), 18 + trackRow * 18 + 94 + 2)
+            .center()
             .columnWithPlayerInv {
                 child(buildMainParentWidget(syncManager)
-                    .child(Column().width(trackInvSize * 18 + 4 + 18).height(trackRow * 18)
-                        .align(Alignment.Center)
+                    .child(Flow.column().width(trackInvSize * 18 + 4 + 18).height(trackRow * 18)
+                        .center()
                         .also { column ->
                             for ((i, handler) in tracks.withIndex()) {
-                                column.child(Row().width(trackInvSize * 18 + 4 + 18).height(18)
+                                column.child(Flow.row().width(trackInvSize * 18 + 4 + 18).height(18)
                                     .child(SlotGroupWidget.builder()
                                         .matrix(slotsRowString)
                                         .key('I') { slotIndex ->
@@ -139,7 +136,7 @@ class MultiTrackBufferMetaTileEntity(
                                         .build())
                                     .child(MuiSlots.phantomSlot(filtersHandler, i)
                                         .background(ClayGuiTextures.M_TRACK_FILTER_SLOTS[i])
-                                        .align(Alignment.CenterRight)))
+                                        .right(0).verticalCenter()))
                             }
                         }
                     )

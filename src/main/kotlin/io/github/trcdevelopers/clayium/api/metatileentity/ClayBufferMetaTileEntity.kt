@@ -7,7 +7,7 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
-import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Flow
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_WIDTH
 import io.github.trcdevelopers.clayium.api.capability.IPipeConnectionLogic
 import io.github.trcdevelopers.clayium.api.capability.impl.ClayiumItemStackHandler
@@ -79,8 +79,8 @@ class ClayBufferMetaTileEntity(
             .child(
                 TextWidget(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)))
                     .margin(6)
-                    .align(Alignment.TopLeft))
-            .child(Column()
+                    .left(0).top(0))
+            .child(Flow.column()
                 .marginTop(18)
                 .child(SlotGroupWidget.builder()
                     .matrix(*matrixStr.toTypedArray())

@@ -103,7 +103,7 @@ class RedstoneProxyMetaTileEntity(
     override fun buildMainParentWidget(syncManager: PanelSyncManager): ParentWidget<*> {
         return super.buildMainParentWidget(syncManager)
             .child(CycleButtonWidget()
-                .align(Alignment.Center).widthRel(0.7f).height(24)
+                .center().widthRel(0.7f).height(24)
                 .length(Mode.entries.size)
                 .value(IntSyncValue({ mode.ordinal }, { i: Int -> mode = Mode.entries[i] }))
                 .overlay(IKey.dynamic { SidelessI18n.format(mode.translationKey) })

@@ -7,7 +7,7 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandlers
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Flow
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget
 import io.github.trcdevelopers.clayium.api.capability.IItemFilter
 import io.github.trcdevelopers.clayium.integration.modularui.MuiSlots
@@ -36,16 +36,16 @@ class ItemStringItemFilter(
 
         MuiSlots.lockHeldItem(syncManager, data.player)
         return ModularPanel.defaultPanel("string_type_filter")
-            .child(Column().margin(7)
+            .child(Flow.column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.str(stack.displayName).asWidget()
-                        .align(Alignment.TopLeft))
+                        .left(0).top(0))
                     .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
+                        .left(0).bottom(0))
                     .child(TextFieldWidget().widthRel(0.8f)
                         .hintText(hintText)
                         .value(oreNameSyncValue)
-                        .align(Alignment.Center))
+                        .center())
                 )
                 .child(MuiSlots.playerInventory(0)))
     }

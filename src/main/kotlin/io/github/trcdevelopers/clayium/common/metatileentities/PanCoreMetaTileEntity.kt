@@ -4,12 +4,11 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.drawable.Rectangle
 import com.cleanroommc.modularui.screen.ModularPanel
-import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData
-import com.cleanroommc.modularui.widgets.layout.Column
+import com.cleanroommc.modularui.widgets.layout.Flow
 import com.cleanroommc.modularui.widgets.layout.Grid
 import io.github.trcdevelopers.clayium.api.ClayEnergy
 import io.github.trcdevelopers.clayium.api.GUI_DEFAULT_HEIGHT
@@ -236,7 +235,9 @@ class PanCoreMetaTileEntity(
         if (!isRemote) {
             refreshNetworkAndThenEntries()
         }
-        val displayItems = Grid.mapToMatrix(9, duplicationEntries.toList()) { index, (itemAndMeta, entry) ->
+        val duplicationEntriesList = duplicationEntries.toList()
+        val displayItems = Grid.createGridOfSizeWidth(duplicationEntriesList.size, 9) { _, _, index ->
+            val (itemAndMeta, entry) = duplicationEntriesList[index]
             val stack = itemAndMeta.asStack()
             ItemDrawable(stack).asWidget().size(16)
                 .tooltip { tooltip ->
@@ -248,28 +249,28 @@ class PanCoreMetaTileEntity(
                 }
                 .also {
                     if (!entry.isAllowedToDuplicate) {
-                        it.background(Rectangle().setColor(0xFF5E1E0E.toInt()))
+                        it.background(Rectangle().color(0xFF5E1E0E.toInt()))
                     }
                 }
         }
         val panDisplayMargin = 4
         val panDisplayWidth = 16 * 9 + 0
         return ModularPanel.defaultPanel("pan_core", GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT + 50)
-            .child(Column().margin(7)
+            .child(Flow.column().margin(7)
                 .child(ParentWidget().widthRel(1f).expanded().marginBottom(2)
                     .child(IKey.lang(this.translationKey, IKey.lang(tier.prefixTranslationKey)).asWidget()
-                        .align(Alignment.TopLeft))
+                        .left(0).top(0))
                     .child(IKey.lang("container.inventory").asWidget()
-                        .align(Alignment.BottomLeft))
+                        .left(0).bottom(0))
                     .child(ParentWidget().width(panDisplayWidth + panDisplayMargin * 2).heightRel(1f)
-                        .align(Alignment.TopCenter).margin(0, 2)
-                        .child(Rectangle().setColor(Color.rgb(0, 0x1E, 0)).asWidget()
+                        .horizontalCenter().top(0).margin(0, 2)
+                        .child(Rectangle().color(Color.rgb(0, 0x1E, 0)).asWidget()
                             .width(panDisplayWidth + panDisplayMargin * 2).heightRel(1f).margin(0, 9))
                         .child(Grid().width(panDisplayWidth).heightRel(1f).margin(panDisplayMargin, 13)
                             .minElementMargin(0, 0)
-                            .matrix(displayItems)
+                            .grid(displayItems)
                             .scrollable(VerticalScrollData())
-                            .background(Rectangle().setColor(Color.rgb(0, 0x1E, 0))))
+                            .background(Rectangle().color(Color.rgb(0, 0x1E, 0))))
                     )
                 )
                 .child(MuiSlots.playerInventory(0)))
