@@ -27,6 +27,16 @@ class EntityThrowableClayBullet : EntityThrowable {
 
     private var age = 0
 
+    companion object {
+        /**
+         * 発射直後にshooter自身に弾が当たるのを防ぐための猶予期間（tick）。
+         * EntityThrowableのデフォルト実装でもthrowerを除外しようとするが、
+         * 発射直後はエンティティのhitboxがまだ重なっている場合があるため、
+         * この期間中はshooterへの着弾判定を明示的に無効化する。
+         */
+        private const val SHOOTER_GRACE_PERIOD_TICKS = 3
+    }
+
     @Deprecated("Not for direct use.")
     constructor(world: World) : super(world)
     constructor(world: World, player: EntityPlayer, lifespan: Int, damage: Int, critical: Boolean) : super(world, player) {
@@ -69,13 +79,16 @@ class EntityThrowableClayBullet : EntityThrowable {
     override fun onImpact(result: RayTraceResult) {
         if (this.isDead || this.world.isRemote) return
 
-        if (result.typeOfHit == RayTraceResult.Type.BLOCK || result.entityHit != null) {
+        // 発射直後の猶予期間中にshooter自身にヒットした場合は無視する
+        val hitEntity = result.entityHit
+        if (hitEntity != null && hitEntity == this.thrower && this.age < SHOOTER_GRACE_PERIOD_TICKS) return
+
+        if (result.typeOfHit == RayTraceResult.Type.BLOCK || hitEntity != null) {
             this.posX = result.hitVec.x
             this.posY = result.hitVec.y
             this.posZ = result.hitVec.z
         }
 
-        val hitEntity = result.entityHit
         if (hitEntity != null) {
             this.onEntityHit(hitEntity)
         }
