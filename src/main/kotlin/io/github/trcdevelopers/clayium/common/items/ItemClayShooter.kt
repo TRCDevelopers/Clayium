@@ -57,9 +57,8 @@ open class ItemClayShooter(
 //                    (this.bulletDamage * per).toInt(), 1, critical
 //            )
             val entityClayBullet = EntityThrowableClayBullet(
-                player.world, player, this.bulletLifespanTick, this.bulletDamage, critical
+                player.world, player, this.bulletLifespanTick, this.bulletInitialVelocity, this.bulletDiffusion, this.bulletDamage, 1, critical
             )
-            entityClayBullet.shoot(player, player.rotationPitch, player.rotationYaw, 0f, this.bulletInitialVelocity * per, this.bulletDiffusion)
             player.world.spawnEntity(entityClayBullet)
         }
 

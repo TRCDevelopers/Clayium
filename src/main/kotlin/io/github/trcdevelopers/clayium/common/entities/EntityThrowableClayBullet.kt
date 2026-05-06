@@ -15,7 +15,11 @@ import net.minecraft.util.SoundCategory
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
+import kotlin.math.PI
+import kotlin.math.atan2
+import kotlin.math.cos
 import kotlin.math.floor
+import kotlin.math.sin
 import kotlin.math.sqrt
 
 class EntityThrowableClayBullet : EntityThrowable {
@@ -33,14 +37,30 @@ class EntityThrowableClayBullet : EntityThrowable {
          * EntityThrowableのデフォルト実装でもthrowerを除外しようとするが、
          * 発射直後はエンティティのhitboxがまだ重なっている場合があるため、
          * この期間中はshooterへの着弾判定を明示的に無効化する。
+         * TODO: time-basedじゃなくてEntityがthrowerかどうかで見る
          */
         private const val SHOOTER_GRACE_PERIOD_TICKS = 3
     }
 
     @Deprecated("Not for direct use.")
     constructor(world: World) : super(world)
-    constructor(world: World, player: EntityPlayer, lifespan: Int, damage: Int, critical: Boolean) : super(world, player) {
+    constructor(world: World, player: EntityPlayer, lifespan: Int, initVelocity: Float, diffusion: Float, damage: Int, numOfTicks: Int, critical: Boolean) : super(world, player) {
         this.player = player
+
+        this.setLocationAndAngles(player.posX, player.posY + player.eyeHeight, player.posZ, player.rotationYaw, player.rotationPitch)
+        val yawRad = player.rotationYaw / 180 * PI
+        val pitchRad = player.rotationPitch / 180 * PI
+        this.posX -= cos(yawRad) * 0.16
+        this.posY -= 0.1f
+        this.posZ -= sin(yawRad) * 0.16
+        this.setPosition(this.posX, this.posY, this.posZ)
+        //  yOffset is always 0.0D in super
+        this.motionX = -sin(yawRad) * cos(pitchRad)
+        this.motionZ = cos(yawRad) * cos(pitchRad)
+        this.motionY = -sin(pitchRad)
+//        this.shoot(this.motionX, this.motionY, this.motionZ, initVelocity, diffusion)
+        this.shoot(this.motionX, this.motionY, this.motionZ, initVelocity, 0f)
+
         this.lifespan = lifespan
         this.damage = damage
         this.critical = critical
@@ -57,6 +77,7 @@ class EntityThrowableClayBullet : EntityThrowable {
     }
 
     override fun onUpdate() {
+        println("LIVING!")
         this.lastTickPosX = this.posX
         this.lastTickPosY = this.posY
         this.lastTickPosZ = this.posZ

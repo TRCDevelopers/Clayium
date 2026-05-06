@@ -16,6 +16,7 @@ import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
+import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.floor
@@ -36,6 +37,7 @@ class EntityClayBullet @Deprecated("Use another constructor, this is for world l
         this.numOfTicks = numOfTicks
         this.critical = critical
 
+        this.setSize(0.25f, 0.25f)
         this.setLocationAndAngles(
             thrower.posX, thrower.posY + thrower.eyeHeight.toDouble(), thrower.posZ, thrower.rotationYaw, thrower.rotationPitch
         )
@@ -91,6 +93,25 @@ class EntityClayBullet @Deprecated("Use another constructor, this is for world l
     }
 
     override fun writeEntityToNBT(compound: NBTTagCompound) {
+    }
+
+    fun setThrowableHeading(dirX: Double, dirY: Double, dirZ: Double, velocity: Float, diffusion: Float) {
+        val len = sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ)
+        var directionX = dirX / len
+        var directionY = dirY / len
+        var directionZ = dirZ / len
+        directionX += this.rand.nextGaussian() * 0.0075 * diffusion
+        directionY += this.rand.nextGaussian() * 0.0075 * diffusion
+        directionZ += this.rand.nextGaussian() * 0.0075 * diffusion
+        this.motionX = directionX
+        this.motionY = directionY
+        this.motionZ = directionZ
+        val len2d = sqrt(directionX * directionX + directionZ * directionZ)
+        this.rotationYaw = (atan2(directionX, directionZ) * 180.0f / PI).toFloat()
+        this.rotationPitch = (atan2(directionX, len2d) * 180.0f / PI).toFloat()
+        this.prevRotationYaw = this.rotationYaw
+        this.prevRotationPitch = this.rotationPitch
+        this.ticksInGround = 0
     }
 
     override fun shoot(x: Double, y: Double, z: Double, velocity: Float, inaccuracy: Float) {
