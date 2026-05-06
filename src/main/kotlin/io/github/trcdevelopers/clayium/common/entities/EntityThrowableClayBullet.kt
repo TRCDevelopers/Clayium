@@ -54,12 +54,10 @@ class EntityThrowableClayBullet : EntityThrowable {
         this.posY -= 0.1f
         this.posZ -= sin(yawRad) * 0.16
         this.setPosition(this.posX, this.posY, this.posZ)
+        val lookVector = player.getLook(1f)
         //  yOffset is always 0.0D in super
-        this.motionX = -sin(yawRad) * cos(pitchRad)
-        this.motionZ = cos(yawRad) * cos(pitchRad)
-        this.motionY = -sin(pitchRad)
 //        this.shoot(this.motionX, this.motionY, this.motionZ, initVelocity, diffusion)
-        this.shoot(this.motionX, this.motionY, this.motionZ, initVelocity, 0f)
+        this.shoot(lookVector.x, lookVector.y, lookVector.z, initVelocity, 0f)
 
         this.lifespan = lifespan
         this.damage = damage
