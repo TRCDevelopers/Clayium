@@ -1,6 +1,5 @@
 package io.github.trcdevelopers.clayium.common.entities
 
-import io.github.trcdevelopers.clayium.api.util.CLog
 import net.minecraft.block.Block
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
@@ -16,11 +15,13 @@ import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
 import kotlin.math.PI
-import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.sin
 import kotlin.math.sqrt
+
+// The velocity of an entity is limited to 3.9D
+// net/minecraftforge/fml/common/network/internal/FMLMessage.java:192
 
 class EntityThrowableClayBullet : EntityThrowable {
 
