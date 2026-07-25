@@ -43,6 +43,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.common.gameevent.TickEvent
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.registries.IForgeRegistry
@@ -50,6 +52,9 @@ import net.minecraftforge.registries.IForgeRegistry
 private const val mode1velocity: Float = 0.7f
 private const val mode2acceleration: Float = 0.9f
 private const val mode2division: Float = 1.1f
+
+private const val FOV_CULLING_REFRESH_TICKS = 20
+private var currentFovCullingRefreshTicks = 0
 
 @Suppress("unused")
 @SideOnly(Side.CLIENT)
@@ -160,6 +165,21 @@ class ClientProxy : CommonProxy() {
             val v = k + 3600f / (k + 60f) - 60f
             val mod = 2.5f / (v + 2.5f)
             e.newfov = e.fov * mod + (1f - mod) * 0.1f
+
+            if (usingTime > 0) {
+                currentFovCullingRefreshTicks = FOV_CULLING_REFRESH_TICKS
+            }
+        }
+    }
+
+    @SubscribeEvent
+    fun onClientTick(e: TickEvent.ClientTickEvent) {
+        if (e.phase == Phase.END) {
+            val mc = Minecraft.getMinecraft()
+            if (currentFovCullingRefreshTicks > 0) {
+                currentFovCullingRefreshTicks--
+                mc.renderGlobal.setDisplayListEntitiesDirty()
+            }
         }
     }
 
