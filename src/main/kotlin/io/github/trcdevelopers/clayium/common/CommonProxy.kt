@@ -136,13 +136,13 @@ open class CommonProxy {
             .entity(EntityClayBullet::class.java)
             .id(clayiumId("clay_bullet"), 1)
             .name("clay_bullet")
-            .tracker(128, 1, true)
+            .tracker(128, 1, false)
             .build())
         registry.register(EntityEntryBuilder.create<EntityThrowableClayBullet>()
             .entity(EntityThrowableClayBullet::class.java)
             .id(clayiumId("throwable_clay_bullet"), 2)
             .name("throwable_clay_bullet")
-            .tracker(128, 1, true)
+            .tracker(128, 1, false)
             .build())
     }
 

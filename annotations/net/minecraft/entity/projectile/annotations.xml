@@ -1,0 +1,5 @@
+<root>
+    <item name='net.minecraft.entity.projectile.EntityThrowable thrower'>
+        <annotation name='org.jetbrains.annotations.Nullable'/>
+    </item>
+</root>

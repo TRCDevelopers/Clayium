@@ -1,5 +1,6 @@
 package io.github.trcdevelopers.clayium.common.entities
 
+import io.netty.buffer.ByteBuf
 import net.minecraft.block.Block
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
@@ -14,6 +15,7 @@ import net.minecraft.util.SoundCategory
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.floor
@@ -23,7 +25,7 @@ import kotlin.math.sqrt
 // The velocity of an entity is limited to 3.9D
 // net/minecraftforge/fml/common/network/internal/FMLMessage.java:192
 
-class EntityThrowableClayBullet : EntityThrowable {
+class EntityThrowableClayBullet : EntityThrowable, IEntityAdditionalSpawnData {
 
     private lateinit var player: EntityPlayer
     private var lifespan: Int = 0
@@ -76,7 +78,6 @@ class EntityThrowableClayBullet : EntityThrowable {
     }
 
     override fun onUpdate() {
-        println("LIVING!")
         this.lastTickPosX = this.posX
         this.lastTickPosY = this.posY
         this.lastTickPosZ = this.posZ
@@ -268,5 +269,17 @@ class EntityThrowableClayBullet : EntityThrowable {
                 mz,
             )
         }
+    }
+
+    override fun writeSpawnData(buffer: ByteBuf) {
+        buffer.writeDouble(this.motionX)
+        buffer.writeDouble(this.motionY)
+        buffer.writeDouble(this.motionZ)
+    }
+
+    override fun readSpawnData(additionalData: ByteBuf) {
+        this.motionX = additionalData.readDouble()
+        this.motionY = additionalData.readDouble()
+        this.motionZ = additionalData.readDouble()
     }
 }
