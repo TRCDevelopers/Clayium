@@ -2,6 +2,7 @@ package io.github.trcdevelopers.clayium.common.network
 
 import io.github.trcdevelopers.clayium.common.util.KeyInput
 import io.netty.buffer.ByteBuf
+import it.unimi.dsi.fastutil.booleans.BooleanArrayList
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage
 
 class KeyInputPacket() : IMessage {
@@ -11,32 +12,30 @@ class KeyInputPacket() : IMessage {
      */
     constructor(updating: List<KeyInput>) : this() {
         this.updating = updating
-        this.data = updating.map { KeyInput.MutBooleanPairKeyData(it.isKeyDown(), it.isPressed()) }
+        this.data = BooleanArrayList().apply { updating.forEach { add(it.isKeyDown()) } }
     }
 
     lateinit var updating: List<KeyInput>
-    lateinit var data: List<KeyInput.MutBooleanPairKeyData>
+    lateinit var data: BooleanArrayList
+
+    override fun toBytes(buf: ByteBuf) {
+        buf.writeInt(updating.size)
+        for (i in updating.indices) {
+            buf.writeInt(updating[i].ordinal)
+            buf.writeBoolean(data.getBoolean(i))
+        }
+    }
 
     override fun fromBytes(buf: ByteBuf) {
         val size = buf.readInt()
         val updating = mutableListOf<KeyInput>()
-        val data = mutableListOf<KeyInput.MutBooleanPairKeyData>()
+        val data = BooleanArrayList()
         repeat(size) {
             updating.add(KeyInput.entries[buf.readInt()])
             val isKeyDown = buf.readBoolean()
-            val isPressed = buf.readBoolean()
-            data.add(KeyInput.MutBooleanPairKeyData(isKeyDown, isPressed))
+            data.add(isKeyDown)
         }
         this.updating = updating
         this.data = data
-    }
-
-    override fun toBytes(buf: ByteBuf) {
-        buf.writeInt(updating.size)
-        for (key in updating) {
-            buf.writeInt(key.ordinal)
-            buf.writeBoolean(key.isKeyDown())
-            buf.writeBoolean(key.isPressed())
-        }
     }
 }

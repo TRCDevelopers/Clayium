@@ -19,12 +19,10 @@ enum class KeyInput(
     SPRINT({{ Minecraft.getMinecraft().gameSettings.keyBindSprint }}),
     ;
 
-    private val mapping by lazy { WeakHashMap<EntityPlayerMP, MutBooleanPairKeyData>() }
+    private val mapping by lazy { WeakHashMap<EntityPlayerMP, Boolean>() }
     private lateinit var keyBinding: KeyBinding
     @SideOnly(Side.CLIENT)
     private var isKeyDown = false
-    @SideOnly(Side.CLIENT)
-    private var isPressed = false
 
     init {
         if (CUtils.isClientSide) {
@@ -32,10 +30,8 @@ enum class KeyInput(
         }
     }
 
-    fun update(player: EntityPlayerMP, isKeyDown: Boolean, isPressed: Boolean) {
-        val pair = mapping.computeIfAbsent(player) { MutBooleanPairKeyData(false, false) }
-        pair.isKeyDown = isKeyDown
-        pair.isPressed = isPressed
+    fun update(player: EntityPlayerMP, isKeyDown: Boolean) {
+        this.mapping[player] = isKeyDown
     }
 
     @SideOnly(Side.CLIENT)
@@ -43,23 +39,9 @@ enum class KeyInput(
         return this.keyBinding.isKeyDown
     }
 
-    @SideOnly(Side.CLIENT)
-    fun isPressed(): Boolean {
-        return this.keyBinding.isPressed
-    }
-
     fun isKeyDown(player: EntityPlayerMP): Boolean {
-        return mapping[player]?.isKeyDown == true
+        return mapping[player] == true
     }
-
-    fun isPressed(player: EntityPlayerMP): Boolean {
-        return mapping[player]?.isPressed == true
-    }
-
-    class MutBooleanPairKeyData(
-        var isKeyDown: Boolean,
-        var isPressed: Boolean
-    )
 
     companion object {
         @SubscribeEvent
@@ -68,11 +50,9 @@ enum class KeyInput(
             var updating: MutableList<KeyInput>? = null
             for (key in KeyInput.entries) {
                 val prevIsKeyDown = key.isKeyDown
-                val prevIsPressed = key.isPressed
                 key.isKeyDown = key.isKeyDown()
-                key.isPressed = key.isPressed()
 
-                if (prevIsKeyDown != key.isKeyDown || prevIsPressed != key.isPressed) {
+                if (prevIsKeyDown != key.isKeyDown) {
                     if (updating == null) updating = mutableListOf()
                     updating.add(key)
                 }

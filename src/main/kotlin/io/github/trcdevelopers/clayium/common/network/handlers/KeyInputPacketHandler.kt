@@ -9,8 +9,8 @@ object KeyInputPacketHandler : IMessageHandler<KeyInputPacket, IMessage> {
     override fun onMessage(message: KeyInputPacket, ctx: MessageContext): IMessage? {
         val player = ctx.serverHandler.player
         player.serverWorld.addScheduledTask {
-            for ((key, data) in message.updating.zip(message.data)) {
-                key.update(player, data.isKeyDown, data.isPressed)
+            for ((key, isKeyDown) in message.updating.zip(message.data)) {
+                key.update(player, isKeyDown)
             }
         }
         return null
