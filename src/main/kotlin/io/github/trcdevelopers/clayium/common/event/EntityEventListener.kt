@@ -3,6 +3,7 @@ package io.github.trcdevelopers.clayium.common.event
 import io.github.trcdevelopers.clayium.api.capability.ClayiumPlayerData
 import io.github.trcdevelopers.clayium.api.util.clayiumId
 import io.github.trcdevelopers.clayium.common.capability.impl.GadgetRepeatedlyAttack
+import io.github.trcdevelopers.clayium.common.items.ItemClayAutomaticRifle
 import io.github.trcdevelopers.clayium.common.items.ItemClayGadgetHolder
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
@@ -21,11 +22,7 @@ object EntityEventListener {
         val player = e.player
 
         ItemClayGadgetHolder.onTick(player)
-
-        val data = player.getCapability(ClayiumPlayerData.CAPABILITY, null)
-        if (data != null && data.clayGunCooldown > 0) {
-            data.clayGunCooldown--
-        }
+        ItemClayAutomaticRifle.clayShooterTick(player)
     }
 
     @SubscribeEvent

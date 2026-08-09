@@ -19,7 +19,7 @@ import io.github.trcdevelopers.clayium.common.blocks.metalchest.TileEntityMetalC
 import io.github.trcdevelopers.clayium.common.entities.EntityClayBullet
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.ICustomItemModel
-import io.github.trcdevelopers.clayium.common.items.ItemClayChargedShooter
+import io.github.trcdevelopers.clayium.common.items.ItemClaySniperRifle
 import io.github.trcdevelopers.clayium.common.items.metaitem.MetaItemClayium
 import io.github.trcdevelopers.clayium.common.metatileentities.MetaTileEntities
 import io.github.trcdevelopers.clayium.common.util.KeyInput
@@ -154,7 +154,7 @@ class ClientProxy : CommonProxy() {
 
         val stack = player.getHeldItem(player.activeHand)
         val item = stack.item
-        if (item is ItemClayChargedShooter) {
+        if (item is ItemClaySniperRifle) {
             val chargeTime = item.chargeTimeTick
             val usingTime = player.itemInUseMaxCount
 

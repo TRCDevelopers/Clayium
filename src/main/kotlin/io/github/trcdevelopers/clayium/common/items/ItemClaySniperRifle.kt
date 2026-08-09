@@ -11,7 +11,7 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.SoundCategory
 import net.minecraft.world.World
 
-class ItemClayChargedShooter(
+class ItemClaySniperRifle(
     maxDamage: Int,
     bulletLifespan: Int,
     bulletInitialVelocity: Float,

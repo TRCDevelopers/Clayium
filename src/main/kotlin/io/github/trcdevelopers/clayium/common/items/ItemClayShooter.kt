@@ -1,21 +1,15 @@
 package io.github.trcdevelopers.clayium.common.items
 
-import io.github.trcdevelopers.clayium.api.capability.ClayiumPlayerData
 import io.github.trcdevelopers.clayium.api.item.ItemTiered
 import io.github.trcdevelopers.clayium.api.util.ClayTiers
 import io.github.trcdevelopers.clayium.api.util.ITier
 import io.github.trcdevelopers.clayium.common.entities.EntityThrowableClayBullet
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemStack
-import net.minecraft.util.ActionResult
-import net.minecraft.util.EnumActionResult
-import net.minecraft.util.EnumHand
 import net.minecraft.util.SoundCategory
-import net.minecraft.world.World
 
-open class ItemClayShooter(
+abstract class ItemClayShooter(
     maxDamage: Int,
     val bulletLifespanTick: Int,
     val bulletInitialVelocity: Float,
@@ -36,8 +30,6 @@ open class ItemClayShooter(
     override fun getTier(stack: ItemStack): ITier {
         return ClayTiers.ADVANCED // TODO
     }
-
-    override fun getMaxItemUseDuration(stack: ItemStack): Int = 72000
 
     @JvmOverloads
     protected fun shoot(stack: ItemStack, player: EntityPlayer, per: Float, critical: Boolean = false) {
@@ -61,23 +53,4 @@ open class ItemClayShooter(
         }
     }
 
-    private fun shootIfCooledDown(stack: ItemStack, player: EntityPlayer, per: Float) {
-        val data = player.getCapability(ClayiumPlayerData.CAPABILITY, null)
-            ?: return
-        val cooldown = data.clayGunCooldown
-        if (cooldown <= 0) {
-            this.shoot(player.getHeldItem(player.activeHand), player, per)
-            data.clayGunCooldown = this.bulletCooldownTick
-        }
-    }
-
-    override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
-        playerIn.activeHand = handIn
-        return ActionResult.newResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
-    }
-
-    override fun onUsingTick(stack: ItemStack, player: EntityLivingBase, count: Int) {
-        if (player !is EntityPlayer) return
-        this.shootIfCooledDown(stack, player, 1.0f)
-    }
 }
