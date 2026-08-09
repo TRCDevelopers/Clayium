@@ -23,7 +23,7 @@ object EntityEventListener {
         ItemClayGadgetHolder.onTick(player)
 
         val data = player.getCapability(ClayiumPlayerData.CAPABILITY, null)
-        if (data != null) {
+        if (data != null && data.clayGunCooldown > 0) {
             data.clayGunCooldown--
         }
     }
