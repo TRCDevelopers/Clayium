@@ -180,6 +180,8 @@ class ClientProxy : CommonProxy() {
                 currentFovCullingRefreshTicks--
                 mc.renderGlobal.setDisplayListEntitiesDirty()
             }
+
+            KeyInput.sendKeyStates(listOf(KeyInput.USE_ITEM))
         }
     }
 

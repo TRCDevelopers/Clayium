@@ -17,6 +17,7 @@ enum class KeyInput(
     keyBinding: () -> (() -> KeyBinding)
 ) {
     SPRINT({{ Minecraft.getMinecraft().gameSettings.keyBindSprint }}),
+    USE_ITEM({{ Minecraft.getMinecraft().gameSettings.keyBindUseItem }})
     ;
 
     private val mapping by lazy { WeakHashMap<EntityPlayerMP, Boolean>() }
@@ -47,8 +48,13 @@ enum class KeyInput(
         @SubscribeEvent
         @Suppress("unused")
         fun onKeyInput(e: InputEvent.KeyInputEvent) {
+            sendKeyStates(KeyInput.entries)
+        }
+
+        @SideOnly(Side.CLIENT)
+        fun sendKeyStates(keys: Iterable<KeyInput>) {
             var updating: MutableList<KeyInput>? = null
-            for (key in KeyInput.entries) {
+            for (key in keys) {
                 val prevIsKeyDown = key.isKeyDown
                 key.isKeyDown = key.isKeyDown()
 

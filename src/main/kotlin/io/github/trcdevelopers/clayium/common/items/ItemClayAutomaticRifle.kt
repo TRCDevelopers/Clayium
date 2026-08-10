@@ -1,13 +1,9 @@
 package io.github.trcdevelopers.clayium.common.items
 
 import io.github.trcdevelopers.clayium.api.capability.ClayiumPlayerData
-import net.minecraft.entity.EntityLivingBase
+import io.github.trcdevelopers.clayium.common.util.KeyInput
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.ItemStack
-import net.minecraft.util.ActionResult
-import net.minecraft.util.EnumActionResult
-import net.minecraft.util.EnumHand
-import net.minecraft.world.World
+import net.minecraft.entity.player.EntityPlayerMP
 
 class ItemClayAutomaticRifle(
     maxDamage: Int,
@@ -20,8 +16,11 @@ class ItemClayAutomaticRifle(
 
     companion object {
         fun clayShooterTick(player: EntityPlayer) {
+            if (player !is EntityPlayerMP) return
+
             val stack = player.heldItemMainhand
             val shooter = stack.item as? ItemClayAutomaticRifle ?: return
+            if (!KeyInput.USE_ITEM.isKeyDown(player)) return
 
             val data = player.getCapability(ClayiumPlayerData.CAPABILITY, null)
                 ?: return
