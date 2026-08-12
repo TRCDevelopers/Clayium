@@ -59,8 +59,7 @@ class EntityThrowableClayBullet : EntityThrowable, IEntityAdditionalSpawnData {
         this.setPosition(this.posX, this.posY, this.posZ)
         val lookVector = player.getLook(1f)
         //  yOffset is always 0.0D in super
-//        this.shoot(this.motionX, this.motionY, this.motionZ, initVelocity, diffusion)
-        this.shoot(lookVector.x, lookVector.y, lookVector.z, initVelocity, 0f)
+        this.shoot(lookVector.x, lookVector.y, lookVector.z, initVelocity, diffusion)
 
         this.lifespan = lifespan
         this.damage = damage
