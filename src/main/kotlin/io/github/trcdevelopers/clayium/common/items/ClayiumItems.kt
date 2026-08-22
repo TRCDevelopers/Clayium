@@ -73,6 +73,7 @@ object ClayiumItems {
     val FLUID_CAPSULE_1000MB = createItem("fluid_capsule_1000mb", ItemFluidCapsule(1000, addSubItemsToCreativeTab = true), ClayiumCTabs.fluidCapsules)
 
     val CLAY_GUN = createItem("clay_gun_basic", ItemClayAutomaticRifle(10000, 2, 1.2f, 25.0f, 4, 6))
+    val CLAY_GUN_ADVANCED = createItem("clay_gun_advanced", ItemClayAutomaticRifle(1000, 4, 4.5f, 3f, 7, 12))
     val CLAY_SNIPER = createItem("clay_gun_sniper", ItemClaySniperRifle(8000, 2, 15.0f, 0.0f, 25, 8, 20))
     val CLAY_SNIPER_PRO = createItem("clay_gun_sniper_pro", ItemClaySniperRifle(2500, 3, 30.0f, 0.0f, 100, 8, 40))
 
@@ -148,6 +149,7 @@ object ClayiumItems {
         proxy.registerItem(registry, FLUID_CAPSULE_1000MB)
 
         proxy.registerItem(registry, CLAY_GUN)
+        proxy.registerItem(registry, CLAY_GUN_ADVANCED)
         proxy.registerItem(registry, CLAY_SNIPER)
         proxy.registerItem(registry, CLAY_SNIPER_PRO)
 
