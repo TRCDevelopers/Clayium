@@ -16,7 +16,7 @@ import io.github.trcdevelopers.clayium.common.blocks.ClayiumBlocks
 import io.github.trcdevelopers.clayium.common.blocks.TileEntityClayLaserReflector
 import io.github.trcdevelopers.clayium.common.blocks.marker.TileClayMarker
 import io.github.trcdevelopers.clayium.common.blocks.metalchest.TileEntityMetalChest
-import io.github.trcdevelopers.clayium.common.entities.EntityClayBullet
+import io.github.trcdevelopers.clayium.common.entities.EntityThrowableClayBullet
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
 import io.github.trcdevelopers.clayium.common.items.ICustomItemModel
 import io.github.trcdevelopers.clayium.common.items.ItemClaySniperRifle
@@ -26,7 +26,6 @@ import io.github.trcdevelopers.clayium.common.util.KeyInput
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.entity.RenderSnowball
-import net.minecraft.entity.projectile.EntityThrowable
 import net.minecraft.init.Items
 import net.minecraft.item.Item
 import net.minecraft.util.math.MathHelper
@@ -97,10 +96,7 @@ class ClientProxy : CommonProxy() {
     }
 
     fun registerRenderers() {
-        RenderingRegistry.registerEntityRenderingHandler(EntityClayBullet::class.java) { manager ->
-            RenderSnowball(manager, Items.CLAY_BALL, Minecraft.getMinecraft().renderItem)
-        }
-        RenderingRegistry.registerEntityRenderingHandler(EntityThrowable::class.java) { manager ->
+        RenderingRegistry.registerEntityRenderingHandler(EntityThrowableClayBullet::class.java) { manager ->
             RenderSnowball(manager, Items.CLAY_BALL, Minecraft.getMinecraft().renderItem)
         }
     }

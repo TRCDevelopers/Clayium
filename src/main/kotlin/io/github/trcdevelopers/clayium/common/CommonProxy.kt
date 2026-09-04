@@ -23,7 +23,6 @@ import io.github.trcdevelopers.clayium.common.blocks.marker.TileClayMarker
 import io.github.trcdevelopers.clayium.common.blocks.metalchest.BlockMetalChest
 import io.github.trcdevelopers.clayium.common.blocks.metalchest.TileEntityMetalChest
 import io.github.trcdevelopers.clayium.common.creativetab.ClayiumCTabs
-import io.github.trcdevelopers.clayium.common.entities.EntityClayBullet
 import io.github.trcdevelopers.clayium.common.entities.EntityThrowableClayBullet
 import io.github.trcdevelopers.clayium.common.event.EntityEventListener
 import io.github.trcdevelopers.clayium.common.items.ClayiumItems
@@ -132,12 +131,6 @@ open class CommonProxy {
     fun registerEntities(e: RegistryEvent.Register<EntityEntry>) {
         CLog.info("Registering entities...")
         val registry = e.registry
-        registry.register(EntityEntryBuilder.create<EntityClayBullet>()
-            .entity(EntityClayBullet::class.java)
-            .id(clayiumId("clay_bullet"), 1)
-            .name("clay_bullet")
-            .tracker(128, 1, false)
-            .build())
         registry.register(EntityEntryBuilder.create<EntityThrowableClayBullet>()
             .entity(EntityThrowableClayBullet::class.java)
             .id(clayiumId("throwable_clay_bullet"), 2)
