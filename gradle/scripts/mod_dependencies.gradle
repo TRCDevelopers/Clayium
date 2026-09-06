@@ -61,6 +61,6 @@ dependencies {
 //    runtimeOnlyNonPublishable(rfg.deobf("curse.maven:galacticraft-legacy-564236:6364107"))
 //    runtimeOnlyNonPublishable(rfg.deobf("curse.maven:metallurgy-4-reforged-300890:5279337")) // somehow crashes on deobf
 
-    devOnlyNonPublishable("mezz.jei:jei_1.12.2:4.16.5.1029")
+    devOnlyNonPublishable("mezz.jei:jei_1.12.2:4.16.5.1030")
     devOnlyNonPublishable(rfg.deobf("curse.maven:top-245211:2667280")) // TOP 1.4.28
 }
