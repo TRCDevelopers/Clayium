@@ -47,7 +47,7 @@ jobs:
         run: ./gradlew build
 
       - name: Publish to Modrinth and CurseForge and Github
-        uses: Kir-Antipov/mc-publish@52307b03863581dec6b652b83e597aec02ebb075 # v3.3.1
+        uses: Kir-Antipov/mc-publish@c23376546a97f5ba7984e94445da359459b14419 # v3.3.2
         with:
           version-type: ${{ env.VERSION_TYPE }}
           name: "Clayium Unofficial: ${{ env.mod_version }}"
